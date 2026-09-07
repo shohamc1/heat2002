@@ -95,28 +95,23 @@ satisfy the next input section's recorded alignment (from its own internal
 inter-function padding actually is. Adding your own padding on top double-counts.
 
 The one real trap: `arm-none-eabi-as` rounds every `.text` section's end up
-to its recorded alignment using NOP filler (`46c0`), independent of section
-content. A monolithic asm/rom.s never showed this (one section, aligned by
-luck at EOF), but a lone C function assembled to its own object will, if its
-size isn't a multiple of 4 -- the extra NOP bytes land in the ROM where the
-real byte (usually zero, from the linker's own alignment fill) belongs.
-`-no-pad-sections` claims to disable this and does not, empirically, in this
-toolchain. The fix lives in the Makefile's `$(BUILD)/src/%.o` rule: an `awk`
-step downgrades agbcc's leading `.align 2, 0` (the function's own entry
-alignment, a content no-op since a function is always first in its own
-object) to `.align 1, 0` before assembling, which stops gas from recording
-alignment 4 for the section at all. (Not `sed -i` -- its in-place flag takes
-a mandatory suffix argument on BSD and an optional one on GNU, so the same
-invocation cannot work on both a Mac dev machine and Linux CI; awk's
-redirect-to-a-temp-file-then-rename has no such split.)
+to its recorded alignment (4, from any `.align 2, 0` in the file -- agbcc
+emits one before every function and every literal pool) using NOP filler
+(`46c0`). `-no-pad-sections` does not stop it. The ROM contains no NOPs: the
+gap before the next function is always zero bytes. So a C function or an asm
+fragment whose size is 2 mod 4 would put `46c0` where the ROM has `0000`.
+This is not rare -- 55 functions have a literal pool followed by a 2-mod-4
+code tail, and 207 function boundaries sit 2 mod 4, so any fragment cut there
+hits it too. The Makefile fixes it by appending an explicit `.align 2, 0` to
+every generated `.s` (C and asm fragments alike) before assembling: an
+explicit align pads with its fill byte (zero) instead of NOPs, and that zero
+is exactly the linker fill the ROM has. Verified on a 2-mod-4 fragment cut at
+`sub_08000274` and on a C function with a mid-body pool and odd tail.
 
-Only the *first* `.align 2, 0` is touched -- this is why **one function per
-`src/*.c` file is a hard build requirement, not a style convention**. A
-second function's own leading alignment, or a real literal pool's alignment
-inside a bigger function, is a second `.align 2, 0` that reintroduces the
-same section-alignment-4 problem the fix exists to avoid, and the fix
-silently stops applying to it. No literal-pool case has been hit yet; when
-one is, this awk step will not be enough on its own and needs revisiting.
+Keep one function per `src/*.c` file anyway: `ldscript.ld` places whole
+objects at addresses, so a file with two functions can only be placed if they
+are adjacent in the ROM, and `progress.py` sizes decompiled functions per
+object.
 
 `scripts/match.py` and `scripts/progress.py` both scan every `asm/*.s`
 fragment now, never a hardcoded `asm/rom.s` (match.py's *target* lookup was

@@ -13,3 +13,4 @@ tools/agbcc/agbcc_arm
 tools/agbcc/old_agbcc
 tools/agbcc/*.a
 report.json
+*.sav

@@ -25,32 +25,25 @@ all: $(TARGET).gba
 # intermediate is kept -- it's what you diff against the target asm when a
 # function doesn't match.
 #
-# The awk strips agbcc's leading `.align 2, 0` (word-align the function
-# start) down to `.align 1, 0` before assembling. That directive is a no-op
-# for content -- a function is always first in its own object, so offset 0
-# is already word-aligned -- but gas records it as the section's alignment
-# and then silently rounds the section's *end* up to match, padding with
-# NOP. Invisible in one monolithic asm/rom.s (one section, padded once at
-# EOF if at all); real now that a decompiled function is its own object
-# sandwiched between two asm fragments at an exact address -- the phantom
-# NOPs land inside the ROM instead of whatever byte was really there. Only
-# the FIRST `.align 2, 0` is touched (a real literal pool's own alignment
-# stays put), which is why one function per src/*.c file is a hard
-# requirement, not just a convention: a second function in the same file
-# reintroduces the alignment gas re-pads against, and the fix silently stops
-# applying to it. (sed's `-i` flag differs between BSD and GNU and one of
-# them always breaks; awk's redirect-to-temp-then-rename has no such split.)
+# gas rounds every .text section's end up to its alignment (4, from the
+# `.align 2, 0` agbcc emits before each function and literal pool) using NOP
+# filler (46c0); -no-pad-sections does not stop it. The ROM has no NOPs -- the
+# gap between functions is zero bytes. An explicit trailing `.align 2, 0`
+# makes gas fill that gap with zeros instead, matching the ROM. Same trick on
+# the asm fragments below: a fragment cut at a 2-mod-4 boundary would
+# otherwise get the same NOP.
 $(BUILD)/src/%.o: src/%.c
 	@mkdir -p $(@D)
 	$(CPP) $(CPPFLAGS) $< -o $(BUILD)/src/$*.i
 	$(CC1) $(CFLAGS) $(BUILD)/src/$*.i -o $(BUILD)/src/$*.s
-	awk '!done && /\.align[[:space:]]+2, 0/ { sub(/\.align[[:space:]]+2, 0/, ".align 1, 0"); done=1 } { print }' \
-		$(BUILD)/src/$*.s > $(BUILD)/src/$*.s.tmp && mv $(BUILD)/src/$*.s.tmp $(BUILD)/src/$*.s
+	printf '\t.align 2, 0\n' >> $(BUILD)/src/$*.s
 	$(AS) $(ASFLAGS) -I include -o $@ $(BUILD)/src/$*.s
 
 $(BUILD)/asm/%.o: asm/%.s
 	@mkdir -p $(@D)
-	$(AS) $(ASFLAGS) -I include -o $@ $<
+	cat $< > $(BUILD)/asm/$*.s
+	printf '\t.align 2, 0\n' >> $(BUILD)/asm/$*.s
+	$(AS) $(ASFLAGS) -I include -o $@ $(BUILD)/asm/$*.s
 
 $(TARGET).elf: ldscript.ld $(OBJS)
 	$(LD) -T ldscript.ld -o $@ $(OBJS)
@@ -69,6 +62,7 @@ test:
 	python3 scripts/progress.py --selftest
 	python3 scripts/seed_functions.py --selftest
 	python3 scripts/strings.py --selftest
+	python3 scripts/test_alignment.py
 
 # Regenerate asm/rom.s from the base ROM. Only needed when function discovery
 # changes -- the committed asm is the working copy.
