@@ -63,6 +63,18 @@ cp /path/to/your/dump.gba baserom.gba
 make check      # must print MATCH
 ```
 
+## Verification
+
+`make check` proves the output is **bit-identical** to the retail ROM. That is
+the strongest signal available and every commit must pass it — but it does not
+prove our C *means* the same thing as the original C, and names like
+`sub_08006734` are addresses, not recovered symbols.
+
+[`docs/verification.md`](docs/verification.md) documents exactly what MATCH does
+and does not establish, including why `scripts/match.py` compares assembled
+**bytes** rather than instruction text (text comparison produced both false
+matches and false mismatches).
+
 ## Build
 
 ```sh
@@ -98,6 +110,7 @@ scripts/
 tools/agbcc      Vendored GCC 2.95 — do not modify
 tools/luvdis     Vendored disassembler — do not modify
 docs/recon.md    Binary recon: inventory, call graph, entry point
+docs/verification.md  What MATCH proves, and what it doesn't
 docs/tickets/    One ticket per function
 CLAUDE.md        Agent instructions (AGENTS.md symlinks here)
 ```
