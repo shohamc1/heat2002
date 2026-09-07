@@ -7,6 +7,7 @@ moved from asm/ into src/.
 
     python3 scripts/match.py sub_8000260
 """
+
 import re
 import sys
 from pathlib import Path

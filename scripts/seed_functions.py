@@ -9,6 +9,7 @@ Either signal alone is mostly noise on this ROM -- a bare 0xB5 byte scan hits
 ~1-in-256 by chance, and Luvdis' own call-graph reachability stalls at
 0x801A56C. Requiring both cuts ~1300 candidates to ~600 real ones.
 """
+
 import sys
 from collections import Counter
 
@@ -48,9 +49,7 @@ def main():
         data = f.read()
 
     targets = bl_targets(data)
-    funcs = sorted(
-        t for t in targets if start <= t < stop and has_push_lr(data, t)
-    )
+    funcs = sorted(t for t in targets if start <= t < stop and has_push_lr(data, t))
 
     with open(out, "w") as f:
         f.write(f"# {len(funcs)} functions, 0 named, {len(funcs)} unnamed\n")
