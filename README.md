@@ -80,7 +80,7 @@ matches and false mismatches).
 ```sh
 make            # build nascar-heat.gba
 make check      # build + verify SHA-1 — the only test that counts
-make disasm     # regenerate asm/rom.s from the base ROM
+make disasm     # full-ROM reference disasm -> build/rom_reference.s (never touches asm/)
 ```
 
 ## How it works

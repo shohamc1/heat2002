@@ -64,10 +64,15 @@ test:
 	python3 scripts/strings.py --selftest
 	python3 scripts/test_alignment.py
 
-# Regenerate asm/rom.s from the base ROM. Only needed when function discovery
-# changes -- the committed asm is the working copy.
+# Regenerate a full-ROM reference disassembly. Written OUTSIDE asm/: once
+# extraction starts, asm/ is split into fragments with functions removed, and
+# overwriting asm/rom.s with the whole ROM would duplicate every symbol.
+# Only needed when function discovery changes; the committed asm is the
+# working copy.
 disasm: nascar.cfg
-	.venv/bin/luvdis disasm baserom.gba -c nascar.cfg -o asm/rom.s
+	@mkdir -p $(BUILD)
+	.venv/bin/luvdis disasm baserom.gba -c nascar.cfg -o $(BUILD)/rom_reference.s
+	@echo "wrote $(BUILD)/rom_reference.s (asm/ untouched)"
 
 nascar.cfg: baserom.gba scripts/seed_functions.py
 	python3 scripts/seed_functions.py baserom.gba $@

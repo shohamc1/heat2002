@@ -76,6 +76,14 @@ ticket. The mechanical steps:
    before the next `thumb_func_start` (e.g. 52 bytes after `sub_08016558`'s
    pool). Those bytes are not the function; `match.py`'s size comes from the
    compiled object, so they would silently vanish from the ROM. Keep them.
+   Also check that no `ldr rN, _XXXXXXXX` in the block refers to a pool
+   label defined in a *different* function's block, or vice versa. A
+   PC-relative load cannot cross an object boundary (assembly fails with
+   "invalid offset"; `.global` does not help). Exactly two such pairs
+   exist: `sub_08000958`/`sub_08000972` (share `_08000988`) and
+   `sub_0833A018`/`sub_0833A032` (share `_0833A048`) -- each is really one
+   routine that `bl`s into its own tail. Decompile each pair together in
+   one `src/*.c` file or leave both in asm; never split between them.
 3. Create a new fragment `asm/rom_ADDR.s` (named for the ROM address where
    the fragment's first byte lands: the end of the removed function, i.e.
    where the kept `.byte` rows or the next function begin) containing: the
@@ -147,7 +155,7 @@ tickets need no further tooling changes for either of these.
 
     make            # build
     make check      # build + verify SHA1 (the only test that counts)
-    make disasm     # regenerate asm/rom.s from the base ROM
+    make disasm     # full-ROM reference disasm -> build/rom_reference.s (never touches asm/)
     python3 scripts/match.py NAME       # diff one function against the target
     python3 scripts/progress.py         # progress summary
     python3 scripts/progress.py --json  # report.json for decomp.dev
