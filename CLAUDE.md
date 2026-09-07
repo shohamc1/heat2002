@@ -14,7 +14,9 @@ SHA1 is wrong, no matter how clean the C looks. Never edit `baserom.gba`,
 - `asm/rom.s` — full ROM disassembly, **743 functions**, reassembles to an exact match.
 - `src/` — empty. Decompilation moves functions from asm into C, one at a time.
 - `docs/recon.md` — function inventory, call graph, entry-point trace, candidate ranking.
-- `docs/tickets/` — one markdown ticket per function. Start with `DECOMP-001`.
+- `docs/tickets/` — one markdown ticket per function. Lowest open number first.
+- `docs/decomp-guide.md` — **read this before your first ticket.** Step-by-step
+  with the failure modes; the loop below is the summary.
 - `scripts/progress.py` — progress in bytes of code; `--json` emits decomp.dev `report.json`.
 
 Counting functions: match **both** `thumb_func_start` and

@@ -5,15 +5,19 @@ One file per function, worked lowest number first. A ticket is done when
 
 | Ticket | Target | Insns | Callers | Status |
 |---|---|---:|---:|---|
-| [DECOMP-001](DECOMP-001-sub_08006734.md) | `sub_08006734` | 1 | 38 | open |
+| [DECOMP-001](DECOMP-001-sub_08006734.md) | `sub_08006734` | 1 | 38 | done |
+| [DECOMP-002](DECOMP-002-sub_08016558.md) | `sub_08016558` | 6 | 51 | done |
+| [DECOMP-003](DECOMP-003-sub_0800048C.md) | `sub_0800048C` | 17 | 40 | open |
 
 Candidate queue (from `docs/recon.md`, not yet ticketed):
 
 | Target | Insns | Leaf | Callers | Note |
 | --- | ---: | :---: | ---: | --- |
-| `sub_08016558` | 6 | yes | 51 | highest in-degree in the ROM |
+| `sub_0800793C` | 9 | yes | 11 | leaf, no calls |
+| `sub_0833FF94` | 9 | yes | 11 | leaf, no calls |
+| `sub_0800F3A4` | 12 | yes | 11 | leaf, no calls |
+| `sub_080045D8` | 9 | yes | 8 | leaf, no calls |
 | `sub_08016E10` | 2 | yes | 24 | `swi #11` BIOS wrapper — needs inline asm |
-| `sub_0800048C` | 16 | yes | 40 | straight-line leaf, reads key input |
 | `sub_08016E28` | 2 | yes | 7 | `swi #21` BIOS wrapper |
 | `sub_080172C4` | 1 | yes | 3 | `__div0` divide-by-zero hook |
 
