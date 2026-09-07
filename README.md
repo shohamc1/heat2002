@@ -1,0 +1,146 @@
+# NASCAR Heat 2002 (GBA) — Matching Decompilation
+
+A work-in-progress matching decompilation of **NASCAR Heat 2002** for Game Boy
+Advance (Crawfish Interactive / Infogrames, May 2002).
+
+"Matching" means the build reproduces the original ROM **byte for byte**. Every
+commit is verified against the retail cartridge's SHA-1. If the hash doesn't
+match, the change is wrong — no exceptions.
+
+## Progress
+
+| Metric | Value |
+| --- | ---: |
+| Functions decompiled | **0 / 743** |
+| Code matched | **0 / 108,960 bytes** |
+| Percent complete | **0.0000%** |
+
+Progress is measured in **bytes of code**, not function count — a 1,500-instruction
+function is not worth the same as a 1-instruction stub. Regenerate with
+`python3 scripts/progress.py`; `--json` emits an
+[objdiff](https://github.com/encounter/objdiff) `report.json` v2 compatible with
+[decomp.dev](https://decomp.dev).
+
+The disassembly already reassembles to a perfect match, so the ROM is fully
+reproducible today. Decompilation is the work of replacing that assembly with C
+that compiles to the same bytes.
+
+## ROM
+
+| | |
+| --- | --- |
+| File | `NASCAR Heat 2002 (USA).gba` |
+| Size | 4,194,304 bytes (4 MB) |
+| SHA-1 | `0eb1fa43d8b0f8a6fb1e3ac04f7bba92c7cbac96` |
+| MD5 | `2fb73b874bbf4119e5cbf17b8ceae9c1` |
+| Game code | `ANHE` (title `NASCAR HEAT`, maker `70`) |
+
+**The ROM is not in this repository** and never will be — it's copyrighted. Supply
+your own dump and place it at `baserom.gba`. Verify with:
+
+```sh
+shasum -c nascar-heat.sha1.baserom
+```
+
+## Setup
+
+Requires `arm-none-eabi-binutils`, Python 3, and a C compiler to bootstrap agbcc.
+
+```sh
+git clone --recursive https://github.com/shohamc1/heat2002-gba
+cd heat2002-gba
+
+# macOS; use apt-get install binutils-arm-none-eabi on Debian/Ubuntu
+brew install arm-none-eabi-binutils
+
+# Build the 2002-era compiler (a few minutes)
+cd tools/agbcc && ./build.sh && cd ../..
+
+# Function discovery tool
+python3 -m venv .venv && .venv/bin/pip install -e tools/luvdis
+
+cp /path/to/your/dump.gba baserom.gba
+make check      # must print MATCH
+```
+
+## Build
+
+```sh
+make            # build nascar-heat.gba
+make check      # build + verify SHA-1 — the only test that counts
+make disasm     # regenerate asm/rom.s from the base ROM
+```
+
+## How it works
+
+The ROM was compiled with **GCC 2.95**, which is unmistakable in the
+disassembly: `pop {r0}; bx r0` epilogues instead of `pop {pc}`, and
+`add rX, rY, #0` used as a register move. Reproducing those bytes requires the
+same compiler, so the project vendors [agbcc](https://github.com/Dream-Atelier/agbcc)
+— the GBA decomp community's build of that era's toolchain.
+
+Function discovery cross-references two signals: addresses that something `bl`s
+to, **and** that begin with a `push {..., lr}` prologue. Either alone is mostly
+noise (a bare `0xB5` byte scan hits roughly 1-in-256 by chance, and Luvdis'
+own call-graph reachability stalls at `0x801A56C`). Requiring both cut ~1,300
+candidates to 593 solid seeds, which Luvdis expanded to 743.
+
+## Layout
+
+```
+asm/rom.s        Full ROM disassembly — 743 functions, reassembles exactly
+src/             Decompiled C (empty; this is the work)
+include/         Headers
+scripts/
+  seed_functions.py  Function discovery (BL targets ∩ push prologues)
+  match.py           Diff one compiled function against the target asm
+  progress.py        Progress report + decomp.dev report.json
+tools/agbcc      Vendored GCC 2.95 — do not modify
+tools/luvdis     Vendored disassembler — do not modify
+docs/recon.md    Binary recon: inventory, call graph, entry point
+docs/tickets/    One ticket per function
+CLAUDE.md        Agent instructions (AGENTS.md symlinks here)
+```
+
+## Contributing
+
+Work the lowest-numbered open ticket in [`docs/tickets/`](docs/tickets/). The loop:
+
+1. Write C in `src/` implementing the target function.
+2. `make && python3 scripts/match.py <function>`
+3. `MISMATCH` prints an instruction-level diff — adjust and repeat.
+4. On `MATCH`, remove the function from `asm/rom.s` and place the C object at
+   the same address in `ldscript.ld`.
+5. `make check` must still print `MATCH`.
+6. Commit. One function per commit.
+
+Read [`CLAUDE.md`](CLAUDE.md) first — it documents the agbcc-specific tells that
+make a function match (loop shape from branch placement, stray `lsl`/`asr` pairs
+meaning a width mismatch, locals assigned in declaration order).
+
+**Never modify anything under `tools/`.** Those are vendored submodules; the
+compiler's exact behavior is what makes matching possible. They're fenced off
+from linting and autofix via per-submodule `.pi-lens.json`.
+
+## What's known about the binary
+
+From [`docs/recon.md`](docs/recon.md):
+
+- Entry point `0x080000C0` (header branch `0xEA00002E`), a standard AGB crt0:
+  IRQ/System stack setup, vector install at `0x03007FFC`, ARM→Thumb interwork.
+- Code clusters in two dense regions: `0x08000260`–`0x0801CCD4` (529 functions)
+  and `0x08339920`–`0x08344DA8` (202 functions). The ~1.15 MB gap in the middle
+  is assets.
+- The late region contains **opcode-for-opcode duplicates** of the libgcc
+  helpers and BIOS wrappers from the first region, plus a second Nintendo logo
+  and ARM startup sequence at `0x08363EE8`.
+- Identified by shape: `__divsi3`, `__modsi3`, `__umodsi3`, `__clzsi2`,
+  `__div0`, a soft-float family, `memcpy`/`memmove`/`memset`, and 8 BIOS SWI
+  wrappers.
+
+## Legal
+
+This project contains **no copyrighted game data** — only original source code
+and analysis. You must supply your own legally-obtained ROM. NASCAR Heat 2002 is
+the property of its respective rights holders; this project is unaffiliated
+reverse-engineering for interoperability and preservation research.
