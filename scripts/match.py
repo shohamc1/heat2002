@@ -34,6 +34,22 @@ PREAMBLE_END = "@ End embedded Luvdis macros"
 
 START = re.compile(r"^\s+(?:non_word_aligned_)?(?:thumb|arm)_func_start\s+(\S+)\s*$")
 END = re.compile(r"^\s+(?:thumb|arm)_func_end\b")
+ZERO_PAD = re.compile(r"^\s*\.byte\s+((?:0x00\s*,\s*)*0x00)\s*$")
+
+
+def _strip_trailing_alignment_pad(body):
+    """Drop a trailing anonymous all-zero `.byte` fill under 4 bytes.
+
+    Luvdis emits the 0-3 filler bytes that pad the *next* function up to a
+    word boundary as trailing lines of whichever function precedes them, with
+    no label of its own. That is alignment padding for the following
+    function, not part of this one's compiled output, so it must not count
+    toward this function's target bytes.
+    """
+    if body and (m := ZERO_PAD.match(body[-1])):
+        if m.group(1).count("0x00") < 4:
+            return body[:-1]
+    return body
 
 
 def extract(path, name):
@@ -58,7 +74,7 @@ def extract(path, name):
             body.append(line)
 
     if body:
-        return body
+        return _strip_trailing_alignment_pad(body)
 
     # agbcc output: plain `name:` label through the .Lfe size marker.
     body, capturing = [], False
@@ -131,9 +147,13 @@ def main():
         if not shutil.which(tool):
             sys.exit(f"{tool} not found; byte comparison needs binutils")
 
-    target = extract(ROOT / "asm" / "rom.s", name)
+    target = None
+    for s in sorted((ROOT / "asm").glob("*.s")):
+        target = extract(s, name)
+        if target is not None:
+            break
     if target is None:
-        sys.exit(f"{name}: not found in asm/rom.s")
+        sys.exit(f"{name}: not found in any asm/*.s")
 
     ours = None
     for s in sorted((ROOT / "build" / "src").rglob("*.s")):
