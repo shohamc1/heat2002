@@ -1,0 +1,14 @@
+build/
+*.elf
+nascar-heat.gba
+.venv/
+.ruff_cache/
+.DS_Store
+# The base ROM is copyrighted; supply it yourself.
+baserom.gba
+NASCAR Heat 2002 (USA).gba
+# Built compiler artifacts inside the vendored submodule.
+tools/agbcc/agbcc
+tools/agbcc/agbcc_arm
+tools/agbcc/old_agbcc
+tools/agbcc/*.a

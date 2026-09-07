@@ -1,0 +1,3 @@
+tools/agbcc/** linguist-vendored
+tools/luvdis/** linguist-vendored
+*.md -linguist-detectable

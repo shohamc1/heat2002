@@ -1,0 +1,6 @@
+[submodule "tools/luvdis"]
+	path = tools/luvdis
+	url = https://github.com/aarant/luvdis.git
+[submodule "tools/agbcc"]
+	path = tools/agbcc
+	url = https://github.com/Dream-Atelier/agbcc.git

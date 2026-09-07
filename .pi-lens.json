@@ -1,0 +1,8 @@
+{
+  "ignore": [
+    "tools/agbcc/**",
+    "tools/luvdis/**",
+    "baserom.gba",
+    "asm/**"
+  ]
+}

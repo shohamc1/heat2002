@@ -1,0 +1,36 @@
+name: build
+
+on: [push, pull_request]
+
+jobs:
+  match:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install binutils
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y binutils-arm-none-eabi
+
+      - name: Build agbcc
+        run: cd tools/agbcc && ./build.sh
+
+      # baserom.gba is not in the repo -- CI needs it supplied out of band.
+      - name: Restore base ROM
+        env:
+          BASEROM_B64: ${{ secrets.BASEROM_B64 }}
+        run: |
+          if [ -z "$BASEROM_B64" ]; then
+            echo "BASEROM_B64 secret not set; skipping match verification."
+            exit 0
+          fi
+          echo "$BASEROM_B64" | base64 -d > baserom.gba
+          shasum -c nascar-heat.sha1.baserom
+
+      - name: Verify byte-for-byte match
+        run: |
+          [ -f baserom.gba ] || exit 0
+          make check
