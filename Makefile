@@ -5,7 +5,10 @@ AS      := arm-none-eabi-as
 LD      := arm-none-eabi-ld
 OBJCOPY := arm-none-eabi-objcopy
 CC1     := tools/agbcc/agbcc
-CPP     := arm-none-eabi-cpp
+# binutils ships no arm-none-eabi-cpp; agbcc does the compiling, so any C
+# preprocessor works here. -undef/-nostdinc keep the host's macros and headers
+# out of a build that must reproduce a 2002 ROM.
+CPP     := cc -E -x c
 
 ASFLAGS := -mcpu=arm7tdmi -mthumb-interwork
 CFLAGS  := -O2 -mthumb-interwork -fhex-asm -Wimplicit -Wparentheses

@@ -32,9 +32,7 @@ AS = "arm-none-eabi-as"
 OBJCOPY = "arm-none-eabi-objcopy"
 PREAMBLE_END = "@ End embedded Luvdis macros"
 
-START = re.compile(
-    r"^\s+(?:non_word_aligned_)?(?:thumb|arm)_func_start\s+(\S+)\s*$"
-)
+START = re.compile(r"^\s+(?:non_word_aligned_)?(?:thumb|arm)_func_start\s+(\S+)\s*$")
 END = re.compile(r"^\s+(?:thumb|arm)_func_end\b")
 
 
