@@ -1,0 +1,315 @@
+@ Generated with Luvdis v0.9.0
+.syntax unified
+.text
+@ Begin embedded Luvdis macros
+	.macro arm_func_start name
+	.align 2, 0
+	.global \name
+	.arm
+	.type \name, %function
+	.endm
+
+	.macro arm_func_end name
+	.size \name, .-\name
+	.endm
+
+	.macro thumb_func_start name
+	.align 2, 0
+	.global \name
+	.thumb
+	.thumb_func
+	.type \name, %function
+	.endm
+
+	.macro non_word_aligned_thumb_func_start name
+	.global \name
+	.thumb
+	.thumb_func
+	.type \name, %function
+	.endm
+
+	.macro thumb_func_end name
+	.size \name, .-\name
+	.endm
+@ End embedded Luvdis macros
+	thumb_func_start sub_0833D7E8
+sub_0833D7E8:
+	push {r4, r5, r6, r7, lr}
+	mov r7, r8
+	push {r7}
+	.global _0833D7EE
+_0833D7EE:
+	movs r0, #0x00
+	mov r8, r0
+	movs r1, #0x00
+	ldr r2, _0833D840 @ =0x0203B610
+	mov r12, r2
+	ldr r7, _0833D844 @ =0x0203B0F0
+	.global _0833D7FA
+_0833D7FA:
+	lsls r0, r1, #0x01
+	mov r2, r12
+	adds r5, r0, r2
+	ldrh r3, [r5, #0x00]
+	adds r6, r1, #0x1
+	lsls r0, r6, #0x01
+	adds r4, r0, r2
+	ldrh r2, [r4, #0x00]
+	lsls r1, r3, #0x01
+	adds r1, r1, r3
+	lsls r1, r1, #0x02
+	adds r1, r1, r7
+	lsls r0, r2, #0x01
+	adds r0, r0, r2
+	lsls r0, r0, #0x02
+	adds r0, r0, r7
+	ldrh r1, [r1, #0x08]
+	ldrh r0, [r0, #0x08]
+	cmp r1, r0
+	bcs _0833D82A
+	strh r2, [r5, #0x00]
+	strh r3, [r4, #0x00]
+	movs r0, #0x01
+	mov r8, r0
+	.global _0833D82A
+_0833D82A:
+	adds r1, r6, #0x0
+	cmp r1, #0x3F
+	bne _0833D7FA
+	mov r1, r8
+	cmp r1, #0x00
+	bne _0833D7EE
+	pop {r3}
+	mov r8, r3
+	pop {r4, r5, r6, r7}
+	pop {r1}
+	bx r1
+	.global _0833D840
+_0833D840: .4byte 0x0203B610
+	.global _0833D844
+_0833D844: .4byte 0x0203B0F0
+	thumb_func_start sub_0833D848
+sub_0833D848:
+	push {r4, r5, r6, r7, lr}
+	ldr r0, _0833D8B8 @ =0x0203ACD4
+	ldrb r3, [r0, #0x00]
+	cmp r3, #0x3F
+	beq _0833D86A
+	ldr r1, _0833D8BC @ =0x0203ACD0
+	movs r4, #0x00
+	movs r2, #0x01
+	negs r2, r2
+	.global _0833D85A
+_0833D85A:
+	ldr r0, [r1, #0x00]
+	strh r4, [r0, #0x08]
+	str r2, [r0, #0x04]
+	adds r0, #0x0C
+	str r0, [r1, #0x00]
+	adds r3, #0x01
+	cmp r3, #0x3F
+	bne _0833D85A
+	.global _0833D86A
+_0833D86A:
+	bl sub_0833D7E8
+	ldr r4, _0833D8C0 @ =0x0203B610
+	movs r3, #0x00
+	ldr r0, _0833D8B8 @ =0x0203ACD4
+	ldrb r1, [r0, #0x00]
+	cmp r3, r1
+	beq _0833D8B0
+	ldr r1, _0833D8C4 @ =0x0203B0F0
+	mov r12, r1
+	ldr r5, _0833D8C8 @ =0x0203ACD8
+	movs r7, #0x01
+	negs r7, r7
+	adds r6, r0, #0x0
+	.global _0833D886
+_0833D886:
+	ldrh r1, [r4, #0x00]
+	lsls r0, r1, #0x01
+	adds r0, r0, r1
+	lsls r0, r0, #0x02
+	mov r1, r12
+	adds r2, r0, r1
+	ldr r0, [r2, #0x04]
+	cmp r0, r7
+	beq _0833D8A6
+	ldr r0, [r5, #0x00]
+	ldr r1, [r2, #0x00]
+	str r1, [r0, #0x00]
+	ldr r1, [r2, #0x04]
+	str r1, [r0, #0x04]
+	adds r0, #0x08
+	str r0, [r5, #0x00]
+	.global _0833D8A6
+_0833D8A6:
+	adds r4, #0x02
+	adds r3, #0x01
+	ldrb r0, [r6, #0x00]
+	cmp r3, r0
+	bne _0833D886
+	.global _0833D8B0
+_0833D8B0:
+	pop {r4, r5, r6, r7}
+	pop {r0}
+	bx r0
+	.byte 0x00, 0x00
+	.global _0833D8B8
+_0833D8B8: .4byte 0x0203ACD4
+	.global _0833D8BC
+_0833D8BC: .4byte 0x0203ACD0
+	.global _0833D8C0
+_0833D8C0: .4byte 0x0203B610
+	.global _0833D8C4
+_0833D8C4: .4byte 0x0203B0F0
+	.global _0833D8C8
+_0833D8C8: .4byte 0x0203ACD8
+	thumb_func_start sub_0833D8CC
+sub_0833D8CC:
+	push {r4, r5, r6, r7, lr}
+	bl sub_0833D848
+	ldr r7, _0833D9B8 @ =0x0200C3E8
+	ldr r0, _0833D9BC @ =0x0203B6DC
+	ldrh r0, [r0, #0x00]
+	adds r1, r0, #0x0
+	adds r1, #0x40
+	lsls r1, r1, #0x01
+	adds r1, r1, r7
+	lsls r0, r0, #0x01
+	adds r0, r0, r7
+	movs r3, #0x00
+	ldsh r2, [r0, r3]
+	negs r3, r2
+	lsls r2, r2, #0x10
+	lsls r3, r3, #0x10
+	ldrh r1, [r1, #0x00]
+	lsls r1, r1, #0x10
+	ldr r4, _0833D9C0 @ =0x0203ACE0
+	adds r0, r1, #0x0
+	ldrh r5, [r4, #0x04]
+	orrs r0, r5
+	str r0, [r4, #0x04]
+	ldrh r0, [r4, #0x0C]
+	orrs r2, r0
+	str r2, [r4, #0x0C]
+	ldrh r2, [r4, #0x14]
+	orrs r3, r2
+	str r3, [r4, #0x14]
+	ldrh r3, [r4, #0x1C]
+	orrs r1, r3
+	str r1, [r4, #0x1C]
+	ldr r0, _0833D9C4 @ =0x0203B828
+	ldrh r0, [r0, #0x00]
+	adds r1, r0, #0x0
+	adds r1, #0x40
+	lsls r1, r1, #0x01
+	adds r1, r1, r7
+	lsls r0, r0, #0x01
+	adds r0, r0, r7
+	movs r5, #0x00
+	ldsh r2, [r0, r5]
+	negs r3, r2
+	lsls r2, r2, #0x10
+	lsls r3, r3, #0x10
+	ldrh r1, [r1, #0x00]
+	lsls r1, r1, #0x10
+	adds r0, r1, #0x0
+	ldrh r5, [r4, #0x24]
+	orrs r0, r5
+	str r0, [r4, #0x24]
+	ldrh r0, [r4, #0x2C]
+	orrs r2, r0
+	str r2, [r4, #0x2C]
+	ldrh r2, [r4, #0x34]
+	orrs r3, r2
+	str r3, [r4, #0x34]
+	ldr r6, _0833D9C8 @ =0x0000FFFF
+	ldrh r3, [r4, #0x3C]
+	orrs r1, r3
+	str r1, [r4, #0x3C]
+	ldr r1, _0833D9CC @ =0x0203B6A0
+	ldrh r0, [r1, #0x00]
+	cmp r0, #0x00
+	beq _0833D9B0
+	adds r1, r0, #0x0
+	adds r0, #0x40
+	lsls r0, r0, #0x01
+	adds r0, r0, r7
+	movs r2, #0x00
+	ldsh r5, [r0, r2]
+	lsls r1, r1, #0x01
+	adds r1, r1, r7
+	movs r3, #0x00
+	ldsh r2, [r1, r3]
+	negs r3, r2
+	adds r1, r5, #0x0
+	ldr r0, _0833D9D0 @ =0x0203B854
+	ldrb r0, [r0, #0x00]
+	cmp r0, #0x00
+	beq _0833D974
+	negs r5, r1
+	adds r3, r2, #0x0
+	.global _0833D974
+_0833D974:
+	ldr r0, _0833D9D4 @ =0x0203B6EC
+	ldrb r0, [r0, #0x00]
+	cmp r0, #0x00
+	beq _0833D980
+	negs r2, r2
+	negs r1, r1
+	.global _0833D980
+_0833D980:
+	ands r5, r6
+	ands r2, r6
+	ands r3, r6
+	ands r1, r6
+	lsls r5, r5, #0x10
+	lsls r2, r2, #0x10
+	lsls r3, r3, #0x10
+	lsls r1, r1, #0x10
+	ldr r0, [r4, #0x44]
+	ands r0, r6
+	orrs r0, r5
+	str r0, [r4, #0x44]
+	ldr r0, [r4, #0x4C]
+	ands r0, r6
+	orrs r0, r2
+	str r0, [r4, #0x4C]
+	ldr r0, [r4, #0x54]
+	ands r0, r6
+	orrs r0, r3
+	str r0, [r4, #0x54]
+	ldr r0, [r4, #0x5C]
+	ands r0, r6
+	orrs r0, r1
+	str r0, [r4, #0x5C]
+	.global _0833D9B0
+_0833D9B0:
+	pop {r4, r5, r6, r7}
+	pop {r0}
+	bx r0
+	.byte 0x00, 0x00
+	.global _0833D9B8
+_0833D9B8: .4byte 0x0200C3E8
+	.global _0833D9BC
+_0833D9BC: .4byte 0x0203B6DC
+	.global _0833D9C0
+_0833D9C0: .4byte 0x0203ACE0
+	.global _0833D9C4
+_0833D9C4: .4byte 0x0203B828
+	.global _0833D9C8
+_0833D9C8: .4byte 0x0000FFFF
+	.global _0833D9CC
+_0833D9CC: .4byte 0x0203B6A0
+	.global _0833D9D0
+_0833D9D0: .4byte 0x0203B854
+	.global _0833D9D4
+_0833D9D4: .4byte 0x0203B6EC
+	thumb_func_start sub_0833D9D8
+sub_0833D9D8:
+	push {lr}
+	bl sub_0833D8CC
+	pop {r0}
+	bx r0
+	.byte 0x00, 0x00, 0x70, 0x47, 0x00, 0x00

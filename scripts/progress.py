@@ -97,7 +97,7 @@ def decompiled():
     sys.path.insert(0, str(ROOT / "scripts"))
     import match
 
-    pat = re.compile(r"^\S[^(\n;]*\b(sub_[0-9A-Fa-f]{8})\s*\([^;{]*\)\s*\{", re.MULTILINE)
+    pat = re.compile(r"^(?:__attribute__\s*\(\([^)]*\)\)\s*)?\S[^(\n;]*\b(sub_[0-9A-Fa-f]{8})\s*\([^;{]*\)\s*\{", re.MULTILINE)
     done = set()
     for c in (ROOT / "src").rglob("*.c"):
         for m in pat.finditer(c.read_text(errors="replace")):
