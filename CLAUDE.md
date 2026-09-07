@@ -27,10 +27,13 @@ function named `name` from the `.macro` definition. `scripts/progress.py
 
 1. Take the lowest-numbered open ticket in `docs/tickets/`.
 2. Write C in `src/` implementing that function.
-3. `make && python3 scripts/match.py <name>`.
+3. `python3 scripts/match.py <name>`. It builds only `build/src/<name>.o`
+   (a full `make` fails with a duplicate symbol while the asm copy still
+   exists -- expected) and links it alone at its address with symbols from
+   `nascar-heat.elf`, so `bl`/pointer references resolve before comparing.
 4. `MISMATCH` prints an instruction diff — adjust the C and repeat.
-5. On `MATCH`, delete the function from `asm/rom.s` and place the C object at
-   the same address in `ldscript.ld`.
+5. On `MATCH`, delete the function from its `asm/*.s` fragment and place the
+   C object at the same address in `ldscript.ld`.
 6. `make check` must still print `MATCH`.
 7. `python3 scripts/progress.py`, then commit. One function per commit.
 
@@ -66,13 +69,19 @@ ticket. The mechanical steps:
 
 1. Find the function's `thumb_func_start`/`arm_func_start` block in whichever
    `asm/*.s` fragment currently holds it.
-2. Truncate that fragment right before the block (delete the block through
-   the next function's `thumb_func_start` line, exclusive).
-3. Create a new fragment `asm/rom_ADDR.s` (named for the address of the
-   function immediately after the one removed) containing: the macro
-   preamble (everything through `@ End embedded Luvdis macros`, copied
+2. Truncate that fragment right before the block. Delete ONLY the
+   function's own bytes: its instructions and its literal pool (the
+   `_XXXXXXXX: .4byte` lines that `ldr rN, _XXXXXXXX` refers to). 312 of the
+   742 blocks end in trailing `.byte` rows -- data that luvdis lumped in
+   before the next `thumb_func_start` (e.g. 52 bytes after `sub_08016558`'s
+   pool). Those bytes are not the function; `match.py`'s size comes from the
+   compiled object, so they would silently vanish from the ROM. Keep them.
+3. Create a new fragment `asm/rom_ADDR.s` (named for the ROM address where
+   the fragment's first byte lands: the end of the removed function, i.e.
+   where the kept `.byte` rows or the next function begin) containing: the
+   macro preamble (everything through `@ End embedded Luvdis macros`, copied
    verbatim -- each `.s` file is assembled standalone) followed by the rest
-   of the original content, starting at that next function.
+   of the original content, starting with any kept trailing data.
 4. Every bare `_XXXXXXXX:` address label (branch/data targets luvdis
    generates, as opposed to `sub_XXXXXXXX` function symbols, which the
    macros already `.global`) must be `.global` in whichever fragment defines

@@ -32,21 +32,21 @@ all: $(TARGET).gba
 # makes gas fill that gap with zeros instead, matching the ROM. Same trick on
 # the asm fragments below: a fragment cut at a 2-mod-4 boundary would
 # otherwise get the same NOP.
-$(BUILD)/src/%.o: src/%.c
+$(BUILD)/src/%.o: src/%.c $(wildcard include/*.h) Makefile
 	@mkdir -p $(@D)
 	$(CPP) $(CPPFLAGS) $< -o $(BUILD)/src/$*.i
 	$(CC1) $(CFLAGS) $(BUILD)/src/$*.i -o $(BUILD)/src/$*.s
 	printf '\t.align 2, 0\n' >> $(BUILD)/src/$*.s
 	$(AS) $(ASFLAGS) -I include -o $@ $(BUILD)/src/$*.s
 
-$(BUILD)/asm/%.o: asm/%.s
+$(BUILD)/asm/%.o: asm/%.s Makefile
 	@mkdir -p $(@D)
 	cat $< > $(BUILD)/asm/$*.s
 	printf '\t.align 2, 0\n' >> $(BUILD)/asm/$*.s
 	$(AS) $(ASFLAGS) -I include -o $@ $(BUILD)/asm/$*.s
 
-$(TARGET).elf: ldscript.ld $(OBJS)
-	$(LD) -T ldscript.ld -o $@ $(OBJS)
+$(TARGET).elf: ldscript.ld symbols.ld $(OBJS)
+	$(LD) -T ldscript.ld -T symbols.ld -o $@ $(OBJS)
 
 $(TARGET).gba: $(TARGET).elf
 	$(OBJCOPY) -O binary $< $@

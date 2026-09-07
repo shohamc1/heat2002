@@ -10,6 +10,14 @@ decompiled -- and deleted from the asm -- the tool could no longer verify it.
 The ROM is the ground truth and it never moves, so a matched function stays
 checkable forever.
 
+The object is first linked alone at its ROM address with `-R nascar-heat.elf`
+(symbol values only, no code) so `bl`/`.word sub_XXX` references resolve to
+their real targets; an unrelocated object cannot match anything that calls
+out. Before extraction the ELF still contains the asm copy of the function,
+which is fine -- only its symbols are read. During the pre-extraction
+iteration loop, build just the object (`make build/src/NAME.o`), since the
+full link fails on the duplicate symbol until the asm block is deleted.
+
 Comparison is on BYTES, never on assembly text, because text is unsound in
 both directions:
 
@@ -31,6 +39,9 @@ ROM = ROOT / "baserom.gba"
 NM = "arm-none-eabi-nm"
 OBJCOPY = "arm-none-eabi-objcopy"
 OBJDUMP = "arm-none-eabi-objdump"
+LD = "arm-none-eabi-ld"
+ELF = ROOT / "nascar-heat.elf"
+SYMBOLS = ROOT / "symbols.ld"
 ROM_BASE = 0x8000000
 
 
@@ -63,12 +74,22 @@ def find_symbol(name):
     return hits
 
 
-def object_bytes(obj, offset, size):
-    """Extract `size` bytes at `offset` from an object's .text."""
+def object_bytes(obj, offset, size, addr):
+    """Link `obj` alone at `addr` (symbols from the full ELF), return .text bytes."""
     with tempfile.TemporaryDirectory() as d:
+        elf = Path(d) / "t.elf"
         bin_ = Path(d) / "t.bin"
+        cmd = [LD, f"-Ttext={addr - offset:#x}", "-e", f"{addr:#x}", "-o", str(elf), str(obj)]
+        if ELF.exists():
+            cmd[1:1] = ["-R", str(ELF)]
+        if SYMBOLS.exists():
+            cmd[1:1] = ["-T", str(SYMBOLS)]
+        r = subprocess.run(cmd, capture_output=True, text=True, check=False)
+        if r.returncode != 0:
+            sys.stderr.write(r.stderr)
+            return None
         r = subprocess.run(
-            [OBJCOPY, "-O", "binary", "--only-section=.text", str(obj), str(bin_)],
+            [OBJCOPY, "-O", "binary", "--only-section=.text", str(elf), str(bin_)],
             capture_output=True,
             check=False,
         )
@@ -102,24 +123,15 @@ def disasm(data, addr):
         return lines
 
 
-def main():
-    if len(sys.argv) != 2:
-        sys.exit("usage: match.py FUNCTION_NAME")
-    name = sys.argv[1]
-
-    for tool in (NM, OBJCOPY, OBJDUMP):
-        if not shutil.which(tool):
-            sys.exit(f"{tool} not found; install arm-none-eabi-binutils")
-    if not ROM.exists():
-        sys.exit(f"{ROM} not found -- supply your own dump (see README)")
-
+def compare(name):
+    """Return (ours, target, size, addr); sys.exit with a reason on failure."""
     addr = addr_of(name)
     if addr is None:
         sys.exit(f"{name}: cannot derive an address from the name")
 
     hits = find_symbol(name)
     if not hits:
-        sys.exit(f"{name}: no compiled object under build/src -- run `make` first")
+        sys.exit(f"{name}: no compiled object under build/src -- run `make build/src/{name}.o` first")
     if len(hits) > 1:
         where = ", ".join(str(o.relative_to(ROOT)) for o, _, _ in hits)
         sys.exit(f"{name}: defined in multiple objects ({where})")
@@ -128,15 +140,42 @@ def main():
     if size == 0:
         sys.exit(f"{name}: nm reports size 0 in {obj.relative_to(ROOT)}")
 
-    ours = object_bytes(obj, offset, size)
+    ours = object_bytes(obj, offset, size, addr)
     if ours is None:
-        sys.exit(f"{name}: could not extract bytes from {obj.relative_to(ROOT)}")
+        sys.exit(f"{name}: could not link/extract bytes from {obj.relative_to(ROOT)}")
 
     rom = ROM.read_bytes()
     start = addr - ROM_BASE
     if not (0 <= start < len(rom)):
         sys.exit(f"{name}: address {addr:#x} is outside the ROM")
-    target = rom[start : start + size]
+    return ours, rom[start : start + size], size, addr
+
+
+def matches(name):
+    """True iff the compiled `name` reproduces the ROM bytes. For progress.py."""
+    ours, target, _, _ = compare(name)
+    return ours == target
+
+
+def main():
+    if len(sys.argv) != 2:
+        sys.exit("usage: match.py FUNCTION_NAME")
+    name = sys.argv[1]
+
+    for tool in (NM, OBJCOPY, OBJDUMP, LD):
+        if not shutil.which(tool):
+            sys.exit(f"{tool} not found; install arm-none-eabi-binutils")
+    if not ROM.exists():
+        sys.exit(f"{ROM} not found -- supply your own dump (see README)")
+
+    # Build only this object: a full `make` fails on the duplicate symbol
+    # until the asm block is deleted, and the point is to match *before* that.
+    if (ROOT / "src" / f"{name}.c").exists():
+        r = subprocess.run(["make", f"build/src/{name}.o"], cwd=ROOT, capture_output=True, text=True)
+        if r.returncode != 0:
+            sys.exit(r.stdout + r.stderr)
+
+    ours, target, size, addr = compare(name)
 
     if ours == target:
         print(f"{name}: MATCH ({size} bytes @ {addr:#010x})")

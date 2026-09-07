@@ -87,17 +87,27 @@ def func_sizes():
 
 
 def decompiled():
-    """Function names *defined* in C under src/, not merely referenced.
+    """Functions defined in src/*.c whose compiled bytes match the ROM.
 
-    Anchored to line start (no leading whitespace) and a `name(` that starts
-    a definition, so a call to a still-asm function from inside a decompiled
-    one -- always indented, inside braces -- doesn't get counted as done.
+    A definition is `name(` at column 0 followed by `{` -- a prototype
+    (`void name(...);`) is not one. Each candidate is then verified against
+    the ROM by match.py, so a C body that compiles but is wrong is not
+    counted as done.
     """
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import match
+
+    pat = re.compile(r"^\S[^(\n;]*\b(sub_[0-9A-Fa-f]{8})\s*\([^;{]*\)\s*\{", re.MULTILINE)
     done = set()
-    pat = re.compile(r"^\S[^(\n]*\b(sub_[0-9A-Fa-f]{8})\s*\(", re.MULTILINE)
     for c in (ROOT / "src").rglob("*.c"):
         for m in pat.finditer(c.read_text(errors="replace")):
-            done.add(m.group(1))
+            name = m.group(1)
+            if not match.find_symbol(name):
+                continue  # not built; reported via `missing` below
+            if match.matches(name):
+                done.add(name)
+            else:
+                print(f"  WARNING: {name} is in src/ but does not match the ROM", file=sys.stderr)
     return done
 
 
@@ -127,7 +137,10 @@ def main():
     # Sizes come from build/**/*.o via nm. With no build (or a stale one), a
     # decompiled function contributes 0 bytes and the totals silently shrink
     # -- which reads as "no progress" rather than "unknown". Say so instead.
-    missing = sorted(n for n in done if n not in csizes)
+    defined = set(re.findall(r"^\S[^(\n;]*\b(sub_[0-9A-Fa-f]{8})\s*\([^;{]*\)\s*\{",
+                             "\n".join(c.read_text(errors="replace") for c in (ROOT / "src").rglob("*.c")),
+                             re.MULTILINE))
+    missing = sorted(n for n in defined if n not in csizes)
 
     # A matched function is deleted from asm/*.s entirely (see CLAUDE.md's
     # loop, step 5), so `insns` alone would lose it from the report. Track it
@@ -212,8 +225,8 @@ def _selftest():
     # 743 total, minus however many have been decompiled out of asm/*.s and
     # into src/*.c so far -- computed, not hardcoded, so this doesn't need
     # editing as tickets land.
-    remaining = 743 - len(decompiled())
-    assert len(insns) == remaining, f"expected {remaining} functions, got {len(insns)}"
+    total = len(set(insns) | decompiled())
+    assert total == 743, f"expected 743 functions across asm + matched C, got {total}"
     assert "sub_08006734" not in insns, "sub_08006734 should be decompiled, not in asm"
     print(f"selftest ok ({len(insns)} functions remaining in asm)")
 

@@ -14,3 +14,4 @@ tools/agbcc/old_agbcc
 tools/agbcc/*.a
 report.json
 *.sav
+__pycache__/
