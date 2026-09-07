@@ -124,6 +124,11 @@ def main():
     done = decompiled()
     csizes = c_func_sizes()
 
+    # Sizes come from build/**/*.o via nm. With no build (or a stale one), a
+    # decompiled function contributes 0 bytes and the totals silently shrink
+    # -- which reads as "no progress" rather than "unknown". Say so instead.
+    missing = sorted(n for n in done if n not in csizes)
+
     # A matched function is deleted from asm/*.s entirely (see CLAUDE.md's
     # loop, step 5), so `insns` alone would lose it from the report. Track it
     # separately, sized from its compiled object instead of asm bytes.
@@ -177,6 +182,11 @@ def main():
     }
 
     if "--json" in sys.argv:
+        if missing:
+            sys.exit(
+                f"refusing to write report.json: no compiled object for "
+                f"{', '.join(missing)} -- run `make` first"
+            )
         report = {"version": 2, "measures": measures, "units": units, "categories": []}
         out = ROOT / "report.json"
         out.write_text(json.dumps(report, indent=2) + "\n")
@@ -185,6 +195,11 @@ def main():
         print("NASCAR Heat 2002 — decompilation progress")
         print(f"  functions: {measures['matched_functions']} / {len(units)} matched")
         print(f"  code:      {matched} / {total} bytes ({pct:.4f}%)")
+        if missing:
+            print(
+                f"\n  WARNING: no compiled object for {', '.join(missing)};"
+                "\n  counted as 0 bytes. Run `make` for accurate totals."
+            )
         if not done:
             print("\n  nothing decompiled yet — see docs/tickets/")
 

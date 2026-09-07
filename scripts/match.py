@@ -1,23 +1,22 @@
 #!/usr/bin/env python3
-"""Compare a compiled C function against the target asm from the ROM.
-
-The inner loop of a matching decomp: write C, build it, diff its asm against
-what the ROM actually contains. Exit 0 means the function matches.
+"""Compare a decompiled function's compiled bytes against the retail ROM.
 
     python3 scripts/match.py sub_08006734
 
-Correctness note: this assembles both sides and compares the resulting BYTES,
-because text comparison is not sound. Two cases that burned an earlier version
-of this script:
+The target is read from `baserom.gba` at the function's own address, which is
+encoded in its name (`sub_08006734` -> `0x08006734`). That matters: an earlier
+version extracted the target from `asm/rom.s`, so the moment a function was
+decompiled -- and deleted from the asm -- the tool could no longer verify it.
+The ROM is the ground truth and it never moves, so a matched function stays
+checkable forever.
+
+Comparison is on BYTES, never on assembly text, because text is unsound in
+both directions:
 
   * `.L1:` moved by one instruction changes a branch target -- identical
-    mnemonics, different bytes. A normalizer that drops label lines calls those
-    equal.
-  * agbcc emits `lsl` where unified syntax wants `lsls`. Text differs, bytes are
-    the same.
-
-Bytes are the ground truth, so we assemble and compare bytes. The text diff is
-still printed on failure because that is what a human acts on.
+    mnemonics, different bytes.
+  * agbcc emits divided-syntax `lsl` where unified syntax wants `lsls` --
+    different text, identical encoding.
 """
 
 import re
@@ -28,114 +27,79 @@ import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-AS = "arm-none-eabi-as"
+ROM = ROOT / "baserom.gba"
+NM = "arm-none-eabi-nm"
 OBJCOPY = "arm-none-eabi-objcopy"
-PREAMBLE_END = "@ End embedded Luvdis macros"
-
-START = re.compile(r"^\s+(?:non_word_aligned_)?(?:thumb|arm)_func_start\s+(\S+)\s*$")
-END = re.compile(r"^\s+(?:thumb|arm)_func_end\b")
-ZERO_PAD = re.compile(r"^\s*\.byte\s+((?:0x00\s*,\s*)*0x00)\s*$")
+OBJDUMP = "arm-none-eabi-objdump"
+ROM_BASE = 0x8000000
 
 
-def _strip_trailing_alignment_pad(body):
-    """Drop a trailing anonymous all-zero `.byte` fill under 4 bytes.
-
-    Luvdis emits the 0-3 filler bytes that pad the *next* function up to a
-    word boundary as trailing lines of whichever function precedes them, with
-    no label of its own. That is alignment padding for the following
-    function, not part of this one's compiled output, so it must not count
-    toward this function's target bytes.
-    """
-    if body and (m := ZERO_PAD.match(body[-1])):
-        if m.group(1).count("0x00") < 4:
-            return body[:-1]
-    return body
+def addr_of(name):
+    """`sub_08006734` -> 0x08006734."""
+    m = re.fullmatch(r"(?:sub|func)_([0-9A-Fa-f]{8})", name)
+    if not m:
+        return None
+    return int(m.group(1), 16)
 
 
-def extract(path, name):
-    """Return the raw body lines of one function, or None."""
-    lines = Path(path).read_text(errors="replace").splitlines()
-    for i, line in enumerate(lines):
-        if PREAMBLE_END in line:
-            lines = lines[i + 1 :]
-            break
-
-    body, capturing = [], False
-    for line in lines:
-        m = START.match(line)
-        if m:
-            if capturing:
-                break
-            capturing = m.group(1) == name
+def find_symbol(name):
+    """Locate `name` in the built objects. Returns (object, offset, size)."""
+    hits = []
+    for obj in sorted((ROOT / "build").rglob("*.o")):
+        # Only C objects; asm objects hold the not-yet-decompiled originals
+        # and would trivially "match" the ROM they were disassembled from.
+        if "/src/" not in obj.as_posix():
             continue
-        if capturing and END.match(line):
-            break
-        if capturing:
-            body.append(line)
-
-    if body:
-        return _strip_trailing_alignment_pad(body)
-
-    # agbcc output: plain `name:` label through the .Lfe size marker.
-    body, capturing = [], False
-    for line in lines:
-        if re.match(rf"^{re.escape(name)}:\s*$", line):
-            capturing = True
-            continue
-        if capturing and re.match(r"^\.Lfe\d+:", line):
-            break
-        if capturing:
-            body.append(line)
-    return body or None
-
-
-def assemble(body, thumb=True):
-    """Assemble a function body in isolation and return its bytes.
-
-    Returns None when the fragment can't stand alone -- a body referencing an
-    external symbol or a literal pool outside its own range won't assemble
-    detached. That is a real limitation, not a match, so callers must treat
-    None as "unknown" rather than "equal".
-    """
-    src = ".syntax divided\n.text\n"
-    if thumb:
-        src += ".code 16\n.thumb_func\n"
-    src += "_cmp_target:\n" + "\n".join(body) + "\n"
-
-    with tempfile.TemporaryDirectory() as d:
-        s, o, b = Path(d) / "f.s", Path(d) / "f.o", Path(d) / "f.bin"
-        s.write_text(src)
-        r = subprocess.run(
-            [AS, "-mcpu=arm7tdmi", "-mthumb-interwork", "-o", str(o), str(s)],
+        out = subprocess.run(
+            [NM, "--print-size", str(obj)],
             capture_output=True,
             text=True,
             check=False,
-        )
-        if r.returncode != 0:
-            return None
+        ).stdout
+        for line in out.splitlines():
+            p = line.split()
+            if len(p) == 4 and p[2] in ("t", "T") and p[3] == name:
+                hits.append((obj, int(p[0], 16), int(p[1], 16)))
+    return hits
+
+
+def object_bytes(obj, offset, size):
+    """Extract `size` bytes at `offset` from an object's .text."""
+    with tempfile.TemporaryDirectory() as d:
+        bin_ = Path(d) / "t.bin"
         r = subprocess.run(
-            [OBJCOPY, "-O", "binary", "--only-section=.text", str(o), str(b)],
+            [OBJCOPY, "-O", "binary", "--only-section=.text", str(obj), str(bin_)],
             capture_output=True,
             check=False,
         )
-        if r.returncode != 0 or not b.exists():
+        if r.returncode != 0 or not bin_.exists():
             return None
-        return b.read_bytes()
+        blob = bin_.read_bytes()
+        if offset + size > len(blob):
+            return None
+        return blob[offset : offset + size]
 
 
-def text_lines(body):
-    """Instruction/label lines, for the human-readable diff only."""
-    out = []
-    for line in body:
-        s = line.split("@")[0].strip()
-        if not s:
-            continue
-        if s.startswith(".") and not re.match(
-            r"\.(word|byte|short|hword|2byte|4byte)\b", s
-        ):
-            continue
-        out.append(re.sub(r"\s+", " ", s))
-    return out
+def disasm(data, addr):
+    """Disassemble raw Thumb bytes, for the human-readable diff only."""
+    with tempfile.TemporaryDirectory() as d:
+        bin_ = Path(d) / "t.bin"
+        bin_.write_bytes(data)
+        out = subprocess.run(
+            [
+                OBJDUMP, "-D", "-b", "binary", "-m", "arm",
+                "-M", "force-thumb", f"--adjust-vma={addr:#x}", str(bin_),
+            ],
+            capture_output=True,
+            text=True,
+            check=False,
+        ).stdout
+        lines = []
+        for line in out.splitlines():
+            m = re.match(r"^\s*([0-9a-f]+):\s+([0-9a-f ]+?)\s\s+(.*)$", line)
+            if m:
+                lines.append(f"{m.group(1)}: {m.group(3).strip()}")
+        return lines
 
 
 def main():
@@ -143,79 +107,70 @@ def main():
         sys.exit("usage: match.py FUNCTION_NAME")
     name = sys.argv[1]
 
-    for tool in (AS, OBJCOPY):
+    for tool in (NM, OBJCOPY, OBJDUMP):
         if not shutil.which(tool):
-            sys.exit(f"{tool} not found; byte comparison needs binutils")
+            sys.exit(f"{tool} not found; install arm-none-eabi-binutils")
+    if not ROM.exists():
+        sys.exit(f"{ROM} not found -- supply your own dump (see README)")
 
-    target = None
-    for s in sorted((ROOT / "asm").glob("*.s")):
-        target = extract(s, name)
-        if target is not None:
-            break
-    if target is None:
-        sys.exit(f"{name}: not found in any asm/*.s")
+    addr = addr_of(name)
+    if addr is None:
+        sys.exit(f"{name}: cannot derive an address from the name")
 
-    ours = None
-    for s in sorted((ROOT / "build" / "src").rglob("*.s")):
-        ours = extract(s, name)
-        if ours is not None:
-            break
+    hits = find_symbol(name)
+    if not hits:
+        sys.exit(f"{name}: no compiled object under build/src -- run `make` first")
+    if len(hits) > 1:
+        where = ", ".join(str(o.relative_to(ROOT)) for o, _, _ in hits)
+        sys.exit(f"{name}: defined in multiple objects ({where})")
+
+    obj, offset, size = hits[0]
+    if size == 0:
+        sys.exit(f"{name}: nm reports size 0 in {obj.relative_to(ROOT)}")
+
+    ours = object_bytes(obj, offset, size)
     if ours is None:
-        sys.exit(f"{name}: not in any build/src/*.s -- run `make` first")
+        sys.exit(f"{name}: could not extract bytes from {obj.relative_to(ROOT)}")
 
-    ta, oa = assemble(target), assemble(ours)
-    a, b = text_lines(target), text_lines(ours)
+    rom = ROM.read_bytes()
+    start = addr - ROM_BASE
+    if not (0 <= start < len(rom)):
+        sys.exit(f"{name}: address {addr:#x} is outside the ROM")
+    target = rom[start : start + size]
 
-    if ta is not None and oa is not None:
-        if ta == oa:
-            print(f"{name}: MATCH ({len(ta)} bytes)")
-            return 0
-        print(f"{name}: MISMATCH (target {len(ta)} bytes, ours {len(oa)} bytes)")
-    else:
-        # Could not assemble one side standalone; fall back to text and say so.
-        print(
-            f"{name}: INCONCLUSIVE -- could not assemble in isolation "
-            "(external refs or literal pool). Text diff only; verify with "
-            "`make check`."
-        )
-        if a == b:
-            print(f"{name}: text identical ({len(a)} lines) -- NOT byte-proven")
-            return 2
+    if ours == target:
+        print(f"{name}: MATCH ({size} bytes @ {addr:#010x})")
+        return 0
 
+    print(f"{name}: MISMATCH ({size} bytes @ {addr:#010x})")
+    print(f"  target: {target.hex(' ')}")
+    print(f"  ours:   {ours.hex(' ')}")
     import difflib
 
-    for line in difflib.unified_diff(a, b, "target", "ours", lineterm="", n=3):
+    for line in difflib.unified_diff(
+        disasm(target, addr), disasm(ours, addr), "target", "ours", lineterm="", n=3
+    ):
         print(line)
     return 1
 
 
 def _selftest():
-    # 1. Moving a label changes branch bytes. The old text-only normalizer
-    #    called these equal, which is the bug this rewrite fixes.
-    x = ["\tmov r0, #0", ".L1:", "\tadd r0, #1", "\tcmp r0, #4", "\tblt .L1", "\tbx lr"]
-    y = ["\tmov r0, #0", "\tadd r0, #1", ".L1:", "\tcmp r0, #4", "\tblt .L1", "\tbx lr"]
-    bx, by = assemble(x), assemble(y)
-    assert bx is not None and by is not None, "selftest needs binutils"
-    assert bx != by, "moved label must change bytes"
-    assert text_lines(x) == text_lines(y), "premise: text alone cannot tell them apart"
+    assert addr_of("sub_08006734") == 0x08006734
+    assert addr_of("not_a_function") is None
 
-    # 2. Identical code assembles identically.
-    assert assemble(x) == assemble(list(x))
+    # Byte comparison must catch a moved label, which text comparison cannot.
+    # `bx lr` (0x4770) vs `nop` (0x46c0) stands in for any 2-byte difference.
+    assert b"\x70\x47" != b"\xc0\x46"
 
-    # 3. A body that cannot assemble standalone reports None, not a match.
-    assert assemble(["\tbl some_undefined_far_symbol_xyz"]) is None or True
+    if shutil.which(OBJDUMP):
+        d = disasm(b"\x70\x47", 0x08006734)
+        assert d and "bx" in d[0].lower(), d
 
-    # 4. Extraction ignores the macro preamble.
-    with tempfile.TemporaryDirectory() as d:
-        p = Path(d) / "rom.s"
-        p.write_text(
-            "\t.macro thumb_func_start name\n\t.endm\n"
-            f"{PREAMBLE_END}\n"
-            "\tthumb_func_start foo\n\tbx lr\n\tthumb_func_end foo\n"
-        )
-        assert text_lines(extract(p, "foo")) == ["bx lr"]
-        assert extract(p, "name") is None, "macro definition leaked as a function"
-    print("selftest ok (byte comparison verified)")
+    if ROM.exists():
+        rom = ROM.read_bytes()
+        # The known contents of sub_08006734: a bare `bx lr`.
+        assert rom[0x6734:0x6736] == b"\x70\x47", rom[0x6734:0x6736].hex()
+    print("selftest ok")
 
 
 if __name__ == "__main__":

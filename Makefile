@@ -18,7 +18,7 @@ C_SRCS   := $(wildcard src/*.c)
 ASM_SRCS := $(wildcard asm/*.s)
 OBJS     := $(C_SRCS:%.c=$(BUILD)/%.o) $(ASM_SRCS:%.s=$(BUILD)/%.o)
 
-.PHONY: all check clean disasm
+.PHONY: all check test clean disasm
 all: $(TARGET).gba
 
 # Each C file is preprocessed, run through agbcc, then assembled. The .s
@@ -61,6 +61,14 @@ $(TARGET).gba: $(TARGET).elf
 # The only thing that matters: does it reproduce the ROM?
 check: $(TARGET).gba
 	@shasum -c $(TARGET).sha1 && echo "MATCH" || (echo "MISMATCH"; exit 1)
+
+# Tool selftests. These check the verification scripts themselves -- a broken
+# matcher that reports MATCH is worse than no matcher.
+test:
+	python3 scripts/match.py --selftest
+	python3 scripts/progress.py --selftest
+	python3 scripts/seed_functions.py --selftest
+	python3 scripts/strings.py --selftest
 
 # Regenerate asm/rom.s from the base ROM. Only needed when function discovery
 # changes -- the committed asm is the working copy.
