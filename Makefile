@@ -11,7 +11,7 @@ CC1     := tools/agbcc/agbcc
 CPP     := cc -E -x c
 
 ASFLAGS := -mcpu=arm7tdmi -mthumb-interwork
-CFLAGS  := -O2 -mthumb-interwork -fhex-asm -Wimplicit -Wparentheses
+CFLAGS  := -O2 -mthumb-interwork -fhex-asm -fprologue-bugfix -Wimplicit -Wparentheses
 CPPFLAGS := -I include -I tools/agbcc/include -iquote include -nostdinc -undef
 
 C_SRCS   := $(wildcard src/*.c)
