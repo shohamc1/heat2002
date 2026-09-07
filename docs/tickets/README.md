@@ -7,7 +7,7 @@ One file per function, worked lowest number first. A ticket is done when
 |---|---|---:|---:|---|
 | [DECOMP-001](DECOMP-001-sub_08006734.md) | `sub_08006734` | 1 | 38 | done |
 | [DECOMP-002](DECOMP-002-sub_08016558.md) | `sub_08016558` | 6 | 51 | done |
-| [DECOMP-003](DECOMP-003-sub_0800048C.md) | `sub_0800048C` | 17 | 40 | open |
+| [DECOMP-003](DECOMP-003-sub_0800048C.md) | `sub_0800048C` | 17 | 40 | done |
 
 Candidate queue (from `docs/recon.md`, not yet ticketed):
 

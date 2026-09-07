@@ -6,6 +6,8 @@ SECTIONS
     .text : ALIGN(4)
     {
         build/asm/rom.o(.text*);
+        build/src/sub_0800048C.o(.text*);
+        build/asm/rom_080004B8.o(.text*);
         build/src/sub_08006734.o(.text*);
         build/asm/rom_08006738.o(.text*);
         build/src/sub_08016558.o(.text*);
