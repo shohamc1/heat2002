@@ -8,6 +8,8 @@ SECTIONS
         build/asm/rom.o(.text*);
         build/src/sub_08006734.o(.text*);
         build/asm/rom_08006738.o(.text*);
+        build/src/sub_08016558.o(.text*);
+        build/asm/rom_08016568.o(.text*);
         /* Catch-all, not the primary placement mechanism: every object above
            is listed explicitly and must stay in address order. This exists
            so a *forgotten* listing (a new src/*.c or asm/*.s add without a
