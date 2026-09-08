@@ -272,7 +272,19 @@ def extract_one(name, plan=False):
                         f"{name}: fragment would start at {new_addr:#x} (2-mod-4) "
                         f"with non-fillable content {tail[0]!r} -- unextractable alone"
                     )
-        (ROOT / f).write_text("\n".join(lines[:start]) + "\n")
+        head = lines[:start]
+        pre_n = len(read_preamble())
+        if any(l.strip() for l in head[pre_n:]):
+            (ROOT / f).write_text("\n".join(head) + "\n")
+        else:
+            (ROOT / f).unlink()
+            print(f"{f.name}: emptied by the cut, removed")
+        if not any(l.strip() for l in tail):
+            # Nothing follows the function in this fragment: writing B would
+            # emit a preamble-only .s assembling to zero bytes -- dead weight
+            # in the build and in ldscript.ld.
+            print(f"{name}: extracted from {f.name} (no tail, no new fragment)")
+            return
         b_path.write_text("\n".join(preamble + tail) + "\n")
         print(f"{name}: extracted from {f.name} -> asm/{b_name}")
         return

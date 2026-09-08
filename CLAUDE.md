@@ -11,9 +11,14 @@ SHA1 is wrong, no matter how clean the C looks. Never edit `baserom.gba`,
 
 ## Current state
 
-- `asm/rom.s` — full ROM disassembly, **743 functions**, reassembles to an exact match.
-- `src/` — empty. Decompilation moves functions from asm into C, one at a time.
+- `asm/*.s` — ROM disassembly, **743 functions** originally, split into one
+  fragment per gap between decompiled functions; reassembles to an exact match.
+- `src/` — **103 functions decompiled** (2,844/109,370 bytes). One function
+  per file, named for it.
 - `docs/recon.md` — function inventory, call graph, entry-point trace, candidate ranking.
+- `docs/learnings/parked.md` — **read before picking a target.** What was
+  already tried and does not match, plus the five luvdis false positives
+  that are not functions at all.
 - `docs/tickets/` — one markdown ticket per function. Lowest open number first.
 - `docs/decomp-guide.md` — **read this before your first ticket.** Step-by-step
   with the failure modes; the loop below is the summary.

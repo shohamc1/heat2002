@@ -61,14 +61,15 @@ def rewrite_ldscript():
     p = ROOT / "ldscript.ld"
     text = p.read_text()
     body = "\n".join(f"        {l}" for _, l in objects_in_order())
-    new = re.sub(
+    new, n = re.subn(
         r"(\.text : ALIGN\(4\)\n    \{\n)(.*?)(\n        /\* Catch-all)",
         lambda mo: mo.group(1) + body + mo.group(3),
         text,
         flags=re.S,
     )
-    if new == text:
+    if n != 1:
         raise SystemExit("ldscript rewrite failed (pattern not found)")
+    # new == text is success, not failure: the script was already canonical.
     p.write_text(new)
 
 

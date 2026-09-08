@@ -11,9 +11,9 @@ match, the change is wrong — no exceptions.
 
 | Metric | Value |
 | --- | ---: |
-| Functions decompiled | **0 / 743** |
-| Code matched | **0 / 108,960 bytes** |
-| Percent complete | **0.0000%** |
+| Functions decompiled | **103 / 743** |
+| Code matched | **2,844 / 109,370 bytes** |
+| Percent complete | **2.6003%** |
 
 Progress is measured in **bytes of code**, not function count — a 1,500-instruction
 function is not worth the same as a 1-instruction stub. Regenerate with
@@ -100,17 +100,21 @@ candidates to 593 solid seeds, which Luvdis expanded to 743.
 ## Layout
 
 ```
-asm/rom.s        Full ROM disassembly — 743 functions, reassembles exactly
-src/             Decompiled C (empty; this is the work)
+asm/*.s          ROM disassembly, one fragment per gap between decompiled
+                 functions; reassembles exactly
+src/             Decompiled C — one function per file, named for it
 include/         Headers
 scripts/
   seed_functions.py  Function discovery (BL targets ∩ push prologues)
   match.py           Diff one compiled function against the target asm
+  extract.py         Cut a matched function out of its asm fragment
+  batch_extract.py   Extract every matched function, regenerate ldscript
   progress.py        Progress report + decomp.dev report.json
 tools/agbcc      Vendored GCC 2.95 — do not modify
 tools/luvdis     Vendored disassembler — do not modify
 docs/recon.md    Binary recon: inventory, call graph, entry point
 docs/verification.md  What MATCH proves, and what it doesn't
+docs/learnings/  Parked functions and known dead ends — read before picking
 docs/tickets/    One ticket per function
 CLAUDE.md        Agent instructions (AGENTS.md symlinks here)
 ```
@@ -122,10 +126,13 @@ Work the lowest-numbered open ticket in [`docs/tickets/`](docs/tickets/). The lo
 1. Write C in `src/` implementing the target function.
 2. `make && python3 scripts/match.py <function>`
 3. `MISMATCH` prints an instruction-level diff — adjust and repeat.
-4. On `MATCH`, remove the function from `asm/rom.s` and place the C object at
-   the same address in `ldscript.ld`.
+4. On `MATCH`, cut the function out of its `asm/*.s` fragment
+   (`python3 scripts/extract.py <function>`) and place the C object at the
+   same address in `ldscript.ld`.
 5. `make check` must still print `MATCH`.
-6. Commit. One function per commit.
+6. Commit. One function per commit, or a batch that was verified one
+   function at a time (`scripts/batch_extract.py` re-runs every `src/*.c`
+   through `match.py` before it cuts anything).
 
 Read [`CLAUDE.md`](CLAUDE.md) first — it documents the agbcc-specific tells that
 make a function match (loop shape from branch placement, stray `lsl`/`asr` pairs

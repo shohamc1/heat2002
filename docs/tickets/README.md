@@ -3,6 +3,14 @@
 One file per function, worked lowest number first. A ticket is done when
 `make check` still prints `MATCH` with the function implemented in C.
 
+**Read [`../learnings/parked.md`](../learnings/parked.md) before picking a
+target.** Several small-looking leaves are already known not to match, and
+five entries in the 743 count are not functions at all.
+
+103 / 743 functions are matched. The three tickets below are the only ones
+ever written; the batches after DECOMP-003 were worked straight from the
+candidate queue, which is why the queue is mostly struck through.
+
 | Ticket | Target | Insns | Callers | Status |
 |---|---|---:|---:|---|
 | [DECOMP-001](DECOMP-001-sub_08006734.md) | `sub_08006734` | 1 | 38 | done |
@@ -13,13 +21,13 @@ Candidate queue (from `docs/recon.md`, not yet ticketed):
 
 | Target | Insns | Leaf | Callers | Note |
 | --- | ---: | :---: | ---: | --- |
-| `sub_0800793C` | 9 | yes | 11 | leaf, no calls |
-| `sub_0833FF94` | 9 | yes | 11 | leaf, no calls |
-| `sub_0800F3A4` | 12 | yes | 11 | leaf, no calls |
-| `sub_080045D8` | 9 | yes | 8 | leaf, no calls |
-| `sub_08016E10` | 2 | yes | 24 | `swi #11` BIOS wrapper — needs inline asm |
-| `sub_08016E28` | 2 | yes | 7 | `swi #21` BIOS wrapper |
-| `sub_080172C4` | 1 | yes | 3 | `__div0` divide-by-zero hook |
+| ~~`sub_0800793C`~~ | 9 | yes | 11 | done |
+| ~~`sub_0833FF94`~~ | 9 | yes | 11 | done |
+| `sub_0800F3A4` | 12 | yes | 11 | **open** — leaf, `stm r0!, {r3}` clear loop |
+| ~~`sub_080045D8`~~ | 9 | yes | 8 | done |
+| ~~`sub_08016E10`~~ | 2 | yes | 24 | done — `swi 0x0B` via inline asm |
+| ~~`sub_08016E28`~~ | 2 | yes | 7 | done — `swi 21` |
+| ~~`sub_080172C4`~~ | 1 | yes | 3 | done — `__div0`, `__attribute__((naked))` |
 
 Write new tickets with the same shape: why this function (with numbers),
 the target asm, concrete steps, a done-when checklist, and honest risks.

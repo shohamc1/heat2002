@@ -11,7 +11,7 @@ u32 sub_080032E4(u16 a, u8 b)
     }
     else
     {
-        if (a != (gUnk_02002170 + 1 & 7))
+        if (a != ((gUnk_02002170 + 1) & 7))
             return 0;
     }
     return 1;
