@@ -82,18 +82,30 @@ def read_preamble():
 
 
 def referenced_labels(lines, lo, hi):
-    """Labels used as POOL operands on instruction lines within [lo,hi).
+    """Labels used as POOL/branch operands within [lo,hi) that would break
+    if this block is extracted.
 
-    Only PC-relative loads (ldr rN, _XXX) are a cross-object hazard: a
-    `bl _XXX` to a moved .global label resolves at link time, and a plain
-    `b _XXX` never crosses function blocks in this ROM's layout. Scanning
-    data/label lines would flag the function's own pool.
+    `bl _XXX` to a moved .global label emits R_ARM_THM_CALL and resolves
+    at link time -- exempt. PC-relative `ldr rN, _XXX` pool loads and
+    b-family branches to _XXXXXXXX labels are real hazards: the
+    assembler computes their offsets inside one object, and `b` also has
+    a +/-2KB range that cannot cross object boundaries. Verified
+    2026-09-09: cross-block b-style label branches exist only inside
+    sub_08026DB6 (misclassified PCM data, never extracted), but the
+    b-family is kept in the flagged set so a future extraction near
+    misclassified data fails loudly instead of silently.
     """
     refs = set()
     for l in lines[lo:hi]:
         if not is_ins(l):
             continue
-        if not re.match(r"\tldr", l):
+        m = re.match(r"\t(\w+)", l)
+        if not m:
+            continue
+        mn = m.group(1)
+        # ldr (pool loads) and b-family branches are hazards; bl/blx
+        # emit link-time relocations and are exempt.
+        if not (mn == "ldr" or (mn.startswith("b") and not mn.startswith("bl"))):
             continue
         refs.update(refd_labels_in_line(l))
     return refs
