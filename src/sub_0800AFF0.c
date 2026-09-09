@@ -2,7 +2,7 @@
 
 extern u8 gUnk_020021E0;
 extern u8 gUnk_02002098;
-extern u32 gCallback_0800AF45[];
+extern u8 gCallback_0800AF45[];   /* Thumb entry: function address | 1 */
 
 u32 sub_080078E4(void);
 void sub_0800793C(u32 a);

@@ -170,8 +170,11 @@ def main():
 
     # Build only this object: a full `make` fails on the duplicate symbol
     # until the asm block is deleted, and the point is to match *before* that.
+    # -B forces the recompile: make compares mtimes at 1-second granularity,
+    # so an edit landing in the same second as the previous build is skipped
+    # and the verdict below would describe the *previous* source.
     if (ROOT / "src" / f"{name}.c").exists():
-        r = subprocess.run(["make", f"build/src/{name}.o"], cwd=ROOT, capture_output=True, text=True)
+        r = subprocess.run(["make", "-B", f"build/src/{name}.o"], cwd=ROOT, capture_output=True, text=True)
         if r.returncode != 0:
             sys.exit(r.stdout + r.stderr)
 

@@ -6,7 +6,7 @@ extern u32 gUnk_0203DE20[];
 extern u16 gUnk_0203B6C8[];
 extern u16 gUnk_0203B6A8[];
 extern u16 gUnk_0203B858[];
-extern u32 gCallback_0200A1BD[];
+extern u8 gCallback_0200A1BD[];   /* Thumb entry: function address | 1 */
 
 void *sub_0833FF44(void);
 void sub_0833FF94(u32 a);

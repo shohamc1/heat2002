@@ -1,7 +1,7 @@
 #include "global.h"
 
 extern u32 gUnk_03007FF0[];
-extern u32 gCallback_08000B69[];
+extern u8 gCallback_08000B69[];   /* Thumb entry: function address | 1 */
 
 void sub_08001534(u32 r0);
 
