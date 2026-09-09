@@ -190,38 +190,3 @@ _0800F0CE:
 	subs r0, r0, r1
 	bgt _0800F0CE
 	bx lr
-	thumb_func_start sub_0800F0D4
-sub_0800F0D4:
-	push {r4, r5, lr}
-	movs r2, #0x00
-	ldr r3, _0800F108 @ =0x04000128
-	ldrh r1, [r3, #0x00]
-	movs r0, #0x80
-	ands r0, r1
-	cmp r0, #0x00
-	beq _0800F0F8
-	ldr r5, _0800F10C @ =0x0000795C
-	movs r4, #0x80
-	.global _0800F0E8
-_0800F0E8:
-	adds r2, #0x01
-	cmp r2, r5
-	bgt _0800F0F8
-	ldrh r1, [r3, #0x00]
-	adds r0, r4, #0x0
-	ands r0, r1
-	cmp r0, #0x00
-	bne _0800F0E8
-	.global _0800F0F8
-_0800F0F8:
-	movs r0, #0x96
-	lsls r0, r0, #0x02
-	bl sub_0800F0BC
-	pop {r4, r5}
-	pop {r0}
-	bx r0
-	.byte 0x00, 0x00
-	.global _0800F108
-_0800F108: .4byte 0x04000128
-	.global _0800F10C
-_0800F10C: .4byte 0x0000795C

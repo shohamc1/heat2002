@@ -82,14 +82,18 @@ def read_preamble():
 
 
 def referenced_labels(lines, lo, hi):
-    """Labels used as operands on instruction lines within [lo,hi).
+    """Labels used as POOL operands on instruction lines within [lo,hi).
 
-    Only PC-relative uses (ldr rN, _XXX etc.) matter for the shared-pool
-    check; scanning data/label lines would flag the function's own pool.
+    Only PC-relative loads (ldr rN, _XXX) are a cross-object hazard: a
+    `bl _XXX` to a moved .global label resolves at link time, and a plain
+    `b _XXX` never crosses function blocks in this ROM's layout. Scanning
+    data/label lines would flag the function's own pool.
     """
     refs = set()
     for l in lines[lo:hi]:
         if not is_ins(l):
+            continue
+        if not re.match(r"\tldr", l):
             continue
         refs.update(refd_labels_in_line(l))
     return refs

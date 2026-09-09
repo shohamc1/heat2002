@@ -1,0 +1,18 @@
+#include "global.h"
+
+extern u32 gUnk_08364B08[]; /* 0x08364B08 */
+
+void sub_0800F3A4(void)
+{
+    u32 *dest = (u32 *)*(u32 *)&gUnk_08364B08[0];
+    u32 r1 = 0;
+    u32 val = 0;
+    u32 r2 = 0xA0 << 1;
+
+    do
+    {
+        *dest = val;
+        dest++;
+        r1++;
+    } while (r1 != r2);
+}

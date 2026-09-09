@@ -306,10 +306,3 @@ _0833D9CC: .4byte 0x0203B6A0
 _0833D9D0: .4byte 0x0203B854
 	.global _0833D9D4
 _0833D9D4: .4byte 0x0203B6EC
-	thumb_func_start sub_0833D9D8
-sub_0833D9D8:
-	push {lr}
-	bl sub_0833D8CC
-	pop {r0}
-	bx r0
-	.byte 0x00, 0x00, 0x70, 0x47, 0x00, 0x00
