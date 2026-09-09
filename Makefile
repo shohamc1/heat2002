@@ -63,6 +63,7 @@ test:
 	python3 scripts/seed_functions.py --selftest
 	python3 scripts/strings.py --selftest
 	python3 scripts/test_alignment.py
+	python3 scripts/test_extract_guard.py
 
 # Regenerate a full-ROM reference disassembly. Written OUTSIDE asm/: once
 # extraction starts, asm/ is split into fragments with functions removed, and
