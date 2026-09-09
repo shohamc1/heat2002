@@ -74,3 +74,13 @@ optimization ordering. Parked with no known path.
   tidying when the surrounding data is named, not before.
 - `symbols.ld` has 9 identical duplicate lines. Harmless to `ld`; a
   `sort -u` fixes it whenever someone is editing the file anyway.
+
+- Callee declarations intentionally disagree across files because each
+  caller matched with a different shape: `sub_080065A8` is `void(u32)`
+  in two files and `void(void)` in four (those callers pass nothing and
+  only match that way — r0 carries garbage the callee tolerates);
+  `sub_08017230` (__divsi3) returns s16/s32/u16 depending on the caller;
+  `sub_0833FF44` is uniformly `void*(void)` after 7340584; `gUnk_03007FF0`
+  is u32/u32[]/struct-ptr per file. Don't "fix" these to a single
+  canonical signature without re-verifying every caller — the per-file
+  shape IS the match. A shared declarations header remains future work.
