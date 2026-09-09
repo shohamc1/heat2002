@@ -2,5 +2,5 @@
 
 void sub_08344B60(void)
 {
-    __asm__ volatile("swi 12");
+    __asm__ volatile("swi 0xc");
 }

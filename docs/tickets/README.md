@@ -7,9 +7,11 @@ One file per function, worked lowest number first. A ticket is done when
 target.** Several small-looking leaves are already known not to match, and
 five entries in the 743 count are not functions at all.
 
-103 / 743 functions are matched. The three tickets below are the only ones
-ever written; the batches after DECOMP-003 were worked straight from the
-candidate queue, which is why the queue is mostly struck through.
+204 / 743 functions are matched. The three tickets below are the only ones
+ever written; everything after DECOMP-003 has been worked in parallel
+batches (see `docs/learnings/parked.md` for what resists and why). New
+single-function work should pick from the remaining asm fragments, lowest
+address or highest caller count first.
 
 | Ticket | Target | Insns | Callers | Status |
 |---|---|---:|---:|---|
@@ -23,7 +25,7 @@ Candidate queue (from `docs/recon.md`, not yet ticketed):
 | --- | ---: | :---: | ---: | --- |
 | ~~`sub_0800793C`~~ | 9 | yes | 11 | done |
 | ~~`sub_0833FF94`~~ | 9 | yes | 11 | done |
-| `sub_0800F3A4` | 12 | yes | 11 | **open** — leaf, `stm r0!, {r3}` clear loop |
+| ~~`sub_0800F3A4`~~ | 12 | yes | 11 | done |
 | ~~`sub_080045D8`~~ | 9 | yes | 8 | done |
 | ~~`sub_08016E10`~~ | 2 | yes | 24 | done — `swi 0x0B` via inline asm |
 | ~~`sub_08016E28`~~ | 2 | yes | 7 | done — `swi 21` |

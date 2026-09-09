@@ -15,7 +15,7 @@ void sub_08000458(void)
     r2 = (volatile u16 *)&gUnk_02000DD0;
     r3 = 1;
     do {
-        __asm__ volatile("swi 2");
+        __asm__ volatile("swi 0x2");
         r1 = *r2;
         r0 = r3 & r1;
     } while (r0 == 0);

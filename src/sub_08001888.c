@@ -1,7 +1,7 @@
 #include "global.h"
 
 extern u32 gUnk_03007FF0[];
-extern u32 gUnk_08000B69[];
+extern u32 gCallback_08000B69[];
 
 void sub_08001534(u32 r0);
 
@@ -37,7 +37,7 @@ void sub_08001888(u32 r0, u32 r1, u32 r2)
         *(u32 *)(r5 + 0x20) = 0;
     }
     *(u32 *)(r5 + 0x24) = r7;
-    *(u32 *)(r5 + 0x20) = (u32)gUnk_08000B69;
+    *(u32 *)(r5 + 0x20) = (u32)gCallback_08000B69;
     *(u32 *)r5 = 0x68736D53;
     *(u32 *)(r7 + 0x34) = 0x68736D53;
 }

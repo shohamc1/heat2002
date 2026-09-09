@@ -1,5 +1,7 @@
 #include "global.h"
 
+void sub_0833EDB8(void);
+
 extern u8 gUnk_0203E1E0[];
 extern u8 gUnk_0200CF90[];
 void sub_0833EF0C(u8 *a, u32 b, u32 c);

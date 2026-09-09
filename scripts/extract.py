@@ -103,9 +103,9 @@ def referenced_labels(lines, lo, hi):
         if not m:
             continue
         mn = m.group(1)
-        # ldr (pool loads) and b-family branches are hazards; bl/blx
-        # emit link-time relocations and are exempt.
-        if not (mn == "ldr" or (mn.startswith("b") and not mn.startswith("bl"))):
+        # bl/blx emit link-time relocations and are exempt (ble/bls/blt
+        # are conditional BRANCHES, not bl forms).
+        if not (mn == "ldr" or (mn.startswith("b") and mn not in ("bl", "blx"))):
             continue
         refs.update(refd_labels_in_line(l))
     return refs

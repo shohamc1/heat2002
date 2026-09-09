@@ -13,7 +13,7 @@ SHA1 is wrong, no matter how clean the C looks. Never edit `baserom.gba`,
 
 - `asm/*.s` — ROM disassembly, **743 functions** originally, split into one
   fragment per gap between decompiled functions; reassembles to an exact match.
-- `src/` — **103 functions decompiled** (2,844/109,370 bytes). One function
+- `src/` — **204 functions decompiled** (7,306/110,078 bytes). One function
   per file, named for it.
 - `docs/recon.md` — function inventory, call graph, entry-point trace, candidate ranking.
 - `docs/learnings/parked.md` — **read before picking a target.** What was

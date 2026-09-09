@@ -6,9 +6,9 @@ extern u32 gUnk_0203DE20[];
 extern u16 gUnk_0203B6C8[];
 extern u16 gUnk_0203B6A8[];
 extern u16 gUnk_0203B858[];
-extern u32 gUnk_0200A1BD[];
+extern u32 gCallback_0200A1BD[];
 
-u32 sub_0833FF44(void);
+void *sub_0833FF44(void);
 void sub_0833FF94(u32 a);
 
 void sub_08342D10(void)
@@ -18,8 +18,8 @@ void sub_08342D10(void)
     r = (u32 *)sub_0833FF44();
     if (r != 0) {
         r[6] = 0x40;
-        r[3] = (u32)gUnk_0200A1BD;
-        sub_0833FF94(r);
+        r[3] = (u32)gCallback_0200A1BD;
+        sub_0833FF94((u32)r);
         gUnk_0203DE28[0] = gUnk_0203B6C8[0];
         gUnk_0203DE3C[0] = gUnk_0203B6A8[0];
         gUnk_0203DE20[0] = gUnk_0203B858[0];
