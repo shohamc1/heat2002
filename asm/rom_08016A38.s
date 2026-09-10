@@ -254,35 +254,3 @@ _08016BEC: .4byte 0xFFFFFE98
 _08016BF0: .4byte 0x0000A482
 	.global _08016BF4
 _08016BF4: .4byte 0x00007674
-	thumb_func_start sub_08016BF8
-sub_08016BF8:
-	push {lr}
-	bl sub_0801661C
-	movs r0, #0x00
-	movs r1, #0x08
-	bl sub_080165E0
-	ldr r1, _08016C1C @ =0x0202F040
-	ldr r0, _08016C20 @ =0x0000A482
-	ldrh r2, [r1, #0x00]
-	cmp r2, r0
-	bne _08016C28
-	ldr r0, _08016C24 @ =0x00007674
-	ldrh r1, [r1, #0x02]
-	cmp r1, r0
-	bne _08016C28
-	movs r0, #0x01
-	b _08016C2A
-	.global _08016C1C
-_08016C1C: .4byte 0x0202F040
-	.global _08016C20
-_08016C20: .4byte 0x0000A482
-	.global _08016C24
-_08016C24: .4byte 0x00007674
-	.global _08016C28
-_08016C28:
-	movs r0, #0x00
-	.global _08016C2A
-_08016C2A:
-	pop {r1}
-	bx r1
-	.byte 0x00, 0x00

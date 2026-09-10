@@ -33,7 +33,7 @@ def main():
     with tempfile.TemporaryDirectory() as tmp:
         d = Path(tmp)
         (d / "t.i").write_text(C_SRC)
-        subprocess.run([ROOT / "tools/agbcc/agbcc", "-O2", "-mthumb-interwork", d / "t.i", "-o", d / "c.s"], check=True)
+        subprocess.run([ROOT / "tools/agbcc/old_agbcc", "-O2", "-mthumb-interwork", d / "t.i", "-o", d / "c.s"], check=True)
         for name, asm in (("c", (d / "c.s").read_text()), ("asm", ASM_SRC)):
             b = text_bytes(d, asm)
             assert len(b) % 4 == 0, f"{name}: section not rounded ({len(b)} bytes)"

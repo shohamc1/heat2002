@@ -23,7 +23,8 @@ SECTIONS
         build/src/sub_0800048C.o(.text*);
         build/asm/rom_080004B8.o(.text*);
         build/src/sub_080011FC.o(.text*);
-        build/asm/rom_08001206.o(.text*);
+        build/src/sub_08001208.o(.text*);
+        build/asm/rom_08001234.o(.text*);
         build/src/sub_080013A0.o(.text*);
         build/asm/rom_080013AE.o(.text*);
         build/src/sub_08001520.o(.text*);
@@ -165,6 +166,8 @@ SECTIONS
         build/asm/rom_08011D2E.o(.text*);
         build/src/sub_08012384.o(.text*);
         build/asm/rom_08012386.o(.text*);
+        build/src/sub_0801238C.o(.text*);
+        build/asm/rom_080123F8.o(.text*);
         build/src/sub_08012758.o(.text*);
         build/asm/rom_08012784.o(.text*);
         build/src/sub_08012A4C.o(.text*);
@@ -176,12 +179,15 @@ SECTIONS
         build/asm/rom_08012C4A.o(.text*);
         build/src/sub_08012EE8.o(.text*);
         build/asm/rom_08012F1C.o(.text*);
+        build/src/sub_080140D8.o(.text*);
+        build/asm/rom_08014104.o(.text*);
         build/src/sub_0801435C.o(.text*);
         build/asm/rom_08014374.o(.text*);
         build/src/sub_08014BA0.o(.text*);
         build/asm/rom_08014BA2.o(.text*);
         build/src/sub_08015304.o(.text*);
         build/asm/rom_08015364.o(.text*);
+        build/src/sub_080164A8.o(.text*);
         build/src/sub_08016558.o(.text*);
         build/asm/rom_08016568.o(.text*);
         build/src/sub_080165E0.o(.text*);
@@ -190,10 +196,12 @@ SECTIONS
         build/asm/rom_08016656.o(.text*);
         build/src/sub_080167E0.o(.text*);
         build/src/sub_08016834.o(.text*);
-        build/asm/rom_08016888.o(.text*);
+        build/src/sub_08016888.o(.text*);
+        build/src/sub_0801692C.o(.text*);
         build/src/sub_080169CC.o(.text*);
         build/src/sub_08016A04.o(.text*);
         build/asm/rom_08016A38.o(.text*);
+        build/src/sub_08016BF8.o(.text*);
         build/src/sub_08016C30.o(.text*);
         build/asm/rom_08016C4E.o(.text*);
         build/src/sub_08016CB0.o(.text*);

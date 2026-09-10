@@ -1,7 +1,7 @@
 #include "global.h"
 
-extern u16 gKeysHeld;     /* 0x020005C8, defined in symbols.ld */
-extern u16 gKeysPressed;  /* 0x020005CC */
+extern volatile u16 gKeysHeld;     /* 0x020005C8, defined in symbols.ld */
+extern volatile u16 gKeysPressed;  /* 0x020005CC */
 
 void sub_0800048C(void)
 {

@@ -46,7 +46,7 @@ function named `name` from the `.macro` definition. `scripts/progress.py
 
 ## Toolchain
 
-`tools/agbcc/agbcc` is GCC 2.95, the compiler this ROM was built with. Its
+`tools/agbcc/old_agbcc` is GCC 2.95, the compiler this ROM was built with. Its
 codegen fingerprints are visible throughout `asm/rom.s`:
 
 - `pop {r0}; bx r0` function epilogues (not `pop {pc}`)
@@ -54,6 +54,35 @@ codegen fingerprints are visible throughout `asm/rom.s`:
 - arguments evaluated right-to-left
 
 If your C produces `pop {pc}` you are not using agbcc.
+
+### Use `old_agbcc`, not `agbcc`
+
+The two vendored binaries differ at the `#ifndef OLD_COMPILER` gate in
+`tools/agbcc/gcc/thumb.c` (`s_register_operand`, line 1588). The visible
+effect is where a constant is materialised relative to the memory load it
+is combined with:
+
+    ldr  r1, _020005CC      ldr  r0, _020005CC
+    movs r0, #8             ldrh r1, [r0, #0]
+    ldrh r1, [r1, #0]       movs r0, #8
+    ands r0, r1             ands r0, r1
+    old_agbcc               agbcc
+
+`old_agbcc` hoists the constant; `agbcc` never does. The ROM contains both
+orders, and **`volatile` is the lever**: under `old_agbcc` a `volatile`
+global suppresses the hoist and gives the second form. `agbcc` can only
+ever produce the second form, so ~27 functions are unreachable from any C
+under it.
+
+Verified 2026-09-10: `make check` prints MATCH for the whole ROM under
+`old_agbcc`, with four globals needing `extern volatile` (`gKeysHeld`,
+`gKeysPressed`, `gUnk_02000DD0`, `gUnk_02037E20`, `gUnk_02037618`,
+`gUnk_0203761C`). `-fprologue-bugfix` does not exist in `old_agbcc` and is
+not needed: all 211 functions matched without it.
+
+So when the asm loads a constant *before* the memory it operates on, write
+the global non-`volatile`; when it loads the memory first, write it
+`volatile`.
 
 ## Writing C that matches
 

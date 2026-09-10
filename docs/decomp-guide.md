@@ -63,7 +63,7 @@ narrow.
 **`push {r4, lr}` ... `pop {r4}; pop {r0}; bx r0`** is a normal non-leaf
 prologue/epilogue. `pop {r0}; bx r0` instead of `pop {pc}` is what agbcc
 always emits -- if your output has `pop {pc}` you are not using
-`tools/agbcc/agbcc`. Which registers are pushed (`r4`..`r7`) tells you how
+`tools/agbcc/old_agbcc`. Which registers are pushed (`r4`..`r7`) tells you how
 many callee-saved locals the compiler needed, which constrains how many
 locals you declare.
 
@@ -143,6 +143,7 @@ fixes, in order of how often they are the answer:
 | extra `lsls/lsrs #16` or `#24` | a variable is too narrow | widen to u32/s32 |
 | missing `lsls/lsrs` | a variable is too wide | narrow to u16/u8 |
 | same instructions, different order | cast instead of extern; or statements reordered | use `extern` symbol; reorder C to match |
+| constant loaded before/after the memory it is combined with | `volatile` on the global | target loads memory first -> add `volatile`; target loads the constant first -> drop it |
 | `bl 0x8000000`/wrong target | prototype missing or wrong name | declare the callee |
 | `str`/`ldr [sp, ...]` you don't have in target | too many locals | remove one |
 | `push {r4, r5}` vs `push {r4}` | wrong number of live locals | add/remove a local |
