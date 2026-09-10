@@ -142,14 +142,80 @@ moved the assignment. What is missing is a C construct that changes the
 
 Start any remaining member of the family from `src/sub_080144F4.c`.
 
-## Still open in that family
+## The eleven open sub_08015364 callees
 
-| Function | Difference | Attempts |
+65 of the 76 callees match. The near-miss C for each of the ten below is
+kept in `docs/learnings/drafts/`; start from those files, not from
+scratch. Every one of them builds and differs from the ROM only where
+noted.
+
+### Genuinely unreachable (1)
+
+`sub_080172C8` ends in `pop {r4, pc}`. Under `-mthumb-interwork` agbcc
+always emits `pop {r4}; pop {r0}; bx r0`, so those bytes cannot come out
+of any C. See "Non-interwork epilogues" above.
+
+### One or two instructions, cause identified in the compiler (5)
+
+| Function | Difference | Cause |
 |---|---|---|
-| `sub_08012B50` | prologue narrows `b` then `a`; ours does `a` then `b`. One instruction-pair swap, size correct (108) | 6 |
-| `sub_08012A80` | the ROM pushes `r9` and never uses it; ours needs one fewer callee-saved register | 3 |
-| `sub_08013964` | the ROM pushes `r6` and never uses it, and reuses the already-zero `r0` for the early `return 0` instead of `movs r0, #0` | 6 |
+| `sub_08014004` | 2 bytes: the two `movs #0` are emitted in the wrong order | Initialising `a` first gives the right order but moves `a` from `r6` to `r7`, because an earlier birth lengthens its live range and lowers `QTY_CMP_PRI`. The two are coupled; 9 shapes tried |
+| `sub_08012B50` | prologue narrows `b` then `a`, ours does `a` then `b` | `assign_parms` (`gcc/function.c:4246`) defers every parameter conversion into `conversion_insns`, flushed at 4537, so conversions always emerge in declaration order. A body conversion reorders them but emits `lsls r0,r0,#24 / lsrs r4,r0,#24` instead of the ROM's copy-plus-in-place form |
+| `sub_08003738` | 3 instructions permuted at one call site | `precompute_register_parameters` (`gcc/calls.c`) copies any argument whose `rtx_cost > 2` into a pseudo before the cheap constants load, and `thumb.h`'s `CONST_COSTS` gives address constants `COSTS_N_INSNS(3)` with `SMALL_REGISTER_CLASSES` set. The ROM's ldr-last form needs `args[2].value` to already be a REG at expand time |
+| `sub_0800F3C0` | first loop counter in `r6`, ROM uses `r4` | `QTY_CMP_PRI` tie broken by quantity creation order; 7 shapes tried |
+| `sub_08001170` | 4 bytes: agbcc folds `+4` into the load offset, the ROM computes `(base+4)+i` | Address reassociation happens during expansion regardless of parenthesisation, loop form (`goto` included), or operand order. The pool-loaded `5` IS solved: `extern u8 gUnk_00000005[];` used by address, with `gUnk_00000005 = 0x00000005;` in symbols.ld |
 
-The last two are the same phenomenon: `regs_ever_live` set by a pseudo that
-reload later eliminated. No C shape tried reproduces a register that is
-saved and never read.
+### The phantom-register family (3)
+
+`sub_08013964` (r6), `sub_08012A80` (r9), `sub_080129E8` (r7). The ROM
+saves a callee-saved register and never reads it, so `regs_ever_live` was
+set by a pseudo that reload later eliminated. A dead extra parameter does
+not do it: `assign_parms` emits the copy but DCE deletes it before
+allocation. `sub_080129E8` is the harder case - its r7 is also *stored*
+(`movs r7, #0`) and never read.
+
+`sub_08013964` is otherwise byte-identical, and its early exit is a bare
+`return;` in an `s8` function - not `return 0;`, which emits
+`movs r0, #0; b end` plus a mid-function pool.
+
+### Unfinished, not blocked (2)
+
+| Function | State |
+|---|---|
+| `sub_0801177C` (644 b) | Structurally correct and 4 bytes short; the register allocation then differs throughout. Needs the missing 4 bytes found first, after which the cascade should resolve |
+| `sub_0800295C` (1486 b) | Largest remaining. The switch shape was identified before the run was cut off; the draft is 1836 bytes against a smaller target |
+
+### Mis-scoped, needs its own ticket (1)
+
+`sub_0800F8D0` is not the 84-byte function the size scan reports. It is a
+16-entry jump table whose case bodies run to a shared epilogue at
+`_08010058`, spanning `0x0800F8D0`-`0x08010078`, roughly 1960 bytes;
+luvdis lumped the cases in as trailing `.byte` rows. It is a real
+`switch` (agbcc `mov pc, r0` tablejump) and decompilable, but only as one
+file holding all 16 cases. **Any size taken from a `thumb_func_start`
+block that excludes `.byte` rows is a lower bound, not the size.**
+
+## Codegen rules learned in the 204-250 run
+
+- A `goto` loop suppresses loop-invariant hoisting and loop rotation:
+  GCC 2.95 only sees loops through front-end loop notes. If the ROM
+  re-loads a global address every iteration, or spins on a flag with no
+  guard load ahead of the loop, the source used `goto`.
+- Keep a `<< 16` inside the loop body and loop-invariant motion hoists it
+  into the preheader after the base-address load. That reproduces the
+  "constants first, shifts later" order in `sub_08003F4C`.
+- Storing a call result through a temp moves the destination address
+  computation after the value: `x = f() + w; p->field = x;` versus
+  `p->field = f() + w;`.
+- A `u8 t = v;` temp for a call argument can flip register assignment;
+  pass `v` straight to the call, CSE reuses the narrowed temp. Conversely
+  two `sel = v;` statements sometimes need merging into
+  `if (A || B) sel = v;` so both paths reach a shared block.
+- Repeated reads of a global with no intervening call do NOT imply
+  `volatile`: a volatile MEM cannot fold into a `zero_extend`, so it
+  forces an extra register move. `gUnk_020020A0` reads three times and is
+  plain.
+- Statement position for `n--` is load-bearing: GCC PRE-hoists `j + 1`
+  and `n - 1` to the inner preheader in source order.
+- A bare `return;` in a non-void function produces an early exit that
+  branches straight to the epilogue with no value materialised.
