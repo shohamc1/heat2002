@@ -29,6 +29,40 @@ PREAMBLE_END = "@ End embedded Luvdis macros"
 # undercounts by 8 on this ROM.
 START = re.compile(r"^\s+(?:non_word_aligned_)?(?:thumb|arm)_func_start\s+(\S+)\s*$")
 
+# Vendored runtime library: 33 libgcc + 59 newlib functions, identified
+# byte-for-byte (docs/learnings/parked.md, runtime-newlib-map.json). They were
+# built without -mthumb-interwork, so they end in `pop {rN, pc}` or
+# `mov pc, lr`, which agbcc cannot emit under the project's flags. They are
+# not decompilation targets: they stay as asm, or are replaced by verified
+# library objects. That epilogue is what identifies them -- an address range
+# would be wrong, because ten already-matched functions sit inside the same
+# spans (a linker interleaves objects; a matched leaf whose epilogue is a bare
+# `bx lr` is flag-insensitive and matches either way).
+NON_INTERWORK_EPILOGUE = re.compile(r"\bpop \{[^}]*pc\}|\bmov pc, lr\b")
+
+# luvdis misread these five data runs as functions; see parked.md.
+LUVDIS_FALSE_POSITIVES = frozenset(
+    ("sub_08026DB6", "sub_0824C6F0", "sub_0827B7CA", "sub_080462B2", "sub_08121316")
+)
+
+
+def runtime_library():
+    """Names of the vendored runtime-library functions still in asm."""
+    found = set()
+    for path in sorted(ASM_DIR.glob("*.s")):
+        txt = path.read_text(errors="replace")
+        starts = [
+            (m.start(), m.group(1))
+            for m in re.finditer(
+                r"\t(?:non_word_aligned_)?(?:thumb|arm)_func_start (\S+)\n", txt
+            )
+        ]
+        for i, (pos, name) in enumerate(starts):
+            end = starts[i + 1][0] if i + 1 < len(starts) else len(txt)
+            if NON_INTERWORK_EPILOGUE.search(txt[pos:end]):
+                found.add(name)
+    return found
+
 
 def parse_asm():
     """Return {name: instruction_count} for functions still in asm.
@@ -146,6 +180,7 @@ def main():
     # loop, step 5), so `insns` alone would lose it from the report. Track it
     # separately, sized from its compiled object instead of asm bytes.
     names = sorted(set(insns) | done)
+    non_targets = runtime_library() | LUVDIS_FALSE_POSITIVES
 
     units, total, matched = [], 0, 0
     for name in names:
@@ -172,7 +207,7 @@ def main():
                     "matched_functions": 1 if is_done else 0,
                     "complete_code": size if is_done else 0,
                 },
-                "metadata": {"complete": is_done},
+                "metadata": {"complete": is_done, "target": name not in non_targets},
             }
         )
 
@@ -205,9 +240,19 @@ def main():
         out.write_text(json.dumps(report, indent=2) + "\n")
         print(f"wrote {out}")
     else:
+        game = [u for u in units if u["metadata"]["target"]]
+        g_total = sum(u["measures"]["total_code"] for u in game)
+        g_matched = sum(u["measures"]["matched_code"] for u in game)
+        g_done = sum(u["measures"]["matched_functions"] for u in game)
+        g_pct = (g_matched / g_total * 100) if g_total else 0.0
         print("NASCAR Heat 2002 — decompilation progress")
-        print(f"  functions: {measures['matched_functions']} / {len(units)} matched")
-        print(f"  code:      {matched} / {total} bytes ({pct:.4f}%)")
+        print(f"  functions: {g_done} / {len(game)} matched")
+        print(f"  code:      {g_matched} / {g_total} bytes ({g_pct:.4f}%)")
+        print(
+            f"  excluded:  {len(units) - len(game)} non-targets"
+            " (vendored runtime library, luvdis false positives)"
+        )
+        print(f"  whole ROM: {matched} / {total} bytes ({pct:.4f}%) over {len(units)} blocks")
         if missing:
             print(
                 f"\n  WARNING: no compiled object for {', '.join(missing)};"
@@ -228,6 +273,24 @@ def _selftest():
     total = len(set(insns) | decompiled())
     assert total == 743, f"expected 743 functions across asm + matched C, got {total}"
     assert "sub_08006734" not in insns, "sub_08006734 should be decompiled, not in asm"
+    # 92 runtime-library functions, all still in asm, plus 5 luvdis false
+    # positives, are not decompilation targets -- so the game-code
+    # denominator is 646, not 743.
+    rt = runtime_library()
+    assert len(rt) == 92, f"expected 92 runtime-library functions, got {len(rt)}"
+    non_targets = rt | LUVDIS_FALSE_POSITIVES
+    assert total - len(non_targets) == 646, (
+        f"game-code denominator should be 646, got {total - len(non_targets)}"
+    )
+    # Every address in the verified newlib map must be one of them.
+    import json as _json
+
+    mapped = {
+        int(row[0], 16)
+        for row in _json.loads((ROOT / "docs/learnings/runtime-newlib-map.json").read_text())
+    }
+    rt_addrs = {int(n.split("_")[1], 16) for n in rt if re.fullmatch(r"sub_[0-9A-Fa-f]{8}", n)}
+    assert mapped <= rt_addrs, f"newlib map has {len(mapped - rt_addrs)} unflagged addresses"
     print(f"selftest ok ({len(insns)} functions remaining in asm)")
 
 
