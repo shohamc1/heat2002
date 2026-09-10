@@ -13,7 +13,7 @@ the SHA1 of the original. Nothing else counts.
 ```
 git status          # must be clean
 make check          # must print MATCH -- if not, STOP, something is broken already
-make test           # all five lines must say "ok"
+make test           # all six checks must pass
 ```
 
 If `make check` does not print MATCH on a clean tree, do not start a ticket.
@@ -236,7 +236,7 @@ from git and redo the split.
 make check                              # MATCH
 python3 scripts/match.py sub_0800048C   # still MATCH
 python3 scripts/progress.py             # function count went up by exactly 1
-make test                               # 5x ok
+make test                               # 6 checks pass
 ```
 
 ## 7. Commit

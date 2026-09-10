@@ -13,12 +13,15 @@ SHA1 is wrong, no matter how clean the C looks. Never edit `baserom.gba`,
 
 - `asm/*.s` — ROM disassembly, **743 functions** originally, split into one
   fragment per gap between decompiled functions; reassembles to an exact match.
-- `src/` — **204 functions decompiled** (7,306/110,078 bytes). One function
-  per file, named for it.
+- `src/` — **257 functions decompiled**. One function per file, named for
+  it. Run `scripts/progress.py` for the live figure; do not hand-copy it
+  here, it goes stale within a day.
 - `docs/recon.md` — function inventory, call graph, entry-point trace, candidate ranking.
 - `docs/learnings/parked.md` — **read before picking a target.** What was
-  already tried and does not match, plus the five luvdis false positives
-  that are not functions at all.
+  already tried and does not match, why the compiler is a fork, and the 97
+  blocks that are not decompilation targets: 92 vendored runtime-library
+  functions (33 libgcc, 59 newlib) and 5 luvdis false positives that are
+  not functions at all.
 - `docs/tickets/` — one markdown ticket per function. Lowest open number first.
 - `docs/decomp-guide.md` — **read this before your first ticket.** Step-by-step
   with the failure modes; the loop below is the summary.
@@ -29,6 +32,10 @@ Counting functions: match **both** `thumb_func_start` and
 preamble (through `@ End embedded Luvdis macros`) or you get a phantom
 function named `name` from the `.macro` definition. `scripts/progress.py
 --selftest` asserts all three.
+
+Of those 743 blocks, **97 are not decompilation targets** — see
+`parked.md` — so the game-code denominator is **646**. `progress.py`
+reports against 646 and prints the whole-ROM figure underneath.
 
 ## The loop
 
@@ -187,13 +194,23 @@ tickets need no further tooling changes for either of these.
 
 ## Never do these
 
-- Do not modify anything under `tools/agbcc/` or `tools/luvdis/`. They are
-  vendored. The compiler's exact behavior is what makes matching possible;
-  reformatting its source can silently change codegen. Both are fenced off
-  from linting via a per-submodule `.pi-lens.json` — leave it in place.
+- Do not modify `tools/luvdis/`, and do not casually modify the compiler.
+  Both are fenced off from linting via a per-submodule `.pi-lens.json` —
+  leave it in place.
+
+  The compiler is **not** stock: `tools/agbcc` points at the fork
+  [shohamc1/agbcc-heat2002](https://github.com/shohamc1/agbcc-heat2002),
+  which carries one deliberate commit. That change cleared a bar, and any
+  further one must clear the same bar: every source-level avenue
+  exhausted first, rival explanations built and regression-tested, the
+  whole corpus still matching, and the reasoning written down. See the
+  "compiler is patched" section of `parked.md` for what that took. A
+  change that merely makes one function match is not acceptable.
 - Do not "fix" warnings in `asm/rom.s`. It reproduces the ROM as-is.
 - Do not add compiler flags to make something match. The flags in the
-  Makefile are the ones the original build used.
+  Makefile are the ones the original build used, and `-O2`, interwork and
+  every other flag have each been swept and eliminated as explanations —
+  see `parked.md` before reaching for one.
 
 ## Commands
 
