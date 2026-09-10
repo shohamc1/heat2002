@@ -96,15 +96,18 @@ extern void sub_0800CCE0(u32 a);
 extern void sub_0800F7E0(void);
 extern u32 sub_08016558(u16 idx);
 
-u8 sub_0800295C(u8 a, u8 b)
+/* Near-miss: 1808 bytes, with only r3/r4 allocation differences in the
+   opening setup and the sub_08004F48/sub_08005280/sub_080050F0 selection. */
+u8 sub_0800295C(u32 a, u8 b)
 {
+    /* The ROM reserves an otherwise unused stack word. */
+    u8 buf[4];
     u32 i;
     struct UnkCar *p;
-    u8 res;
+    s32 res;
     u8 flag;
-    s8 v;
+    s32 v;
     s32 t;
-    u32 k1, k2, k3;
 
     gUnk_020020F0 = 0;
     gUnk_020021BC = 0;
@@ -182,10 +185,15 @@ u8 sub_0800295C(u8 a, u8 b)
         gUnk_020020A8 = 0;
     }
     gUnk_020020A8 = 0;
-    if (gUnk_020020DC != 0)
+    if (gUnk_020020DC != 0) {
         sub_080043F8(&gUnk_0202A550[(*(volatile u32 *)0x04000128 << 26) >> 30]);
-    else
+        goto camera_ready;
+connection_error:
+        gUnk_02002144 = 1;
+        goto success;
+    } else
         sub_080043F8(&gUnk_0202A550[0]);
+camera_ready:
     gUnk_02002100[0] = gUnk_02002100[2];
     gUnk_02002100[1] = gUnk_02002100[3];
     gUnk_0200209C = 0;
@@ -198,7 +206,6 @@ u8 sub_0800295C(u8 a, u8 b)
     gUnk_020021F0 = 0;
     gUnk_02002124 = 0;
     flag = 0;
-    k1 = gUnk_0200209C; k2 = gUnk_02002148; k3 = gUnk_02002124;
     gUnk_020021EC[3] = 0;
     gUnk_020021EC[2] = 0;
     gUnk_020021EC[1] = 0;
@@ -219,8 +226,7 @@ u8 sub_0800295C(u8 a, u8 b)
                            + ((p->unk40 * gUnk_08364AF4[p->unk3E]) >> 6)) >> 3);
         if (gUnk_020020E0 != 0) {
             sub_080043F8(gUnk_0202A6E0);
-            t = gUnk_0200209C / 256;
-            gUnk_08364ADC = t;
+            gUnk_08364ADC = t = gUnk_0200209C / 256;
             if ((t & 7) == 0)
                 gUnk_08364ADC = 4;
         } else {
@@ -267,8 +273,8 @@ u8 sub_0800295C(u8 a, u8 b)
                 sub_08003F84(0x19, 0);
             }
         } else {
-            if (gUnk_0200215C != 3 && gUnk_0200215C != 4) {
-                if (gUnk_020021E0 == 0 && gUnk_02022E14 == 0)
+            if (gUnk_0200215C != 3 && gUnk_0200215C != 4 && gUnk_020021E0 == 0) {
+                if (gUnk_02022E14 == 0)
                     res = sub_08004F48();
                 else
                     res = 0;
@@ -316,12 +322,12 @@ u8 sub_0800295C(u8 a, u8 b)
         if (gUnk_020020DC != 0) {
             v = sub_08003330();
             if (v != 0) {
-                gUnk_02002144 = 1;
-                return 1;
+                goto connection_error;
             }
             gUnk_020020C0 = v;
-            while (gUnk_020020C0 == 0)
-                ;
+wait_link:
+            if (gUnk_020020C0 == 0)
+                goto wait_link;
         } else {
             gUnk_020020C0 = 0;
             while (gUnk_020020C0 == 0)
@@ -331,9 +337,10 @@ u8 sub_0800295C(u8 a, u8 b)
         if (gUnk_020021E0 == 2 && gUnk_02022E14 == 0)
             gUnk_02002144 = 1;
     }
-    gUnk_0200209C = k1 + k2 + k3;
-    if (flag != 0)
+    if (flag != 0) {
+success:
         return 1;
+    }
     sub_080019B4(gUnk_02001F60);
     return 0;
 }

@@ -1,9 +1,8 @@
 #include "global.h"
 
-/* NOTE: near-miss, not yet byte-identical.  Two deltas remain against ROM:
-   the ROM keeps the table base in r8 and computes (base + 4) + i inside the
-   loop, while agbcc here folds the +4 into the load offset; and p/n land in
-   the opposite pair of callee-saved registers. */
+/* Near-miss: p/n are swapped and the preheader coalesces away a pointer copy.
+   Assigning off = 4 inside the loop prevents folding +4 into the load offset;
+   i + (base + off) also preserves the ROM's add operand order. */
 
 extern u8 gUnk_0800054D[];
 extern u8 gUnk_00000005[];
@@ -35,6 +34,7 @@ void sub_08001170(void)
     u32 i;
     u32 base;
     u16 cnt;
+    u32 off;
 
     sub_08016E10((u32)gUnk_0800054D & ~1, 0x03007000, 0x04000100);
     sub_08001548(gUnk_02000DE0);
@@ -48,8 +48,9 @@ void sub_08001170(void)
         i = 0;
         n = cnt;
     loop:
+        off = 4;
         x = p->unk0;
-        sub_08001888(x, *(u32 *)(base + 4 + i), p->unk8);
+        sub_08001888(x, *(u32 *)(i + (base + off)), p->unk8);
         *(u32 *)(x + 0x18) = (u32)gUnk_02002020;
         p++;
         i += 12;
