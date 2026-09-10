@@ -149,58 +149,89 @@ kept in `docs/learnings/drafts/`; start from those files, not from
 scratch. Every one of them builds and differs from the ROM only where
 noted.
 
-### Not unreachable, but not game C either: the non-interwork epilogues
+### Resolved: the 92 non-interwork epilogues are all runtime library
 
-**Correction.** An earlier note in this file claimed `pop {r4, pc}` /
-`mov pc, lr` epilogues were unreachable from C because agbcc under
-`-mthumb-interwork` always emits `pop {rN}; pop {r0}; bx r0`. The gate is
-real -- `thumb_pushpop` in `tools/agbcc/gcc/thumb.c:601` refuses a direct
-PC pop when `TARGET_THUMB_INTERWORK` is set, independent of optimisation
-level and of every other flag -- but the conclusion was wrong. Drop
-`-mthumb-interwork` and the same C emits `pop {rN, pc}`. Verified: an
-already-matching file (`src/sub_08008338.c`) recompiled without the flag
-changes epilogue form, and a hand-written `sub_08019D78` is byte-identical
-to the ROM under `old_agbcc -O2 -fhex-asm` with no interwork.
+**All 92 are runtime-library code: 33 libgcc and 59 newlib. None is game
+code.** They are not decompilation targets and should stay as assembly, or
+later be replaced by verified library objects. Two independent reviews and
+a byte-level identification of every one of the 59 newlib functions agree.
 
-Notes on the gate, from an independent review:
+`docs/learnings/runtime-newlib-map.json` maps each newlib address to its
+symbol and source file.
 
-- `naked` suppresses the generated epilogue; it does not select
-  `pop {pc}`. Inline asm could supply one, which is not decompilation.
-- This Thumb backend does not recognise `is_called_in_ARM_mode`, so the
-  branch referencing it in `thumb_exit` is dead. `section` affects
-  placement only. The `mov pc` patterns in `thumb.md` are indirect jumps,
-  not ordinary returns.
-- A register-held return address uses `bx` even without interwork.
+| Cluster | Range | Funcs | libgcc | newlib |
+|---|---|---|---|---|
+| 1 | 0x08017230-0x0801767C | 9 | 5 | 4 (`stdio/vfprintf.o`) |
+| 2 | 0x080185DC-0x08018948 | 5 | 0 | 5 (`vfprintf`, `wsetup`, `dtoa`) |
+| 3 | 0x08019640-0x0801CCD4 | 72 | 22 | 50 |
+| 4 | 0x08344BB8-0x08344DA8 | 6 | 6 | 0 |
 
-**But these are mostly runtime library code, not game C.** 92 functions
-in `asm/` have a non-interwork epilogue, in four contiguous clusters. At
-least 33 are vendored libgcc, identified by compiling the shipped sources
-and comparing bytes (call and address relocations excluded):
+The vendored `tools/agbcc/libc/` is **newlib** (see its `COPYING.NEWLIB`),
+including ARM/RDI monitor support. Cluster 3's 50 newlib functions come
+from `stdio/{fflush,findfp,fvwrite,fwalk,makebuf}.o`, `locale/locale.o`,
+`stdlib/{mallocr,freer,callocr,mprec}.o`,
+`string/{memchr,memcpy,memmove,memset,strcmp,strlen}.o`,
+`reent/{sbrkr,writer,closer,fstatr,lseekr,readr}.o`, and
+`arm/syscalls.o`. All 59 match the compiled instruction and data bytes
+with relocation fields excluded, built with
+`old_agbcc -O2 -fno-builtin`, **no interwork**, and the vendored
+preprocessing settings; 188 call targets were cross-checked for
+relocation-address consistency.
 
-| Cluster | Range | Funcs | Identified libgcc |
+#### Why `pop {rN, pc}` appears at all
+
+`thumb_pushpop` (`tools/agbcc/gcc/thumb.c:601`) refuses a direct PC pop
+when `TARGET_THUMB_INTERWORK` is set, unconditionally -- no optimisation
+level and no other flag bypasses it. The runtime objects were built
+without that flag, so they carry the other epilogue form. An earlier note
+in this file called these bytes unreachable from C; that was wrong, and it
+predated the `old_agbcc` switch without being retested. The correct
+conclusion is narrower: unreachable *under the project's flags*, and
+irrelevant anyway because the functions are not game code.
+
+Related facts on the gate: `naked` suppresses the epilogue rather than
+selecting `pop {pc}`; this Thumb backend does not recognise
+`is_called_in_ARM_mode`, so that branch in `thumb_exit` is dead;
+`section` affects placement only; the `mov pc` patterns in `thumb.md` are
+indirect jumps, not returns; a register-held return address uses `bx`
+even without interwork.
+
+#### Flag matrix results
+
+Only these cells match:
+
+| Function | Compiler | -O | Interwork |
 |---|---|---|---|
-| 1 | 0x08017230-0x0801767C | 9 | 5 (`__divsi3`, `__modsi3`, `__muldi3`, `__negdi2`, `__umodsi3`) |
-| 2 | 0x080185DC-0x08018948 | 5 | 0 |
-| 3 | 0x08019640-0x0801CCD4 | 72 | 22 (21 float routines from `libgcc/fp-bit-base.c`, plus `__lshrdi3` from `libgcc2.c`) |
-| 4 | 0x08344BB8-0x08344DA8 | 6 | 6 (the five above plus `__div0`) |
+| `__muldi3` -> 0x08017398 | either | O2, O3 | off |
+| `__pack_d` -> 0x0801B5EC | `old_agbcc` only | O2, O3, Os | off |
 
-`__muldi3` and `__negdi2` match exactly. Cluster 2 and much of the rest of
-cluster 3 show libc/newlib-style formatting, stream, allocation and
-reentrancy behaviour; their provenance is unverified. **Do not treat the
-remaining 59 as game C.** Preserve identified runtime routines as assembly
-or link verified library objects; do not decompile them.
+Compiler choice is invariant for `__muldi3` (both binaries emit identical
+bytes in all eight cells, failures included) but discriminates for
+`__pack_d`, where every `agbcc` cell fails -- further independent support
+for `old_agbcc`. No test so far separates O2 from O3.
 
-Optimisation level is now constrained for at least one runtime object: an
-unchanged `libgcc2.c` `__muldi3` against `sub_08017398` matches at `-O2`
-and `-O3` without interwork, and mismatches at `-O1`, `-Os`, and every
-interwork variant. Bytes alone cannot distinguish a linked library object
-from identical source compiled separately, so provenance stays a
-hypothesis.
+#### Build architecture
 
-`tools/agbcc/agbcc` was deleted from the working tree earlier in this work
-as an unused build artifact. That removed the ability to run the
-compiler-choice arm of this matrix. Rebuild it with
-`tools/agbcc/build.sh` before any further provenance experiment.
+Leave `src/` and its flags alone. If runtime assembly is ever replaced by
+source-built objects, use a separate build group with its own flags:
+clusters 1-2 as explicit newlib objects (`vfprintf.o` spans both), libgcc2
+source for multiplication and negation while keeping the handwritten
+division assembly, cluster 3 as explicit newlib plus float-runtime objects
+plus `__lshrdi3`, and cluster 4 left as the duplicate runtime assembly it
+is. Reusing identical global library symbols needs separate names or
+isolation. Avoid blanket archive linking: member order, extra functions,
+data placement and duplicate symbols all matter, and some runtime objects
+contain functions already present in the current build. Keep the existing
+assembly until each replacement passes placement and full ROM checks.
+Changing global flags, or replacing library objects without removing
+overlapping definitions, would put the current 250 matches at risk.
+
+#### Consequence for the denominator
+
+The 743 count includes 92 runtime-library functions and the 5 luvdis
+false positives recorded above. Neither group is a decompilation target,
+so the real game-code denominator is about **646**. `scripts/progress.py`
+still divides by 743; a future change could report both.
 
 ### One or two instructions, cause identified in the compiler (5)
 
