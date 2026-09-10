@@ -149,11 +149,58 @@ kept in `docs/learnings/drafts/`; start from those files, not from
 scratch. Every one of them builds and differs from the ROM only where
 noted.
 
-### Genuinely unreachable (1)
+### Not unreachable, but not game C either: the non-interwork epilogues
 
-`sub_080172C8` ends in `pop {r4, pc}`. Under `-mthumb-interwork` agbcc
-always emits `pop {r4}; pop {r0}; bx r0`, so those bytes cannot come out
-of any C. See "Non-interwork epilogues" above.
+**Correction.** An earlier note in this file claimed `pop {r4, pc}` /
+`mov pc, lr` epilogues were unreachable from C because agbcc under
+`-mthumb-interwork` always emits `pop {rN}; pop {r0}; bx r0`. The gate is
+real -- `thumb_pushpop` in `tools/agbcc/gcc/thumb.c:601` refuses a direct
+PC pop when `TARGET_THUMB_INTERWORK` is set, independent of optimisation
+level and of every other flag -- but the conclusion was wrong. Drop
+`-mthumb-interwork` and the same C emits `pop {rN, pc}`. Verified: an
+already-matching file (`src/sub_08008338.c`) recompiled without the flag
+changes epilogue form, and a hand-written `sub_08019D78` is byte-identical
+to the ROM under `old_agbcc -O2 -fhex-asm` with no interwork.
+
+Notes on the gate, from an independent review:
+
+- `naked` suppresses the generated epilogue; it does not select
+  `pop {pc}`. Inline asm could supply one, which is not decompilation.
+- This Thumb backend does not recognise `is_called_in_ARM_mode`, so the
+  branch referencing it in `thumb_exit` is dead. `section` affects
+  placement only. The `mov pc` patterns in `thumb.md` are indirect jumps,
+  not ordinary returns.
+- A register-held return address uses `bx` even without interwork.
+
+**But these are mostly runtime library code, not game C.** 92 functions
+in `asm/` have a non-interwork epilogue, in four contiguous clusters. At
+least 33 are vendored libgcc, identified by compiling the shipped sources
+and comparing bytes (call and address relocations excluded):
+
+| Cluster | Range | Funcs | Identified libgcc |
+|---|---|---|---|
+| 1 | 0x08017230-0x0801767C | 9 | 5 (`__divsi3`, `__modsi3`, `__muldi3`, `__negdi2`, `__umodsi3`) |
+| 2 | 0x080185DC-0x08018948 | 5 | 0 |
+| 3 | 0x08019640-0x0801CCD4 | 72 | 22 (21 float routines from `libgcc/fp-bit-base.c`, plus `__lshrdi3` from `libgcc2.c`) |
+| 4 | 0x08344BB8-0x08344DA8 | 6 | 6 (the five above plus `__div0`) |
+
+`__muldi3` and `__negdi2` match exactly. Cluster 2 and much of the rest of
+cluster 3 show libc/newlib-style formatting, stream, allocation and
+reentrancy behaviour; their provenance is unverified. **Do not treat the
+remaining 59 as game C.** Preserve identified runtime routines as assembly
+or link verified library objects; do not decompile them.
+
+Optimisation level is now constrained for at least one runtime object: an
+unchanged `libgcc2.c` `__muldi3` against `sub_08017398` matches at `-O2`
+and `-O3` without interwork, and mismatches at `-O1`, `-Os`, and every
+interwork variant. Bytes alone cannot distinguish a linked library object
+from identical source compiled separately, so provenance stays a
+hypothesis.
+
+`tools/agbcc/agbcc` was deleted from the working tree earlier in this work
+as an unused build artifact. That removed the ability to run the
+compiler-choice arm of this matrix. Rebuild it with
+`tools/agbcc/build.sh` before any further provenance experiment.
 
 ### One or two instructions, cause identified in the compiler (5)
 
