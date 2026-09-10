@@ -15,6 +15,7 @@ extern void sub_08000458(void);
 extern void sub_0800420C(u32 a, u32 b);
 u8 sub_08014278(void)
 {
+    void *p;
     u8 buf[0x200];
     u8 mode;
     s8 v;
@@ -24,7 +25,8 @@ u8 sub_08014278(void)
     v = 0;
     sub_0800F3A4();
     sub_0800F498();
-    sub_0800F328(gUnk_082EE104, buf);
+    p = gUnk_082EE104;
+    sub_0800F328(p, buf);
     sub_08014104(0);
     sub_08004238(buf, 0x0F);
     sel = 0x40;

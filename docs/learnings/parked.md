@@ -289,6 +289,68 @@ luvdis lumped the cases in as trailing `.byte` rows. It is a real
 file holding all 16 cases. **Any size taken from a `thumb_func_start`
 block that excludes `.byte` rows is a lower bound, not the size.**
 
+## The compiler is patched: no precompute of address constants
+
+The `tools/agbcc` submodule points at
+[shohamc1/agbcc-heat2002](https://github.com/shohamc1/agbcc-heat2002), a
+fork of Dream-Atelier/agbcc carrying one extra commit (`51e46db` on
+`a0f70c9`). Upstream history is intact, so `git log` and `git blame` on
+`gcc/calls.c` still work and rebasing onto future upstream is a normal
+operation. The compiler binary is gitignored, so a fresh clone needs
+`git submodule update --init` then `tools/agbcc/build.sh` before
+`make check` will pass.
+
+**What it changes.** `precompute_register_parameters()` copies any argument
+whose `rtx_cost` exceeds 2 into a pseudo before the cheaper argument
+constants are emitted. `thumb.h` rates `SYMBOL_REF` at `COSTS_N_INSNS(3)`
+and sets `SMALL_REGISTER_CLASSES`, so for an address constant the copy is
+unconditional and no flag reaches it. The patch adds three lines excluding
+`SYMBOL_REF`, `LABEL_REF` and `CONST`.
+
+**Why it was needed.** The ROM contains both argument orders for the same
+call shape: `sub_080128E0` and `sub_08003738` both call
+`sub_0800295C(imm, imm, &global)`, loading the address first and last
+respectively. The unpatched compiler emits address-first for both, so
+`sub_08003738`'s bytes were unreachable from any C.
+
+**The idiom this creates.** The compiler no longer forces the order; the
+source selects it:
+
+| ROM shows | Write |
+|---|---|
+| address loaded **first** | assign it to a local before the call |
+| address loaded **last** | pass the constant directly |
+
+Eight functions matched under the old behaviour by compensating for it and
+were re-matched with that one edit each: `sub_080041E0`, `sub_0800F1EC`,
+`sub_080102F0`, `sub_08010334`, `sub_08008338` (twice, two addresses),
+`sub_080128E0`, `sub_08014278`, `sub_0801661C`.
+
+**Status: validated hypothesis.** 257/257 functions match and the whole-ROM
+SHA1 verifies, but that is not proof the retail compiler carried exactly
+this condition. Confirmation means finding the upstream revision. If a
+future function contradicts the rule, revisit it rather than adding a
+second special case. The full evidence -- ~35 source forms, a 16-cell
+compiler/-O/interwork matrix, five flags, and four rival patch rules
+scoring 12/9/8/10 broken -- is in the fork's README.
+
+**Do not re-run these.** Ruled out before patching: every spelling of a
+constant argument; local pointers of three types at every statement
+insertion point; variadic, K&R and unprototyped declarations; structs by
+value; register pressure from 4 to 12 live values; both vendored trees
+(identical `calls.c`); both compiler builds; `-O1/-O2/-O3/-Os`; interwork
+on and off; `-fno-expensive-optimizations`, `-fno-cse-follow-jumps`,
+`-fno-force-mem`, `-fno-caller-saves`.
+
+A methodological warning for anyone testing further rules: a candidate that
+needs to count arguments before deciding requires splitting
+`precompute_register_parameters` into two passes, and the original
+interleaves each argument's expand/convert with its precompute copy.
+Splitting it reorders emitted insns and changes codegen independently of
+the rule under test, so such a variant tests a rule *and* a bug. Two
+candidates were discarded on that basis after their failure lists turned
+out to be artifacts.
+
 ## Codegen rules learned in the 204-250 run
 
 - A `goto` loop suppresses loop-invariant hoisting and loop rotation:

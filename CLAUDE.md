@@ -46,7 +46,15 @@ function named `name` from the `.macro` definition. `scripts/progress.py
 
 ## Toolchain
 
-`tools/agbcc/old_agbcc` is GCC 2.95, the compiler this ROM was built with. Its
+`tools/agbcc/old_agbcc` is GCC 2.95, the compiler this ROM was built with,
+built from the **fork** at
+[shohamc1/agbcc-heat2002](https://github.com/shohamc1/agbcc-heat2002),
+which the `tools/agbcc` submodule points at. It carries one commit on top
+of upstream: address constants are not precomputed into a pseudo before
+the parameter registers are loaded. See the "compiler is patched" section
+of `docs/learnings/parked.md` for why, and for the idiom it creates. The
+binary is gitignored, so a fresh clone needs
+`git submodule update --init` then `tools/agbcc/build.sh`. Its
 codegen fingerprints are visible throughout `asm/rom.s`:
 
 - `pop {r0}; bx r0` function epilogues (not `pop {pc}`)

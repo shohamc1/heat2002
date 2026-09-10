@@ -31,6 +31,8 @@ extern void sub_08012874(u8 a);
 
 u8 sub_080128E0(void)
 {
+    u8 *p;
+
     gUnk_02002184 = 2;
     gUnk_0202ED84 = gUnk_083FDD48[gUnk_0202EDD8];
     gUnk_020020CC = gUnk_083FDD34[gUnk_0202EDD8];
@@ -41,7 +43,8 @@ u8 sub_080128E0(void)
     sub_08016D28(1);
     sub_0800F3C0();
     sub_08011168(0, gUnk_020020CC);
-    sub_0800295C(0, 0x0D, gUnk_0202CDA8);
+    p = gUnk_0202CDA8;
+    sub_0800295C(0, 0x0D, p);
     if (gUnk_0202EF00[2] != 0)
         sub_08001208(3);
     sub_08015304();

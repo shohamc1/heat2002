@@ -10,11 +10,14 @@ void sub_0800420C(u32 a, u32 b);
 
 void sub_080102F0(void)
 {
+    u32 p;
+
     volatile u16 *r = (volatile u16 *)0x0400000C;
     *r = 0x81;
     r = (volatile u16 *)0x04000000;
     *r = 0x444;
-    sub_08016E28((u32)gUnk_082B370C, 0xC0 << 19);
+    p = (u32)gUnk_082B370C;
+    sub_08016E28(p, 0xC0 << 19);
     sub_08004238((u32)gUnk_082B350C, 0xF);
     sub_080102BC(0x78);
     sub_0800420C(0, 0xF);

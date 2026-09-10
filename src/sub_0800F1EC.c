@@ -9,7 +9,11 @@ void sub_08006950(u32 a, u32 b, u32 c);
 
 void sub_0800F1EC(u8 a)
 {
+    u32 p;
+
     sub_080065A8((u32)gUnk_0829EF40);
-    sub_08006950((u32)gUnk_0829EF50, 8, a == 0);
-    sub_08006950((u32)gUnk_0829EF64, 0xA, a == 1);
+    p = (u32)gUnk_0829EF50;
+    sub_08006950(p, 8, a == 0);
+    p = (u32)gUnk_0829EF64;
+    sub_08006950(p, 0xA, a == 1);
 }
