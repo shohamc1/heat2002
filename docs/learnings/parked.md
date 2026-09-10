@@ -326,6 +326,27 @@ were re-matched with that one edit each: `sub_080041E0`, `sub_0800F1EC`,
 `sub_080102F0`, `sub_08010334`, `sub_08008338` (twice, two addresses),
 `sub_080128E0`, `sub_08014278`, `sub_0801661C`.
 
+**The cost-table explanation was tested and refuted.** `gcc/calls.c` is
+target-independent, so the better-shaped theory was that the retail
+compiler's ARM cost table rated address constants below the `> 2`
+threshold, needing no generic change. `COSTS_N_INSNS(N)` is `N * 4 - 2`,
+so `COSTS_N_INSNS(1)` is 2 and is not `> 2`; `thumb.h` rates `SYMBOL_REF`
+at `COSTS_N_INSNS(3)` = 10, and on Thumb an address constant really is a
+single pool load, so 1 looks like the correct value and 3 like an ARM-ism.
+
+Rating it 1 does reproduce the ROM's argument order with clean upstream
+`calls.c`. But against the same baseline it breaks **14** functions where
+the precompute patch breaks 8, and the six extra failures are not
+argument-ordering cases: `sub_08016CB0`, `sub_0833FF44` and `sub_08008A20`
+differ by 26, 40 and 125 lines, since `rtx_cost` feeds CSE and allocation.
+
+The ROM's own codegen is consistent with cost 3 everywhere except the
+precompute decision. Had the retail compiler used 1, that would show
+throughout the ROM rather than only at argument setup, and the 249
+functions matching untouched say it did not. So the retail cost model
+agrees with the vendored one, and the divergence is specifically the
+precompute condition. Do not re-test the cost table.
+
 **Status: validated hypothesis.** 257/257 functions match and the whole-ROM
 SHA1 verifies, but that is not proof the retail compiler carried exactly
 this condition. Confirmation means finding the upstream revision. If a
