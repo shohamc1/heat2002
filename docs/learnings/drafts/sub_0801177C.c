@@ -12,6 +12,7 @@ struct Car
 };
 extern struct Car gUnk_0202A550[];
 extern void sub_08011A50(void);
+extern u8 gUnk_06016000[];
 extern void sub_08016E10(u32 src, u32 dst, u32 ctrl);
 extern void sub_080045D8(void);
 extern void sub_08007344(void);
@@ -54,7 +55,7 @@ s8 sub_0801177C(void)
         i--;
     } while (i >= 0);
     e = a[(*(volatile u32 *)0x04000128 << 26) >> 30];
-    sub_08016E10((u32)gUnk_082B8710, 0x06016000, 0x80 << 5);
+    sub_08016E10((u32)gUnk_082B8710, (u32)gUnk_06016000, 0x80 << 5);
     sub_080045D8();
     sub_08007344();
     sub_080073D8();

@@ -272,6 +272,53 @@ allocation. `sub_080129E8` is the harder case - its r7 is also *stored*
 `return;` in an `s8` function - not `return 0;`, which emits
 `movs r0, #0; b end` plus a mid-function pool.
 
+### The last three callees, characterised
+
+All three are one or two instructions from matching inside functions that
+otherwise reproduce exactly. Drafts are in `docs/learnings/drafts/`.
+
+**`sub_08001170`** differs by **exactly one instruction**:
+
+    ROM:   ldr r1, =0x0801DA90 | mov r8, r1 | mov r5, r8
+    ours:  ldr r6, =0x0801DA90 | mov r8, r6
+
+GCC propagates the constant straight into `p`'s register instead of
+copying it from `base`; the 2-byte shift and the p/n register swap that
+follow are consequences of that one elision. The ROM keeps `base` in
+**r8**, a high register, so each use needs its own `mov` -- which is why
+it recomputes `base + 4` inside the loop rather than hoisting it.
+
+Tried without success: `base` derived from `p`; a third variable holding
+the address; the global inlined; `base` assigned twice to break the
+single-set constant equivalence; 14 permutations of local declaration
+order; `do/while`, `while` and count-up loop forms; four associations of
+the address expression. Hoisting `base` before the `if (cnt != 0)` guard
+**does** produce the missing copy and the correct 140 bytes, but then GCC
+hoists `base + 4` out of the loop. Something must give both at once.
+
+**`sub_0800295C`** is 9 bytes out, a pure r3/r4 tie between the address
+copy for `gUnk_0200215C` and the address of `gUnk_020020E0`. Size,
+branches and pool are all correct. `volatile` on either global, extern
+declaration order, the parameter type, the type of the unused stack
+`buf`, pointer locals for either global, and no-op `(u8)`/`(u32)` casts at
+seven separate read sites all leave it at 18 differing lines.
+
+**`sub_0801177C`** needs structural work -- 221 differing instructions in
+a 360-instruction function -- but one real fix is recorded in its draft:
+`0x06016000` was written as an integer literal, so it is a `CONST_INT`
+costing 10 and gets precomputed. Written as an address
+(`(u32)gUnk_06016000`, symbol added to `symbols.ld`) it is excluded by the
+fork's patch and both addresses load in parameter order, matching the ROM.
+
+That call site then leaves only the third argument, `0x80 << 5`. It is
+*shiftable*, so `CONST_COSTS` gives it `COSTS_N_INSNS(2)` = 6, still over
+the threshold, and our compiler precomputes it -- the ROM does not. Note
+the ROM **does** precompute a cost-10 `CONST_INT` elsewhere
+(`sub_080017D0`'s `0x05000318`), so the distinction is not simply
+"constants are never precomputed". Do not widen the compiler patch on the
+strength of this one site; it wants the same treatment the current patch
+got -- rival rules built, whole corpus regression-tested.
+
 ### Unfinished, not blocked (2)
 
 | Function | State |
