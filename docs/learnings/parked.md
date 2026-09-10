@@ -84,3 +84,51 @@ optimization ordering. Parked with no known path.
   is u32/u32[]/struct-ptr per file. Don't "fix" these to a single
   canonical signature without re-verifying every caller — the per-file
   shape IS the match. A shared declarations header remains future work.
+
+## Solved: the constant-materialisation order (was 27 functions)
+
+`agbcc` and `old_agbcc` disagree on where a constant is materialised
+relative to the memory load it is combined with. The ROM contains both
+orders; only `old_agbcc` can produce both. The build switched to it on
+2026-09-10 -- see the "Use `old_agbcc`, not `agbcc`" section of
+`CLAUDE.md`. `volatile` on the global is the lever:
+
+- target loads the **constant first** -> plain `extern u16 gFoo;`
+- target loads the **memory first** -> `extern volatile u16 gFoo;`
+
+`volatile` also stops CSE, so a target that re-reads the same global
+twice (once into a local for two tests, once as a call argument) needs
+the `volatile` form plus a local. `sub_080144F4` is the worked example.
+
+## Register-allocation ties that no C shape has flipped
+
+Six functions differ from the ROM by nothing but which hard register a
+quantity landed in. Instruction sequence, count, and size all match.
+
+| Function | Difference | Attempts |
+|---|---|---|
+| `sub_0801238C` (2nd loop) | address in `r1`/value in `r0`; ours swaps them | 6 |
+| `sub_0800F3C0` (1st loop) | counter in `r4`; ours uses `r6` | 7 |
+| `sub_0800F818` | mixed: the `0x04000128` read wants non-`volatile`, the write wants `volatile` | 6 |
+| `sub_08003F4C` | both mask constants hoisted above the shifts | 5 |
+| `sub_080144F4` / `sub_08014A84` | one register short; `keys` read lands in `r0` then copies to `r1` | 8 |
+| `sub_08003738` | literal pool emitted mid-function, ours is longer | 1 |
+
+`local-alloc.c` orders quantities by
+`QTY_CMP_PRI = floor_log2(n_refs) * n_refs * size / (death - birth)`, ties
+broken by quantity number (creation order). Declaration order, temporaries,
+pointer-vs-index forms, and `for`-vs-`do/while` were all tried and none
+moved the assignment. What is missing is a C construct that changes the
+*creation order* of the two quantities, not their live ranges.
+
+## The menu-loop family
+
+`sub_08012BBC`, `sub_08012B50`, `sub_08012A80`, `sub_08013964` share a
+shape: a `sub_08011C9C(n, buf)` setup, a `do { sub_0800048C(); ... }
+while (sel == 0x40)` poll, then `sub_0800420C(0, 0x0F)`. Each needs one
+more callee-saved register than the natural C produces, and a `u8`
+narrowing on the return value that agbcc optimises away because it can
+prove the value fits. `sub_08013964` pushes `r6` and never uses it.
+`sub_080144F4` got 4 of the 5 differences down with `s8 v` plus
+`volatile` on the keys global; the remaining two are in the table above.
+Start from `sub_080144F4` in git history, not from scratch.
