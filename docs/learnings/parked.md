@@ -243,6 +243,22 @@ still divides by 743; a future change could report both.
 | `sub_0800F3C0` | first loop counter in `r6`, ROM uses `r4` | `QTY_CMP_PRI` tie broken by quantity creation order; 7 shapes tried |
 | `sub_08001170` | 4 bytes: agbcc folds `+4` into the load offset, the ROM computes `(base+4)+i` | Address reassociation happens during expansion regardless of parenthesisation, loop form (`goto` included), or operand order. The pool-loaded `5` IS solved: `extern u8 gUnk_00000005[];` used by address, with `gUnk_00000005 = 0x00000005;` in symbols.ld |
 
+### Ruled out: per-file flags for the game-code near-misses
+
+The runtime-library clusters turned out to use different flags, which made
+a per-translation-unit flag story plausible for the stuck game functions
+too. It is not the answer. All nine remaining drafts were compiled across
+`{old_agbcc, agbcc}` x `{-O1, -O2, -O3, -Os}` with interwork on and
+byte-compared: **72 cells, no matches.** `sub_08001170`, `sub_08003738`,
+`sub_0800F3C0`, `sub_080129E8`, `sub_08012A80`, `sub_08012B50`,
+`sub_08013964`, `sub_08014004`, `sub_0801177C`.
+
+Flags can produce an individual symptom in isolation -- `sub_08013964`'s
+missing `r6` push appears under `-O1`, and under `-O2 -fforce-addr` -- but
+those cells change 65 other lines. The phantom register is coupled to the
+source shape, not to a flag. Do not re-run this sweep; extend it only if a
+new flag or compiler revision enters the tree.
+
 ### The phantom-register family (3)
 
 `sub_08013964` (r6), `sub_08012A80` (r9), `sub_080129E8` (r7). The ROM
