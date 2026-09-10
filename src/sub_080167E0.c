@@ -1,0 +1,33 @@
+#include "global.h"
+extern u16 gUnk_0202F170[];
+extern u16 gUnk_020253A0[];
+extern u16 gUnk_02025200[];
+extern u16 gUnk_02025380[];
+extern void sub_08010074(void);
+extern void sub_080165E0(u32 a, u32 b);
+extern void sub_080100B0(void);
+void sub_080167E0(void)
+{
+    u16 *src;
+    s32 i;
+    u16 *d4;
+    u16 *d3;
+    u16 *d2;
+    sub_08010074();
+    sub_080165E0(0x130, 0x48);
+    src = gUnk_0202F170;
+    i = 0;
+    d4 = gUnk_020253A0;
+    d3 = gUnk_02025200;
+    d2 = gUnk_02025380;
+    do {
+        *d2 = *src++;
+        *d3 = *src++;
+        *d4 = *src++;
+        d4++;
+        d3++;
+        d2++;
+        i++;
+    } while (i != 0x0C);
+    sub_080100B0();
+}
