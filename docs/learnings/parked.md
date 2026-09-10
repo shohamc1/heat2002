@@ -121,14 +121,35 @@ pointer-vs-index forms, and `for`-vs-`do/while` were all tried and none
 moved the assignment. What is missing is a C construct that changes the
 *creation order* of the two quantities, not their live ranges.
 
-## The menu-loop family
+## The menu-loop family (mostly solved)
 
-`sub_08012BBC`, `sub_08012B50`, `sub_08012A80`, `sub_08013964` share a
-shape: a `sub_08011C9C(n, buf)` setup, a `do { sub_0800048C(); ... }
-while (sel == 0x40)` poll, then `sub_0800420C(0, 0x0F)`. Each needs one
-more callee-saved register than the natural C produces, and a `u8`
-narrowing on the return value that agbcc optimises away because it can
-prove the value fits. `sub_08013964` pushes `r6` and never uses it.
-`sub_080144F4` got 4 of the 5 differences down with `s8 v` plus
-`volatile` on the keys global; the remaining two are in the table above.
-Start from `sub_080144F4` in git history, not from scratch.
+`sub_080144F4`, `sub_08014A84`, `sub_0800F22C`, `sub_08014F5C` and
+`sub_08012BBC` all match now. Three rules got them there:
+
+1. **The cursor variables are `s8`, not `u8`.** The `lsls #24` / `lsrs #24`
+   pair the ROM emits before each use is the u8 conversion of a value
+   stored as `s8`; declare them `u8` and agbcc proves the conversion
+   redundant and drops it. An `s8` *parameter* additionally produces the
+   `adds r4, r0, #0` copy before the narrowing (`sub_08012BBC`).
+2. **`gKeysPressed` stays non-`volatile`, with no local copy.** Write
+   `gKeysPressed & 1` and `gKeysPressed & 2` and pass `gKeysPressed`
+   to the call: old_agbcc reuses one load for the two tests and emits a
+   second for the call, which is what the ROM does. A local copy adds an
+   `adds r1, r0, #0`; `volatile` adds a third load.
+3. The return type is `u8` while the cursor is `s8`, which is what forces
+   the `lsls`/`lsrs` pair in the loop tail and the `lsrs r0, rN, #24`
+   after `sub_0800420C`.
+
+Start any remaining member of the family from `src/sub_080144F4.c`.
+
+## Still open in that family
+
+| Function | Difference | Attempts |
+|---|---|---|
+| `sub_08012B50` | prologue narrows `b` then `a`; ours does `a` then `b`. One instruction-pair swap, size correct (108) | 6 |
+| `sub_08012A80` | the ROM pushes `r9` and never uses it; ours needs one fewer callee-saved register | 3 |
+| `sub_08013964` | the ROM pushes `r6` and never uses it, and reuses the already-zero `r0` for the early `return 0` instead of `movs r0, #0` | 6 |
+
+The last two are the same phenomenon: `regs_ever_live` set by a pseudo that
+reload later eliminated. No C shape tried reproduces a register that is
+saved and never read.
