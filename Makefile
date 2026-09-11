@@ -60,6 +60,7 @@ check: $(TARGET).gba
 test:
 	python3 scripts/match.py --selftest
 	python3 scripts/progress.py --selftest
+	python3 scripts/closure.py --selftest
 	python3 scripts/seed_functions.py --selftest
 	python3 scripts/strings.py --selftest
 	python3 scripts/test_alignment.py
