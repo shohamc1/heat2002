@@ -319,22 +319,33 @@ the ROM **does** precompute a cost-10 `CONST_INT` elsewhere
 strength of this one site; it wants the same treatment the current patch
 got -- rival rules built, whole corpus regression-tested.
 
-### Unfinished, not blocked (2)
+### Unfinished, not blocked (0)
 
-| Function | State |
-|---|---|
-| `sub_0801177C` (644 b) | Structurally correct and 4 bytes short; the register allocation then differs throughout. Needs the missing 4 bytes found first, after which the cascade should resolve |
-| `sub_0800295C` (1486 b) | Largest remaining. The switch shape was identified before the run was cut off; the draft is 1836 bytes against a smaller target |
+Both entries that stood here are decompiled: `sub_0801177C` (724 b) and
+`sub_0800295C` (1808 b). The sizes quoted while they were stuck were the
+`thumb_func_start` block sizes, which exclude trailing `.byte` rows and
+are therefore lower bounds -- the same trap `sub_0800F8D0` fell into.
 
-### Mis-scoped, needs its own ticket (1)
+### Resolved: `sub_0800F8D0` was mis-scoped
 
-`sub_0800F8D0` is not the 84-byte function the size scan reports. It is a
+`sub_0800F8D0` is not the 84-byte function the size scan reported. It is a
 16-entry jump table whose case bodies run to a shared epilogue at
-`_08010058`, spanning `0x0800F8D0`-`0x08010078`, roughly 1960 bytes;
-luvdis lumped the cases in as trailing `.byte` rows. It is a real
-`switch` (agbcc `mov pc, r0` tablejump) and decompilable, but only as one
-file holding all 16 cases. **Any size taken from a `thumb_func_start`
-block that excludes `.byte` rows is a lower bound, not the size.**
+`_08010058`, spanning `0x0800F8D0`-`0x08010074`, 1956 bytes; luvdis lumped
+the cases in as trailing `.byte` rows. It is a real `switch` (agbcc
+`mov pc, r0` tablejump) and it matched as one file holding all 16 cases.
+**Any size taken from a `thumb_func_start` block that excludes `.byte`
+rows is a lower bound, not the size.**
+
+To read a function luvdis truncated this way, disassemble the raw ROM over
+the real range instead of the ELF:
+
+    arm-none-eabi-objdump -D -b binary -m armv4t -M force-thumb \
+        --adjust-vma=0x08000000 --start-address=0x0800F95C \
+        --stop-address=0x08010078 baserom.gba
+
+`scripts/extract.py` refuses a cut that contains `.byte` rows, so this one
+was cut by hand: the fragment ended at the function, so truncating it at
+the last row before `thumb_func_start` was the whole edit.
 
 ## The compiler is patched: no precompute of address constants
 
