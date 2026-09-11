@@ -27,6 +27,7 @@ both directions:
     different text, identical encoding.
 """
 
+import functools
 import re
 import shutil
 import subprocess
@@ -53,9 +54,16 @@ def addr_of(name):
     return int(m.group(1), 16)
 
 
-def find_symbol(name):
-    """Locate `name` in the built objects. Returns (object, offset, size)."""
-    hits = []
+@functools.lru_cache(maxsize=1)
+def _symbol_index():
+    """Map every built C symbol to [(object, offset, size)], in one nm pass.
+
+    Cached because progress.py checks every decompiled function and each
+    check used to re-run nm over all of build/src -- quadratic in the number
+    of decompiled functions, minutes of subprocesses by the 250-function
+    mark. Call _symbol_index.cache_clear() after rebuilding an object.
+    """
+    index = {}
     for obj in sorted((ROOT / "build").rglob("*.o")):
         # Only C objects; asm objects hold the not-yet-decompiled originals
         # and would trivially "match" the ROM they were disassembled from.
@@ -69,9 +77,14 @@ def find_symbol(name):
         ).stdout
         for line in out.splitlines():
             p = line.split()
-            if len(p) == 4 and p[2] in ("t", "T") and p[3] == name:
-                hits.append((obj, int(p[0], 16), int(p[1], 16)))
-    return hits
+            if len(p) == 4 and p[2] in ("t", "T"):
+                index.setdefault(p[3], []).append((obj, int(p[0], 16), int(p[1], 16)))
+    return index
+
+
+def find_symbol(name):
+    """Locate `name` in the built objects. Returns (object, offset, size)."""
+    return list(_symbol_index().get(name, ()))
 
 
 def object_bytes(obj, offset, size, addr):
@@ -177,6 +190,7 @@ def main():
         r = subprocess.run(["make", "-B", f"build/src/{name}.o"], cwd=ROOT, capture_output=True, text=True)
         if r.returncode != 0:
             sys.exit(r.stdout + r.stderr)
+        _symbol_index.cache_clear()
 
     ours, target, size, addr = compare(name)
 
@@ -212,6 +226,16 @@ def _selftest():
         rom = ROM.read_bytes()
         # The known contents of sub_08006734: a bare `bx lr`.
         assert rom[0x6734:0x6736] == b"\x70\x47", rom[0x6734:0x6736].hex()
+
+    # The symbol index is built once and reused; a second lookup must not
+    # re-run nm, or progress.py goes quadratic again.
+    if (ROOT / "build" / "src").is_dir():
+        _symbol_index.cache_clear()
+        first = _symbol_index.cache_info()
+        find_symbol("sub_08006734")
+        find_symbol("sub_08006734")
+        info = _symbol_index.cache_info()
+        assert first.currsize == 0 and info.hits >= 1 and info.misses == 1, info
     print("selftest ok")
 
 
