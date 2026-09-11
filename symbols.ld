@@ -335,3 +335,13 @@ gUnk_0806C678 = 0x0806C678;
 gUnk_0202CBD0 = 0x0202CBD0;
 gUnk_0202CBD8 = 0x0202CBD8;
 gUnk_06016000 = 0x06016000;
+
+/* libgcc integer division helpers, still present as vendored asm. agbcc emits
+ * a bare `bl __divsi3` (and friends) for `/` and `%`, so decompiled C can use
+ * the operators instead of calling the sub_ names. Identified by shape in
+ * docs/recon.md; the ROM carries a second copy of each in the 0x0834xxxx
+ * region, so these aliases serve callers in the main region only. */
+__divsi3 = sub_08017230;
+__modsi3 = sub_080172C8;
+__udivsi3 = _08017420;
+__umodsi3 = sub_08017498;

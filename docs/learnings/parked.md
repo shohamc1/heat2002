@@ -159,6 +159,27 @@ a byte-level identification of every one of the 59 newlib functions agree.
 `docs/learnings/runtime-newlib-map.json` maps each newlib address to its
 symbol and source file.
 
+The libgcc side is identified by shape in `docs/recon.md`. Four of those
+helpers are reachable from plain C, because agbcc emits a bare
+`bl __divsi3`, `bl __modsi3`, `bl __udivsi3` or `bl __umodsi3` for `/` and
+`%`. `symbols.ld` aliases each name onto the vendored block, so decompiled
+C writes the operator instead of calling the `sub_` name:
+
+    __divsi3 = sub_08017230;
+    __modsi3 = sub_080172C8;
+    __udivsi3 = _08017420;
+    __umodsi3 = sub_08017498;
+
+Verified by linking `int t(int a, int b) { return a % b; }` with
+`symbols.ld`: the `bl` resolves to `0x080172C8`.
+
+The ROM carries a second copy of each helper in the `0x0834xxxx` region
+(`sub_08344BB8`, `sub_08344C50`, `sub_08344DA8`). A linker symbol has one
+value, so these aliases serve the main region. A function in the high
+region that needs `/` or `%` will link to the low copy, emit a different
+`bl` offset than the ROM, and fail `make check` -- call the `sub_` name
+directly there.
+
 | Cluster | Range | Funcs | libgcc | newlib |
 |---|---|---|---|---|
 | 1 | 0x08017230-0x0801767C | 9 | 5 | 4 (`stdio/vfprintf.o`) |
