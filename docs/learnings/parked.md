@@ -100,26 +100,125 @@ orders; only `old_agbcc` can produce both. The build switched to it on
 twice (once into a local for two tests, once as a call argument) needs
 the `volatile` form plus a local. `sub_080144F4` is the worked example.
 
-## Register-allocation ties that no C shape has flipped
+## Register-allocation ties: one left, and the mechanism is not an excuse
 
-Six functions differ from the ROM by nothing but which hard register a
-quantity landed in. Instruction sequence, count, and size all match.
+This section used to list seven functions as "ties no C shape has flipped".
+**Six of them now match** (`sub_0801238C`, `sub_0800F3C0`, `sub_0800F818`,
+`sub_08003F4C`, `sub_080144F4` / `sub_08014A84`, `sub_08003738`), all at the
+source level, with no compiler change. Re-check with
+`python3 scripts/match.py <name>` before believing any claim below.
+
+The lever that cleared most of them is in commit `bcfef4c`: **where the ROM
+shows an extra live register, or an ordering you cannot reproduce, look for a
+variable the C writes as a literal.** Declaring `s8 v = 0;` live across the
+setup calls and writing `sel = v` where the obvious C says `sel = 0` makes
+the local claim a register; constant propagation then folds `v` to 0 and
+deletes the loads, but the *allocation survives the value*. That commit also
+records the methodological error to avoid here: tracing the mechanism in
+`local-alloc.c` explains the output you are getting and says nothing about
+which source produces the ROM's, so **do not treat a mechanism trace as an
+impossibility proof.**
 
 | Function | Difference | Attempts |
 |---|---|---|
-| `sub_0801238C` (2nd loop) | address in `r1`/value in `r0`; ours swaps them | 6 |
-| `sub_0800F3C0` (1st loop) | counter in `r4`; ours uses `r6` | 7 |
-| `sub_0800F818` | mixed: the `0x04000128` read wants non-`volatile`, the write wants `volatile` | 6 |
-| `sub_08003F4C` | both mask constants hoisted above the shifts | 5 |
-| `sub_080144F4` / `sub_08014A84` | one register short; `keys` read lands in `r0` then copies to `r1` | 8 |
-| `sub_08003738` | literal pool emitted mid-function, ours is longer | 1 |
+| `sub_08015364` | ONE 2-byte run at `0x8015d8f-0x8015d90`: the `gUnk_0202EEB0 = 1;` constant in the state2 track-select arm wants `r2`, ours takes `r0` | ~300 |
 
-`local-alloc.c` orders quantities by
-`QTY_CMP_PRI = floor_log2(n_refs) * n_refs * size / (death - birth)`, ties
-broken by quantity number (creation order). Declaration order, temporaries,
-pointer-vs-index forms, and `for`-vs-`do/while` were all tried and none
-moved the assignment. What is missing is a C construct that changes the
-*creation order* of the two quantities, not their live ranges.
+Two shapes reach the ROM from opposite sides and neither closes: the current
+draft (4042) gets the index group at `0x8015d7e` right and the constant wrong,
+while a `volatile`-cast index plus a function-scope `one` (4039) gets the
+constant byte-exact and rotates the index group. The blockers are symmetric and
+both come from the ROM's own instruction stream, not from the C -- see
+`docs/learnings/drafts/sub_08015364-HANDOFF.md` for the allocation data and the
+priority arithmetic before spending time here.
+
+`sub_08015364` is 4042 / 4044 bytes, size exact, and its instruction stream
+is identical to the ROM's -- same count (1757), mnemonics, immediates, shift
+counts, branch targets and pool offsets. A diff normalising only register
+names has zero hunks. `docs/learnings/drafts/sub_08015364.c` holds the C and
+a long comment with the mechanism and the full list of what has been swept:
+48 `volatile` variants, the `u32 addr = (u32)&g;` idiom on 22 globals, all 11
+adjacent swaps of the local declaration list, constant-valued locals in three
+types at four declaration positions, and the store written as an array, a
+`u8 *`, a literal address and a macro.
+
+What the RTL says (`old_agbcc -dl -dg`): the constant is pseudo 861, created
+by `movqi`'s expander, block-local in block 160 with `REG_N_DEATHS == 1`, so
+`local_alloc` owns it. `find_free_reg` takes the first register outside
+`fixed_reg_set | regs_live_at[birth..death) | ~reg_class_contents[class]`,
+and `regs_live_at` holds only hard registers plus quantities already
+allocated *in this block* (`REG_SET_TO_HARD_REG_SET` masks the pseudos out),
+so ours takes `r0`. Between the `bl` at `0x8015d88` and the store there is
+exactly one instruction, so at most one local can be born in the window, and
+nothing else in the block outlives the call. The two other allocators were
+measured rather than argued: making the constant a spilled pseudo puts it in
+`r3` via `allocate_reload_reg`'s round-robin (4036/4044), and making it a
+short-range global allocno puts it in `r7` for every live range tried,
+because `find_reg`'s pass 0 excludes `r0`-`r6`. `src/sub_0833FF44.c`'s own
+`u32 one = 1;` also lands in `r7`, hoisted ahead of its loop.
+
+That narrows what to look for, and `u8 f8d0 = sub_0800F8D0(...)` with a use
+in the first `if` does move the constant to `r1`, which shows the shape is
+reachable -- something has to be live in `r0` across the store while
+`&gUnk_0202EEB0` stays in `r1`. No arrangement found yet keeps the rest of
+the block intact. Do not reach for the compiler: the same `old_agbcc`
+reproduces 257 functions and 1757 of 1757 instructions of this one, this
+tree's `local-alloc.c` and `global.c` hard-code an `r0`..`r15` scan with no
+`REG_ALLOC_ORDER` hook, and any change to that order moves registers
+everywhere.
+
+
+### Rival rule tested and refuted: QTY_CMP_PRI with `size` in bytes
+
+`QTY_CMP_PRI` multiplies by `qty_size`, which is `PSEUDO_REGNO_SIZE` -- WORDS,
+so SImode and QImode both score 1. The obvious rival rule is that the retail
+compiler used byte sizes, which would let a pointer quantity outrank a QImode
+constant. Built (`make CC1=<patched> check`) and measured:
+
+- **114 of 261 decompiled functions match, 147 break.** Whole-ROM SHA1 fails.
+- `sub_08015364` drops from 4042/4044 to 578/4044, and the register it was
+  meant to fix does not move: still `movs r0, #1` at 0x8015d8e.
+
+Refuted on both counts. The site is insensitive to allocation *priority*
+because the constant is the only local quantity live at that point; only a
+quantity or hard register occupying r0 across the store can move it.
+
+### `block_alloc`'s three-quantity sort is not a sort
+
+`local-alloc.c:block_alloc` orders quantities with `qsort` only when a block
+has four or more of them. For one, two or three it uses a hand-rolled
+sequence, and the three-quantity case is wrong:
+
+```c
+    case 3:
+      if (qty_compare (0, 1) > 0) EXCHANGE (0, 1);
+      if (qty_compare (1, 2) > 0) EXCHANGE (2, 1);
+      /* fall through */
+    case 2:
+      if (qty_compare (0, 1) > 0) EXCHANGE (0, 1);
+```
+
+`EXCHANGE` swaps `qty_order[]` slots, but `qty_compare` takes quantity
+*numbers*. After the `case 3` exchange, slot 1 no longer holds quantity 1, so
+the `case 2` comparison compares the wrong pair. **In a three-quantity block
+the allocation order can therefore be non-monotonic in priority.**
+
+`sub_0801238C` is the worked example, and it is why that function matches.
+Instrumented `find_free_reg` output for its first block:
+
+```
+qty=0 reg=23 born=2  dead=18 nref=7 pri=8750   -> r0   (&gUnk_0202EF00)
+qty=2 reg=36 born=8  dead=16 nref=5 pri=12500  -> r1   (the constant 1)
+qty=1 reg=27 born=4  dead=18 nref=3 pri=2142   -> r2   (the constant 0)
+```
+
+The address is allocated first despite the lowest-but-one priority, which is
+how the ROM's `ldr r0,[pc]; movs r2,#0; strb r2,[r0,#0]` -- constant in a
+*higher* register than the address -- is reachable at all. Under a correct
+sort the constant would have gone first and taken r0.
+
+This is worth checking before declaring any register tie unreachable: count
+the local quantities in the block first (`old_agbcc -dl` lists them as
+"in block N"). Three is the interesting number.
 
 ## The menu-loop family (mostly solved)
 
