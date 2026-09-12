@@ -164,33 +164,3 @@ _080102B6:
 	pop {r4}
 	pop {r0}
 	bx r0
-	thumb_func_start sub_080102BC
-sub_080102BC:
-	push {r4, r5, r6, r7, lr}
-	adds r5, r0, #0x0
-	movs r4, #0x00
-	cmp r4, r5
-	bge _080102E2
-	ldr r7, _080102E8 @ =0x020005CC
-	ldr r0, _080102EC @ =0x000003FF
-	adds r6, r0, #0x0
-	.global _080102CC
-_080102CC:
-	bl sub_08000458
-	bl sub_0800048C
-	ldrh r0, [r7, #0x00]
-	ands r0, r6
-	cmp r0, #0x00
-	bne _080102E2
-	adds r4, #0x01
-	cmp r4, r5
-	blt _080102CC
-	.global _080102E2
-_080102E2:
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.global _080102E8
-_080102E8: .4byte 0x020005CC
-	.global _080102EC
-_080102EC: .4byte 0x000003FF
