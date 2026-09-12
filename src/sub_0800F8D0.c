@@ -24,7 +24,8 @@ extern void sub_08008AB0(void);
 extern void sub_0800F3C0(void);
 extern void sub_08016D28(u8 a);
 
-void sub_0800F8D0(u8 a)
+/* Matching reconstruction: accept the menu's address argument, unused here. */
+void sub_0800F8D0(u8 a, u8 *unused)
 {
     u8 i;
 
