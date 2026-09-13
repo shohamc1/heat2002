@@ -1,0 +1,37 @@
+@ Generated with Luvdis v0.9.0
+.syntax unified
+.text
+@ Begin embedded Luvdis macros
+	.macro arm_func_start name
+	.align 2, 0
+	.global \name
+	.arm
+	.type \name, %function
+	.endm
+
+	.macro arm_func_end name
+	.size \name, .-\name
+	.endm
+
+	.macro thumb_func_start name
+	.align 2, 0
+	.global \name
+	.thumb
+	.thumb_func
+	.type \name, %function
+	.endm
+
+	.macro non_word_aligned_thumb_func_start name
+	.global \name
+	.thumb
+	.thumb_func
+	.type \name, %function
+	.endm
+
+	.macro thumb_func_end name
+	.size \name, .-\name
+	.endm
+@ End embedded Luvdis macros
+	.byte 0x10, 0xB5, 0x02, 0x9C, 0x8A, 0x42, 0x01, 0xDD, 0x20, 0x1C, 0x0B, 0xE0, 0x11, 0x1A, 0x00, 0x29
+	.byte 0x07, 0xDB, 0x80, 0x20, 0xC0, 0x01, 0x40, 0x1A, 0x58, 0x43, 0x61, 0x43, 0x40, 0x18, 0x80, 0x13
+	.byte 0x00, 0xE0, 0x18, 0x1C, 0x10, 0xBC, 0x02, 0xBC, 0x08, 0x47, 0x00, 0x00
