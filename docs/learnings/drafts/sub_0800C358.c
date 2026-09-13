@@ -1,17 +1,27 @@
-/* DRAFT -- 216 bytes = exact target size, MISMATCH only in register
- * allocation. Structure fully solved (see struct below); the loop body
- * (0x0800C3C8-0x0800C3FA) and epilogue match byte-for-byte. Remaining
- * diffs, all register ties in the clamp/setup region (0x0800C364-0x0800C3BC):
- *   1. target homes the struct pointer in r3 (`adds r3, r0, #0`), ours r4.
- *   2. target: `asrs r2, r0, #23` (x-index in r2); ours reuses r3, forcing
- *      `adds r2, r4, #0` copies at 0x0800C3A4/0x0800C3B0.
- *   3. epilogue `ldr r1, [sp, #8]` (target) vs `ldr r3` (ours).
- * Tried: locals-in-order vs declarations-at-top; u32* vs u16* table;
- * statement reordering of the gUnk_0202CC3C garbage store (must stay
- * before the y/x loads to put its pool entry first). The r3 homing looks
- * like a 3-quantity allocation tie (see parked.md block_alloc note) --
- * the uninitialized `cur` local occupying r6 across the store is what
- * reproduces the `str r6` garbage store; keep it.
+/* sub_0800C358 -- quarantined draft (round 2, much closer than round 1).
+ * 216/216 bytes, full instruction stream, loop, branch layout, pool and
+ * prologue match. Remaining diff is ONE global-alloc ordering artifact
+ * plus its renames:
+ *   - target homes the struct pointer p in r3 (`adds r3, r0, #0`) and
+ *     xi in r2 (`asrs r2, r0, #23`); ours p->r4, xi->r3. Everything
+ *     downstream (clamps `cmp r1/r2`, index chain, epilogue sp8 read
+ *     into r1) is byte-exact once these two swap back.
+ * SOLVED THIS ROUND (keep):
+ *   - yi/xi MUST be computed as raw-field shifts, not from the homed
+ *     y/x: `yi = p->unk18 >> 23; xi = p->unk1C >> 23;` gives
+ *     `asrs r1, r1, #23` / `asrs r2, r0, #23` reading the raw load
+ *     pseudos (the >>16 y/x defs combine away). `yi = y >> 7` also
+ *     combines to >>23 but reads the WRONG register in this build.
+ * Allocation data (old_agbcc -dg, docs in /tmp/decomp/f1.c.greg):
+ *   global order ... 30(xi, refs7 len16, pri 8750) ... 29(yi, 6315,
+ *   pref r1) ... 22(p, refs7 len33, pri 4242). xi allocates before p
+ *   and takes r3 (its conflicts exclude r0/r2, r1 taken by an earlier
+ *   loop-temp allocno), forcing p to r4. p can ONLY take r3 among
+ *   caller-saved (conflicts 0,1,2 hard). Flipping needs either p's pri
+ *   > 8750 (impossible: 7 refs/33 insns) or xi's pri < 4242 (needs len
+ *   > 33; it is 16) or xi to prefer/be-able-to-take r1.
+ * Swept without flipping: xi/yi compute-order swap; xi/yi declaration
+ * swap; mixed `xi = x >> 7`; u32 xi (flips branch polarity, wrong).
  */
 #include "global.h"
 
@@ -55,8 +65,8 @@ u32 sub_0800C358(struct Unk0800C358 *p)
     gUnk_0202CC3C[0] = (u32)cur;
     y = p->unk18 >> 16;
     x = p->unk1C >> 16;
-    yi = y >> 7;
-    xi = x >> 7;
+    yi = p->unk18 >> 23;
+    xi = p->unk1C >> 23;
     if (yi < 0)
         yi = 0;
     if (xi < 0)

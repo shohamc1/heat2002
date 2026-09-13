@@ -575,12 +575,25 @@ out to be artifacts.
 - A bare `return;` in a non-void function produces an early exit that
   branches straight to the epilogue with no value materialised.
 
-## Quarantined 2026-09-13: sub_0800CB18
+## Resolved 2026-09-13: sub_0800CB18 (matched, 68 bytes)
 
-Draft at docs/learnings/drafts/sub_0800CB18.c. Loop body and condition
-layout match byte-for-byte; two coupled diffs remain: (1) the x loop-local
-lands in r3 for every C shape tried (r2 in the ROM); (2) the lookup tail
-loads the table address first into r0 and accumulates the index in r1 in
-the ROM, while reachable C shapes load the table last or into r2.
-~20 source shapes swept (single/double locals, u32 temps, y-reassignment,
-decomposed index locals, parenthesisation, for/while/do/goto forms).
+The whole register web hung on the tail: the ROM builds the table index
+IN PLACE on y (`y = y + 0x80; y = y << 8; y = y + 0x80; return t[a + y];`
+with `t = gUnk_0806C97C;` assigned BEFORE the updates so the pool ldr
+comes first). With no index temps stealing r0, the table qty takes r0,
+which frees r2 for the `a` loop-local — both old diffs resolved at once.
+`a / 2` (not `(a + (a >> 31)) >> 1`, which emits `asrs #31` for the sign
+bit) and the zero-return block placed via
+`if (y <= 0x7F) goto table; zero: return 0; table: ...` complete it.
+See src/sub_0800CB18.c.
+
+## Quarantined 2026-09-13 (round 2): sub_0800C2CC and sub_0800C358
+
+`docs/learnings/drafts/sub_0800C2CC.c` (140 bytes, fresh attempt this
+round): instruction stream/pool/prologue fully solved via
+`q = (u16 *)(4 * e[1] + (u32)p);` (temp-first plus) + two-statement
+sum; remaining diff is one allocation web (v wants r1 not r2, dx/dy
+swapped). `docs/learnings/drafts/sub_0800C358.c` (216 bytes): the
+round-1 register-tie diff shrank to a single p(r3)/xi(r2) swap after
+computing `yi = p->unk18 >> 23; xi = p->unk1C >> 23;` directly from the
+raw loads; global-alloc priority data in each header.

@@ -1,29 +1,44 @@
-/* sub_08001150 (32 bytes @ 0x08001150) — MISMATCH after ~20 source variants.
- * Remaining diff (only 2 instructions, register allocation of the u16-narrowed
- * param vs the tag load):
- *   target: 08001154: lsrs r1, r1, #16      08001156: ldr r3, [r2, #0x34]
- *   ours:   08001154: lsrs r3, r1, #16      08001156: ldr r1, [r2, #0x34]
- * i.e. the narrowed u16 must stay in its incoming register r1 while the tag
- * load takes r3. Every C shape tried either (a) puts the narrowed value in a
- * fresh pseudo that grabs r3 (when the pointer copy `adds r2, r0` is emitted
- * first), or (b) narrows in place in r1 but then the pointer copy lands in r3
- * and the tag in r2 (when the tag load is scheduled before the narrowing).
- * The `u32 c = 0x80 << 1;` local fixed the tail (movs r0/lsls r0/strh r0
- * without the `adds r0, r1, #0` copy). Sweep tried: u16/u32/s16 params,
- * (void*) param, v/t/c/r2 locals in all declaration+assignment orders,
- * casts at use vs local copies, direct global compare vs tag local,
- * if/return vs if/body, volatile stores, struct-field access, store order
- * swap. This is the 3-quantity block case from parked.md's block_alloc note
- * (qty_order sort is non-monotonic); the next lever is shaping pseudo birth
- * order so the allocator's hand-rolled 3-qty sequence lands r1/r2/r3 as the
- * ROM has them.
+/* sub_08001150 (32 bytes @ 0x08001150) — MISMATCH after ~30 source variants
+ * (20 in the previous pass, ~10 more 2026-09-13 including the K&R and
+ * struct-param shapes). Remaining diff is ALWAYS the same 4-instruction
+ * register swap, in every shape tried:
+ *   target: lsrs r1, r1, #16 / ldr r3, [r2, #0x34] / cmp r3, r0 / strh r1
+ *   ours:   lsrs r3, r1, #16 / ldr r1, [r2, #0x34] / cmp r1, r0 / strh r3
+ * i.e. the narrowed u16 (global allocno, preference r1 via set_preference
+ * through reg_renumber of the lsls temp) must get r1, and the block-local
+ * tag quantity must take r3. local-alloc's find_free_reg scans r0,r1,r2,..:
+ * in BB0 the tag qty's window [2*ldrtag .. 2*cmp+1] has r0 blocked by the
+ * pool-const qty (windows overlap), but r1 and r2 are FREE in that window:
+ * the lsls temp qty is [2*lsls, 2*lsrs) and the param-copy pseudo is a
+ * global allocno (pseudos are masked out of regs_live_at during
+ * local-alloc). post_mark_life marks [birth, death) so both ranges end
+ * exactly at the tag qty's birth. Therefore the tag qty ALWAYS takes r1,
+ * which forces v to r3 (global conflict with the local qty in r1).
+ * Mechanism traced through tools/agbcc/gcc/local-alloc.c (block_alloc,
+ * find_free_reg, post_mark_life) and global.c (set_preference,
+ * expand_preferences, find_reg); the walk order (deaths before stores in
+ * global_conflicts) confirms v never conflicts the lsls temp itself.
+ * What would flip it: a fourth BB0 qty, or a hard reg, live in r1 or r2
+ * during the tag window; or the tag pseudo being global (then global-alloc
+ * order gives v->r1, tag->r3, ptr->r2 = target). Neither is constructible
+ * without extra instructions: any second use of the pointer/tag/const
+ * emits code, dead stores survive to asm (verified: E10-style dead init
+ * survives), and auto-increment on the tag load would emit ldm/writeback.
+ * Tried this pass: u16 second param (assign_parms in-place conversion),
+ * K&R definition (caller sub_080013A0 uses unprototyped decl + (u16) cast),
+ * struct-pointer param with fields, volatile tag, early-return form,
+ * stores-via-param + local copy for the load, t local decl order variants,
+ * fused compare (no t local), const local. All produce the identical diff.
+ * Previous pass swept: u16/u32/s16 params, (void*) param, v/t/c/r2 locals
+ * in all declaration+assignment orders, casts at use vs local copies,
+ * direct global compare vs tag local, if/return vs if/body, volatile
+ * stores, struct-field access, store order swap.
  */
 #include "global.h"
 
-void sub_08001150(u32 r0, u32 r1)
+void sub_08001150(u32 r0, u16 v)
 {
     u32 r2 = r0;
-    u16 v = r1;
     u32 t = *(u32 *)(r2 + 0x34);
     u32 c = 0x80 << 1;
 
