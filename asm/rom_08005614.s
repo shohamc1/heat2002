@@ -32,62 +32,6 @@
 	.size \name, .-\name
 	.endm
 @ End embedded Luvdis macros
-	thumb_func_start sub_080055B0
-sub_080055B0:
-	ldr r1, _080055F4 @ =0x020253C0
-	movs r0, #0x00
-	str r0, [r1, #0x00]
-	ldr r3, _080055F8 @ =0x0202521C
-	ldr r0, _080055FC @ =0x02025240
-	ldrb r0, [r0, #0x00]
-	str r0, [r3, #0x00]
-	ldr r1, _08005600 @ =0x02025238
-	movs r0, #0x01
-	strb r0, [r1, #0x00]
-	ldr r0, _08005604 @ =0x0200215C
-	ldrb r1, [r0, #0x00]
-	cmp r1, #0x0A
-	bne _080055D0
-	movs r0, #0x14
-	str r0, [r3, #0x00]
-	.global _080055D0
-_080055D0:
-	cmp r1, #0x00
-	bne _080055F0
-	ldr r1, _08005608 @ =0x0202EF00
-	movs r0, #0x03
-	ldrb r1, [r1, #0x00]
-	subs r0, r0, r1
-	lsls r0, r0, #0x18
-	lsrs r0, r0, #0x18
-	ldr r1, _0800560C @ =0x08365330
-	ldr r2, _08005610 @ =0x020020CC
-	ldrb r2, [r2, #0x00]
-	adds r1, r2, r1
-	adds r0, #0x03
-	ldrb r1, [r1, #0x00]
-	adds r0, r1, r0
-	str r0, [r3, #0x00]
-	.global _080055F0
-_080055F0:
-	bx lr
-	.byte 0x00, 0x00
-	.global _080055F4
-_080055F4: .4byte 0x020253C0
-	.global _080055F8
-_080055F8: .4byte 0x0202521C
-	.global _080055FC
-_080055FC: .4byte 0x02025240
-	.global _08005600
-_08005600: .4byte 0x02025238
-	.global _08005604
-_08005604: .4byte 0x0200215C
-	.global _08005608
-_08005608: .4byte 0x0202EF00
-	.global _0800560C
-_0800560C: .4byte 0x08365330
-	.global _08005610
-_08005610: .4byte 0x020020CC
 	thumb_func_start sub_08005614
 sub_08005614:
 	push {r4, r5, r6, lr}
