@@ -135,7 +135,7 @@ SECTIONS
         build/src/sub_08008A20.o(.text*);
         build/asm/rom_08008AB0.o(.text*);
         build/src/sub_08008CB8.o(.text*);
-        build/asm/rom_08008CDC.o(.text*);
+        build/src/sub_08008CDC.o(.text*);
         build/src/sub_08008D20.o(.text*);
         build/src/sub_08008D3C.o(.text*);
         build/src/sub_08008D70.o(.text*);
