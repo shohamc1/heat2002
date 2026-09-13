@@ -574,3 +574,13 @@ out to be artifacts.
   and `n - 1` to the inner preheader in source order.
 - A bare `return;` in a non-void function produces an early exit that
   branches straight to the epilogue with no value materialised.
+
+## Quarantined 2026-09-13: sub_0800CB18
+
+Draft at docs/learnings/drafts/sub_0800CB18.c. Loop body and condition
+layout match byte-for-byte; two coupled diffs remain: (1) the x loop-local
+lands in r3 for every C shape tried (r2 in the ROM); (2) the lookup tail
+loads the table address first into r0 and accumulates the index in r1 in
+the ROM, while reachable C shapes load the table last or into r2.
+~20 source shapes swept (single/double locals, u32 temps, y-reassignment,
+decomposed index locals, parenthesisation, for/while/do/goto forms).
