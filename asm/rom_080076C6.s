@@ -32,56 +32,6 @@
 	.size \name, .-\name
 	.endm
 @ End embedded Luvdis macros
-	thumb_func_start sub_0800767C
-sub_0800767C:
-	push {r4, r5, lr}
-	adds r4, r0, #0x0
-	ldr r1, _08007694 @ =0x02025860
-	movs r2, #0x00
-	adds r5, r1, #0x0
-	movs r3, #0x01
-	.global _08007688
-_08007688:
-	ldr r0, [r1, #0x08]
-	cmp r0, r4
-	bne _08007698
-	str r3, [r1, #0x00]
-	adds r0, r1, #0x0
-	b _080076C0
-	.global _08007694
-_08007694: .4byte 0x02025860
-	.global _08007698
-_08007698:
-	adds r2, #0x01
-	adds r1, #0x14
-	cmp r2, #0x20
-	bne _08007688
-	adds r1, r5, #0x0
-	movs r2, #0x00
-	movs r3, #0x01
-	.global _080076A6
-_080076A6:
-	ldr r0, [r1, #0x00]
-	cmp r0, #0x00
-	bne _080076B6
-	str r3, [r1, #0x00]
-	strb r3, [r1, #0x04]
-	str r4, [r1, #0x08]
-	adds r0, r1, #0x0
-	b _080076C0
-	.global _080076B6
-_080076B6:
-	adds r2, #0x01
-	adds r1, #0x14
-	cmp r2, #0x20
-	bne _080076A6
-	movs r0, #0x00
-	.global _080076C0
-_080076C0:
-	pop {r4, r5}
-	pop {r1}
-	bx r1
-	.byte 0x00, 0x00
 	thumb_func_start sub_080076C8
 sub_080076C8:
 	push {r4, r5, lr}
