@@ -1,58 +1,85 @@
 /*
- * QUARANTINED (wave 5): 2240/2240 bytes, 10 bytes differ (3 sites), from a
- * FRESH rebuild (rm .o; make .o; match.py). All size/structure/pool issues
- * from the wave-4 draft are fixed. Remaining diff (all register-allocation
- * / one instruction choice, verified from fresh build):
+ * QUARANTINED (wave 6): 2240/2240 bytes, 10 bytes differ (3 sites), from a
+ * FRESH rebuild (rm .o; make .o; match.py). Same 3 sites as wave 5, but the
+ * ROOT CAUSES are now fully identified from agbcc source + -dr/-dg dumps
+ * (tools/agbcc/gcc/global.c, arm.h). Nothing below is speculation.
  *
- *   0x8006b84/b86/b8e/b90/baa/bb0: determinant pseudos swapped.
- *     target: subs r6(r0,r1); adds r0,r6; ... subs r5(r3,r1); adds r1,r5;
- *             ... adds r0,r6; muls r0,r3; ... muls r1,r5
- *     ours:   same instructions with r5<->r6 swapped (P1=second-product
- *             difference in r5, P2 in r6; target homes P1 in r6, P2 in r5).
- *     Cause: global-alloc ordering of these two CSE'd subtractions.
- *     Swept: hoisting both into locals (breaks early spills), pinning one
- *     to r6 via `register asm("r6")` (rebuilds whole allocation badly),
- *     swapping l0/l4 and x0../y0.. declaration orders (no effect / breaks),
- *     negating det+both conds together (flips det block codegen).
+ * ALLOCATOR MECHANICS (verified from compiler source + .greg dump):
+ *   - global.c allocno_compare: pri = floor_log2(n_refs)*n_refs/live_length
+ *     (floor_log2(3)=1, so det: 2*4/24=.333 > Y: 1*3/13=.231 > X: 1*3/14=.214;
+ *     dump order: det(45) pos336, Y(178) pos364, X(173) pos374).
+ *   - find_reg scans hard regs ASCENDING r0..r15 (NOT REG_ALLOC_ORDER), two
+ *     passes; pass 0 skips regs in regs_someone_prefers[] = full-preferences
+ *     of CONFLICTING LOWER-priority allocnos (prune_preferences).
+ *   - set_preference (global.c:1511) fires on mark_reg_store: a pseudo whose
+ *     SET_SRC is an expr takes XEXP(src,0) and gives that operand pseudo a
+ *     preference for operand0's HARD REG (local-alloc'd pseudos only).
  *
- *   0x8006c98/c9e: final time-sum add in the 0x0C block.
- *     target: adds r1, r0, r2 ; cmp r1, r0   (new pseudo r1)
- *     ours:   adds r2, r0, r2 ; cmp r2, r0   (coalesced into dying r2)
- *     Swept: commuting the expression to `253CC + (25218*60000+251FC*1000)`
- *     (breaks computation order), regrouping parens (no effect).
+ * (a) 0x8006b84-bb0 r5<->r6 swap, X=(corners[1]-l4)=pseudo173, Y=(corners[0]-l0)=178:
+ *   NATURAL order: det->r4, Y->r5, X->r6 = TARGET. OURS inverts because
+ *   A=(corners[2]-corners[0]) (pseudo 160, spilled [sp,#116]) carries a
+ *   full-preference for r5: A's def insn 278 is (set A (minus reg158 reg159))
+ *   and operand0 reg158 = the corners[2] LOAD pseudo, which LOCAL-alloc put
+ *   in r5 (visible at 0x8006b54: subs r0,r5,r0). A conflicts Y (ranges
+ *   overlap insns 278..348 vs 311..360) and A is lower priority, so
+ *   regs_someone_prefers[Y] gets r5 -> Y's pass 0 skips r5 -> Y=r6; X's pass
+ *   0 also skips r5 (A conflicts X too) but pass 1 then takes it -> X=r5.
+ *   FIX = make A's operand0 pseudo not be local-alloc'd into r5 (e.g. make
+ *   the corners[2] load cross a basic block so it becomes a global pseudo
+ *   with reg_renumber<0 at set_preference time -> no preference), or shift
+ *   the det-block's local-alloc so 158 lands on any reg but r5. No source
+ *   shape found that does this without moving bytes (tried this wave:
+ *   yl0/xl4 hoists between checks [pure CSE no-op], new s32 local [frame+8,
+ *   pool shift], x0-reuse [loses r7=p], dead expression statements [no-ops:
+ *   flow.c RECOUNTS REG_N_REFS per live reference - the stale-refcount
+ *   lever does not exist in this compiler], negations/decl-order [wave 5]).
  *
- *   0x8006ce0: p->unk4D = -1 materialization.
- *     target: subs r0, r1, #1   (r1 = hoisted zero also stored to unk4E)
- *     ours:   movs r0, #255
- *     Cause: target reuses the unk4E-store's hoisted zero pseudo as the
- *     minuend; every source shape that shares that pseudo either folds the
- *     -1 back to a constant (CSE knows the zero) or stores unk4E too early.
- *     Swept: z locals (s32/u8/u16) before/after unk4C++, (z = 0) - 1,
- *     (p->unk4E = (z = 0)) - 1 (keeps subs but wrong store order),
- *     p->unk4E - 1 (real ldrb), ~10 toy-verified shapes.
+ * (b) 0x8006c98/c9e sum coalesced into dying partial r2:
+ *   sum = pseudo 364 (refs=2,len=4), partial = 361 (local, r2). Gen RTL
+ *   insn 704: (set 364 (plus 361 363)) -> set_preference gives 364 a COPY
+ *   preference for r2 -> find_reg's preference override assigns r2 ->
+ *   adds r2,r0,r2. TARGET = r1: needs operand0 != the r2-partial. Writing
+ *   `gUnk_020253CC + (a*60000 + b*1000)` swaps operand0 but ALSO moves the
+ *   253CC load before the 25218 load (expand is left-to-right) = byte diff.
+ *   PARTIAL FIX verified: `det = a*60000+b*1000; if ((u32)(det + c) < ed84)`
+ *   inside the ==0x0C block emits adds r1,r0,r4/cmp r1,r0 (sum reg correct!)
+ *   but the partial rides det's r4 -> adds r4,r2,r0 defect at 0x8006c92.
+ *   Full fix likely falls out of fixing (a) (same global allocation state).
  *
- * Fixes landed since wave 4 (all verified byte-exact):
- *   - u16 locals for e->unk10 reads inlined as s32 t / s32 t2 (kills the
- *     decl-init convert_move copies; s32 avoids store_expr's promoted-var
- *     copy branch); values survive QI stores because they live in pseudos,
- *     not CSE (char-alias-set-0 stores kill all memory CSE - proven).
- *   - -1 store to gUnk_0202524C written as `s32 v = 1; u16 w;
- *     gUnk_0202524C = (w = -v);` (address-first + movs#1+negs + copy).
- *   - gUnk_0200215C != 0x10/0xF/2/0xE chain as NESTED ifs (fold_range_test
- *     folds adjacent != pairs into (u8)(x-15)<=1 otherwise).
- *   - ==5 and ==0xC blocks: unk4C==2184 check nested INSIDE p==A550.
- *   - (u16)(e->unk10-1)<=1 block also guards the trailing ==1/t2 block.
- *   - gUnk_0200215C != 2 block CONTAINS the (x-3)/16D28/253D4 statements.
- *   - sub_08005598 arg: `s32 inner = v58/2+6; (u8)(e->unk14 + inner)`.
- *   - the second 0/6/1 || chain re-reads via
- *     `s32 v2 = *(volatile u8 *)&gUnk_0200215C;` (forces the ldrb r0,[r4]
- *     reload + keeps r4 as the address; plain reads get CSE'd into a
- *     callee-saved value + lsls/lsrs #24 narrowing).
- * NOTE: the wave-4 header's "inlined sub_080072F4 tail" theory was stale -
- * this draft never contained that inline; the object was 2256B due to the
- * reload/copy issues above. sub_08006A34 ends at 0x80072F4 exactly where
- * sub_080072F4 begins (fallthrough-free, no call needed).
+ * (c) 0x8006ce0 movs r0,#255 vs subs r0,r1,#1:
+ *   EVERY u8 store to this struct expands as RMW (load; QIzero; and; ior;
+ *   subreg; strb); the 4C-store's mask zero (QI pseudo, born between the
+ *   adds and the 4C strb = 0x8006cdc movs r1,#0) is the block-canonical
+ *   QI zero (CSE merges the 4D/4E stores' mask zeros into it) and reload
+ *   gives it r1; the 4E strb r1,[r6] reads it in both builds.
+ *   `subs r0,r1,#1` requires the -1 as plus(<that zero>, -1) surviving CSE,
+ *   but CSE FOLDS subreg-of-known-const and plus(known-reg,-1) -> const -1
+ *   (reload remat: movs r0,#1; negs r0). Only RMW-chain values (assignment
+ *   values of u8 stores, which contain the unknown LOAD so CSE cannot fold
+ *   and(x,0)) are opaque and keep the subs (verified: (p->unk4E=(t=0))-1
+ *   emits subs r0,r3,#1 at exactly the right place), but any such form
+ *   stores unk4E BEFORE unk4D (evaluation order is forced), while target
+ *   stores 4C,4D,4E in order and unk50's ldrb r2,[r4] read-back needs the
+ *   4E store after the 4D store to kill the CSE forwarding record. Also
+ *   tried and folded: u8 z local (z-1 folds; z=0 statement before/after
+ *   4C++: movs lands at wrong site or plus folds), (u8)t, (u8)(t=0),
+ *   (z=0)-1, t=0 early (two movs), p->unk4E-1 (real ldrb), dead stores.
+ *   Combine note: plus(x,-1) also folds when the zero-movsi and the plus
+ *   are within combine's 3-insn window; the 4C strb between movs@0xcdc and
+ *   subs@0xce0 is what protects the target shape.
+ *
+ * FIXES STILL VALID FROM WAVE 5 HEADER (all landed pre-quarantine).
+ * Next lever if revisited: (a) is the master - a source shape that keeps
+ * the corners[2] load pseudo out of r5 (or makes it global) should flip
+ * X/Y AND likely re-land (b)'s sum into r1 (its r2 is a copy-preference
+ * override, not reload inheritance) and possibly (c) via allocation
+ * rotation. Dump recipe: cc -E -x c -I include -I tools/agbcc/include
+ * -iquote include -nostdinc -undef src/f.c -o x.i;
+ * tools/agbcc/old_agbcc -O2 -mthumb-interwork -fhex-asm -dr x.i (gen RTL);
+ * -dg = global alloc sorted order + conflicts + post-alloc RTL (identify
+ * pseudos by MEM offsets in minus/plus insns; hard regs already show).
  */
+
 #include "global.h"
 
 struct Car {
