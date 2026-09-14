@@ -218,7 +218,8 @@ SECTIONS
         build/src/sub_0800B594.o(.text*);
         build/asm/rom_0800B5D4.o(.text*);
         build/src/sub_0800B614.o(.text*);
-        build/asm/rom_0800B616.o(.text*);
+        build/src/sub_0800B618.o(.text*);
+        build/asm/rom_0800B658.o(.text*);
         build/src/sub_0800BA34.o(.text*);
         build/asm/rom_0800BA36.o(.text*);
         build/src/sub_0800BBFC.o(.text*);
