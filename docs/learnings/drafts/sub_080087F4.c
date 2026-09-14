@@ -39,7 +39,11 @@ void sub_080087F4(u8 which, struct Unk080087F4 *obj)
     s32 prod;
     s32 dist;
     s32 idx;
-    s32 m;
+    register s32 m asm("r2");
+    register s32 mm asm("r0");
+    s32 ti;
+    s32 t;
+    s32 *pa;
 
     cos = gUnk_0801CD08[((gUnk_0202CBF0 + 0x40) & 0xFF) + 0x40];
     sin = gUnk_0801CD08[(gUnk_0202CBF0 + 0x40) & 0xFF];
@@ -86,11 +90,21 @@ tail:
     m = dist * gUnk_0202CBD4;
     m >>= 8;
     m = -m;
-    obj->unk140 += (m * cos) >> 8;
-    obj->unk144 += (sin * m) >> 8;
-    m = (gUnk_0801CD08[((gUnk_0202CBF0 + 0x40) - gUnk_0202CB0C) & 0xFF] * m) >> 8;
-    m = m << 7;
-    idx = m / 32768;
+    pa = &obj->unk140;
+    *pa += (m * cos) >> 8;
+    pa = &obj->unk144;
+    *pa += (sin * m) >> 8;
+    ti = gUnk_0202CBF0;
+    ti += 0x40;
+    ti -= gUnk_0202CB0C;
+    ti &= 0xFF;
+    mm = gUnk_0801CD08[ti] * m;
+    m = mm >> 8;
+    m <<= 7;
+    t = m;
+    if (m < 0)
+        t = m + 0x7FFF;
+    idx = t >> 15;
     if (obj->unk180 != 0) {
         obj->unk180--;
         obj->unk148 += idx >> 1;

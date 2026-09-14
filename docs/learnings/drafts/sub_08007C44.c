@@ -1,3 +1,40 @@
+/*
+ * sub_08007C44 — MISMATCH (700/700 bytes, register+slot allocation only).
+ *
+ * All instructions, pool contents AND pool order match. The remaining diff is
+ * purely register/stack-slot assignment in the loop-entry region:
+ *
+ * TARGET:  xs->r0 (in place from px), ys->r2 (moved off py's r1),
+ *          yBase->r2 (callee... caller-saved, saved to [sp,#52] across the
+ *          sub_0800CBB8 call by caller-save), xBase SPILLED to [sp,#60],
+ *          reload at EVERY use (x=xBase-1, xBase+2 recomputed per y-iter
+ *          into r9, x==xBase reloads).  mask->r3 ([sp,#56] caller-save),
+ *          0const->r4, &unk171->r3, &unk172->r5, count->r8, y->r5.
+ * OURS:    xs->r2, ys->r1 (in place), yBase SPILLED to [sp,#60],
+ *          xBase->r3 + stash [sp,#56] across call, mask->r2/[sp,#52].
+ *          Extra 8 bytes: mov r8,r7 (&unk172), yBase+2 recomputed from spill
+ *          twice; CSE folds xBase+2 to xs+3 (xs+3 = adds r2,#3) so xs stays
+ *          live (global) and eats r2.
+ *
+ * Tried (all still MISMATCH):
+ *  - decl order swaps (xBase/yBase, xs/ys, mask s32): inert.
+ *  - px/py removal (B): xs in-place r0 OK but ys stays r0, yBase still spilled.
+ *  - `volatile s32 xBase` + manual per-y-iter hoist `xl = xBase + 2` (keeps
+ *    while-test cached in r9 like target, `x == xBase` reloads like target):
+ *    structure right (696b) BUT volatile slot lands FIRST ([sp,#40] not #60)
+ *    and ys->r1 not r2.  Volatile yBase: loop test reloads per-iter (wrong).
+ *  - register pins: `yBase asm("r2")` sticks (asrs r2/adds r2) but GCC 2.95
+ *    does NOT caller-save pinned regs across the bl -> r2 clobbered =
+ *    miscompile.  Same for r3.
+ *  - w/w2 dead-temp games: global alloc ignores block-local occupancy.
+ *
+ * Root cause (from -da RTL dumps): global-alloc priority contest.  In our
+ * build pri(mask)=4*14/120=0.467 > pri(yBase)=3*10/83=0.362, so mask wins
+ * r2, yBase loses and spills; in the target's build yBase won r2 and xBase
+ * was the spill victim (slot #60, after caller-save slots #52/#56).  Need a
+ * source shape where yBase's refs/live beat mask's, with xBase the spillee.
+ * Qty tie-break by number is inert to declaration order here.
+ */
 #include "global.h"
 
 struct Unk0202A550

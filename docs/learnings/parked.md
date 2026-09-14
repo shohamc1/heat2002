@@ -597,3 +597,31 @@ swapped). `docs/learnings/drafts/sub_0800C358.c` (216 bytes): the
 round-1 register-tie diff shrank to a single p(r3)/xi(r2) swap after
 computing `yi = p->unk18 >> 23; xi = p->unk1C >> 23;` directly from the
 raw loads; global-alloc priority data in each header.
+
+## Parked 2026-09-14: sub_08000958 + sub_08000972 — hand-written asm, not a C target
+
+The pair shares literal pool `_08000988` (guide step 6a: extract together or
+not at all), but the stronger result is that no agbcc C can produce these
+bytes at all — it is hand-written assembly in the retail source:
+
+- The caller keeps its loop state in r0-r3 ACROSS the `bl` callee
+  (`ldr r3,[r2]; bl sub_08000972; stm r0!,{r3}; adds r2,#4; subs r1,#1`).
+  All four are call-used registers; agbcc's reload must move every live
+  value into r4-r7 (or spill it) around any call, so the ROM's register
+  choice is structurally unreachable.
+- The callee returns its result in r3 and pops the CALLER's r0 back
+  (`push {r0}; ...; movs r3,#0; ...; pop {r0}; bx lr`) — a hand-rolled
+  custom convention; any C callee ends `add r0, r3, #0; bx lr` (AAPCS
+  return in r0), and a single-reg `push {r0}` prologue never appears in
+  `tools/agbcc/gcc/thumb.c` (pretend-args pushes rN..r3, reload spills
+  via `str [sp,#off]`).
+- The caller is a leaf-call idiom `mov r12, lr ... bx r12` around a `bl`;
+  `thumb_function_prologue` always pushes lr for any non-leaf, and IPREGISTER
+  (r12) appears in the compiler only in the >12-byte struct-return epilogue.
+
+Swept and refuted: two-function splits with 4-arg/value/out-param callees,
+a single merged function, and a 16-byte struct return (GCC 2.95 returns
+structs via hidden memory pointer). The identical sibling pair
+sub_0833A018/sub_0833A032 (same bytes except the pool constant) is the same
+hand-asm macro instantiated twice. Full analysis and the closest reachable
+C shapes: `docs/learnings/drafts/sub_08000958.c`. Leave both halves in asm.

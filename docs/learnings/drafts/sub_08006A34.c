@@ -1,3 +1,10 @@
+/*
+ * QUARANTINED (wave 4): this C inlined the 16-byte function sub_080072F4
+ * (already decompiled at src/sub_080072F4.c) as a tail, so the object is
+ * 2256 bytes vs the real 2240-byte function. It is otherwise byte-perfect
+ * for the first 2240 bytes. The fix is to call sub_080072F4 instead of the
+ * inline tail; a later agent will do it.
+ */
 #include "global.h"
 
 struct Car {
