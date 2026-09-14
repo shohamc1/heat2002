@@ -1,9 +1,57 @@
 /*
- * QUARANTINED (wave 4): this C inlined the 16-byte function sub_080072F4
- * (already decompiled at src/sub_080072F4.c) as a tail, so the object is
- * 2256 bytes vs the real 2240-byte function. It is otherwise byte-perfect
- * for the first 2240 bytes. The fix is to call sub_080072F4 instead of the
- * inline tail; a later agent will do it.
+ * QUARANTINED (wave 5): 2240/2240 bytes, 10 bytes differ (3 sites), from a
+ * FRESH rebuild (rm .o; make .o; match.py). All size/structure/pool issues
+ * from the wave-4 draft are fixed. Remaining diff (all register-allocation
+ * / one instruction choice, verified from fresh build):
+ *
+ *   0x8006b84/b86/b8e/b90/baa/bb0: determinant pseudos swapped.
+ *     target: subs r6(r0,r1); adds r0,r6; ... subs r5(r3,r1); adds r1,r5;
+ *             ... adds r0,r6; muls r0,r3; ... muls r1,r5
+ *     ours:   same instructions with r5<->r6 swapped (P1=second-product
+ *             difference in r5, P2 in r6; target homes P1 in r6, P2 in r5).
+ *     Cause: global-alloc ordering of these two CSE'd subtractions.
+ *     Swept: hoisting both into locals (breaks early spills), pinning one
+ *     to r6 via `register asm("r6")` (rebuilds whole allocation badly),
+ *     swapping l0/l4 and x0../y0.. declaration orders (no effect / breaks),
+ *     negating det+both conds together (flips det block codegen).
+ *
+ *   0x8006c98/c9e: final time-sum add in the 0x0C block.
+ *     target: adds r1, r0, r2 ; cmp r1, r0   (new pseudo r1)
+ *     ours:   adds r2, r0, r2 ; cmp r2, r0   (coalesced into dying r2)
+ *     Swept: commuting the expression to `253CC + (25218*60000+251FC*1000)`
+ *     (breaks computation order), regrouping parens (no effect).
+ *
+ *   0x8006ce0: p->unk4D = -1 materialization.
+ *     target: subs r0, r1, #1   (r1 = hoisted zero also stored to unk4E)
+ *     ours:   movs r0, #255
+ *     Cause: target reuses the unk4E-store's hoisted zero pseudo as the
+ *     minuend; every source shape that shares that pseudo either folds the
+ *     -1 back to a constant (CSE knows the zero) or stores unk4E too early.
+ *     Swept: z locals (s32/u8/u16) before/after unk4C++, (z = 0) - 1,
+ *     (p->unk4E = (z = 0)) - 1 (keeps subs but wrong store order),
+ *     p->unk4E - 1 (real ldrb), ~10 toy-verified shapes.
+ *
+ * Fixes landed since wave 4 (all verified byte-exact):
+ *   - u16 locals for e->unk10 reads inlined as s32 t / s32 t2 (kills the
+ *     decl-init convert_move copies; s32 avoids store_expr's promoted-var
+ *     copy branch); values survive QI stores because they live in pseudos,
+ *     not CSE (char-alias-set-0 stores kill all memory CSE - proven).
+ *   - -1 store to gUnk_0202524C written as `s32 v = 1; u16 w;
+ *     gUnk_0202524C = (w = -v);` (address-first + movs#1+negs + copy).
+ *   - gUnk_0200215C != 0x10/0xF/2/0xE chain as NESTED ifs (fold_range_test
+ *     folds adjacent != pairs into (u8)(x-15)<=1 otherwise).
+ *   - ==5 and ==0xC blocks: unk4C==2184 check nested INSIDE p==A550.
+ *   - (u16)(e->unk10-1)<=1 block also guards the trailing ==1/t2 block.
+ *   - gUnk_0200215C != 2 block CONTAINS the (x-3)/16D28/253D4 statements.
+ *   - sub_08005598 arg: `s32 inner = v58/2+6; (u8)(e->unk14 + inner)`.
+ *   - the second 0/6/1 || chain re-reads via
+ *     `s32 v2 = *(volatile u8 *)&gUnk_0200215C;` (forces the ldrb r0,[r4]
+ *     reload + keeps r4 as the address; plain reads get CSE'd into a
+ *     callee-saved value + lsls/lsrs #24 narrowing).
+ * NOTE: the wave-4 header's "inlined sub_080072F4 tail" theory was stale -
+ * this draft never contained that inline; the object was 2256B due to the
+ * reload/copy issues above. sub_08006A34 ends at 0x80072F4 exactly where
+ * sub_080072F4 begins (fallthrough-free, no call needed).
  */
 #include "global.h"
 
@@ -166,15 +214,18 @@ u8 sub_08006A34(struct Car *p, u8 a1)
     }
     p->unk36 = p->unk34;
     p->unk38 = p->unk4D;
-    if (e->unk10 == 1) {
+    {
+    s32 t = e->unk10;
+    if (t == 1) {
         p->unk17C = gUnk_020253B8;
         if (p == gUnk_0202A550) {
-            s32 v = -1;
-            gUnk_0202524C = v;
+            s32 v = 1;
+            u16 w;
+            gUnk_0202524C = (w = -v);
         }
         if (gUnk_0200215C == 0x0C) {
             if ((u32)(gUnk_02025218 * 60000 + gUnk_020251FC * 1000 + gUnk_020253CC) < gUnk_0202ED84)
-                gUnk_0202EEE4 = e->unk10;
+                gUnk_0202EEE4 = t;
         }
         if (a1 == v6C && gUnk_0200215C != 0x0C && p->unk166 != 0) {
             p->unk167 = 0x1E;
@@ -209,12 +260,14 @@ u8 sub_08006A34(struct Car *p, u8 a1)
                 }
             }
             if (gUnk_0202ED70 == 5) {
-                if (p == gUnk_0202A550 && p->unk166 != 0) {
-                    gUnk_0202EEE4 = 1;
-                    sub_0800AFF0();
+                if (p == gUnk_0202A550) {
+                    if (p->unk166 != 0) {
+                        gUnk_0202EEE4 = 1;
+                        sub_0800AFF0();
+                    }
+                    if (*(s8 *)&p->unk4C == gUnk_02002184)
+                        sub_0800AFF0();
                 }
-                if (*(s8 *)&p->unk4C == gUnk_02002184)
-                    sub_0800AFF0();
             }
             if (gUnk_0202ED70 == 6) {
                 if (a1 == 0 && *(s8 *)&p->unk4C == gUnk_02002184) {
@@ -250,12 +303,14 @@ u8 sub_08006A34(struct Car *p, u8 a1)
                 }
             }
             if (gUnk_0202ED70 == 0xC) {
-                if (p == gUnk_0202A550 && p->unk166 != 0) {
-                    gUnk_0202EEE4 = 1;
-                    sub_0800AFF0();
+                if (p == gUnk_0202A550) {
+                    if (p->unk166 != 0) {
+                        gUnk_0202EEE4 = 1;
+                        sub_0800AFF0();
+                    }
+                    if (*(s8 *)&p->unk4C == gUnk_02002184)
+                        sub_0800AFF0();
                 }
-                if (*(s8 *)&p->unk4C == gUnk_02002184)
-                    sub_0800AFF0();
             }
             if (gUnk_0202ED70 == 0xD) {
                 if (p == gUnk_0202A550 && *(s8 *)&p->unk4C == gUnk_02002184) {
@@ -299,19 +354,25 @@ u8 sub_08006A34(struct Car *p, u8 a1)
                 sub_0800A438(p);
                 gUnk_020253E0[gUnk_020253D4] = a1;
                 gUnk_020253D4 = gUnk_020253D4 + 1;
-            }
-            if ((u8)(gUnk_0200215C - 3) <= 1)
-                p->unk16C = gUnk_02025260 * 60000 + gUnk_02025220 * 1000 + gUnk_02025224;
-            if (a1 == v6C) {
-                if (gUnk_0200215C == 0 || gUnk_0200215C == 6 || gUnk_0200215C == 1) {
-                    sub_08016D28();
-                    sub_0800AFF0();
+                if ((u8)(gUnk_0200215C - 3) <= 1)
+                    p->unk16C = gUnk_02025260 * 60000 + gUnk_02025220 * 1000 + gUnk_02025224;
+                if (a1 == v6C) {
+                    s32 v2 = *(volatile u8 *)&gUnk_0200215C;
+                    if (v2 == 0 || v2 == 6 || v2 == 1) {
+                        sub_08016D28();
+                        sub_0800AFF0();
+                    }
                 }
-            }
-            if (gUnk_020253D4 == v68) {
-                if (gUnk_0200215C != 0x10 && gUnk_0200215C != 0xF
-                    && gUnk_0200215C != 2 && gUnk_0200215C != 0xE)
-                    sub_0800AFF0();
+                if (gUnk_020253D4 == v68) {
+                    if (gUnk_0200215C != 0x10) {
+                        if (gUnk_0200215C != 0xF) {
+                            if (gUnk_0200215C != 2) {
+                                if (gUnk_0200215C != 0xE)
+                                    sub_0800AFF0();
+                            }
+                        }
+                    }
+                }
             }
         } else {
             if (a1 == v6C && p->unk18E != 0)
@@ -319,6 +380,7 @@ u8 sub_08006A34(struct Car *p, u8 a1)
         }
         if (a1 == v6C)
             sub_08005560();
+    }
     }
 
     if ((u16)(e->unk10 - 1) <= 1) {
@@ -328,14 +390,19 @@ u8 sub_08006A34(struct Car *p, u8 a1)
                 sub_0800B540();
             if (gUnk_0202EF00[3] != 0 && gUnk_020020E0 == 0 && gUnk_020021E0 == 0)
                 sub_08001208(0x33);
-            if (a1 == v6C && gUnk_0200215C != 0xA)
-                sub_08005598((u8)(e->unk14 + (v58 / 2 + 6)));
+            if (a1 == v6C && gUnk_0200215C != 0xA) {
+                s32 inner = v58 / 2 + 6;
+                sub_08005598((u8)(e->unk14 + inner));
+            }
         }
-    }
-    if (e->unk10 == 1 && p->unk18E == 0) {
-        if (p == gUnk_0202A550)
-            sub_0800B2C4();
-        p->unk18E = e->unk10;
+        {
+        s32 t2 = e->unk10;
+        if (t2 == 1 && p->unk18E == 0) {
+            if (p == gUnk_0202A550)
+                sub_0800B2C4();
+            p->unk18E = t2;
+        }
+        }
     }
     p->unk4D = p->unk4D + 1;
     return 1;
