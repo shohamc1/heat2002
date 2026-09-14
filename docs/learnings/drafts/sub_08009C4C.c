@@ -1,4 +1,17 @@
 /*
+ * sub_08009C4C — QUARANTINED wave 5d (2026-09-15, agent died mid-work).
+ * This state REPLACES the previous draft content (whose header below
+ * claims "8 bytes differ" — that claim no longer matched the file it sat
+ * on; fresh build of the old content gave 498 diff lines, this one 419).
+ * Fresh verification (rm .o; make .o; match.py): MISMATCH, 752 bytes,
+ * 419 diff lines (209 target-only / 210 ours-only). First clusters:
+ *   - 0x8009c58: a1 homed in r6 (target) vs r7 (ours) through the prologue
+ *     (ldr r0,[r6,#0] / ldr r1,[r6,#8] vs [r7,...]).
+ *   - 0x8009c70: b.n 0x8009f2a (target) vs 0x8009f20 (ours) — early-exit
+ *     label lands 10 bytes apart, i.e. then/else layout shift downstream.
+ */
+
+/*
  * sub_08009C4C — QUARANTINED wave 6 (2026-09-14, budget reached; best state
  * = THIS draft: 756/764, 8 bytes / one alloc web in the then-path).
  * WAVE-6 FINDINGS (all fresh-verified):
@@ -95,14 +108,19 @@ void sub_08009C4C(struct Car *a1, u8 a2)
     else
         attr |= 0x400;
     if (flip == 0) {
-        t = sub_080075E4(gUnk_08367640[a1->unk162][v]);
-        if (t != 0)
+        u8 *row1 = (u8 *)gUnk_08367640[a1->unk162];
+        u8 *row2;
+        u32 *u;
+        v <<= 2;
+        u = sub_080075E4(*(u32 *)(v + (u32)row1));
+        if (u != 0)
             sub_080044DC((out[1] & 0xFF) | ((out[0] & 0x1FF) << 16) | 0x80008000,
-                         t[4] | attr, (u16)(base + 0x40));
-        t = sub_0800754C(gUnk_083676B8[a1->unk162][v]);
-        if (t != 0)
+                         u[4] | attr, (u16)(base + 0x40));
+        row2 = (u8 *)gUnk_083676B8[a1->unk162];
+        u = sub_0800754C(*(u32 *)(v + (u32)row2));
+        if (u != 0)
             sub_080044DC((out[1] & 0xFF) | (((out[0] + 0x10) & 0x1FF) << 16) | 0x80000000,
-                         t[4] | attr, (u16)(base + 0x40));
+                         u[4] | attr, (u16)(base + 0x40));
     } else {
         t = sub_0800754C(gUnk_083676B8[a1->unk162][v]);
         if (t != 0) {

@@ -1,5 +1,11 @@
 /*
- * sub_080093BC — QUARANTINED wave 6 (2026-09-14; budget reached at 22 diff
+ * sub_080093BC — RESOLVED 2026-09-14 wave 7: MATCH (1000 bytes).
+ * The fix: the case-4 division is 0x6400 / (*p >> 8) (dividend is the
+ * constant in r0, accumulator the divisor in r1) — the accumulator home
+ * follows the divisor arg register; the old (*p >> 8) / 0x6400 had them
+ * swapped. Prior quarantine notes below for history:
+ *
+ * QUARANTINED wave 6 (2026-09-14; budget reached at 22 diff
  * lines / 1000-of-1000 bytes — down from 358 (fresh re-verified from the
  * saved draft). This file IS the best state:
  * fresh-verified rm .o; make .o; match.py = MISMATCH with ONLY the case-4
@@ -142,7 +148,7 @@ void sub_080093BC(struct Car *a1, u8 a2)
         p = &a1->unk188;
         *p += gUnk_0202A520;
         *p += gUnk_08368134[gUnk_0202CBC0[2]];
-        gUnk_0202CAE0 = (*p >> 8) / 0x6400;
+        gUnk_0202CAE0 = 0x6400 / (*p >> 8);
         *p = 0x6400;
         break;
     case 5:

@@ -1,3 +1,13 @@
+/*
+ * sub_08016ED8 — QUARANTINED wave 5d (2026-09-15, agent died mid-work).
+ * Fresh verification (rm .o; make .o; match.py): MISMATCH, 100 bytes,
+ * exactly one cluster of 4 register-swapped instructions at 0x08016eea:
+ *   target: ldrb r1,[r1,#0] / movs r2,#8 / lsls r2,r1 / ldrh r1,[r4,#0]
+ *   ours:   ldrb r2,[r1,#0] / movs r1,#8 / lsls r1,r2 / ldrh r2,[r4,#0]
+ * (the (1<<bit) mask chain is homed in r2 in target vs r1 in ours, then
+ * orrs r1,r2 consumes it; everything else byte-exact).
+ */
+
 #include "global.h"
 
 extern u16 gUnk_020004A0;

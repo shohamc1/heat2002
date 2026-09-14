@@ -1,4 +1,14 @@
 /*
+ * sub_0800C2CC — QUARANTINED wave 5d (2026-09-15, agent died mid-work).
+ * This state REPLACES the previous draft content, which did not compile
+ * (redefinition of sub_0800C2CC: previously defined at its line 37, again
+ * at line 73). Fresh verification (rm .o; make .o; match.py): MISMATCH,
+ * 140 bytes, 60 diff lines (30/30) — a register-allocation web through
+ * the transform chain starting at 0x800c2dc (ldrh r4/r5, ldrb r7, subs/
+ * muls cluster homed r4/r5/r7 in target vs r6/r4/r5 in ours).
+ */
+
+/*
  * sub_0800C2CC -- QUARANTINED (wave 6, 2026-09-14; fresh-verified v1 state:
  * rm .o; make .o; match.py = MISMATCH, 140/140 bytes, 30 diff lines).
  * WAVE-6 ADDITIONS (all fresh-verified, all worse than v1's 30 lines):
@@ -28,42 +38,6 @@
  *   products, making px/py born earlier, or changing which pseudos cross
  *   the clamp basic-block boundaries).
  */
-#include "global.h"
-
-extern u32 gUnk_0202CC24[];
-extern u32 gUnk_0202CC38[];
-
-u32 sub_0800C2CC(s32 a, s32 b, u16 *p, u8 *e)
-{
-    u16 *q;
-    s32 x0;
-    s32 y0;
-    register s32 dx asm("r6");
-    s32 dy;
-    register s32 v asm("r1");
-    s32 px;
-    s32 py;
-
-    x0 = p[2 * e[0]];
-    y0 = p[2 * e[0] + 1];
-    q = (u16 *)(4 * e[1] + (u32)p);
-    v = (a - x0) * (*q - x0);
-    v = v + (b - y0) * (q[1] - y0);
-    v = v * e[2];
-    if (v < 0)
-        v = 0;
-    if (v > 0xFFFF)
-        v = 0xFFFF;
-    dx = *q - x0;
-    dy = q[1] - y0;
-    px = x0 + ((dx * v) >> 16);
-    py = y0 + ((dy * v) >> 16);
-    gUnk_0202CC24[0] = px;
-    gUnk_0202CC38[0] = py;
-    px = (a - px) >> 2;
-    py = (b - py) >> 2;
-    return px * px + py * py;
-}
 #include "global.h"
 
 extern u32 gUnk_0202CC24[];

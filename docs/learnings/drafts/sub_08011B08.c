@@ -1,3 +1,13 @@
+/*
+ * sub_08011B08 — QUARANTINED wave 5d (2026-09-15, agent died mid-edit).
+ * Fresh verification: DOES NOT COMPILE —
+ *   src/sub_08011B08.c:40: `key' undeclared (first use in this function)
+ * Line 40 assigns `key = (u8 *)0x04000128;' but no declaration exists
+ * (was being introduced as a local for the sound bias/DMA MMIO reads;
+ * next agent: declare it — likely `register u8 *key asm(...)` to pin the
+ * register — then match.py from scratch).
+ */
+
 #include "global.h"
 
 extern volatile u16 gUnk_0202ED78[];

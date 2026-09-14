@@ -1,4 +1,14 @@
 /*
+ * sub_0800E200 — QUARANTINED wave 5d (2026-09-15, agent died mid-experiment;
+ * this state compiles — the wave-7 `fp'/u32-flag rewrite left a stale
+ * `start' use at its line 86 and did not compile). Fresh verification
+ * (rm .o; make .o; match.py): MISMATCH, 452 bytes, 350 diff lines (175/175)
+ * starting in the prologue: add sp literal pool 152 (target) vs 148 (ours)
+ * and a missing `str r0,[sp,#596]' — the frame is 4 bytes short, so fix
+ * frame size/layout first; everything downstream shifts with it.
+ */
+
+/*
  * sub_0800E200 quarantine notes (2026-09-14, retry wave)
  * Best build: 452/452 bytes (this file) -- EXACT target size, ~4 insns
  * of placement residue. Major fixes since last quarantine:
@@ -60,8 +70,8 @@ extern void sub_0800E008(void);
 u32 sub_0800E200(void)
 {
     u8 work[0x24C];
+    u32 flag;
     u32 len;
-    u8 flag;
     register u32 icon __asm__("r9");
     u8 *start;
     u8 *a;
@@ -86,7 +96,7 @@ u32 sub_0800E200(void)
     start = gUnk_08363EE8;
     len = (u32)gUnk_08364AC8 - (u32)start;
     *(u32 *)(work + 0x28) = (u32)start;
-    work[0x4B] = flag;
+    work[0x4B] = *(volatile u8 *)&flag;
     sub_0800EA64(work);
 loop:
     {
@@ -98,9 +108,9 @@ loop:
         y = 9;
         x = 0x54;
         do {
+            __asm__ volatile ("" : : : "r1");
             if (((a[0x1D] >> i) & one) == 0)
                 goto show0;
-            __asm__ volatile ("" : : : "r2");
             if (((a[0x1E] >> i) & one) != 0)
                 goto show1;
 show0:
@@ -148,7 +158,7 @@ pnext:
             return 1;
         if (sub_0800EFC0(work) == 0)
         {
-            if ((gKeysPressed & 2) != 0 && *(u32 *)&flag != 1)
+            if ((gKeysPressed & 2) != 0 && flag != 1)
                 return 1;
         }
         else
