@@ -80,7 +80,7 @@ SECTIONS
         build/src/sub_0800420C.o(.text*);
         build/src/sub_08004238.o(.text*);
         build/src/sub_08004260.o(.text*);
-        build/asm/rom_08004278.o(.text*);
+        build/src/sub_08004278.o(.text*);
         build/src/sub_080043BC.o(.text*);
         build/src/sub_080043F8.o(.text*);
         build/src/sub_0800443C.o(.text*);
