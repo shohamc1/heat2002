@@ -1,46 +1,34 @@
-/* sub_08009C4C — QUARANTINED 2026-09-14 (756/764 bytes, 8 bytes out)
- *
- * Everything matches byte-for-byte except ONE allocation web in the
- * `flip == 0` ("then") path; all cascades (branch/pool offsets) follow from
- * the 8-byte size delta. The else path and both tail blocks match exactly.
- *
- * Remaining diff (then-path entry):
- *   ROM:  adds r7, r6, r2      ; &p->unk162 pseudo got r7
- *         ldrb r3, [r7]
- *         lsls r0, r3, #2 / adds / ldr
- *         lsls r4, r4, #2      ; v*4 reuses v's r4 IN PLACE
- *         adds r0, r4, r0 / ldr / bl 75E4
- *         adds r3, r0, #0      ; t in r3
- *   ours: adds r2, r2, r6      ; reload temp (addr pseudo got r8)
- *         mov  r8, r2
- *         ldrb r3, [r2]
- *         lsls r0, r3, #2 / adds / ldr
- *         lsls r7, r4, #2      ; v*4 copy in r7, v stays live in r4
- *         adds r0, r7, r0 / ldr / bl 75E4
- *         adds r4, r0, #0      ; t in r4
- *   (second access: ROM `ldrb r7,[r7]` vs ours `mov r2,r8; ldrb r2,[r2]`)
- *
- * Root cause: global.c gives the &p->unk162 pseudo r7 in the ROM (pass 0),
- * letting v*4 take r4 (v dies exactly at its birth). In ours v*4 wins pass 0
- * (r7), the address cannot take r4 (v still live at its earlier birth) and
- * falls to r8 with the reload mov dance.
- *
- * Swept (all still 756/764 or worse):
- *   - u8 *pu = &a1->unk162 local; u8 ub = a1->unk162 reloaded between calls
- *   - u32 *tb = gUnk_08367640[a1->unk162]; t = f(tb[v]) table-base temp
- *   - u8** tables + [v * 4] explicit multiply (byte-pointer indexing)
- *   - *(gUnk_...[a1->unk162] + v) pointer-plus form
- *   - ((u8 *)a1)[0x162] byte-cast on first/second/both accesses
- *   - a-local for arg0 in the then-path (matches else style) — no change
- *   - goto flipped / goto tail structure — no change
- *   - register u32 v asm("r4") pin — worse (117 diff lines)
- *   - s32 v/attr; attr | t[4] commuted call arg (wrong: changes orrs order);
- *     separate w = v index temp; separate t2 local in then-path — worse
- *   - two a-local variants, tail 0x40000000 constant verified (0x80<<23)
- *
- * The constants that DID converge after misreads: 0x80<<15 = 0x10000000,
- * 0x80<<17(0x17)=0x40000000; else-path arg0 = local a | 0x10000000 (kept
- * un-folded because a is a variable); then-path arg0 inline.
+/*
+ * sub_08009C4C — QUARANTINED wave 6 (2026-09-14, budget reached; best state
+ * = THIS draft: 756/764, 8 bytes / one alloc web in the then-path).
+ * WAVE-6 FINDINGS (all fresh-verified):
+ *   - ROM's two paths compile the SAME table access DIFFERENTLY:
+ *     then: adds r7,r6,r2 (a1-FIRST plus), address global r7 direct,
+ *           lsls r4,r4,#2 (v-scale IN PLACE on v's reg), t -> r3;
+ *     else: adds r0,r0,r6 (offset-first), mov r8,r0 (global r8 + reload
+ *           dance), lsls r7,r4,#2 (fresh v4), t -> r3.
+ *     The draft already produces the ELSE pattern in both paths.
+ *   - v <<= 2 as a statement (v's own pseudo, in-place lsls rX,rX,#2)
+ *     WORKS for the scale shape; combined with a table-base temp
+ *     (tb = gUnk[*pk]; t = f(*(u32*)(v + tb))) and u8 *pk = &a1->unk162
+ *     the then-path ORDER comes out right (pk, tb chain, v<<=2, v+tb,
+ *     ldr, bl) — but the plus orders come out offset-first
+ *     (adds r2,r2,r6 / adds r0,r0,r6) and pk still lands r8.
+ *   - register u32 attr asm("r5") pin: WORKS (no shape damage, orrs
+ *     chains unchanged). register struct Car *a1 asm("r6") = a0 copy-pin:
+ *     gives ROM's exact prologue byte (adds r6,r0,#0) but pk STILL r8
+ *     (the v pseudo then takes r7; flip takes r4 — the web just rotates).
+ *   - pinning pk itself r7: adds r7,r6,r2 a1-first ✓ but ldrb gets a
+ *     preceding `adds r0,r7,#0` copy (pinned-address-copy disease) and
+ *     the pool ldr moves after the address computation (ROM: pool first).
+ *   - the residual web (v/flip/pk homes) is RELOAD-driven, not
+ *     global-alloc-driven (greg conflict rows predict r3/r4 picks that
+ *     never appear in the final asm). Same reload-rotation phenomenon as
+ *     sub_0800C2CC: every web member lands one register late.
+ * Remaining diff (then-path only, else + tails exact):
+ *   0x8009d10 adds r7,r6,r2 vs ours adds r2,r2,r6 (+ mov r8,r2 copy)
+ *   0x8009d1a lsls r4,r4,#2   vs ours lsls r7,r4,#2
+ *   0x8009d24 adds r3,r0,#0   vs ours adds r4,r0,#0   (t home)
  */
 
 #include "global.h"

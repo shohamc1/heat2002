@@ -1,26 +1,38 @@
 /*
- * sub_0800E008 quarantine notes (2026-09-14, wave-5a crashed agent,
- * fresh-verified: rm .o; make .o; match.py) — MISMATCH, 225 diff lines,
- * object 532 bytes @ 0x0800E008. Instruction SHAPES are parallel to the
- * target almost everywhere; the residual diffs are:
- *
- *  1. Prologue: target saves r8 AND r9 (mov r7,r9; mov r6,r8; push
- *     {r6,r7}); ours saves only r9 (mov r7,r9; push {r7}). Target homes
- *     the hoisted `r5<<2` (gUnk_02000590 index) in r8 BEFORE the loop
- *     (lsls r3,r5,#2; mov r8,r3); ours recomputes it after the loop-set
- *     (lsls r7,r5,#2 at 0x800e068). Missing r8 use = missing save.
- *  2. 16-bit loop-counter increment order: target does
- *     adds r0,r4,#1; lsls r0,#16; lsrs r4,r0,#16 (add, then truncate);
- *     ours does lsls r0,r4,#16; lsrs r0,#16; adds r4,r0,#1 (truncate,
- *     then add). Same u8 idx variable, opposite expansion order.
- *  3. Every pool ldr offset differs (e.g. first: [pc,#328] vs [pc,#220])
- *     because the literal-pool order/layout differs downstream of the
- *     above — fix 1+2 first, the pool follows.
- *
- * Also: target materialises `adds r1,r2,#0` copies for the 0x2000 orrs;
- * ours matches those. Structure (nm[2] local, 0x96 gUnk_080000B2 check,
- * 2-iteration bl 0x8016E1C loop, gUnk_02000590/gUnk_083FDA50 setup,
- * second loop with bl 0x8016E0C + sub_0800E460 tail) all looks right.
+ * sub_0800E008 quarantine notes (2026-09-14, retry wave)
+ * Best build: 540/532 bytes (this file, natural allocation, no pins).
+ * SOLVED since last quarantine:
+ *  - Prologue now saves r8 AND r9 (mov r7,r9; mov r6,r8; push {r6,r7}):
+ *    fell out naturally once ALL asm() pins were REMOVED. GCC 2.95's
+ *    local register variables do not model conflicts; every pin in the
+ *    old draft collided (shift's r7 clobbered by idx4, r8 pin silently
+ *    dropped when RHS is a computation -- pins only survive when the
+ *    initializer is a CONSTANT, see matched src/sub_080040E0.c i=0xF0).
+ *  - Loop counters: i must be u16 with `i = i + 1;` (add-then-truncate:
+ *    adds r0,r4,#1; lsls r0,#16; lsrs r4,r0,#16). The old `u32 i;
+ *    i = (u16)i + 1;` truncated first (lsls/lsrs before the add).
+ * Remaining diffs (all in the retry-loop web):
+ *  1. Setup register rotation. Target: idx4(idx*4)=r8 (hoisted before
+ *     everything: lsls r3,r5,#2; mov r8,r3), shift=r7, nxt=r6.
+ *     Ours: shift=r8, nxt=r7, idx4=r6 (natural allocation).
+ *     qty priority = floor_log2(nrefs)*nrefs*size/live_len: idx4 has the
+ *     shortest life (def e062->use e0ca) so it wins r6 in ours; target
+ *     has it LAST (r8) => in the target idx4's qty must have LOWER
+ *     priority (longer life or REG_EQUIV demotion: local-alloc.c:852
+ *     doubles REG_LIVE_LENGTH for equiv-bearing pseudos).
+ *  2. idx=nxt narrow: target uses a scratch (lsls r0,r6,#24;
+ *     lsrs r5,r0,#24), ours truncates in place (lsls r5,r7,#24;
+ *     lsrs r5,r5,#24).
+ *  3. Retry block layout: target `beq _exit` forward + update inline;
+ *     ours `bne update` backward + exit fallthrough; also our loop head
+ *     sits at the v-computation with `mov r6,sp` re-entry (+4 insns
+ *     total = the 8-byte delta).
+ * Verified levers that DO NOT work: pinning idx4 to r8 (silently ignored
+ * when RHS is idx*4 with the 0x96 branch present; without that branch the
+ * whole setup folds to constants and the pin fires -- bisected);
+ * pinning all four setup vars (uservar collisions, miscompiles);
+ * comma-expression or reordered setup statements (emission order is
+ * allocation-driven, not statement-driven); extra idx4 read (folded).
  */
 #include "global.h"
 
@@ -51,11 +63,11 @@ u32 sub_0800E008(void)
 {
     u32 nm[2];
     u8 idx;
-    u32 i;
-    register u32 idx4 __asm__("r8");
-    register u32 shift __asm__("r7");
-    register u32 *pn __asm__("r9");
-    register u32 nxt __asm__("r6");
+    u16 i;
+    u32 idx4;
+    u32 shift;
+    u32 *pn;
+    u32 nxt;
 
     nm[1] = 0;
     idx = 0;
@@ -74,7 +86,7 @@ u32 sub_0800E008(void)
     nxt = idx + 1;
     do {
         sub_08016E1C(gUnk_083FDA50[i], 0x06010000 + i * 0x200);
-        i = (u16)i + 1;
+        i = i + 1;
     } while (i <= 2);
     *(volatile u32 *)0x040000D4 = (u32)gUnk_0807CB58;
     *(volatile u32 *)0x040000D8 = 0x05000200;
@@ -91,7 +103,7 @@ u32 sub_0800E008(void)
     i = 0;
     do {
         sub_08006950(gUnk_0807C9F0, i + 8, 1);
-        i = (u16)i + 1;
+        i = i + 1;
     } while (i <= 3);
     do {
         u8 v = (u8)((shift + nm[1] * 4) >> 10);

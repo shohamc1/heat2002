@@ -1,27 +1,47 @@
-/* sub_080093BC — QUARANTINED 2026-09-14 (1004/1000 bytes, 4 bytes over; budget
- * exhausted). Instruction stream, jump table (7 entries, case 0 empty),
- * prologue and case 6 all match in shape; remaining diffs:
+/*
+ * sub_080093BC — QUARANTINED wave 6 (2026-09-14; budget reached at 22 diff
+ * lines / 1000-of-1000 bytes — down from 358 (fresh re-verified from the
+ * saved draft). This file IS the best state:
+ * fresh-verified rm .o; make .o; match.py = MISMATCH with ONLY the case-4
+ * register pair left, see below).
  *
- * 1. Case 4 tail: `p = &a1->unk188; *p += gUnk_0202A520; *p += gUnk_08368134[..]`
- *    ROM keeps the accumulator in r1 and the addend in r0
- *    (ldr r1,[r4]; ldr r0,[r2]; adds r1,r1,r0), ours swaps the pair
- *    (ldr r0,[r4]; ldr r1,[r2]; adds r0,r0,r1). Same count, different regs,
- *    cascades into asrs r1/r0 and the div-arg copy.
- * 2. ~2 extra instructions somewhere in the case-5 tail / case-6 region
- *    (function is 1004 vs 1000; late-region diffs at 0x80096e4+ are partly
- *    offset cascades from the case-4 swap).
+ * WAVE-6 FIXES (all verified, cumulative):
+ * 1. THREE branch-polarity/layout inversions fixed by swapping if/else
+ *    order in the source (ROM puts the "else" body in fallthrough and
+ *    branches on the == / ==0 condition):
+ *      - l_big `a1->unk184 +=`: if (a1 != gUnk_0202A550) unk184 += 0x100
+ *        else unk184 += gUnk_0202CAE0  (was swapped; ROM: bne to the 0x100
+ *        block? NO - beq to the CaE0 block, 0x100 first in layout);
+ *      - l_big tail: if (a1 == gUnk_0202A550) {A53C checks...} else
+ *        {unk9C=0xB400 reset block} (ROM: bne away to the reset block,
+ *        == path falls through);
+ *      - case 6 head: if (a1->unk182 == 0) {else-body} else {C534 body}
+ *        (ROM: bne away to the C534 body, ==0 path falls through).
+ * 2. unk182 CSE-reload killed by hoisting: `v = a1->unk182;` before the
+ *    case-6 head test, then using v for unk175 store + CBC8 store (the
+ *    strb to unk175 kills CSE of the u16 otherwise -> extra ldrh + the
+ *    0x182-offset reg died -> fresh 0x178 materialization; with the
+ *    hoist ROM's `subs r1,#0xa` offset reuse appears for free).
+ * 3. TWO WRONG SYMBOLS (pool words were 0x0202CAD0 / 0x020020E0 /
+ *    0x020021E0): gUnk_0200CAD0 -> gUnk_0202CAD0 (symbols.ld has both;
+ *    the 0200 spellings are decoys), gUnk_0202E0E0/gUnk_0202E0E1 ->
+ *    gUnk_020020E0/gUnk_020021E0. This alone removed 3 pool-region
+ *    diff hunks and the jump-over-pool branch surplus.
  *
- * What converged after sweeps: struct Car s32 unk184/unk188/unk9C and
- * gUnk_0202A520/gUnk_0202CAE0 as s32 (signed compares ble/bge);
- * gUnk_08368124/gUnk_08368134 as u32 VALUE arrays (single ldr, no deref);
- * case 5 head as `if (A && (B || C) && D) goto l_big;` with the ELSE block
- * placed before l_big (ROM layout: else first, then the big block);
- * `& 15`/`& 3` masks (NOT `% 16`/`% 4` — u8 modulo emits a high-byte
- * and/shift dance); `s32 *p` pointer local for the unk188 accumulation.
- *
- * Try next: flip the += register pair (e.g. `*p = *p + gUnk_0202A520`
- * spelled with the global load first, or a temp local for the addend),
- * then re-check the 2-instruction surplus in the case-5/6 tail.
+ * Remaining diff (22 diff lines = 11 instructions, ONE web in case 4):
+ *   ROM:  ldr r1,[r4](*p) ; ldr r0,[r2](gUnk_0202A520) ; adds r1,r1,r0
+ *         lsls r0,r3,#2 ... ldr r0,[r0](table) ; adds r1,r1,r0 ; asrs r1
+ *   ours: same insns with *p in r0 and both addends in r1 (asrs r0).
+ *   Priority math says the gUnk_0202A520 value qty (2 refs / 2-insn span
+ *   = 10000) should beat the *p value qty (6 refs / 15-insn span = 8000)
+ *   and take r0 first - ours allocates *p first. Not yet found why.
+ *   Try next: declaration order of p vs the += spelling, a dummy use to
+ *   extend *p's live length past the asrs, or `*p = *p + gUnk_0202A520`
+ *   with the str hoisted into a temp.
+ * Earlier converged items (from wave 5, still true): struct Car s32
+ * unk184/unk188/unk9C; gUnk_08368124/gUnk_08368134 as u32 VALUE arrays;
+ * case 5 head `if (A && (B || C) && D) goto l_big;` with else first;
+ * & 15 / & 3 masks; s32 *p pointer local for the unk188 accumulation.
  */
 
 #include "global.h"
@@ -47,7 +67,7 @@ struct Car {
     u8 unk18F;
 };
 
-extern u8 gUnk_0200CAD0;
+extern u8 gUnk_0202CAD0;
 extern u8 gUnk_0202EEB0;
 extern u8 gUnk_0202A53C;
 extern struct Car gUnk_0202A550[];
@@ -61,8 +81,8 @@ extern s32 gUnk_0202CAE0;
 extern u8 gUnk_0202CBC0[];
 extern u8 gUnk_0202CBC8[];
 extern u8 gUnk_0202EF00[];
-extern u8 gUnk_0202E0E0;
-extern u8 gUnk_0202E0E1;
+extern u8 gUnk_020020E0;
+extern u8 gUnk_020021E0;
 
 extern void sub_080080B4(void);
 extern void sub_08006418(u8 *str, u32 y, u32 z);
@@ -80,7 +100,7 @@ void sub_080093BC(struct Car *a1, u8 a2)
     u32 v;
     s32 *p;
 
-    if (gUnk_0200CAD0 != 0 && a1 == gUnk_0202A550)
+    if (gUnk_0202CAD0 != 0 && a1 == gUnk_0202A550)
         sub_080080B4();
     if (a1 == gUnk_0202A550 && gUnk_0202EEB0 == 0)
         sub_08006418(gUnk_0806C918, 10, 1);
@@ -93,13 +113,13 @@ void sub_080093BC(struct Car *a1, u8 a2)
         sub_0800C534(a1, a2);
         break;
     case 4:
-        if (gUnk_0200CAD0 == 0 && gUnk_0202A53C == 0)
+        if (gUnk_0202CAD0 == 0 && gUnk_0202A53C == 0)
             a1->unk175 = 5;
         else if (gUnk_0202EEB0 != 0)
             sub_0800A5BC(a1);
         else
             a1->unk175 = 5;
-        if (gUnk_0200CAD0 != 0 && a1 == gUnk_0202A550) {
+        if (gUnk_0202CAD0 != 0 && a1 == gUnk_0202A550) {
             sub_0800A5BC(a1);
             break;
         }
@@ -144,7 +164,7 @@ l_big:
         if (a1 == gUnk_0202A550) {
             if (gUnk_0202A53C != 0) {
                 if (gUnk_0202EF00[3] != 0) {
-                    if (gUnk_0202E0E0 == 0 && gUnk_0202E0E1 == 0
+                    if (gUnk_020020E0 == 0 && gUnk_020021E0 == 0
                         && (sub_080025FC() & 15) > 13) {
                         v = sub_080025FC() & 3;
                         if (v == 0)
@@ -160,18 +180,11 @@ l_big:
                 sub_0800920C((a1->unk184 >> 8) % 100);
             }
         }
-        if (a1 == gUnk_0202A550)
-            a1->unk184 += gUnk_0202CAE0;
-        else
+        if (a1 != gUnk_0202A550)
             a1->unk184 += 0x100;
-        if (a1 != gUnk_0202A550) {
-            a1->unk9C = 0xB400;
-            a1->unk8C = 0;
-            a1->unk90 = 0;
-            a1->unk94 = 0;
-            a1->unk98 = 0;
-            a1->unk88 = 0;
-        } else {
+        else
+            a1->unk184 += gUnk_0202CAE0;
+        if (a1 == gUnk_0202A550) {
             if (gUnk_0202A53C == 0)
                 break;
             if (gUnk_0202A520 > 0) {
@@ -186,22 +199,30 @@ l_big:
             }
             if (gUnk_0202CBC0[2] == 0)
                 a1->unk88 = 0;
+        } else {
+            a1->unk9C = 0xB400;
+            a1->unk8C = 0;
+            a1->unk90 = 0;
+            a1->unk94 = 0;
+            a1->unk98 = 0;
+            a1->unk88 = 0;
         }
         break;
     case 6:
-        if (a1->unk182 != 0) {
-            sub_0800C534(a1, a2);
-            if (a1 == gUnk_0202A550 && gUnk_0202EEB0 != 0)
-                sub_0800649C(gUnk_0806C934, 10, 10);
-        } else {
-            a1->unk175 = a1->unk182;
+        v = a1->unk182;
+        if (v == 0) {
+            a1->unk175 = v;
             if (a1 != gUnk_0202A550) {
                 sub_0800BE00(a1, a1->unk178);
                 a1->unk18F = 1;
             }
-            gUnk_0202CBC8[a1->unk181] = a1->unk182;
+            gUnk_0202CBC8[a1->unk181] = v;
             if (a1 == gUnk_0202A550)
                 sub_0800649C(gUnk_0806C924, 9, 10);
+        } else {
+            sub_0800C534(a1, a2);
+            if (a1 == gUnk_0202A550 && gUnk_0202EEB0 != 0)
+                sub_0800649C(gUnk_0806C934, 10, 10);
         }
         break;
     }

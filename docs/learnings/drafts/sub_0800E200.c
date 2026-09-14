@@ -1,8 +1,39 @@
 /*
- * PARKED (wave 4): rebuild diverges from the ROM (object 462 bytes vs the
- * real 452-byte function; first diff at 0x0800E20A, frame/pool offsets
- * drift from there). Dead-agent mid-edit state, same class as
- * sub_0800C430. Needs re-derivation from the asm before extracting.
+ * sub_0800E200 quarantine notes (2026-09-14, retry wave)
+ * Best build: 452/452 bytes (this file) -- EXACT target size, ~4 insns
+ * of placement residue. Major fixes since last quarantine:
+ *  - flag is a `u8 flag;` local written via `*(u32 *)&flag = 0/1;`
+ *    (word stores, str [sp,#imm]) and read as plain `flag` (byte load
+ *    through a materialized base). u8 flag[4] array or u32 flag with
+ *    plain/cast accesses both fail differently (base-reg lives or the
+ *    value is forwarded into a register).
+ *  - `one` must be u32 (u8 added (r8<<24)>>24 renarrowing per use).
+ *    It is pinned r8 with CONST init 1 (= i at init) -- const-init
+ *    pins DO fire; computed-init pins are silently dropped.
+ *  - loop counter i is SIGNED (`cmp r6,#3; ble`, not bls); x=r4,y=r5,
+ *    i=r6 pins (const inits) give the target mapping; icon pin r9.
+ *  - start naturally lands sl once icon takes r9.
+ *  - EEFC call args are (work, start+0xC0, len-0xC0, 4, 1) -- the old
+ *    draft had the 1 in the wrong position.
+ *  - tail restructured to `if (EFC0 == 0) { if (keys&2 && flag != 1)
+ *    return 1; } else { DFCC; E008; return 0; } goto loop;` -- gives
+ *    the target block order (DFCC fallthrough, keys block after).
+ * Remaining diffs (4 classes):
+ *  1. slot swap: ours len@0x254 flag@0x250, target len@0x250 flag@0x254
+ *     (u8 flag packs differently; decl order (work,len,flag) tried).
+ *  2. flag word-store: ours materializes `add r5,sp,#592` at the top and
+ *     keeps it live to the byte-read; target stores str [sp,#596]
+ *     directly and materializes the base only at the ldrb. (Every
+ *     `*(u32 *)&x` form tested forces a base; the target's sp-direct
+ *     word stores suggest the original flag access path avoided the
+ *     INDIRECT_REF force the way plain locals do.)
+ *  3. second bit test: target re-copies r8 per use (`mov r2,r8` then
+ *     `mov r1,r8`); ours CSEs one copy. The old draft's
+ *     `__asm__ volatile ("" : : : "r2")` clobber between the two tests
+ *     forced the double copy -- RESTORE IT if iterating (it was removed
+ *     during this sweep; re-add inside the first test's fallthrough).
+ *  4. minor arg-reg choices at the EEFC call (movs r4,#1 vs movs r0,#1)
+ *     -- follows from 1+2.
  */
 #include "global.h"
 
@@ -30,16 +61,16 @@ u32 sub_0800E200(void)
 {
     u8 work[0x24C];
     u32 len;
-    u8 flag[4];
+    u8 flag;
     register u32 icon __asm__("r9");
-    register u8 *start __asm__("r10");
-    register u8 *a __asm__("r7");
-    register u8 one __asm__("r8");
+    u8 *start;
+    u8 *a;
+    register u32 one __asm__("r8");
     register u32 x __asm__("r4");
     register u32 y __asm__("r5");
-    register u32 i __asm__("r6");
+    register s32 i __asm__("r6");
 
-    *(u32 *)flag = 0;
+    *(u32 *)&flag = 0;
     icon = 0;
     *(volatile u16 *)0x0400000E = 0x1C0C;
     {
@@ -55,7 +86,7 @@ u32 sub_0800E200(void)
     start = gUnk_08363EE8;
     len = (u32)gUnk_08364AC8 - (u32)start;
     *(u32 *)(work + 0x28) = (u32)start;
-    work[0x4B] = flag[0];
+    work[0x4B] = flag;
     sub_0800EA64(work);
 loop:
     {
@@ -109,20 +140,24 @@ pnext:
         {
             if (work[0x18] == 0 && work[0x1E] != 0)
             {
-                sub_0800EEFC(work, 1, start + 0xC0, len - 0xC0, 4);
-                *(u32 *)flag = 1;
+                sub_0800EEFC(work, start + 0xC0, len - 0xC0, 4, 1);
+                *(u32 *)&flag = 1;
             }
         }
-        if (sub_0800EAA0(work) != 0 && *(u32 *)flag == 1)
+        if (sub_0800EAA0(work) != 0 && flag == 1)
             return 1;
-        if (sub_0800EFC0(work) != 0)
+        if (sub_0800EFC0(work) == 0)
+        {
+            if ((gKeysPressed & 2) != 0 && *(u32 *)&flag != 1)
+                return 1;
+        }
+        else
         {
             sub_0800DFCC();
             sub_0800E008();
             return 0;
         }
-        if ((gKeysPressed & 2) == 0 || *(u32 *)flag == 1)
-            goto loop;
+        goto loop;
     }
     return 1;
 }

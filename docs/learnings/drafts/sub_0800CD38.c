@@ -1,28 +1,60 @@
 /*
- * sub_0800CD38 quarantine notes (2026-09-14, F4)
- * Best build: 572/580 bytes, register-identical after masking reg names
- * EXCEPT 6 single-instruction hunks (all "target reloads, ours reuses"):
- *  1. gUnk_02000480 pool ldr r3 comes BEFORE `mov r0, ip; subs (dz)` in
- *     target; ours computes dz first, loads pool at the store. Tried: fused
- *     nested assignment `g480 = (cross = ...)`, separate statements,
- *     pointer local pg (GCC folds it), comma-expression, volatile on g480
- *     (reorders worse), raw cast *(s32*)0x02000480 (moves other hunks).
- *  2. target reloads p0y `ldr r0,[sp,#0x24]` right before `subs r7,r5,r0`
- *     (a = x0 - p0y); ours reuses the r6 value from ex computation.
- *  3/4. target re-loads the g488/g484 pool addresses between the div-result
- *     copy and the second store (`adds r4,r0,#0; ldr r0,[pc]; str`); ours
- *     CSEs one address pseudo and holds it in r4 across the __divsi3 call.
- *     Casting only the 2nd store `*(s32 *)0x02000488 = nx;` DOES reproduce
- *     the per-store pool load but restructures the prologue/s16 region.
- *  5. a4 fill: target copies wall `mov r0, r8` then `mov r2, r8` (two
- *     copies); ours copies once into r3 and reuses.
- *  6. a4 fill: target reloads a4 `[sp,#0x1C]` before EACH field store;
- *     ours holds one copy. `volatile struct Result *a4` param makes it
- *     worse (extra ldrb reloads of the u8 fields).
- * Pins used: z0=r12, dz=r10, dx16=r9 (assignment-expr inside cross),
- * a=r7, b=r5 (assignment-exprs inside t). wall naturally lands r8 once
- * dx16 takes r9. v1/v2 temps + explicit `next` local reproduce the
- * wall-lookup/next-store interleaving at 0x0800CD5C.
+ * sub_0800CD38 quarantine notes (2026-09-14, F4 + retry wave)
+ * Best build: 572/580 bytes (this file: s32 return + original pins).
+ * SOLVED since last quarantine:
+ *  - Epilogue: ROM has `pop {r1}; bx r1` — thumb_exit() picks ARG_2 for ANY
+ *    function whose return size <= 4. Return type must be s32/u32, not void.
+ *  - p0y reload hunk (was #2) already fixed in this state.
+ * Remaining diffs (4 classes, all one allocation web):
+ *  a. g480 pool ldr is 2 insns LATE (after `mov sl,r0`); ROM loads &g480
+ *     BEFORE the dz computation.
+ *  b. cross lands r7 (collides with a=r7 pin!); ROM has cross=r6. NOTE:
+ *     GCC 2.95 local register variables DO NOT create alloc conflicts —
+ *     with a pinned r7, local-alloc also gave cross r7, so our build's
+ *     first __divsi3 divides by `a`, not cross (silent miscompile class).
+ *  c. 488/484 stores: we hold ONE CSE'd address pseudo in r4 across the
+ *     div call; ROM reloads the pool address PER STORE (2 ldrs of the same
+ *     pool entry for each global).
+ *  d. a4-fill: ROM reloads a4 ([sp,#0x1C]) before each field store and
+ *     copies wall `mov r0,r8`/`mov r2,r8` twice; we hold one copy of each.
+ *
+ * MECHANISM (verified against agbcc source + experiments):
+ *  - Every global store creates an address pseudo at expand (expr.c:4802
+ *    change_address -> memory_address -> force_reg) with (set P (symbol_ref)).
+ *  - cse.c invalidate_for_call() only invalidates HARD regs; pseudo constant
+ *    entries survive calls, so CSE unifies both stores' pseudos -> nrefs=2
+ *    pseudo -> wins callee-saved r4 -> single ldr (ours).
+ *  - ROM shape = TWO nrefs=1 address pseudos (no CSE unify): priority
+ *    floor_log2(1)*1*... = 0 -> never allocated a reg -> spilled with
+ *    REG_EQUIV constant -> reload RE-MATERIALIZES `ldr rX,[pc]` per use.
+ *    add_constant() dedups pool entries by rtx, so one entry, loaded twice.
+ *  - `*(s32 *)0x02000488 = nx;` literal on 2nd store ONLY: reproduces the
+ *    per-store reloads AND cross=r6, nx=r4, a4 per-store reloads (568B),
+ *    but cascades: wall falls to r7 (ROM keeps r8 + mov copies), t gets
+ *    spilled around the first store, inner loop strength-reduces cur1 into
+ *    r8 (`movs r0,#24; add r8,r0`), j moves to [sp,#0x34]. Net -12B.
+ *  - Literal casts on ALL FOUR stores: CSE folds 0x02000484 = 0x02000488-4
+ *    (`ldr r4,pool; subs r4,#4`) — wrong shape, 556B.
+ *  - Literal on 1st store + extern 2nd: same cascade class, 564B.
+ *  - Folding dz into the store RHS (`g480 = (cross = (dz = z1-z0)*...)`)
+ *    and `pg=&g480` BEFORE dz + `*pg=` store both hoist the &g480 ldr
+ *    correctly BUT rotate early allocation (next r4->r5, wall-copy r6->r2,
+ *    dz scratch r0->r5). 580B size, wrong regs everywhere.
+ *  - `register struct Wall *w asm("r8")` pin: every wall use emits its own
+ *    `mov rX,r8` copy (612B). ROM copies only at region boundaries.
+ *  - Unpinning a/b (natural alloc): whole frame restructures (0x4C frame,
+ *    wall=r7 from function start, t spilled, 548-560B). The pins ARE
+ *    load-bearing for the outer loop; they only misbehave for cross.
+ * NEXT LEVERS if revisited:
+ *  - Find a source form that yields two nrefs=1 symbol_ref address pseudos
+ *    with the SAME symbol_ref rtx (CSE must not unify): e.g. both stores
+ *    through one extern but with CSE blocked structurally between them
+ *    (the bhi continue-check sits AFTER both stores in ROM, so no EBB break
+ *    available), or make the 1st store's pseudo die before CSE records it.
+ *  - sub_0800D124 (next function, asm/rom_0800CD38.s:575+) shows the SAME
+ *    double-load idiom for 0x02000488/0x02000484 — matching it first may
+ *    reveal the original source convention shared by both.
+ * Pins used: z0=r12, dz=r10, dx16=r9, a=r7, b=r5 (all assignment-exprs).
  */
 #include "global.h"
 
@@ -82,8 +114,8 @@ extern s32 gUnk_02000480;
 extern s32 gUnk_02000484;
 extern s32 gUnk_02000488;
 
-void sub_0800CD38(struct Corner *a1, struct Box *a2, struct Box *a3,
-                  struct Result *a4, u16 *a5, s32 *a6)
+s32 sub_0800CD38(struct Corner *a1, struct Box *a2, struct Box *a3,
+                 struct Result *a4, u16 *a5, s32 *a6)
 {
     u8 unused[0x10];
     s32 p0x, p0y, p1x, p1y;
