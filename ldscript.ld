@@ -227,7 +227,7 @@ SECTIONS
         build/src/sub_0800BB58.o(.text*);
         build/asm/rom_0800BBDC.o(.text*);
         build/src/sub_0800BBFC.o(.text*);
-        build/asm/rom_0800BC4A.o(.text*);
+        build/src/sub_0800BC4C.o(.text*);
         build/src/sub_0800BD44.o(.text*);
         build/asm/rom_0800BD98.o(.text*);
         build/src/sub_0800BE00.o(.text*);
