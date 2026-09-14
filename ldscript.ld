@@ -201,6 +201,8 @@ SECTIONS
         build/src/sub_0800A310.o(.text*);
         build/src/sub_0800A438.o(.text*);
         build/asm/rom_0800A470.o(.text*);
+        build/src/sub_0800A5BC.o(.text*);
+        build/asm/rom_0800A5E2.o(.text*);
         build/src/sub_0800AF20.o(.text*);
         build/asm/rom_0800AF44.o(.text*);
         build/src/sub_0800AFF0.o(.text*);
