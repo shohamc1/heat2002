@@ -593,10 +593,27 @@ See src/sub_0800CB18.c.
 round): instruction stream/pool/prologue fully solved via
 `q = (u16 *)(4 * e[1] + (u32)p);` (temp-first plus) + two-statement
 sum; remaining diff is one allocation web (v wants r1 not r2, dx/dy
-swapped). `docs/learnings/drafts/sub_0800C358.c` (216 bytes): the
-round-1 register-tie diff shrank to a single p(r3)/xi(r2) swap after
-computing `yi = p->unk18 >> 23; xi = p->unk1C >> 23;` directly from the
-raw loads; global-alloc priority data in each header.
+swapped).
+
+### Resolved 2026-09-14: sub_0800C358 (MATCH, 216 bytes)
+
+`src/sub_0800C358.c` matches all 216 bytes at `0x0800C358`. Compute the
+table offset before adding the data address:
+
+```c
+entry = (u8 *)(p->unk100[xi * 48 + yi] + (u32)p->unkFC);
+```
+
+This one expression selects `p` in r3 and `xi` in r2, and places the
+`unkFC` address calculation after the table-index calculation. The former
+pointer-first expression selected the wrong registers and computed that
+address too early. Keep the raw-field shifts for `yi` and `xi`.
+
+Two independent Luna experiments and `python3 scripts/match.py sub_0800C358`
+confirmed the full match. No register declarations, compiler changes, or
+flag changes were needed. The C object replaces the original asm at its ROM
+address. A clean copy of the commit contents passed `make check` and
+`make test`; unrelated local drafts were excluded from that copy.
 
 ## Parked 2026-09-14: sub_08000958 + sub_08000972 — hand-written asm, not a C target
 
