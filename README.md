@@ -11,15 +11,17 @@ match, the change is wrong — no exceptions.
 
 | Metric | Value |
 | --- | ---: |
-| Functions decompiled | **103 / 743** |
-| Code matched | **2,844 / 109,370 bytes** |
-| Percent complete | **2.6003%** |
+| Functions decompiled | **394 / 646** |
+| Code matched | **44,106 / 100,292 bytes** |
+| Percent complete | **43.9776%** |
 
 Progress is measured in **bytes of code**, not function count — a 1,500-instruction
-function is not worth the same as a 1-instruction stub. Regenerate with
-`python3 scripts/progress.py`; `--json` emits an
-[objdiff](https://github.com/encounter/objdiff) `report.json` v2 compatible with
-[decomp.dev](https://decomp.dev).
+function is not worth the same as a 1-instruction stub. The denominator is the
+646 game-code functions (743 blocks minus 97 vendored runtime-library and
+luvdis false positives — see `docs/learnings/parked.md`); over the whole ROM
+the same bytes are 37.4313%. Regenerate with `python3 scripts/progress.py`;
+`--json` emits an [objdiff](https://github.com/encounter/objdiff) `report.json`
+v2 compatible with [decomp.dev](https://decomp.dev).
 
 The disassembly already reassembles to a perfect match, so the ROM is fully
 reproducible today. Decompilation is the work of replacing that assembly with C
