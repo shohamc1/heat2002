@@ -48,7 +48,7 @@ Ranked by original caller count. Drafts for functions since resolved into
 | `sub_0800C534` | 1104 b | 2 | 1104/1104 bytes, 536/536 instructions; 11 register-name diffs |
 | `sub_0800F0BC` | 24 b | 1 | BLOCKED — reachable/unreachable insn mix (`mov r2, pc` self-check) |
 | `sub_08000958` | 26 b | 1 | hand-written asm pair with `sub_08000972`; not reachable from agbcc C |
-| `sub_08007304` | 64 b | 1 | 12 of 64 bytes differ (best shape; was 22+) |
+| `sub_08007304` | 64 b | 1 | wave-1 closeout: 4-byte floor with r7 pin (mov r7,ip constructible); pure-C r0-occupant impossible |
 | `sub_0800383C` | 84 b | 1 | one register permutation away |
 | `sub_08016ED8` | 100 b | 1 | one cluster of 4 register-swapped instructions at 0x08016eea |
 | `sub_0800C2CC` | 140 b | 1 | wave-5d state compiles; agent died mid-work |
@@ -63,7 +63,6 @@ Ranked by original caller count. Drafts for functions since resolved into
 | `sub_0800E200` | 452 b | 1 | wave-5d state compiles; agent died mid-experiment |
 | `sub_0800E008` | 504 b | 1 | best build 540/532 bytes (retry-wave notes in header) |
 | `sub_0800AB78` | 520 b | 1 | 520/520 bytes; cross-jump sharing of the four `sub_0800A80C` call sites |
-| `sub_080087F4` | 556 b | 1 | bare struct-typed draft, no quarantine header |
 | `sub_0800BEA4` | 580 b | 1 | wave-4 dead-agent state; mid-function code 4 bytes short |
 | `sub_0800CD38` | 580 b | 1 | best build 572/580 bytes |
 | `sub_0800A084` | 592 b | 1 | wave-4 dead-agent state; code 2 bytes short, branch/pool offsets drift |

@@ -1,21 +1,3 @@
-/* sub_080087F4 — SOLVED 2026-09-15 (permutation campaign wave 1):
- * MATCH (502 bytes, full extent). Canonical source in src/sub_080087F4.c;
- * this file kept for the learning record. The bare draft was 5 bytes off.
- *
- * THE FIX (two tail edits): (1) delete the separate `idx` local and write
- * `m = t >> 15;` — idx reuses pinned m's r2 home, and m staying live to the
- * else-use blocks r2 for ptr180, which falls to r3 (the ROM homes idx r2 /
- * &obj->unk180 r3; global-alloc priority had ptr180 stealing r2 from idx).
- * (2) spell the then-arm shift explicitly `obj->unk148 += t >> 16;` (was
- * `idx >> 1`). The draft's two register pins (m=r2, mm=r0) are load-bearing
- * (all pins removed: 34 bytes off). NEW LEVER for the catalog: fold the
- * losing allocno into a pinned/callee variable whose home it should
- * inherit — the variable-folding route beats zero-emission ref tricks
- * because combine (before regclass) deletes computed-value refs.
- * Extraction note: trailing pad bytes 0x080089EA-B are linker fill the
- * C object's own .align produces — the new fragment starts at 0x080089EC;
- * keeping them double-counts and shifts everything after by 4.
- */
 #include "global.h"
 
 struct Unk080087F4 {
@@ -122,11 +104,11 @@ tail:
     t = m;
     if (m < 0)
         t = m + 0x7FFF;
-    idx = t >> 15;
+    m = t >> 15;
     if (obj->unk180 != 0) {
         obj->unk180--;
-        obj->unk148 += idx >> 1;
+        obj->unk148 += t >> 16;
     } else {
-        obj->unk148 += idx;
+        obj->unk148 += m;
     }
 }
