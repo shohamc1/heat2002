@@ -48,7 +48,8 @@ reports against 646 and prints the whole-ROM figure underneath.
    `nascar-heat.elf`, so `bl`/pointer references resolve before comparing.
 4. `MISMATCH` prints an instruction diff — adjust the C and repeat. If the
    structure matches and only registers or a few instructions differ, run
-   the permuter before you park the function (see "Helper tools").
+   the permuter and trace the compiler passes before you park the function
+   (see "Helper tools").
 5. On `MATCH`, delete the function from its `asm/*.s` fragment and place the
    C object at the same address in `ldscript.ld`.
 6. `make check` must still print `MATCH`.
@@ -149,6 +150,21 @@ instructions:
 - Its C parser rejects `register ... asm("rN")` pins. Remove them first.
 - It runs from `.venv`, because it needs `pycparser<3`. See the setup
   section of `README.md`.
+
+Don't stop at the permuter. Its first trial, on `sub_08016ED8`, ran about
+30 minutes from a score of 25 without improving, and the fix needed an
+`asm("rN")` pin that the permuter can't parse. Tracing the compiler passes
+found that fix:
+
+1. Find a variant, even one with wrong bytes, that gets the right register
+   choices. For `sub_08016ED8`, that was a `volatile u32` read in place of
+   `u16`.
+2. Compile it and the draft with `old_agbcc` plus `-dc -dN -dl` to dump
+   RTL after combine, regmove, and local-alloc.
+3. Find the first pass where the two dumps diverge, and write C that
+   changes what that pass sees.
+
+The `sub_08016ED8` entry in `parked.md` walks through a full example.
 
 `scripts/permute.py` replaces the permuter's own `import.py`. It links the
 target and every candidate at the function's ROM address, like `match.py`.
