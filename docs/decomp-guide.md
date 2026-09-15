@@ -13,7 +13,7 @@ the SHA1 of the original. Nothing else counts.
 ```
 git status          # must be clean
 make check          # must print MATCH -- if not, STOP, something is broken already
-make test           # all six checks must pass
+make test           # every check must pass
 ```
 
 If `make check` does not print MATCH on a clean tree, do not start a ticket.
@@ -78,6 +78,16 @@ lr on the stack. Rare; see the shared-pool note in step 6.
 
 File: `src/sub_0800048C.c`. **One function per file. Always.** The build
 places whole objects at addresses; two functions in one file cannot be placed.
+
+To get a first draft, run m2c on the fragment from step 1:
+
+```
+python3 tools/m2c/m2c.py -t gba -f sub_0800048C asm/rom.s
+```
+
+m2c shows the control flow, struct offsets, and hardware registers. It
+doesn't follow the rules below: it casts RAM addresses, guesses types, and
+names locals by register. Read it, then write the C yourself.
 
 ```c
 #include "global.h"
@@ -151,9 +161,22 @@ fixes, in order of how often they are the answer:
 | literal pool value differs | wrong constant/address | copy the `@ =` value exactly |
 | `undefined reference to gFoo` | symbol not in `symbols.ld` | add it |
 
-Do not loop forever. If after ~10 tries the diff is one stubborn
-instruction, write down what you tried in the ticket under "Risks" and
-move on to the next ticket. A half-done ticket with notes is useful; a
+**If only registers differ,** run the permuter. It fits a diff with the
+right instruction count and opcodes but the wrong register names, or a few
+reordered instructions:
+
+```
+python3 scripts/permute.py sub_0800048C src/sub_0800048C.c -j8
+```
+
+Press Ctrl+C when the score stops falling. Candidates land in
+`nonmatchings/sub_0800048C/output-SCORE-N/source.c`. Copy the lowest-scoring
+one into `src/` and run `match.py` again. A score of 0 isn't a match until
+`match.py` says so. For setup and limits, see "Helper tools" in `CLAUDE.md`.
+
+Do not loop forever. If after ~10 tries and a permuter run the diff is one
+stubborn instruction, write down what you tried in the ticket under "Risks"
+and move on to the next ticket. A half-done ticket with notes is useful; a
 guessed "match" that is not one is not.
 
 Things that are NOT fixes and must never be done:
@@ -236,7 +259,7 @@ from git and redo the split.
 make check                              # MATCH
 python3 scripts/match.py sub_0800048C   # still MATCH
 python3 scripts/progress.py             # function count went up by exactly 1
-make test                               # 6 checks pass
+make test                               # every check passes
 ```
 
 ## 7. Commit

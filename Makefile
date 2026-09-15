@@ -63,6 +63,7 @@ test:
 	python3 scripts/closure.py --selftest
 	python3 scripts/seed_functions.py --selftest
 	python3 scripts/strings.py --selftest
+	python3 scripts/permute.py --selftest
 	python3 scripts/test_alignment.py
 	python3 scripts/test_extract_guard.py
 

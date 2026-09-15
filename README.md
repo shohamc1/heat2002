@@ -61,6 +61,9 @@ cd tools/agbcc && ./build.sh && cd ../..
 # Function discovery tool
 python3 -m venv .venv && .venv/bin/pip install -e tools/luvdis
 
+# Permuter dependencies (scripts/permute.py); pycparser 3 breaks it
+.venv/bin/pip install "pycparser<3" toml
+
 cp /path/to/your/dump.gba baserom.gba
 make check      # must print MATCH
 ```
@@ -112,8 +115,11 @@ scripts/
   extract.py         Cut a matched function out of its asm fragment
   batch_extract.py   Extract every matched function, regenerate ldscript
   progress.py        Progress report + decomp.dev report.json
+  permute.py         Run decomp-permuter on a near-miss draft
 tools/agbcc      Vendored GCC 2.95 — do not modify
 tools/luvdis     Vendored disassembler — do not modify
+tools/m2c        Vendored asm-to-C decompiler for first drafts; do not modify
+tools/decomp-permuter  Vendored C permuter (agbcc fork); do not modify
 docs/recon.md    Binary recon: inventory, call graph, entry point
 docs/verification.md  What MATCH proves, and what it doesn't
 docs/learnings/  Parked functions and known dead ends — read before picking

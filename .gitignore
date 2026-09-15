@@ -13,5 +13,7 @@ tools/agbcc/agbcc_arm
 tools/agbcc/old_agbcc
 tools/agbcc/*.a
 report.json
+# decomp-permuter working directories (scripts/permute.py).
+nonmatchings/
 *.sav
 __pycache__/

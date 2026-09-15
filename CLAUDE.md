@@ -40,12 +40,15 @@ reports against 646 and prints the whole-ROM figure underneath.
 ## The loop
 
 1. Take the lowest-numbered open ticket in `docs/tickets/`.
-2. Write C in `src/` implementing that function.
+2. Write C in `src/` implementing that function. For a first draft, read
+   m2c's output (see "Helper tools").
 3. `python3 scripts/match.py <name>`. It builds only `build/src/<name>.o`
    (a full `make` fails with a duplicate symbol while the asm copy still
    exists -- expected) and links it alone at its address with symbols from
    `nascar-heat.elf`, so `bl`/pointer references resolve before comparing.
-4. `MISMATCH` prints an instruction diff — adjust the C and repeat.
+4. `MISMATCH` prints an instruction diff — adjust the C and repeat. If the
+   structure matches and only registers or a few instructions differ, run
+   the permuter before you park the function (see "Helper tools").
 5. On `MATCH`, delete the function from its `asm/*.s` fragment and place the
    C object at the same address in `ldscript.ld`.
 6. `make check` must still print `MATCH`.
@@ -112,6 +115,47 @@ maps closely onto the source:
   stray `lsl`/`asr` sign-extension pairs.
 - Stack shuffling that won't go away usually means a local is missing or one
   too many exists.
+
+## Helper tools
+
+Two vendored submodules help at opposite ends of a ticket. Neither decides a
+match: only `match.py` and `make check` do.
+
+**m2c** (`tools/m2c`) turns asm into draft C. Use it when you start a
+function, especially a large one with no draft. To find the fragment, run
+`grep -l 'func_start sub_080112E0$' asm/*.s`, then:
+
+    python3 tools/m2c/m2c.py -t gba -f sub_080112E0 asm/rom_080112DE.s
+
+Treat the output as notes, not source. It casts addresses instead of using
+`extern` symbols, guesses types, and ignores declaration order. Rewrite it
+with the rules in "Writing C that matches".
+
+**decomp-permuter** (`tools/decomp-permuter`, the agbcc fork) rewrites a
+draft at random and scores each compile against the target. Use it when the
+structure matches and the diff is register names or a few reordered
+instructions:
+
+    python3 scripts/permute.py sub_080112E0 docs/learnings/drafts/sub_080112E0.c -j8
+
+- It writes `nonmatchings/NAME/` (gitignored) and runs until you press
+  Ctrl+C. Each better candidate lands in
+  `nonmatchings/NAME/output-SCORE-N/source.c`.
+- Edit your draft, not `base.c`. Every run regenerates the inputs.
+- A score of 0 means the disassembly text matches. Copy the candidate to
+  `src/NAME.c` and run `match.py`: only its `MATCH` counts.
+- A lower non-zero score is a lead. Find the change that helped and apply
+  it to your draft by hand, then run the permuter again from there.
+- Its C parser rejects `register ... asm("rN")` pins. Remove them first.
+- It runs from `.venv`, because it needs `pycparser<3`. See the setup
+  section of `README.md`.
+
+`scripts/permute.py` replaces the permuter's own `import.py`. It links the
+target and every candidate at the function's ROM address, like `match.py`.
+Unlinked objects never score 0 here: asm pools hold literal addresses, and C
+pools hold relocations. `import.py` can't link, because it builds every
+`compile.sh` from one project-wide command, and the address differs per
+function. On an already-matched function this setup scores 0.
 
 ## Extracting a function: linker placement
 
@@ -194,7 +238,8 @@ tickets need no further tooling changes for either of these.
 
 ## Never do these
 
-- Do not modify `tools/luvdis/`, and do not casually modify the compiler.
+- Do not modify `tools/luvdis/`, `tools/m2c/`, or `tools/decomp-permuter/`,
+  and do not casually modify the compiler.
   Both are fenced off from linting via a per-submodule `.pi-lens.json` —
   leave it in place.
 
@@ -218,5 +263,7 @@ tickets need no further tooling changes for either of these.
     make check      # build + verify SHA1 (the only test that counts)
     make disasm     # full-ROM reference disasm -> build/rom_reference.s (never touches asm/)
     python3 scripts/match.py NAME       # diff one function against the target
+    python3 tools/m2c/m2c.py -t gba -f NAME FRAGMENT.s   # draft C from asm
+    python3 scripts/permute.py NAME DRAFT.c -j8          # permute a near-miss
     python3 scripts/progress.py         # progress summary
     python3 scripts/progress.py --json  # report.json for decomp.dev

@@ -119,6 +119,14 @@ records the methodological error to avoid here: tracing the mechanism in
 which source produces the ROM's, so **do not treat a mechanism trace as an
 impossibility proof.**
 
+Before a manual variant campaign on a register-only diff, run
+`python3 scripts/permute.py NAME DRAFT.c -j8` (see "Helper tools" in
+`CLAUDE.md`). It automates the search that cleared `sub_08001150`. Its
+agbcc passes include duplicate and self assignments, the family the
+dead write-back store belongs to, but at low weight. Treat a run with no
+0 as a lead, not a verdict: its best candidate shows which rewrites move
+the allocation.
+
 | Function | Difference | Attempts |
 |---|---|---|
 | `sub_08015364` | ONE 2-byte run at `0x8015d8f-0x8015d90`: the `gUnk_0202EEB0 = 1;` constant in the state2 track-select arm wants `r2`, ours takes `r0` | ~300 |
