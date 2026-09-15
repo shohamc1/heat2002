@@ -1,65 +1,30 @@
 /*
- * sub_0800C534 — SOLVED 2026-09-15 (permutation campaign wave 1):
- * MATCH (1104 bytes). Canonical source in src/sub_0800C534.c; this file
- * kept for the learning record.
+ * sub_0800C534 -- SOLVED: MATCH, 1104 bytes @ 0x0800C534 (campaign 2026-09-15,
+ * scratch /tmp/perm/w1/sub_0800C534, variant v015). Three levers closed the
+ * final 11 register-name diff bytes (all other structure already matched):
  *
- * THE FIX, cluster by cluster (all three ties were source-idiom issues,
- * not allocation magic):
- *  C3 (narrowing scratch): the (s16) narrowing must be TWO STATEMENTS on
- *    the SAME variable (`diffxy = diffxy << 16; diffxy = diffxy >> 16;`)
- *    — one-expression shift pairs and (s16) casts create a fresh
- *    intermediate pseudo that local-alloc homes in r0.
- *  C1 (ldrb r0 vs r1): the tail's `stv` reuse for `ent->unk175` inflated
- *    its global allocno across the whole function; a separate block-local
- *    `u8 st2` for the tail load shrinks stv's range so it takes r0.
- *  C2 (subs operand): write the angle def NEGATION-FIRST:
- *    `angle = -(sub_0800CB18(...) << 8) + 0x8400;` — same minus RTL after
- *    canonicalization, but the expand-time tree order shifts pseudo
- *    creation so the spilled angle's def-site reload picks r0.
+ *  C3 (0x0800C826/C836, 4 bytes): the (s16) narrowing must be written as TWO
+ *     statements per site, same variable in and out:
+ *       diffxy = diffxy << 16;  diffxy = diffxy >> 16;
+ *       d2 = angle - ent->unk34;  d2 = d2 << 16;  d2 = d2 >> 16;
+ *     A one-expression pair or a (s16) cast creates a fresh intermediate
+ *     pseudo that local-alloc homes in r0 (lsls r0,rX / asrs rX,r0 scratch).
+ *     The two-statement form keeps one pseudo so both shifts run in place.
  *
- * sub_0800C534 -- QUARANTINED (1104/1104 bytes, 536/536 instructions, 11 register-name diffs)
+ *  C1 (0x0800C660, 3 bytes): the tail state test (unk175 == 2 -> *pA0 = value)
+ *     must use a SEPARATE block-local variable (st2), not reuse stv. Reusing
+ *     stv gives it 2 sets and a whole-function allocno; the inflated conflict
+ *     set excludes r0 in global find_reg pass 0, landing stv in r1.
  *
- * Status: MISMATCH. Structure, size, branch targets, pool contents all match.
- * Three independent one-register allocation ties remain (all others swept):
+ *  C2 (0x0800C744, 2 bytes): the angle def must be written negation-first:
+ *       angle = -(sub_0800CB18(...) << 8) + 0x8400;
+ *     gcc canonicalizes to the identical `subs rd, r1, r0` RTL, but the
+ *     different expand-time tree shifts pseudo creation order so the def-site
+ *     output reload of the spilled angle pseudo inherits r0 (the dying shift
+ *     result) instead of r1.
  *
- *  1) 0x0800C660  T: ldrb r0,[r6]      O: ldrb r1,[r6]   (+ cmp r0/r1 x2 at C664/C668)
- *     The state byte read through ps (r6). Target reuses r0 (the reg that just
- *     held the 0x175 pool const); ours allocates a fresh r1. Direct `*ps` reads
- *     (no stv local) DO land in r0 (cse folds the two tests to one load), but
- *     then the reload move `mov r10,r4` (bufp=buf) slides BEFORE the ldrb
- *     instead of after it. With `u8 stv = *ps` the mov position is right but
- *     the read takes r1. Tried: stv as u8/u32/register, pinned/unpinned ps,
- *     decl-order permutations. (Pinned ps defeats the load cse entirely --
- *     two ldrb's -- see /tmp notes below.)
- *
- *  2) 0x0800C744  T: subs r0,r1,r0 ; str r0,[sp,#0x34]   O: subs r1,... ; str r1,...
- *     angle = 0x8400 - (sub_0800CB18(...) << 8). Reload picks the sub's
- *     destination: target reuses r0 (call-result reg), ours r1 (0x8400 reg).
- *
- *  3) 0x0800C826  T: lsls r3,r3,#16 ; asrs r3,r3,#16     O: lsls r0,r3,#16 ; asrs r3,r0,#16
- *    0x0800C836  T: ldrh r0 ; subs r1,r2,r0 ; lsls r1,r1 ; asrs r1,r1
- *                 O: ldrh r1 ; subs r0,r2,r1 ; lsls r0,r0 ; asrs r1,r0
- *     The (s16) narrowing after the if/else writes through an r0 scratch;
- *     target narrows in place. d2 = (s16)(angle - ent->unk34) likewise.
- *
- * Swept (all matched or reverted): ternary vs if/else for the unkA0 mask
- * (direct stores per arm + gcc cross-jump merges the strh -- REQUIRED),
- * table reads inside the state==2 block, operand order `gUnk_020020CC * 8 +
- * ent->unk181`, angle as a separate stack local (buf[2] must NOT be an array
- * element -- the compiler then picks pointer-form vs sp-form addressing for
- * bufp[1]/angle exactly as the ROM), t1/t2/t3 locals for the second table
- * block (REQUIRED for the T1,T2,T3,dx,T4,dy interleave), 0x8400-(x<<8) not
- * 0x84000-x, ps=&ent->unk175 local (r6; pinned breaks cse, unpinned works but
- * see (1)), stv single-read for the state tests, second sub_0800C4E0 call in
- * the state==1 arm (<= 0xC7 after gUnk_020020CC==3), dead pad[10] before buf
- * (frame 0x38), result pinned r8 / zero pinned r9 (register-asm; zero must be
- * pinned or the `if (zero != 0)` tail folds away -- plain locals get cse'd to
- * nothing), bufp unpinned (r10 falls out naturally once ps takes r6).
- *
- * Next levers not yet tried: -dl dump of local_alloc qty order around the
- * three sites (the C660 block has exactly the 3-quantity broken-sort shape
- * described in parked.md); making the C660 read part of a 2-qty block;
- * reload-suggested-register games via copy shapes for (2)/(3).
+ * Everything else (frame, pins, t1/t2/t3 interleave, ps/bufp locals, dead
+ * pad[10]) is as documented in the previous draft header below.
  */
 #include "global.h"
 
@@ -207,8 +172,8 @@ void sub_0800C534(struct Unk0800C534 *ent, u8 param)
             t1 = gUnk_083672F0[(gUnk_020020CC * 8 + 6) * 2];
             t2 = gUnk_083672F0[(gUnk_020020CC * 8 + 6) * 2 + 1];
             t3 = gUnk_083672F0[(gUnk_020020CC * 8 + 7) * 2];
-            angle = 0x8400 - (sub_0800CB18(t1 - t3,
-                t2 - gUnk_083672F0[(gUnk_020020CC * 8 + 7) * 2 + 1]) << 8);
+            angle = -(sub_0800CB18(t1 - t3,
+                t2 - gUnk_083672F0[(gUnk_020020CC * 8 + 7) * 2 + 1]) << 8) + 0x8400;
         }
     }
     limit = 4;
@@ -235,10 +200,13 @@ void sub_0800C534(struct Unk0800C534 *ent, u8 param)
             diffxy = angle - ent->unk12C;
         else
             diffxy = angl - ent->unk12C;
-        diffxy = (diffxy << 16) >> 16;
+        diffxy = diffxy << 16;
+        diffxy = diffxy >> 16;
         if (ent->unk175 == 3)
         {
-            d2 = (s16)(angle - ent->unk34);
+            d2 = angle - ent->unk34;
+            d2 = d2 << 16;
+            d2 = d2 >> 16;
             if ((d2 < 0 ? -d2 : d2) <= 0x3FF
                 || gUnk_020020CC == 3 || gUnk_020020CC == 1 || gUnk_020020CC == 9
                 || ((d2 < 0 ? -d2 : d2) <= 0xFFF && (gUnk_020020CC == 4 || gUnk_020020CC == 2)))
@@ -259,9 +227,11 @@ void sub_0800C534(struct Unk0800C534 *ent, u8 param)
     }
     if (ent->unk175 == 1 && (-ent->unk2C) >> 12 > 0x50)
         *pA0 = 2;
-    stv = ent->unk175;
-    if (stv == 2 && (-ent->unk2C) >> 12 > 0x28)
-        *pA0 = stv;
+    {
+        u8 st2 = ent->unk175;
+        if (st2 == 2 && (-ent->unk2C) >> 12 > 0x28)
+            *pA0 = st2;
+    }
     if (ent->unk175 == 3 && (-ent->unk2C) >> 12 > 0xA)
         *pA0 = 2;
     if (zero != 0)

@@ -45,7 +45,6 @@ Ranked by original caller count. Drafts for functions since resolved into
 | `sub_08017000` | 184 b | 2 | one allocation decision plus its register fallout (190/184 bytes) |
 | `sub_08004018` | 200 b | 2 | 2 insn-shape issues in the loop body |
 | `sub_08000DC8` | 772 b | 2 | BLOCKED — epilogue is interwork form |
-| `sub_0800C534` | 1104 b | 2 | 1104/1104 bytes, 536/536 instructions; 11 register-name diffs |
 | `sub_0800F0BC` | 24 b | 1 | BLOCKED — reachable/unreachable insn mix (`mov r2, pc` self-check) |
 | `sub_08000958` | 26 b | 1 | hand-written asm pair with `sub_08000972`; not reachable from agbcc C |
 | `sub_08007304` | 64 b | 1 | wave-1 closeout: 4-byte floor with r7 pin (mov r7,ip constructible); pure-C r0-occupant impossible |
