@@ -1,15 +1,16 @@
-/* sub_08016F80 -- draft. Remaining diff vs ROM (108/120 bytes, structure matches):
-   1) AND order in DISPCNT setup: ROM `ands r4,r3` (masked-value dest, const second),
-      all reachable shapes give `ands r3,r4` (const dest). Tried: local v, in-place
-      &=, operand swap in |, extern volatile symbols vs casts.
-   2) guard read: ROM `adds r1,#2; ldrh r1,[r1]` (real pointer bump, direct [r1]);
-      every C shape gives `ldrh rX,[rX,#2]` (offset form) -- the offset is legal for
-      HImode (<64) so find_best_addr folds p++ into the offset.
-   3) spin mask: ROM re-materializes 0x8000 INSIDE the spin (movs+lsls+adds r1,r0,#0)
-      with its own DE pool load outside; CSE merges guard+spin mask pseudos into one
-      global allocno so the spin reuses the guard's r2 via `adds r0,r2,#0`.
-   dma/src/dst store shape, IE save/restore, push set, and overall branch layout
-   all match. */
+/* QUARANTINE DRAFT -- does not match (124 vs 124 bytes; target pool sits 4B later).
+ * Solved by this round vs the old draft: size now exact; the three old blockers
+ * (DISPCNT ands dest, guard [r1] folding, spin-loop CSE) are gone.
+ * Remaining diff (fresh-verified 2026-09-15):
+ *   0x8016fb6: target materialises the 0x8000 constant FIRST (movs r2,#0x80;
+ *   lsls r2,#8; adds r0,r2,#0) then does `ldrh r1,[r1,#0]`; ours loads first.
+ *   -> the guard global wants the volatile lever at this site (memory-after-
+ *   constant = plain, constant-after-memory = volatile per CLAUDE.md). All
+ *   pool offsets shift -4 as a consequence of the one reorder.
+ * The rest of the instruction stream matches. Old 120B draft replaced by this
+ * closer state.
+ */
+
 #include "global.h"
 
 extern u32 gUnk_0202F240;
@@ -22,8 +23,8 @@ void sub_08016F80(u32 src, u32 dst, u16 cnt)
 {
     u16 saved;
     volatile u16 *disp;
-    volatile u16 *p;
-    u16 v;
+    register volatile u16 *p asm("r1");
+    register u16 v asm("r4");
 
     saved = *(volatile u16 *)0x04000208;
     *(volatile u16 *)0x04000208 = 0;
@@ -33,10 +34,10 @@ void sub_08016F80(u32 src, u32 dst, u16 cnt)
     *disp = ((u16 *)gUnk_0202F240)[3] | v;
     gUnk_040000D4[0] = src;
     gUnk_040000D8 = dst;
-    *(volatile u32 *)gUnk_040000DC_16 = 0x80000000 | cnt;
     p = gUnk_040000DC_16;
+    *(volatile u32 *)p = 0x80000000 | cnt;
     p++;
-    if (*p & 0x8000) {
+    if (0x8000 & *p) {
         do { } while (gUnk_040000DE & 0x8000);
     }
     *(volatile u16 *)0x04000208 = saved;
