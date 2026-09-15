@@ -49,7 +49,6 @@ Ranked by original caller count. Drafts for functions since resolved into
 | `sub_08000958` | 26 b | 1 | hand-written asm pair with `sub_08000972`; not reachable from agbcc C |
 | `sub_08007304` | 64 b | 1 | wave-1 closeout: 4-byte floor with r7 pin (mov r7,ip constructible); pure-C r0-occupant impossible |
 | `sub_0800383C` | 84 b | 1 | one register permutation away |
-| `sub_08016ED8` | 100 b | 1 | one cluster of 4 register-swapped instructions at 0x08016eea |
 | `sub_0800C2CC` | 140 b | 1 | wave-5d state compiles; agent died mid-work |
 | `sub_0800C430` | 176 b | 1 | wave-4 dead-agent state; rebuild diverges (push set differs) |
 | `sub_0800A628` | 224 b | 1 | 220/220 bytes; one diff cluster around the j-chain 0x800a66a-0x800a686 |

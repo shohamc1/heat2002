@@ -651,6 +651,47 @@ use of the block-local value after the branch (a write-back store of the
 loaded value is the canonical form). Try this on remaining
 "register-permutation-only" drafts before any deeper analysis.
 
+## Resolved 2026-09-16: sub_08016ED8 (matched, 100 bytes) - a hard-register pin decides the ior's output
+
+The draft was four instructions off at `0x08016EEA`: the ROM computes the
+IE update as `ldrh r1; orrs r1, r2; strh r1`, and every C shape gave
+`ldrh r2; orrs r1, r2; strh r1`. The fix pins the mask to r2 and keeps it
+inside the `|=`:
+
+```c
+register u32 mask asm("r2");
+*(volatile u16 *)0x04000200 |= (mask = 8 << gUnk_02000494);
+```
+
+The pass that decides this is regmove, not local-alloc. A thumb `orrs` is
+two-address, so regmove rewrites the ior's output to be one of its inputs.
+A `u16 |=` narrows the ior to 16 bits, so the IE value reaches it as
+`subreg:SI (reg:HI)`. regmove skips a subreg input and picks the mask
+pseudo, and the mask chain then outranks the value in local-alloc. When
+the IE value is a plain SImode register (`volatile u32` IE, wrong bytes),
+regmove picks the value and the ROM's registers fall out. A hard register
+can't become the output either, so pinning the mask leaves the value
+chain as the only candidate.
+
+What doesn't reach it:
+
+- **A plain SImode value from C.** A volatile load can't be merged by
+  combine, and a non-volatile one folds into the ior as
+  `subreg:SI (mem:HI)`. `u32` locals for the value, the mask, or the
+  result all keep the subreg.
+- **The pin as its own statement.** `mask = 8 << x;` before the `|=`
+  fixes the cluster but loads the IE address after the mask, which
+  shifts every later address register. Keep the assignment inside the
+  `|=`, or load the address first through a pointer local.
+
+`sub_08016F80` uses the same lever (`register u16 v asm("r4")` as an ior
+input). Try it on any diff where an ior, and, or xor output lands in the
+wrong chain.
+
+Permuter trial: `scripts/permute.py` ran about 30 minutes with `-j8` from a
+score of 25 and found nothing lower. Its C parser can't accept `asm()` pins,
+so it couldn't reach this fix.
+
 ## Parked 2026-09-14: sub_08000958 + sub_08000972 — hand-written asm, not a C target
 
 The pair shares literal pool `_08000988` (guide step 6a: extract together or
