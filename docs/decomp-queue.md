@@ -9,13 +9,13 @@ dead ends.
 
 ## Status
 
-- 160 of the 203 queue functions decompiled and integrated on this branch
-  (`git log --oneline main..HEAD | grep -c Decompile` = 160; `src/` grew from
-  262 functions at `main` to 422).
-- `python3 scripts/progress.py`: functions 422 / 646 matched; code 51076 /
-  102160 bytes (49.9961%); whole ROM 51076 / 119700 bytes (42.6700%) over
+- 161 of the 203 queue functions decompiled and integrated on this branch
+  (`git log --oneline main..HEAD | grep -c Decompile` = 161; `src/` grew from
+  262 functions at `main` to 423).
+- `python3 scripts/progress.py`: functions 423 / 646 matched; code 51108 /
+  102164 bytes (50.0254%); whole ROM 51108 / 119704 bytes (42.6953%) over
   743 blocks (5 of which are luvdis false positives — see `parked.md`).
-- 43 queue functions remain, all parked: 42 with drafts in
+- 42 queue functions remain, all parked: 41 with drafts in
   `docs/learnings/drafts/`, plus `sub_08000972` (below).
 
 ## Remaining to decompile (in asm, no draft)
@@ -48,7 +48,6 @@ Ranked by original caller count. Drafts for functions since resolved into
 | `sub_0800C534` | 1104 b | 2 | 1104/1104 bytes, 536/536 instructions; 11 register-name diffs |
 | `sub_0800F0BC` | 24 b | 1 | BLOCKED — reachable/unreachable insn mix (`mov r2, pc` self-check) |
 | `sub_08000958` | 26 b | 1 | hand-written asm pair with `sub_08000972`; not reachable from agbcc C |
-| `sub_08001150` | 32 b | 1 | same 4-instruction register swap in every shape tried (~30 variants) |
 | `sub_08007304` | 64 b | 1 | 12 of 64 bytes differ (best shape; was 22+) |
 | `sub_0800383C` | 84 b | 1 | one register permutation away |
 | `sub_08016ED8` | 100 b | 1 | one cluster of 4 register-swapped instructions at 0x08016eea |

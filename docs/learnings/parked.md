@@ -615,6 +615,34 @@ flag changes were needed. The C object replaces the original asm at its ROM
 address. A clean copy of the commit contents passed `make check` and
 `make test`; unrelated local drafts were excluded from that copy.
 
+## Resolved 2026-09-15: sub_08001150 (matched, 32 bytes) — the dead write-back globalizer
+
+Parked after ~30 variants with one stable 4-instruction register swap
+(narrowed `v` wanted r1, the tag load r3; every shape gave the reverse).
+A 5-agent permutation campaign (~200 variants) closed it. **The lever: an
+eliminated write-back that keeps a loaded value live across a branch.**
+Appending `*(u32 *)(r2 + 0x34) = t;` as the last statement of the if-body
+changes nothing semantically and emits nothing (the store writes back the
+just-loaded value and is dead-store-eliminated), but its *use* crosses the
+basic-block boundary — which moves the tag pseudo out of block-local
+allocation into global allocation, where the ordering is
+v→r1, tag→r3, ptr→r2: exactly the ROM's homes. The draft's own analysis had
+identified "the tag pseudo being global" as one of two flip routes and then
+declared it "not constructible without extra instructions" — wrong, in the
+same way the `bcfef4c` note warns about. Two agents converged on this fix
+independently (one via flat pointer writes, one via struct fields with an
+early return); `register`-asm pins on r3 also matched but are unnecessary.
+
+Campaign negatives worth keeping: literal-valued locals (the `bcfef4c`
+missing-variable axis) reached diff 9 of 32 bytes but never 0; operand
+order and spelling at every address site (`r2+OFF` vs `OFF+r2` vs
+`((u16*)r2)[i]`, compare spelling, v-use spelling) is fully inelastic here —
+53 variants, one object. Generalisation: when a *block-local* quantity sits
+in the register a *global* allocno needs, look for a zero-emission second
+use of the block-local value after the branch (a write-back store of the
+loaded value is the canonical form). Try this on remaining
+"register-permutation-only" drafts before any deeper analysis.
+
 ## Parked 2026-09-14: sub_08000958 + sub_08000972 — hand-written asm, not a C target
 
 The pair shares literal pool `_08000988` (guide step 6a: extract together or
