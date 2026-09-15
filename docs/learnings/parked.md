@@ -670,3 +670,32 @@ structs via hidden memory pointer). The identical sibling pair
 sub_0833A018/sub_0833A032 (same bytes except the pool constant) is the same
 hand-asm macro instantiated twice. Full analysis and the closest reachable
 C shapes: `docs/learnings/drafts/sub_08000958.c`. Leave both halves in asm.
+
+## Resolved 2026-09-15: sub_08006A34 (matched, 2240 bytes)
+
+`src/sub_08006A34.c` matches. Its header records all three levers. Two of
+them are worth trying on other register-only drafts.
+
+**Shared multi-block variable defeats a local tie.** At `0x8006c98` the
+sum was tied to the dying partial by `block_alloc`, not steered by the
+global `set_preference` that the old header blamed. `combine_regs` refuses
+to tie a pseudo that isn't local to its block. One function-scope
+`u32 time;` assigned at the two unsigned compare sites made the sum's
+register span several blocks. It then took the first free register, `r1`,
+as the ROM does. Check the ROM first: the time sum appears seven times, and
+only the two sites that use `r1` share the variable. So look for identical
+expressions whose destination register differs between copies.
+
+**Inline register pins keep evaluation order.** At `0x8006b84`,
+`register s32 dx asm("r6");` assigned inside the original expression
+(`(dx = corners[1] - l4) * ...`) matched. The same pin as a separate
+initialiser fixed the registers but moved the subtraction.
+
+**A constant derived from a zero needs an int temporary.** The ROM computed
+`p->unk4D = -1` as `subs r0, r1, #1`. A literal takes the byte store's
+constant fast path and loads `movs r0, #255`. `p->unk4D = z - 1` is narrowed
+to QImode, so combine folds it back to a constant. `s32 m = z - 1;
+p->unk4D = m;` keeps the subtraction in SImode on the same zero register that
+the next store uses, and CSE keeps it because an SImode -1 costs more than
+`(plus reg -1)` on Thumb. When the ROM derives a constant from a register
+that holds zero or a nearby value, look for this shape.
