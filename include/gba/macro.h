@@ -26,6 +26,7 @@
 }
 
 #define CpuFastFill16(value, dest, size) CpuFastFill(((value) << 16) | (value), (dest), (size))
+#define CpuFastFill8(value, dest, size) CpuFastFill(((value) << 24) | ((value) << 16) | ((value) << 8) | (value), (dest), (size))
 
 #define CpuFastCopy(src, dest, size) CpuFastSet(src, dest, ((size)/(32/8) & 0x1FFFFF))
 
@@ -83,6 +84,16 @@
     dmaRegs[5] &= ~DMA_ENABLE;                                  \
     dmaRegs[5];                                                 \
 }
+
+#define IntrEnable(flags)                                       \
+{                                                               \
+    u16 imeTemp;                                                \
+                                                                \
+    imeTemp = REG_IME;                                          \
+    REG_IME = 0;                                                \
+    REG_IE |= flags;                                            \
+    REG_IME = imeTemp;                                          \
+}                                                               \
 
 #define DmaCopyLarge(dmaNum, src, dest, size, block, bit) \
 {                                                         \
@@ -157,6 +168,12 @@
 #define DmaFill16Large(dmaNum, fillval, dest, size, block) DmaFillLarge(dmaNum, fillval, dest, size, block, 16)
 #define DmaFill32Large(dmaNum, fillval, dest, size, block) DmaFillLarge(dmaNum, fillval, dest, size, block, 32)
 
+// Alternate name for the same DmaFillLarge instantiation, with the bit
+// width in the middle instead of at the end; kept as an alias for callers
+// that expect that spelling.
+#define DmaFillLarge16(dmaNum, fillval, dest, size, block) DmaFillLarge(dmaNum, fillval, dest, size, block, 16)
+#define DmaFillLarge32(dmaNum, fillval, dest, size, block) DmaFillLarge(dmaNum, fillval, dest, size, block, 32)
+
 #define DmaFillDefvars(dmaNum, fillval, dest, size, bit) \
 {                                                        \
     void *_dest = (void *)(dest);                        \
@@ -166,6 +183,16 @@
 
 #define DmaFill16Defvars(dmaNum, fillval, dest, size) DmaFillDefvars(dmaNum, fillval, dest, size, 16)
 #define DmaFill32Defvars(dmaNum, fillval, dest, size) DmaFillDefvars(dmaNum, fillval, dest, size, 32)
+
+#define DmaClearDefvars(dmaNum, dest, size, bit) \
+{                                                \
+    void *_dest = dest;                          \
+    u32 _size = size;                            \
+    DmaClear##bit(dmaNum, _dest, _size);         \
+}
+
+#define DmaClear16Defvars(dmaNum, dest, size) DmaClearDefvars(dmaNum, dest, size, 16)
+#define DmaClear32Defvars(dmaNum, dest, size) DmaClearDefvars(dmaNum, dest, size, 32)
 
 // from pokeemerald
 // Maximum amount of data we will transfer in one operation

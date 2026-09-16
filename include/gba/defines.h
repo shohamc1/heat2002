@@ -14,7 +14,9 @@
 #define INTR_VECTOR    (*(void **)0x3007FFC)
 
 #define EWRAM_START 0x02000000
+#define EWRAM_END   (EWRAM_START + 0x40000)
 #define IWRAM_START 0x03000000
+#define IWRAM_END   (IWRAM_START + 0x8000)
 
 #define PLTT      0x5000000
 #define PLTT_SIZE 0x400
@@ -49,14 +51,33 @@
 #define DISPLAY_WIDTH  240
 #define DISPLAY_HEIGHT 160
 
+// Dimensions of a tile in pixels
+#define TILE_WIDTH  8
+#define TILE_HEIGHT 8
+
+// Dimensions of the GBA screen in tiles
+#define DISPLAY_TILE_WIDTH  (DISPLAY_WIDTH / TILE_WIDTH)
+#define DISPLAY_TILE_HEIGHT (DISPLAY_HEIGHT / TILE_HEIGHT)
+
+// Size of a tile in bytes, given its bit depth
+#define TILE_SIZE(bpp) ((bpp) * TILE_WIDTH * TILE_HEIGHT / 8)
+#define TILE_SIZE_1BPP TILE_SIZE(1)
 #define TILE_SIZE_4BPP 32
 #define TILE_SIZE_8BPP 64
+
+#define TILE_OFFSET_4BPP(n) ((n) * TILE_SIZE_4BPP)
+#define TILE_OFFSET_8BPP(n) ((n) * TILE_SIZE_8BPP)
+
+#define BG_TILE_H_FLIP(n) (0x400 + (n))
+#define BG_TILE_V_FLIP(n) (0x800 + (n))
 
 #define TOTAL_OBJ_TILE_COUNT 1024
 
 #define PLTT_SIZEOF(n) ((n) * sizeof(u16))
 #define PLTT_SIZE_4BPP PLTT_SIZEOF(16)
 #define PLTT_SIZE_8BPP PLTT_SIZEOF(256)
+
+#define PLTT_OFFSET_4BPP(n) ((n) * PLTT_SIZE_4BPP)
 
 #define RGB(r, g, b) ((r) | ((g) << 5) | ((b) << 10))
 
