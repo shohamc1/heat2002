@@ -1,27 +1,20 @@
 #include "global.h"
 #include "gba/defines.h"
 #include "gba/io_reg.h"
+#include "gba/m4a_internal.h"
 
-struct Unk03007FF0
-{
-    u32 magic;
-    volatile u8 x;
-    u8 pad[3];
-    u32 y;
-};
-
-extern struct Unk03007FF0 *gUnk_03007FF0;
+/* m4aSoundVSyncOn */
 
 void sub_0800184C(void)
 {
-    struct Unk03007FF0 *r2 = (struct Unk03007FF0 *)SOUND_INFO_PTR;
-    u32 r3 = r2->magic;
+    struct SoundInfo *soundInfo = (struct SoundInfo *)SOUND_INFO_PTR;
+    u32 ident = soundInfo->ident;
 
-    if (r3 != 0x68736D53)
+    if (ident != ID_NUMBER)
     {
-        REG_DMA1CNT_H = 0xB6 << 8;
-        REG_DMA2CNT_H = 0xB6 << 8;
-        r2->x = 0;
-        r2->magic = r3 - 0xA;
+        REG_DMA1CNT_H = DMA_ENABLE | DMA_START_SPECIAL | DMA_32BIT | DMA_REPEAT;
+        REG_DMA2CNT_H = DMA_ENABLE | DMA_START_SPECIAL | DMA_32BIT | DMA_REPEAT;
+        soundInfo->pcmDmaCounter = 0;
+        soundInfo->ident = ident - 10;
     }
 }

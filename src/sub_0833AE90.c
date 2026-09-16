@@ -1,20 +1,24 @@
 #include "global.h"
 #define GBA_CPUSET sub_08344B64
 #include "gba/compat.h"
+#include "gba/m4a_internal.h"
+
+/* m4aSoundVSyncOff (high copy) */
 
 void sub_0833AE90(void)
 {
-    u32 *r2 = (u32 *)SOUND_INFO_PTR;
-    u32 r1 = *r2;
-    if (r1 - 0x68736D53 <= 1)
+    struct SoundInfo *soundInfo = (struct SoundInfo *)SOUND_INFO_PTR;
+    u32 ident = soundInfo->ident;
+
+    if (ident - ID_NUMBER <= 1)
     {
-        *r2 = r1 + 10;
+        soundInfo->ident = ident + 10;
         if (REG_DMA1CNT & (DMA_REPEAT << 16))
             REG_DMA1CNT = 0x84400004;
         if (REG_DMA2CNT & (DMA_REPEAT << 16))
             REG_DMA2CNT = 0x84400004;
         REG_DMA1CNT_H = DMA_32BIT;
         REG_DMA2CNT_H = DMA_32BIT;
-        CpuFill32(0, (u32)r2 + 0x350, 0xC60);
+        CpuFill32(0, (u32)soundInfo->pcmBuffer, sizeof(soundInfo->pcmBuffer));
     }
 }
