@@ -1,32 +1,35 @@
 #include "global.h"
 #include "gba/defines.h"
 #include "gba/io_reg.h"
+#include "gba/m4a_internal.h"
+
+/* SampleFreqSet (high copy) */
 
 extern u32 gUnk_03007FF0;
 extern u16 gUnk_0200C7DC[];
 extern s32 sub_08344BB8(s32 a, s32 b);
 extern void sub_0833AF0C(void);
-void sub_0833AD00(u32 a)
+void sub_0833AD00(u32 freq)
 {
-    u32 r4 = (u32)SOUND_INFO_PTR;
+    struct SoundInfo *soundInfo = SOUND_INFO_PTR;
 
-    a = (a & (0xF0 << 12)) >> 16;
+    freq = (freq & (0xF0 << 12)) >> 16;
     {
         u32 r6 = 0;
 
-        *(u8 *)(r4 + 8) = a;
+        soundInfo->freq = freq;
         {
-            u16 r5 = gUnk_0200C7DC[a - 1];
+            u16 pcmSamplesPerVBlank = gUnk_0200C7DC[freq - 1];
 
-            *(u32 *)(r4 + 0x10) = r5;
-            *(u8 *)(r4 + 0xB) = sub_08344BB8(0xC6 << 3, r5);
-            *(u32 *)(r4 + 0x14) = sub_08344BB8(r5 * 0x00091D1B + 0x1388, 0x2710);
-            *(u32 *)(r4 + 0x18) = (sub_08344BB8(0x80 << 17, *(u32 *)(r4 + 0x14)) + 1) >> 1;
+            soundInfo->pcmSamplesPerVBlank = pcmSamplesPerVBlank;
+            soundInfo->pcmDmaPeriod = sub_08344BB8(0xC6 << 3, pcmSamplesPerVBlank);
+            soundInfo->pcmFreq = sub_08344BB8(pcmSamplesPerVBlank * 0x00091D1B + 0x1388, 0x2710);
+            soundInfo->divFreq = (sub_08344BB8(0x80 << 17, soundInfo->pcmFreq) + 1) >> 1;
             REG_TM0CNT_H = r6;
             {
                 u32 t2 = REG_ADDR_TM0CNT;
 
-                *(volatile u16 *)t2 = -sub_08344BB8(0x00044940, r5);
+                *(volatile u16 *)t2 = -sub_08344BB8(0x00044940, pcmSamplesPerVBlank);
             }
         }
         sub_0833AF0C();

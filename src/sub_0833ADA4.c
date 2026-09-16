@@ -1,54 +1,45 @@
 #include "global.h"
 #include "gba/defines.h"
 #include "gba/io_reg.h"
+#include "gba/m4a_internal.h"
 
-extern u32 gUnk_03007FF0;
-
-struct Snd {
-    u32 magic;
-    u8 unk4;
-    u8 f5;
-    u8 f6;
-    u8 f7;
-    u8 pad[0x48];
-    u8 chan[12][0x40];
-};
+/* m4aSoundMode (high copy) */
 
 void sub_0833AE90(void);
 void sub_0833AD00(u32 a);
 
-void sub_0833ADA4(u32 cmd)
+void sub_0833ADA4(u32 mode)
 {
-    struct Snd *s = (struct Snd *)SOUND_INFO_PTR;
-    u32 t;
+    struct SoundInfo *soundInfo = (struct SoundInfo *)SOUND_INFO_PTR;
+    u32 temp;
     u8 *p;
 
-    if (s->magic != 0x68736D53)
+    if (soundInfo->ident != ID_NUMBER)
         return;
-    s->magic = s->magic + 1;
-    t = cmd & 0xFF;
-    if (t != 0) {
-        t &= 0x7F;
-        s->f5 = t;
+    soundInfo->ident = soundInfo->ident + 1;
+    temp = mode & 0xFF;
+    if (temp != 0) {
+        temp &= 0x7F;
+        soundInfo->reverb = temp;
     }
-    t = cmd & 0xF00;
-    if (t != 0) {
-        s->f6 = t >> 8;
-        for (t = 12, p = &s->chan[0][0]; t != 0; t--, p += 0x40)
+    temp = mode & 0xF00;
+    if (temp != 0) {
+        soundInfo->maxChans = temp >> 8;
+        for (temp = MAX_DIRECTSOUND_CHANNELS, p = &soundInfo->chans[0].statusFlags; temp != 0; temp--, p += sizeof(struct SoundChannel))
             *p = 0;
     }
-    t = cmd & 0xF000;
-    if (t != 0)
-        s->f7 = t >> 12;
-    t = cmd & 0xB00000;
-    if (t != 0) {
-        t = (t & 0x300000) >> 14;
-        REG_SOUNDBIAS_H = (REG_SOUNDBIAS_H & 0x3F) | t;
+    temp = mode & 0xF000;
+    if (temp != 0)
+        soundInfo->masterVolume = temp >> 12;
+    temp = mode & 0xB00000;
+    if (temp != 0) {
+        temp = (temp & 0x300000) >> 14;
+        REG_SOUNDBIAS_H = (REG_SOUNDBIAS_H & 0x3F) | temp;
     }
-    t = cmd & 0xF0000;
-    if (t != 0) {
+    temp = mode & 0xF0000;
+    if (temp != 0) {
         sub_0833AE90();
-        sub_0833AD00(t);
+        sub_0833AD00(temp);
     }
-    s->magic = 0x68736D53;
+    soundInfo->ident = ID_NUMBER;
 }
