@@ -748,3 +748,74 @@ p->unk4D = m;` keeps the subtraction in SImode on the same zero register that
 the next store uses, and CSE keeps it because an SImode -1 costs more than
 `(plus reg -1)` on Thumb. When the ROM derives a constant from a register
 that holds zero or a nearby value, look for this shape.
+
+## Parked 2026-09-16: sub_08000DC8 + sub_0833A488 — `tst rX, rY` is unreachable
+
+Both halves of this m4a twin pair are blocked in the compiler, not by
+register allocation. The ROM uses a two-register `tst r0, r1`, and
+`tools/agbcc/gcc/thumb.md:818` defines the only `tst` pattern in the whole
+machine description as single-operand:
+
+    (define_insn "tstsi"
+      [(set (cc0) (match_operand:SI 0 "s_register_operand" "l"))]
+      ""
+      "cmp\\t%0, #0")
+
+`tst` appears exactly once in that file, so no C agbcc accepts can emit the
+register-vs-register form. A test compile of `if (head->flags & 0x80)`
+yields `ands r0, r1; cmp r0, #0` instead.
+
+A second, independent blocker sits in the same function: `ands r0, r3; beq`
+reuses the flags straight off the ANDS, and agbcc always inserts a separate
+`cmp rN, #0` before the branch. No available C construct produces bare
+flag reuse after ANDS.
+
+The high twin sub_0833A488 has the same `tst r0, r1` and the same fused
+`ands`/`beq` at the same relative offsets (asm/rom_08339B78.s), so it is
+equally blocked, not merely likely to be. Leave both in asm.
+
+Earlier draft and analysis: `docs/learnings/drafts/sub_08000DC8.c`.
+
+## Near-miss drafts parked 2026-09-16 (m4a low region)
+
+Three m4a low-region functions have drafts that build but do not yet match.
+They are NOT blocked in the compiler as far as anyone has shown; they were
+abandoned mid-iteration when a session limit killed the run. Start from
+these files, not from scratch:
+
+- `docs/learnings/drafts/sub_080019F4.c` (128 bytes) — diverges at the tail
+  `bx r0`; the trailing flags check was being reshaped when work stopped.
+- `docs/learnings/drafts/sub_08001A74.c` (428 bytes) — diverges at the tail
+  `bx r0`.
+- `docs/learnings/drafts/sub_08001C20.c` (1340 bytes) — diverges around
+  `pop {r4}`.
+
+Their high twins (sub_0833B0B4, sub_0833B134, sub_0833B2E0) were never
+attempted. sub_08002638 and its twin sub_0833BCF8 were never attempted
+either.
+
+### The m4a engine is duplicated at delta 0x3396C0
+
+Established 2026-09-16 and worth reusing. The ROM carries the MP2K/m4a
+sound engine twice: a low copy near 0x08000260 and a high copy near
+0x08339920, offset by exactly 0x3396C0. Engine ident is 0x68736D53
+("Smsh"), one revision below pret's 0x68736D54.
+
+The delta holds ONLY for a twin function's own address. It does NOT hold
+for callees or data:
+
+- Shared leaf routines exist once, not twice. The `swi 0x0B` CpuSet wrapper
+  is at sub_08344B64; the BX trampoline table at `_08344B80`.
+- RAM globals in the high copy sit at unrelated addresses (e.g.
+  gUnk_02000580 -> gUnk_020375D0, a delta of 0x37050).
+- One literal in sub_0833AF48 is 0x020017A9 where the low twin has
+  gCallback_08000B69, which is not the delta of anything.
+
+Read every call target and literal off the target disassembly. Computing
+them from the delta produces confident, wrong answers.
+
+Also note: the span 0x080004B8-0x08000958 is undecoded `.byte` data in
+`asm/rom_080004B8.s` with no `thumb_func_start`. It is real MP2K code (it
+carries the hi-register epilogue at 0x080008E0 and the `Smsh` ident), but
+luvdis never split it, so it is invisible to progress.py's numerator and
+denominator alike.
