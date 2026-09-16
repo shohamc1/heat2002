@@ -1,24 +1,27 @@
 #include "global.h"
+#include "gba/m4a_internal.h"
 
-void sub_08000DC8(u32, u32);
+/* m4aMPlayStop */
 
-void sub_080019B4(u32 r0)
+void sub_08000DC8(struct MusicPlayerInfo *, struct MusicPlayerTrack *);
+
+void sub_080019B4(struct MusicPlayerInfo *mplayInfo)
 {
-    u32 r6 = r0;
+    struct MusicPlayerInfo *r6 = mplayInfo;
     s32 r4;
-    u32 r5;
+    struct MusicPlayerTrack *r5;
 
-    if (*(u32 *)(r6 + 0x34) != 0x68736D53)
+    if (r6->ident != ID_NUMBER)
         return;
-    *(u32 *)(r6 + 0x34) = *(u32 *)(r6 + 0x34) + 1;
-    *(u32 *)(r6 + 0x04) = *(u32 *)(r6 + 0x04) | (u32)0x80 << 0x18;
-    r4 = *(u8 *)(r6 + 0x08);
-    r5 = *(u32 *)(r6 + 0x2C);
+    r6->ident = r6->ident + 1;
+    r6->status = r6->status | MUSICPLAYER_STATUS_PAUSE;
+    r4 = r6->trackCount;
+    r5 = r6->tracks;
     while (r4 > 0)
     {
         sub_08000DC8(r6, r5);
         r4--;
-        r5 += 0x50;
+        r5 = (struct MusicPlayerTrack *)((u8 *)r5 + 0x50);
     }
-    *(u32 *)(r6 + 0x34) = 0x68736D53;
+    r6->ident = ID_NUMBER;
 }
