@@ -184,7 +184,8 @@ SECTIONS
         build/src/sub_080087F4.o(.text*);
         build/asm/rom_080089EC.o(.text*);
         build/src/sub_08008A20.o(.text*);
-        build/asm/rom_08008AB0.o(.text*);
+        build/src/sub_08008AB0.o(.text*);
+        build/asm/rom_08008B40.o(.text*);
         build/src/sub_08008CB8.o(.text*);
         build/src/sub_08008CDC.o(.text*);
         build/src/sub_08008D20.o(.text*);
