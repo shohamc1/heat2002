@@ -253,7 +253,7 @@ SECTIONS
         build/src/sub_0800C164.o(.text*);
         build/asm/rom_0800C21A.o(.text*);
         build/src/sub_0800C28C.o(.text*);
-        build/asm/rom_0800C2CC.o(.text*);
+        build/src/sub_0800C2CC.o(.text*);
         build/src/sub_0800C358.o(.text*);
         build/asm/rom_0800C430.o(.text*);
         build/src/sub_0800C4E0.o(.text*);
