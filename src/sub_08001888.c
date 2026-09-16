@@ -1,43 +1,46 @@
 #include "global.h"
+#include "gba/m4a_internal.h"
+
+/* MPlayOpen */
 
 extern u32 gUnk_03007FF0[];
 extern u8 gCallback_08000B69[];   /* Thumb entry: function address | 1 */
 
 void sub_08001534(u32 r0);
 
-void sub_08001888(u32 r0, u32 r1, u32 r2)
+void sub_08001888(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *tracks, u32 r2)
 {
-    u32 r7 = r0;
-    u32 r6 = r1;
+    struct MusicPlayerInfo *r7 = mplayInfo;
+    struct MusicPlayerTrack *r6 = tracks;
     u8 r4 = (u8)r2;
-    u32 r5;
+    struct SoundInfo *soundInfo;
 
     if (r4 == 0)
         return;
     if (r4 > 0x10)
         r4 = 0x10;
-    r5 = gUnk_03007FF0[0];
-    if (*(u32 *)r5 != 0x68736D53)
+    soundInfo = (struct SoundInfo *)gUnk_03007FF0[0];
+    if (soundInfo->ident != ID_NUMBER)
         return;
-    *(u32 *)r5 = *(u32 *)r5 + 1;
-    sub_08001534(r7);
-    *(u32 *)(r7 + 0x2C) = r6;
-    *(u8 *)(r7 + 8) = r4;
-    *(u32 *)(r7 + 4) = 0x80 << 0x18;
+    soundInfo->ident = soundInfo->ident + 1;
+    sub_08001534((u32)r7);
+    r7->tracks = r6;
+    r7->trackCount = r4;
+    r7->status = MUSICPLAYER_STATUS_PAUSE;
     while (r4 != 0)
     {
-        *(u8 *)r6 = 0;
+        r6->flags = 0;
         r4--;
-        r6 += 0x50;
+        r6++;
     }
-    if (*(u32 *)(r5 + 0x20) != 0)
+    if (soundInfo->MPlayMainHead != NULL)
     {
-        *(u32 *)(r7 + 0x38) = *(u32 *)(r5 + 0x20);
-        *(u32 *)(r7 + 0x3C) = *(u32 *)(r5 + 0x24);
-        *(u32 *)(r5 + 0x20) = 0;
+        r7->MPlayMainNext = soundInfo->MPlayMainHead;
+        r7->musicPlayerNext = soundInfo->musicPlayerHead;
+        soundInfo->MPlayMainHead = NULL;
     }
-    *(u32 *)(r5 + 0x24) = r7;
-    *(u32 *)(r5 + 0x20) = (u32)gCallback_08000B69;
-    *(u32 *)r5 = 0x68736D53;
-    *(u32 *)(r7 + 0x34) = 0x68736D53;
+    soundInfo->musicPlayerHead = r7;
+    soundInfo->MPlayMainHead = (MPlayMainFunc)gCallback_08000B69;
+    soundInfo->ident = ID_NUMBER;
+    r7->ident = ID_NUMBER;
 }
