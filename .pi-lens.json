@@ -2,6 +2,8 @@
   "ignore": [
     "tools/agbcc/**",
     "tools/luvdis/**",
+    "tools/m2c/**",
+    "tools/decomp-permuter/**",
     "baserom.gba",
     "asm/**"
   ]

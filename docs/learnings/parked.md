@@ -119,6 +119,14 @@ records the methodological error to avoid here: tracing the mechanism in
 which source produces the ROM's, so **do not treat a mechanism trace as an
 impossibility proof.**
 
+Before a manual variant campaign on a register-only diff, run
+`python3 scripts/permute.py NAME DRAFT.c -j8` (see "Helper tools" in
+`CLAUDE.md`). It automates the search that cleared `sub_08001150`. Its
+agbcc passes include duplicate and self assignments, the family the
+dead write-back store belongs to, but at low weight. Treat a run with no
+0 as a lead, not a verdict: its best candidate shows which rewrites move
+the allocation.
+
 | Function | Difference | Attempts |
 |---|---|---|
 | `sub_08015364` | ONE 2-byte run at `0x8015d8f-0x8015d90`: the `gUnk_0202EEB0 = 1;` constant in the state2 track-select arm wants `r2`, ours takes `r0` | ~300 |
@@ -574,3 +582,240 @@ out to be artifacts.
   and `n - 1` to the inner preheader in source order.
 - A bare `return;` in a non-void function produces an early exit that
   branches straight to the epilogue with no value materialised.
+
+## Resolved 2026-09-13: sub_0800CB18 (matched, 68 bytes)
+
+The whole register web hung on the tail: the ROM builds the table index
+IN PLACE on y (`y = y + 0x80; y = y << 8; y = y + 0x80; return t[a + y];`
+with `t = gUnk_0806C97C;` assigned BEFORE the updates so the pool ldr
+comes first). With no index temps stealing r0, the table qty takes r0,
+which frees r2 for the `a` loop-local — both old diffs resolved at once.
+`a / 2` (not `(a + (a >> 31)) >> 1`, which emits `asrs #31` for the sign
+bit) and the zero-return block placed via
+`if (y <= 0x7F) goto table; zero: return 0; table: ...` complete it.
+See src/sub_0800CB18.c.
+
+## Quarantined 2026-09-13 (round 2): sub_0800C2CC and sub_0800C358
+
+`docs/learnings/drafts/sub_0800C2CC.c` (140 bytes, fresh attempt this
+round): instruction stream/pool/prologue fully solved via
+`q = (u16 *)(4 * e[1] + (u32)p);` (temp-first plus) + two-statement
+sum; remaining diff is one allocation web (v wants r1 not r2, dx/dy
+swapped).
+
+### Resolved 2026-09-14: sub_0800C358 (MATCH, 216 bytes)
+
+`src/sub_0800C358.c` matches all 216 bytes at `0x0800C358`. Compute the
+table offset before adding the data address:
+
+```c
+entry = (u8 *)(p->unk100[xi * 48 + yi] + (u32)p->unkFC);
+```
+
+This one expression selects `p` in r3 and `xi` in r2, and places the
+`unkFC` address calculation after the table-index calculation. The former
+pointer-first expression selected the wrong registers and computed that
+address too early. Keep the raw-field shifts for `yi` and `xi`.
+
+Two independent Luna experiments and `python3 scripts/match.py sub_0800C358`
+confirmed the full match. No register declarations, compiler changes, or
+flag changes were needed. The C object replaces the original asm at its ROM
+address. A clean copy of the commit contents passed `make check` and
+`make test`; unrelated local drafts were excluded from that copy.
+
+## Resolved 2026-09-15: sub_08001150 (matched, 32 bytes) — the dead write-back globalizer
+
+Parked after ~30 variants with one stable 4-instruction register swap
+(narrowed `v` wanted r1, the tag load r3; every shape gave the reverse).
+A 5-agent permutation campaign (~200 variants) closed it. **The lever: an
+eliminated write-back that keeps a loaded value live across a branch.**
+Appending `*(u32 *)(r2 + 0x34) = t;` as the last statement of the if-body
+changes nothing semantically and emits nothing (the store writes back the
+just-loaded value and is dead-store-eliminated), but its *use* crosses the
+basic-block boundary — which moves the tag pseudo out of block-local
+allocation into global allocation, where the ordering is
+v→r1, tag→r3, ptr→r2: exactly the ROM's homes. The draft's own analysis had
+identified "the tag pseudo being global" as one of two flip routes and then
+declared it "not constructible without extra instructions" — wrong, in the
+same way the `bcfef4c` note warns about. Two agents converged on this fix
+independently (one via flat pointer writes, one via struct fields with an
+early return); `register`-asm pins on r3 also matched but are unnecessary.
+
+Campaign negatives worth keeping: literal-valued locals (the `bcfef4c`
+missing-variable axis) reached diff 9 of 32 bytes but never 0; operand
+order and spelling at every address site (`r2+OFF` vs `OFF+r2` vs
+`((u16*)r2)[i]`, compare spelling, v-use spelling) is fully inelastic here —
+53 variants, one object. Generalisation: when a *block-local* quantity sits
+in the register a *global* allocno needs, look for a zero-emission second
+use of the block-local value after the branch (a write-back store of the
+loaded value is the canonical form). Try this on remaining
+"register-permutation-only" drafts before any deeper analysis.
+
+## Resolved 2026-09-16: sub_08016ED8 (matched, 100 bytes) - a hard-register pin decides the ior's output
+
+The draft was four instructions off at `0x08016EEA`: the ROM computes the
+IE update as `ldrh r1; orrs r1, r2; strh r1`, and every C shape gave
+`ldrh r2; orrs r1, r2; strh r1`. The fix pins the mask to r2 and keeps it
+inside the `|=`:
+
+```c
+register u32 mask asm("r2");
+*(volatile u16 *)0x04000200 |= (mask = 8 << gUnk_02000494);
+```
+
+The pass that decides this is regmove, not local-alloc. A thumb `orrs` is
+two-address, so regmove rewrites the ior's output to be one of its inputs.
+A `u16 |=` narrows the ior to 16 bits, so the IE value reaches it as
+`subreg:SI (reg:HI)`. regmove skips a subreg input and picks the mask
+pseudo, and the mask chain then outranks the value in local-alloc. When
+the IE value is a plain SImode register (`volatile u32` IE, wrong bytes),
+regmove picks the value and the ROM's registers fall out. A hard register
+can't become the output either, so pinning the mask leaves the value
+chain as the only candidate.
+
+What doesn't reach it:
+
+- **A plain SImode value from C.** A volatile load can't be merged by
+  combine, and a non-volatile one folds into the ior as
+  `subreg:SI (mem:HI)`. `u32` locals for the value, the mask, or the
+  result all keep the subreg.
+- **The pin as its own statement.** `mask = 8 << x;` before the `|=`
+  fixes the cluster but loads the IE address after the mask, which
+  shifts every later address register. Keep the assignment inside the
+  `|=`, or load the address first through a pointer local.
+
+`sub_08016F80` uses the same lever (`register u16 v asm("r4")` as an ior
+input). Try it on any diff where an ior, and, or xor output lands in the
+wrong chain.
+
+Permuter trial: `scripts/permute.py` ran about 30 minutes with `-j8` from a
+score of 25 and found nothing lower. Its C parser can't accept `asm()` pins,
+so it couldn't reach this fix.
+
+## Parked 2026-09-14: sub_08000958 + sub_08000972 — hand-written asm, not a C target
+
+The pair shares literal pool `_08000988` (guide step 6a: extract together or
+not at all), but the stronger result is that no agbcc C can produce these
+bytes at all — it is hand-written assembly in the retail source:
+
+- The caller keeps its loop state in r0-r3 ACROSS the `bl` callee
+  (`ldr r3,[r2]; bl sub_08000972; stm r0!,{r3}; adds r2,#4; subs r1,#1`).
+  All four are call-used registers; agbcc's reload must move every live
+  value into r4-r7 (or spill it) around any call, so the ROM's register
+  choice is structurally unreachable.
+- The callee returns its result in r3 and pops the CALLER's r0 back
+  (`push {r0}; ...; movs r3,#0; ...; pop {r0}; bx lr`) — a hand-rolled
+  custom convention; any C callee ends `add r0, r3, #0; bx lr` (AAPCS
+  return in r0), and a single-reg `push {r0}` prologue never appears in
+  `tools/agbcc/gcc/thumb.c` (pretend-args pushes rN..r3, reload spills
+  via `str [sp,#off]`).
+- The caller is a leaf-call idiom `mov r12, lr ... bx r12` around a `bl`;
+  `thumb_function_prologue` always pushes lr for any non-leaf, and IPREGISTER
+  (r12) appears in the compiler only in the >12-byte struct-return epilogue.
+
+Swept and refuted: two-function splits with 4-arg/value/out-param callees,
+a single merged function, and a 16-byte struct return (GCC 2.95 returns
+structs via hidden memory pointer). The identical sibling pair
+sub_0833A018/sub_0833A032 (same bytes except the pool constant) is the same
+hand-asm macro instantiated twice. Full analysis and the closest reachable
+C shapes: `docs/learnings/drafts/sub_08000958.c`. Leave both halves in asm.
+
+## Resolved 2026-09-15: sub_08006A34 (matched, 2240 bytes)
+
+`src/sub_08006A34.c` matches. Its header records all three levers. Two of
+them are worth trying on other register-only drafts.
+
+**Shared multi-block variable defeats a local tie.** At `0x8006c98` the
+sum was tied to the dying partial by `block_alloc`, not steered by the
+global `set_preference` that the old header blamed. `combine_regs` refuses
+to tie a pseudo that isn't local to its block. One function-scope
+`u32 time;` assigned at the two unsigned compare sites made the sum's
+register span several blocks. It then took the first free register, `r1`,
+as the ROM does. Check the ROM first: the time sum appears seven times, and
+only the two sites that use `r1` share the variable. So look for identical
+expressions whose destination register differs between copies.
+
+**Inline register pins keep evaluation order.** At `0x8006b84`,
+`register s32 dx asm("r6");` assigned inside the original expression
+(`(dx = corners[1] - l4) * ...`) matched. The same pin as a separate
+initialiser fixed the registers but moved the subtraction.
+
+**A constant derived from a zero needs an int temporary.** The ROM computed
+`p->unk4D = -1` as `subs r0, r1, #1`. A literal takes the byte store's
+constant fast path and loads `movs r0, #255`. `p->unk4D = z - 1` is narrowed
+to QImode, so combine folds it back to a constant. `s32 m = z - 1;
+p->unk4D = m;` keeps the subtraction in SImode on the same zero register that
+the next store uses, and CSE keeps it because an SImode -1 costs more than
+`(plus reg -1)` on Thumb. When the ROM derives a constant from a register
+that holds zero or a nearby value, look for this shape.
+
+## Parked 2026-09-16: sub_08000DC8 + sub_0833A488 — `tst rX, rY` is unreachable
+
+Both halves of this m4a twin pair are blocked in the compiler, not by
+register allocation. The ROM uses a two-register `tst r0, r1`, and
+`tools/agbcc/gcc/thumb.md:818` defines the only `tst` pattern in the whole
+machine description as single-operand:
+
+    (define_insn "tstsi"
+      [(set (cc0) (match_operand:SI 0 "s_register_operand" "l"))]
+      ""
+      "cmp\\t%0, #0")
+
+`tst` appears exactly once in that file, so no C agbcc accepts can emit the
+register-vs-register form. A test compile of `if (head->flags & 0x80)`
+yields `ands r0, r1; cmp r0, #0` instead.
+
+A second, independent blocker sits in the same function: `ands r0, r3; beq`
+reuses the flags straight off the ANDS, and agbcc always inserts a separate
+`cmp rN, #0` before the branch. No available C construct produces bare
+flag reuse after ANDS.
+
+The high twin sub_0833A488 has the same `tst r0, r1` and the same fused
+`ands`/`beq` at the same relative offsets (asm/rom_08339B78.s), so it is
+equally blocked, not merely likely to be. Leave both in asm.
+
+Earlier draft and analysis: `docs/learnings/drafts/sub_08000DC8.c`.
+
+## Near-miss drafts parked 2026-09-16 (m4a low region)
+
+Three m4a low-region functions have drafts that build but do not yet match.
+They are NOT blocked in the compiler as far as anyone has shown; they were
+abandoned mid-iteration when a session limit killed the run. Start from
+these files, not from scratch:
+
+- `docs/learnings/drafts/sub_080019F4.c` (128 bytes) — diverges at the tail
+  `bx r0`; the trailing flags check was being reshaped when work stopped.
+- `docs/learnings/drafts/sub_08001A74.c` (428 bytes) — diverges at the tail
+  `bx r0`.
+- `docs/learnings/drafts/sub_08001C20.c` (1340 bytes) — diverges around
+  `pop {r4}`.
+
+Their high twins (sub_0833B0B4, sub_0833B134, sub_0833B2E0) were never
+attempted. sub_08002638 and its twin sub_0833BCF8 were never attempted
+either.
+
+### The m4a engine is duplicated at delta 0x3396C0
+
+Established 2026-09-16 and worth reusing. The ROM carries the MP2K/m4a
+sound engine twice: a low copy near 0x08000260 and a high copy near
+0x08339920, offset by exactly 0x3396C0. Engine ident is 0x68736D53
+("Smsh"), one revision below pret's 0x68736D54.
+
+The delta holds ONLY for a twin function's own address. It does NOT hold
+for callees or data:
+
+- Shared leaf routines exist once, not twice. The `swi 0x0B` CpuSet wrapper
+  is at sub_08344B64; the BX trampoline table at `_08344B80`.
+- RAM globals in the high copy sit at unrelated addresses (e.g.
+  gUnk_02000580 -> gUnk_020375D0, a delta of 0x37050).
+- One literal in sub_0833AF48 is 0x020017A9 where the low twin has
+  gCallback_08000B69, which is not the delta of anything.
+
+Read every call target and literal off the target disassembly. Computing
+them from the delta produces confident, wrong answers.
+
+Also note: the span 0x080004B8-0x08000958 is undecoded `.byte` data in
+`asm/rom_080004B8.s` with no `thumb_func_start`. It is real MP2K code (it
+carries the hi-register epilogue at 0x080008E0 and the `Smsh` ident), but
+luvdis never split it, so it is invisible to progress.py's numerator and
+denominator alike.

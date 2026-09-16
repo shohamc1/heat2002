@@ -11,15 +11,17 @@ match, the change is wrong — no exceptions.
 
 | Metric | Value |
 | --- | ---: |
-| Functions decompiled | **103 / 743** |
-| Code matched | **2,844 / 109,370 bytes** |
-| Percent complete | **2.6003%** |
+| Functions decompiled | **422 / 646** |
+| Code matched | **51,076 / 102,160 bytes** |
+| Percent complete | **49.9961%** |
 
 Progress is measured in **bytes of code**, not function count — a 1,500-instruction
-function is not worth the same as a 1-instruction stub. Regenerate with
-`python3 scripts/progress.py`; `--json` emits an
-[objdiff](https://github.com/encounter/objdiff) `report.json` v2 compatible with
-[decomp.dev](https://decomp.dev).
+function is not worth the same as a 1-instruction stub. The denominator is the
+646 game-code functions (743 blocks minus 97 vendored runtime-library and
+luvdis false positives — see `docs/learnings/parked.md`); over the whole ROM
+the same bytes are 42.6700%. Regenerate with `python3 scripts/progress.py`;
+`--json` emits an [objdiff](https://github.com/encounter/objdiff) `report.json`
+v2 compatible with [decomp.dev](https://decomp.dev).
 
 The disassembly already reassembles to a perfect match, so the ROM is fully
 reproducible today. Decompilation is the work of replacing that assembly with C
@@ -58,6 +60,9 @@ cd tools/agbcc && ./build.sh && cd ../..
 
 # Function discovery tool
 python3 -m venv .venv && .venv/bin/pip install -e tools/luvdis
+
+# Permuter dependencies (scripts/permute.py); pycparser 3 breaks it
+.venv/bin/pip install "pycparser<3" toml
 
 cp /path/to/your/dump.gba baserom.gba
 make check      # must print MATCH
@@ -104,14 +109,18 @@ asm/*.s          ROM disassembly, one fragment per gap between decompiled
                  functions; reassembles exactly
 src/             Decompiled C — one function per file, named for it
 include/         Headers
+include/gba/     GBA hardware headers vendored from fireemblem8u (pret)
 scripts/
   seed_functions.py  Function discovery (BL targets ∩ push prologues)
   match.py           Diff one compiled function against the target asm
   extract.py         Cut a matched function out of its asm fragment
   batch_extract.py   Extract every matched function, regenerate ldscript
   progress.py        Progress report + decomp.dev report.json
+  permute.py         Run decomp-permuter on a near-miss draft
 tools/agbcc      Vendored GCC 2.95 — do not modify
 tools/luvdis     Vendored disassembler — do not modify
+tools/m2c        Vendored asm-to-C decompiler for first drafts; do not modify
+tools/decomp-permuter  Vendored C permuter (agbcc fork); do not modify
 docs/recon.md    Binary recon: inventory, call graph, entry point
 docs/verification.md  What MATCH proves, and what it doesn't
 docs/learnings/  Parked functions and known dead ends — read before picking
@@ -157,6 +166,22 @@ From [`docs/recon.md`](docs/recon.md):
 - Identified by shape: `__divsi3`, `__modsi3`, `__umodsi3`, `__clzsi2`,
   `__div0`, a soft-float family, `memcpy`/`memmove`/`memset`, and 8 BIOS SWI
   wrappers.
+
+## Credits
+
+The headers in [`include/gba/`](include/gba/) come from
+[fireemblem8u](https://github.com/laqieer/fireemblem8u), which carries the
+shared GBA hardware layer originated by [pret](https://github.com/pret).
+`io_reg.h` is identical to pokeemerald's. The same four files are used across
+pret-lineage decompilations: `io_reg.h`, `defines.h`, `syscall.h` and
+`macro.h`. Neither project ships a licence file, so they are reused here by
+community convention, with attribution.
+
+One change was made to them. `defines.h` dropped its `#include <stddef.h>`,
+because this project builds with `-nostdinc` and used nothing from that header.
+
+fireemblem8u also identified this ROM's sound engine. It is MP2K (m4a), with
+ident `0x68736D53`, one revision older than pret's `0x68736D54`.
 
 ## Legal
 

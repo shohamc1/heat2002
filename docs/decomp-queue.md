@@ -1,211 +1,77 @@
-# Decompilation queue: sub_08015364 subtree (remaining)
+# Decompilation queue: sub_08015364 subtree — final state
 
-Everything the main loop reaches that is not yet decompiled, ranked by caller count.
-Depth = hops from sub_08015364. Work top-down; verify each with `python3 scripts/match.py <name>`,
-then follow the extraction loop in AGENTS.md / docs/decomp-guide.md.
+The queue originally held 203 functions reachable from `sub_08015364` and not
+yet decompiled, ranked by caller count. This file now records where that
+effort landed: what was integrated, and what is parked with a draft and a
+one-line statement of the remaining diff. Each parked draft's header comment
+is the authoritative record; `docs/learnings/parked.md` holds the cross-cutting
+dead ends.
 
-```
-  sub_080065A8    396 b  depth 2  30 callers
-  sub_08006950    196 b  depth 2  27 callers
-  sub_08011D38    116 b  depth 2  14 callers
-  sub_0800F328    124 b  depth 2  13 callers
-  sub_080063BC     92 b  depth 3  12 callers
-  sub_080078E4     88 b  depth 3  11 callers
-  sub_080073D8    288 b  depth 2  9 callers
-  sub_08003330   1032 b  depth 2  9 callers
-  sub_08007344    148 b  depth 2  8 callers
-  sub_08006418    132 b  depth 2  7 callers
-  sub_0800EA64     60 b  depth 3  6 callers
-  sub_0800F4FC    100 b  depth 2  6 callers
-  sub_080102BC     52 b  depth 3  5 callers
-  sub_080044A4     56 b  depth 4  5 callers
-  sub_080019B4     64 b  depth 2  5 callers
-  sub_0801659C     68 b  depth 2  5 callers
-  sub_080106CC     72 b  depth 3  4 callers
-  sub_08007714     76 b  depth 4  4 callers
-  sub_08010680     76 b  depth 3  4 callers
-  sub_0800649C     92 b  depth 7  4 callers
-  sub_08016C50     96 b  depth 3  4 callers
-  sub_0800BE00    164 b  depth 5  4 callers
-  sub_08004DB4    240 b  depth 3  4 callers
-  sub_08011C44     88 b  depth 3  3 callers
-  sub_0800F498    100 b  depth 2  3 callers
-  sub_0800BD98    104 b  depth 5  3 callers
-  sub_08011E00    132 b  depth 2  3 callers
-  sub_08010194    232 b  depth 3  3 callers
-  sub_08004944     60 b  depth 2  2 callers
-  sub_0800A2D4     60 b  depth 5  2 callers
-  sub_0800DFCC     60 b  depth 3  2 callers
-  sub_0800C28C     64 b  depth 5  2 callers
-  sub_08007630     76 b  depth 4  2 callers
-  sub_0800EE8C     76 b  depth 4  2 callers
-  sub_0800BBFC     80 b  depth 5  2 callers
-  sub_0800CB18     88 b  depth 5  2 callers
-  sub_0800C0FC    104 b  depth 6  2 callers
-  sub_08016F80    128 b  depth 4  2 callers
-  sub_08003F84    148 b  depth 2  2 callers
-  sub_08009B20    148 b  depth 3  2 callers
-  sub_08004D1C    152 b  depth 4  2 callers
-  sub_08010E04    156 b  depth 2  2 callers
-  sub_080112E0    156 b  depth 2  2 callers
-  sub_0800930C    176 b  depth 3  2 callers
-  sub_08017000    184 b  depth 3  2 callers
-  sub_08004018    200 b  depth 2  2 callers
-  sub_080012D4    204 b  depth 3  2 callers
-  sub_080062BC    204 b  depth 2  2 callers
-  sub_08004C44    216 b  depth 3  2 callers
-  sub_0800C358    216 b  depth 5  2 callers
-  sub_080016E4    236 b  depth 3  2 callers
-  sub_08003BFC    320 b  depth 3  2 callers
-  sub_080058CC    352 b  depth 3  2 callers
-  sub_08010FE4    388 b  depth 2  2 callers
-  sub_08000DC8    772 b  depth 3  2 callers
-  sub_0800C534   1104 b  depth 4  2 callers
-  sub_0800F0BC     24 b  depth 5  1 callers
-  sub_080102A4     24 b  depth 2  1 callers
-  sub_08000958     26 b  depth 3  1 callers
-  sub_08001150     32 b  depth 3  1 callers
-  sub_080061F0     36 b  depth 3  1 callers
-  sub_0801027C     40 b  depth 3  1 callers
-  sub_0800524C     52 b  depth 3  1 callers
-  sub_08004A18     56 b  depth 3  1 callers
-  sub_0800D64C     56 b  depth 6  1 callers
-  sub_0800DE60     60 b  depth 4  1 callers
-  sub_08007304     64 b  depth 3  1 callers
-  sub_08008CDC     68 b  depth 3  1 callers
-  sub_0800F14C     68 b  depth 2  1 callers
-  sub_08016F3C     68 b  depth 4  1 callers
-  sub_0800CC98     72 b  depth 6  1 callers
-  sub_08014614     72 b  depth 2  1 callers
-  sub_0800754C     76 b  depth 4  1 callers
-  sub_08007598     76 b  depth 4  1 callers
-  sub_080075E4     76 b  depth 4  1 callers
-  sub_0800767C     76 b  depth 3  1 callers
-  sub_08011F78     76 b  depth 2  1 callers
-  sub_08014A38     76 b  depth 2  1 callers
-  sub_08005614     80 b  depth 7  1 callers
-  sub_0800A034     80 b  depth 6  1 callers
-  sub_0800383C     84 b  depth 3  1 callers
-  sub_08003D3C     84 b  depth 4  1 callers
-  sub_080074F8     84 b  depth 4  1 callers
-  sub_0800BD44     84 b  depth 5  1 callers
-  sub_0800C4E0     84 b  depth 5  1 callers
-  sub_08011DAC     84 b  depth 6  1 callers
-  sub_08009F48     88 b  depth 2  1 callers
-  sub_0800CCE0     88 b  depth 2  1 callers
-  sub_0801060C     88 b  depth 2  1 callers
-  sub_08013908     92 b  depth 2  1 callers
-  sub_080045EC     96 b  depth 4  1 callers
-  sub_080040E0    100 b  depth 2  1 callers
-  sub_080055B0    100 b  depth 3  1 callers
-  sub_0800F434    100 b  depth 2  1 callers
-  sub_08011E84    100 b  depth 6  1 callers
-  sub_08012984    100 b  depth 2  1 callers
-  sub_08016ED8    100 b  depth 4  1 callers
-  sub_080051E4    104 b  depth 3  1 callers
-  sub_08013AFC    104 b  depth 2  1 callers
-  sub_0800A5BC    108 b  depth 6  1 callers
-  sub_08012874    108 b  depth 2  1 callers
-  sub_0801380C    108 b  depth 3  1 callers
-  sub_0800B2C4    112 b  depth 6  1 callers
-  sub_08010B38    112 b  depth 3  1 callers
-  sub_080115D8    116 b  depth 2  1 callers
-  sub_08013684    116 b  depth 2  1 callers
-  sub_08014480    116 b  depth 2  1 callers
-  sub_08014EE8    116 b  depth 2  1 callers
-  sub_0800D5D4    120 b  depth 6  1 callers
-  sub_08005338    128 b  depth 3  1 callers
-  sub_0800464C    132 b  depth 3  1 callers
-  sub_08007B34    132 b  depth 2  1 callers
-  sub_080134E8    136 b  depth 2  1 callers
-  sub_08007BB8    140 b  depth 4  1 callers
-  sub_0800C2CC    140 b  depth 6  1 callers
-  sub_08012228    140 b  depth 2  1 callers
-  sub_08011EE8    144 b  depth 2  1 callers
-  sub_080127E4    144 b  depth 3  1 callers
-  sub_08013878    144 b  depth 2  1 callers
-  sub_08005664    148 b  depth 6  1 callers
-  sub_08009FA0    148 b  depth 3  1 callers
-  sub_08010AA4    148 b  depth 3  1 callers
-  sub_0801719C    148 b  depth 3  1 callers
-  sub_08003890    152 b  depth 3  1 callers
-  sub_08009BB4    152 b  depth 4  1 callers
-  sub_0800E3C4    156 b  depth 4  1 callers
-  sub_0800B334    160 b  depth 2  1 callers
-  sub_0800F600    160 b  depth 2  1 callers
-  sub_0800F6A0    160 b  depth 2  1 callers
-  sub_0800F740    160 b  depth 2  1 callers
-  sub_08004EA4    164 b  depth 3  1 callers
-  sub_0800BB58    164 b  depth 2  1 callers
-  sub_08006214    168 b  depth 3  1 callers
-  sub_080116D4    168 b  depth 2  1 callers
-  sub_080079D0    172 b  depth 3  1 callers
-  sub_0800C430    176 b  depth 5  1 callers
-  sub_08001900    180 b  depth 2  1 callers
-  sub_08003B44    184 b  depth 2  1 callers
-  sub_08005280    184 b  depth 2  1 callers
-  sub_0800C164    184 b  depth 5  1 callers
-  sub_080083C0    192 b  depth 6  1 callers
-  sub_0800EEFC    196 b  depth 3  1 callers
-  sub_080100CC    200 b  depth 3  1 callers
-  sub_08005024    204 b  depth 3  1 callers
-  sub_08016658    204 b  depth 2  1 callers
-  sub_08004F48    220 b  depth 2  1 callers
-  sub_0800A628    224 b  depth 4  1 callers
-  sub_0800CBB8    224 b  depth 6  1 callers
-  sub_08008AB0    228 b  depth 2  1 callers
-  sub_080170B8    228 b  depth 3  1 callers
-  sub_08012C4C    232 b  depth 2  1 callers
-  sub_0800EFD0    236 b  depth 4  1 callers
-  sub_080050F0    244 b  depth 2  1 callers
-  sub_08001548    248 b  depth 2  1 callers
-  sub_0800BC4C    248 b  depth 6  1 callers
-  sub_0800545C    260 b  depth 2  1 callers
-  sub_0800A708    260 b  depth 5  1 callers
-  sub_080046D0    268 b  depth 2  1 callers
-  sub_080013F8    296 b  depth 2  1 callers
-  sub_0800A310    296 b  depth 5  1 callers
-  sub_08010BA8    296 b  depth 2  1 callers
-  sub_0800DE9C    304 b  depth 4  1 callers
-  sub_080123F8    312 b  depth 2  1 callers
-  sub_08011B08    316 b  depth 2  1 callers
-  sub_08004278    324 b  depth 2  1 callers
-  sub_0800B764    324 b  depth 7  1 callers
-  sub_08007F44    332 b  depth 6  1 callers
-  sub_0800B618    332 b  depth 5  1 callers
-  sub_0800B3D4    364 b  depth 6  1 callers
-  sub_08014708    364 b  depth 2  1 callers
-  sub_08014104    372 b  depth 2  1 callers
-  sub_0800A438    388 b  depth 6  1 callers
-  sub_0800B8A8    396 b  depth 4  1 callers
-  sub_08008D8C    400 b  depth 2  1 callers
-  sub_0800AD80    416 b  depth 2  1 callers
-  sub_0801137C    428 b  depth 2  1 callers
-  sub_08012074    436 b  depth 2  1 callers
-  sub_0800E200    452 b  depth 2  1 callers
-  sub_08013E3C    456 b  depth 2  1 callers
-  sub_08014C60    456 b  depth 2  1 callers
-  sub_0800E008    504 b  depth 3  1 callers
-  sub_08013B64    504 b  depth 2  1 callers
-  sub_0800AB78    520 b  depth 3  1 callers
-  sub_08003928    540 b  depth 2  1 callers
-  sub_080087F4    556 b  depth 6  1 callers
-  sub_0800BEA4    580 b  depth 4  1 callers
-  sub_0800CD38    580 b  depth 6  1 callers
-  sub_0800A084    592 b  depth 5  1 callers
-  sub_080080B4    600 b  depth 5  1 callers
-  sub_0800E460    680 b  depth 4  1 callers
-  sub_08007C44    692 b  depth 5  1 callers
-  sub_08008F1C    732 b  depth 3  1 callers
-  sub_08009C4C    764 b  depth 3  1 callers
-  sub_0800A80C    876 b  depth 4  1 callers
-  sub_08008480    884 b  depth 5  1 callers
-  sub_080097A4    892 b  depth 4  1 callers
-  sub_0800D248    908 b  depth 5  1 callers
-  sub_080093BC   1000 b  depth 4  1 callers
-  sub_0800EAA0   1004 b  depth 3  1 callers
-  sub_08000972   1110 b  depth 4  1 callers
-  sub_0800215C   1120 b  depth 2  1 callers
-  sub_0800D684   2012 b  depth 5  1 callers
-  sub_08006A34   2240 b  depth 5  1 callers
-```
+## Status
+
+- 161 of the 203 queue functions decompiled and integrated on this branch
+  (`git log --oneline main..HEAD | grep -c Decompile` = 161; `src/` grew from
+  262 functions at `main` to 423).
+- `python3 scripts/progress.py`: functions 423 / 646 matched; code 51108 /
+  102164 bytes (50.0254%); whole ROM 51108 / 119704 bytes (42.6953%) over
+  743 blocks (5 of which are luvdis false positives — see `parked.md`).
+- 42 queue functions remain, all parked: 41 with drafts in
+  `docs/learnings/drafts/`, plus `sub_08000972` (below).
+
+## Remaining to decompile (in asm, no draft)
+
+None. Every queue function still in `asm/` either has a quarantined draft or
+belongs to the hand-written-asm pair `sub_08000958` + `sub_08000972`, which is
+retail hand-written assembly, not a C target — leave both halves in `asm/`
+(`docs/learnings/parked.md`, "Parked 2026-09-14: sub_08000958 +
+sub_08000972"). The pair's analysis record lives in
+`docs/learnings/drafts/sub_08000958.c`.
+
+## Parked with drafts (42)
+
+Ranked by original caller count. Drafts for functions since resolved into
+`src/` (e.g. `sub_0800EEFC`) are kept as learning records and are not listed.
+
+| Function | Size | Callers | Remaining diff (from draft header) |
+|---|---|---|---|
+| `sub_080065A8` | 396 b | 30 | exact size, 198/198 instructions, same opcodes — register-allocation names only |
+| `sub_08003330` | 1032 b | 9 | unmatched draft; record in `docs/learnings/sub_08003330.md` |
+| `sub_08004DB4` | 240 b | 4 | bare code draft, no quarantine header |
+| `sub_0800BD98` | 104 b | 3 | bare code draft, no quarantine header |
+| `sub_08016F80` | 128 b | 2 | 108/120 bytes, structure matches; DISPCNT `ands r4,r3` vs our `ands r3,r4` |
+| `sub_08003F84` | 148 b | 2 | loop tail 2 insns short (reload scratch r0 vs r2) + high-register permutation |
+| `sub_080112E0` | 156 b | 2 | structure fully solved; one pairwise register permutation |
+| `sub_0800930C` | 176 b | 2 | bare code draft, no quarantine header |
+| `sub_08017000` | 184 b | 2 | one allocation decision plus its register fallout (190/184 bytes) |
+| `sub_08004018` | 200 b | 2 | 2 insn-shape issues in the loop body |
+| `sub_08000DC8` | 772 b | 2 | BLOCKED — epilogue is interwork form |
+| `sub_0800F0BC` | 24 b | 1 | BLOCKED — reachable/unreachable insn mix (`mov r2, pc` self-check) |
+| `sub_08000958` | 26 b | 1 | hand-written asm pair with `sub_08000972`; not reachable from agbcc C |
+| `sub_08007304` | 64 b | 1 | wave-1 closeout: 4-byte floor with r7 pin (mov r7,ip constructible); pure-C r0-occupant impossible |
+| `sub_0800383C` | 84 b | 1 | one register permutation away |
+| `sub_0800C2CC` | 140 b | 1 | wave-5d state compiles; agent died mid-work |
+| `sub_0800C430` | 176 b | 1 | wave-4 dead-agent state; rebuild diverges (push set differs) |
+| `sub_0800A628` | 224 b | 1 | 220/220 bytes; one diff cluster around the j-chain 0x800a66a-0x800a686 |
+| `sub_0800CBB8` | 224 b | 1 | structure 100% solved; only a register swap (mask results r3,r2) |
+| `sub_08008AB0` | 228 b | 1 | 132 b code, identical control flow/block layout; register allocation differs |
+| `sub_080170B8` | 228 b | 1 | register-allocation and block-ordering artifacts after ~18 iterations |
+| `sub_080046D0` | 268 b | 1 | batch3 register permutation only (batches 1&2, flags, masks all MATCH) |
+| `sub_0800DE9C` | 304 b | 1 | everything matches except 2 insns in the loop's tile computation |
+| `sub_08011B08` | 316 b | 1 | compiles; one allocation-race cluster left (324/324, diff at words 9-82) |
+| `sub_0800E200` | 452 b | 1 | wave-5d state compiles; agent died mid-experiment |
+| `sub_0800E008` | 504 b | 1 | best build 540/532 bytes (retry-wave notes in header) |
+| `sub_0800AB78` | 520 b | 1 | 520/520 bytes; cross-jump sharing of the four `sub_0800A80C` call sites |
+| `sub_0800BEA4` | 580 b | 1 | wave-4 dead-agent state; mid-function code 4 bytes short |
+| `sub_0800CD38` | 580 b | 1 | best build 572/580 bytes |
+| `sub_0800A084` | 592 b | 1 | wave-4 dead-agent state; code 2 bytes short, branch/pool offsets drift |
+| `sub_08007C44` | 692 b | 1 | 700/700 bytes; register+slot allocation only, pools match |
+| `sub_08009C4C` | 764 b | 1 | wave-5d state replaces older draft; agent died mid-work |
+| `sub_0800A80C` | 876 b | 1 | 896/876 bytes; GCSE PRE hoists at the `sub_0800D248` join |
+| `sub_080097A4` | 892 b | 1 | wave-4 dead-agent state; allocation pattern differs (adds-chain vs movs+adds) |
+| `sub_0800D248` | 908 b | 1 | best build 868/908 bytes (64-bit math / MIN/MAX chains) |
+| `sub_0800EAA0` | 1004 b | 1 | control-flow transcription believed correct after ~12 iterations |
+| `sub_0800D684` | 2012 b | 1 | 1990/2012 bytes; 39-instruction multiset diff, fully characterized |
+| `sub_08006A34` | 2240 b | 1 | 2240/2240 bytes, 10 bytes differ at 3 sites; root causes identified |
+
+`sub_08000972` (1110 b, 1 caller) has no separate draft: it is the second
+half of the hand-written-asm pair above.
