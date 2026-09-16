@@ -5,7 +5,7 @@
    Assigning off = 4 inside the loop keeps base + 4 out of the preheader. */
 
 extern u8 gUnk_0800054D[];
-extern u8 gUnk_00000005[];
+extern u8 gNumMusicPlayersLow[];
 extern u8 gUnk_02000DE0[];
 extern u8 gUnk_02001E20[];
 extern u8 gUnk_02002020[];
@@ -38,7 +38,7 @@ void sub_08001170(void)
     sub_08001548(gUnk_02000DE0);
     sub_080013F8(gUnk_02001E20);
     sub_080016E4(0x0097EA00);
-    cnt = (u16)(u32)gUnk_00000005;
+    cnt = (u16)(u32)gNumMusicPlayersLow;
     if (cnt != 0)
     {
         base = (u32)gUnk_0801DA90;

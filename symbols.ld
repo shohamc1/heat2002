@@ -330,13 +330,16 @@ gUnk_083FDD48 = 0x083FDD48;
 gUnk_083FDE78 = 0x083FDE78;
 gUnk_083FECB0 = 0x083FECB0;
 gUnk_0806C688 = 0x0806C688;
-gUnk_00000005 = 0x00000005;
+/* MP2K build-configuration constants. Not addresses: the code takes the
+   symbol's address to materialise a small constant. The two engine copies
+   are configured with different player counts. */
+gNumMusicPlayersLow = 0x00000005;
 gUnk_0806C678 = 0x0806C678;
 gUnk_0202CBD0 = 0x0202CBD0;
 gUnk_0202CBD8 = 0x0202CBD8;
 gUnk_06016000 = 0x06016000;
 gUnk_0200118D = 0x0200118D;
-gUnk_00000004 = 0x00000004;
+gNumMusicPlayersHigh = 0x00000004;
 gUnk_02002F81 = 0x02002F81;
 gUnk_02001CE5 = 0x02001CE5;
 gUnk_02001CF9 = 0x02001CF9;
@@ -530,7 +533,7 @@ gUnk_08368290 = 0x08368290;
 gUnk_083FDDD0 = 0x083FDDD0;
 gUnk_083FDCF0 = 0x083FDCF0;
 gUnk_083FDC88 = 0x083FDC88;
-gUnk_00000000 = 0x00000000;
+gMaxLines = 0x00000000;   /* shared by both engine copies */
 gUnk_08002341 = 0x08002341;
 gUnk_080010A5 = 0x080010A5;
 gUnk_080010B9 = 0x080010B9;

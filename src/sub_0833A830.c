@@ -16,7 +16,7 @@ struct Unk0801DA90
 extern struct Unk0801DA90 gUnk_0200CA74[];
 
 extern u8 gUnk_0200118D[];
-extern u8 gUnk_00000004[];
+extern u8 gNumMusicPlayersHigh[];
 extern void sub_0833AC08(void *a);
 extern void sub_0833AAB8(void *a);
 extern void sub_0833ADA4(u32 a);
@@ -36,7 +36,7 @@ void sub_0833A830(void)
     sub_0833AC08((void *)EWRAM_START + 0x37E30);
     sub_0833AAB8((void *)EWRAM_START + 0x38E70);
     sub_0833ADA4(0x0097D800);
-    cnt = (u16)(u32)gUnk_00000004;
+    cnt = (u16)(u32)gNumMusicPlayersHigh;
     if (cnt != 0)
     {
         base = (u32)gUnk_0200CA74;

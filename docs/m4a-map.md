@@ -33,6 +33,7 @@ addresses.
 | `sub_08001900` | `sub_0833AFC0` | `MPlayStart` | certain | yes | converted (kept the r4/r0 register pins) |
 | `sub_080019B4` | `sub_0833B074` | `m4aMPlayStop` | certain | yes | converted |
 | `sub_0800215C` | `sub_0833B81C` | `m4aMPlayPitchControl` | certain | yes | converted |
+| `sub_08001170` | `sub_0833A830` | `m4aSoundInit` | certain | yes | n/a (no offset casts; see the build constants below) |
 | `sub_08001150` | `sub_0833A810` | fade-control setter (`m4aMPlayFadeIn`/`m4aMPlayFadeOutTemporarily` family) | likely | yes | not touched (confidence is only "likely", not certain) |
 | `sub_08000DC8` | `sub_0833A488` | `TrackStop` | certain | **no** (blocked in compiler; `tst rX, rY` unreachable — see `parked.md`) | n/a, not decompiled |
 | `sub_080019F4` | `sub_0833B0B4` | `FadeOutBody` | certain | **no** (near-miss draft: `docs/learnings/drafts/sub_080019F4.c`) | n/a, not decompiled |
@@ -97,3 +98,32 @@ to their engine names. `ldscript.ld` and `symbols.ld` place objects and
 resolve symbols by filename/symbol name, so a rename cascades into both
 and is a separate, higher-risk piece of work. Renaming is a deliberate
 follow-up, not part of this pass.
+
+## Build-configuration constants
+
+Three symbols in `symbols.ld` are not addresses. The code takes a symbol's
+address and truncates it, which is how the MP2K build materialises a
+compile-time configuration value:
+
+    soundInfo->maxLines = (u8)(u32)&gMaxLines;      // src/sub_080013F8.c
+    cnt = (u16)(u32)gNumMusicPlayersLow;             // src/sub_08001170.c
+
+The reference driver declares the same two symbols in its own linker
+script, as `gNumMusicPlayers` and `gMaxLines`. This repo's names, and
+their values:
+
+| Symbol | Value | Used by |
+|---|---|---|
+| `gMaxLines` | 0 | both copies, in `MPlayExtender` |
+| `gNumMusicPlayersLow` | 5 | low copy, in `m4aSoundInit` |
+| `gNumMusicPlayersHigh` | 4 | high copy, in `m4aSoundInit` |
+
+The two engine copies are configured with different music-player counts,
+5 and 4. That is why one concept needs two symbols: a linker symbol holds
+one value. It is also independent evidence that the copies are separate
+builds rather than a byte-for-byte duplication, which matches the
+`parked.md` rule that the 0x3396C0 delta applies to a twin's own address
+and to nothing else.
+
+These were named `gUnk_00000005`, `gUnk_00000004` and `gUnk_00000000`
+until 16 September 2026. All four affected files still print `MATCH`.

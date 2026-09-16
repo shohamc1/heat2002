@@ -6,7 +6,7 @@
 
 extern struct SoundInfo *gUnk_03007FF0;
 extern MPlayFunc gUnk_02001D90[];
-extern u8 gUnk_00000000;
+extern u8 gMaxLines;
 extern u8 gUnk_08002341;
 extern u8 gUnk_080010A5;
 extern u8 gUnk_080010B9;
@@ -54,7 +54,7 @@ void sub_080013F8(struct CgbChannel *cgbChans)
         soundInfo->CgbSound = (CgbSoundFunc)&gUnk_08001C89;
         soundInfo->CgbOscOff = (CgbOscOffFunc)&gUnk_08001BD1;
         soundInfo->MidiKeyToCgbFreq = (MidiKeyToCgbFreqFunc)&gUnk_08001B29;
-        soundInfo->maxLines = (u8)(u32)&gUnk_00000000;
+        soundInfo->maxLines = (u8)(u32)&gMaxLines;
         CpuFill32(0, (u32)cgbChans, 0x100);
         cgbChans[0].type = 1;
         cgbChans[0].panMask = 0x11;

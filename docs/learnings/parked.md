@@ -810,6 +810,11 @@ for callees or data:
   gUnk_02000580 -> gUnk_020375D0, a delta of 0x37050).
 - One literal in sub_0833AF48 is 0x020017A9 where the low twin has
   gCallback_08000B69, which is not the delta of anything.
+- The two copies are configured differently, not just relocated. The low
+  copy runs 5 music players and the high copy 4, read from the linker
+  constants `gNumMusicPlayersLow` and `gNumMusicPlayersHigh` in
+  `m4aSoundInit` (sub_08001170 / sub_0833A830). See
+  `docs/m4a-map.md`.
 
 Read every call target and literal off the target disassembly. Computing
 them from the delta produces confident, wrong answers.
