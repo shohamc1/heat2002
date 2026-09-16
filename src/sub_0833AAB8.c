@@ -1,49 +1,12 @@
 #include "global.h"
 #define GBA_CPUSET sub_08344B64
 #include "gba/compat.h"
+#include "gba/m4a_internal.h"
 
-struct SndWork
-{
-    u32 magic;
-    u8 filler4[0xC - 0x04];
-    u8 unk0C;
-    u8 filler0D[0x1C - 0x0D];
-    u32 unk1C;
-    u8 filler20[0x28 - 0x20];
-    u32 unk28;
-    u32 unk2C;
-    u32 unk30;
-};
+/* MPlayExtender (high copy) */
 
-struct Tail
-{
-    u8 filler0[0x01];
-    u8 unk1;
-    u8 filler2[0x1C - 0x02];
-    u8 unk1C;
-};
-
-struct SndWork2
-{
-    u8 filler0[0x01];
-    u8 unk1;
-    u8 filler2[0x1C - 0x02];
-    u8 unk1C;
-    u8 filler1D[0x41 - 0x1D];
-    u8 unk41;
-    u8 filler42[0x5C - 0x42];
-    u8 unk5C;
-    u8 filler5D[0x81 - 0x5D];
-    u8 unk81;
-    u8 filler82[0x9C - 0x82];
-    u8 unk9C;
-    u8 filler9D[0xC0 - 0x9D];
-    struct Tail tail;
-};
-
-
-extern struct SndWork *gUnk_03007FF0;
-extern u32 gUnk_02038DE0[];
+extern struct SoundInfo *gUnk_03007FF0;
+extern MPlayFunc gUnk_02038DE0[];
 extern u8 gUnk_00000000;
 extern u8 gUnk_02002F81;
 extern u8 gUnk_02001CE5;
@@ -58,10 +21,10 @@ extern u8 gUnk_020028C9;
 extern u8 gUnk_02002811;
 extern u8 gUnk_02002769;
 
-void sub_0833AAB8(struct SndWork2 *a1)
+void sub_0833AAB8(struct CgbChannel *cgbChans)
 {
-    u32 v;
-    struct SndWork *p;
+    u32 ident;
+    struct SoundInfo *soundInfo;
 
     REG_SOUNDCNT_X = (SOUND_MASTER_ENABLE | SOUND_1_ON | SOUND_2_ON | SOUND_3_ON | SOUND_4_ON);
     REG_SOUNDCNT_L = 0x77;
@@ -73,38 +36,34 @@ void sub_0833AAB8(struct SndWork2 *a1)
     REG_NR44 = 0x80;
     REG_NR30 = 0x00;
     REG_SOUNDCNT_L = 0xFF77;
-    p = SOUND_INFO_PTR;
-    v = p->magic;
-    if (v == 0x68736D53)
+    soundInfo = SOUND_INFO_PTR;
+    ident = soundInfo->ident;
+    if (ident == ID_NUMBER)
     {
-        p->magic = v + 1;
-        gUnk_02038DE0[8] = (u32)&gUnk_02002F81;
-        gUnk_02038DE0[0x11] = (u32)&gUnk_02001CE5;
-        gUnk_02038DE0[0x13] = (u32)&gUnk_02001CF9;
-        gUnk_02038DE0[0x1C] = (u32)&gUnk_020030D9;
-        gUnk_02038DE0[0x1D] = (u32)&gUnk_02001C7D;
-        gUnk_02038DE0[0x1E] = (u32)&gUnk_02002281;
-        gUnk_02038DE0[0x1F] = (u32)&gUnk_02001A09;
-        gUnk_02038DE0[0x20] = (u32)&gUnk_02002635;
-        gUnk_02038DE0[0x21] = (u32)&gUnk_020026B5;
-        p->unk1C = (u32)a1;
-        p->unk28 = (u32)&gUnk_020028C9;
-        p->unk2C = (u32)&gUnk_02002811;
-        p->unk30 = (u32)&gUnk_02002769;
-        p->unk0C = (u8)(u32)&gUnk_00000000;
-        CpuFill32(0, (u32)a1, 0x100);
-        a1->unk1 = 1;
-        a1->unk1C = 0x11;
-        a1->unk41 = 2;
-        a1->unk5C = 0x22;
-        a1->unk81 = 3;
-        a1->unk9C = 0x44;
-        {
-            struct Tail *t = &a1->tail;
-
-            t->unk1 = 4;
-            t->unk1C = 0x88;
-        }
-        p->magic = v;
+        soundInfo->ident = ident + 1;
+        gUnk_02038DE0[8] = (MPlayFunc)&gUnk_02002F81;
+        gUnk_02038DE0[0x11] = (MPlayFunc)&gUnk_02001CE5;
+        gUnk_02038DE0[0x13] = (MPlayFunc)&gUnk_02001CF9;
+        gUnk_02038DE0[0x1C] = (MPlayFunc)&gUnk_020030D9;
+        gUnk_02038DE0[0x1D] = (MPlayFunc)&gUnk_02001C7D;
+        gUnk_02038DE0[0x1E] = (MPlayFunc)&gUnk_02002281;
+        gUnk_02038DE0[0x1F] = (MPlayFunc)&gUnk_02001A09;
+        gUnk_02038DE0[0x20] = (MPlayFunc)&gUnk_02002635;
+        gUnk_02038DE0[0x21] = (MPlayFunc)&gUnk_020026B5;
+        soundInfo->cgbChans = cgbChans;
+        soundInfo->CgbSound = (CgbSoundFunc)&gUnk_020028C9;
+        soundInfo->CgbOscOff = (CgbOscOffFunc)&gUnk_02002811;
+        soundInfo->MidiKeyToCgbFreq = (MidiKeyToCgbFreqFunc)&gUnk_02002769;
+        soundInfo->maxLines = (u8)(u32)&gUnk_00000000;
+        CpuFill32(0, (u32)cgbChans, 0x100);
+        cgbChans[0].type = 1;
+        cgbChans[0].panMask = 0x11;
+        cgbChans[1].type = 2;
+        cgbChans[1].panMask = 0x22;
+        cgbChans[2].type = 3;
+        cgbChans[2].panMask = 0x44;
+        cgbChans[3].type = 4;
+        cgbChans[3].panMask = 0x88;
+        soundInfo->ident = ident;
     }
 }
