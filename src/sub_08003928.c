@@ -1,4 +1,5 @@
 #include "global.h"
+#include "tilemap.h"
 #include "gba/compat.h"
 
 extern u16 *gUnk_02002208;
@@ -108,8 +109,8 @@ void sub_08003928(u32 idx)
         gUnk_02002200[0] = 0x5E;
     if (idx == 11)
         gUnk_02002200[0] = 0x7D;
-    sub_08003BFC(0, 0, gUnk_02002208, (u32 *)IWRAM_START, gUnk_0200221C, gUnk_02022DE4);
-    sub_08003BFC(0, 0, gUnk_0200BC54, (u32 *)(IWRAM_START + 0x800), gUnk_02002210, gUnk_0200BC34);
+    sub_08003BFC(0, 0, gUnk_02002208, (u32 *)TILEMAP_BUFFER(0), gUnk_0200221C, gUnk_02022DE4);
+    sub_08003BFC(0, 0, gUnk_0200BC54, (u32 *)TILEMAP_BUFFER(1), gUnk_02002210, gUnk_0200BC34);
     sub_08003D90();
     sub_08004260(0, 0);
     sub_08008F1C(idx);

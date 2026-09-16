@@ -1,4 +1,5 @@
 #include "global.h"
+#include "tilemap.h"
 #include "gba/defines.h"
 
 extern u32 gUnk_02002100[];
@@ -34,6 +35,6 @@ void sub_08003B44(void)
     gUnk_02002218 = x & 0x10;
     x >>= 5;
     y >>= 5;
-    sub_08003BFC(x, y, gUnk_02002208, (u32 *)IWRAM_START, gUnk_0200221C, gUnk_02022DE4);
-    sub_08003BFC(x, y, gUnk_0200BC54, (u32 *)(IWRAM_START + 0x800), gUnk_02002210, gUnk_0200BC34);
+    sub_08003BFC(x, y, gUnk_02002208, (u32 *)TILEMAP_BUFFER(0), gUnk_0200221C, gUnk_02022DE4);
+    sub_08003BFC(x, y, gUnk_0200BC54, (u32 *)TILEMAP_BUFFER(1), gUnk_02002210, gUnk_0200BC34);
 }

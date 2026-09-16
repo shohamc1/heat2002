@@ -1,4 +1,5 @@
 #include "global.h"
+#include "tilemap.h"
 #include "gba/compat.h"
 
 extern u8 gUnk_02002218;
@@ -9,9 +10,9 @@ void sub_08003D3C(u8 *a, u8 *b)
 
     if (gUnk_02002218 != 0)
         a += 4;
-    for (i = 0; i != 0x18; i++) {
-        CpuFastCopy(a, b, 0x40);
-        a += 0x48;
-        b += 0x40;
+    for (i = 0; i != TILEMAP_ROWS; i++) {
+        CpuFastCopy(a, b, TILEMAP_DST_STRIDE);
+        a += TILEMAP_SRC_STRIDE;
+        b += TILEMAP_DST_STRIDE;
     }
 }
