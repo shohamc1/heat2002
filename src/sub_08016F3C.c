@@ -1,4 +1,5 @@
 #include "global.h"
+#include "gba/io_reg.h"
 
 extern u16 *volatile gUnk_0200049C;
 extern volatile u8 gUnk_02000494;
@@ -14,7 +15,7 @@ void sub_08016F3C(void)
     *p = 0;
     p--;
     gUnk_0200049C = p;
-    *(volatile u16 *)0x04000208 = 0;
-    *(volatile u16 *)0x04000200 &= ~(8 << gUnk_02000494);
-    *(volatile u16 *)0x04000208 = gUnk_020004A0;
+    REG_IME = 0;
+    REG_IE &= ~(8 << gUnk_02000494);
+    REG_IME = gUnk_020004A0;
 }

@@ -1,4 +1,5 @@
 #include "global.h"
+#include "gba/io_reg.h"
 
 struct Unk03007FF0
 {
@@ -17,8 +18,8 @@ void sub_0800184C(void)
 
     if (r3 != 0x68736D53)
     {
-        *(volatile u16 *)0x040000C6 = 0xB6 << 8;
-        *(volatile u16 *)0x040000D2 = 0xB6 << 8;
+        REG_DMA1CNT_H = 0xB6 << 8;
+        REG_DMA2CNT_H = 0xB6 << 8;
         r2->x = 0;
         r2->magic = r3 - 0xA;
     }

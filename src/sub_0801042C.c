@@ -1,4 +1,5 @@
 #include "global.h"
+#include "gba/io_reg.h"
 extern u16 gKeysHeld;
 extern u8 gUnk_02001F20[];
 extern u8 gUnk_020020B4;
@@ -28,9 +29,9 @@ u8 sub_0801042C(void)
         sub_08001208(1);
     gUnk_020020B4 = 1;
     sub_08000458();
-    *(volatile u16 *)0x0400000C = 0x1F81;
-    *(volatile u16 *)0x04000008 = 0x1C0D;
-    *(volatile u16 *)0x04000000 = 0xA8 << 3;
+    REG_BG2CNT = 0x1F81;
+    REG_BG0CNT = 0x1C0D;
+    REG_DISPCNT = 0xA8 << 3;
     sub_08016E10(0x082A0130, 0xC0 << 19, 0x5140);
     sub_08016E10(0x0833338C, 0x0600C000, 0x80 << 5);
     sub_08010680(0x0829FB54);

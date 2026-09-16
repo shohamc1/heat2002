@@ -1,4 +1,5 @@
 #include "global.h"
+#include "gba/io_reg.h"
 
 extern u16 gKeysPressed;
 extern u8 gUnk_0807CA60[];
@@ -36,7 +37,7 @@ u32 sub_0800E200(void)
 
     flag = 0;
     icon = 0;
-    *(volatile u16 *)0x0400000E = 0x1C0C;
+    REG_BG3CNT = 0x1C0C;
     {
         u8 *src = gUnk_0833338C;
         sub_08016E10((u32)src, 0x0600C000, 0x80 << 5);

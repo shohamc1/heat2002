@@ -1,4 +1,5 @@
 #include "global.h"
+#include "gba/io_reg.h"
 
 struct SndWork
 {
@@ -27,19 +28,19 @@ void sub_0833AC08(struct SndWork *a1)
     u32 sp[1];
 
     a1->magic = 0;
-    if (*(volatile u32 *)0x040000C4 & 0x02000000)
-        *(volatile u32 *)0x040000C4 = 0x84400004;
-    if (*(volatile u32 *)0x040000D0 & 0x02000000)
-        *(volatile u32 *)0x040000D0 = 0x84400004;
-    *(volatile u16 *)0x040000C6 = 0x400;
-    *(volatile u16 *)0x040000D2 = 0x400;
-    *(volatile u16 *)0x04000084 = 0x8F;
-    *(volatile u16 *)0x04000082 = 0xA90E;
-    *(volatile u8 *)0x04000089 = (*(volatile u8 *)0x04000089 & 0x3F) | 0x40;
-    *(volatile u32 *)0x040000BC = (u32)a1 + 0x350;
-    *(volatile u32 *)0x040000C0 = 0x040000A0;
-    *(volatile u32 *)0x040000C8 = (u32)a1 + 0x980;
-    *(volatile u32 *)0x040000CC = 0x040000A4;
+    if (REG_DMA1CNT & 0x02000000)
+        REG_DMA1CNT = 0x84400004;
+    if (REG_DMA2CNT & 0x02000000)
+        REG_DMA2CNT = 0x84400004;
+    REG_DMA1CNT_H = 0x400;
+    REG_DMA2CNT_H = 0x400;
+    REG_SOUNDCNT_X = 0x8F;
+    REG_SOUNDCNT_H = 0xA90E;
+    REG_SOUNDBIAS_H = (REG_SOUNDBIAS_H & 0x3F) | 0x40;
+    REG_DMA1SAD = (u32)a1 + 0x350;
+    REG_DMA1DAD = 0x040000A0;
+    REG_DMA2SAD = (u32)a1 + 0x980;
+    REG_DMA2DAD = 0x040000A4;
     gUnk_03007FF0 = a1;
     sp[0] = 0;
     sub_08344B64((u32)sp, (u32)a1, 0x050003EC);

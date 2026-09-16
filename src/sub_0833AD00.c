@@ -1,4 +1,5 @@
 #include "global.h"
+#include "gba/io_reg.h"
 extern u32 gUnk_03007FF0;
 extern u16 gUnk_0200C7DC[];
 extern s32 sub_08344BB8(s32 a, s32 b);
@@ -19,7 +20,7 @@ void sub_0833AD00(u32 a)
             *(u8 *)(r4 + 0xB) = sub_08344BB8(0xC6 << 3, r5);
             *(u32 *)(r4 + 0x14) = sub_08344BB8(r5 * 0x00091D1B + 0x1388, 0x2710);
             *(u32 *)(r4 + 0x18) = (sub_08344BB8(0x80 << 17, *(u32 *)(r4 + 0x14)) + 1) >> 1;
-            *(volatile u16 *)0x04000102 = r6;
+            REG_TM0CNT_H = r6;
             {
                 u32 t2 = 0x04000100;
 
@@ -31,6 +32,6 @@ void sub_0833AD00(u32 a)
             ;
         while (*(volatile u8 *)0x04000006 != 0x9F)
             ;
-        *(volatile u16 *)0x04000102 = 0x80;
+        REG_TM0CNT_H = 0x80;
     }
 }

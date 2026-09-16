@@ -1,4 +1,5 @@
 #include "global.h"
+#include "gba/io_reg.h"
 
 struct CommRegs
 {
@@ -31,27 +32,27 @@ u32 sub_0800E460(u32 *a1)
         }
         else
         {
-            *(volatile u16 *)0x04000128 = 0x80 << 5;
+            REG_SIOCNT = 0x80 << 5;
         }
-        *(volatile u32 *)0x04000120 = 0;
-        *(volatile u16 *)0x04000202 = 0xC0;
+        REG_SIODATA32 = 0;
+        REG_IF = 0xC0;
         {
             register u32 mode __asm__("r4") = gUnk_0202CDD0.mode;
 
             if (mode == 1)
             {
-                *(volatile u16 *)0x04000128 |= 0x80;
-                *(volatile u32 *)0x0400010C = 0x00C0F318;
-                *(volatile u16 *)0x04000208 = 0;
-                *(volatile u16 *)0x04000200 |= 0x40;
-                *(volatile u16 *)0x04000208 = mode;
+                REG_SIOCNT |= 0x80;
+                REG_TM3CNT = 0x00C0F318;
+                REG_IME = 0;
+                REG_IE |= 0x40;
+                REG_IME = mode;
             }
             else
             {
-                *(volatile u16 *)0x04000128 |= 0x81 << 7;
-                *(volatile u16 *)0x04000208 = 0;
-                *(volatile u16 *)0x04000200 |= 0x80;
-                *(volatile u16 *)0x04000208 = 1;
+                REG_SIOCNT |= 0x81 << 7;
+                REG_IME = 0;
+                REG_IE |= 0x80;
+                REG_IME = 1;
             }
         }
         gUnk_0202CDD0.retry = 0;
@@ -99,22 +100,22 @@ u32 sub_0800E460(u32 *a1)
         }
         break;
     case 3:
-        *(volatile u16 *)0x04000208 = 0;
+        REG_IME = 0;
         {
             volatile u16 *ie = (volatile u16 *)0x04000200;
             volatile u32 *p;
 
             *ie &= 0xFF3F;
-            *(volatile u16 *)0x04000208 = 1;
-            *(volatile u16 *)0x04000128 = 0x80 << 5;
+            REG_IME = 1;
+            REG_SIOCNT = 0x80 << 5;
             *(volatile u32 *)0x04000128 = 0x80 << 6;
             *(volatile u32 *)0x04000128 = (0x80 << 6) + 3;
             p = (volatile u32 *)((u32)ie - 0xE0);
             *(volatile long long *)p = 0;
         }
         if (gUnk_0202CDD0.mode != 0)
-            *(volatile u32 *)0x0400010C = 0;
-        *(volatile u16 *)0x04000202 = 0xC0;
+            REG_TM3CNT = 0;
+        REG_IF = 0xC0;
         if (gUnk_0202CDD0.mode != 0)
         {
             gUnk_0202CDD0.retry = 0;

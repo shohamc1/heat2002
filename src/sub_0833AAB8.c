@@ -1,4 +1,5 @@
 #include "global.h"
+#include "gba/io_reg.h"
 
 struct SndWork
 {
@@ -64,16 +65,16 @@ void sub_0833AAB8(struct SndWork2 *a1)
     u32 v;
     struct SndWork *p;
 
-    *(volatile u16 *)0x04000084 = 0x8F;
-    *(volatile u16 *)0x04000080 = 0x77;
-    *(volatile u8 *)0x04000063 = 0x08;
-    *(volatile u8 *)0x04000069 = 0x08;
-    *(volatile u8 *)0x04000079 = 0x08;
-    *(volatile u8 *)0x04000065 = 0x80;
-    *(volatile u8 *)0x0400006D = 0x80;
-    *(volatile u8 *)0x0400007D = 0x80;
-    *(volatile u8 *)0x04000070 = 0x00;
-    *(volatile u16 *)0x04000080 = 0xFF77;
+    REG_SOUNDCNT_X = 0x8F;
+    REG_SOUNDCNT_L = 0x77;
+    REG_NR12 = 0x08;
+    REG_NR22 = 0x08;
+    REG_NR42 = 0x08;
+    REG_NR14 = 0x80;
+    REG_NR24 = 0x80;
+    REG_NR44 = 0x80;
+    REG_NR30 = 0x00;
+    REG_SOUNDCNT_L = 0xFF77;
     p = gUnk_03007FF0;
     v = p->magic;
     if (v == 0x68736D53)

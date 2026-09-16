@@ -1,4 +1,5 @@
 #include "global.h"
+#include "gba/io_reg.h"
 
 extern u16 gUnk_020004A0;
 extern volatile u8 gUnk_02000494;
@@ -13,10 +14,10 @@ void sub_08016ED8(u16 *a)
      * value chain to it instead of the mask chain (see parked.md). */
     register u32 mask asm("r2");
 
-    gUnk_020004A0 = *(volatile u16 *)0x04000208;
-    *(volatile u16 *)0x04000208 = 0;
-    *(volatile u16 *)0x04000200 |= (mask = 8 << gUnk_02000494);
-    *(volatile u16 *)0x04000208 = 1;
+    gUnk_020004A0 = REG_IME;
+    REG_IME = 0;
+    REG_IE |= (mask = 8 << gUnk_02000494);
+    REG_IME = 1;
     gUnk_02000498 = 0;
     gUnk_02000496 = *a++;
     p = gUnk_0200049C;

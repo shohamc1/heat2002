@@ -1,4 +1,5 @@
 #include "global.h"
+#include "gba/io_reg.h"
 
 struct UnkCar {
     u8 filler000[0x7D];
@@ -185,21 +186,21 @@ u32 sub_08015364(void)
         sub_080169CC();
     }
 
-    *(volatile u16 *)0x04000020 = 0x0100;
-    *(volatile u16 *)0x04000024 = 0;
-    *(volatile u16 *)0x04000026 = 0x0100;
-    *(volatile u16 *)0x04000030 = 0x0100;
-    *(volatile u16 *)0x04000032 = 0x0100;
+    REG_BG2PA = 0x0100;
+    REG_BG2PC = 0;
+    REG_BG2PD = 0x0100;
+    REG_BG3PA = 0x0100;
+    REG_BG3PB = 0x0100;
     *(volatile s16 *)0x04000034 = -0x100;
-    *(volatile u16 *)0x04000036 = 0x0100;
-    *(volatile u16 *)0x04000028 = 0;
-    *(volatile u16 *)0x0400002A = 0;
-    *(volatile u16 *)0x0400002C = 0;
-    *(volatile u16 *)0x0400002E = 0;
-    *(volatile u16 *)0x04000038 = 0;
-    *(volatile u16 *)0x0400003A = 0;
-    *(volatile u16 *)0x0400003C = 0;
-    *(volatile u16 *)0x0400003E = 0;
+    REG_BG3PD = 0x0100;
+    REG_BG2X_L = 0;
+    REG_BG2X_H = 0;
+    REG_BG2Y_L = 0;
+    REG_BG2Y_H = 0;
+    REG_BG3X_L = 0;
+    REG_BG3X_H = 0;
+    REG_BG3Y_L = 0;
+    REG_BG3Y_H = 0;
 
     sub_0800F560();
     sub_08010334();
@@ -233,7 +234,7 @@ u32 sub_08015364(void)
 
     sub_0800F3A4();
     sub_08010664(0);
-    *(volatile u16 *)0x04000000 = 0x0540;
+    REG_DISPCNT = 0x0540;
     sub_08011C9C(1, frame);
     if (gUnk_0202EF00[2] != 0)
         sub_08001208(2);
@@ -246,7 +247,7 @@ u32 sub_08015364(void)
     do {
     if (redraw != 0) {
         redraw = 0;
-        *(volatile u16 *)0x04000000 = 0x0540;
+        REG_DISPCNT = 0x0540;
         sub_08011C9C(1, frame);
         sub_0800F3A4();
         sub_08010664(gUnk_0202EDD4);

@@ -1,4 +1,5 @@
 #include "global.h"
+#include "gba/io_reg.h"
 
 extern u32 gUnk_0202F240;
 extern volatile u32 gUnk_040000D4[];
@@ -16,8 +17,8 @@ void sub_08016F80(u32 src, u32 dst, u16 cnt)
     register u16 spinMask asm("r1");
     register u32 test asm("r0");
 
-    saved = *(volatile u16 *)0x04000208;
-    *(volatile u16 *)0x04000208 = 0;
+    saved = REG_IME;
+    REG_IME = 0;
     disp = (volatile u16 *)0x04000204;
     v = *disp;
     v &= 0xF8FF;
@@ -38,5 +39,5 @@ void sub_08016F80(u32 src, u32 dst, u16 cnt)
         if (*(volatile u16 *)temp & spinMask)
             goto spin;
     }
-    *(volatile u16 *)0x04000208 = saved;
+    REG_IME = saved;
 }

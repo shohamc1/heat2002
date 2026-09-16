@@ -1,4 +1,5 @@
 #include "global.h"
+#include "gba/io_reg.h"
 
 struct UnkCar {
     /* 0x00 */ u32 unk00;
@@ -271,7 +272,7 @@ camera_ready:
                 gUnk_020021BC = 1;
                 gUnk_020021E0 = 2;
                 sub_08000458();
-                *(volatile u16 *)0x04000000 &= 0xEFFF;
+                REG_DISPCNT &= 0xEFFF;
                 if (gUnk_0202EF00[2] != 0)
                     sub_080013A0(gUnk_02001F20, 2);
                 sub_08003F84(0x19, 0);
@@ -311,7 +312,7 @@ camera_ready:
                     gUnk_020021BC = 1;
                     gUnk_020021E0 = 2;
                     sub_08000458();
-                    *(volatile u16 *)0x04000000 &= 0xEFFF;
+                    REG_DISPCNT &= 0xEFFF;
                     sub_080019B4(gUnk_02001FA0);
                     sub_080019B4(gUnk_02002030);
                     sub_080019B4(gUnk_02001FE0);

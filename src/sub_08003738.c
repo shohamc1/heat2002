@@ -1,4 +1,5 @@
 #include "global.h"
+#include "gba/io_reg.h"
 extern u16 gKeysPressed;
 extern u8 gUnk_020020DC;
 extern u8 gUnk_020020CC;
@@ -27,13 +28,13 @@ u8 sub_08003738(void)
     if (sub_0800E200() == 1)
         return 1;
     sub_08000380();
-    *(volatile u16 *)0x04000200 = 0;
-    *(volatile u16 *)0x04000208 = 1;
-    *(volatile u16 *)0x04000004 = 8;
+    REG_IE = 0;
+    REG_IME = 1;
+    REG_DISPSTAT = 8;
     sub_0800048C();
     sub_080003F8(0x0800306D);
-    *(volatile u16 *)0x04000200 = 0x2001;
-    *(volatile u16 *)0x04000004 = 8;
+    REG_IE = 0x2001;
+    REG_DISPSTAT = 8;
     sub_08001170();
     sub_0800184C();
     sub_08000370();

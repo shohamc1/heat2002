@@ -1,4 +1,5 @@
 #include "global.h"
+#include "gba/io_reg.h"
 
 extern u32 gUnk_020375D0;
 extern u32 gUnk_03007FFC;
@@ -16,7 +17,7 @@ void sub_08339A40(void)
     gUnk_040000D4[2] = 0x80000400;
     (void)gUnk_040000D4[2];
     gUnk_03007FFC = 0x02037620;
-    *(volatile u16 *)0x04000204 = 0x00004014;
+    REG_WAITCNT = 0x00004014;
     gUnk_020375E0[1] = 0x02001051;
     gUnk_020375E0[0] = 0x0200106D;
     gUnk_020375E0[2] = 0x0200106D;

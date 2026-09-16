@@ -1,4 +1,5 @@
 #include "global.h"
+#include "gba/io_reg.h"
 extern u32 gUnk_082EE8E0[];
 extern u32 gUnk_0833338C[];
 extern u32 gUnk_082EE304[];
@@ -12,8 +13,8 @@ void sub_0800F498(void)
     u32 dest;
     u32 ctrl;
 
-    *(volatile u16 *)0x04000008 = 0x1C0E;
-    *(volatile u16 *)0x0400000C = 0x1F82;
+    REG_BG0CNT = 0x1C0E;
+    REG_BG2CNT = 0x1F82;
     src = gUnk_082EE8E0;
     dest = 0xC0 << 19;
     ctrl = 0x5140;

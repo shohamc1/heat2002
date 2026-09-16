@@ -1,12 +1,13 @@
 #include "global.h"
+#include "gba/io_reg.h"
 
 void sub_0800F7E0(void)
 {
     volatile u16 *ie;
 
-    *(volatile u16 *)0x04000134 = 0;
-    *(volatile u16 *)0x04000128 = 0x6003;
-    *(volatile u16 *)0x04000208 = 0;
-    *(volatile u16 *)0x04000200 = *(volatile u16 *)0x04000200 | 0x80;
-    *(volatile u16 *)0x04000208 = 1;
+    REG_RCNT = 0;
+    REG_SIOCNT = 0x6003;
+    REG_IME = 0;
+    REG_IE = REG_IE | 0x80;
+    REG_IME = 1;
 }

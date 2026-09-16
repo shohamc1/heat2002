@@ -1,4 +1,5 @@
 #include "global.h"
+#include "gba/io_reg.h"
 
 extern u32 gUnk_03007FF0;
 
@@ -41,7 +42,7 @@ void sub_080016E4(u32 cmd)
     t = cmd & 0xB00000;
     if (t != 0) {
         t = (t & 0x300000) >> 14;
-        *(volatile u8 *)0x04000089 = (*(volatile u8 *)0x04000089 & 0x3F) | t;
+        REG_SOUNDBIAS_H = (REG_SOUNDBIAS_H & 0x3F) | t;
     }
     t = cmd & 0xF0000;
     if (t != 0) {

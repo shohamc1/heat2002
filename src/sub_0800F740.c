@@ -1,4 +1,5 @@
 #include "global.h"
+#include "gba/io_reg.h"
 extern void sub_08016E10(u32 src, u32 dest, u32 control);
 extern void sub_08000458(void);
 extern void sub_080106CC(u32 a, u32 b);
@@ -9,8 +10,8 @@ extern void sub_0800420C(u32 a, u32 b);
 void sub_0800F740(void)
 {
     u8 buf[0x200];
-    *(volatile u16 *)0x04000008 = 0x1C0D;
-    *(volatile u16 *)0x0400000C = 0x1F82;
+    REG_BG0CNT = 0x1C0D;
+    REG_BG2CNT = 0x1F82;
     sub_08016E10(0x083171A4, 0xC0 << 19, 0x5140);
     sub_08016E10(0x0833338C, 0x0600C000, 0x80 << 5);
     sub_08000458();

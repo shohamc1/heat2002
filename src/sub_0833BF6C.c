@@ -1,6 +1,7 @@
 #include "global.h"
+#include "gba/io_reg.h"
 
 void sub_0833BF6C(void)
 {
-    *(volatile u16 *)0x04000000 = 0x1F40;
+    REG_DISPCNT = 0x1F40;
 }

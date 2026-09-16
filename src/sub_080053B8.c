@@ -1,4 +1,5 @@
 #include "global.h"
+#include "gba/io_reg.h"
 
 void sub_080073D8(void);
 void sub_08004484(void);
@@ -29,7 +30,7 @@ void sub_080053B8(void)
             {
                 u32 r0 = *(u8 *)0x0202EF90;
                 if (r0 == 0)
-                    r0 = *(volatile u16 *)0x04000130;
+                    r0 = REG_KEYINPUT;
                 sub_08016E30(r0);
             }
         }
