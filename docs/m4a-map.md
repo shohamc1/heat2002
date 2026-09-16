@@ -19,24 +19,28 @@ addresses.
 
 ## Identified functions
 
-| Low address | High address | Name | Confidence | Decompiled? |
-|---|---|---|---|---|
-| `sub_080013F8` | `sub_0833AAB8` | `MPlayExtender` | certain | yes |
-| `sub_08001520` | `sub_0833ABE0` | `ClearChain` | certain | yes |
-| `sub_08001534` | `sub_0833ABF4` | `Clear64byte` | certain | yes |
-| `sub_08001548` | `sub_0833AC08` | `SoundInit` | certain | yes |
-| `sub_08001640` | `sub_0833AD00` | `SampleFreqSet` | certain | yes |
-| `sub_080016E4` | `sub_0833ADA4` | `m4aSoundMode` | certain | yes |
-| `sub_080017D0` | `sub_0833AE90` | `m4aSoundVSyncOff` | certain | yes |
-| `sub_0800184C` | `sub_0833AF0C` | `m4aSoundVSyncOn` | certain | yes |
-| `sub_08001888` | `sub_0833AF48` | `MPlayOpen` | certain | yes |
-| `sub_08001900` | `sub_0833AFC0` | `MPlayStart` | certain | yes |
-| `sub_080019B4` | `sub_0833B074` | `m4aMPlayStop` | certain | yes |
-| `sub_0800215C` | `sub_0833B81C` | `m4aMPlayPitchControl` | certain | yes |
-| `sub_08001150` | `sub_0833A810` | fade-control setter (`m4aMPlayFadeIn`/`m4aMPlayFadeOutTemporarily` family) | likely | yes |
-| `sub_08000DC8` | `sub_0833A488` | `TrackStop` | certain | **no** (blocked in compiler; `tst rX, rY` unreachable — see `parked.md`) |
-| `sub_080019F4` | `sub_0833B0B4` | `FadeOutBody` | certain | **no** (near-miss draft: `docs/learnings/drafts/sub_080019F4.c`) |
-| `sub_08001A74` | `sub_0833B134` | `TrkVolPitSet` | certain | **no** (near-miss draft: `docs/learnings/drafts/sub_08001A74.c`) |
+| Low address | High address | Name | Confidence | Decompiled? | Struct pass (Stage B3) |
+|---|---|---|---|---|---|
+| `sub_080013F8` | `sub_0833AAB8` | `MPlayExtender` | certain | yes | converted |
+| `sub_08001520` | `sub_0833ABE0` | `ClearChain` | certain | yes | nothing to convert (already just a jump-table call, no offset casts) |
+| `sub_08001534` | `sub_0833ABF4` | `Clear64byte` | certain | yes | nothing to convert (already just a jump-table call, no offset casts) |
+| `sub_08001548` | `sub_0833AC08` | `SoundInit` | certain | yes | converted |
+| `sub_08001640` | `sub_0833AD00` | `SampleFreqSet` | certain | yes | converted |
+| `sub_080016E4` | `sub_0833ADA4` | `m4aSoundMode` | certain | yes | converted |
+| `sub_080017D0` | `sub_0833AE90` | `m4aSoundVSyncOff` | certain | yes | converted |
+| `sub_0800184C` | `sub_0833AF0C` | `m4aSoundVSyncOn` | certain | yes | converted |
+| `sub_08001888` | `sub_0833AF48` | `MPlayOpen` | certain | yes | converted |
+| `sub_08001900` | `sub_0833AFC0` | `MPlayStart` | certain | yes | converted (kept the r4/r0 register pins) |
+| `sub_080019B4` | `sub_0833B074` | `m4aMPlayStop` | certain | yes | converted |
+| `sub_0800215C` | `sub_0833B81C` | `m4aMPlayPitchControl` | certain | yes | converted |
+| `sub_08001150` | `sub_0833A810` | fade-control setter (`m4aMPlayFadeIn`/`m4aMPlayFadeOutTemporarily` family) | likely | yes | not touched (confidence is only "likely", not certain) |
+| `sub_08000DC8` | `sub_0833A488` | `TrackStop` | certain | **no** (blocked in compiler; `tst rX, rY` unreachable — see `parked.md`) | n/a, not decompiled |
+| `sub_080019F4` | `sub_0833B0B4` | `FadeOutBody` | certain | **no** (near-miss draft: `docs/learnings/drafts/sub_080019F4.c`) | n/a, not decompiled |
+| `sub_08001A74` | `sub_0833B134` | `TrkVolPitSet` | certain | **no** (near-miss draft: `docs/learnings/drafts/sub_08001A74.c`) | n/a, not decompiled |
+
+All 20 files across the 10 "converted" rows still print `MATCH` individually
+(`python3 scripts/match.py <name>`), and `make check` prints `MATCH` for the
+whole ROM after every one of them.
 
 The "certain" confidence on the three asm-only rows comes from
 `MPlayExtender`'s jump-table assignment (`gUnk_02001D90[0x1E..0x21]` /
