@@ -68,8 +68,8 @@ Stage B3.
 
 ## Coverage against the 67-file estimate
 
-`docs/pokeemerald-port.md` estimated 67 decompiled files across the two
-copies (35 low, 32 high). Reading every `src/sub_0800*.c` and
+The background analysis behind this pass estimated 67 decompiled files
+across the two copies (35 low, 32 high). Reading every `src/sub_0800*.c` and
 `src/sub_0833*.c` file that references a sound-engine token
 (`SOUND_INFO_PTR`, the `0x68736D53` ident, or a jump-table RAM global)
 found only 13 low-copy and 13 high-copy decompiled files that are
