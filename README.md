@@ -109,6 +109,7 @@ asm/*.s          ROM disassembly, one fragment per gap between decompiled
                  functions; reassembles exactly
 src/             Decompiled C — one function per file, named for it
 include/         Headers
+include/gba/     GBA hardware headers vendored from fireemblem8u (pret)
 scripts/
   seed_functions.py  Function discovery (BL targets ∩ push prologues)
   match.py           Diff one compiled function against the target asm
@@ -165,6 +166,22 @@ From [`docs/recon.md`](docs/recon.md):
 - Identified by shape: `__divsi3`, `__modsi3`, `__umodsi3`, `__clzsi2`,
   `__div0`, a soft-float family, `memcpy`/`memmove`/`memset`, and 8 BIOS SWI
   wrappers.
+
+## Credits
+
+The headers in [`include/gba/`](include/gba/) come from
+[fireemblem8u](https://github.com/laqieer/fireemblem8u), which carries the
+shared GBA hardware layer originated by [pret](https://github.com/pret).
+`io_reg.h` is identical to pokeemerald's. The same four files are used across
+pret-lineage decompilations: `io_reg.h`, `defines.h`, `syscall.h` and
+`macro.h`. Neither project ships a licence file, so they are reused here by
+community convention, with attribution.
+
+One change was made to them. `defines.h` dropped its `#include <stddef.h>`,
+because this project builds with `-nostdinc` and used nothing from that header.
+
+fireemblem8u also identified this ROM's sound engine. It is MP2K (m4a), with
+ident `0x68736D53`, one revision older than pret's `0x68736D54`.
 
 ## Legal
 
