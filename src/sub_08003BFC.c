@@ -1,4 +1,5 @@
 #include "global.h"
+#include "gba/defines.h"
 
 extern volatile u32 gUnk_0200BC30;
 
@@ -19,7 +20,7 @@ void sub_08003BFC(u32 x, u32 y, u8 *map, u32 *dest, u8 *charBase)
         do {
             t = *(u16 *)src;
             src += 2;
-            s = (u32 *)(charBase + t * 32);
+            s = (u32 *)(charBase + t * TILE_SIZE_4BPP);
             dest[0] = *s++;
             dest[1] = *s++;
             dest[0x12] = *s++;

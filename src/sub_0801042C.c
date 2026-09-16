@@ -1,5 +1,6 @@
 #include "global.h"
-#include "gba/io_reg.h"
+#include "gba/compat.h"
+
 extern u16 gKeysHeld;
 extern u8 gUnk_02001F20[];
 extern u8 gUnk_020020B4;
@@ -7,7 +8,6 @@ extern u8 gUnk_0202EF00[];
 extern u16 *gUnk_08364B08;
 extern void sub_08001208(u16 a);
 extern void sub_08000458(void);
-extern void sub_08016E10(u32 src, u32 dest, u32 control);
 extern void sub_08010680(u32 a);
 extern u16 sub_08011C44(u32 r, u32 g, u32 b);
 extern void sub_08004238(void *a, u32 b);
@@ -29,20 +29,20 @@ u8 sub_0801042C(void)
         sub_08001208(1);
     gUnk_020020B4 = 1;
     sub_08000458();
-    REG_BG2CNT = 0x1F81;
-    REG_BG0CNT = 0x1C0D;
+    REG_BG2CNT = BGCNT_PRIORITY(1) | BGCNT_256COLOR | BGCNT_SCREENBASE(31);
+    REG_BG0CNT = BGCNT_PRIORITY(1) | BGCNT_CHARBASE(3) | BGCNT_SCREENBASE(28);
     REG_DISPCNT = 0xA8 << 3;
-    sub_08016E10(0x082A0130, 0xC0 << 19, 0x5140);
-    sub_08016E10(0x0833338C, 0x0600C000, 0x80 << 5);
+    CpuCopy16(0x082A0130, VRAM, 0xA280);
+    CpuCopy16(0x0833338C, BG_SCREEN_ADDR(24), 0x2000);
     sub_08010680(0x0829FB54);
     i = 0;
     do {
         gUnk_08364B08[i] = 0;
         i++;
     } while (i != 0x380);
-    sub_08016E10(0x0829F954, (u32)buf, 0x80 << 1);
-    sub_08016E10(0x08332BC8, (u32)&buf[0xF0], 0x10);
-    sub_08016E10(0x08332BC8, (u32)&buf[0xE0], 0x10);
+    CpuCopy16(0x0829F954, (u32)buf, 0x200);
+    CpuCopy16(0x08332BC8, (u32)&buf[0xF0], 0x20);
+    CpuCopy16(0x08332BC8, (u32)&buf[0xE0], 0x20);
     buf[0xEA] = sub_08011C44(0x34, 0x34, 0x34);
     buf[0xEB] = sub_08011C44(0x24, 0x24, 0x24);
     buf[0xEC] = sub_08011C44(0x0E, 0x0E, 0x0E);

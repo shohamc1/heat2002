@@ -1,4 +1,7 @@
 #include "global.h"
+#include "gba/defines.h"
+#include "gba/io_reg.h"
+
 extern u16 gKeysPressed;
 extern volatile u8 gUnk_020020C0;
 extern u8 gUnk_0202EED8;
@@ -42,27 +45,27 @@ u8 sub_08011168(u8 a, u8 b)
     sub_0800F328(0x082E4328, buf);
     sub_08010FE4(v, a);
     sub_08004238(buf, 0x0F);
-    *(volatile u16 *)(0x80 << 19) = 0xA8 << 3;
+    REG_DISPCNT = 0xA8 << 3;
     sub_08000458();
-    *(volatile u16 *)(0x80 << 19) = 0xAA << 5;
+    REG_DISPCNT = 0xAA << 5;
     sel = 0x40;
     do {
         sub_08004484();
         sub_08010FE4(v, a);
         sub_0800048C();
-        if (((gKeysPressed & 1) && a == 1)
+        if (((gKeysPressed & A_BUTTON) && a == 1)
             || (a == 0 && gUnk_0202EED8 == 0x20))
             sel = v;
         if (a != 0)
             v = sub_08011EE8(gKeysPressed, v, 0, 0x0B);
         if (v == 7) {
-            if (gKeysPressed & 0x20)
+            if (gKeysPressed & DPAD_LEFT)
                 v = 6;
-            if (gKeysPressed & 0x10)
+            if (gKeysPressed & DPAD_RIGHT)
                 v = 8;
         }
         gUnk_0202EF8C = v;
-        if ((gKeysPressed & 2) && a != 0)
+        if ((gKeysPressed & B_BUTTON) && a != 0)
             sel = 0;
         sub_080047DC();
         gUnk_020020C0 = 0;
@@ -73,7 +76,7 @@ u8 sub_08011168(u8 a, u8 b)
         sub_08000458();
     } while (sel == 0x40);
     sub_08000458();
-    *(volatile u16 *)(0x80 << 19) = 0xA8 << 3;
+    REG_DISPCNT = 0xA8 << 3;
     sub_08000458();
     if (gUnk_0202EF00[3] != 0)
         sub_08001208(9);

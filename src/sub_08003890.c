@@ -1,10 +1,9 @@
 #include "global.h"
+#include "gba/compat.h"
 
 extern u16 gUnk_02022DE4;
 extern u16 gUnk_0200BC34;
 extern u16 gUnk_02022DF4;
-
-void sub_08016E10(u32 src, u32 dest, u32 control);
 
 struct Track {
     /* +0x00 */ u32 unk00;
@@ -21,85 +20,85 @@ void sub_08003890(u8 idx)
 {
     switch (idx) {
     case 0:
-        sub_08016E10(gUnk_08364B0C[idx].unk04, 0x06000000, 0x4000);
-        sub_08016E10(gUnk_08364B0C[idx].unk00, 0x06008000, 0x2000);
+        CpuCopy16(gUnk_08364B0C[idx].unk04, VRAM, 0x8000);
+        CpuCopy16(gUnk_08364B0C[idx].unk00, BG_CHAR_ADDR(2), 0x4000);
         gUnk_02022DE4 = 0;
         gUnk_0200BC34 = 0;
         gUnk_02022DF4 = 0;
         break;
     case 1:
-        sub_08016E10(gUnk_08364B0C[idx].unk04, 0x06000000, 0x4000);
-        sub_08016E10(gUnk_08364B0C[idx].unk00, 0x06008000, 0x2000);
+        CpuCopy16(gUnk_08364B0C[idx].unk04, VRAM, 0x8000);
+        CpuCopy16(gUnk_08364B0C[idx].unk00, BG_CHAR_ADDR(2), 0x4000);
         gUnk_02022DE4 = 0;
         gUnk_0200BC34 = 0;
         gUnk_02022DF4 = 0;
         break;
     case 2:
-        sub_08016E10(gUnk_08364B0C[idx].unk04, 0x06000000, 0x4000);
-        sub_08016E10(gUnk_08364B0C[idx].unk00, 0x06008000, 0x2000);
+        CpuCopy16(gUnk_08364B0C[idx].unk04, VRAM, 0x8000);
+        CpuCopy16(gUnk_08364B0C[idx].unk00, BG_CHAR_ADDR(2), 0x4000);
         gUnk_02022DE4 = 0;
         gUnk_0200BC34 = 0;
         gUnk_02022DF4 = 0;
         break;
     case 3:
-        sub_08016E10(gUnk_08364B0C[idx].unk04, 0x06000000, 0x4000);
-        sub_08016E10(gUnk_08364B0C[idx].unk00, 0x06008000, 0x2000);
+        CpuCopy16(gUnk_08364B0C[idx].unk04, VRAM, 0x8000);
+        CpuCopy16(gUnk_08364B0C[idx].unk00, BG_CHAR_ADDR(2), 0x4000);
         gUnk_02022DE4 = 0;
         gUnk_0200BC34 = 0;
         gUnk_02022DF4 = 0;
         break;
     case 4:
-        sub_08016E10(gUnk_08364B0C[idx].unk04, 0x06000000, 0x4000);
-        sub_08016E10(gUnk_08364B0C[idx].unk00, 0x06008000, 0x2000);
+        CpuCopy16(gUnk_08364B0C[idx].unk04, VRAM, 0x8000);
+        CpuCopy16(gUnk_08364B0C[idx].unk00, BG_CHAR_ADDR(2), 0x4000);
         gUnk_02022DE4 = 0;
         gUnk_0200BC34 = 0;
         gUnk_02022DF4 = 0;
         break;
     case 5:
-        sub_08016E10(gUnk_08364B0C[idx].unk04, 0x06000000, 0x4000);
-        sub_08016E10(gUnk_08364B0C[idx].unk00, 0x06008000, 0x2000);
+        CpuCopy16(gUnk_08364B0C[idx].unk04, VRAM, 0x8000);
+        CpuCopy16(gUnk_08364B0C[idx].unk00, BG_CHAR_ADDR(2), 0x4000);
         gUnk_02022DE4 = 0;
         gUnk_0200BC34 = 0;
         gUnk_02022DF4 = 0;
         break;
     case 6:
-        sub_08016E10(gUnk_08364B0C[idx].unk04, 0x06000000, 0x4000);
-        sub_08016E10(gUnk_08364B0C[idx].unk00, 0x06008000, 0x2000);
+        CpuCopy16(gUnk_08364B0C[idx].unk04, VRAM, 0x8000);
+        CpuCopy16(gUnk_08364B0C[idx].unk00, BG_CHAR_ADDR(2), 0x4000);
         gUnk_02022DE4 = 0;
         gUnk_0200BC34 = 0;
         gUnk_02022DF4 = 0;
         break;
     case 7:
-        sub_08016E10(gUnk_08364B0C[idx].unk04, 0x06000000, 0x4000);
-        sub_08016E10(gUnk_08364B0C[idx].unk00, 0x06008000, 0x2000);
+        CpuCopy16(gUnk_08364B0C[idx].unk04, VRAM, 0x8000);
+        CpuCopy16(gUnk_08364B0C[idx].unk00, BG_CHAR_ADDR(2), 0x4000);
         gUnk_02022DE4 = 0;
         gUnk_0200BC34 = 0;
         gUnk_02022DF4 = 0;
         break;
     case 8:
-        sub_08016E10(gUnk_08364B0C[idx].unk04, 0x06000000, 0x4000);
-        sub_08016E10(gUnk_08364B0C[idx].unk00, 0x06008000, 0x2000);
+        CpuCopy16(gUnk_08364B0C[idx].unk04, VRAM, 0x8000);
+        CpuCopy16(gUnk_08364B0C[idx].unk00, BG_CHAR_ADDR(2), 0x4000);
         gUnk_02022DE4 = 0;
         gUnk_0200BC34 = 0;
         gUnk_02022DF4 = 0;
         break;
     case 9:
-        sub_08016E10(gUnk_08364B0C[idx].unk04, 0x06000000, 0x4000);
-        sub_08016E10(gUnk_08364B0C[idx].unk00, 0x06008000, 0x2000);
+        CpuCopy16(gUnk_08364B0C[idx].unk04, VRAM, 0x8000);
+        CpuCopy16(gUnk_08364B0C[idx].unk00, BG_CHAR_ADDR(2), 0x4000);
         gUnk_02022DE4 = 0;
         gUnk_0200BC34 = 0;
         gUnk_02022DF4 = 0;
         break;
     case 10:
-        sub_08016E10(gUnk_08364B0C[idx].unk04, 0x06000000, 0x4000);
-        sub_08016E10(gUnk_08364B0C[idx].unk00, 0x06008000, 0x2000);
+        CpuCopy16(gUnk_08364B0C[idx].unk04, VRAM, 0x8000);
+        CpuCopy16(gUnk_08364B0C[idx].unk00, BG_CHAR_ADDR(2), 0x4000);
         gUnk_02022DE4 = 0;
         gUnk_0200BC34 = 0;
         gUnk_02022DF4 = 0;
         break;
     case 11:
-        sub_08016E10(gUnk_08364B0C[idx].unk04, 0x06000000, 0x4000);
-        sub_08016E10(gUnk_08364B0C[idx].unk00, 0x06008000, 0x2000);
+        CpuCopy16(gUnk_08364B0C[idx].unk04, VRAM, 0x8000);
+        CpuCopy16(gUnk_08364B0C[idx].unk00, BG_CHAR_ADDR(2), 0x4000);
         gUnk_02022DE4 = 0;
         gUnk_0200BC34 = 0;
         gUnk_02022DF4 = 0;

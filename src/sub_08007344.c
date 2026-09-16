@@ -1,4 +1,5 @@
 #include "global.h"
+#include "gba/defines.h"
 
 extern u32 gUnk_083671F0[];
 extern u32 gUnk_083671F8[];
@@ -53,7 +54,7 @@ void sub_08007344(void)
         sub_08007304(0x20, b, c);
     }
     i = 0;
-    color = 0x05000200;
+    color = OBJ_PLTT;
     q = gUnk_02025E00;
     for (; i != 0x10; q += 3, i++) {
         sub_080072F4((void *)q);

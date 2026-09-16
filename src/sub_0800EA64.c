@@ -1,5 +1,6 @@
 #include "global.h"
 #include "gba/io_reg.h"
+
 void sub_0800EA64(u8 *a)
 {
     u8 z;
@@ -15,6 +16,6 @@ void sub_0800EA64(u8 *a)
     q[0] = z;
     *(u16 *)(a + 0x16) = z;
     REG_RCNT = z;
-    REG_SIOCNT = 0x2003;
+    REG_SIOCNT = SIO_MULTI_MODE | 3;
     REG_SIODATA8 = z;
 }

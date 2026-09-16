@@ -1,4 +1,5 @@
 #include "global.h"
+#include "gba/defines.h"
 
 struct unk_07304
 {
@@ -27,7 +28,7 @@ void sub_08007304(u32 count, u16 *src, struct unk_07304 *e)
             e->f4 = 0;
             e->f10 = *src;
             t = *src;
-            e->fC = 0x06010000 + (t << 5);
+            e->fC = OBJ_VRAM0 + (t << 5);
             e->f6 = 0;
             i++;
             e++;

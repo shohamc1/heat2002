@@ -1,4 +1,5 @@
 #include "global.h"
+#include "gba/defines.h"
 #include "gba/io_reg.h"
 
 void sub_080073D8(void);
@@ -28,13 +29,13 @@ void sub_080053B8(void)
             sub_080017D0();
             while (1)
             {
-                u32 r0 = *(u8 *)0x0202EF90;
+                u32 r0 = *(u8 *)(EWRAM_START + 0x2EF90);
                 if (r0 == 0)
                     r0 = REG_KEYINPUT;
                 sub_08016E30(r0);
             }
         }
-        if (*(u8 *)0x0202EF90 != 0)
+        if (*(u8 *)(EWRAM_START + 0x2EF90) != 0)
             sub_08006418(sub_08016558(0x58), 0x0E, 1);
         else
             sub_08006418(sub_08016558(0x0F), 0x0E, 1);

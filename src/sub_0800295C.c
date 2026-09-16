@@ -191,7 +191,7 @@ u8 sub_0800295C(u32 a, u8 b)
     }
     gUnk_020020A8 = 0;
     if (gUnk_020020DC != 0) {
-        sub_080043F8(&gUnk_0202A550[(*(volatile u32 *)0x04000128 << 26) >> 30]);
+        sub_080043F8(&gUnk_0202A550[(*(volatile u32 *)REG_ADDR_SIOCNT << 26) >> 30]);
         goto camera_ready;
 connection_error:
         gUnk_02002144 = 1;
@@ -236,7 +236,7 @@ camera_ready:
                 gUnk_08364ADC = 4;
         } else {
             if (gUnk_020020DC != 0)
-                sub_080043F8(&gUnk_0202A550[(*(volatile u32 *)0x04000128 << 26) >> 30]);
+                sub_080043F8(&gUnk_0202A550[(*(volatile u32 *)REG_ADDR_SIOCNT << 26) >> 30]);
             else
                 sub_080043F8(&gUnk_0202A550[0]);
             if (gUnk_0200215C == 9 || gUnk_0200215C == 0x0D || gUnk_0200215C == 0x0E
@@ -272,7 +272,7 @@ camera_ready:
                 gUnk_020021BC = 1;
                 gUnk_020021E0 = 2;
                 sub_08000458();
-                REG_DISPCNT &= 0xEFFF;
+                REG_DISPCNT &= ~DISPCNT_OBJ_ON;
                 if (gUnk_0202EF00[2] != 0)
                     sub_080013A0(gUnk_02001F20, 2);
                 sub_08003F84(0x19, 0);
@@ -312,7 +312,7 @@ camera_ready:
                     gUnk_020021BC = 1;
                     gUnk_020021E0 = 2;
                     sub_08000458();
-                    REG_DISPCNT &= 0xEFFF;
+                    REG_DISPCNT &= ~DISPCNT_OBJ_ON;
                     sub_080019B4(gUnk_02001FA0);
                     sub_080019B4(gUnk_02002030);
                     sub_080019B4(gUnk_02001FE0);

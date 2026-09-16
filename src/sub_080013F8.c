@@ -1,5 +1,5 @@
 #include "global.h"
-#include "gba/io_reg.h"
+#include "gba/compat.h"
 
 struct SndWork
 {
@@ -58,15 +58,12 @@ extern void sub_08000DC8(void);
 extern void sub_080019F4(void);
 extern void sub_08001A74(void);
 
-void sub_08016E10(u32 a, u32 b, u32 c);
-
 void sub_080013F8(struct SndWork2 *a1)
 {
-    u32 sp[1];
     u32 v;
     struct SndWork *p;
 
-    REG_SOUNDCNT_X = 0x8F;
+    REG_SOUNDCNT_X = (SOUND_MASTER_ENABLE | SOUND_1_ON | SOUND_2_ON | SOUND_3_ON | SOUND_4_ON);
     REG_SOUNDCNT_L = 0x77;
     REG_NR12 = 0x08;
     REG_NR22 = 0x08;
@@ -76,7 +73,7 @@ void sub_080013F8(struct SndWork2 *a1)
     REG_NR44 = 0x80;
     REG_NR30 = 0x00;
     REG_SOUNDCNT_L = 0xFF77;
-    p = gUnk_03007FF0;
+    p = SOUND_INFO_PTR;
     v = p->magic;
     if (v == 0x68736D53)
     {
@@ -95,8 +92,7 @@ void sub_080013F8(struct SndWork2 *a1)
         p->unk2C = (u32)&gUnk_08001BD1;
         p->unk30 = (u32)&gUnk_08001B29;
         p->unk0C = (u8)(u32)&gUnk_00000000;
-        sp[0] = 0;
-        sub_08016E10((u32)sp, (u32)a1, 0x05000040);
+        CpuFill32(0, (u32)a1, 0x100);
         a1->unk1 = 1;
         a1->unk1C = 0x11;
         a1->unk41 = 2;

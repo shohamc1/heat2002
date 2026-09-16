@@ -32,26 +32,26 @@ u32 sub_0800E460(u32 *a1)
         }
         else
         {
-            REG_SIOCNT = 0x80 << 5;
+            REG_SIOCNT = SIO_32BIT_MODE;
         }
         REG_SIODATA32 = 0;
-        REG_IF = 0xC0;
+        REG_IF = INTR_FLAG_TIMER3 | INTR_FLAG_SERIAL;
         {
             register u32 mode __asm__("r4") = gUnk_0202CDD0.mode;
 
             if (mode == 1)
             {
-                REG_SIOCNT |= 0x80;
+                REG_SIOCNT |= SIO_START;
                 REG_TM3CNT = 0x00C0F318;
                 REG_IME = 0;
-                REG_IE |= 0x40;
+                REG_IE |= INTR_FLAG_TIMER3;
                 REG_IME = mode;
             }
             else
             {
-                REG_SIOCNT |= 0x81 << 7;
+                REG_SIOCNT |= SIO_INTR_ENABLE | SIO_START;
                 REG_IME = 0;
-                REG_IE |= 0x80;
+                REG_IE |= INTR_FLAG_SERIAL;
                 REG_IME = 1;
             }
         }
@@ -102,20 +102,20 @@ u32 sub_0800E460(u32 *a1)
     case 3:
         REG_IME = 0;
         {
-            volatile u16 *ie = (volatile u16 *)0x04000200;
+            volatile u16 *ie = &REG_IE;
             volatile u32 *p;
 
-            *ie &= 0xFF3F;
+            *ie &= ~(INTR_FLAG_TIMER3 | INTR_FLAG_SERIAL);
             REG_IME = 1;
-            REG_SIOCNT = 0x80 << 5;
-            *(volatile u32 *)0x04000128 = 0x80 << 6;
-            *(volatile u32 *)0x04000128 = (0x80 << 6) + 3;
+            REG_SIOCNT = SIO_32BIT_MODE;
+            *(volatile u32 *)REG_ADDR_SIOCNT = 0x80 << 6;
+            *(volatile u32 *)REG_ADDR_SIOCNT = (0x80 << 6) + 3;
             p = (volatile u32 *)((u32)ie - 0xE0);
             *(volatile long long *)p = 0;
         }
         if (gUnk_0202CDD0.mode != 0)
             REG_TM3CNT = 0;
-        REG_IF = 0xC0;
+        REG_IF = INTR_FLAG_TIMER3 | INTR_FLAG_SERIAL;
         if (gUnk_0202CDD0.mode != 0)
         {
             gUnk_0202CDD0.retry = 0;

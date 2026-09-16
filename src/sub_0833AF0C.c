@@ -1,4 +1,5 @@
 #include "global.h"
+#include "gba/defines.h"
 #include "gba/io_reg.h"
 
 struct Unk03007FF0
@@ -13,7 +14,7 @@ extern struct Unk03007FF0 *gUnk_03007FF0;
 
 void sub_0833AF0C(void)
 {
-    struct Unk03007FF0 *r2 = gUnk_03007FF0;
+    struct Unk03007FF0 *r2 = (struct Unk03007FF0 *)SOUND_INFO_PTR;
     u32 r3 = r2->magic;
 
     if (r3 != 0x68736D53)

@@ -1,4 +1,5 @@
 #include "global.h"
+#include "gba/compat.h"
 
 extern u16 *gUnk_02002208;
 extern u16 *gUnk_0200BC54;
@@ -51,7 +52,6 @@ struct Track {
 extern struct Track gUnk_08364B0C[];
 
 void sub_08003890(u8 idx);
-void sub_08016E10(u32 src, u32 dest, u32 control);
 void sub_08004018(s32 arg0, u16 *src);
 void sub_0800383C(u16 *src, u16 *dst, u16 count);
 void sub_08003BFC(u32 x, u32 y, u16 *map, u32 *dest, u16 *charBase, u16 a6);
@@ -69,9 +69,9 @@ void sub_08003928(u32 idx)
 
     sub_08003890(idx);
     t = gUnk_08335C60;
-    sub_08016E10(t, 0x0600C000, 0x1000);
-    sub_08016E10(gUnk_08364B0C[idx].unk18, (u32)a, 0x100);
-    sub_08016E10(t = gUnk_08334BCC, (u32)b, 0x10);
+    CpuCopy16(t, BG_SCREEN_ADDR(24), 0x2000);
+    CpuCopy16(gUnk_08364B0C[idx].unk18, (u32)a, 0x200);
+    CpuCopy16(t = gUnk_08334BCC, (u32)b, 0x20);
     sub_08004018(0x1E, a);
     gUnk_0200BC30 = gUnk_08364B0C[idx].unk2C;
     gUnk_02022DD8 = gUnk_08364B0C[idx].unk34;
@@ -108,8 +108,8 @@ void sub_08003928(u32 idx)
         gUnk_02002200[0] = 0x5E;
     if (idx == 11)
         gUnk_02002200[0] = 0x7D;
-    sub_08003BFC(0, 0, gUnk_02002208, (u32 *)0x03000000, gUnk_0200221C, gUnk_02022DE4);
-    sub_08003BFC(0, 0, gUnk_0200BC54, (u32 *)0x03000800, gUnk_02002210, gUnk_0200BC34);
+    sub_08003BFC(0, 0, gUnk_02002208, (u32 *)IWRAM_START, gUnk_0200221C, gUnk_02022DE4);
+    sub_08003BFC(0, 0, gUnk_0200BC54, (u32 *)(IWRAM_START + 0x800), gUnk_02002210, gUnk_0200BC34);
     sub_08003D90();
     sub_08004260(0, 0);
     sub_08008F1C(idx);

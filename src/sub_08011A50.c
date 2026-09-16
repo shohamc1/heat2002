@@ -1,5 +1,6 @@
 #include "global.h"
 #include "gba/io_reg.h"
+
 extern u32 gUnk_0202EDBC;
 extern u16 gUnk_0200216C;
 struct Unk_0202EFA0 {
@@ -30,9 +31,9 @@ void sub_08011A50(void)
     gUnk_0200216C = 0;
     sub_08000370();
     sub_0800F7E0();
-    REG_IE |= 0x80;
-    if ((*(u8 *)0x04000128 & 0x30) == 0)
-        REG_IE |= 0x40;
+    REG_IE |= INTR_FLAG_SERIAL;
+    if ((*(u8 *)REG_ADDR_SIOCNT & 0x30) == 0)
+        REG_IE |= INTR_FLAG_TIMER3;
     i = 0;
     do {
         gUnk_0202ED78[i] = 0;

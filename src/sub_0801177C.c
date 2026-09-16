@@ -1,4 +1,6 @@
 #include "global.h"
+#include "gba/compat.h"
+
 extern u16 gUnk_020020A0[];
 extern u8 gUnk_020020AC;
 extern volatile u8 gUnk_020020C0;
@@ -13,7 +15,6 @@ struct Car
 extern struct Car gUnk_0202A550[];
 extern void sub_08011A50(void);
 extern u8 gUnk_06016000[];
-extern void sub_08016E10(u32 src, u32 dst, u32 ctrl);
 extern void sub_080045D8(void);
 extern void sub_08007344(void);
 extern void sub_080073D8(void);
@@ -63,10 +64,10 @@ s8 sub_0801177C(void)
         *init-- = i;
         i--;
     } while (i >= 0);
-    e = a[(*(volatile u32 *)0x04000128 << 26) >> 30];
+    e = a[(*(volatile u32 *)REG_ADDR_SIOCNT << 26) >> 30];
     src = (u32)gUnk_082B8710;
     dst = (u32)gUnk_06016000;
-    sub_08016E10(src, dst, 0x80 << 5);
+    CpuCopy16(src, dst, 0x2000);
     sub_080045D8();
     sub_08007344();
     sub_080073D8();
@@ -77,11 +78,11 @@ s8 sub_0801177C(void)
     sub_0800F3A4();
     sub_0800F4FC();
     sub_0800F328((u32)gUnk_082E4328, buf);
-    sub_08010E04(a[(*(volatile u32 *)0x04000128 << 26) >> 30]);
+    sub_08010E04(a[(*(volatile u32 *)REG_ADDR_SIOCNT << 26) >> 30]);
     sub_08004238(buf, 0x0F);
-    *(volatile u16 *)(0x80 << 19) = 0xA8 << 3;
+    REG_DISPCNT = 0xA8 << 3;
     sub_08000458();
-    *(volatile u16 *)(0x80 << 19) = 0xAA << 5;
+    REG_DISPCNT = 0xAA << 5;
     sel = 0x40;
     for (i = 0; i < gUnk_020020AC; i++)
         b[i] |= 0xFF;

@@ -1,13 +1,11 @@
 #include "global.h"
-#include "gba/io_reg.h"
+#include "gba/compat.h"
 
 extern u16 gKeysPressed;
 extern u8 gUnk_0807CA60[];
 extern u8 gUnk_0833338C[];
 extern u8 gUnk_08363EE8[];
 extern u8 gUnk_08364AC8[];
-
-extern void sub_08016E10(u32 src, u32 dest, u32 control);
 extern void sub_08016E30(void);
 extern u32 sub_08016558(u32 idx);
 extern void sub_08006950(u8 *p, u32 a1, u8 a2);
@@ -37,10 +35,10 @@ u32 sub_0800E200(void)
 
     flag = 0;
     icon = 0;
-    REG_BG3CNT = 0x1C0C;
+    REG_BG3CNT = BGCNT_SCREENBASE(28) | BGCNT_CHARBASE(3);
     {
         u8 *src = gUnk_0833338C;
-        sub_08016E10((u32)src, 0x0600C000, 0x80 << 5);
+        CpuCopy16((u32)src, BG_SCREEN_ADDR(24), 0x2000);
     }
     {
         u8 *buf = work + 0x4C;

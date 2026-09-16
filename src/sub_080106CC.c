@@ -1,4 +1,5 @@
 #include "global.h"
+#include "gba/defines.h"
 
 void sub_080106CC(u16 *src, u16 *tiles)
 {
@@ -8,7 +9,7 @@ void sub_080106CC(u16 *src, u16 *tiles)
     u32 i;
     u32 j;
 
-    dest = (u16 *)0x0600F800;
+    dest = (u16 *)BG_SCREEN_ADDR(31);
     for (i = 0; i != 10; i++) {
         for (j = 0; j != 15; j++) {
             v = *src++;

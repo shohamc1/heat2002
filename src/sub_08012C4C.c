@@ -1,4 +1,5 @@
 #include "global.h"
+#include "gba/compat.h"
 
 extern u32 gUnk_083FDE18[];
 extern u32 gUnk_083FEF00;
@@ -15,7 +16,7 @@ extern void sub_08006734(u32 a);
 extern u32 sub_08016558(u16 idx);
 extern void sub_080065A8(void);
 extern void sub_08006950(u32 a, u32 b, u32 c);
-extern void sub_08016E28(u32 a, u32 b);
+extern void RLUnCompVram(u32 a, u32 b);
 extern void sub_080100CC(u32 a0, u32 a1, u32 a2, u32 a3, u8 a4);
 
 void sub_08012C4C(u32 a)
@@ -32,7 +33,7 @@ void sub_08012C4C(u32 a)
         sub_08006950((u32)gUnk_0829F388, 0xA, 1);
     }
     if (a <= 2)
-        sub_08016E28(gUnk_083FEF00, 0x06010000);
+        RLUnCompVram(gUnk_083FEF00, OBJ_VRAM0);
     if (a == 0) {
         t = (u32)gUnk_08310160;
         sub_080100CC(0x58, 0x40, 0, t, a);

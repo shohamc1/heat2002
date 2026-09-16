@@ -1,4 +1,6 @@
 #include "global.h"
+#include "gba/io_reg.h"
+#include "gba/defines.h"
 
 extern u16 gKeysPressed;
 extern volatile u8 gUnk_020020C0;
@@ -33,7 +35,7 @@ u8 sub_08012D34(u8 a)
     sub_08000458();
     sub_08004238(buf, 0x0F);
     sub_08000458();
-    *(volatile u16 *)(0x80 << 19) = 0xAA << 5;
+    REG_DISPCNT = 0xAA << 5;
     sel = 0x40;
     do
     {

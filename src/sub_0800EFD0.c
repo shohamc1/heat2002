@@ -1,4 +1,5 @@
 #include "global.h"
+#include "gba/io_reg.h"
 
 extern s32 sub_0800EE8C(void *a1, u16 a2);
 extern void sub_0800EA64(void *a1);
@@ -25,7 +26,7 @@ e0:
         keys = a1[0x1E];
         {
             u32 one = 1;
-            volatile u16 *p = (volatile u16 *)0x04000126;
+            volatile u16 *p = &REG_SIOMULTI3;
             do {
                 v = *p;
                 if (((keys >> i) & one) != 0 && v != *(u32 *)(a1 + 4))
@@ -54,7 +55,7 @@ send:
         i = 3;
         keys = a1[0x1E];
         do {
-            v = ((volatile u16 *)0x04000120)[i];
+            v = REG_SIOMULTI(i);
             if (((keys >> i) & 1) != 0 && v != *(u32 *)(a1 + 4))
             {
                 sub_0800EA64(a1);

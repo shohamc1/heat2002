@@ -1,5 +1,6 @@
 #include "global.h"
 #include "gba/io_reg.h"
+
 extern u32 gUnk_02022DE8;
 extern u32 gUnk_02022DE0;
 extern u32 gUnk_0200BC2C;

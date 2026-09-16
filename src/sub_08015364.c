@@ -191,7 +191,7 @@ u32 sub_08015364(void)
     REG_BG2PD = 0x0100;
     REG_BG3PA = 0x0100;
     REG_BG3PB = 0x0100;
-    *(volatile s16 *)0x04000034 = -0x100;
+    *(volatile s16 *)REG_ADDR_BG3PC = -0x100;
     REG_BG3PD = 0x0100;
     REG_BG2X_L = 0;
     REG_BG2X_H = 0;
@@ -234,7 +234,7 @@ u32 sub_08015364(void)
 
     sub_0800F3A4();
     sub_08010664(0);
-    REG_DISPCNT = 0x0540;
+    REG_DISPCNT = DISPCNT_OBJ_1D_MAP | DISPCNT_BG0_ON | DISPCNT_BG2_ON;
     sub_08011C9C(1, frame);
     if (gUnk_0202EF00[2] != 0)
         sub_08001208(2);
@@ -247,7 +247,7 @@ u32 sub_08015364(void)
     do {
     if (redraw != 0) {
         redraw = 0;
-        REG_DISPCNT = 0x0540;
+        REG_DISPCNT = DISPCNT_OBJ_1D_MAP | DISPCNT_BG0_ON | DISPCNT_BG2_ON;
         sub_08011C9C(1, frame);
         sub_0800F3A4();
         sub_08010664(gUnk_0202EDD4);
@@ -257,14 +257,14 @@ u32 sub_08015364(void)
     sub_0800048C();
     keys = gKeysHeld;
     keys &= gKeysPressed;
-    if ((keys & 0x40) != 0) {
+    if ((keys & DPAD_UP) != 0) {
         if (--gUnk_0202EDD4 < 0)
             gUnk_0202EDD4 = 6;
         if (gUnk_0202EF00[3] != 0)
             sub_08001208(8);
         sub_08010664(gUnk_0202EDD4);
     }
-    if ((keys & 0x80) != 0) {
+    if ((keys & DPAD_DOWN) != 0) {
         if (++gUnk_0202EDD4 > 6)
             gUnk_0202EDD4 = 0;
         if (gUnk_0202EF00[3] != 0)
@@ -272,8 +272,8 @@ u32 sub_08015364(void)
         sub_08010664(gUnk_0202EDD4);
     }
 
-    if ((*(u8 *)0x04000128 & 0x30) == 0) {
-        gUnk_0202ED78 = (((*(u32 *)0x04000128 << 26) >> 30) + 1) << 12 | 1;
+    if ((*(u8 *)REG_ADDR_SIOCNT & 0x30) == 0) {
+        gUnk_0202ED78 = (((*(u32 *)REG_ADDR_SIOCNT << 26) >> 30) + 1) << 12 | 1;
         sub_0800F818(gUnk_0202ED78);
     }
 
@@ -386,7 +386,7 @@ state3_done:
         *(u8 *)a6b2 = sub_08010EA0();
         sub_08008A20();
         sub_0800420C(0, 0x0F);
-        if ((gKeysPressed & 2) != 0)
+        if ((gKeysPressed & B_BUTTON) != 0)
             goto state0_done;
 
         gUnk_0202F024 = 0;
@@ -398,7 +398,7 @@ state0_menu:
         choice = sub_080136F8(
             gUnk_0202F024 | gUnk_0202F034,
             gUnk_0202F034 | gUnk_0202EEC8);
-        if ((gKeysPressed & 2) != 0 || choice == 3)
+        if ((gKeysPressed & B_BUTTON) != 0 || choice == 3)
             goto state0_done;
 
         gUnk_0202EEF8 = choice;
@@ -489,13 +489,13 @@ state1_load:
         *(u8 *)a6b2 = sub_08010EA0();
         sub_08008A20();
         sub_0800420C(0, 0x0F);
-        if ((gKeysPressed & 2) != 0)
+        if ((gKeysPressed & B_BUTTON) != 0)
             goto state1_done;
 
 state1_config:
         sub_08011168(1, 0);
         sub_0800420C(0, 0x0F);
-        if ((gKeysPressed & 2) != 0)
+        if ((gKeysPressed & B_BUTTON) != 0)
             goto state1_done;
         gUnk_020020CC = gUnk_0202EF8C;
         gUnk_02002184 = gUnk_083FDA6E[gUnk_0202EF00[1]];
@@ -539,14 +539,14 @@ state4_load:
         *(u8 *)a6b2 = sub_08010EA0();
         sub_08008A20();
         sub_0800420C(0, 0x0F);
-        if ((gKeysPressed & 2) != 0)
+        if ((gKeysPressed & B_BUTTON) != 0)
             goto state4_done;
 
 state4_config:
         sub_08011168(1, 0);
         gUnk_020020CC = gUnk_0202EF8C;
         sub_0800420C(0, 0x0F);
-        if ((gKeysPressed & 2) != 0)
+        if ((gKeysPressed & B_BUTTON) != 0)
             goto state4_done;
         gUnk_020020CC = gUnk_0202EF8C;
         gUnk_02002184 = 3;
@@ -585,7 +585,7 @@ state4_done:
 
 state2_select:
         track = sub_0801465C();
-        if ((gKeysPressed & 2) != 0)
+        if ((gKeysPressed & B_BUTTON) != 0)
             goto state2_done;
         gUnk_0202ED70 = track << 2;
 
@@ -595,7 +595,7 @@ state2_track:
             sub_0801692C();
         }
         gUnk_0202ED70 = sub_08014874(track, gUnk_0202ED70);
-        if ((gKeysPressed & 2) != 0)
+        if ((gKeysPressed & B_BUTTON) != 0)
             goto state2_select;
 
         gUnk_02002098 = 0;
@@ -696,7 +696,7 @@ state2_done:
 
         if (sub_08016634() != 0) {
             result = sub_08014A84();
-            if ((gKeysPressed & 2) != 0)
+            if ((gKeysPressed & B_BUTTON) != 0)
                 goto state5_done;
             if (result == 1) {
                 sub_08016724();
@@ -713,7 +713,7 @@ state5_setup:
         }
 
         gUnk_0202EDD8 = sub_08010CD0();
-        if ((gKeysPressed & 2) != 0)
+        if ((gKeysPressed & B_BUTTON) != 0)
             goto state5_done;
         *(u8 *)a6b2 = sub_0800F120(gUnk_0202EDD8);
         if (sub_080128E0(*(u8 *)a6b2) == 0)
@@ -723,7 +723,7 @@ state5_load:
         *(u8 *)a6b2 = sub_0800F120(gUnk_0202EDD8);
         sub_08008A20();
         sub_0800420C(0, 0x0F);
-        if ((gKeysPressed & 2) != 0)
+        if ((gKeysPressed & B_BUTTON) != 0)
             goto state5_done;
 
         gUnk_0202F024 = 0;
@@ -735,7 +735,7 @@ state5_menu:
         choice = sub_08013570(
             gUnk_0202F024 | gUnk_0202F034,
             gUnk_0202F034 | gUnk_0202EEC8);
-        if ((gKeysPressed & 2) != 0 || choice == 4)
+        if ((gKeysPressed & B_BUTTON) != 0 || choice == 4)
             goto state5_done;
 
         gUnk_0202EEF8 = choice;

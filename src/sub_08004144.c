@@ -1,11 +1,12 @@
 #include "global.h"
+#include "gba/defines.h"
 
 void sub_080041A0(void);
 
 void sub_08004144(void)
 {
-    u32 v = *(s16 *)0x02022E18;
-    u8 *p = (u8 *)0x02022E14;
+    u32 v = *(s16 *)(EWRAM_START + 0x22E18);
+    u8 *p = (u8 *)(EWRAM_START + 0x22E14);
     if (v == 0)
         *p = v;
     if (*p != 0)
@@ -17,14 +18,14 @@ void sub_08004144(void)
         sub_080041A0();
         i = 0;
         n = 0x300;
-        r3 = (u32 *)0x02022E20;
-        r4 = (u32 *)0x02023A20;
+        r3 = (u32 *)(EWRAM_START + 0x22E20);
+        r4 = (u32 *)(EWRAM_START + 0x23A20);
         while (i != n)
         {
             *r3++ += *r4++;
             i++;
         }
-        *(u16 *)0x02022E18 = *(u16 *)0x02022E18 - 1;
+        *(u16 *)(EWRAM_START + 0x22E18) = *(u16 *)(EWRAM_START + 0x22E18) - 1;
     }
-    *(u8 *)0x02022E10 = 1;
+    *(u8 *)(EWRAM_START + 0x22E10) = 1;
 }

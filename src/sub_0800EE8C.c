@@ -16,7 +16,7 @@ s32 sub_0800EE8C(void *a1, u16 a2)
     else
     {
         REG_SIODATA8 = a2;
-        REG_SIOCNT = 0x2083;
+        REG_SIOCNT = SIO_MULTI_MODE | SIO_START | 3;
         *(u8 *)((u32)a1 + 0x48) = 1;
         return 0;
     }

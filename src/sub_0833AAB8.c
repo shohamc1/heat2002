@@ -1,5 +1,6 @@
 #include "global.h"
-#include "gba/io_reg.h"
+#define GBA_CPUSET sub_08344B64
+#include "gba/compat.h"
 
 struct SndWork
 {
@@ -57,15 +58,12 @@ extern u8 gUnk_020028C9;
 extern u8 gUnk_02002811;
 extern u8 gUnk_02002769;
 
-extern void sub_08344B64(u32 a, u32 b, u32 c);
-
 void sub_0833AAB8(struct SndWork2 *a1)
 {
-    u32 sp[1];
     u32 v;
     struct SndWork *p;
 
-    REG_SOUNDCNT_X = 0x8F;
+    REG_SOUNDCNT_X = (SOUND_MASTER_ENABLE | SOUND_1_ON | SOUND_2_ON | SOUND_3_ON | SOUND_4_ON);
     REG_SOUNDCNT_L = 0x77;
     REG_NR12 = 0x08;
     REG_NR22 = 0x08;
@@ -75,7 +73,7 @@ void sub_0833AAB8(struct SndWork2 *a1)
     REG_NR44 = 0x80;
     REG_NR30 = 0x00;
     REG_SOUNDCNT_L = 0xFF77;
-    p = gUnk_03007FF0;
+    p = SOUND_INFO_PTR;
     v = p->magic;
     if (v == 0x68736D53)
     {
@@ -94,8 +92,7 @@ void sub_0833AAB8(struct SndWork2 *a1)
         p->unk2C = (u32)&gUnk_02002811;
         p->unk30 = (u32)&gUnk_02002769;
         p->unk0C = (u8)(u32)&gUnk_00000000;
-        sp[0] = 0;
-        sub_08344B64((u32)sp, (u32)a1, 0x05000040);
+        CpuFill32(0, (u32)a1, 0x100);
         a1->unk1 = 1;
         a1->unk1C = 0x11;
         a1->unk41 = 2;

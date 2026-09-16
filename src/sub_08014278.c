@@ -1,4 +1,6 @@
 #include "global.h"
+#include "gba/io_reg.h"
+
 extern u16 gKeysPressed;
 extern u8 gUnk_0202EF00[];
 extern u8 gUnk_082EE104[];
@@ -33,14 +35,14 @@ u8 sub_08014278(void)
     do {
         sub_0800048C();
         sub_08014104(mode);
-        if (gKeysPressed & 1)
+        if (gKeysPressed & A_BUTTON)
             sel = v;
-        if ((gKeysPressed & 0x40) && mode == 1) {
+        if ((gKeysPressed & DPAD_UP) && mode == 1) {
             mode = 0;
             if (gUnk_0202EF00[3] != 0)
                 sub_08001208(8);
         }
-        if ((gKeysPressed & 0x80) && mode == 0) {
+        if ((gKeysPressed & DPAD_DOWN) && mode == 0) {
             mode = 1;
             if (gUnk_0202EF00[3] != 0)
                 sub_08001208(8);

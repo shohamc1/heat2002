@@ -1,5 +1,6 @@
 #include "global.h"
 #include "gba/io_reg.h"
+
 extern u16 gKeysPressed;
 extern u8 gUnk_020020DC;
 extern u8 gUnk_020020CC;
@@ -30,11 +31,11 @@ u8 sub_08003738(void)
     sub_08000380();
     REG_IE = 0;
     REG_IME = 1;
-    REG_DISPSTAT = 8;
+    REG_DISPSTAT = DISPSTAT_VBLANK_INTR;
     sub_0800048C();
     sub_080003F8(0x0800306D);
-    REG_IE = 0x2001;
-    REG_DISPSTAT = 8;
+    REG_IE = INTR_FLAG_GAMEPAK | INTR_FLAG_VBLANK;
+    REG_DISPSTAT = DISPSTAT_VBLANK_INTR;
     sub_08001170();
     sub_0800184C();
     sub_08000370();

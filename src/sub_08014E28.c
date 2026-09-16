@@ -1,4 +1,6 @@
 #include "global.h"
+#include "gba/io_reg.h"
+
 extern u16 gKeysPressed;
 extern u8 gUnk_0202EF00[];
 extern void sub_0800F3C0(void);
@@ -25,14 +27,14 @@ u8 sub_08014E28(void)
     do {
         sub_0800048C();
         sub_08014C60(v);
-        if (gKeysPressed & 1)
+        if (gKeysPressed & A_BUTTON)
             sel = z;
-        if ((gKeysPressed & 0x40) && v != 0) {
+        if ((gKeysPressed & DPAD_UP) && v != 0) {
             v = 0;
             if (gUnk_0202EF00[3])
                 sub_08001208(8);
         }
-        if ((gKeysPressed & 0x80) && v == 0) {
+        if ((gKeysPressed & DPAD_DOWN) && v == 0) {
             v = 1;
             if (gUnk_0202EF00[3])
                 sub_08001208(8);

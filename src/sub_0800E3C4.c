@@ -1,7 +1,5 @@
 #include "global.h"
-#include "gba/io_reg.h"
-
-extern void sub_08016E10(u32 src, u32 dest, u32 control);
+#include "gba/compat.h"
 
 extern u32 gUnk_0202CDD0[];
 
@@ -13,13 +11,13 @@ void sub_0800E3C4(u32 a1, u32 a2)
     register u32 *g __asm__("r4");
 
     REG_IME = 0;
-    REG_IE &= 0xFF3F;
+    REG_IE &= ~(INTR_FLAG_TIMER3 | INTR_FLAG_SERIAL);
     one = 1;
     REG_IME = 1;
     fill = 0;
     g = gUnk_0202CDD0;
-    sub_08016E10((u32)&fill, (u32)g, 0x05000006);
-    *(volatile u32 *)0x04000128 = 0x2003;
+    CpuSet((u32)&fill, (u32)g, CPU_SET_32BIT | CPU_SET_SRC_FIXED | 6);
+    *(volatile u32 *)REG_ADDR_SIOCNT = 0x2003;
     g[1] = a2;
     g[2] = -1;
     if (a1 != 0)
@@ -35,7 +33,7 @@ void sub_0800E3C4(u32 a1, u32 a2)
             } while (count > 0);
         }
         g[3] = ~sum;
-        REG_SIOCNT = 0x80 << 5;
-        REG_SIOCNT = (0x80 << 5) + 1;
+        REG_SIOCNT = SIO_32BIT_MODE;
+        REG_SIOCNT = SIO_32BIT_MODE + 1;
     }
 }

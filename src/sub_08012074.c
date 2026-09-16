@@ -1,4 +1,6 @@
 #include "global.h"
+#include "gba/defines.h"
+#include "gba/io_reg.h"
 
 extern u8 gKeysHeld;
 extern u16 gKeysPressed;
@@ -31,18 +33,18 @@ s32 sub_08012074(void)
     u16 t;
     volatile u16 *ed;
 
-    if ((*(u8 *)0x04000128 & 0x30) == 0) {
+    if ((*(u8 *)REG_ADDR_SIOCNT & 0x30) == 0) {
         sub_08016E30();
     } else {
         do {
             sub_0800048C();
             if (gKeysPressed & 2)
                 return -1;
-        } while ((gUnk_03007FF8 & 0x80) == 0);
+        } while ((INTR_CHECK & 0x80) == 0);
     }
     sub_0800048C();
     ed = &gUnk_0202ED78;
-    t = ((((*(u32 *)0x04000128 << 26) >> 30) + 1) << 12) | 0x100;
+    t = ((((*(u32 *)REG_ADDR_SIOCNT << 26) >> 30) + 1) << 12) | 0x100;
     t |= gKeysHeld;
     z = 0;
     *ed = t;
@@ -82,8 +84,8 @@ s32 sub_08012074(void)
             count++;
         i++;
     } while (i < 4);
-    gUnk_0202EF90 = (*(u32 *)0x04000128 << 26) >> 30;
-    if ((*(u8 *)0x04000128 & 0x30) == 0) {
+    gUnk_0202EF90 = (*(u32 *)REG_ADDR_SIOCNT << 26) >> 30;
+    if ((*(u8 *)REG_ADDR_SIOCNT & 0x30) == 0) {
         if (gUnk_0202EEF4 > 1 && gUnk_0202EEF4 == count)
             sub_08006950((u8 *)sub_08016558(0xF), 0xF, 1);
         else

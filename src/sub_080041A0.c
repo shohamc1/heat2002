@@ -1,9 +1,10 @@
 #include "global.h"
+#include "gba/defines.h"
 
 void sub_080041A0(void)
 {
-    s32 *r6 = (s32 *)0x02022E20;
-    u16 *r5 = (u16 *)0x02024620;
+    s32 *r6 = (s32 *)(EWRAM_START + 0x22E20);
+    u16 *r5 = (u16 *)(EWRAM_START + 0x24620);
     u32 r4 = 0;
     u32 m = 0x1F;
     u32 r7 = 0x80 << 1;
@@ -19,7 +20,7 @@ void sub_080041A0(void)
         x &= m;
         y &= m;
         z &= m;
-        *r5++ = x | (y << 5) | (z << 10);
+        *r5++ = RGB(x, y, z);
         r4++;
     }
 }

@@ -1,4 +1,5 @@
 #include "global.h"
+#include "gba/defines.h"
 #include "gba/io_reg.h"
 
 extern u32 gUnk_03007FF0;
@@ -18,7 +19,7 @@ void sub_0833AD00(u32 a);
 
 void sub_0833ADA4(u32 cmd)
 {
-    struct Snd *s = (struct Snd *)gUnk_03007FF0;
+    struct Snd *s = (struct Snd *)SOUND_INFO_PTR;
     u32 t;
     u8 *p;
 

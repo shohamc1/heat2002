@@ -1,4 +1,6 @@
 #include "global.h"
+#define GBA_CPUSET sub_08344B64
+#include "gba/compat.h"
 
 /* The cancelling offset preserves the initial base-to-p copy.
    Assigning off = 4 inside the loop keeps base + 4 out of the preheader. */
@@ -15,8 +17,6 @@ extern struct Unk0801DA90 gUnk_0200CA74[];
 
 extern u8 gUnk_0200118D[];
 extern u8 gUnk_00000004[];
-
-extern void sub_08344B64(u32 a, u32 b, u32 c);
 extern void sub_0833AC08(void *a);
 extern void sub_0833AAB8(void *a);
 extern void sub_0833ADA4(u32 a);
@@ -32,9 +32,9 @@ void sub_0833A830(void)
     u16 cnt;
     u32 off;
 
-    sub_08344B64((u32)gUnk_0200118D & ~1, 0x03007000, 0x04000100);
-    sub_0833AC08((void *)0x02037E30);
-    sub_0833AAB8((void *)0x02038E70);
+    CpuCopy32((u32)gUnk_0200118D & ~1, IWRAM_START + 0x7000, 0x400);
+    sub_0833AC08((void *)EWRAM_START + 0x37E30);
+    sub_0833AAB8((void *)EWRAM_START + 0x38E70);
     sub_0833ADA4(0x0097D800);
     cnt = (u16)(u32)gUnk_00000004;
     if (cnt != 0)
@@ -48,7 +48,7 @@ void sub_0833A830(void)
         off = 4;
         x = p->unk0;
         sub_0833AF48(x, *(u32 *)(i + (base + off)), p->unk8);
-        *(u32 *)(x + 0x18) = 0x02039030;
+        *(u32 *)(x + 0x18) = EWRAM_START + 0x39030;
         p++;
         i += 12;
         n--;

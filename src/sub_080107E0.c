@@ -1,4 +1,7 @@
 #include "global.h"
+#include "gba/defines.h"
+#include "gba/io_reg.h"
+
 extern u16 gUnk_020020A0;
 extern volatile u8 gUnk_020020C0;
 extern u16 gUnk_0202EF40[];
@@ -45,9 +48,9 @@ u8 sub_080107E0(void)
     sub_0800F328(0x082E4328, buf);
     sub_08010FE4(0, 1);
     sub_08004238(buf, 0x0F);
-    *(volatile u16 *)(0x80 << 19) = 0xA8 << 3;
+    REG_DISPCNT = 0xA8 << 3;
     sub_08000458();
-    *(volatile u16 *)(0x80 << 19) = 0xAA << 5;
+    REG_DISPCNT = 0xAA << 5;
     sel = 0x40;
     gUnk_0202EF8C = 0;
     prev = 0;
@@ -60,14 +63,14 @@ u8 sub_080107E0(void)
             continue;
         }
         k = (k ^ gUnk_020020A0) & gUnk_020020A0;
-        if (k & 0x10) {
+        if (k & DPAD_RIGHT) {
             gUnk_0202EF8C++;
             if (gUnk_0202EF8C == 7)
                 gUnk_0202EF8C = 8;
             if (gUnk_0202EF8C > 0x0B)
                 gUnk_0202EF8C = 0x0B;
         }
-        if (k & 0x20) {
+        if (k & DPAD_LEFT) {
             gUnk_0202EF8C--;
             if (gUnk_0202EF8C == 7)
                 gUnk_0202EF8C = 6;
@@ -83,12 +86,12 @@ u8 sub_080107E0(void)
             sub_08010FE4(gUnk_0202EF8C, 1);
         else
             sub_08010FE4(gUnk_0202EF8C, 1);
-        if (k & 1) {
+        if (k & A_BUTTON) {
             sub_08001208(9);
             gUnk_0202EF8C = gUnk_083FDE78[gUnk_0202EF8C];
             sel = 1;
         }
-        if (k & 2)
+        if (k & B_BUTTON)
             sel = 2;
         sub_080047DC();
         gUnk_020020C0 = 0;
@@ -98,7 +101,7 @@ u8 sub_080107E0(void)
         sub_08000458();
     } while (sel == 0x40);
     sub_08000458();
-    *(volatile u16 *)(0x80 << 19) = 0xA8 << 3;
+    REG_DISPCNT = 0xA8 << 3;
     sub_08000458();
     if (sel == 2)
         return 0;

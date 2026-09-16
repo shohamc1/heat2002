@@ -1,10 +1,11 @@
 #include "global.h"
+#include "gba/defines.h"
 #include "gba/io_reg.h"
+#include "gba/macro.h"
 
 extern u32 gUnk_02000580;
 extern u32 gUnk_03007FFC;
 extern u32 gUnk_02000590[];
-extern volatile u32 gUnk_040000D4[];
 
 void sub_08000430(void);
 
@@ -12,12 +13,9 @@ void sub_08000380(void)
 {
     sub_08000430();
     gUnk_02000580 = 0x0800042D;
-    gUnk_040000D4[0] = 0x08000104;
-    gUnk_040000D4[1] = 0x020005D0;
-    gUnk_040000D4[2] = 0x80000400;
-    (void)gUnk_040000D4[2];
-    gUnk_03007FFC = 0x020005D0;
-    REG_WAITCNT = 0x00004014;
+    DmaCopy16(3, 0x08000104, 0x020005D0, 0x800);
+    INTR_VECTOR = (void *)0x020005D0;
+    REG_WAITCNT = WAITCNT_SRAM_4 | WAITCNT_WS0_N_3 | WAITCNT_WS0_S_1 | WAITCNT_PREFETCH_ENABLE;
     gUnk_02000590[1] = 0x08000411;
     gUnk_02000590[0] = 0x0800042D;
     gUnk_02000590[2] = 0x0800042D;
