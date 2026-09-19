@@ -1,0 +1,14 @@
+diff --git a/gcc/final.c b/gcc/final.c
+index d5867c3..62bea5e 100755
+--- a/gcc/final.c
++++ b/gcc/final.c
+@@ -1341,6 +1341,9 @@ final_scan_insn (insn, file, optimize, prescan, nopeepholes)
+ {
+ #ifdef HAVE_cc0
+   rtx set;
++
++  if (getenv ("RT_UIDPRINT") && insn && GET_CODE (insn) == INSN)
++    fprintf (file, "\t@ uid %d\n", INSN_UID (insn));
+ #endif
+ 
+   insn_counter++;

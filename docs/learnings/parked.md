@@ -824,3 +824,156 @@ Also note: the span 0x080004B8-0x08000958 is undecoded `.byte` data in
 carries the hi-register epilogue at 0x080008E0 and the `Smsh` ident), but
 luvdis never split it, so it is invisible to progress.py's numerator and
 denominator alike.
+
+## sub_0800D684: instruction-identical, 49 register encodings short
+
+`src/sub_0800D684.c` (2006 bytes) reproduces the ROM's instruction stream
+byte for byte from 0x800d684 to 0x800de58. `match.py` still reports MISMATCH
+because 49 register operands differ (45 single recolours priced 5, 4 double
+priced 10; `sdiff` 265 under `d684-tools/filediff.py`). No shape, immediate or
+pool-offset difference remains.
+
+Both residual causes were traced into the compiler and neither is expressible
+in C:
+
+1. **uid 91's reload pair** - **explained** (cont. 122).  `allocate_reload_reg`
+   walks `spill_regs` cyclically from a cursor reset once per pass and advanced
+   once per allocation.  Instrumenting `reload_reg_used` at that insn gives
+   `{0 2 4 5 7 8 9 10 11..16}` - r0, r2 and r4 in use, r1/r3/r6 free.  With our
+   array {0,1,2,3,6} the constant's scan takes index 4 = r6; the ROM's
+   instruction `adds r0, r3, r1` follows exactly if its array was
+   **{0,1,2,3,4}**: index 4 = r4 (in use, skipped), index 0 = r0 (in use,
+   skipped), index 1 = r1 (free).  So the two compiles differ in their *spill
+   set*, and everything downstream of that pick follows.  Why the sets differ
+   is the open half: cont. 116's candidate is that our `d1` is homed in r6
+   (the tail walks memory through `[r6]`), forcing r6 into the set.
+   Corroborated four ways: the used-register bitmap above; the `SPILLSET`
+   dump, which shows pinning `d1` to r4 removes r6 from the set (cont. 123);
+   the whole-function usage counts (r6: 46 in the target, 70 here - cont. 125);
+   and the forced-allocation map, where matching the target's register at that
+   site makes the rest worse, which only a differing array explains (cont. 120).
+   Our body cannot be compiled without r6 - every r6-free `RT_SET` variant
+   ICEs - so the configuration cannot be tested here.
+
+2. **A home swap between `e` and `d1`** - at the two `(d1 = (e = ...))` carrier
+   guards the ROM's result lands in r4 and ours in r6.  r6 is *dead* across
+   those blocks in the ROM (bracketing uses at 0x800d7ce and 0x800d932), so
+   this is a `find_reg` priority outcome, not an occupancy: ours is
+   `e`->r4 / `d1`->r6 and the ROM's is `e`->r6 / `d1`->r4.  Closed across every
+   carrier spelling, nesting, comma, drop, role-split, dead-variable and pin
+   variant, and across the literal-variable lever from commit `bcfef4c`
+   applied in seven forms (all neutral or worse - the assignments fold away
+   before global-alloc, and this C has no conditional loop-carried slack left).
+
+   Mechanism (cont. 129/130): the destination of the carrier instruction is
+   the *result temporary*, not `e` itself, and r4 is **live** at that insn -
+   the used-register mark set there is exactly the callee-saved registers the
+   loop keeps across calls.  Ours has `e` resident in r4 through the loop, so
+   the temporary cannot take r4 and lands in r6; the ROM's lands in r4, so its
+   `e` was resident elsewhere.  So the variable whose home differs is `e`.
+
+   Quantified: `find_reg`'s priority is `floor(log2(refs)) * refs /
+   live_length`, and the `.greg` dump gives `d1` = 70 refs / 357 insns (1.18)
+   versus `e` = 48 refs / 138 insns (1.74).  `e` outranks `d1` and takes r4;
+   the ROM needs the reverse, i.e. `d1`'s live length below ~241 insns instead
+   of 357.  Shortening it means splitting the variable, which adds a
+   declaration and costs 2 hunks, and routing the carriers through an existing
+   variable instead only moves the deviation (best 325).
+
+Roughly 325 000 semantics-preserving source variants across ten lanes, plus
+spelling sweeps over constants, casts, widths, declaration order, alias
+respelling per occurrence, bounds, comparisons, increments and prototypes, all
+bottom out at 265.  The one compiler rule change that reproduced the pick
+produced 2022 bytes with the corpus broken and was reverted.
+
+Full record, tooling (including the `reload_set.patch` diagnostic compiler),
+lane reports and the integration recipe: `docs/learnings/drafts/sub_0800D684-NEXT.md`.
+
+**Quantified (cont. 139/140).** Counting register occurrences over the function:
+
+    ours:  r5 x40, r6 x70
+    ROM:   r5 x38, r6 x46
+
+24 extra uses of r6, and the diff list's pairs are dominated by `(r6, X)` - our r6 against the
+ROM's r4/r3/r2/r1/r0.  The pairs are not a bijection, so this is not a global renaming: it is one
+extra long-lived resident, pseudo 36 (`d1`), homed r6 because its conflict set contains hard r4
+(inherited from the pinned `cc2 asm("r4")`).  The ROM's `lsls r0, r4, #16` shows its `d1` in r4.
+
+**The homes are reachable, and it does not help.**  Giving 36 r4 - leaving 45 (`e`) in r4 as
+well, disjoint ranges, exactly as the ROM has them - scores **3031**, and the other 45 sites
+break with it.  The two halves of the residual are in tension: fixing the four carrier
+instructions costs far more than it gains.  That is why every one-lever move fails, and why the
+265 baseline is stable in both directions.
+
+**Twelve compiler rules measured, all reverted, none better than 265:** scan start `i = -1`
+(7185); no cursor advance for constants (7185); per-insn cursor reset (7518); `REG_ALLOC_ORDER`
+swap (no effect - neither `find_reg` nor `find_free_reg` consults it); r6 not a spill candidate
+(2056); `RT_SET=01234` (cc1 ICE, `NEWSPILL` cascade); deny r4 to all (28173); deny r4 to `e`
+(385); give `d1` r4 (3031); swap r4 between them (3151); `combine_regs` off (29707); and
+`prune_preferences` off (neutral - `regs_someone_prefers` is empty, so the barrier is a plain
+conflict and not a tunable).
+
+**The reload-side account is closed (cont. 141-149).**  Running the reload instrument's own
+`RT` trace, which reports each pick directly rather than reconstructing it:
+
+    RT uid=91 rnum=1 reg=6 idx=4 nspills=5 last=3 in=(const_int 399) out=
+
+Five-entry pool, index 4 -> r6, reloading the constant 399 - cont. 122's account, now confirmed
+by measurement.  Two structural facts explain the rest:
+
+* `calculate_needs_all_insns` (reload1.c:924) runs before `reload_as_needed` (1023), so the pool
+  is **fully built before any register is chosen** - which is why uid 91 reports `nspills=5`
+  while its own candidate list shows only the first entries.
+* r6 enters the pool from the **tail** (first `NEWSPILL ... reg=6` is at uid 1447, the `[r6]`
+  walker), so `d1` being homed r6 and r6 being a spill register are two faces of one fact.
+
+The whole residual therefore reduces to one sentence: **the ROM's code has a need for r4 at some
+insn where ours has a need for r6, and `{0,1,2,3,4}` versus `{0,1,2,3,6}` - hence everything
+downstream - follows entirely from that difference in which registers are live when.**
+
+Measured and refuted since this entry was first written: fifteen spill-set configurations (six
+ICE outright, `{0,1,2,3,4}` among them), thirteen compiler rules (scan start, cursor advance and
+per-insn reset, `REG_ALLOC_ORDER`, r6 as non-candidate, reload preference order, `combine_regs`,
+`prune_preferences` - the last neutral, `regs_someone_prefers` being empty), and the whole-function
+counts: ours r5 x40 / r6 x70 against the ROM's r5 x38 / r6 x46.
+
+Two tools are kept for the next attempt, both in `drafts/d684-tools/`: `reload_set.patch` (the
+`RT`/`NEWSPILL`/`ORDER` instrumentation, whose `pot` output is the *candidate* list and not the
+pool - the trap that produced one false contradiction) and `uidprint.patch` (emits `INSN_UID` as
+an assembly comment, so address-to-uid maps are measured rather than assumed).
+
+**Why r6 enters the pool, measured (cont. 158-165).**  At uid 1447 a reload needs a register of
+class `BASE_REGS` (`class=4`; `thumb.h`: `BASE_REGS = 0x020ff` = r0-r7 + sp).  The candidate scan
+offers, in order:
+
+    pot: 12 6 9 10 0 4 3 2 1 8 7 5 11 13 14 15 16
+    uses(by regno): r0=24 r1=77 r2=30 r3=27 r4=24 r5=427 r6=0 r7=315 r8=200 r9=0 r10=0 ...
+
+r12 is rejected by the class test; r9 and r10 are r8-r15, also outside BASE_REGS; **r6 is unused at
+this insn**, so it is the first free in-class candidate and is taken.  It enters `used_spill_regs`,
+`finish_spills` sorts the set to `{0,1,2,3,6}` (index 4 = r6), and uid 91's scan reaches index 4,
+putting constant 399 in r6 where the ROM's `adds r0, r3, r1` has r1.
+
+The ROM's pool is `{0,1,2,3,4}`: its code needed r4 at some insn where r4 was free, and never
+needed r6 at all.  So the residual is which values are live at one instruction - a property of the
+body, and every lever attempted (15 spill sets, 13 allocator rules, 19 flags, 20 `volatile`
+variants, two compiler builds, ~325 000 source variants) scores worse than the 265 baseline.
+
+One trap for the next reader: the ORDER dump's `uses` line labels the **sorted** array by position,
+not by register - reading it as if indexed by regno produced a wrong "r6 has 27 uses" claim
+(cont. 158, retracted in cont. 165).  Key on `hard_reg_n_uses[k].regno`.
+
+**The weights, derived (cont. 166-173).**  `order_regs_for_reload` zeroes each entry *inside* its
+outer loop, so iteration `i` wipes whatever earlier iterations added to `hard_reg_n_uses[i]`.
+A register `h` therefore keeps only contributions from iterations `i >= h` that are not bad:
+
+    uses[h] = |{ i : h <= i < 17, i not in bad }| x refs(h)
+
+which reproduces all eight measured weights exactly (24, 77, 30, 27, 24, 427, 315, 200) and makes
+the observed `12 - h` form a special case.  It matters only as documentation: the ordering test is
+the *binary* unused/used split, so r6 - with no live resident - is weight 0 under any of this.
+
+Three explanations of the weights were proposed and refuted by measurement before the code was
+re-read (cont. 166 sum over live resid ents, cont. 169, cont. 170 sum over all residents); the
+empirical fit was then checked on a second, independent chain (cont. 172) before being derived
+(cont. 173).  Same discipline as the rest of this file: measure, record the fit, then explain.

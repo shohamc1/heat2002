@@ -1,0 +1,13 @@
+diff --git a/gcc/global.c b/gcc/global.c
+index d6a0526..fb595db 100755
+--- a/gcc/global.c
++++ b/gcc/global.c
+@@ -1833,7 +1833,7 @@ dump_global_regs (file)
+   for (i = FIRST_PSEUDO_REGISTER, j = 0; i < max_regno; i++)
+     if (reg_renumber[i] >= 0)
+       {
+-	fprintf (file, "%d in %d  ", i, reg_renumber[i]);
++	fprintf (file, "%d[u%d-%d] in %d  ", i, REGNO_FIRST_UID (i), REGNO_LAST_UID (i), reg_renumber[i]);
+         if (++j % 6 == 0)
+ 	  fprintf (file, "\n");
+       }
