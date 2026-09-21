@@ -709,6 +709,7 @@ SECTIONS
         build/asm/rom_0834313A.o(.text*);
         build/src/sub_08343148.o(.text*);
         build/asm/rom_083431CC.o(.text*);
+        build/src/sub_08343234.o(.text*);
         build/src/sub_083432EC.o(.text*);
         build/asm/rom_083432F2.o(.text*);
         build/src/sub_08343464.o(.text*);
