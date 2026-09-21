@@ -8,7 +8,11 @@ struct UnkF240
     u8 unk8;
 };
 
-#define Q ((struct UnkF240 *)*(volatile u32 *)0x0202F240)
+extern struct UnkF240 *gUnk_0202F240;
+extern struct UnkF240 *gUnk_0202F240x;
+
+#define QV ((volatile struct UnkF240 *)*(volatile u32 *)0x0202F240)
+
 extern u8 gUnk_02000498;
 extern u8 gUnk_08339404[];
 
@@ -23,12 +27,11 @@ u16 sub_080170B8(u16 v, u16 *src)
     u8 i, j, k;
     u16 *s;
     u16 w;
-    struct UnkF240 * volatile *pp;
 
-    if (v >= Q->unk4)
+    if (v >= gUnk_0202F240->unk4)
         return 0x80FF;
     s = src;
-    p = buf + Q->unk8;
+    p = buf + gUnk_0202F240x->unk8;
     p += 0x42;
     *p-- = 0;
     j = 0;
@@ -42,14 +45,13 @@ u16 sub_080170B8(u16 v, u16 *src)
         } while (i <= 0xF);
         j++;
     } while (j <= 3);
-    pp = (struct UnkF240 * volatile *)0x0202F240;
-    for (k = 0; k < (*pp)->unk8; k++) {
+    for (k = 0; k < gUnk_0202F240x->unk8; k++) {
         *p-- = v;
         v >>= 1;
     }
     *p-- = 0;
     *p = 1;
-    sub_08016F80((u32)buf, 0x0D000000, (((u32)Q->unk8 << 16) + 0x430000) >> 16);
+    sub_08016F80((u32)buf, 0x0D000000, ((QV->unk8 << 16) + 0x430000) >> 16);
     sub_08016ED8((u32)gUnk_08339404);
     v = 0;
     for (;;) {
