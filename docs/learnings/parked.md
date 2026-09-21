@@ -749,6 +749,50 @@ the next store uses, and CSE keeps it because an SImode -1 costs more than
 `(plus reg -1)` on Thumb. When the ROM derives a constant from a register
 that holds zero or a nearby value, look for this shape.
 
+## Batch notes 2026-09-22: second smallest-functions campaign (51 matched)
+
+51 more functions matched and integrated (90-362 bytes; one commit per
+function, `make check` MATCH throughout). Progress 514 -> 565 / 646.
+
+**Resolved from earlier park notes:**
+- `sub_080019F4`, `sub_08001A74` and their high twins `sub_0833B0B4` /
+  `sub_0833B134` all match. The 01A74 fix is pret's `TrkVolPitSet`
+  statement structure (pokeemerald `src/m4a.c`); 019F4 is a byte-for-byte
+  port of the matched twin with only the callee renamed. The "428 bytes"
+  figure quoted for sub_08001A74 below was the block *with trailing data*;
+  the function is 180 bytes (ends `bx r0` at 0x08001B26).
+- **Twin correction**: `sub_08002638`'s high twin is `sub_0833BDB4`, NOT
+  `sub_0833BCF8` (which is a standalone bubble sort). Both 02638 and BDB4
+  are matched; BCF8 remains a near-miss (np home r8 vs r10).
+
+**New levers proven this campaign:**
+- Consecutive constant stores are auto-related by CSE: `*p = 0x808;
+  p -= 1; *p = 0x740;` makes GCC 2.95 emit the `ldr r2,=K / subs r2,#imm /
+  adds r0,r2 / strh` chain. No staging locals, no pins. (sub_08002638)
+- A division that "should" inline but calls `__divsi3` may be hand-written
+  fixed point in the original source: `((s32)(a - b) * (s32)0xC28F5C29) >> 4`
+  is exact for /0x190 on 0x190-aligned pointers and defeats synth_mult;
+  removing the helper call also fixed the whole allocation. (sub_0834108C)
+- `register u32 m asm("r12")` for an and/or mask forces the
+  `movs rX / mov ip, rX` pair — general form of the regmove-ior lever.
+- Assignment-in-condition `(m = CONST) & global` materialises the constant
+  before the load.
+- GCC 2.95 emits walk deltas from CSE-canonicalised `p+K` chains, so the
+  last post-increment of a walk folds away unless consumed: write the final
+  store without `++` and subtract from the pre-increment pointer.
+  (sub_08005C18)
+- Matched-twin C ports byte-for-byte across engine copies when only the
+  callee changes (sub_080019F4 <- sub_0833B0B4, sub_0833E714 <- sub_08005C18).
+
+**Still near-miss, drafts in `docs/learnings/drafts/` (residuals in headers):**
+`sub_0833DA34` (const pair swap), `sub_08343DF8` (idx home r6 vs r7),
+`sub_0833EE88` (glyph-arm r0/r1 tie, floor 50), `sub_08004B1C` (3-qty
+key-test rotation — the block_alloc sort-bug case), `sub_083415B0`
+(q stashed to r8 too early), `sub_0833BCF8` (np r8 vs r10),
+`sub_08017000` / `sub_080170B8` (r7-push cascade + CSE2 pool fusion),
+`sub_0833D31C` (asrs-vs-lsrs lever conflict, floor 505). All are
+register-allocation ties; none hits a documented compiler wall.
+
 ## Batch notes 2026-09-21: smallest-52 campaign
 
 52 functions matched and integrated in one campaign (24-112 bytes each; commits
