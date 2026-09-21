@@ -32,52 +32,6 @@
 	.size \name, .-\name
 	.endm
 @ End embedded Luvdis macros
-	thumb_func_start sub_08343504
-sub_08343504:
-	ldr r3, _08343544 @ =0x0203DE60
-	ldr r2, _08343548 @ =0x0202AED4
-	lsls r1, r0, #0x02
-	adds r1, r1, r0
-	lsls r1, r1, #0x02
-	adds r0, r2, #0x4
-	adds r0, r1, r0
-	ldr r0, [r0, #0x00]
-	str r0, [r3, #0x00]
-	ldr r3, _0834354C @ =0x0203DE64
-	adds r0, r1, r2
-	ldr r0, [r0, #0x00]
-	str r0, [r3, #0x00]
-	ldr r3, _08343550 @ =0x0203DE68
-	adds r0, r2, #0x0
-	adds r0, #0x08
-	adds r0, r1, r0
-	ldr r0, [r0, #0x00]
-	str r0, [r3, #0x00]
-	ldr r3, _08343554 @ =0x0203DE8C
-	adds r0, r2, #0x0
-	adds r0, #0x0C
-	adds r0, r1, r0
-	ldr r0, [r0, #0x00]
-	str r0, [r3, #0x00]
-	ldr r3, _08343558 @ =0x0203DE88
-	adds r2, #0x10
-	adds r1, r1, r2
-	ldr r0, [r1, #0x00]
-	str r0, [r3, #0x00]
-	bx lr
-	.byte 0x00, 0x00
-	.global _08343544
-_08343544: .4byte 0x0203DE60
-	.global _08343548
-_08343548: .4byte 0x0202AED4
-	.global _0834354C
-_0834354C: .4byte 0x0203DE64
-	.global _08343550
-_08343550: .4byte 0x0203DE68
-	.global _08343554
-_08343554: .4byte 0x0203DE8C
-	.global _08343558
-_08343558: .4byte 0x0203DE88
 	thumb_func_start sub_0834355C
 sub_0834355C:
 	push {r4, r5, r6, r7, lr}
