@@ -1,0 +1,41 @@
+#include "global.h"
+
+struct SoundSlot0833F {
+    /* +0x00 */ u32 unk00;
+    /* +0x04 */ u8 unk04;
+    /* +0x05 */ u8 unk05[3];
+    /* +0x08 */ void *unk08;
+    /* +0x0C */ u8 unk0C[8];
+};
+
+extern struct SoundSlot0833F gUnk_0203BF50[]; /* 0x0203BF50 */
+
+struct SoundSlot0833F *sub_0833FC48(void *a)
+{
+    struct SoundSlot0833F *p;
+    u32 i;
+
+    p = gUnk_0203BF50;
+    for (i = 0; i != 0x14; i++, p++)
+    {
+        if (p->unk08 == a)
+        {
+            p->unk00 = 1;
+            return p;
+        }
+    }
+
+    p = gUnk_0203BF50;
+    for (i = 0; i != 0x14; i++, p++)
+    {
+        if (p->unk00 == 0)
+        {
+            p->unk00 = 1;
+            p->unk04 = 1;
+            p->unk08 = a;
+            return p;
+        }
+    }
+
+    return 0;
+}
