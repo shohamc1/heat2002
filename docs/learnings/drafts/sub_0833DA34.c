@@ -8,11 +8,13 @@ extern u16 gUnk_020390B0[];
 
 u16 sub_0833DA34(void)
 {
+    register u8 *p asm("r4");
     u16 i;
-    u16 v;
+    register u16 v asm("r3");
     u8 n;
 
-    if (gUnk_0203B850 == 0xFF)
+    p = &gUnk_0203B850;
+    if (*p == 0xFF)
     {
         v = 0;
         i = 0;
@@ -21,7 +23,7 @@ u16 sub_0833DA34(void)
         {
             if ((gUnk_020390B0[i] & 8) != 0)
             {
-                gUnk_0203B850 = i;
+                *p = i;
                 v = gUnk_020390B0[i];
             }
         }
@@ -30,7 +32,7 @@ u16 sub_0833DA34(void)
     }
     else
     {
-        v = gUnk_020390B0[gUnk_0203B850];
+        v = gUnk_020390B0[*p];
         gUnk_0203B6FC = v & ~gUnk_0203B848;
         gUnk_0203B848 = v;
     }

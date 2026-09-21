@@ -9,8 +9,8 @@ void sub_0833EE88(u8 *str, u32 y)
     u8 *cursor;
     u8 len;
     u8 c;
-    u8 w;
     u32 tile;
+    u8 w;
     u16 *dest;
     u32 e;
 

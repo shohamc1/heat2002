@@ -22,7 +22,6 @@ void sub_08004B1C(u8 arg)
     u32 sel = arg;
     s32 val;
     u32 *p;
-    volatile u16 *kp;
     u32 m;
 
     if (sel <= 4) {
@@ -32,15 +31,12 @@ void sub_08004B1C(u8 arg)
         val = gUnk_0202CB20[idx - 5];
         p = gUnk_0202CB20;
     }
-    kp = &gKeysPressed;
-    m = 0x20;
-    if (m & *kp) {
+    if ((m = 0x20) & gKeysPressed) {
         val = val - gUnk_08365308[sel];
         if (val < gUnk_083652B8[sel])
             val = gUnk_083652B8[sel];
     }
-    m = 0x10;
-    if (m & *kp) {
+    if ((m = 0x10) & gKeysPressed) {
         val = val + gUnk_08365308[sel];
         if (val > gUnk_083652E0[sel])
             val = gUnk_083652E0[sel];
