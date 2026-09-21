@@ -722,6 +722,8 @@ SECTIONS
         build/asm/rom_08344B7A.o(.text*);
         build/src/sub_0836419C.o(.text*);
         build/asm/rom_083641D8.o(.text*);
+        build/src/sub_083644B4.o(.text*);
+        build/asm/rom_08364550.o(.text*);
         build/src/sub_083647FC.o(.text*);
         build/asm/rom_08364800.o(.text*);
         /* Catch-all, not the primary placement mechanism: every object above
