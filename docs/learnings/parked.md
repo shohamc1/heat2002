@@ -749,6 +749,33 @@ the next store uses, and CSE keeps it because an SImode -1 costs more than
 `(plus reg -1)` on Thumb. When the ROM derives a constant from a register
 that holds zero or a nearby value, look for this shape.
 
+## Batch notes 2026-09-21: smallest-52 campaign
+
+52 functions matched and integrated in one campaign (24-112 bytes each; commits
+`073d5a9..6b7e9a5`, one function per commit, `make check` MATCH at every step).
+Findings worth keeping:
+
+- **`sub_0800F0BC` is blocked, corroborated** (already marked BLOCKED in
+  `docs/decomp-queue.md`): the tail is `subs r0, r0, r1; bgt _label` — the
+  branch reads the SUBS flags with no `cmp`. agbcc's thumb.md has no
+  `*subsi_compare0` pattern, and a corpus scan of all matched objects found
+  zero `sub`+`bcc` sites. The `register u32 pcv asm("r15")` idiom does
+  reproduce the `mov r2, pc` prologue, but the residual diff is exactly the
+  missing `cmp r0, #0` (26 vs 24 bytes). Draft kept at
+  `docs/learnings/drafts/sub_0800F0BC.c`.
+- **Two more luvdis false positives**: `sub_08120E3A` and `sub_08248272`
+  (both `non_word_aligned_thumb_func_start`). A `push {…}` opcode byte
+  (0xB5xx) inside a data run; each "function" is one instruction followed by
+  `.byte` rows. Same tell as the five known ones, which makes it seven, not
+  five. The 646 game-code denominator was deliberately NOT adjusted — that
+  needs a matching `progress.py` change and selftest update, not a drive-by.
+- **The epilogue pop register reveals the return type** (session discovery,
+  from `thumb_exit` in `tools/agbcc/gcc/thumb.c`): `pop {r0}; bx r0` = void
+  return, `pop {r1}` = returns a ≤4-byte value, `pop {r2}` = ≤8 bytes,
+  `pop {r3}` = larger. A "void-looking" function ending `pop {r1}; bx r1`
+  RETURNS a value — declare it `u32` (avoids spurious narrowing pairs).
+  Proven on `sub_0833D6D8`/`sub_0833D6A0`/`sub_0833D7E8`.
+
 ## Parked 2026-09-16: sub_08000DC8 + sub_0833A488 — `tst rX, rY` is unreachable
 
 Both halves of this m4a twin pair are blocked in the compiler, not by
