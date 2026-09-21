@@ -896,7 +896,63 @@ carries the hi-register epilogue at 0x080008E0 and the `Smsh` ident), but
 luvdis never split it, so it is invisible to progress.py's numerator and
 denominator alike.
 
-## sub_0800D684: instruction-identical, 49 register encodings short
+## Resolved 2026-09-22: sub_0800D684 (matched, 2006 bytes)
+
+`src/sub_0800D684.c` matches. The 49-recolour residual below was never
+reachable from the old draft, because the draft was fitted to the instruction
+stream with carriers, self-stores and pins, and its pseudo structure differed
+from the retail source in one place that decides the whole loop allocation.
+The fix came from rewriting the function as plain C from the asm and then
+comparing the allocator's decisions (`global.c:find_reg`, instrumented to print
+each allocno's conflicts, `regs_used_so_far` and `regs_someone_prefers`)
+against what the ROM's registers imply. Three findings transfer:
+
+**A two-element array written element-wise occupies a register pair for the
+whole loop.** The rotation deltas are `s32 d[2]`, assigned as `d[0] = pa[4];
+d[1] = pa[5]; d[0] -= pb[4]; d[1] -= pb[5];`. An 8-byte array is a DImode
+pseudo, and a store to one element is a partial def, which flow treats as a
+use as well, so the pseudo is live from function entry to its last use. It
+therefore conflicts with every loop allocno and needs two consecutive
+registers, r5:r6. That is what pushed `e`, `u`, `w`, `v[0]`'s temporary and
+`other` to r4, r7, r8, r9, r10, spilled `car`, and put the pre-loop
+address copy in r7. The old record's "two invisible occupants of r5/r6" and
+its spill-set difference (`{0,1,2,3,4}` versus `{0,1,2,3,6}`) were both this
+one array. When the ROM avoids a consecutive register pair across a region
+with no visible use of it, look for a small array or struct written by
+element. `d[2]` as two scalars, or as a whole-struct copy, both lose this.
+
+**A pointer local used only for one call still gets a callee-saved register.**
+`pa = gUnk_0202CCB0; sub_0800D5D4(car, pa);` is the address-first idiom from
+the compiler-patch section, but here the loop also hoists the same address,
+and cse-after-loop turns the hoisted load into a copy of `pa`. That extends
+`pa` across the call, so it is a global allocno rather than a local one, and
+it takes r7 (never used by `local_alloc`, since r7 is the frame pointer
+register). If `pa` were also used inside the loop it would be rematerialised
+everywhere, including at the call.
+
+**Declaration order sets spill-slot order.** `reload` hands out slots in
+decreasing pseudo number, and the frame grows downward, so the ROM's slot
+layout (`car` 0x24, `a2` 0x28, `i` 0x2C, `m` 0x30, `q` 0x38, `count` 0x40)
+reads off the declaration order directly: `count` is declared after `m` and
+`q`. Address-taken locals (`hit`, `v[4]`) are placed at expand time and come
+first.
+
+Smaller points, all recorded in the source header: `t = (w * e) / u;
+t += v[0];` must be two statements (one expression ties the division result
+to r0); the post-loop speed clamp needs its own variable rather than reusing
+`t`; `other = base` is assigned before the pre-loop call; and the range
+pre-check is `px = car->x; px -= other->x; pz = (car->z - other->z) >> 8;
+px >>= 8;`, because `px` must be the load's target while `pz`'s two operands
+must be separate temporaries (the block has three local quantities, so
+`block_alloc`'s three-quantity sort applies).
+
+The rest of this section is the pre-resolution record, kept for the tooling
+notes and as a warning: 325 000 variants of a fitted draft could not reach a
+different pseudo structure. When a draft is instruction-identical but tens of
+registers off, rewrite from the asm and diff the allocator, do not permute.
+
+### Pre-resolution record: instruction-identical, 49 register encodings short
+
 
 `src/sub_0800D684.c` (2006 bytes) reproduces the ROM's instruction stream
 byte for byte from 0x800d684 to 0x800de58. `match.py` still reports MISMATCH
