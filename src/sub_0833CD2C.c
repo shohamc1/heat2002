@@ -1,0 +1,112 @@
+#include "global.h"
+#define GBA_CPUSET sub_08344B64
+#include "tilemap.h"
+#include "gba/compat.h"
+
+struct Track {
+    /* +0x00 */ u32 unk00;
+    /* +0x04 */ u32 unk04;
+    /* +0x08 */ u32 unk08;
+    /* +0x0C */ u16 *unk0C;
+    /* +0x10 */ u16 *unk10;
+    /* +0x14 */ u32 unk14;
+    /* +0x18 */ u32 unk18;
+    /* +0x1C */ u32 unk1C;
+    /* +0x20 */ u16 *unk20;
+    /* +0x24 */ u16 *unk24;
+    /* +0x28 */ u32 unk28;
+    /* +0x2C */ u32 unk2C;
+    /* +0x30 */ u32 unk30;
+    /* +0x34 */ u32 unk34;
+    /* +0x38 */ u32 unk38;
+    /* +0x3C */ u32 unk3C;
+    /* +0x40 */ u32 unk40;
+    /* +0x44 */ u16 *unk44;
+    /* +0x48 */ u32 unk48;
+    /* +0x4C */ u8 filler4C[0x5C - 0x4C];
+    /* +0x5C */ u16 unk5C;
+    /* +0x5E */ u16 unk5E;
+    /* +0x60 */ u16 unk60;
+    /* +0x62 */ u8 filler62[0x64 - 0x62];
+};
+
+extern u16 gUnk_02022428[];
+extern struct Track gUnk_020251BC[];
+extern u16 gUnk_02021394[];
+extern u32 gUnk_02039244;
+extern u32 gUnk_02039288;
+extern u16 *gUnk_02039228;
+extern u16 *gUnk_02039268;
+extern u32 gUnk_02039224;
+extern u16 *gUnk_02039238;
+extern u16 *gUnk_0203922C;
+extern u32 gUnk_020392A0;
+extern u32 gUnk_02039280;
+extern u32 gUnk_0203929C;
+extern u32 gUnk_02039220[];
+extern u16 gUnk_02039294;
+extern u16 gUnk_02039248;
+extern u8 gUnk_0203B864;
+
+void sub_0833CCD4(u8 idx);
+void sub_0833D31C(s32 arg0, u16 *src);
+void sub_0833CFC8(u32 x, u32 y, u16 *map, u32 *dest, u16 *charBase, u16 a6);
+void sub_0833D094(void);
+void sub_0833D564(u32 x, u32 y);
+void sub_0834108C(u32 idx);
+void sub_0833E05C(void);
+void sub_0833E078(void);
+
+void sub_0833CD2C(u32 idx)
+{
+    u16 a[0xE0];
+    u16 b[0x20];
+    u16 *t;
+
+    sub_0833CCD4(idx);
+    t = gUnk_02022428;
+    CpuCopy16(t, BG_SCREEN_ADDR(24), 0x2000);
+    CpuCopy16(gUnk_020251BC[idx].unk18, (u32)a, 0x200);
+    CpuCopy16(t = gUnk_02021394, (u32)b, 0x20);
+    sub_0833D31C(0x1E, a);
+    gUnk_02039244 = gUnk_020251BC[idx].unk2C;
+    gUnk_02039288 = gUnk_020251BC[idx].unk34;
+    gUnk_02039228 = gUnk_020251BC[idx].unk20;
+    gUnk_02039268 = gUnk_020251BC[idx].unk24;
+    gUnk_02039224 = gUnk_020251BC[idx].unk28;
+    gUnk_02039238 = gUnk_020251BC[idx].unk0C;
+    gUnk_0203922C = gUnk_020251BC[idx].unk10;
+    gUnk_020392A0 = gUnk_020251BC[idx].unk3C;
+    gUnk_02039280 = gUnk_020251BC[idx].unk40;
+    gUnk_0203929C = gUnk_020251BC[idx].unk48;
+    if (idx == 0)
+        gUnk_02039220[0] = 0x7D;
+    if (idx == 1)
+        gUnk_02039220[0] = 0x70;
+    if (idx == 2)
+        gUnk_02039220[0] = 0xA8;
+    if (idx == 3)
+        gUnk_02039220[0] = 0x6B;
+    if (idx == 4)
+        gUnk_02039220[0] = 0xA3;
+    if (idx == 5)
+        gUnk_02039220[0] = 0xA6;
+    if (idx == 6)
+        gUnk_02039220[0] = 0x7D;
+    if (idx == 8)
+        gUnk_02039220[0] = 0x7D;
+    if (idx == 9)
+        gUnk_02039220[0] = 0x7D;
+    if (idx == 10)
+        gUnk_02039220[0] = 0x5E;
+    if (idx == 11)
+        gUnk_02039220[0] = 0x7D;
+    sub_0833CFC8(0, 0, gUnk_02039228, (u32 *)TILEMAP_BUFFER(1), gUnk_02039238, gUnk_02039294);
+    sub_0833CFC8(0, 0, gUnk_02039268, (u32 *)TILEMAP_BUFFER(2), gUnk_0203922C, gUnk_02039248);
+    sub_0833D094();
+    sub_0833D564(0, 0);
+    sub_0834108C(idx);
+    sub_0833E05C();
+    sub_0833E078();
+    gUnk_0203B864 = 0;
+}
