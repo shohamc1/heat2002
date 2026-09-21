@@ -32,44 +32,6 @@
 	.size \name, .-\name
 	.endm
 @ End embedded Luvdis macros
-	thumb_func_start sub_0833F968
-sub_0833F968:
-	push {r4, r5, r6, r7, lr}
-	adds r5, r0, #0x0
-	movs r3, #0x00
-	cmp r3, r5
-	beq _0833F99A
-	ldr r0, _0833F9A0 @ =0x0000FFFF
-	mov r12, r0
-	movs r4, #0x00
-	ldr r6, _0833F9A4 @ =0x06010000
-	.global _0833F97A
-_0833F97A:
-	mov r7, r12
-	str r7, [r2, #0x08]
-	str r4, [r2, #0x00]
-	strb r4, [r2, #0x04]
-	ldrh r0, [r1, #0x00]
-	str r0, [r2, #0x10]
-	ldrh r7, [r1, #0x00]
-	lsls r0, r7, #0x05
-	adds r0, r0, r6
-	str r0, [r2, #0x0C]
-	strb r4, [r2, #0x06]
-	adds r3, #0x01
-	adds r2, #0x14
-	adds r1, #0x02
-	cmp r3, r5
-	bne _0833F97A
-	.global _0833F99A
-_0833F99A:
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.global _0833F9A0
-_0833F9A0: .4byte 0x0000FFFF
-	.global _0833F9A4
-_0833F9A4: .4byte 0x06010000
 	thumb_func_start sub_0833F9A8
 sub_0833F9A8:
 	push {r4, r5, r6, lr}
