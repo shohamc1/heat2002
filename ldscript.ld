@@ -663,6 +663,8 @@ SECTIONS
         build/src/sub_08342DE4.o(.text*);
         build/src/sub_08342DE8.o(.text*);
         build/asm/rom_08342E28.o(.text*);
+        build/src/sub_08342FAC.o(.text*);
+        build/asm/rom_08342FF0.o(.text*);
         build/src/sub_08343138.o(.text*);
         build/asm/rom_0834313A.o(.text*);
         build/src/sub_083432EC.o(.text*);
