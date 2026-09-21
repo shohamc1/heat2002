@@ -1,3 +1,41 @@
+/*
+ * sub_0800E008 quarantine notes (2026-09-14; updated 2026-09-21 session)
+ * Best build: 516/516 bytes (the struct-overlay form below), natural
+ * allocation, no pins. The 2026-09-21 session fully characterized the
+ * remaining divergence (the `mov r6, sp` insert + pool 0x70 early):
+ *
+ *  ROOT CAUSE (RTL-traced): GCC 2.95 register-allocates ANY fixed-size
+ *  8-byte local -- struct S, u32[2] array, array-of-1-struct alike --
+ *  into a DImode pseudo (expand_decl), and taking `&s.v0`/`&nm[0]`
+ *  routes through gen_mem_addressof because can_use_addressof requires
+ *  only decl_mode == promoted_mode (true for DImode aggregates).
+ *  purge_addressof then demotes it, but EVERY field/element access is
+ *  rewritten through a shared ADDRESS pseudo (`(set rX (addressof
+ *  (reg/v:DI N) 22))`), CSE merges those pseudos, and the merged pseudo
+ *  lives across the retry loop -> homed r6 -> `mov r6,sp` on the entry
+ *  edge + `[r6,#4]` loop accesses + layout inversion. The retail build
+ *  has sp-relative accesses (ldr/str [sp,#4]) and NO base pseudo.
+ *
+ *  STRUCT vs SCALARS trade (both verified):
+ *  - struct S {u32 v0; u32 frame;}: RIGHT slots (v0 sp+0, frame sp+4),
+ *    RIGHT 2-hi-reg prologue, RIGHT early DMA block; WRONG r6 base pseudo.
+ *  - two scalars u32 v0, u32 frame (u32: decl_mode==promoted, still
+ *    addressof-eligible but accesses stay on the reg until demotion):
+ *    clean sp-relative accesses, but slots land SWAPPED (frame sp+0,
+ *    v0 sp+4), a third hi reg is saved, and the &v0 pseudo is LICM-
+ *    hoisted into the setup block. Declaration order and a dead
+ *    `pv = &v0;` first-statement both FAIL to flip the slot order.
+ *  - volatile struct: 310-line diff (worse). 12-byte struct would force
+ *    BLKmode/memory but grows the frame to 0xC (target is sub sp,#8).
+ *
+ *  Next leads: find what makes the retail object memory-resident yet
+ *  8 bytes (DECL_INITIAL? an &x earlier than expand_decl? a spelling
+ *  that keeps decl_mode != promoted_mode), or accept r6 and make the
+ *  exit block's DMA source a DIFFERENT pseudo so the break edge needs
+ *  no insert (the exit's `mov r3,sp` stays fresh in every build so far
+ *  -- the insert is the ADDRESSOF pseudo's reload, not a DMA-source CSE).
+ */
+
 #include "global.h"
 
 struct S { u32 v0; u32 frame; };

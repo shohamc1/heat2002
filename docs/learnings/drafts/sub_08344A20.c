@@ -1,4 +1,15 @@
 /*
+ * UPDATE 2026-09-21: the low twin sub_08011B08 was rewritten in a new
+ * best shape (316/316, prologue matching — see that draft). The winning
+ * additions over this draft: t1..t4 as u32 locals read ONCE
+ * (`t1 = gUnk_0203E160[0] >> 12; if (t1 == 1)`), `int zero` for the
+ * E110 store (forces per-use remat of the const-0), `u32 v` assigned
+ * from the volatile KEY word read and reused as `(v & 0x30)` in the
+ * t1-block, and `(0x80 << 1)` for the 0x100 literal. Port those before
+ * the next permuter run.
+ */
+
+/*
  * NEAR-MISS port of sub_08011B08 (same residual class, all register allocation):
  * the winning combination so far is [volatile u16 *snd local] + [int
  * new_var for the gUnk_0203E110 = 0 store] + [one u32 v reused in the
