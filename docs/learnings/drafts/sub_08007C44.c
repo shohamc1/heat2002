@@ -1,3 +1,4 @@
+/* 2026-09-22: pad must be 0x2C (frame 64, matches target `sub sp,#64`; 0x28 gives 60). Remaining diff after frame fix: register-rename cascade only ({zero,car+0x171} r4/r3 vs r5/r4 at the head). */
 #include "global.h"
 
 struct Car {
@@ -37,7 +38,7 @@ void sub_080019B4(s32 a);
 
 void sub_08007C44(struct Car *car)
 {
-    u8 pad[0x28];
+    u8 pad[0x2C];
     s32 p;
     s32 yend;
     s32 p2;

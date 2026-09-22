@@ -1,3 +1,4 @@
+/* 2026-09-22: frame pad corrected to match target `sub sp` exactly (sub_0800A80C). */
 #include "global.h"
 
 struct Car {
@@ -71,7 +72,7 @@ void sub_08001208(u16 idx);
 
 void sub_0800A80C(struct Car *car, u32 b, u8 c)
 {
-    u8 unused[0x14];
+    u8 unused[0x10];
     s32 v;
     s32 t;
     u32 off;

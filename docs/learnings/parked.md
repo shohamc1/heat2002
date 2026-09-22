@@ -826,13 +826,66 @@ in their headers):**
   libcall's hard-r0 return and flip the allocation. Needs a per-region
   alias mechanism or a compiler-side look.
 - **Allocation battles** (~15 drafts, several ONE instruction from
-  matching: sub_0800BEA4 one reload copy, sub_080047E8 one zero-pseudo
-  swap, sub_0833F468 and sub_0833BF80 one pool word each at FULL
-  instruction parity). Root causes per RTL dumps: global-alloc priority
-  `floor_log2(nrefs)*nrefs/live_length` with pseudo-number ties, plus
-  jump.c cross-jump pairing (sub_0800AB78: which branch's bl survives the
-  merge is emission-order-driven; min-2 pairing reduced to min-1 by the
-  CODE_LABEL decrement).
+  matching: sub_0800BEA4 one reload copy, ~~sub_080047E8 one zero-pseudo
+  swap~~ MATCHED 2026-09-22, sub_0833F468 and sub_0833BF80 one pool word
+  each at FULL instruction parity — NB: re-verified 2026-09-22, the
+  BANKED drafts for F468/BF80 are NOT at parity (89%/72% of instructions
+  differ); the parity state was a lost working copy). Root causes per RTL
+  dumps: global-alloc priority `floor_log2(nrefs)*nrefs/live_length` with
+  pseudo-number ties, plus jump.c cross-jump pairing (sub_0800AB78: which
+  branch's bl survives the merge is emission-order-driven; min-2 pairing
+  reduced to min-1 by the CODE_LABEL decrement).
+
+## Session record 2026-09-22: the 21-draft near-miss sweep
+
+One full pass over every parked near-miss draft. **1 matched and
+integrated: sub_080047E8** (606/646). Everything else re-characterized;
+the materially-improved drafts (11B08, 4A20, 7C44, A80C, 03330) are
+banked with updated headers. New levers and walls:
+
+- **`register`-pinned locals win stubborn allocation ties.** 47E8's
+  "unflippable" zero-pseudo swap (50k permuter iters at floor 60) fell to
+  `register u8 z asm("r10")` on first compile (a pin of w to r2 also
+  matched). The pin is legal in `src/` (0x08016ED8 precedent) — the
+  permuter just can't parse it.
+- **Direct volatile casts share ONE address pseudo across calls.**
+  Writing every KEYINPUT read as `*(volatile u32/u8 *)0x04000128`
+  directly (no pointer variable) makes cse share a single pool load,
+  homed callee-saved across the intervening call (verified in isolation).
+  A pointer VARIABLE carrying the same address is always defeated by
+  REG_EQUIV: cse2 substitutes the known constant at later uses and the
+  home is freed — an `asm("r7")` pin does NOT prevent this (the pin binds
+  the def site only). This rebuilt 11B08/4A20 prologues byte-exact.
+- **Per-use reload copies vs one coalesced copy:** an UNPINNED local homed
+  in a high reg gets per-use `mov r0,r9` copies at each OR; PINNING the
+  same variable coalesces them to one copy (reload inheritance). Target
+  11B08/4A20 wants FIVE per-use copies; both spellings reachable, neither
+  fully matches — the remaining delta on both twins is one {m,keyaddr}
+  r7/r9 home swap (target: keyaddr=r7 direct + m=r9 with per-use copies;
+  ours: m=r7 + keyaddr=r9 stash). 11B08 at 312/316, 4A20 at 312/316,
+  both 151-153 instructions with only register names + that swap left.
+- **sub_08004B1C:** the retail code reads `idx` UNINITIALIZED from r4
+  (`lsls r0,r4,#2` with no r4 def — a real bug faithfully compiled).
+  GCC assigns the uninit pseudo a garbage register, and WHICH register
+  follows the rest of the allocation; several source shapes flip it
+  (r4/r7). Remaining delta is a 2-instr r7-push ripple.
+- **Frame pads:** 7C44 needs `u8 pad[0x2C]` (frame 64), A80C
+  `unused[0x10]`, 03330 `unused[20]` — banked into the drafts.
+- **Permuter gaps, re-confirmed:** (a) it cannot score RAM-linked
+  functions (sub_08341288 run sat at score floor 3475 with 848 constant
+  errors — the EWRAM-base link isn't reproduced for candidates); (b)
+  sub_08004B1C hits `TypeError: '<' not supported between NoneType and
+  int` in `_eval_candidate` (STRUCT_FLOOR vs None `_last_score`) and
+  every iteration reports "12 permuter failures" with base score stuck
+  at 1000; (c) BEA4's pin-free base floors at 1430 after 1.2k iters
+  (the r10 pin the match needs is unparseable). Manual iteration beat
+  all three runs.
+- 17000's "one allocation decision" is `dest` homed r5 in target vs r8
+  in ours (r7-push cascade); parameter pins (`register ... asm()` on a
+  PARAMETER) are a syntax error in agbcc, and a pinned LOCAL copy costs
+  the same cascade differently. EAA0/9C4C: target saves THREE high regs
+  (r8/r9/sl) vs our two — one more live-across-call variable (9C4C's
+  stashes arg1 to sl across the very first call).
 
 ## Batch notes 2026-09-22: second smallest-functions campaign (51 matched)
 

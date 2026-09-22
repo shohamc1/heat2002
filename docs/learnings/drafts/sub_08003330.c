@@ -1,3 +1,4 @@
+/* 2026-09-22: frame pad corrected to match target `sub sp` exactly (sub_08003330). */
 #include "global.h"
 
 extern u8 gUnk_020020AC;
@@ -20,7 +21,7 @@ s32 sub_08003330(void)
 {
     volatile u16 recv[4];
     volatile s32 i;
-    u8 unused[12];
+    u8 unused[20];
     s32 done;
     u8 retry;
     u32 phase;
