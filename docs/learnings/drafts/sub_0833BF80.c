@@ -1,6 +1,13 @@
 #include "global.h"
 
 /*
+ * 2026-09-23 update: honest similarity 0.8765 (shift-insensitive stream);
+ * permuter relaunched from this base (4070 after ~100 iters). New dead ends:
+ * t -= 3 moved into/before the busy-wait (H1a/H1b) keeps both PRE inserts;
+ * s32 prototype + (s8) cast does NOT force asrs (extension flavor is reload's
+ * coin-flip when all uses are sign-agnostic); pre-gcse .cse dump shows both
+ * (u8)t sites already carry independent pairs — the merge is purely gcse PRE
+ * on (ashift (reg/v:SI 32) 24), dump insns 678/817 (bb 46/51), reaching reg 590.
  * sub_0833BF80 draft state (2026-09-22, evening session) — 1310B, 655 insns.
  * NOT matched; improved from the previous banked draft. Normalized-stream
  * match ~640/737; the remaining deltas are precisely known:
