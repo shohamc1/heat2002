@@ -1,18 +1,25 @@
 /*
- * sub_08011B08 — NEAR-MISS UPDATE 2026-09-22 (session 2): 312/316 bytes.
- * Structure COMPLETE (prologue, ed-hoist, keyaddr sharing, per-use ff
- * copies all present); the only remaining delta is ONE ALLOCATION SWAP:
- * target {ff=r9 (mov r0,r9 copies), keyaddr=r7 (direct ldr, ldrb [r7])}
- * vs ours {ff=r7 (adds r0,r7 copies + ands r0,r7), keyaddr=r9 (ldr r2 +
- * mov r9,r2 stash)}. ff type changes (u16/u32/s8/int) all identical;
- * pinning key to r7 loses to REG_EQUIV substitution (cse2 rewrites later
- * *key uses to fresh pool loads, ff steals r7); a volatile-poisoned key
- * derivation (`(*(volatile u8*)0x4000131 & 0) + 0x04000128`) keeps the
- * pseudo alive across the call but costs 2 extra insns the ROM doesn't
- * have. KEY SHAPE on this file: pins state=r8, edd0=r6, eef4=r5,
- * ef40=r4; NO v local; all-direct volatile casts for KEYINPUT; head
- * test non-volatile; per-use ff copies come from ff being an UNPINNED
- * homed local (a PIN coalesces the copies to one -- see probe).
+ * sub_08011B08 — NEAR-MISS UPDATE 2026-09-22 (session 3, V5): 312/316 bytes.
+ * THE ALLOCATION SWAP IS FIXED: a `volatile u32 *key` local, assigned inside
+ * the loop right before the `t = ...` line (pool load into r7 at exactly the
+ * ROM's point) and RE-ASSIGNED before the gUnk_0202EF90 read, flips ff into
+ * r9 (movs r2,#255; mov r9,r2) and key into r7 (ldr r7,[pc] direct). The
+ * re-assignment is what wins the tie (3 uses beats ff's refs) while its
+ * remat reproduces the ROM's second pool load; a key local with only 2 uses
+ * (dying at the & 0x30 read) LOSES the tie again — V4 proved it.
+ * Remaining deltas (all downstream of scratch allocation):
+ *   - 0x80<<1 temp: target r3, ours r6 (ours then reloads r6 for edd0).
+ *   - ed copy `mov r3,sl` vs ours `mov r0,sl`; EFA0 base r2 vs ours r3.
+ *   - nest: target keeps ef40[0]'s full ldrh value (r3) for the `- 1` and
+ *     keeps r4 = ef40 through the nest; ours re-loads both (pressure).
+ *   - line-74 read: target `ldrb r7,[r7,#0]` lets the byte take the dying
+ *     key home; ours `ldrb r1,[r7,#0]`.
+ *   - line-92 remat lands in r7 (ours) vs r0 (target).
+ *   - state--/++: target normalizes on write (mov r0,r8; +/-; lsls/lsrs;
+ *     mov r8,r0), ours adds directly (negs/add r8). Explicit (u8) casts
+ *     fold identically (V7 — no change).
+ * Pins (state=r8, edd0=r6, eef4=r5, ef40=r4) remain load-bearing: removing
+ * them (V6) loses 4 bytes of shape.
  */
 #include "global.h"
 
@@ -32,6 +39,7 @@ extern void sub_0800F818(u16 a);
 void sub_08011B08(void)
 {
     register u8 state asm("r8");
+    volatile u32 *key;
     volatile u16 *ed;
     register u8 *edd0 asm("r6");
     register u8 *eef4 asm("r5");
@@ -55,7 +63,8 @@ void sub_08011B08(void)
         else
             sub_08016E14(1, 0x80);
         sub_0800048C();
-        t = ((((*((volatile u32 *)0x04000128) << 26) >> 30) + 1) << 12) | (0x80 << 1);
+        key = (volatile u32 *)0x04000128;
+        t = (((key[0] << 26) >> 30) + 1) << 12 | (0x80 << 1);
         edd0 = &gUnk_0202EDD0;
         t |= ff & (*edd0 + 1);
         ed[0] = t;
@@ -71,7 +80,7 @@ void sub_08011B08(void)
         if (t1 == 1) {
             gUnk_0202EFA0[2] = t1;
             *eef4 = t1;
-            if ((*(volatile u8 *)0x04000128 & 0x30) != 0)
+            if ((*(volatile u8 *)key & 0x30) != 0)
                 *edd0 = ef40[0] - 1;
             t2 = gUnk_0202EF40[1][0] >> 12;
             if (t2 == 2) {
@@ -89,7 +98,8 @@ void sub_08011B08(void)
                 }
             }
         }
-        gUnk_0202EF90 = (*((volatile u32 *)0x04000128) << 26) >> 30;
+        key = (volatile u32 *)0x04000128;
+        gUnk_0202EF90 = (key[0] << 26) >> 30;
         gUnk_020020AC = *eef4;
         if (((u8) *eef4) <= 1)
             state--;
