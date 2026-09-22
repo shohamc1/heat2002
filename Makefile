@@ -48,7 +48,8 @@ all: $(TARGET).gba
 # ordinary call does not, and that changes register allocation.
 HIGH_LIBGCC_OBJS := $(patsubst src/%.c,$(BUILD)/src/%.o,$(wildcard src/sub_083[3-9]*.c))
 HIGH_LIBGCC_REDEFINES := --redefine-sym __divsi3=sub_08344BB8 \
-	--redefine-sym __modsi3=sub_08344C50 --redefine-sym __umodsi3=sub_08344DA8
+	--redefine-sym __modsi3=sub_08344C50 --redefine-sym __umodsi3=sub_08344DA8 \
+	--redefine-sym __muldi3=sub_08344D20
 $(BUILD)/src/%.o: src/%.c $(wildcard include/*.h) Makefile
 	@mkdir -p $(@D)
 	$(CPP) $(CPPFLAGS) $< -o $(BUILD)/src/$*.i

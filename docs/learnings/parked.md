@@ -831,8 +831,24 @@ in their headers):**
   renaming __divsi3/__modsi3/__umodsi3 to the high copies. Write `/`
   and `%` as operators there. sub_08343EA8 MATCHED with this: it is
   instruction-identical to the matched sub_0800D684 and was ported from
-  that source. sub_08343A6C and sub_08342258 were also blocked on this
-  and can be retried.
+  that source. sub_08343A6C MATCHED the same day (with sub_0800D248, its
+  low twin); sub_08342258 (twin of the near-miss sub_0800A80C) remains.
+- **Spill-slot order is gcse hash order (sub_0800D248, 2026-09-22).**
+  Pseudos that PRE creates for hoisted expressions are numbered in
+  hash-bucket order, and reload assigns spill slots in pseudo order, so
+  the frame layout of a function with many spilled invariants depends on
+  `expr_hash_table_size = (real_insns / 2) | 1` at gcse time. The insn
+  count includes insns that combine, jump, or flow delete later, so
+  code-neutral rewrites (a `u8` local, an `s16` prototype parameter, an
+  early `return 0` that cross-jumps) shift the table size by two insns
+  each. To diagnose: `-dG` prints the table size and each expression's
+  hash; the hash of `(plus (reg R) (const V))` is `(13772 + R + V) % M`.
+  Fit M from the ROM's slot order, then tune the count. Other levers from
+  that function: `long long` temporaries whose dead high half occupies a
+  register (changes which regs reload may spill), a struct declared
+  separately instead of `arr[N]` (its address becomes a PRE pseudo with
+  no home, so reload inherits it), and `inline` non-static helpers whose
+  out-of-line bodies land after the function.
 - **Allocation battles** (~15 drafts, several ONE instruction from
   matching: sub_0800BEA4 one reload copy, ~~sub_080047E8 one zero-pseudo
   swap~~ MATCHED 2026-09-22, sub_0833F468 and sub_0833BF80 one pool word
