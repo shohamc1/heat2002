@@ -802,13 +802,23 @@ in their headers):**
   `-dG` dumps name each insert. Partial counter-levers: volatile-cast one
   read of the hoisted expression's global; split a pointer init inside
   the loop; place the counter increment as the body's first statement.
-- **RAM-linked switch tables** (sub_08364550, sub_08340EFC, sub_08341288,
-  sub_08342258, sub_08343A6C): modules linked at EWRAM addresses embed
-  0x0200xxxx jumptable words; match.py's link-at-ROM-address scheme
-  cannot reproduce them from any source. Fix: a match.py mode that links
-  at the EWRAM base (readable off the table constant) and byte-compares
-  against the ROM copy. sub_08340EFC additionally needs its three callees
-  (sub_08340CB0/CDC/E90) promoted from .byte rows to real thumb symbols.
+- **RAM-linked switch tables — SOLVED as a class** (2026-09-22). The
+  module images were compiled to run from EWRAM; their jumptables embed
+  the module's link addresses. The build now reproduces this faithfully:
+  match.py links RAM functions at their EWRAM base (RAM_LINK_OVERRIDES,
+  derived from each table-base constant's self+4 pattern) standalone
+  (symbols.ld + generated defsyms, no -R); the Makefile links each such
+  C object into a standalone image at its EWRAM base and embeds it as
+  data at the ROM address via an .incbin wrapper with a .thumb_func
+  symbol; module-internal callees resolve through a typed .thumb_set
+  alias stub (ram/aliases_0834.s) -- script absolutes get interwork
+  veneers, and the main ELF's real definitions would override the
+  aliases at ROM addresses. Landed: sub_08364550 (480b, multiboot
+  island, base 0x02000668) and sub_08340EFC (400b, base 0x0200847C).
+  Remaining: sub_08341288 (base 0x02008808, machinery ready, needs its
+  C written); sub_08342258 and sub_08343A6C are ALSO own-libgcc-blocked.
+  The luvdis-mangled table/case bodies are repaired by an assemble-and-
+  byte-compare oracle (docs: the sub_08364550 commit).
 - **High-region own libgcc** (sub_08343EA8 at 2010/2022 bytes,
   sub_08343A6C): the high module resolved `/` to sub_08344BB8, but the
   repo's single __divsi3 alias points low; explicit calls lose the
