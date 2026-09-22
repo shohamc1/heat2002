@@ -1,3 +1,20 @@
+/*
+ * sub_0833BF80 — 2026-09-23 session 2 final: ratio 0.9263, 565/739
+ * positional. Every structural wall cracked (details in parked.md and the
+ * draft history): dead t++;t--; kills for the PRE wall, r4 pin for
+ * gUnk_020390F0, camera mul operand swap, rrret block via goto INTO the
+ * D5F4 then-arm, the r-region as a goto net (r_ext shared pair, s32 rt
+ * for the signed ble, r_zero falling into the dispatch, case bodies in
+ * ROM order 1/2/0x27), and the chained store
+ * gUnk_020250EC = t2 = gUnk_020390AC / 256 (loads the store address
+ * const BEFORE the division like the ROM).
+ * Remaining (~220 diff lines): tail register cascades — the rr extension
+ * flavor (ROM asrs vs ours lsrs; every type/cast/order lever tried, it is
+ * reload's coin-flip on sign-agnostic uses), the busy-wait preload order
+ * (r4/r2/r3/r5 vs ours r2/r5/r3/r4), the EC-test byte in r1 vs r0, a
+ * 2-insn pair duplication in the DCB0 arm, and downstream pool order.
+ * Permuter restarted from this file.
+ */
 #include "global.h"
 
 /*
@@ -41,6 +58,13 @@
  * ROM's dispatch `cmp#1;beq / cmp#1;ble / cmp#2;beq / cmp#39;beq` is NOT a
  * plain 3-case switch (gcc 2.95 always re-roots a 3-case AVL at the
  * median); see parked.md for the full derivation.
+ *
+ * 2026-09-23 BREAKTHROUGH: the gcse PRE wall is SOLVED. hoist_code needs
+ * hoistable > 1 (two dominated computing blocks with no intervening kill);
+ * dead `t++; t--;` pairs before EACH (u8)t site give gcse a kill on t, and
+ * DCE deletes the arithmetic completely (len 737, both ROM pairs present,
+ * ratio 0.8874). Note: `t += 256; t -= 256;` leaves residue (the shared
+ * 256 constant tangles between kills); ++/-- shares no constant.
  */
 
 struct Ent {
@@ -132,8 +156,10 @@ void sub_0833FA3C(void);
 s32 sub_0833BF80(u8 arg0, u8 arg1)
 {
     u8 pad[4];
+    register u8 *pf asm("r4");
     u32 t;
     u32 r;
+    s32 rt;
     s32 i;
     u32 flag;
     struct Ent *ent;
@@ -146,7 +172,8 @@ s32 sub_0833BF80(u8 arg0, u8 arg1)
     gUnk_020391CC = 0;
     gUnk_02039154 = 0;
     gUnk_0203916C = t;
-    gUnk_020390F0 = arg0;
+    pf = &gUnk_020390F0;
+    *pf = arg0;
     if (t != 0xF)
         gUnk_020390A0 = 5;
     if (gUnk_0203916C == 2)
@@ -157,7 +184,7 @@ s32 sub_0833BF80(u8 arg0, u8 arg1)
         gUnk_020390A0 = 1;
     if (gUnk_0203916C == 0xE)
         gUnk_020390A0 = 1;
-    if (gUnk_020390F0 != 0)
+    if (*pf != 0)
         gUnk_020390A0 = 2;
     if (gUnk_020390DC > 6 && gUnk_020390DC != 8 && gUnk_020390DC != 9
         && gUnk_020390DC != 0xA && gUnk_020390DC != 0xB)
@@ -221,18 +248,28 @@ skip42B04:
         gUnk_020390B8 = 0;
     }
     gUnk_020390B8 = 0;
-    if (gUnk_020390EC != 0)
+    if (gUnk_020390EC != 0) {
         sub_0833D5F4(&gUnk_0203D520[(*(volatile u32 *)0x04000128 << 0x1A) >> 0x1E]);
-    else
+        goto after_d5f4;
+rrret:
+        gUnk_02039154 = 1;
+        return 1;
+after_d5f4: ;
+    } else {
         sub_0833D5F4(gUnk_0203D520);
+    }
     gUnk_02039110[0] = gUnk_02039110[2];
     gUnk_02039110[1] = gUnk_02039110[3];
     gUnk_020390AC = 0;
     gUnk_020391F0 = 0;
     gUnk_020390C4 = 1;
+    t++;
+    t--;
     if ((u8)t <= 1)
         sub_08344878();
     sub_0833A8C8(0x38);
+    t++;
+    t--;
     gUnk_0203921C = 0;
     gUnk_02039134 = 0;
     flag = 0;
@@ -253,11 +290,10 @@ skip42B04:
             ent = &gUnk_0203D520[gUnk_0203E1B0];
         sub_0833B81C(gUnk_02038FB0, 1,
                     ((s16)(gUnk_02025190[ent->unk3E]
-                         + ((gUnk_020251A4[ent->unk3E] * ent->unk40) >> 6))) >> 3);
+                         + ((ent->unk40 * gUnk_020251A4[ent->unk3E]) >> 6))) >> 3);
         if (gUnk_020390F0 != 0) {
             sub_0833D5F4(gUnk_0203D6B0);
-            t2 = gUnk_020390AC / 256;
-            gUnk_020250EC = t2;
+            gUnk_020250EC = t2 = gUnk_020390AC / 256;
             if (t2 % 8 == 0)
                 gUnk_020250EC = 4;
         } else {
@@ -296,26 +332,36 @@ skip42B04:
             }
         } else {
             if ((u8)(gUnk_0203916C - 3) > 1 && gUnk_020391F0 == 0) {
-                if (gUnk_020392C4 != 0) {
-                    r = 0;
-                } else {
-                    r = sub_0833DBC8();
-                }
-            } else {
-                if (gUnk_020392C4 != 0) {
-                    r = 0;
-                } else if (gUnk_020391F0 != 0) {
-                    r = 0;
-                } else if (gUnk_0203916C == 4) {
-                    r = sub_0833DCB0();
-                } else {
-                    r = sub_0833DBF4();
-                }
+                if (gUnk_020392C4 != 0)
+                    goto r_zero;
+                r = sub_0833DBC8();
+                goto r_ext;
             }
-            if ((u8)r != 1) {
-                if ((u8)r > 1) {
-                    switch ((u8)r) {
-                    case 2:
+            if (gUnk_020392C4 != 0 || gUnk_020391F0 != 0)
+                goto r_zero;
+            if (gUnk_0203916C == 4)
+                r = sub_0833DCB0();
+            else
+                r = sub_0833DBF4();
+r_ext:
+            rt = (u8)r;
+            goto r_tests;
+r_zero:
+            rt = 0;
+r_tests:
+            if (rt == 1)
+                goto r_case1;
+            if (rt <= 1)
+                goto r_end;
+            if (rt == 2)
+                goto r_case2;
+            if (rt == 0x27)
+                goto r_case27;
+            goto r_end;
+r_case1:
+            sub_0833A8C8(0x38);
+            goto r_end;
+r_case2:
                 if (gUnk_0203916C == 2 || gUnk_0203916C == 0xE || gUnk_0203916C == 0
                     || gUnk_0203916C == 7 || gUnk_0203916C == 6 || gUnk_0203916C == 9
                     || gUnk_0203916C == 5 || gUnk_0203916C == 0x11 || gUnk_0203916C == 1
@@ -328,22 +374,15 @@ skip42B04:
                     *(volatile u16 *)0x04000000 &= 0xEFFF;
                 }
                 sub_0833D288(0x19, 0);
-                break;
-                    case 0x27:
-                        flag = 1;
-                        break;
-                    }
-                }
-            } else {
-                sub_0833A8C8(0x38);
-            }
+            goto r_end;
+r_case27:
+            flag = 1;
+r_end: ;
         }
         if (gUnk_020390EC != 0) {
             rr = sub_0833C874();
-            if (rr != 0) {
-                gUnk_02039154 = 1;
-                return 1;
-            }
+            if (rr != 0)
+                goto rrret;
             gUnk_020390D0 = rr;
             do
                 ;
