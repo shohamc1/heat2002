@@ -18,3 +18,5 @@
 .thumb_set sub_08340DB8, 0x02008339
 .global sub_08340E28
 .thumb_set sub_08340E28, 0x020083A9
+.global sub_083432EC
+.thumb_set sub_083432EC, 0x0200A86D
