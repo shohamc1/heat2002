@@ -815,8 +815,9 @@ in their headers):**
   veneers, and the main ELF's real definitions would override the
   aliases at ROM addresses. Landed: sub_08364550 (480b, multiboot
   island, base 0x02000668) and sub_08340EFC (400b, base 0x0200847C).
-  Remaining: sub_08341288 (base 0x02008808, machinery ready, needs its
-  C written); sub_08342258 and sub_08343A6C are ALSO own-libgcc-blocked.
+  Remaining: sub_08341288 (base 0x02008808, machinery ready; draft at
+  798/804 bytes -- six instructions in two analyzed hunks, the const-set
+  elision rule traced); sub_08342258 and sub_08343A6C are ALSO own-libgcc-blocked.
   The luvdis-mangled table/case bodies are repaired by an assemble-and-
   byte-compare oracle (docs: the sub_08364550 commit).
 - **High-region own libgcc** (sub_08343EA8 at 2010/2022 bytes,
