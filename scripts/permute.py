@@ -36,7 +36,19 @@ import tempfile
 from pathlib import Path
 
 from extract import PAD_RE, find_block, fragments, read_preamble
-from match import ELF, LD, OBJCOPY, ROM, ROM_BASE, ROOT, SYMBOLS, addr_of
+from match import (
+    ELF,
+    LD,
+    OBJCOPY,
+    ROM,
+    ROM_BASE,
+    ROOT,
+    SYMBOLS,
+    RAM_LINK_EXTRA_OBJECTS,
+    RAM_LINK_OVERRIDES,
+    addr_of,
+    ram_defsyms,
+)
 
 PERMUTER = ROOT / "tools" / "decomp-permuter" / "permuter.py"
 # The permuter needs pycparser < 3 (3.0 removed pycparser.plyparser), so it
@@ -52,7 +64,7 @@ cd {root}
 {cc1} {cflags} "$1" -o "$3.s"
 printf '\\t.align 2, 0\\n' >> "$3.s"
 {as_} {asflags} -I include -o "$3.u.o" "$3.s"
-{link} -o "$3" "$3.u.o"
+{link} -o "$3" "$3.u.o"{extra}
 rm -f "$3.s" "$3.u.o"
 """
 
@@ -81,8 +93,33 @@ def link_cmd(addr):
     return [LD, "-T", str(SYMBOLS), "-R", str(ELF), f"-Ttext={addr:#x}", "-e", f"{addr:#x}"]
 
 
+def candidate_link(name):
+    """(ld_args, extra_input_args) linking a CANDIDATE the way match.py does.
+
+    RAM-module functions must link at their EWRAM base, standalone (no -R
+    ELF: the main ELF's ROM-addressed definitions would override the
+    module's EWRAM aliases and veneer every call) with the alias stub.
+    The candidate object holds one function at offset 0, so -Ttext is the
+    link base itself. Anything else links at its ROM address like the
+    target below.
+    """
+    base = RAM_LINK_OVERRIDES.get(name)
+    if base is None:
+        return link_cmd(addr_of(name)), []
+    args = [LD, "-T", str(SYMBOLS), *ram_defsyms(), f"-Ttext={base:#x}", "-e", f"{base:#x}"]
+    extra = RAM_LINK_EXTRA_OBJECTS.get(name)
+    return args, ([str(ROOT / extra)] if extra and (ROOT / extra).exists() else [])
+
+
 def build_target(name, out, texts=None):
-    """Assemble NAME's asm block and link it at its ROM address into `out`."""
+    """Assemble NAME's asm block and link it at its ROM address into `out`.
+
+    RAM-module functions link at the EWRAM base instead, the same way the
+    candidate does: both objects' bytes are identical either way (bl
+    offsets are position-relative), but the permuter's objdump-text
+    scoring includes resolved addresses in branch/pool annotations, and
+    mixed bases make every annotated line differ.
+    """
     asm = function_asm(name, texts)
     if asm is None:
         sys.exit(f"{name}: not found in asm/*.s")
@@ -91,7 +128,8 @@ def build_target(name, out, texts=None):
     unlinked = out.with_suffix(".u.o")
     run = lambda cmd: subprocess.run(cmd, cwd=ROOT, check=True)
     run([make_var("AS"), *make_var("ASFLAGS").split(), "-I", "include", "-o", str(unlinked), str(src)])
-    run([*link_cmd(addr_of(name)), "-o", str(out), str(unlinked)])
+    link, extra = candidate_link(name)
+    run([*link, "-o", str(out), str(unlinked), *extra])
     unlinked.unlink()
 
 
@@ -111,13 +149,15 @@ def setup(name, c_file):
     (d / "base.c").write_text(base.stdout)
 
     sh = d / "compile.sh"
+    link, extra = candidate_link(name)
     sh.write_text(COMPILE_SH.format(
         root=shlex.quote(str(ROOT)),
         cc1=make_var("CC1"),
         cflags=make_var("CFLAGS"),
         as_=make_var("AS"),
         asflags=make_var("ASFLAGS"),
-        link=shlex.join(link_cmd(addr_of(name))),
+        link=shlex.join(link),
+        extra="".join(f" {shlex.quote(e)}" for e in extra),
     ))
     sh.chmod(0o755)
     (d / "settings.toml").write_text(f'func_name = "{name}"\ncompiler_type = "gcc"\n')
