@@ -749,6 +749,80 @@ the next store uses, and CSE keeps it because an SImode -1 costs more than
 `(plus reg -1)` on Thumb. When the ROM derives a constant from a register
 that holds zero or a nearby value, look for this shape.
 
+## Campaign record 2026-09-22: the endgame push (603/646)
+
+Every eligible function in the ROM has now been attempted. Since the
+2026-09-21 campaigns, 89 more functions matched (514 -> 603 of 646; 82.0%
+of code bytes). `make check` MATCH at every commit.
+
+**What worked, in order of lever value:**
+1. **Twin/sibling mining.** The 0x0833xxxx-0x0834xxxx region is the same
+   game module as 0x0800xxxx-0x0801xxxx with lookup tables relocated
+   ROM->RAM — 20+ functions this campaign matched as table-swap ports,
+   most on the first compile. Find twins with a NORMALIZED-instruction
+   search (mnemonics with registers/immediates blanked, difflib ratio
+   0.88+; the three known-real twins score 0.955/0.959). A raw byte-diff
+   "site count" is NOT a similarity metric — a few long differing runs
+   imitate a twin (129 bytes in 5 runs once scored as "5 sites").
+2. **The D684 rewrite method** (see the resolution section below) closed
+   6 of 9 parked drafts; the hardest (sub_0833D31C, permuter floor 505)
+   fell to its matched low twin's source, ported wholesale.
+3. Second-chance rounds with the newest levers closed sub_0800920C.
+
+**New levers proven this campaign:**
+- Re-mention a pointer's global in the for-init (`for (j=0, q=gFoo;...)`):
+  cse turns the second pool load into a copy at the for-init position —
+  the late `mov r8,r0` callee-saved stash, in plain C.
+- A dead `u8 pad[0x28]` / `s32 tmp[4]` FIRST IN DECLARATION grows the
+  frame and pushes a specific spill to its ROM slot (sub_0800920C,
+  sub_0800CD38; sub_08004980 precedent).
+- Chained assignments (`g = x1 = pc->f02;`) defeat CSE across aliased
+  s16 param stores; `goto` INTO an if-body places a shared return block
+  mid-function instead of merged at the end.
+- **agbcc's first cse canonicalizes const-0 mode-dependently**: SI/HI-mode
+  lookups resolve to the first-assigned zero pseudo, QImode lookups to
+  another. An `int zero` assigned once forces the QI site to rematerialize
+  `movs rX,#0` at the store (sub_08011B08's `zero` is load-bearing).
+- The jump pass ALWAYS converts `if (c) p=&A; else p=&B;` into
+  default+override at -O2; write `x = *(p = &A)` / `x = *(p = &B)` inside
+  the arms instead, and cross-jumping re-merges the derefs (sub_0833F468).
+- Busy-wait shape: `first = gFlag; t -= 3; if (first == 0) do ;
+  while (gFlag == 0);` with gFlag volatile (sub_0833BF80).
+- `t = arg1; ... t -= 3;` (plain copy, then compound sub) defeats the
+  tree fold of `(u8)(x-3)` into `(u8)(x+253)`; loop bounds `i != N`, not
+  `i < N` (GCC reverses `<` into a countdown).
+- Explicit `*24` pointer scaling synthesizes `((i*3)<<3)` where implicit
+  array scaling picks a different shift (sub_0833F468).
+
+**Wall classes now precisely characterized (drafts in drafts/, residuals
+in their headers):**
+- **gcse PRE hoisting** (sub_08017000, sub_080170B8, sub_08004B1C): the
+  earlier "goto loops suppress invariant hoisting" note was INCOMPLETE —
+  gcse runs on the raw CFG before loop.c; goto only suppresses LICM.
+  `-dG` dumps name each insert. Partial counter-levers: volatile-cast one
+  read of the hoisted expression's global; split a pointer init inside
+  the loop; place the counter increment as the body's first statement.
+- **RAM-linked switch tables** (sub_08364550, sub_08340EFC, sub_08341288,
+  sub_08342258, sub_08343A6C): modules linked at EWRAM addresses embed
+  0x0200xxxx jumptable words; match.py's link-at-ROM-address scheme
+  cannot reproduce them from any source. Fix: a match.py mode that links
+  at the EWRAM base (readable off the table constant) and byte-compares
+  against the ROM copy. sub_08340EFC additionally needs its three callees
+  (sub_08340CB0/CDC/E90) promoted from .byte rows to real thumb symbols.
+- **High-region own libgcc** (sub_08343EA8 at 2010/2022 bytes,
+  sub_08343A6C): the high module resolved `/` to sub_08344BB8, but the
+  repo's single __divsi3 alias points low; explicit calls lose the
+  libcall's hard-r0 return and flip the allocation. Needs a per-region
+  alias mechanism or a compiler-side look.
+- **Allocation battles** (~15 drafts, several ONE instruction from
+  matching: sub_0800BEA4 one reload copy, sub_080047E8 one zero-pseudo
+  swap, sub_0833F468 and sub_0833BF80 one pool word each at FULL
+  instruction parity). Root causes per RTL dumps: global-alloc priority
+  `floor_log2(nrefs)*nrefs/live_length` with pseudo-number ties, plus
+  jump.c cross-jump pairing (sub_0800AB78: which branch's bl survives the
+  merge is emission-order-driven; min-2 pairing reduced to min-1 by the
+  CODE_LABEL decrement).
+
 ## Batch notes 2026-09-22: second smallest-functions campaign (51 matched)
 
 51 more functions matched and integrated (90-362 bytes; one commit per
