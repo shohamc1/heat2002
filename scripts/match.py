@@ -43,6 +43,7 @@ OBJDUMP = "arm-none-eabi-objdump"
 LD = "arm-none-eabi-ld"
 ELF = ROOT / "nascar-heat.elf"
 SYMBOLS = ROOT / "symbols.ld"
+_current_name = [None]
 ROM_BASE = 0x8000000
 
 # Functions whose RETAIL build linked at an EWRAM base: the multiboot
@@ -59,6 +60,14 @@ RAM_LINK_OVERRIDES = {
     "sub_08364550": 0x02000668,  # multiboot island module
     "sub_08340EFC": 0x0200847C,  # high-region RAM module (delta 0x6338A80)
     "sub_08341288": 0x02008808,  # same module
+}
+
+# Extra objects for RAM-module links: symbols.ld absolutes carry no Thumb
+# function type, so ld would veneer calls to them. These stubs hold the
+# module-internal callee aliases (.thumb_set) at their EWRAM values.
+RAM_LINK_EXTRA_OBJECTS = {
+    "sub_08340EFC": "build/ram/aliases_0834.o",
+    "sub_08341288": "build/ram/aliases_0834.o",
 }
 
 
@@ -98,6 +107,26 @@ def _symbol_index():
     return index
 
 
+@functools.lru_cache(maxsize=1)
+def ram_defsyms():
+    """--defsym args for every name referenced by a symbols.ld expression
+    whose value derives from its sub_XXXXXXXX / _XXXXXXXX name."""
+    out = []
+    if not SYMBOLS.exists():
+        return out
+    names = set()
+    rhs = re.compile(r"^\w+ = (\w+)")
+    for line in SYMBOLS.read_text().splitlines():
+        m = rhs.match(line)
+        if m:
+            names.add(m.group(1))
+    for n in sorted(names):
+        m = re.fullmatch(r"(?:sub_|_)([0-9A-Fa-f]{8})", n)
+        if m:
+            out.append(f"--defsym={n}=0x{m.group(1)}")
+    return out
+
+
 def find_symbol(name):
     """Locate `name` in the built objects. Returns (object, offset, size)."""
     return list(_symbol_index().get(name, ()))
@@ -112,10 +141,21 @@ def object_bytes(obj, offset, size, addr, link_addr=None):
         elf = Path(d) / "t.elf"
         bin_ = Path(d) / "t.bin"
         cmd = [LD, f"-Ttext={link_addr - offset:#x}", "-e", f"{addr:#x}", "-o", str(elf), str(obj)]
-        if ELF.exists():
-            cmd[1:1] = ["-R", str(ELF)]
-        if SYMBOLS.exists():
-            cmd[1:1] = ["-T", str(SYMBOLS)]
+        extra = RAM_LINK_EXTRA_OBJECTS.get(_current_name[0])
+        if extra and (ROOT / extra).exists():
+            cmd.append(str(ROOT / extra))
+        if link_addr is not None and link_addr != addr:
+            # RAM-module link: the main ELF's definitions sit at ROM
+            # addresses and would override the module's EWRAM aliases (and
+            # veneer every call), so link standalone: symbols.ld + the
+            # alias stub + defsyms for symbols.ld's expression names.
+            if SYMBOLS.exists():
+                cmd[1:1] = ["-T", str(SYMBOLS)] + ram_defsyms()
+        else:
+            if ELF.exists():
+                cmd[1:1] = ["-R", str(ELF)]
+            if SYMBOLS.exists():
+                cmd[1:1] = ["-T", str(SYMBOLS)]
         r = subprocess.run(cmd, capture_output=True, text=True, check=False)
         if r.returncode != 0:
             sys.stderr.write(r.stderr)
@@ -172,6 +212,7 @@ def compare(name):
     if size == 0:
         sys.exit(f"{name}: nm reports size 0 in {obj.relative_to(ROOT)}")
 
+    _current_name[0] = name
     ours = object_bytes(obj, offset, size, addr,
                         link_addr=RAM_LINK_OVERRIDES.get(name))
     if ours is None:

@@ -43,6 +43,7 @@ ROOT = Path(__file__).resolve().parent.parent
 PREAMBLE_END = "@ End embedded Luvdis macros"
 
 PAD_RE = re.compile(r"\t\.byte 0x00, 0x00\s*$")
+SHORT_RE = re.compile(r"\t\.short( 0x[0-9a-f]{4})(, 0x[0-9a-f]{4})*\s*$")
 GLOBAL_RE = re.compile(r"\t\.global\s+(_[0-9A-F]{8})\s*$")
 POOL_ENTRY_RE = re.compile(r"(_[0-9A-F]{8}):\s*\.4byte\s")
 FUNC_START_RE = re.compile(r"\t(non_word_aligned_)?(thumb|arm)_func_start\s")
@@ -185,6 +186,11 @@ def block_bytes(lines, start, cut_end, name):
         if PAD_RE.match(l):
             n += 2
             pads += 1
+            continue
+        if SHORT_RE.match(l):
+            # raw halfword data inside a repaired block (a luvdis .byte run
+            # redisassembled by the RAM-module repair tooling)
+            n += 2 * l.count("0x")
             continue
         if is_ins(l):
             n += ins_bytes(l)

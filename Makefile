@@ -20,7 +20,7 @@ ASM_SRCS := $(wildcard asm/*.s)
 # build/ram rule below); the main ROM embeds the image as data. They must
 # not reach the main link, or the trailing *(.text*) catch-all places them
 # twice over.
-RAM_MODULE_OBJS := build/src/sub_08364550.o
+RAM_MODULE_OBJS := build/src/sub_08364550.o build/src/sub_08340EFC.o
 OBJS     := $(filter-out $(RAM_MODULE_OBJS),$(C_SRCS:%.c=$(BUILD)/%.o) $(ASM_SRCS:%.s=$(BUILD)/%.o))
 
 .PHONY: all check test clean disasm
@@ -50,6 +50,16 @@ $(BUILD)/asm/%.o: asm/%.s Makefile
 	printf '\t.align 2, 0\n' >> $(BUILD)/asm/$*.s
 	$(AS) $(ASFLAGS) -I include -o $@ $(BUILD)/asm/$*.s
 
+# All symbols.ld expression RHS names (libgcc aliases, call-via tables)
+# resolved for standalone blob links; their values derive from their names.
+RAM_DEFSYMS := $(shell awk -F' = ' '/ = /{split($$2,a,";"); split(a[1],b," +"); print b[1]}' symbols.ld | sort -u | awk '/^(sub_|_)[0-9A-Fa-f]{8}$$/{n=$$0; sub(/^(sub_|_)/,"",n); printf "--defsym %s=0x%s ", $$0, n}')
+
+# Blob-only alias stubs (never in the main link; they would collide with
+# the real matched functions).
+build/ram/aliases_0834.o: ram/aliases_0834.s Makefile
+	@mkdir -p $(dir $@)
+	$(AS) $(ASFLAGS) -o $@ $<
+
 # RAM-module images: functions whose retail build linked at an EWRAM base
 # (match.py's RAM_LINK_OVERRIDES). Compiled to C objects like everything
 # else, but linked into a standalone image at the module's EWRAM base and
@@ -62,7 +72,13 @@ build/ram/sub_08364550.bin: build/src/sub_08364550.o symbols.ld Makefile
 	$(LD) -Ttext=0x02000668 -e 0x02000668 --defsym gUnk_03000C00=0x03000C00 -o $@.elf $<
 	$(OBJCOPY) -O binary --only-section=.text $@.elf $@
 
+build/ram/sub_08340EFC.bin: build/src/sub_08340EFC.o build/ram/aliases_0834.o symbols.ld Makefile
+	@mkdir -p $(dir $@)
+	$(LD) -Ttext=0x0200847C -e 0x0200847C -T symbols.ld $(RAM_DEFSYMS) -o $@.elf $< build/ram/aliases_0834.o
+	$(OBJCOPY) -O binary --only-section=.text $@.elf $@
+
 build/asm/ram_08364550.o: build/ram/sub_08364550.bin
+build/asm/ram_08340EFC.o: build/ram/sub_08340EFC.bin
 
 $(TARGET).elf: ldscript.ld symbols.ld $(OBJS)
 	$(LD) -T ldscript.ld -T symbols.ld -o $@ $(OBJS)
