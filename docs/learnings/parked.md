@@ -820,11 +820,19 @@ in their headers):**
   elision rule traced); sub_08342258 and sub_08343A6C are ALSO own-libgcc-blocked.
   The luvdis-mangled table/case bodies are repaired by an assemble-and-
   byte-compare oracle (docs: the sub_08364550 commit).
-- **High-region own libgcc** (sub_08343EA8 at 2010/2022 bytes,
-  sub_08343A6C): the high module resolved `/` to sub_08344BB8, but the
-  repo's single __divsi3 alias points low; explicit calls lose the
-  libcall's hard-r0 return and flip the allocation. Needs a per-region
-  alias mechanism or a compiler-side look.
+- **High-region own libgcc -- SOLVED as a class** (2026-09-22): the
+  high module resolved `/` and `%` to its own libgcc copy (sub_08344BB8,
+  sub_08344C50, sub_08344DA8), but symbols.ld's single __divsi3 alias
+  points low, and calling sub_08344BB8 by name loses the libcall's
+  hard-r0 return and flips the allocation. Every caller at or above
+  sub_0833AD00 uses the high copies and none below sub_080199F0 does
+  (checked against the ROM's bl targets), so the Makefile now runs
+  `objcopy --redefine-sym` on objects built from src/sub_083[3-9]*.c,
+  renaming __divsi3/__modsi3/__umodsi3 to the high copies. Write `/`
+  and `%` as operators there. sub_08343EA8 MATCHED with this: it is
+  instruction-identical to the matched sub_0800D684 and was ported from
+  that source. sub_08343A6C and sub_08342258 were also blocked on this
+  and can be retried.
 - **Allocation battles** (~15 drafts, several ONE instruction from
   matching: sub_0800BEA4 one reload copy, ~~sub_080047E8 one zero-pseudo
   swap~~ MATCHED 2026-09-22, sub_0833F468 and sub_0833BF80 one pool word

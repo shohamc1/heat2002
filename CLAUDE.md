@@ -116,6 +116,13 @@ maps closely onto the source:
   stray `lsl`/`asr` sign-extension pairs.
 - Stack shuffling that won't go away usually means a local is missing or one
   too many exists.
+- In `src/sub_083[3-9]*.c`, write `/` and `%` as operators, never as calls
+  to `sub_08344BB8` and friends. That module linked its own libgcc copy, and
+  the Makefile renames the libcall symbols for those objects. A named call
+  loses the libcall's hard-r0 return and changes register allocation.
+- Before drafting from scratch, check whether an instruction-identical twin
+  is already matched: the 0x0834 module duplicates parts of the low region
+  (`sub_08343EA8` is `sub_0800D684` with renamed globals).
 
 ## Helper tools
 

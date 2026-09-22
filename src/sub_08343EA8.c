@@ -1,54 +1,15 @@
 #include "global.h"
 
-#define DIV_HI(a, b) (__extension__({ \
-    register s32 _d0 asm("r0") = (a); \
-    register s32 _d1 asm("r1") = (b); \
-    s32 _rr; \
-    asm volatile("bl sub_08344BB8" : "=l"(_d0) : "0"(_d0), "l"(_d1) \
-                 : "r2", "r3", "r12", "lr", "cc"); \
-    _rr = _d0; \
-    _rr; }))
-#define DIV_T(a, b) (__extension__({ \
-    register s32 _d0 asm("r0") = (a); \
-    register s32 _d1 asm("r1") = (b); \
-    register s32 _rr asm("r1"); \
-    asm volatile("bl sub_08344BB8\n\tadd %0, r0, #0" : "=l"(_rr) : "r"(_d0), "r"(_d1) \
-                 : "r2", "r3", "r12", "lr", "cc"); \
-    _rr; }))
-
 /*
- * High-region twin of sub_0800D684 (car-vs-car box collision test).
- * NEAR-MISS DRAFT: 2010 of 2022 bytes; residual diagnosed below.
- * Same shapes; see docs/learnings/parked.md for the low-region record:
- * - d[2] written element-wise keeps the DImode pseudo (r5:r6) live
- *   across the whole loop.
- * - pa is a pointer local used only for the first call.
- * - a2 is never assigned.
- * - count is declared after m/q so its spill slot is the highest one.
- * - The range pre-check is px load-then-subtract and pz in one expression.
+ * Car-vs-car box collision test: the high-region (0x0834 module) copy of
+ * sub_0800D684, byte-identical in instruction stream and ported from that
+ * matched source with the module's globals and callees. See
+ * src/sub_0800D684.c for the shapes the retail bytes depend on.
  *
- * The ROM's high region was built with its own libgcc: `/` resolved to
- * sub_08344BB8 there, but our symbols.ld aliases __divsi3 to sub_08017230,
- * so the divisions cannot use the `/` operator. A plain explicit call
- * changes the RTL two ways (verified by compiling sub_0800D684.c both
- * ways): a tree-level CALL argument is pre-evaluated to the front of the
- * argument list (the target emits stack args 5,6,7 and the nested div
- * LAST), and it loses the libcall's hard-r0 return, which changes the
- * loop allocation (car kept in r10 instead of spilled to sp+0x24).
- * DIV_HI/DIV_T above restore both with r0/r1-pinned statement-expressions;
- * DIV_T bakes the forced copy ("add %0, r0, #0", result pinned r1) that
- * `t = div; t += v[0];` needs at the eight t-sites. Modulo by 3 is an
- * explicit sub_08344DA8 call (unsigned mod helper).
- *
- * Remaining 12-byte residual (3 items):
- *  1. In the SECOND rotation half, GCC schedules edge2's `mov r0, r8;
- *     muls r0, r4` product before the mid-function pool and branches over
- *     it; the libcall kept the product attached to the div. Baking the
- *     movs into the asm template fixes this but breaks agbcc's long-branch
- *     trampolines ("branch out of range" in gas).
- *  2. `mov r4, r8; adds r4, #0x55` (&b->unk55) is emitted after the
- *     a->unk55 load; the target emits it between the load and its compare.
- *  3. Consequential mid-pool position/order shift (16 bytes later).
+ * The `/` and `%` here must stay operators: the module links its own
+ * libgcc copy (sub_08344BB8, sub_08344DA8), and the Makefile renames the
+ * libcall symbols for src/sub_083[3-9]*.c objects. Calling sub_08344BB8
+ * directly loses the libcall's hard-r0 return and flips the allocation.
  */
 
 struct Ent {
@@ -123,8 +84,6 @@ void sub_08343138(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g);
 void sub_08344680(s32 a, u8 b);
 void sub_08341D64(struct Ent *a);
 void sub_0833A8C8(u16 idx);
-s32 sub_08344BB8(s32 a, s32 b);
-s32 sub_08344DA8(s32 a, s32 b);
 
 u8 sub_08343EA8(struct Ent *car)
 {
@@ -201,28 +160,28 @@ u8 sub_08343EA8(struct Ent *car)
         w = v[2] - v[0];
         u = v[3] - v[1];
         if (u < 0 && v[3] <= 0x1C00 && (e = v[1] - 0x1C00) >= 0) {
-            t = DIV_T(w * e, u);
+            t = (w * e) / u;
             t += v[0];
             if (t >= -0xF00 && t <= 0xF00)
-                sub_08343E70(car, a2, other, 0, &gUnk_0203DEB0, &hit, -u, DIV_HI(e << 16, -u));
+                sub_08343E70(car, a2, other, 0, &gUnk_0203DEB0, &hit, -u, (e << 16) / -u);
         }
         if (u > 0 && v[3] >= -0x1C00 && (e = -0x1C00 - v[1]) >= 0) {
-            t = DIV_T(w * e, u);
+            t = (w * e) / u;
             t += v[0];
             if (t >= -0xF00 && t <= 0xF00)
-                sub_08343E70(car, a2, other, 1, &gUnk_0203DEB0, &hit, u, DIV_HI(e << 16, u));
+                sub_08343E70(car, a2, other, 1, &gUnk_0203DEB0, &hit, u, (e << 16) / u);
         }
         if (w > 0 && v[2] >= -0xF00 && (e = -0xF00 - v[0]) >= 0) {
-            t = DIV_T(e * u, w);
+            t = (e * u) / w;
             t += v[1];
             if (t >= -0x1C00 && t <= 0x1C00)
-                sub_08343E70(car, a2, other, 2, &gUnk_0203DEB0, &hit, w, DIV_HI(e << 16, w));
+                sub_08343E70(car, a2, other, 2, &gUnk_0203DEB0, &hit, w, (e << 16) / w);
         }
         if (w < 0 && v[2] <= 0xF00 && (e = v[0] - 0xF00) >= 0) {
-            t = DIV_T(e * u, w);
+            t = (e * u) / w;
             t += v[1];
             if (t >= -0x1C00 && t <= 0x1C00)
-                sub_08343E70(car, a2, other, 3, &gUnk_0203DEB0, &hit, -w, DIV_HI(e << 16, -w));
+                sub_08343E70(car, a2, other, 3, &gUnk_0203DEB0, &hit, -w, (e << 16) / -w);
         }
 
         d[0] = gUnk_0203DF50[4];
@@ -240,28 +199,28 @@ u8 sub_08343EA8(struct Ent *car)
         w = v[2] - v[0];
         u = v[3] - v[1];
         if (u < 0 && v[3] <= 0x1C00 && (e = v[1] - 0x1C00) >= 0) {
-            t = DIV_T(w * e, u);
+            t = (w * e) / u;
             t += v[0];
             if (t >= -0xF00 && t <= 0xF00)
-                sub_08343E70(other, a2, car, 0, &gUnk_0203DEB0, &hit, -u, DIV_HI(e << 16, -u));
+                sub_08343E70(other, a2, car, 0, &gUnk_0203DEB0, &hit, -u, (e << 16) / -u);
         }
         if (u > 0 && v[3] >= -0x1C00 && (e = -0x1C00 - v[1]) >= 0) {
-            t = DIV_T(w * e, u);
+            t = (w * e) / u;
             t += v[0];
             if (t >= -0xF00 && t <= 0xF00)
-                sub_08343E70(other, a2, car, 1, &gUnk_0203DEB0, &hit, u, DIV_HI(e << 16, u));
+                sub_08343E70(other, a2, car, 1, &gUnk_0203DEB0, &hit, u, (e << 16) / u);
         }
         if (w > 0 && v[2] >= -0xF00 && (e = -0xF00 - v[0]) >= 0) {
-            t = DIV_T(e * u, w);
+            t = (e * u) / w;
             t += v[1];
             if (t >= -0x1C00 && t <= 0x1C00)
-                sub_08343E70(other, a2, car, 2, &gUnk_0203DEB0, &hit, w, DIV_HI(e << 16, w));
+                sub_08343E70(other, a2, car, 2, &gUnk_0203DEB0, &hit, w, (e << 16) / w);
         }
         if (w < 0 && v[2] <= 0xF00 && (e = v[0] - 0xF00) >= 0) {
-            t = DIV_T(e * u, w);
+            t = (e * u) / w;
             t += v[1];
             if (t >= -0x1C00 && t <= 0x1C00)
-                sub_08343E70(other, a2, car, 3, &gUnk_0203DEB0, &hit, -w, DIV_HI(e << 16, -w));
+                sub_08343E70(other, a2, car, 3, &gUnk_0203DEB0, &hit, -w, (e << 16) / -w);
         }
     }
 
@@ -299,7 +258,7 @@ u8 sub_08343EA8(struct Ent *car)
                 if (sd < 0)
                     sd = 0;
                 if (sd > 50)
-                    sub_08344680(a - gUnk_0203D520, sub_08344DA8(gUnk_0203D4FC, 3));
+                    sub_08344680(a - gUnk_0203D520, gUnk_0203D4FC % 3);
                 else
                     sub_08344680(a - gUnk_0203D520, 4);
             }
@@ -309,7 +268,7 @@ u8 sub_08343EA8(struct Ent *car)
         a->unk48 = a->unk2C;
         if (a->unk2C > 0)
             a->unk48 = 0;
-        a->unk40 = sub_08344BB8(a->unk48 << 8, -a->unkE8[a->unk3E]);
+        a->unk40 = (a->unk48 << 8) / -a->unkE8[a->unk3E];
         if (b->unk7C < 5 || b->unk7C > 7) {
             if (gUnk_0203E0E0 != 0)
                 b->unk88 -= f >> 14;
@@ -318,7 +277,7 @@ u8 sub_08343EA8(struct Ent *car)
                 if (sd < 0)
                     sd = 0;
                 if (sd > 50)
-                    sub_08344680(b - gUnk_0203D520, sub_08344DA8(gUnk_0203D4FC, 3));
+                    sub_08344680(b - gUnk_0203D520, gUnk_0203D4FC % 3);
                 else
                     sub_08344680(b - gUnk_0203D520, 4);
             }
@@ -328,7 +287,7 @@ u8 sub_08343EA8(struct Ent *car)
         b->unk48 = b->unk2C;
         if (b->unk2C > 0)
             b->unk48 = 0;
-        b->unk40 = sub_08344BB8(b->unk48 << 8, -b->unkE8[b->unk3E]);
+        b->unk40 = (b->unk48 << 8) / -b->unkE8[b->unk3E];
         if (a == gUnk_0203D520 || b == gUnk_0203D520 || gUnk_020390EC != 0) {
             if (gUnk_020391F0 == 0 && gUnk_020390F0 == 0 && gUnk_0203E120[3] != 0
                 && (car == gUnk_0203D520 || gUnk_020390EC != 0)

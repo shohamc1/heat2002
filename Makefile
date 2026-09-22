@@ -37,12 +37,25 @@ all: $(TARGET).gba
 # makes gas fill that gap with zeros instead, matching the ROM. Same trick on
 # the asm fragments below: a fragment cut at a 2-mod-4 boundary would
 # otherwise get the same NOP.
+#
+# The high 0x0833/0x0834 module was linked with its own libgcc copy, so its
+# `/` and `%` libcalls land on sub_08344BB8 and friends, not the low copies
+# that symbols.ld aliases. Every caller at or above sub_0833AD00 uses the
+# high copies and no lower caller does (checked against the ROM's bl
+# targets), so objects from src/sub_083[3-9]*.c get their libcall symbols
+# renamed after assembly. Writing the call as `/` instead of a bare
+# sub_08344BB8 call matters: a libcall carries a hard-r0 return that an
+# ordinary call does not, and that changes register allocation.
+HIGH_LIBGCC_OBJS := $(patsubst src/%.c,$(BUILD)/src/%.o,$(wildcard src/sub_083[3-9]*.c))
+HIGH_LIBGCC_REDEFINES := --redefine-sym __divsi3=sub_08344BB8 \
+	--redefine-sym __modsi3=sub_08344C50 --redefine-sym __umodsi3=sub_08344DA8
 $(BUILD)/src/%.o: src/%.c $(wildcard include/*.h) Makefile
 	@mkdir -p $(@D)
 	$(CPP) $(CPPFLAGS) $< -o $(BUILD)/src/$*.i
 	$(CC1) $(CFLAGS) $(BUILD)/src/$*.i -o $(BUILD)/src/$*.s
 	printf '\t.align 2, 0\n' >> $(BUILD)/src/$*.s
 	$(AS) $(ASFLAGS) -I include -o $@ $(BUILD)/src/$*.s
+	$(if $(filter $(HIGH_LIBGCC_OBJS),$@),$(OBJCOPY) $(HIGH_LIBGCC_REDEFINES) $@)
 
 $(BUILD)/asm/%.o: asm/%.s Makefile
 	@mkdir -p $(@D)
