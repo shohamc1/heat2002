@@ -854,7 +854,8 @@ in their headers):**
   out-of-line bodies land after the function.
 - **Allocation battles** (~15 drafts, several ONE instruction from
   matching: sub_0800BEA4 one reload copy, ~~sub_080047E8 one zero-pseudo
-  swap~~ MATCHED 2026-09-22, sub_0833F468 and sub_0833BF80 one pool word
+  swap~~ MATCHED 2026-09-22, sub_0833F468 and ~~sub_0833BF80~~ (MATCHED 2026-09-23;
+  its pool word was a `gUnk_08338FB0` typo) one pool word
   each at FULL instruction parity — NB: re-verified 2026-09-22, the
   BANKED drafts for F468/BF80 are NOT at parity (89%/72% of instructions
   differ); the parity state was a lost working copy). Root causes per RTL
@@ -1137,11 +1138,35 @@ reach a different pseudo structure. When a draft is instruction-identical but
 tens of registers off, rewrite from the asm and diff the allocator, do not
 permute.
 
-## Parked 2026-09-22 (evening): sub_0833BF80 (1310B) — gcse PRE owns `(u8)t`
+## Resolved 2026-09-23: sub_0833BF80 (1584B) — MATCHED
 
-Improved draft banked in `docs/learnings/drafts/sub_0833BF80.c` with a
-header listing the four remaining deltas. Two findings from this session
-are reusable beyond this function:
+Parked 2026-09-22 with gcse PRE owning `(u8)t`; matched the next day. The
+last session's fixes, each reusable:
+
+- **An empty-body `do ; while` always gets a pre-test.** `expand_end_loop`
+  (the Cygnus loop-test variant) rotates every loop whose exit is not the
+  last insn, and jump.c's `duplicate_loop_exit_test` then copies the test
+  in front of the `NOTE_INSN_LOOP_BEG`. A bare `L: ldrb; cmp; beq L` with
+  no pre-test comes from a `goto` loop, which has no loop notes. A goto
+  loop also left gcse PRE free to insert the ROM's preload order.
+- **A label on a `return` blocks jump.c's range swap.** The "if (foo)
+  bar; else break;" optimization inverts `if (c) goto L1; A; goto L2; L1:
+  B; goto X; L2:` into `B` first. It needs the first label after the
+  conditional jump to be the jump's own target, so `if (flag != 0) { ret1:
+  return 1; }` (with another path doing `goto ret1`) keeps the source order.
+- **ARM promotes `s8` locals zero-extended** (`PROMOTE_MODE` forces
+  `UNSIGNEDP` for QImode). An `s8 rr = f();` compiles to `lsrs`, and the
+  test folds to `cmp` on the shifted value. The ROM's `asrs r1; cmp r1`
+  with the same register stored later is an `s32` local assigned from an
+  `s8`-returning call.
+- **Check which block a statement lives in before chasing registers.** Two
+  of the largest deltas were structural: a copy block inside the else arm,
+  and a call inside the `if`. The branch targets in the diff show both.
+- **The "one pool word" was a typo**: the draft passed `gUnk_08338FB0`
+  where the ROM (and every other caller of `sub_0833B074`) uses
+  `gUnk_02038FB0`.
+
+Findings from the parked sessions, still reusable:
 
 **1. A 3-case switch ALWAYS emits a median-rooted tree — read the walk to
 recover the source shape.** gcc 2.95 builds case AVL trees (rotations on
