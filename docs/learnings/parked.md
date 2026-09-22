@@ -7,9 +7,9 @@ so the next attempt starts from the failure instead of rediscovering it.
 
 ## Not functions at all (luvdis false positives)
 
-Five entries in the 743 count are data runs that the seed heuristic
+Seven entries in the 743 count are data runs that the seed heuristic
 (`BL` target ∩ `push {..., lr}` prologue) misclassified. A `0xB5` byte
-appears in data roughly 1-in-256 of the time, and these five landed on one
+appears in data roughly 1-in-256 of the time, and these landed on one
 that a `bl` also happens to point near.
 
 | "Function" | Tell |
@@ -19,6 +19,8 @@ that a `bl` also happens to point near.
 | `sub_0827B7CA` | `strb r5, [r2, r1]` before any register is set up |
 | `sub_080462B2` | `.2byte 0xFA4A @ bl lr+1172` — a `bl` into the middle of nowhere |
 | `sub_08121316` | `add sp, #0x000`, then a second `push` |
+| `sub_08120E3A` | one `push`, then `0xB1xx`/`0xB5xx` table halfwords; no references |
+| `sub_08248272` | one `push`, then `0xB1xx`/`0xB5xx` table halfwords; no references |
 
 They are left in `asm/` and must stay there. Do not write C for them. The
 743 denominator is therefore ~738 real functions; the count is left at 743
@@ -416,12 +418,13 @@ overlapping definitions, would put the current 250 matches at risk.
 
 #### Consequence for the denominator
 
-The 743 count includes the runtime library and the 5 luvdis false
-positives recorded above. Neither is a decompilation target. Since newlib
-builds from source, `scripts/progress.py` counts 112 non-targets: 48
-flagged runtime blocks still in asm, the 54 `NEWLIB_BLOCKS`, 5 library
-leaves in `src/` (`RUNTIME_LEAVES`, which the asm-only epilogue check cannot
-see), and the 5 false positives. The game-code denominator is **631**.
+The 743 count includes the runtime library, the SDK code and the 7 luvdis
+false positives recorded above. None is a decompilation target.
+`scripts/progress.py` counts 134 non-targets: the 33 libgcc blocks still in
+asm, the 93 `LIBRARY_BLOCKS` (73 newlib, 14 libagbsyscall, 6 `m4a_1.s`),
+libgcc's `__div0` leaf in `src/` (`RUNTIME_LEAVES`, which the asm-only
+epilogue check cannot see), and the 7 false positives. The game-code
+denominator is **609**.
 
 ### One or two instructions, cause identified in the compiler (5)
 
@@ -1105,8 +1108,8 @@ Findings worth keeping:
   (both `non_word_aligned_thumb_func_start`). A `push {…}` opcode byte
   (0xB5xx) inside a data run; each "function" is one instruction followed by
   `.byte` rows. Same tell as the five known ones, which makes it seven, not
-  five. The 646 game-code denominator was deliberately NOT adjusted — that
-  needs a matching `progress.py` change and selftest update, not a drive-by.
+  five. Both are in `LUVDIS_FALSE_POSITIVES` since 2026-09-23, with the
+  selftest updated.
 - **The epilogue pop register reveals the return type** (session discovery,
   from `thumb_exit` in `tools/agbcc/gcc/thumb.c`): `pop {r0}; bx r0` = void
   return, `pop {r1}` = returns a ≤4-byte value, `pop {r2}` = ≤8 bytes,

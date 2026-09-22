@@ -41,10 +41,11 @@ START = re.compile(r"^\s+(?:non_word_aligned_)?(?:thumb|arm)_func_start\s+(\S+)\
 # `bx lr` is flag-insensitive and matches either way).
 NON_INTERWORK_EPILOGUE = re.compile(r"\bpop \{[^}]*pc\}|\bmov pc, lr\b")
 
-# luvdis misread these five data runs as functions; see parked.md.
-LUVDIS_FALSE_POSITIVES = frozenset(
-    ("sub_08026DB6", "sub_0824C6F0", "sub_0827B7CA", "sub_080462B2", "sub_08121316")
-)
+# luvdis misread these seven data runs as functions; see parked.md.
+LUVDIS_FALSE_POSITIVES = frozenset((
+    "sub_08026DB6", "sub_0824C6F0", "sub_0827B7CA", "sub_080462B2", "sub_08121316",
+    "sub_08120E3A", "sub_08248272",
+))
 
 # luvdis blocks whose bytes now come from newlib objects built from source
 # (build/lib/newlib, placed by ldscript.ld). They left asm/ and src/ without
@@ -361,15 +362,15 @@ def _selftest():
     assert total == 743, f"expected 743 functions across asm + matched C + libraries, got {total}"
     assert "sub_08006734" not in insns, "sub_08006734 should be decompiled, not in asm"
     # 92 runtime-library functions were flagged in asm; the 59 newlib ones
-    # are now built from source, so the 33 libgcc ones remain. With the 5
+    # are now built from source, so the 33 libgcc ones remain. With the 7
     # luvdis false positives, the 93 library blocks (73 newlib, 14
-    # libagbsyscall, 6 m4a_1) and libgcc's __div0 leaf in src/, 132 blocks
-    # are not decompilation targets: the game-code denominator is 611.
+    # libagbsyscall, 6 m4a_1) and libgcc's __div0 leaf in src/, 134 blocks
+    # are not decompilation targets: the game-code denominator is 609.
     rt = runtime_library()
     assert len(rt) == 33, f"expected 33 runtime-library functions in asm, got {len(rt)}"
     non_targets = rt | LUVDIS_FALSE_POSITIVES | LIBRARY_BLOCKS | RUNTIME_LEAVES
-    assert total - len(non_targets) == 611, (
-        f"game-code denominator should be 611, got {total - len(non_targets)}"
+    assert total - len(non_targets) == 609, (
+        f"game-code denominator should be 609, got {total - len(non_targets)}"
     )
     # Every address in the verified newlib map must be one of them.
     import json as _json

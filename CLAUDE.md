@@ -18,9 +18,9 @@ SHA1 is wrong, no matter how clean the C looks. Never edit `baserom.gba`,
   here, it goes stale within a day.
 - `docs/recon.md` — function inventory, call graph, entry-point trace, candidate ranking.
 - `docs/learnings/parked.md` — **read before picking a target.** What was
-  already tried and does not match, why the compiler patch was reverted, and the 132
+  already tried and does not match, why the compiler patch was reverted, and the 134
   blocks that are not decompilation targets: runtime-library and SDK code
-  (libgcc, newlib, libagbsyscall, the sound driver's `m4a_1.s`) and 5 luvdis
+  (libgcc, newlib, libagbsyscall, the sound driver's `m4a_1.s`) and 7 luvdis
   false positives that are not functions at all.
 - `build/lib/newlib/` — all 34 newlib code objects (plus `impure.o`'s data)
   built from `tools/agbcc/libc` with the library's own flags (see the
@@ -42,10 +42,10 @@ preamble (through `@ End embedded Luvdis macros`) or you get a phantom
 function named `name` from the `.macro` definition. `scripts/progress.py
 --selftest` asserts all three.
 
-Of those 743 blocks, **132 are not decompilation targets** — see
-`parked.md` — so the game-code denominator is **611**. The 74 blocks now
+Of those 743 blocks, **134 are not decompilation targets** — see
+`parked.md` — so the game-code denominator is **609**. The 74 blocks now
 built from library source are listed in `progress.py` (`LIBRARY_BLOCKS`) so
-the 743 still adds up. `progress.py` reports against 611 and prints the
+the 743 still adds up. `progress.py` reports against 609 and prints the
 whole-ROM figure underneath.
 
 ## The loop

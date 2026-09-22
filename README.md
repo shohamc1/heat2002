@@ -11,13 +11,13 @@ match, the change is wrong — no exceptions.
 
 | Metric | Value |
 | --- | ---: |
-| Functions decompiled | **588 / 611** |
-| Code matched | **94,918 / 106,580 bytes** |
+| Functions decompiled | **588 / 609** |
+| Code matched | **94,918 / 106,576 bytes** |
 | Percent complete | **89.06%** |
 
 Progress is measured in **bytes of code**, not function count — a 1,500-instruction
 function is not worth the same as a 1-instruction stub. The denominator is the
-611 game-code functions: 743 blocks minus 132 that are runtime library, SDK
+609 game-code functions: 743 blocks minus 134 that are runtime library, SDK
 or luvdis false positives (see `docs/learnings/parked.md`). 54 library objects
 are built from source: 34 newlib from `tools/agbcc/libc`, and from `lib/` 18
 libagbsyscall members plus two copies of the sound driver's `m4a_1.s`, both
