@@ -45,6 +45,22 @@ ELF = ROOT / "nascar-heat.elf"
 SYMBOLS = ROOT / "symbols.ld"
 ROM_BASE = 0x8000000
 
+# Functions whose RETAIL build linked at an EWRAM base: the multiboot
+# island and part of the high 0x0834 region are module images that were
+# compiled to run from RAM. Their compiler-generated switch jumptables
+# embed the module's EWRAM link addresses (0x0200xxxx), so the candidate
+# object must be linked at that base or the table words can never
+# reproduce the ROM copy. The comparison itself is unchanged: still
+# byte-for-byte against baserom.gba at the function's ROM address.
+# Each base is derived from the function's own table-base pool constant,
+# which points at the word immediately after itself (self+4):
+#   link_base = rom_addr - (constant - constant_offset - 4)
+RAM_LINK_OVERRIDES = {
+    "sub_08364550": 0x02000668,  # multiboot island module
+    "sub_08340EFC": 0x0200847C,  # high-region RAM module (delta 0x6338A80)
+    "sub_08341288": 0x02008808,  # same module
+}
+
 
 def addr_of(name):
     """`sub_08006734` -> 0x08006734."""
@@ -87,12 +103,15 @@ def find_symbol(name):
     return list(_symbol_index().get(name, ()))
 
 
-def object_bytes(obj, offset, size, addr):
-    """Link `obj` alone at `addr` (symbols from the full ELF), return .text bytes."""
+def object_bytes(obj, offset, size, addr, link_addr=None):
+    """Link `obj` alone at `link_addr` (default: its ROM address; symbols
+    from the full ELF), return .text bytes."""
+    if link_addr is None:
+        link_addr = addr
     with tempfile.TemporaryDirectory() as d:
         elf = Path(d) / "t.elf"
         bin_ = Path(d) / "t.bin"
-        cmd = [LD, f"-Ttext={addr - offset:#x}", "-e", f"{addr:#x}", "-o", str(elf), str(obj)]
+        cmd = [LD, f"-Ttext={link_addr - offset:#x}", "-e", f"{addr:#x}", "-o", str(elf), str(obj)]
         if ELF.exists():
             cmd[1:1] = ["-R", str(ELF)]
         if SYMBOLS.exists():
@@ -153,7 +172,8 @@ def compare(name):
     if size == 0:
         sys.exit(f"{name}: nm reports size 0 in {obj.relative_to(ROOT)}")
 
-    ours = object_bytes(obj, offset, size, addr)
+    ours = object_bytes(obj, offset, size, addr,
+                        link_addr=RAM_LINK_OVERRIDES.get(name))
     if ours is None:
         sys.exit(f"{name}: could not link/extract bytes from {obj.relative_to(ROOT)}")
 
