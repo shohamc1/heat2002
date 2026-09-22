@@ -1,5 +1,41 @@
 #include "global.h"
 
+/*
+ * sub_0833BF80 draft state (2026-09-22, evening session) — 1310B, 655 insns.
+ * NOT matched; improved from the previous banked draft. Normalized-stream
+ * match ~640/737; the remaining deltas are precisely known:
+ *
+ *   1. gcse PRE fires on expr (ashift (reg/v t) 24) (dump: expression 87,
+ *      PRE at bb 46 + bb 51, reaching reg 590): emits two `lsls r6,r6,#24`
+ *      inserts and turns both `(u8)t` sites into `lsrs r0,r6,#24` extracts.
+ *      The ROM has NO inserts and a `lsls r0,r6,#24; lsrs r0,r0,#24` pair at
+ *      each site. Levers tried and DEAD: u8 t (renormalizes + direct cmp),
+ *      (u8)(arg1-3) at site 2 (recomputes via a callee-saved arg1 copy),
+ *      deep casts (u8)(s16)/(u8)(u8)/(u8)(s8) (folded in the front end),
+ *      dead-store count shifts (deleted before gcse), pad[]/first/arg s8
+ *      perturbations (table stays 349 buckets, inserts persist). Next idea:
+ *      split t into two pseudos gcse cannot canonicalize, or change the bb
+ *      structure feeding bb 46's predecessors.
+ *   2. r3/r4 swap at the top (&gUnk_020390F0 const vs the &gUnk_0203916C
+ *      copy): target puts the POOL CONSTANT in r4, the copy in r3.
+ *   3. ent/camera region: ours loads ent->unk40 early and muls
+ *      (unk40 * gUnk_020251A4[..]); target loads gUnk_02025190[..] first,
+ *      then gA4[..], then unk40 LAST, and muls (gA4 * unk40).
+ *   4. busy-wait tail: register shuffle (r0/r1) and ours merges the
+ *      `gUnk_02039154 = 1; return 1` block into the epilogue region instead
+ *      of the ROM's out-of-line block at 0x833c19c (reached by b.n from the
+ *      rr!=0 path at 0x833c51a).
+ * Fixed this session (verified in the diff): s32 gUnk_020390AC (signed
+ * /256: bge/adds#255/asrs), s16 third param of sub_0833B81C (asrs #19, no
+ * zero-extend), gUnk_02039218[3..0] stores as four separate descending
+ * statements, ent-selection arms inverted ((u8)t > 1 first), the r-switch
+ * restructured as `if ((u8)r != 1) { if ((u8)r > 1) switch ((u8)r)
+ * { case 2: ... case 0x27: ... } } else { sub_0833A8C8(0x38); }` — the
+ * ROM's dispatch `cmp#1;beq / cmp#1;ble / cmp#2;beq / cmp#39;beq` is NOT a
+ * plain 3-case switch (gcc 2.95 always re-roots a 3-case AVL at the
+ * median); see parked.md for the full derivation.
+ */
+
 struct Ent {
     u8 pad00[0x3E];
     u8 unk3E;
@@ -18,7 +54,7 @@ extern u8 gUnk_020390BC;
 extern u32 gUnk_020391E0[4];
 extern u32 gUnk_02039158;
 extern u8 gUnk_020391D4;
-extern volatile u8 gUnk_020390D0;
+extern volatile s8 gUnk_020390D0;
 extern u8 gUnk_020390FC;
 extern u8 gUnk_0203E120[];
 extern u8 gUnk_020390D4;
@@ -27,7 +63,7 @@ extern u8 gUnk_020390B8;
 extern u8 gUnk_020390EC;
 extern struct Ent gUnk_0203D520[];
 extern u32 gUnk_02039110[4];
-extern u32 gUnk_020390AC;
+extern s32 gUnk_020390AC;
 extern u8 gUnk_020391F0;
 extern u8 gUnk_020390C4;
 extern u8 gUnk_0203921C;
@@ -68,7 +104,7 @@ void sub_08342B04(void);
 void sub_0833D5F4(void *);
 void sub_08344878(void);
 void sub_08343148(u8 *, u32, u32);
-void sub_0833B81C(void *, u16, u16);
+void sub_0833B81C(void *, u16, s16);
 void sub_0833D448(void);
 void sub_0833D5B8(void);
 void sub_0833D57C(void);
@@ -193,7 +229,10 @@ skip42B04:
     gUnk_0203921C = 0;
     gUnk_02039134 = 0;
     flag = 0;
-    gUnk_02039218[3] = gUnk_02039218[2] = gUnk_02039218[1] = gUnk_02039218[0] = 0;
+    gUnk_02039218[3] = 0;
+    gUnk_02039218[2] = 0;
+    gUnk_02039218[1] = 0;
+    gUnk_02039218[0] = 0;
     while (gUnk_02039154 == 0) {
         sub_0833FA3C();
         sub_0833D680();
@@ -201,10 +240,10 @@ skip42B04:
         if (gUnk_0203921C != 0)
             sub_08343148(gUnk_02039170, 0x4B, 0x5A);
         gUnk_02039134 = 0;
-        if ((u8)t <= 1)
-            ent = &gUnk_0203D520[gUnk_0203E1B0];
-        else
+        if ((u8)t > 1)
             ent = gUnk_0203D520;
+        else
+            ent = &gUnk_0203D520[gUnk_0203E1B0];
         sub_0833B81C(gUnk_02038FB0, 1,
                     ((s16)(gUnk_02025190[ent->unk3E]
                          + ((gUnk_020251A4[ent->unk3E] * ent->unk40) >> 6))) >> 3);
@@ -266,11 +305,10 @@ skip42B04:
                     r = sub_0833DBF4();
                 }
             }
-            switch ((u8)r) {
-            case 1:
-                sub_0833A8C8(0x38);
-                break;
-            case 2:
+            if ((u8)r != 1) {
+                if ((u8)r > 1) {
+                    switch ((u8)r) {
+                    case 2:
                 if (gUnk_0203916C == 2 || gUnk_0203916C == 0xE || gUnk_0203916C == 0
                     || gUnk_0203916C == 7 || gUnk_0203916C == 6 || gUnk_0203916C == 9
                     || gUnk_0203916C == 5 || gUnk_0203916C == 0x11 || gUnk_0203916C == 1
@@ -284,9 +322,13 @@ skip42B04:
                 }
                 sub_0833D288(0x19, 0);
                 break;
-            case 0x27:
-                flag = 1;
-                break;
+                    case 0x27:
+                        flag = 1;
+                        break;
+                    }
+                }
+            } else {
+                sub_0833A8C8(0x38);
             }
         }
         if (gUnk_020390EC != 0) {

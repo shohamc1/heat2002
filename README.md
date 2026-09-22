@@ -11,15 +11,15 @@ match, the change is wrong — no exceptions.
 
 | Metric | Value |
 | --- | ---: |
-| Functions decompiled | **605 / 646** |
-| Code matched | **87,718 / 106,648 bytes** |
-| Percent complete | **82.25%** |
+| Functions decompiled | **611 / 646** |
+| Code matched | **93,588 / 107,092 bytes** |
+| Percent complete | **87.39%** |
 
 Progress is measured in **bytes of code**, not function count — a 1,500-instruction
 function is not worth the same as a 1-instruction stub. The denominator is the
 646 game-code functions (743 blocks minus 97 vendored runtime-library and
 luvdis false positives — see `docs/learnings/parked.md`); over the whole ROM
-the same bytes are 82.0186%%. Regenerate with `python3 scripts/progress.py`;
+the same bytes are 75.0915%. Regenerate with `python3 scripts/progress.py`;
 `--json` emits an [objdiff](https://github.com/encounter/objdiff) `report.json`
 v2 compatible with [decomp.dev](https://decomp.dev).
 

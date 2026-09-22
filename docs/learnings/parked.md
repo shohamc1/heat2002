@@ -1136,3 +1136,39 @@ one thing worth keeping from them: 325 000 variants of a fitted draft could not
 reach a different pseudo structure. When a draft is instruction-identical but
 tens of registers off, rewrite from the asm and diff the allocator, do not
 permute.
+
+## Parked 2026-09-22 (evening): sub_0833BF80 (1310B) — gcse PRE owns `(u8)t`
+
+Improved draft banked in `docs/learnings/drafts/sub_0833BF80.c` with a
+header listing the four remaining deltas. Two findings from this session
+are reusable beyond this function:
+
+**1. A 3-case switch ALWAYS emits a median-rooted tree — read the walk to
+recover the source shape.** gcc 2.95 builds case AVL trees (rotations on
+balance ±2), flattens to a list only when the root has a left child, then
+`balance_case_nodes` splits any list of >2 nodes at the middle (the
+cost-table lopsided path is unreachable when any case value is a control
+character — 1, 2 fail `cost_table[i] >= 0`). So cases {1,2,39} in ANY
+source order emit `cmp #2; beq/bgt; [left 1]; [right 39]`. The ROM's
+dispatch at 0x833c470 is `cmp#1;beq C1 / cmp#1;ble D / cmp#2;beq C2 /
+cmp#39;beq C27 / b D` — a right-chain 1→2→39, impossible from one 3-case
+switch. It is `if (r != 1) { if (r > 1) switch (r) { case 2: ...; case
+0x27: ...; } } else { case-1 body }`: the else-arm placement puts the
+==1 body out of line after the dispatch (bodies at 0x833c482/48a follow
+`b D`), the `r > 1` guard is the `cmp#1; ble D`, and the 2-case switch
+{i=2,39} keeps its AVL chain (2 nodes, no split) emitting the beq chain.
+Verified in the draft: this source compiles to the ROM dispatch exactly.
+
+**2. gcse PRE on a register cast-pair is a wall class worth naming.** When
+a u8 extraction of a u32 local appears twice, PRE hoists the `<<24` into
+the variable's home register (two edge inserts + `lsrs` extracts), where
+the ROM keeps independent `lsls/lsrs` pairs per site. Killed levers: deep
+casts (front end folds them), re-deriving from the argument (allocator
+keeps the argument callee-saved instead), shifting gcse-time insn counts
+(dead stores are deleted before gcse), and every u8/s8/pad perturbation
+(expr table pinned at 349 buckets, PRE persisted). The `-dG` dump names
+the expression (`PRE: redundant insn N (expression E) in bb B, reaching
+reg is R`) — diagnose there first. The surviving hypothesis: the original
+source split the value across two pseudos gcse could not canonicalize,
+or its bb structure around the first site's predecessors differs in a way
+that breaks partial availability.
