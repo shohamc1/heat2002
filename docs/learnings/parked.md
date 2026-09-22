@@ -306,6 +306,51 @@ with relocation fields excluded, built with
 preprocessing settings; 188 call targets were cross-checked for
 relocation-address consistency.
 
+#### Newlib built from source (2026-09-23)
+
+32 of the ROM's 34 newlib code objects, plus the data-only `reent/impure.o`,
+now build from `tools/agbcc/libc` (Makefile `NEWLIB_OBJS`) and link whole at
+their ROM addresses. They replaced 54 luvdis blocks: 44 flagged runtime
+blocks, 5 matched `src/` leaves (`_mbtowc_r`, `__malloc_lock`/`unlock`,
+`__errno`, `isatty`), and 5 "game" targets that were never game code
+(`sprintf`, `_Bfree`, `_hi0bits`, `_lo0bits`, `abort`). The newlib run is
+0x08017558-0x0801B5EC; `sprintf.o` at 0x08017558 was hidden inside the
+`__umodsi3` block.
+
+How it was placed, reusable for libgcc:
+
+- **Locate by masked bytes.** Build every vendored object, then slide each
+  `.text` over the ROM with its relocation fields masked. The objects tiled
+  the run with no gaps. Two false hits (tiny objects matching inside a
+  larger one) are easy to spot.
+- **Derive every other address from the ROM's resolved relocations.** Each
+  `.text` relocation's ROM value, minus its addend, is the target's address,
+  so one pass gives each object's `.rodata`/`.data`/`.bss` base and every
+  external symbol. `.rodata` sits in link order at 0x08339464-0x0833967D
+  (`impure.o`'s two bytes fill the gap after `dtoa.o`); `.data` is used in
+  place in ROM at 0x083FF7BC-0x083FFF04 (`_impure_ptr` 0x083FFAA8,
+  `__malloc_av_` 0x083FFAC0); `arm/syscalls.o`'s `.bss` is 0x020004A8, and
+  `errno`/`end` are 0x0202F244/0x0202F248.
+- **Place data sections inside the one `.text` output section**, between the
+  asm fragments cut around them. The linker's zero fill reproduces every
+  alignment gap.
+- **Aliases live in `ldscript.ld`, not `symbols.ld`.** Game code still calls
+  newlib by luvdis name (`sub_08017594 = sprintf;`), and newlib calls the
+  asm that remains (`__muldf3 = sub_0801BAE0;`). The RAM-module links read
+  `symbols.ld` and have no newlib, so a C-name right-hand side there fails.
+- **`errno` is COMMON**; a script definition (`errno = 0x0202F244;`) wins.
+
+**`locale.o` and `arm/syscalls.o` need the pre-patch compiler.** Each has a
+call that passes a string literal next to a register argument
+(`strcmp(locale, "C")`, `_write(1, "...", 32)`), and the ROM loads the
+address first: the stock `precompute_register_parameters` behaviour that the
+fork's one-line patch removes. Every other newlib object matches under the
+patched compiler because none has that call shape. The runtime library was
+prebuilt with the stock compiler; the game was not. Both objects stay as asm
+fragments plus four matched `src/` leaves (`_localeconv_r`, `findslot`,
+`remap_handle`, `_fstat`) until a stock build exists; a shallow CI submodule
+cannot build the fork's parent commit.
+
 #### Why `pop {rN, pc}` appears at all
 
 `thumb_pushpop` (`tools/agbcc/gcc/thumb.c:601`) refuses a direct PC pop
@@ -340,8 +385,8 @@ for `old_agbcc`. No test so far separates O2 from O3.
 
 #### Build architecture
 
-Leave `src/` and its flags alone. If runtime assembly is ever replaced by
-source-built objects, use a separate build group with its own flags:
+Leave `src/` and its flags alone. Newlib now builds this way (above). For
+the rest of the runtime assembly, use a separate build group with its own flags:
 clusters 1-2 as explicit newlib objects (`vfprintf.o` spans both), libgcc2
 source for multiplication and negation while keeping the handwritten
 division assembly, cluster 3 as explicit newlib plus float-runtime objects
@@ -356,10 +401,12 @@ overlapping definitions, would put the current 250 matches at risk.
 
 #### Consequence for the denominator
 
-The 743 count includes 92 runtime-library functions and the 5 luvdis
-false positives recorded above. Neither group is a decompilation target,
-so the real game-code denominator is about **646**. `scripts/progress.py`
-still divides by 743; a future change could report both.
+The 743 count includes the runtime library and the 5 luvdis false
+positives recorded above. Neither is a decompilation target. Since newlib
+builds from source, `scripts/progress.py` counts 112 non-targets: 48
+flagged runtime blocks still in asm, the 54 `NEWLIB_BLOCKS`, 5 library
+leaves in `src/` (`RUNTIME_LEAVES`, which the asm-only epilogue check cannot
+see), and the 5 false positives. The game-code denominator is **631**.
 
 ### One or two instructions, cause identified in the compiler (5)
 

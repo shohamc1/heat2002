@@ -1,4 +1,39 @@
 ENTRY(rom_entry)
+
+/* newlib objects call these; they are still asm (libgcc soft-float,
+   _call_via_rN, locale.o, arm/syscalls.o) or absolute data. Kept here, not
+   in symbols.ld: the RAM-module links read symbols.ld and have no newlib. */
+__adddf3 = sub_0801BA78;
+__subdf3 = sub_0801BAA8;
+__muldf3 = sub_0801BAE0;
+__divdf3 = sub_0801BD88;
+__eqdf2 = sub_0801C03C;
+__nedf2 = sub_0801C088;
+__gtdf2 = sub_0801C0D4;
+__ltdf2 = sub_0801C16C;
+__ledf2 = sub_0801C1B8;
+__floatsidf = sub_0801C204;
+__fixdfsi = sub_0801C280;
+__negdf2 = sub_0801C2F4;
+_call_via_r3 = _08017200;
+_call_via_r8 = _08017214;
+localeconv = sub_08019D78;
+_read = sub_0801B154;
+_lseek = sub_0801B220;
+_write = sub_0801B250;
+_close = sub_0801B384;
+_sbrk = sub_0801B3D4;
+_fstat = sub_0801B410;
+__mb_cur_max = 0x083FFAAC;
+errno = 0x0202F244;
+
+/* Game code and the remaining asm call newlib by its luvdis names. */
+sub_08017594 = sprintf;
+sub_0801AF74 = strcmp;
+sub_0801AFD0 = strlen;
+sub_0801B52C = __errno;
+sub_0801B564 = abort;
+
 SECTIONS
 {
     . = 0x08000000;
@@ -528,22 +563,57 @@ SECTIONS
         build/asm/rom_080171F2.o(.text*);
         build/src/sub_080172C4.o(.text*);
         build/asm/rom_080172C6.o(.text*);
+        /* newlib, built from tools/agbcc/libc (see the Makefile). locale.o
+           and arm/syscalls.o stay as asm and C pieces until they can be
+           built with the pre-patch compiler. */
+        build/lib/newlib/stdio/sprintf.o(.text);
+        build/lib/newlib/stdio/vfprintf.o(.text);
+        build/lib/newlib/stdio/wsetup.o(.text);
+        build/lib/newlib/stdlib/dtoa.o(.text);
+        build/lib/newlib/stdio/fflush.o(.text);
+        build/lib/newlib/stdio/findfp.o(.text);
+        build/lib/newlib/stdlib/freer.o(.text);
+        build/lib/newlib/stdio/fvwrite.o(.text);
+        build/lib/newlib/stdio/fwalk.o(.text);
+        build/asm/rom_08019D1C.o(.text*);
         build/src/sub_08019D58.o(.text*);
         build/asm/rom_08019D60.o(.text*);
-        build/src/sub_0801A380.o(.text*);
-        build/asm/rom_0801A3AA.o(.text*);
-        build/src/sub_0801A568.o(.text*);
-        build/src/sub_0801A56C.o(.text*);
-        build/asm/rom_0801A56E.o(.text*);
+        build/lib/newlib/stdio/makebuf.o(.text);
+        build/lib/newlib/stdlib/mallocr.o(.text);
+        build/lib/newlib/stdlib/mbtowc_r.o(.text);
+        build/lib/newlib/string/memchr.o(.text);
+        build/lib/newlib/string/memcpy.o(.text);
+        build/lib/newlib/string/memmove.o(.text);
+        build/lib/newlib/string/memset.o(.text);
+        build/lib/newlib/stdlib/mlock.o(.text);
+        build/lib/newlib/stdlib/mprec.o(.text);
+        build/lib/newlib/math/s_isinf.o(.text);
+        build/lib/newlib/math/s_isnan.o(.text);
+        build/lib/newlib/reent/sbrkr.o(.text);
+        build/lib/newlib/stdio/stdio.o(.text);
+        build/lib/newlib/string/strcmp.o(.text);
+        build/lib/newlib/string/strlen.o(.text);
         build/src/sub_0801B014.o(.text*);
         build/src/sub_0801B034.o(.text*);
         build/asm/rom_0801B080.o(.text*);
         build/src/sub_0801B410.o(.text*);
         build/asm/rom_0801B41A.o(.text*);
-        build/src/sub_0801B52C.o(.text*);
-        build/asm/rom_0801B538.o(.text*);
-        build/src/sub_0801B584.o(.text*);
-        build/asm/rom_0801B588.o(.text*);
+        build/lib/newlib/reent/writer.o(.text);
+        build/lib/newlib/stdlib/callocr.o(.text);
+        build/lib/newlib/reent/closer.o(.text);
+        build/lib/newlib/errno/errno.o(.text);
+        build/lib/newlib/reent/fstatr.o(.text);
+        build/lib/newlib/arm/libcfunc.o(.text);
+        build/lib/newlib/reent/lseekr.o(.text);
+        build/lib/newlib/reent/readr.o(.text);
+        build/asm/rom_0801B5EC.o(.text*);
+        /* newlib .rodata, in link order; locale.o's is still asm */
+        build/lib/newlib/stdio/vfprintf.o(.rodata);
+        build/lib/newlib/stdlib/dtoa.o(.rodata);
+        build/lib/newlib/reent/impure.o(.rodata);
+        build/asm/rom_083394F8.o(.text*);
+        build/lib/newlib/stdlib/mprec.o(.rodata);
+        build/asm/rom_08339658.o(.text*);
         build/src/sub_08339920.o(.text*);
         build/src/sub_08339934.o(.text*);
         build/src/sub_0833995C.o(.text*);
@@ -810,6 +880,11 @@ SECTIONS
         build/asm/rom_08364730.o(.text*);
         build/src/sub_083647FC.o(.text*);
         build/asm/rom_08364800.o(.text*);
+        /* newlib .data, which the ROM uses in place; locale.o's is still asm */
+        build/lib/newlib/reent/impure.o(.data);
+        build/asm/rom_083FFAAC.o(.text*);
+        build/lib/newlib/stdlib/mallocr.o(.data);
+        build/asm/rom_083FFF04.o(.text*);
         /* Catch-all, not the primary placement mechanism: every object above
            is listed explicitly and must stay in address order. This exists
            so a *forgotten* listing (a new src/*.c or asm/*.s add without a

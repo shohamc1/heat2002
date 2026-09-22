@@ -21,7 +21,23 @@ ASM_SRCS := $(wildcard asm/*.s)
 # not reach the main link, or the trailing *(.text*) catch-all places them
 # twice over.
 RAM_MODULE_OBJS := build/src/sub_08364550.o build/src/sub_08340EFC.o
-OBJS     := $(filter-out $(RAM_MODULE_OBJS),$(C_SRCS:%.c=$(BUILD)/%.o) $(ASM_SRCS:%.s=$(BUILD)/%.o))
+
+# Runtime library: newlib objects built from the vendored source with the
+# flags of tools/agbcc/libc/Makefile (no interwork, -fno-builtin), in ROM
+# order. ldscript.ld places each one whole, plus its .rodata and .data.
+# locale.o and arm/syscalls.o are still asm: the ROM's copies were built
+# before the fork's calls.c patch, which changes their argument order.
+NEWLIB_DIR  := tools/agbcc/libc
+NEWLIB_OBJS := $(addprefix $(BUILD)/lib/newlib/,$(addsuffix .o, \
+	stdio/sprintf stdio/vfprintf stdio/wsetup stdlib/dtoa stdio/fflush \
+	stdio/findfp stdlib/freer stdio/fvwrite stdio/fwalk stdio/makebuf \
+	stdlib/mallocr stdlib/mbtowc_r string/memchr string/memcpy \
+	string/memmove string/memset stdlib/mlock stdlib/mprec math/s_isinf \
+	math/s_isnan reent/sbrkr stdio/stdio string/strcmp string/strlen \
+	reent/writer stdlib/callocr reent/closer errno/errno reent/fstatr \
+	arm/libcfunc reent/lseekr reent/readr reent/impure))
+
+OBJS     := $(filter-out $(RAM_MODULE_OBJS),$(C_SRCS:%.c=$(BUILD)/%.o) $(ASM_SRCS:%.s=$(BUILD)/%.o)) $(NEWLIB_OBJS)
 
 .PHONY: all check test clean disasm
 all: $(TARGET).gba
@@ -57,6 +73,30 @@ $(BUILD)/src/%.o: src/%.c $(wildcard include/*.h) Makefile
 	printf '\t.align 2, 0\n' >> $(BUILD)/src/$*.s
 	$(AS) $(ASFLAGS) -I include -o $@ $(BUILD)/src/$*.s
 	$(if $(filter $(HIGH_LIBGCC_OBJS),$@),$(OBJCOPY) $(HIGH_LIBGCC_REDEFINES) $@)
+
+NEWLIB_CPPFLAGS := -I tools/agbcc/ginclude -I $(NEWLIB_DIR)/include -nostdinc -undef \
+	-DABORT_PROVIDED -DHAVE_GETTIMEOFDAY -D__thumb__ -DARM_RDI_MONITOR \
+	-D__GNUC__ -DINTERNAL_NEWLIB -D__USER_LABEL_PREFIX__=
+NEWLIB_CFLAGS := -O2 -fno-builtin
+# mallocr.c yields one object per -DDEFINE_* entry point.
+NEWLIB_MALLOC_OBJS := $(addprefix $(BUILD)/lib/newlib/stdlib/,mallocr.o freer.o callocr.o)
+$(BUILD)/lib/newlib/stdlib/mallocr.o: NEWLIB_DEFS := -DDEFINE_MALLOC
+$(BUILD)/lib/newlib/stdlib/freer.o: NEWLIB_DEFS := -DDEFINE_FREE
+$(BUILD)/lib/newlib/stdlib/callocr.o: NEWLIB_DEFS := -DDEFINE_CALLOC
+$(BUILD)/lib/newlib/stdlib/mbtowc_r.o: NEWLIB_CFLAGS += -fshort-enums
+
+define newlib_compile
+@mkdir -p $(@D)
+$(CPP) $(NEWLIB_CPPFLAGS) $(NEWLIB_DEFS) $< -o $(@:.o=.i)
+$(CC1) $(NEWLIB_CFLAGS) $(@:.o=.i) -o $(@:.o=.s)
+printf '.text\n\t.align\t2, 0\n' >> $(@:.o=.s)
+$(AS) -mcpu=arm7tdmi -o $@ $(@:.o=.s)
+endef
+
+$(filter-out $(NEWLIB_MALLOC_OBJS),$(NEWLIB_OBJS)): $(BUILD)/lib/newlib/%.o: $(NEWLIB_DIR)/%.c Makefile
+	$(newlib_compile)
+$(NEWLIB_MALLOC_OBJS): $(NEWLIB_DIR)/stdlib/mallocr.c Makefile
+	$(newlib_compile)
 
 $(BUILD)/asm/%.o: asm/%.s Makefile
 	@mkdir -p $(@D)

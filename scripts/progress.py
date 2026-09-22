@@ -29,8 +29,9 @@ PREAMBLE_END = "@ End embedded Luvdis macros"
 # undercounts by 8 on this ROM.
 START = re.compile(r"^\s+(?:non_word_aligned_)?(?:thumb|arm)_func_start\s+(\S+)\s*$")
 
-# Vendored runtime library: 33 libgcc + 59 newlib functions, identified
-# byte-for-byte (docs/learnings/parked.md, runtime-newlib-map.json). They were
+# Vendored runtime library still in asm: libgcc, and the newlib objects not
+# yet built from source (docs/learnings/parked.md, runtime-newlib-map.json).
+# They were
 # built without -mthumb-interwork, so they end in `pop {rN, pc}` or
 # `mov pc, lr`, which agbcc cannot emit under the project's flags. They are
 # not decompilation targets: they stay as asm, or are replaced by verified
@@ -43,6 +44,30 @@ NON_INTERWORK_EPILOGUE = re.compile(r"\bpop \{[^}]*pc\}|\bmov pc, lr\b")
 # luvdis misread these five data runs as functions; see parked.md.
 LUVDIS_FALSE_POSITIVES = frozenset(
     ("sub_08026DB6", "sub_0824C6F0", "sub_0827B7CA", "sub_080462B2", "sub_08121316")
+)
+
+# luvdis blocks whose bytes now come from newlib objects built from source
+# (build/lib/newlib, placed by ldscript.ld). They left asm/ and src/ without
+# being game code; listing them keeps the 743-block accounting closed.
+NEWLIB_BLOCKS = frozenset((
+    "sub_08017594", "sub_080175D4", "sub_080175F4", "sub_08017668", "sub_0801767C",
+    "sub_080185DC", "sub_080186D0", "sub_08018740", "sub_080187EC", "sub_08018948",
+    "sub_08019640", "sub_080196D4", "sub_0801970C", "sub_080197B0", "sub_080197D0",
+    "sub_08019830", "sub_080199F0", "sub_08019AB0", "sub_08019CDC", "sub_08019D88",
+    "sub_08019E64", "sub_08019FC0", "sub_0801A380", "sub_0801A3AC", "sub_0801A42C",
+    "sub_0801A48C", "sub_0801A514", "sub_0801A568", "sub_0801A56C", "sub_0801A570",
+    "sub_0801A5C8", "sub_0801A5E0", "sub_0801A6FC", "sub_0801A754", "sub_0801A7D8",
+    "sub_0801A7EC", "sub_0801A958", "sub_0801A9F0", "sub_0801AA90", "sub_0801AAD0",
+    "sub_0801AC0C", "sub_0801ACC8", "sub_0801AE84", "sub_0801AF74", "sub_0801AFD0",
+    "sub_0801B478", "sub_0801B4A8", "sub_0801B500", "sub_0801B52C", "sub_0801B538",
+    "sub_0801B564", "sub_0801B584", "sub_0801B58C", "sub_0801B5BC",
+))
+
+# Runtime-library functions the epilogue check cannot see, because they are
+# in src/ rather than asm/: libgcc's __div0, and pieces of newlib's locale.o
+# and arm/syscalls.o that stay split until those objects build from source.
+RUNTIME_LEAVES = frozenset(
+    ("sub_080172C4", "sub_08019D58", "sub_0801B014", "sub_0801B034", "sub_0801B410")
 )
 
 
@@ -162,6 +187,20 @@ def c_func_sizes():
     return sizes
 
 
+def library_objects():
+    """{object: .text bytes} for the runtime library built from source."""
+    sizes = {}
+    lib = ROOT / "build" / "lib"
+    for obj in sorted(lib.rglob("*.o")):
+        out = subprocess.run(
+            ["arm-none-eabi-size", "-A", str(obj)], capture_output=True, text=True, check=False
+        ).stdout
+        m = re.search(r"^\.text\s+(\d+)", out, re.MULTILINE)
+        if m and int(m.group(1)):
+            sizes[str(obj.relative_to(lib))] = int(m.group(1))
+    return sizes
+
+
 def main():
     insns = parse_asm()
     sizes = func_sizes()
@@ -180,7 +219,7 @@ def main():
     # loop, step 5), so `insns` alone would lose it from the report. Track it
     # separately, sized from its compiled object instead of asm bytes.
     names = sorted(set(insns) | done)
-    non_targets = runtime_library() | LUVDIS_FALSE_POSITIVES
+    non_targets = runtime_library() | LUVDIS_FALSE_POSITIVES | RUNTIME_LEAVES
 
     units, total, matched = [], 0, 0
     for name in names:
@@ -211,6 +250,27 @@ def main():
             }
         )
 
+    # Source-built runtime library: complete by construction (make check
+    # verifies it), never a decompilation target.
+    lib = library_objects()
+    for name, size in lib.items():
+        total += size
+        matched += size
+        units.append(
+            {
+                "name": name,
+                "measures": {
+                    "total_code": size,
+                    "matched_code": size,
+                    "matched_code_percent": 100.0,
+                    "total_functions": 1,
+                    "matched_functions": 1,
+                    "complete_code": size,
+                },
+                "metadata": {"complete": True, "target": False},
+            }
+        )
+
     pct = (matched / total * 100) if total else 0.0
     measures = {
         "fuzzy_match_percent": pct,
@@ -221,12 +281,12 @@ def main():
         "matched_data": 0,
         "matched_data_percent": 0.0,
         "total_functions": len(units),
-        "matched_functions": len(done),
-        "matched_functions_percent": (len(done) / len(units) * 100 if units else 0.0),
+        "matched_functions": len(done) + len(lib),
+        "matched_functions_percent": ((len(done) + len(lib)) / len(units) * 100 if units else 0.0),
         "complete_code": matched,
         "complete_code_percent": pct,
         "total_units": len(units),
-        "complete_units": len(done),
+        "complete_units": len(done) + len(lib),
     }
 
     if "--json" in sys.argv:
@@ -252,7 +312,12 @@ def main():
             f"  excluded:  {len(units) - len(game)} non-targets"
             " (vendored runtime library, luvdis false positives)"
         )
-        print(f"  whole ROM: {matched} / {total} bytes ({pct:.4f}%) over {len(units)} blocks")
+        print(
+            f"  whole ROM: {matched} / {total} bytes ({pct:.4f}%) over {len(units)} units"
+            f" ({len(lib)} newlib objects built from source)"
+        )
+        if not lib:
+            print("\n  WARNING: no build/lib objects; run `make` for accurate totals.")
         if missing:
             print(
                 f"\n  WARNING: no compiled object for {', '.join(missing)};"
@@ -270,17 +335,20 @@ def _selftest():
     # 743 total, minus however many have been decompiled out of asm/*.s and
     # into src/*.c so far -- computed, not hardcoded, so this doesn't need
     # editing as tickets land.
-    total = len(set(insns) | decompiled())
-    assert total == 743, f"expected 743 functions across asm + matched C, got {total}"
+    done = decompiled()
+    assert not NEWLIB_BLOCKS & (set(insns) | done), "a newlib block is back in asm/ or src/"
+    total = len(set(insns) | done | NEWLIB_BLOCKS)
+    assert total == 743, f"expected 743 functions across asm + matched C + newlib, got {total}"
     assert "sub_08006734" not in insns, "sub_08006734 should be decompiled, not in asm"
-    # 92 runtime-library functions, all still in asm, plus 5 luvdis false
-    # positives, are not decompilation targets -- so the game-code
-    # denominator is 646, not 743.
+    # 92 runtime-library functions were flagged in asm; 44 of them are now
+    # newlib built from source, so 48 remain. With the 5 luvdis false
+    # positives, the 54 newlib blocks and the 5 library leaves in src/, 112
+    # blocks are not decompilation targets: the game-code denominator is 631.
     rt = runtime_library()
-    assert len(rt) == 92, f"expected 92 runtime-library functions, got {len(rt)}"
-    non_targets = rt | LUVDIS_FALSE_POSITIVES
-    assert total - len(non_targets) == 646, (
-        f"game-code denominator should be 646, got {total - len(non_targets)}"
+    assert len(rt) == 48, f"expected 48 runtime-library functions in asm, got {len(rt)}"
+    non_targets = rt | LUVDIS_FALSE_POSITIVES | NEWLIB_BLOCKS | RUNTIME_LEAVES
+    assert total - len(non_targets) == 631, (
+        f"game-code denominator should be 631, got {total - len(non_targets)}"
     )
     # Every address in the verified newlib map must be one of them.
     import json as _json
@@ -289,7 +357,11 @@ def _selftest():
         int(row[0], 16)
         for row in _json.loads((ROOT / "docs/learnings/runtime-newlib-map.json").read_text())
     }
-    rt_addrs = {int(n.split("_")[1], 16) for n in rt if re.fullmatch(r"sub_[0-9A-Fa-f]{8}", n)}
+    rt_addrs = {
+        int(n.split("_")[1], 16)
+        for n in rt | NEWLIB_BLOCKS
+        if re.fullmatch(r"sub_[0-9A-Fa-f]{8}", n)
+    }
     assert mapped <= rt_addrs, f"newlib map has {len(mapped - rt_addrs)} unflagged addresses"
     print(f"selftest ok ({len(insns)} functions remaining in asm)")
 
