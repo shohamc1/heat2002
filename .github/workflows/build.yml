@@ -5,6 +5,7 @@ on: [push, pull_request]
 jobs:
   match:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
         with:
@@ -20,19 +21,10 @@ jobs:
       - name: Build agbcc
         run: cd tools/agbcc && ./build.sh
 
-      # baserom.gba is not in the repo -- CI needs it supplied out of band.
-      - name: Restore base ROM
-        env:
-          BASEROM_B64: ${{ secrets.BASEROM_B64 }}
-        run: |
-          if [ -z "$BASEROM_B64" ]; then
-            echo "BASEROM_B64 secret not set; skipping match verification."
-            exit 0
-          fi
-          echo "$BASEROM_B64" | base64 -d > baserom.gba
-          shasum -c nascar-heat.sha1.baserom
-
-      - name: Verify byte-for-byte match
-        run: |
-          [ -f baserom.gba ] || exit 0
-          make check
+      # baserom.gba is deliberately never supplied to CI: nothing in the
+      # build reads it (only `make disasm` does), and `make check` compares
+      # the produced ROM against the sha1 committed in nascar-heat.sha1 --
+      # the same fingerprint the project's correctness rule is written on.
+      # The ROM stays on the developer's machine in every form.
+      - name: Build and verify byte-for-byte match
+        run: make -j"$(nproc)" check
