@@ -16,7 +16,12 @@ CPPFLAGS := -I include -I tools/agbcc/include -iquote include -nostdinc -undef
 
 C_SRCS   := $(wildcard src/*.c)
 ASM_SRCS := $(wildcard asm/*.s)
-OBJS     := $(C_SRCS:%.c=$(BUILD)/%.o) $(ASM_SRCS:%.s=$(BUILD)/%.o)
+# RAM-module objects link into their standalone image only (see the
+# build/ram rule below); the main ROM embeds the image as data. They must
+# not reach the main link, or the trailing *(.text*) catch-all places them
+# twice over.
+RAM_MODULE_OBJS := build/src/sub_08364550.o
+OBJS     := $(filter-out $(RAM_MODULE_OBJS),$(C_SRCS:%.c=$(BUILD)/%.o) $(ASM_SRCS:%.s=$(BUILD)/%.o))
 
 .PHONY: all check test clean disasm
 all: $(TARGET).gba
@@ -44,6 +49,20 @@ $(BUILD)/asm/%.o: asm/%.s Makefile
 	cat $< > $(BUILD)/asm/$*.s
 	printf '\t.align 2, 0\n' >> $(BUILD)/asm/$*.s
 	$(AS) $(ASFLAGS) -I include -o $@ $(BUILD)/asm/$*.s
+
+# RAM-module images: functions whose retail build linked at an EWRAM base
+# (match.py's RAM_LINK_OVERRIDES). Compiled to C objects like everything
+# else, but linked into a standalone image at the module's EWRAM base and
+# embedded into the ROM as data at the function's ROM address -- the same
+# way the retail build shipped the module.
+RAM_MODULES := sub_08364550
+
+build/ram/sub_08364550.bin: build/src/sub_08364550.o symbols.ld Makefile
+	@mkdir -p $(dir $@)
+	$(LD) -Ttext=0x02000668 -e 0x02000668 --defsym gUnk_03000C00=0x03000C00 -o $@.elf $<
+	$(OBJCOPY) -O binary --only-section=.text $@.elf $@
+
+build/asm/ram_08364550.o: build/ram/sub_08364550.bin
 
 $(TARGET).elf: ldscript.ld symbols.ld $(OBJS)
 	$(LD) -T ldscript.ld -T symbols.ld -o $@ $(OBJS)
