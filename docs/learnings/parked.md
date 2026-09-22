@@ -308,11 +308,12 @@ relocation-address consistency.
 
 #### Newlib built from source (2026-09-23)
 
-32 of the ROM's 34 newlib code objects, plus the data-only `reent/impure.o`,
-now build from `tools/agbcc/libc` (Makefile `NEWLIB_OBJS`) and link whole at
-their ROM addresses. They replaced 54 luvdis blocks: 44 flagged runtime
-blocks, 5 matched `src/` leaves (`_mbtowc_r`, `__malloc_lock`/`unlock`,
-`__errno`, `isatty`), and 5 "game" targets that were never game code
+All 34 of the ROM's newlib code objects, plus the data-only `reent/impure.o`,
+build from `tools/agbcc/libc` (Makefile `NEWLIB_OBJS`) and link whole at
+their ROM addresses. They replaced 73 luvdis blocks: all 59 flagged newlib
+blocks, 9 matched `src/` leaves (`_mbtowc_r`, `__malloc_lock`/`unlock`,
+`__errno`, `isatty`, `_localeconv_r`, `findslot`, `remap_handle`, `_fstat`),
+and 5 "game" targets that were never game code
 (`sprintf`, `_Bfree`, `_hi0bits`, `_lo0bits`, `abort`). The newlib run is
 0x08017558-0x0801B5EC; `sprintf.o` at 0x08017558 was hidden inside the
 `__umodsi3` block.
@@ -340,16 +341,14 @@ How it was placed, reusable for libgcc:
   `symbols.ld` and have no newlib, so a C-name right-hand side there fails.
 - **`errno` is COMMON**; a script definition (`errno = 0x0202F244;`) wins.
 
-**`locale.o` and `arm/syscalls.o` need the pre-patch compiler.** Each has a
+**`locale.o` and `arm/syscalls.o` needed the stock compiler.** Each has a
 call that passes a string literal next to a register argument
 (`strcmp(locale, "C")`, `_write(1, "...", 32)`), and the ROM loads the
 address first: the stock `precompute_register_parameters` behaviour that the
-fork's one-line patch removes. Every other newlib object matches under the
-patched compiler because none has that call shape. The runtime library was
-prebuilt with the stock compiler; the game was not. Both objects stay as asm
-fragments plus four matched `src/` leaves (`_localeconv_r`, `findslot`,
-`remap_handle`, `_fstat`) until a stock build exists; a shallow CI submodule
-cannot build the fork's parent commit.
+fork's patch removed. They were the evidence that led to reverting the
+patch (see "Reverted 2026-09-23: the `calls.c` precompute patch"); since
+then all 34 newlib code objects build from source, `syscalls.o`'s `.bss`
+placed at 0x020004A8 in a NOLOAD section and `end` set in `ldscript.ld`.
 
 #### libagbsyscall from pokeemerald (2026-09-23)
 
@@ -430,7 +429,7 @@ see), and the 5 false positives. The game-code denominator is **631**.
 |---|---|---|
 | `sub_08014004` | 2 bytes: the two `movs #0` are emitted in the wrong order | Initialising `a` first gives the right order but moves `a` from `r6` to `r7`, because an earlier birth lengthens its live range and lowers `QTY_CMP_PRI`. The two are coupled; 9 shapes tried |
 | `sub_08012B50` | prologue narrows `b` then `a`, ours does `a` then `b` | `assign_parms` (`gcc/function.c:4246`) defers every parameter conversion into `conversion_insns`, flushed at 4537, so conversions always emerge in declaration order. A body conversion reorders them but emits `lsls r0,r0,#24 / lsrs r4,r0,#24` instead of the ROM's copy-plus-in-place form |
-| `sub_08003738` | 3 instructions permuted at one call site | `precompute_register_parameters` (`gcc/calls.c`) copies any argument whose `rtx_cost > 2` into a pseudo before the cheap constants load, and `thumb.h`'s `CONST_COSTS` gives address constants `COSTS_N_INSNS(3)` with `SMALL_REGISTER_CLASSES` set. The ROM's ldr-last form needs `args[2].value` to already be a REG at expand time |
+| `sub_08003738` | 3 instructions permuted at one call site | `precompute_register_parameters` (`gcc/calls.c`) copies any argument whose `rtx_cost > 2` into a pseudo before the cheap constants load, and `thumb.h`'s `CONST_COSTS` gives address constants `COSTS_N_INSNS(3)` with `SMALL_REGISTER_CLASSES` set. The ROM's ldr-last form needs `args[2].value` to already be a REG at expand time. Matched; since 2026-09-23 with register pins on the constant arguments and a stock compiler |
 | `sub_0800F3C0` | first loop counter in `r6`, ROM uses `r4` | `QTY_CMP_PRI` tie broken by quantity creation order; 7 shapes tried |
 | `sub_08001170` | 4 bytes: agbcc folds `+4` into the load offset, the ROM computes `(base+4)+i` | Address reassociation happens during expansion regardless of parenthesisation, loop form (`goto` included), or operand order. The pool-loaded `5` IS solved: `extern u8 gUnk_00000005[];` used by address, with `gUnk_00000005 = 0x00000005;` in symbols.ld |
 
@@ -498,17 +497,17 @@ seven separate read sites all leave it at 18 differing lines.
 a 360-instruction function -- but one real fix is recorded in its draft:
 `0x06016000` was written as an integer literal, so it is a `CONST_INT`
 costing 10 and gets precomputed. Written as an address
-(`(u32)gUnk_06016000`, symbol added to `symbols.ld`) it is excluded by the
-fork's patch and both addresses load in parameter order, matching the ROM.
+(`(u32)gUnk_06016000`, symbol added to `symbols.ld`) it was excluded by the
+since-reverted `calls.c` patch and both addresses loaded in parameter order,
+matching the ROM. Under the stock compiler, pin the other arguments instead.
 
 That call site then leaves only the third argument, `0x80 << 5`. It is
 *shiftable*, so `CONST_COSTS` gives it `COSTS_N_INSNS(2)` = 6, still over
 the threshold, and our compiler precomputes it -- the ROM does not. Note
 the ROM **does** precompute a cost-10 `CONST_INT` elsewhere
 (`sub_080017D0`'s `0x05000318`), so the distinction is not simply
-"constants are never precomputed". Do not widen the compiler patch on the
-strength of this one site; it wants the same treatment the current patch
-got -- rival rules built, whole corpus regression-tested.
+"constants are never precomputed". Argument order is a source-level lever
+now (register pins), so do not patch the compiler for this site.
 
 ### Unfinished, not blocked (0)
 
@@ -538,7 +537,37 @@ the real range instead of the ELF:
 was cut by hand: the fragment ended at the function, so truncating it at
 the last row before `thumb_func_start` was the whole edit.
 
-## The compiler is patched: no precompute of address constants
+## Reverted 2026-09-23: the `calls.c` precompute patch
+
+**The patch was not necessary, and `tools/agbcc` is stock again**: upstream
+Dream-Atelier/agbcc `a0f70c9`, checked out in the same submodule. The claim
+below that `sub_08003738`'s argument order is unreachable from any C was
+wrong. Pinning the constant arguments to their registers reproduces it
+under the stock compiler:
+
+    register u32 a0 asm("r0") = 0;
+    register u32 a1 asm("r1") = 4;
+    if (sub_0800295C(a0, a1, gUnk_0202CD90) != 0) {
+
+Hard-register variables are loaded where they are declared, before
+`expand_call` precomputes the address, and their argument moves become
+no-ops, so the address load lands last. Pinning only `r1` is not enough.
+
+Evidence: every `src/*.c` compiled with both compilers differs in real
+codegen in exactly one function, `sub_08003738`; 13 others differ only in
+local label numbers. The eight functions re-matched for the patch with a
+hoisted local compile identically under stock. With the pin, `make check`
+prints MATCH on the stock compiler, and newlib's `locale.o` and
+`arm/syscalls.o`, which the patched compiler could not reproduce, build from
+source.
+
+**The idiom now:** an address argument loaded before the other arguments
+is the compiler's default (a hoisted local also works); loaded after them,
+it needs the other arguments pinned with `register ... asm("rN")`.
+
+The original record of why the patch was added follows.
+
+### Original record: the compiler is patched
 
 The `tools/agbcc` submodule points at
 [shohamc1/agbcc-heat2002](https://github.com/shohamc1/agbcc-heat2002), a

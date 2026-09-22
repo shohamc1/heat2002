@@ -18,15 +18,14 @@ SHA1 is wrong, no matter how clean the C looks. Never edit `baserom.gba`,
   here, it goes stale within a day.
 - `docs/recon.md` — function inventory, call graph, entry-point trace, candidate ranking.
 - `docs/learnings/parked.md` — **read before picking a target.** What was
-  already tried and does not match, why the compiler is a fork, and the 132
+  already tried and does not match, why the compiler patch was reverted, and the 132
   blocks that are not decompilation targets: runtime-library and SDK code
   (libgcc, newlib, libagbsyscall, the sound driver's `m4a_1.s`) and 5 luvdis
   false positives that are not functions at all.
-- `build/lib/newlib/` — 32 newlib objects built from `tools/agbcc/libc`
-  with the library's own flags (see the Makefile), placed whole by
-  `ldscript.ld` with their `.rodata` and `.data`. They replaced 54 luvdis
-  blocks. `locale.o` and `arm/syscalls.o` are still asm: the ROM's copies
-  predate the fork's `calls.c` patch.
+- `build/lib/newlib/` — all 34 newlib code objects (plus `impure.o`'s data)
+  built from `tools/agbcc/libc` with the library's own flags (see the
+  Makefile), placed whole by `ldscript.ld` with their `.rodata`, `.data` and
+  `.bss`. They replaced 73 luvdis blocks.
 - `lib/` — SDK source pulled from pret/pokeemerald: `libagbsyscall.s` (one
   object per syscall; all three copies in the ROM build from it) and
   `m4a_1.s` (the sound driver's hand-written asm, edited to this ROM's older
@@ -70,13 +69,12 @@ whole-ROM figure underneath.
 ## Toolchain
 
 `tools/agbcc/old_agbcc` is GCC 2.95, the compiler this ROM was built with,
-built from the **fork** at
+built from **stock** upstream Dream-Atelier/agbcc at `a0f70c9`. The
+`tools/agbcc` submodule's remote is the fork
 [shohamc1/agbcc-heat2002](https://github.com/shohamc1/agbcc-heat2002),
-which the `tools/agbcc` submodule points at. It carries one commit on top
-of upstream: address constants are not precomputed into a pseudo before
-the parameter registers are loaded. See the "compiler is patched" section
-of `docs/learnings/parked.md` for why, and for the idiom it creates. The
-binary is gitignored, so a fresh clone needs
+checked out at that upstream commit: the fork's one `calls.c` patch was
+reverted on 2026-09-23 (see "Reverted 2026-09-23" in
+`docs/learnings/parked.md`). The binary is gitignored, so a fresh clone needs
 `git submodule update --init` then `tools/agbcc/build.sh`. Its
 codegen fingerprints are visible throughout `asm/rom.s`:
 
@@ -122,6 +120,10 @@ maps closely onto the source:
 
 - Match the exact number and order of locals; agbcc assigns registers in
   declaration order.
+- An address (or any argument costing more than one cheap move) is loaded
+  before the other argument registers. When the ROM loads it after them,
+  pin the other arguments: `register u32 a0 asm("r0") = 0;
+  register u32 a1 asm("r1") = 4; f(a0, a1, &g);` (see `sub_08003738`).
 - A `for` that compiles to `bge` at the top ran zero-trip-checked; a `do/while`
   shape puts the branch at the bottom. The asm tells you which loop was written.
 - Prefer `s32`/`u8` etc. from `include/global.h` — width mismatches show up as
@@ -278,14 +280,14 @@ tickets need no further tooling changes for either of these.
   Both are fenced off from linting via a per-submodule `.pi-lens.json` —
   leave it in place.
 
-  The compiler is **not** stock: `tools/agbcc` points at the fork
-  [shohamc1/agbcc-heat2002](https://github.com/shohamc1/agbcc-heat2002),
-  which carries one deliberate commit. That change cleared a bar, and any
-  further one must clear the same bar: every source-level avenue
-  exhausted first, rival explanations built and regression-tested, the
-  whole corpus still matching, and the reasoning written down. See the
-  "compiler is patched" section of `parked.md` for what that took. A
-  change that merely makes one function match is not acceptable.
+  The compiler is stock upstream agbcc. A `calls.c` patch was carried
+  until 2026-09-23 and reverted once register pins matched the one function
+  that needed it; the source-level avenue it had missed is the lesson. Any
+  compiler change must clear this bar: every source-level avenue exhausted
+  first (register pins included), rival explanations built and
+  regression-tested, the whole corpus still matching, and the reasoning
+  written down. A change that merely makes one function match is not
+  acceptable.
 - Do not "fix" warnings in `asm/rom.s`. It reproduces the ROM as-is.
 - Do not add compiler flags to make something match. The flags in the
   Makefile are the ones the original build used, and `-O2`, interwork and

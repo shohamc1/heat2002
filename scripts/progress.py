@@ -53,14 +53,18 @@ NEWLIB_BLOCKS = frozenset((
     "sub_08017594", "sub_080175D4", "sub_080175F4", "sub_08017668", "sub_0801767C",
     "sub_080185DC", "sub_080186D0", "sub_08018740", "sub_080187EC", "sub_08018948",
     "sub_08019640", "sub_080196D4", "sub_0801970C", "sub_080197B0", "sub_080197D0",
-    "sub_08019830", "sub_080199F0", "sub_08019AB0", "sub_08019CDC", "sub_08019D88",
-    "sub_08019E64", "sub_08019FC0", "sub_0801A380", "sub_0801A3AC", "sub_0801A42C",
-    "sub_0801A48C", "sub_0801A514", "sub_0801A568", "sub_0801A56C", "sub_0801A570",
-    "sub_0801A5C8", "sub_0801A5E0", "sub_0801A6FC", "sub_0801A754", "sub_0801A7D8",
-    "sub_0801A7EC", "sub_0801A958", "sub_0801A9F0", "sub_0801AA90", "sub_0801AAD0",
-    "sub_0801AC0C", "sub_0801ACC8", "sub_0801AE84", "sub_0801AF74", "sub_0801AFD0",
-    "sub_0801B478", "sub_0801B4A8", "sub_0801B500", "sub_0801B52C", "sub_0801B538",
-    "sub_0801B564", "sub_0801B584", "sub_0801B58C", "sub_0801B5BC",
+    "sub_08019830", "sub_080199F0", "sub_08019AB0", "sub_08019CDC", "sub_08019D1C",
+    "sub_08019D58", "sub_08019D78", "sub_08019D88", "sub_08019E64", "sub_08019FC0",
+    "sub_0801A380", "sub_0801A3AC", "sub_0801A42C", "sub_0801A48C", "sub_0801A514",
+    "sub_0801A568", "sub_0801A56C", "sub_0801A570", "sub_0801A5C8", "sub_0801A5E0",
+    "sub_0801A6FC", "sub_0801A754", "sub_0801A7D8", "sub_0801A7EC", "sub_0801A958",
+    "sub_0801A9F0", "sub_0801AA90", "sub_0801AAD0", "sub_0801AC0C", "sub_0801ACC8",
+    "sub_0801AE84", "sub_0801AF74", "sub_0801AFD0", "sub_0801B014", "sub_0801B034",
+    "sub_0801B0F0", "sub_0801B104", "sub_0801B118", "sub_0801B130", "sub_0801B154",
+    "sub_0801B19C", "sub_0801B220", "sub_0801B22C", "sub_0801B250", "sub_0801B29C",
+    "sub_0801B350", "sub_0801B384", "sub_0801B3D4", "sub_0801B410", "sub_0801B478",
+    "sub_0801B4A8", "sub_0801B500", "sub_0801B52C", "sub_0801B538", "sub_0801B564",
+    "sub_0801B584", "sub_0801B58C", "sub_0801B5BC",
 ))
 
 # luvdis blocks now built from Nintendo's libagbsyscall (lib/libagbsyscall.s,
@@ -83,11 +87,8 @@ M4A_BLOCKS = frozenset((
 LIBRARY_BLOCKS = NEWLIB_BLOCKS | AGBSYSCALL_BLOCKS | M4A_BLOCKS
 
 # Runtime-library functions the epilogue check cannot see, because they are
-# in src/ rather than asm/: libgcc's __div0, and pieces of newlib's locale.o
-# and arm/syscalls.o that stay split until those objects build from source.
-RUNTIME_LEAVES = frozenset(
-    ("sub_080172C4", "sub_08019D58", "sub_0801B014", "sub_0801B034", "sub_0801B410")
-)
+# in src/ rather than asm/: libgcc's __div0.
+RUNTIME_LEAVES = frozenset(("sub_080172C4",))
 
 
 def runtime_library():
@@ -359,13 +360,13 @@ def _selftest():
     total = len(set(insns) | done | LIBRARY_BLOCKS)
     assert total == 743, f"expected 743 functions across asm + matched C + libraries, got {total}"
     assert "sub_08006734" not in insns, "sub_08006734 should be decompiled, not in asm"
-    # 92 runtime-library functions were flagged in asm; 44 of them are now
-    # newlib built from source, so 48 remain. With the 5 luvdis false
-    # positives, the 74 library blocks (54 newlib, 14 libagbsyscall, 6 m4a_1)
-    # and the 5 library leaves in src/, 132 blocks are not decompilation
-    # targets: the game-code denominator is 611.
+    # 92 runtime-library functions were flagged in asm; the 59 newlib ones
+    # are now built from source, so the 33 libgcc ones remain. With the 5
+    # luvdis false positives, the 93 library blocks (73 newlib, 14
+    # libagbsyscall, 6 m4a_1) and libgcc's __div0 leaf in src/, 132 blocks
+    # are not decompilation targets: the game-code denominator is 611.
     rt = runtime_library()
-    assert len(rt) == 48, f"expected 48 runtime-library functions in asm, got {len(rt)}"
+    assert len(rt) == 33, f"expected 33 runtime-library functions in asm, got {len(rt)}"
     non_targets = rt | LUVDIS_FALSE_POSITIVES | LIBRARY_BLOCKS | RUNTIME_LEAVES
     assert total - len(non_targets) == 611, (
         f"game-code denominator should be 611, got {total - len(non_targets)}"

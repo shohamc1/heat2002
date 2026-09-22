@@ -24,17 +24,15 @@ RAM_MODULE_OBJS := build/src/sub_08364550.o build/src/sub_08340EFC.o
 
 # Runtime library: newlib objects built from the vendored source with the
 # flags of tools/agbcc/libc/Makefile (no interwork, -fno-builtin), in ROM
-# order. ldscript.ld places each one whole, plus its .rodata and .data.
-# locale.o and arm/syscalls.o are still asm: the ROM's copies were built
-# before the fork's calls.c patch, which changes their argument order.
+# order. ldscript.ld places each one whole, plus its .rodata, .data and .bss.
 NEWLIB_DIR  := tools/agbcc/libc
 NEWLIB_OBJS := $(addprefix $(BUILD)/lib/newlib/,$(addsuffix .o, \
 	stdio/sprintf stdio/vfprintf stdio/wsetup stdlib/dtoa stdio/fflush \
-	stdio/findfp stdlib/freer stdio/fvwrite stdio/fwalk stdio/makebuf \
+	stdio/findfp stdlib/freer stdio/fvwrite stdio/fwalk locale/locale stdio/makebuf \
 	stdlib/mallocr stdlib/mbtowc_r string/memchr string/memcpy \
 	string/memmove string/memset stdlib/mlock stdlib/mprec math/s_isinf \
 	math/s_isnan reent/sbrkr stdio/stdio string/strcmp string/strlen \
-	reent/writer stdlib/callocr reent/closer errno/errno reent/fstatr \
+	arm/syscalls reent/writer stdlib/callocr reent/closer errno/errno reent/fstatr \
 	arm/libcfunc reent/lseekr reent/readr reent/impure))
 
 # Nintendo's BIOS-call library, one object per syscall, from

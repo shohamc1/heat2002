@@ -18,11 +18,11 @@ match, the change is wrong — no exceptions.
 Progress is measured in **bytes of code**, not function count — a 1,500-instruction
 function is not worth the same as a 1-instruction stub. The denominator is the
 611 game-code functions: 743 blocks minus 132 that are runtime library, SDK
-or luvdis false positives (see `docs/learnings/parked.md`). 52 library objects
-are built from source: 32 newlib from `tools/agbcc/libc`, and from `lib/` 18
+or luvdis false positives (see `docs/learnings/parked.md`). 54 library objects
+are built from source: 34 newlib from `tools/agbcc/libc`, and from `lib/` 18
 libagbsyscall members plus two copies of the sound driver's `m4a_1.s`, both
-adapted from pret/pokeemerald. Counting them, 86.7570% of the whole ROM's
-code comes from source. Regenerate with `python3 scripts/progress.py`;
+adapted from pret/pokeemerald. Counting them, 87.3111% of the whole ROM's
+code comes from source. Only libgcc (33 functions) is still vendored asm. Regenerate with `python3 scripts/progress.py`;
 `--json` emits an [objdiff](https://github.com/encounter/objdiff) `report.json`
 v2 compatible with [decomp.dev](https://decomp.dev).
 

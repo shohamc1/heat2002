@@ -51,7 +51,14 @@ loop:
     gUnk_020020DC = 1;
     gUnk_020020CC = 7;
     gUnk_02002184 = 3;
-    if (sub_0800295C(0, 4, gUnk_0202CD90) != 0) {
+    {
+        /* The ROM loads the address after the two constants. The stock
+           compiler precomputes an address argument before the other
+           argument registers are loaded, unless those are already in place:
+           pinning them emits their loads first. */
+        register u32 a0 asm("r0") = 0;
+        register u32 a1 asm("r1") = 4;
+        if (sub_0800295C(a0, a1, gUnk_0202CD90) != 0) {
         sub_08006418(sub_08016558(0x75), 0x0A, 1);
         sub_08006418((u32)gUnk_0806C688, 0x0C, 1);
         sub_08010074();
@@ -68,5 +75,6 @@ wait2:
         sub_080112E0();
         sub_080053B8();
         goto loop;
+    }
     }
 }

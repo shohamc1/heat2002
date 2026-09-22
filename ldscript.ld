@@ -1,8 +1,8 @@
 ENTRY(rom_entry)
 
 /* newlib objects call these; they are still asm (libgcc soft-float,
-   _call_via_rN, locale.o, arm/syscalls.o) or absolute data. Kept here, not
-   in symbols.ld: the RAM-module links read symbols.ld and have no newlib. */
+   _call_via_rN) or linker-level data. Kept here, not in symbols.ld: the
+   RAM-module links read symbols.ld and have no newlib. */
 __adddf3 = sub_0801BA78;
 __subdf3 = sub_0801BAA8;
 __muldf3 = sub_0801BAE0;
@@ -17,15 +17,8 @@ __fixdfsi = sub_0801C280;
 __negdf2 = sub_0801C2F4;
 _call_via_r3 = _08017200;
 _call_via_r8 = _08017214;
-localeconv = sub_08019D78;
-_read = sub_0801B154;
-_lseek = sub_0801B220;
-_write = sub_0801B250;
-_close = sub_0801B384;
-_sbrk = sub_0801B3D4;
-_fstat = sub_0801B410;
-__mb_cur_max = 0x083FFAAC;
 errno = 0x0202F244;
+end = 0x0202F248;
 
 /* Game code and the remaining asm call newlib by its luvdis names. */
 sub_08017594 = sprintf;
@@ -583,9 +576,7 @@ SECTIONS
         build/asm/rom_080171F2.o(.text*);
         build/src/sub_080172C4.o(.text*);
         build/asm/rom_080172C6.o(.text*);
-        /* newlib, built from tools/agbcc/libc (see the Makefile). locale.o
-           and arm/syscalls.o stay as asm and C pieces until they can be
-           built with the pre-patch compiler. */
+        /* newlib, built from tools/agbcc/libc (see the Makefile) */
         build/lib/newlib/stdio/sprintf.o(.text);
         build/lib/newlib/stdio/vfprintf.o(.text);
         build/lib/newlib/stdio/wsetup.o(.text);
@@ -595,9 +586,7 @@ SECTIONS
         build/lib/newlib/stdlib/freer.o(.text);
         build/lib/newlib/stdio/fvwrite.o(.text);
         build/lib/newlib/stdio/fwalk.o(.text);
-        build/asm/rom_08019D1C.o(.text*);
-        build/src/sub_08019D58.o(.text*);
-        build/asm/rom_08019D60.o(.text*);
+        build/lib/newlib/locale/locale.o(.text);
         build/lib/newlib/stdio/makebuf.o(.text);
         build/lib/newlib/stdlib/mallocr.o(.text);
         build/lib/newlib/stdlib/mbtowc_r.o(.text);
@@ -613,11 +602,7 @@ SECTIONS
         build/lib/newlib/stdio/stdio.o(.text);
         build/lib/newlib/string/strcmp.o(.text);
         build/lib/newlib/string/strlen.o(.text);
-        build/src/sub_0801B014.o(.text*);
-        build/src/sub_0801B034.o(.text*);
-        build/asm/rom_0801B080.o(.text*);
-        build/src/sub_0801B410.o(.text*);
-        build/asm/rom_0801B41A.o(.text*);
+        build/lib/newlib/arm/syscalls.o(.text);
         build/lib/newlib/reent/writer.o(.text);
         build/lib/newlib/stdlib/callocr.o(.text);
         build/lib/newlib/reent/closer.o(.text);
@@ -627,13 +612,14 @@ SECTIONS
         build/lib/newlib/reent/lseekr.o(.text);
         build/lib/newlib/reent/readr.o(.text);
         build/asm/rom_0801B5EC.o(.text*);
-        /* newlib .rodata, in link order; locale.o's is still asm */
+        /* newlib .rodata, in link order */
         build/lib/newlib/stdio/vfprintf.o(.rodata);
         build/lib/newlib/stdlib/dtoa.o(.rodata);
         build/lib/newlib/reent/impure.o(.rodata);
-        build/asm/rom_083394F8.o(.text*);
+        build/lib/newlib/locale/locale.o(.rodata);
         build/lib/newlib/stdlib/mprec.o(.rodata);
-        build/asm/rom_08339658.o(.text*);
+        build/lib/newlib/arm/syscalls.o(.rodata);
+        build/asm/rom_08339680.o(.text*);
         build/src/sub_08339920.o(.text*);
         build/src/sub_08339934.o(.text*);
         build/src/sub_0833995C.o(.text*);
@@ -906,9 +892,9 @@ SECTIONS
         build/lib/agbsyscall/sub_08364804.o(.text);
         build/lib/agbsyscall/sub_08364808.o(.text);
         build/asm/rom_08364810.o(.text*);
-        /* newlib .data, which the ROM uses in place; locale.o's is still asm */
+        /* newlib .data, which the ROM uses in place */
         build/lib/newlib/reent/impure.o(.data);
-        build/asm/rom_083FFAAC.o(.text*);
+        build/lib/newlib/locale/locale.o(.data);
         build/lib/newlib/stdlib/mallocr.o(.data);
         build/asm/rom_083FFF04.o(.text*);
         /* Catch-all, not the primary placement mechanism: every object above
@@ -919,6 +905,11 @@ SECTIONS
            instead of silently vanishing into /DISCARD/ with `make check`
            still printing MATCH. */
         *(.text*);
+    }
+    /* arm/syscalls.o's statics, in EWRAM; no bytes in the ROM */
+    .bss 0x020004A8 (NOLOAD) :
+    {
+        build/lib/newlib/arm/syscalls.o(.bss);
     }
     /DISCARD/ : { *(*); }
 }
