@@ -7,7 +7,6 @@
 extern struct SoundInfo *gUnk_03007FF0;
 extern MPlayFunc gUnk_02001D90[];
 
-void sub_08000958(u32 a);
 void sub_08001640(u32 a);
 
 void sub_08001548(struct SoundInfo *soundInfo)
@@ -39,7 +38,7 @@ void sub_08001548(struct SoundInfo *soundInfo)
     {
         MPlayFunc *t = gUnk_02001D90;
 
-        sub_08000958((u32)t);
+        MPlayJumpTableCopy(t);
         soundInfo->MPlayJumpTable = t;
     }
     sub_08001640(0x40000);

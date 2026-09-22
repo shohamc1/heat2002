@@ -35,7 +35,7 @@ addresses.
 | `sub_0800215C` | `sub_0833B81C` | `m4aMPlayPitchControl` | certain | yes | converted |
 | `sub_08001170` | `sub_0833A830` | `m4aSoundInit` | certain | yes | n/a (no offset casts; see the build constants below) |
 | `sub_08001150` | `sub_0833A810` | fade-control setter (`m4aMPlayFadeIn`/`m4aMPlayFadeOutTemporarily` family) | likely | yes | not touched (confidence is only "likely", not certain) |
-| `sub_08000DC8` | `sub_0833A488` | `TrackStop` | certain | **no** (blocked in compiler; `tst rX, rY` unreachable — see `parked.md`) | n/a, not decompiled |
+| `sub_08000DC8` | `sub_0833A488` | `TrackStop` | certain | n/a (hand-written asm in `m4a_1.s`; built from `lib/m4a_1.s`) | n/a |
 | `sub_080019F4` | `sub_0833B0B4` | `FadeOutBody` | certain | **no** (near-miss draft: `docs/learnings/drafts/sub_080019F4.c`) | n/a, not decompiled |
 | `sub_08001A74` | `sub_0833B134` | `TrkVolPitSet` | certain | **no** (near-miss draft: `docs/learnings/drafts/sub_08001A74.c`) | n/a, not decompiled |
 

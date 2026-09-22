@@ -18,18 +18,19 @@ SHA1 is wrong, no matter how clean the C looks. Never edit `baserom.gba`,
   here, it goes stale within a day.
 - `docs/recon.md` — function inventory, call graph, entry-point trace, candidate ranking.
 - `docs/learnings/parked.md` — **read before picking a target.** What was
-  already tried and does not match, why the compiler is a fork, and the 126
+  already tried and does not match, why the compiler is a fork, and the 132
   blocks that are not decompilation targets: runtime-library and SDK code
-  (libgcc, newlib, libagbsyscall) and 5 luvdis false positives that are not
-  functions at all.
+  (libgcc, newlib, libagbsyscall, the sound driver's `m4a_1.s`) and 5 luvdis
+  false positives that are not functions at all.
 - `build/lib/newlib/` — 32 newlib objects built from `tools/agbcc/libc`
   with the library's own flags (see the Makefile), placed whole by
   `ldscript.ld` with their `.rodata` and `.data`. They replaced 54 luvdis
   blocks. `locale.o` and `arm/syscalls.o` are still asm: the ROM's copies
   predate the fork's `calls.c` patch.
-- `lib/` — SDK source pulled from pret/pokeemerald (`libagbsyscall.s`, one
-  object per syscall). All three syscall copies in the ROM (main program,
-  high module, multiboot island) build from it; the copies outside the main
+- `lib/` — SDK source pulled from pret/pokeemerald: `libagbsyscall.s` (one
+  object per syscall; all three copies in the ROM build from it) and
+  `m4a_1.s` (the sound driver's hand-written asm, edited to this ROM's older
+  revision; both engine copies build from it). Copies outside the main
   program keep their luvdis names.
 - `docs/tickets/` — one markdown ticket per function. Lowest open number first.
 - `docs/decomp-guide.md` — **read this before your first ticket.** Step-by-step
@@ -42,10 +43,10 @@ preamble (through `@ End embedded Luvdis macros`) or you get a phantom
 function named `name` from the `.macro` definition. `scripts/progress.py
 --selftest` asserts all three.
 
-Of those 743 blocks, **126 are not decompilation targets** — see
-`parked.md` — so the game-code denominator is **617**. The 68 blocks now
+Of those 743 blocks, **132 are not decompilation targets** — see
+`parked.md` — so the game-code denominator is **611**. The 74 blocks now
 built from library source are listed in `progress.py` (`LIBRARY_BLOCKS`) so
-the 743 still adds up. `progress.py` reports against 617 and prints the
+the 743 still adds up. `progress.py` reports against 611 and prints the
 whole-ROM figure underneath.
 
 ## The loop

@@ -40,6 +40,19 @@ sub_08016E0C = CpuFastSet;
 sub_08016E10 = CpuSet;
 sub_08016E28 = RLUnCompVram;
 
+/* lib/m4a_1.s calls into m4a.c and reads the driver's tables. The high
+   module's copy is bound to its own twins in the Makefile (M4A_HIGH_EXTERNS). */
+Clear64byte = sub_08001534;
+ClearChain = sub_08001520;
+FadeOutBody = sub_080019F4;
+MidiKeyToFreq = sub_080010CC;
+TrkVolPitSet = sub_08001A74;
+SoundMainRAM_Buffer = 0x03007000;
+gClockTable = 0x0801D1FC;
+gMPlayJumpTableTemplate = 0x0801CF88;
+gUnk_0200C8DC = 0x0200C8DC;
+gUnk_0200C668 = 0x0200C668;
+
 SECTIONS
 {
     . = 0x08000000;
@@ -62,7 +75,7 @@ SECTIONS
         build/src/sub_08000458.o(.text*);
         build/asm/rom_08000478.o(.text*);
         build/src/sub_0800048C.o(.text*);
-        build/asm/rom_080004B8.o(.text*);
+        build/lib/m4a/m4a_1.o(.text);
         build/src/sub_080010CC.o(.text*);
         build/asm/rom_08001130.o(.text*);
         build/src/sub_08001150.o(.text*);
@@ -635,7 +648,7 @@ SECTIONS
         build/src/sub_08339B18.o(.text*);
         build/asm/rom_08339B38.o(.text*);
         build/src/sub_08339B4C.o(.text*);
-        build/asm/rom_08339B78.o(.text*);
+        build/lib/m4a/m4a_1_high.o(.text);
         build/src/sub_0833A78C.o(.text*);
         build/asm/rom_0833A7F0.o(.text*);
         build/src/sub_0833A810.o(.text*);

@@ -17,7 +17,6 @@ extern u8 gUnk_08001BD1;
 extern u8 gUnk_08001B29;
 
 extern void sub_08001640(u32 a);
-extern void sub_08000DC8(void);
 extern void sub_080019F4(void);
 extern void sub_08001A74(void);
 
@@ -47,7 +46,7 @@ void sub_080013F8(struct CgbChannel *cgbChans)
         gUnk_02001D90[0x1C] = (MPlayFunc)&gUnk_08002499;
         gUnk_02001D90[0x1D] = (MPlayFunc)&gUnk_0800103D;
         gUnk_02001D90[0x1E] = (MPlayFunc)sub_08001640;
-        gUnk_02001D90[0x1F] = (MPlayFunc)sub_08000DC8;
+        gUnk_02001D90[0x1F] = (MPlayFunc)TrackStop;
         gUnk_02001D90[0x20] = (MPlayFunc)sub_080019F4;
         gUnk_02001D90[0x21] = (MPlayFunc)sub_08001A74;
         soundInfo->cgbChans = cgbChans;

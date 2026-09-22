@@ -72,8 +72,15 @@ AGBSYSCALL_BLOCKS = frozenset((
     "sub_08344B68", "sub_08344B70", "sub_08344B74", "sub_083647FC",
 ))
 
+# luvdis blocks now built from the MP2K driver's hand-written assembly
+# (lib/m4a_1.s, from pokeemerald's), in the main program and the high module.
+M4A_BLOCKS = frozenset((
+    "sub_08000958", "sub_08000972", "sub_08000DC8",
+    "sub_0833A018", "sub_0833A032", "sub_0833A488",
+))
+
 # Every luvdis block whose bytes now come from a source-built library object.
-LIBRARY_BLOCKS = NEWLIB_BLOCKS | AGBSYSCALL_BLOCKS
+LIBRARY_BLOCKS = NEWLIB_BLOCKS | AGBSYSCALL_BLOCKS | M4A_BLOCKS
 
 # Runtime-library functions the epilogue check cannot see, because they are
 # in src/ rather than asm/: libgcc's __div0, and pieces of newlib's locale.o
@@ -354,14 +361,14 @@ def _selftest():
     assert "sub_08006734" not in insns, "sub_08006734 should be decompiled, not in asm"
     # 92 runtime-library functions were flagged in asm; 44 of them are now
     # newlib built from source, so 48 remain. With the 5 luvdis false
-    # positives, the 68 library blocks (54 newlib, 14 libagbsyscall) and the
-    # 5 library leaves in src/, 126 blocks are not decompilation targets: the
-    # game-code denominator is 617.
+    # positives, the 74 library blocks (54 newlib, 14 libagbsyscall, 6 m4a_1)
+    # and the 5 library leaves in src/, 132 blocks are not decompilation
+    # targets: the game-code denominator is 611.
     rt = runtime_library()
     assert len(rt) == 48, f"expected 48 runtime-library functions in asm, got {len(rt)}"
     non_targets = rt | LUVDIS_FALSE_POSITIVES | LIBRARY_BLOCKS | RUNTIME_LEAVES
-    assert total - len(non_targets) == 617, (
-        f"game-code denominator should be 617, got {total - len(non_targets)}"
+    assert total - len(non_targets) == 611, (
+        f"game-code denominator should be 611, got {total - len(non_targets)}"
     )
     # Every address in the verified newlib map must be one of them.
     import json as _json

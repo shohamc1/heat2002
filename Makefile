@@ -52,8 +52,18 @@ AGBSYSCALL_COPIES := sub_08344B60:CpuFastSet sub_08344B64:CpuSet \
 AGBSYSCALL_COPY_OBJS := $(foreach c,$(AGBSYSCALL_COPIES),$(BUILD)/lib/agbsyscall/$(firstword $(subst :, ,$(c))).o)
 syscall_of = $(lastword $(subst :, ,$(filter $(1):%,$(AGBSYSCALL_COPIES))))
 
+# The MP2K sound driver's hand-written assembly (lib/m4a_1.s, this ROM's
+# revision of pokeemerald's m4a_1.s). The main program and the high 0x0834
+# module each link a copy. The high copy's globals take their luvdis address
+# names, and its externs point at the high module's own m4a.c twins and data.
+M4A_OBJS := $(BUILD)/lib/m4a/m4a_1.o $(BUILD)/lib/m4a/m4a_1_high.o
+M4A_HIGH_BASE := 0x08339B78
+M4A_HIGH_EXTERNS := Clear64byte=sub_0833ABF4 ClearChain=sub_0833ABE0 \
+	FadeOutBody=sub_0833B0B4 MidiKeyToFreq=sub_0833A78C TrkVolPitSet=sub_0833B134 \
+	gClockTable=gUnk_0200C8DC gMPlayJumpTableTemplate=gUnk_0200C668
+
 OBJS     := $(filter-out $(RAM_MODULE_OBJS),$(C_SRCS:%.c=$(BUILD)/%.o) $(ASM_SRCS:%.s=$(BUILD)/%.o)) \
-	$(NEWLIB_OBJS) $(AGBSYSCALL_OBJS) $(AGBSYSCALL_COPY_OBJS)
+	$(NEWLIB_OBJS) $(AGBSYSCALL_OBJS) $(AGBSYSCALL_COPY_OBJS) $(M4A_OBJS)
 
 .PHONY: all check test clean disasm
 all: $(TARGET).gba
@@ -121,6 +131,15 @@ $(AGBSYSCALL_COPY_OBJS): $(BUILD)/lib/agbsyscall/%.o: lib/libagbsyscall.s lib/fu
 	@mkdir -p $(@D)
 	$(AS) -mcpu=arm7tdmi -I lib --defsym L_$(call syscall_of,$*)=1 -o $@ $<
 	$(OBJCOPY) --redefine-sym $(call syscall_of,$*)=$* $@
+
+$(BUILD)/lib/m4a/m4a_1.o: lib/m4a_1.s lib/function.inc lib/m4a_constants.inc Makefile
+	@mkdir -p $(@D)
+	$(AS) -mcpu=arm7tdmi -I lib -o $@ $<
+$(BUILD)/lib/m4a/m4a_1_high.o: $(BUILD)/lib/m4a/m4a_1.o Makefile
+	arm-none-eabi-nm $< | while read v t n; do if [ "$$t" = T ]; then \
+		printf '%s sub_%08X\n' $$n $$((0x$$v + $(M4A_HIGH_BASE))); fi; done > $@.syms
+	$(OBJCOPY) --redefine-syms=$@.syms \
+		$(foreach e,$(M4A_HIGH_EXTERNS),--redefine-sym $(e)) $< $@
 
 $(BUILD)/asm/%.o: asm/%.s Makefile
 	@mkdir -p $(@D)

@@ -20,14 +20,12 @@ dead ends.
 
 ## Remaining to decompile (in asm, no draft)
 
-None. Every queue function still in `asm/` either has a quarantined draft or
-belongs to the hand-written-asm pair `sub_08000958` + `sub_08000972`, which is
-retail hand-written assembly, not a C target — leave both halves in `asm/`
-(`docs/learnings/parked.md`, "Parked 2026-09-14: sub_08000958 +
-sub_08000972"). The pair's analysis record lives in
-`docs/learnings/drafts/sub_08000958.c`.
+None. Every queue function still in `asm/` has a quarantined draft. The
+hand-written-asm pair `sub_08000958` + `sub_08000972` and `sub_08000DC8`
+(`TrackStop`) turned out to be the sound driver's `m4a_1.s` and now build from
+`lib/m4a_1.s` (`docs/learnings/parked.md`).
 
-## Parked with drafts (42)
+## Parked with drafts (36)
 
 Ranked by original caller count. Drafts for functions since resolved into
 `src/` (e.g. `sub_0800EEFC`) are kept as learning records and are not listed.
@@ -44,9 +42,7 @@ Ranked by original caller count. Drafts for functions since resolved into
 | `sub_0800930C` | 176 b | 2 | bare code draft, no quarantine header |
 | `sub_08017000` | 184 b | 2 | one allocation decision plus its register fallout (190/184 bytes) |
 | `sub_08004018` | 200 b | 2 | 2 insn-shape issues in the loop body |
-| `sub_08000DC8` | 772 b | 2 | BLOCKED — epilogue is interwork form |
 | `sub_0800F0BC` | 24 b | 1 | BLOCKED — reachable/unreachable insn mix (`mov r2, pc` self-check) |
-| `sub_08000958` | 26 b | 1 | hand-written asm pair with `sub_08000972`; not reachable from agbcc C |
 | `sub_08007304` | 64 b | 1 | wave-1 closeout: 4-byte floor with r7 pin (mov r7,ip constructible); pure-C r0-occupant impossible |
 | `sub_0800383C` | 84 b | 1 | one register permutation away |
 | `sub_0800C2CC` | 140 b | 1 | wave-5d state compiles; agent died mid-work |

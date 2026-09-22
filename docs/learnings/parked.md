@@ -755,7 +755,23 @@ Permuter trial: `scripts/permute.py` ran about 30 minutes with `-j8` from a
 score of 25 and found nothing lower. Its C parser can't accept `asm()` pins,
 so it couldn't reach this fix.
 
-## Parked 2026-09-14: sub_08000958 + sub_08000972 — hand-written asm, not a C target
+## Resolved 2026-09-23: sub_08000958 + sub_08000972 — built from lib/m4a_1.s
+
+Confirmed hand-written: they are `MPlayJumpTableCopy` and `chk_adr_r2` /
+`ld_r3_tp_adr_i` from the MP2K driver's `m4a_1.s`. The whole of
+0x080004B8-0x080010CC (and its high copy at 0x08339B78) is that one file.
+`lib/m4a_1.s` is pokeemerald's `m4a_1.s` with five edits for this older
+revision (listed in its header: no compressed-sample mixer path, fw kept in
+`lr`, no `SoundMainRAM_Unk1`/`Unk2`, no second status check in `MPlayMain`,
+no track count in `ply_note`). It builds both copies byte-for-byte; the six
+blocks it covers (`sub_08000958`, `sub_08000972`, `sub_08000DC8` =
+`TrackStop`, and their high twins) are `M4A_BLOCKS` in `progress.py`.
+To find the edits, assemble pokeemerald's file, match each routine against
+the ROM with relocations masked, and diff the instruction streams of the
+routines that miss; most "misses" are only pc-relative offsets shifted by an
+earlier size change. The original analysis follows.
+
+### Original analysis (2026-09-14)
 
 The pair shares literal pool `_08000988` (guide step 6a: extract together or
 not at all), but the stronger result is that no agbcc C can produce these
@@ -781,7 +797,8 @@ a single merged function, and a 16-byte struct return (GCC 2.95 returns
 structs via hidden memory pointer). The identical sibling pair
 sub_0833A018/sub_0833A032 (same bytes except the pool constant) is the same
 hand-asm macro instantiated twice. Full analysis and the closest reachable
-C shapes: `docs/learnings/drafts/sub_08000958.c`. Leave both halves in asm.
+C shapes were in `docs/learnings/drafts/sub_08000958.c` (removed on
+resolution; `git log` has it).
 
 ## Resolved 2026-09-15: sub_08006A34 (matched, 2240 bytes)
 
@@ -1067,7 +1084,14 @@ Findings worth keeping:
   RETURNS a value — declare it `u32` (avoids spurious narrowing pairs).
   Proven on `sub_0833D6D8`/`sub_0833D6A0`/`sub_0833D7E8`.
 
-## Parked 2026-09-16: sub_08000DC8 + sub_0833A488 — `tst rX, rY` is unreachable
+## Resolved 2026-09-23: sub_08000DC8 + sub_0833A488 — `TrackStop`, hand-written
+
+These are `TrackStop` (plus `ChnVolSetAsm`, `ply_note` and the rest of the
+file's tail) from the MP2K driver's `m4a_1.s`, so the `tst rX, rY` below is
+simply hand-written. Both copies now build from `lib/m4a_1.s`; see the
+resolved entry for sub_08000958 above. The original analysis follows.
+
+### Original analysis (2026-09-16)
 
 Both halves of this m4a twin pair are blocked in the compiler, not by
 register allocation. The ROM uses a two-register `tst r0, r1`, and
@@ -1092,7 +1116,8 @@ The high twin sub_0833A488 has the same `tst r0, r1` and the same fused
 `ands`/`beq` at the same relative offsets (asm/rom_08339B78.s), so it is
 equally blocked, not merely likely to be. Leave both in asm.
 
-Earlier draft and analysis: `docs/learnings/drafts/sub_08000DC8.c`.
+Earlier draft and analysis were in `docs/learnings/drafts/sub_08000DC8.c`
+(removed on resolution; `git log` has it).
 
 ## Near-miss drafts parked 2026-09-16 (m4a low region)
 

@@ -17,7 +17,7 @@ struct MPlayInfo
   u16 fadeOV;
   struct Track *tracks;
 };
-void sub_08000DC8(struct MPlayInfo *mplayInfo, struct Track *track);
+void TrackStop(struct MPlayInfo *mplayInfo, struct Track *track);
 void sub_080019F4(struct MPlayInfo *mplayInfo)
 {
   s32 i;
@@ -34,7 +34,7 @@ void sub_080019F4(struct MPlayInfo *mplayInfo)
       {
         for (i = mplayInfo->trackCount, track = mplayInfo->tracks; i > 0; i--, track++)
         {
-          sub_08000DC8(mplayInfo, track);
+          TrackStop(mplayInfo, track);
           track->flags = 0;
         }
 

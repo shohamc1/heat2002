@@ -9,7 +9,7 @@ struct Unk10CC
 extern const u8 gUnk_0200C6F8[];
 extern const u32 gUnk_0200C7AC[];
 
-extern s32 _08339B78(s32 a, s32 b);
+extern s32 sub_08339B78(s32 a, s32 b);
 
 s32 sub_0833A78C(struct Unk10CC *arg0, u8 arg1, u32 arg2)
 {
@@ -33,5 +33,5 @@ s32 sub_0833A78C(struct Unk10CC *arg0, u8 arg1, u32 arg2)
     diff = gUnk_0200C7AC[b & 0xF] >> (b >> 4);
     next = arg0->unk4;
     diff -= t;
-    return _08339B78(next, t + _08339B78(diff, packed));
+    return sub_08339B78(next, t + sub_08339B78(diff, packed));
 }

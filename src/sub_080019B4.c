@@ -3,7 +3,7 @@
 
 /* m4aMPlayStop */
 
-void sub_08000DC8(struct MusicPlayerInfo *, struct MusicPlayerTrack *);
+void TrackStop(struct MusicPlayerInfo *, struct MusicPlayerTrack *);
 
 void sub_080019B4(struct MusicPlayerInfo *mplayInfo)
 {
@@ -19,7 +19,7 @@ void sub_080019B4(struct MusicPlayerInfo *mplayInfo)
     r5 = r6->tracks;
     while (r4 > 0)
     {
-        sub_08000DC8(r6, r5);
+        TrackStop(r6, r5);
         r4--;
         r5 = (struct MusicPlayerTrack *)((u8 *)r5 + 0x50);
     }

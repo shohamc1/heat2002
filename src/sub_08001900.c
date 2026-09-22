@@ -3,7 +3,7 @@
 
 /* MPlayStart */
 
-void sub_08000DC8(struct MusicPlayerInfo *, struct MusicPlayerTrack *);
+void TrackStop(struct MusicPlayerInfo *, struct MusicPlayerTrack *);
 void sub_080016E4(u32);
 
 void sub_08001900(struct MusicPlayerInfo *mplayInfo, struct SongHeader *songHeader)
@@ -37,7 +37,7 @@ void sub_08001900(struct MusicPlayerInfo *mplayInfo, struct SongHeader *songHead
     if (r6 < r7->trackCount && r6 < r5->trackCount) {
         r8 = r6;
 loopA:
-        sub_08000DC8(r5, track);
+        TrackStop(r5, track);
         track->flags = 0xC0;
         track->chan = (struct SoundChannel *)r8;
         t = r6 * 4;
@@ -53,7 +53,7 @@ loopA:
     if (r6 < r5->trackCount) {
         r8 = 0;
 loopB:
-        sub_08000DC8(r5, track);
+        TrackStop(r5, track);
         track->flags = r8;
         r6++;
         track = (struct MusicPlayerTrack *)((u8 *)track + 0x50);
