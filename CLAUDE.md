@@ -69,11 +69,10 @@ whole-ROM figure underneath.
 ## Toolchain
 
 `tools/agbcc/old_agbcc` is GCC 2.95, the compiler this ROM was built with,
-built from **stock** upstream Dream-Atelier/agbcc at `a0f70c9`. The
-`tools/agbcc` submodule's remote is the fork
-[shohamc1/agbcc-heat2002](https://github.com/shohamc1/agbcc-heat2002),
-checked out at that upstream commit: the fork's one `calls.c` patch was
-reverted on 2026-09-23 (see "Reverted 2026-09-23" in
+built from **stock** upstream
+[Dream-Atelier/agbcc](https://github.com/Dream-Atelier/agbcc) at `a0f70c9`,
+which the `tools/agbcc` submodule points at. A fork carrying one `calls.c`
+patch was used until 2026-09-23 (see "Reverted 2026-09-23" in
 `docs/learnings/parked.md`). The binary is gitignored, so a fresh clone needs
 `git submodule update --init` then `tools/agbcc/build.sh`. Its
 codegen fingerprints are visible throughout `asm/rom.s`:

@@ -539,8 +539,9 @@ the last row before `thumb_func_start` was the whole edit.
 
 ## Reverted 2026-09-23: the `calls.c` precompute patch
 
-**The patch was not necessary, and `tools/agbcc` is stock again**: upstream
-Dream-Atelier/agbcc `a0f70c9`, checked out in the same submodule. The claim
+**The patch was not necessary, and `tools/agbcc` is stock again**: the
+submodule points at upstream Dream-Atelier/agbcc `a0f70c9`, so the fork and
+CI's access token are no longer needed. The claim
 below that `sub_08003738`'s argument order is unreachable from any C was
 wrong. Pinning the constant arguments to their registers reproduces it
 under the stock compiler:

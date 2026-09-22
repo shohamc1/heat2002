@@ -10,8 +10,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-          # tools/agbcc is a private fork; the default GITHUB_TOKEN can't clone it.
-          token: ${{ secrets.AGBCC_PAT }}
 
       - name: Install binutils
         run: |
