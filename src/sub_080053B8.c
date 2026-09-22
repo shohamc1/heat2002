@@ -9,7 +9,7 @@ u32 sub_08016558(u16 idx);
 void sub_08006418(u32 a, u32 b, u32 c);
 void sub_080019B4(u32 a);
 void sub_080017D0(void);
-void sub_08016E30(u32 a);
+void VBlankIntrWait(u32 a);
 u32 sub_08004DB4(void);
 void sub_0800420C(u32 a, u32 b);
 
@@ -32,7 +32,7 @@ void sub_080053B8(void)
                 u32 r0 = *(u8 *)(EWRAM_START + 0x2EF90);
                 if (r0 == 0)
                     r0 = REG_KEYINPUT;
-                sub_08016E30(r0);
+                VBlankIntrWait(r0);
             }
         }
         if (*(u8 *)(EWRAM_START + 0x2EF90) != 0)

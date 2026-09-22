@@ -4,7 +4,7 @@ extern u8 gUnk_020020B4;
 extern u16 gUnk_02002124;
 extern u8 gUnk_0800306D[];
 
-void sub_08016E2C(u32 r0);
+void RegisterRamReset(u32 r0);
 void sub_08000380(void);
 void sub_0800048C(void);
 void sub_080003F8(u32 r0);
@@ -23,7 +23,7 @@ void sub_08002638(void)
     volatile u16 *ds;
     register volatile u16 *p asm("r1");
 
-    sub_08016E2C(1);
+    RegisterRamReset(1);
     p128 = (volatile u16 *)0x04000128;
     z1 = 0;
     z2 = 0;

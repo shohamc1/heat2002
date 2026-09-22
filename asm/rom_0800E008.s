@@ -96,7 +96,7 @@ _0800E070:
 	lsls r1, r4, #0x09
 	ldr r2, _0800E190 @ =0x06010000
 	adds r1, r1, r2
-	bl sub_08016E1C
+	bl LZ77UnCompVram
 	adds r0, r4, #0x1
 	lsls r0, r0, #0x10
 	lsrs r4, r0, #0x10
@@ -123,7 +123,7 @@ _0800E070:
 	lsls r1, r1, #0x13
 	movs r2, #0x80
 	lsls r2, r2, #0x01
-	bl sub_08016E0C
+	bl CpuFastSet
 	movs r2, #0x80
 	lsls r2, r2, #0x13
 	ldrh r0, [r2, #0x00]
@@ -201,8 +201,8 @@ _0800E14E:
 	lsls r1, r1, #0x13
 	movs r2, #0x80
 	lsls r2, r2, #0x01
-	bl sub_08016E0C
-	bl sub_08016E30
+	bl CpuFastSet
+	bl VBlankIntrWait
 	b _0800E0EC
 	.byte 0x00, 0x00
 	.global _0800E164
@@ -267,7 +267,7 @@ _0800E1C0:
 	lsls r1, r1, #0x13
 	movs r2, #0x80
 	lsls r2, r2, #0x01
-	bl sub_08016E0C
+	bl CpuFastSet
 	bl sub_0800DFCC
 	movs r0, #0x00
 	add sp, #0x008

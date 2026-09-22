@@ -11,7 +11,7 @@ void sub_08004DB4(void);
 void sub_08010094(void);
 u32 sub_08003330(void);
 void sub_080017D0(void);
-void sub_08016E30(u32 a);
+void VBlankIntrWait(u32 a);
 void sub_0800524C(void);
 void sub_080051E4(void);
 
@@ -38,7 +38,7 @@ u8 sub_08005280(void)
                         v = gUnk_0202EF90;
                         if (v == 0)
                             return 0x27;
-                        sub_08016E30(v);
+                        VBlankIntrWait(v);
                     } while (done == 0);
                 }
                 sub_08004DB4();

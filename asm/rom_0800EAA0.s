@@ -478,7 +478,7 @@ _0800ED8C:
 	cmp r4, #0x00
 	bne _0800ED78
 	adds r0, r6, #0x0
-	bl sub_08016E20
+	bl MultiBoot
 	adds r4, r0, #0x0
 	cmp r4, #0x00
 	bne _0800EDB0

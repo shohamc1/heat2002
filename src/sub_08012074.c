@@ -17,7 +17,7 @@ extern u8 gUnk_0202EEF4;
 extern u16 gUnk_0202EF40[4][4];
 extern u8 gUnk_0202EF90;
 extern u8 gUnk_0829F32C[];
-extern void sub_08016E30(void);
+extern void VBlankIntrWait(void);
 extern void sub_0800048C(void);
 extern void sub_0800F818(u16 a);
 extern u32 sub_08016558(u16 idx);
@@ -34,7 +34,7 @@ s32 sub_08012074(void)
     volatile u16 *ed;
 
     if ((*(u8 *)REG_ADDR_SIOCNT & 0x30) == 0) {
-        sub_08016E30();
+        VBlankIntrWait();
     } else {
         do {
             sub_0800048C();

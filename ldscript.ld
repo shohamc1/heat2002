@@ -34,6 +34,12 @@ sub_0801AFD0 = strlen;
 sub_0801B52C = __errno;
 sub_0801B564 = abort;
 
+/* include/gba/compat.h maps pokeemerald-style CpuSet/CpuFastSet/RLUnCompVram
+   calls onto these names with u32 prototypes; they are libagbsyscall's. */
+sub_08016E0C = CpuFastSet;
+sub_08016E10 = CpuSet;
+sub_08016E28 = RLUnCompVram;
+
 SECTIONS
 {
     . = 0x08000000;
@@ -544,14 +550,15 @@ SECTIONS
         build/asm/rom_08016CF8.o(.text*);
         build/src/sub_08016D08.o(.text*);
         build/src/sub_08016D28.o(.text*);
-        build/src/sub_08016E0C.o(.text*);
-        build/src/sub_08016E10.o(.text*);
-        build/src/sub_08016E14.o(.text*);
-        build/src/sub_08016E1C.o(.text*);
-        build/src/sub_08016E20.o(.text*);
-        build/src/sub_08016E28.o(.text*);
-        build/src/sub_08016E2C.o(.text*);
-        build/src/sub_08016E30.o(.text*);
+        /* libagbsyscall, from lib/libagbsyscall.s */
+        build/lib/agbsyscall/CpuFastSet.o(.text);
+        build/lib/agbsyscall/CpuSet.o(.text);
+        build/lib/agbsyscall/IntrWait.o(.text);
+        build/lib/agbsyscall/LZ77UnCompVram.o(.text);
+        build/lib/agbsyscall/MultiBoot.o(.text);
+        build/lib/agbsyscall/RLUnCompVram.o(.text);
+        build/lib/agbsyscall/RegisterRamReset.o(.text);
+        build/lib/agbsyscall/VBlankIntrWait.o(.text);
         build/src/sub_08016E38.o(.text*);
         build/asm/rom_08016E7C.o(.text*);
         build/src/sub_08016EA0.o(.text*);
@@ -866,11 +873,12 @@ SECTIONS
         build/asm/rom_083448F4.o(.text*);
         build/src/sub_08344968.o(.text*);
         build/asm/rom_08344A20.o(.text*);
-        build/src/sub_08344B60.o(.text*);
-        build/src/sub_08344B64.o(.text*);
-        build/src/sub_08344B68.o(.text*);
-        build/src/sub_08344B70.o(.text*);
-        build/src/sub_08344B74.o(.text*);
+        /* the high module's libagbsyscall copy */
+        build/lib/agbsyscall/sub_08344B60.o(.text);
+        build/lib/agbsyscall/sub_08344B64.o(.text);
+        build/lib/agbsyscall/sub_08344B68.o(.text);
+        build/lib/agbsyscall/sub_08344B70.o(.text);
+        build/lib/agbsyscall/sub_08344B74.o(.text);
         build/asm/rom_08344B7A.o(.text*);
         build/src/sub_0836419C.o(.text*);
         build/src/sub_083641D8.o(.text*);
@@ -878,8 +886,13 @@ SECTIONS
         build/src/sub_083644B4.o(.text*);
         build/asm/ram_08364550.o(.text*);
         build/asm/rom_08364730.o(.text*);
-        build/src/sub_083647FC.o(.text*);
-        build/asm/rom_08364800.o(.text*);
+        /* the multiboot island's libagbsyscall copy */
+        build/lib/agbsyscall/sub_083647F8.o(.text);
+        build/lib/agbsyscall/sub_083647FC.o(.text);
+        build/lib/agbsyscall/sub_08364800.o(.text);
+        build/lib/agbsyscall/sub_08364804.o(.text);
+        build/lib/agbsyscall/sub_08364808.o(.text);
+        build/asm/rom_08364810.o(.text*);
         /* newlib .data, which the ROM uses in place; locale.o's is still asm */
         build/lib/newlib/reent/impure.o(.data);
         build/asm/rom_083FFAAC.o(.text*);

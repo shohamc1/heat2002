@@ -37,7 +37,23 @@ NEWLIB_OBJS := $(addprefix $(BUILD)/lib/newlib/,$(addsuffix .o, \
 	reent/writer stdlib/callocr reent/closer errno/errno reent/fstatr \
 	arm/libcfunc reent/lseekr reent/readr reent/impure))
 
-OBJS     := $(filter-out $(RAM_MODULE_OBJS),$(C_SRCS:%.c=$(BUILD)/%.o) $(ASM_SRCS:%.s=$(BUILD)/%.o)) $(NEWLIB_OBJS)
+# Nintendo's BIOS-call library, one object per syscall, from
+# lib/libagbsyscall.s (pokeemerald's). Each separately linked module carries
+# its own copy: the main program's keeps the SDK names; the high 0x0834
+# module's and the multiboot island's keep their luvdis names, since one link
+# cannot hold three CpuSets.
+AGBSYSCALL_OBJS := $(addprefix $(BUILD)/lib/agbsyscall/,$(addsuffix .o, \
+	CpuFastSet CpuSet IntrWait LZ77UnCompVram MultiBoot RLUnCompVram \
+	RegisterRamReset VBlankIntrWait))
+AGBSYSCALL_COPIES := sub_08344B60:CpuFastSet sub_08344B64:CpuSet \
+	sub_08344B68:IntrWait sub_08344B70:RLUnCompVram sub_08344B74:VBlankIntrWait \
+	sub_083647F8:CpuFastSet sub_083647FC:CpuSet sub_08364800:LZ77UnCompVram \
+	sub_08364804:RegisterRamReset sub_08364808:VBlankIntrWait
+AGBSYSCALL_COPY_OBJS := $(foreach c,$(AGBSYSCALL_COPIES),$(BUILD)/lib/agbsyscall/$(firstword $(subst :, ,$(c))).o)
+syscall_of = $(lastword $(subst :, ,$(filter $(1):%,$(AGBSYSCALL_COPIES))))
+
+OBJS     := $(filter-out $(RAM_MODULE_OBJS),$(C_SRCS:%.c=$(BUILD)/%.o) $(ASM_SRCS:%.s=$(BUILD)/%.o)) \
+	$(NEWLIB_OBJS) $(AGBSYSCALL_OBJS) $(AGBSYSCALL_COPY_OBJS)
 
 .PHONY: all check test clean disasm
 all: $(TARGET).gba
@@ -97,6 +113,14 @@ $(filter-out $(NEWLIB_MALLOC_OBJS),$(NEWLIB_OBJS)): $(BUILD)/lib/newlib/%.o: $(N
 	$(newlib_compile)
 $(NEWLIB_MALLOC_OBJS): $(NEWLIB_DIR)/stdlib/mallocr.c Makefile
 	$(newlib_compile)
+
+$(AGBSYSCALL_OBJS): $(BUILD)/lib/agbsyscall/%.o: lib/libagbsyscall.s lib/function.inc Makefile
+	@mkdir -p $(@D)
+	$(AS) -mcpu=arm7tdmi -I lib --defsym L_$*=1 -o $@ $<
+$(AGBSYSCALL_COPY_OBJS): $(BUILD)/lib/agbsyscall/%.o: lib/libagbsyscall.s lib/function.inc Makefile
+	@mkdir -p $(@D)
+	$(AS) -mcpu=arm7tdmi -I lib --defsym L_$(call syscall_of,$*)=1 -o $@ $<
+	$(OBJCOPY) --redefine-sym $(call syscall_of,$*)=$* $@
 
 $(BUILD)/asm/%.o: asm/%.s Makefile
 	@mkdir -p $(@D)

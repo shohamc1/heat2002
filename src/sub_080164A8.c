@@ -15,7 +15,7 @@ extern u32 sub_08016558(u16 idx);
 extern void sub_080065A8(void);
 extern void sub_08006950(u32 a, u32 b, u32 c);
 extern void sub_08004238(void *a, u32 b);
-extern void sub_08016E30(void);
+extern void VBlankIntrWait(void);
 extern void sub_0800048C(void);
 extern void sub_0800420C(u32 a, u32 b);
 void sub_080164A8(void)
@@ -38,7 +38,7 @@ void sub_080164A8(void)
     sub_08006950(sub_08016558(0x75), 0x0A, 1);
     sub_08004238(buf, 0x0F);
     do {
-        sub_08016E30();
+        VBlankIntrWait();
         sub_0800048C();
         sub_08006950(sub_08016558(0x0F), 0x0F, 1);
     } while (!(*(u16 *)0x020005CC & 8));

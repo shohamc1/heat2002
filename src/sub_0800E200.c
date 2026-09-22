@@ -6,7 +6,7 @@ extern u8 gUnk_0807CA60[];
 extern u8 gUnk_0833338C[];
 extern u8 gUnk_08363EE8[];
 extern u8 gUnk_08364AC8[];
-extern void sub_08016E30(void);
+extern void VBlankIntrWait(void);
 extern u32 sub_08016558(u32 idx);
 extern void sub_08006950(u8 *p, u32 a1, u8 a2);
 extern void sub_08011C9C(u8 a, u16 *dst);
@@ -56,7 +56,7 @@ u32 sub_0800E200(void)
     sub_0800EA64(work);
 loop:
     {
-        sub_08016E30();
+        VBlankIntrWait();
         sub_08006950((u8 *)sub_08016558(0x53), 8, 1);
         i = 1;
         a = work;

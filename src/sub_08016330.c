@@ -19,7 +19,7 @@ void sub_08011D2C(u32 a, void *b);
 void sub_08006738(u8 *a);
 void sub_08006950(u8 *p, u32 a1, u8 a2);
 void sub_08004238(void *a, u32 b);
-void sub_08016E30(void);
+void VBlankIntrWait(void);
 void sub_0800048C(void);
 void sub_08015304(void);
 
@@ -51,7 +51,7 @@ void sub_08016330(u8 x)
     }
     sub_08004238(buf, 0xF);
     for (i = 0; i <= 0x13; i++)
-        sub_08016E30();
+        VBlankIntrWait();
     for (;;) {
         sub_0800048C();
         if (gKeysPressed & 2)
@@ -70,7 +70,7 @@ void sub_08016330(u8 x)
             }
             *(volatile u16 *)0x04000012 = (j - 0x14) * 8 + sel;
         }
-        sub_08016E30();
+        VBlankIntrWait();
     }
     sub_0800420C(0, 0xF);
     sub_08015304();

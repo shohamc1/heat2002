@@ -351,6 +351,22 @@ fragments plus four matched `src/` leaves (`_localeconv_r`, `findslot`,
 `remap_handle`, `_fstat`) until a stock build exists; a shallow CI submodule
 cannot build the fork's parent commit.
 
+#### libagbsyscall from pokeemerald (2026-09-23)
+
+The ROM's BIOS-call wrappers are Nintendo's `libagbsyscall`, in archive
+member order (alphabetical) and pokeemerald's exact shapes. Each separately
+linked module carries its own copy: the main program (8 at 0x08016E0C), the
+high 0x0834 module (5 at 0x08344B60) and the multiboot island (5 at
+0x083647F8). All 18 build from `lib/libagbsyscall.s` with
+`--defsym L_<Name>=1`; the high and island copies are renamed to their
+luvdis names with `objcopy --redefine-sym`, because one link cannot hold three
+`CpuSet`s. `include/gba/compat.h` keeps its `u32`-typed shim names
+(`sub_08016E10` and two others) through `ldscript.ld` aliases; pointing it at
+`syscall.h`'s pointer prototypes adds about 100 int-to-pointer warnings.
+
+Not covered: the two `svc 0x2A` (`SoundGetJumpList`) stubs at 0x0800151C
+and 0x0833ABDC. That syscall is not in pokeemerald's newer SDK.
+
 #### Why `pop {rN, pc}` appears at all
 
 `thumb_pushpop` (`tools/agbcc/gcc/thumb.c:601`) refuses a direct PC pop

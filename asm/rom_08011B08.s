@@ -54,7 +54,7 @@ _08011B22:
 	ands r0, r1
 	cmp r0, #0x00
 	bne _08011B3C
-	bl sub_08016E30
+	bl VBlankIntrWait
 	b _08011B44
 	.global _08011B34
 _08011B34: .4byte 0x0202ED78
@@ -64,7 +64,7 @@ _08011B38: .4byte 0x04000128
 _08011B3C:
 	movs r0, #0x01
 	movs r1, #0x80
-	bl sub_08016E14
+	bl IntrWait
 	.global _08011B44
 _08011B44:
 	bl sub_0800048C

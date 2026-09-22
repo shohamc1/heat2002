@@ -10,8 +10,8 @@ extern u8 gUnk_02025E00[];
 extern s32 gUnk_02025EC4;
 extern s32 gUnk_02025EC0;
 
-void sub_08016E28(u32 a, u32 b);
-void sub_08016E10(u32 src, u32 dest, u32 control);
+void RLUnCompVram(u32 a, u32 b);
+void CpuSet(u32 src, u32 dest, u32 control);
 
 void sub_08007760(void)
 {
@@ -30,7 +30,7 @@ void sub_08007760(void)
         if (p[4] != 0) {
             src = *(s32 *)(p + 8);
             len = *(s32 *)(p + 0xC);
-            sub_08016E28(src, len);
+            RLUnCompVram(src, len);
             p[4] = 0;
         }
         i++;
@@ -43,7 +43,7 @@ void sub_08007760(void)
         if (p[4] != 0) {
             src = *(s32 *)(p + 8);
             len = *(s32 *)(p + 0xC);
-            sub_08016E28(src, len);
+            RLUnCompVram(src, len);
             p[4] = 0;
         }
         i++;
@@ -56,8 +56,8 @@ void sub_08007760(void)
         if (p[4] != 0) {
             src = *(s32 *)(p + 8);
             len = *(s32 *)(p + 0xC);
-            sub_08016E28(src, (u32)buf);
-            sub_08016E10((u32)buf, len, 0x20);
+            RLUnCompVram(src, (u32)buf);
+            CpuSet((u32)buf, len, 0x20);
             p[4] = 0;
         }
         i++;
@@ -70,7 +70,7 @@ void sub_08007760(void)
         if (p[4] != 0) {
             src = *(s32 *)(p + 8);
             len = *(s32 *)(p + 0xC);
-            sub_08016E28(src, len);
+            RLUnCompVram(src, len);
             p[4] = 0;
         }
         i++;
@@ -83,7 +83,7 @@ void sub_08007760(void)
         if (p[4] != 0) {
             src = *(s32 *)(p + 8);
             len = *(s32 *)(p + 0xC);
-            sub_08016E28(src, len);
+            RLUnCompVram(src, len);
             p[4] = 0;
         }
         i++;
@@ -97,9 +97,9 @@ void sub_08007760(void)
             src = *(s32 *)(p + 8);
             len = *(s32 *)(p + 0xC);
             if (p[4] == 1)
-                sub_08016E10(src, len, 0x10);
+                CpuSet(src, len, 0x10);
             else
-                sub_08016E28(src, len);
+                RLUnCompVram(src, len);
             p[4] = 0;
         }
         i++;
@@ -113,7 +113,7 @@ void sub_08007760(void)
         if (p[1] != 0) {
             src = *(s32 *)(p + 4);
             len = *(s32 *)(p + 8);
-            sub_08016E10(src, len, 0x10);
+            CpuSet(src, len, 0x10);
             p[1] = 0;
             *q += 0x20;
         }

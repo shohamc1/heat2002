@@ -63,6 +63,18 @@ NEWLIB_BLOCKS = frozenset((
     "sub_0801B564", "sub_0801B584", "sub_0801B58C", "sub_0801B5BC",
 ))
 
+# luvdis blocks now built from Nintendo's libagbsyscall (lib/libagbsyscall.s,
+# pokeemerald's): the main program's copy, the high 0x0834 module's, and the
+# multiboot island's.
+AGBSYSCALL_BLOCKS = frozenset((
+    "sub_08016E0C", "sub_08016E10", "sub_08016E14", "sub_08016E1C", "sub_08016E20",
+    "sub_08016E28", "sub_08016E2C", "sub_08016E30", "sub_08344B60", "sub_08344B64",
+    "sub_08344B68", "sub_08344B70", "sub_08344B74", "sub_083647FC",
+))
+
+# Every luvdis block whose bytes now come from a source-built library object.
+LIBRARY_BLOCKS = NEWLIB_BLOCKS | AGBSYSCALL_BLOCKS
+
 # Runtime-library functions the epilogue check cannot see, because they are
 # in src/ rather than asm/: libgcc's __div0, and pieces of newlib's locale.o
 # and arm/syscalls.o that stay split until those objects build from source.
@@ -314,7 +326,7 @@ def main():
         )
         print(
             f"  whole ROM: {matched} / {total} bytes ({pct:.4f}%) over {len(units)} units"
-            f" ({len(lib)} newlib objects built from source)"
+            f" ({len(lib)} library objects built from source)"
         )
         if not lib:
             print("\n  WARNING: no build/lib objects; run `make` for accurate totals.")
@@ -336,19 +348,20 @@ def _selftest():
     # into src/*.c so far -- computed, not hardcoded, so this doesn't need
     # editing as tickets land.
     done = decompiled()
-    assert not NEWLIB_BLOCKS & (set(insns) | done), "a newlib block is back in asm/ or src/"
-    total = len(set(insns) | done | NEWLIB_BLOCKS)
-    assert total == 743, f"expected 743 functions across asm + matched C + newlib, got {total}"
+    assert not LIBRARY_BLOCKS & (set(insns) | done), "a library block is back in asm/ or src/"
+    total = len(set(insns) | done | LIBRARY_BLOCKS)
+    assert total == 743, f"expected 743 functions across asm + matched C + libraries, got {total}"
     assert "sub_08006734" not in insns, "sub_08006734 should be decompiled, not in asm"
     # 92 runtime-library functions were flagged in asm; 44 of them are now
     # newlib built from source, so 48 remain. With the 5 luvdis false
-    # positives, the 54 newlib blocks and the 5 library leaves in src/, 112
-    # blocks are not decompilation targets: the game-code denominator is 631.
+    # positives, the 68 library blocks (54 newlib, 14 libagbsyscall) and the
+    # 5 library leaves in src/, 126 blocks are not decompilation targets: the
+    # game-code denominator is 617.
     rt = runtime_library()
     assert len(rt) == 48, f"expected 48 runtime-library functions in asm, got {len(rt)}"
-    non_targets = rt | LUVDIS_FALSE_POSITIVES | NEWLIB_BLOCKS | RUNTIME_LEAVES
-    assert total - len(non_targets) == 631, (
-        f"game-code denominator should be 631, got {total - len(non_targets)}"
+    non_targets = rt | LUVDIS_FALSE_POSITIVES | LIBRARY_BLOCKS | RUNTIME_LEAVES
+    assert total - len(non_targets) == 617, (
+        f"game-code denominator should be 617, got {total - len(non_targets)}"
     )
     # Every address in the verified newlib map must be one of them.
     import json as _json
@@ -359,7 +372,7 @@ def _selftest():
     }
     rt_addrs = {
         int(n.split("_")[1], 16)
-        for n in rt | NEWLIB_BLOCKS
+        for n in rt | LIBRARY_BLOCKS
         if re.fullmatch(r"sub_[0-9A-Fa-f]{8}", n)
     }
     assert mapped <= rt_addrs, f"newlib map has {len(mapped - rt_addrs)} unflagged addresses"
