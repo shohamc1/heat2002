@@ -831,8 +831,11 @@ in their headers):**
   renaming __divsi3/__modsi3/__umodsi3 to the high copies. Write `/`
   and `%` as operators there. sub_08343EA8 MATCHED with this: it is
   instruction-identical to the matched sub_0800D684 and was ported from
-  that source. sub_08343A6C MATCHED the same day (with sub_0800D248, its
-  low twin); sub_08342258 (twin of the near-miss sub_0800A80C) remains.
+  that source. sub_08343A6C and sub_08342258 MATCHED the same day,
+  each ported from its low twin (sub_0800D248, sub_0800A80C) once the
+  twin was matched. Before drafting a 0x0834 function from scratch, look
+  for an instruction-identical low twin: normalise both streams (strip
+  pool offsets and branch targets) and compare.
 - **Spill-slot order is gcse hash order (sub_0800D248, 2026-09-22).**
   Pseudos that PRE creates for hoisted expressions are numbered in
   hash-bucket order, and reload assigns spill slots in pseudo order, so
@@ -893,8 +896,9 @@ banked with updated headers. New levers and walls:
   GCC assigns the uninit pseudo a garbage register, and WHICH register
   follows the rest of the allocation; several source shapes flip it
   (r4/r7). Remaining delta is a 2-instr r7-push ripple.
-- **Frame pads:** 7C44 needs `u8 pad[0x2C]` (frame 64), A80C
-  `unused[0x10]`, 03330 `unused[20]` — banked into the drafts.
+- **Frame pads:** 7C44 needs `u8 pad[0x2C]` (frame 64), 03330
+  `unused[20]` — banked into the drafts. A80C's 20 bytes turned out to be
+  a wholly unused local plus nothing else once the spill went away.
 - **Permuter gaps, re-confirmed:** (a) it cannot score RAM-linked
   functions (sub_08341288 run sat at score floor 3475 with 848 constant
   errors — the EWRAM-base link isn't reproduced for candidates); (b)

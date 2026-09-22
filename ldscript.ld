@@ -237,7 +237,8 @@ SECTIONS
         build/asm/rom_0800A5E2.o(.text*);
         build/src/sub_0800A628.o(.text*);
         build/src/sub_0800A708.o(.text*);
-        build/asm/rom_0800A80A.o(.text*);
+        build/src/sub_0800A80C.o(.text*);
+        build/asm/rom_0800AB78.o(.text*);
         build/src/sub_0800AD80.o(.text*);
         build/asm/rom_0800AE94.o(.text*);
         build/src/sub_0800AF20.o(.text*);
@@ -745,7 +746,7 @@ SECTIONS
         build/asm/rom_0834202E.o(.text*);
         build/src/sub_08342074.o(.text*);
         build/src/sub_08342154.o(.text*);
-        build/asm/rom_08342256.o(.text*);
+        build/src/sub_08342258.o(.text*);
         build/src/sub_083425C4.o(.text*);
         build/src/sub_083426C8.o(.text*);
         build/asm/rom_083427DC.o(.text*);

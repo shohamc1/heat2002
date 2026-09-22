@@ -1,5 +1,24 @@
-/* 2026-09-22: frame pad corrected to match target `sub sp` exactly (sub_0800A80C). */
 #include "global.h"
+
+/*
+ * Per-frame car update: zero the impulse accumulators, run the sub-steps,
+ * apply track collision (sub_0800D248) and car collision (sub_0800D684),
+ * then integrate position and heading.
+ *
+ * Shapes the retail bytes depend on:
+ * - `unused[5]` is a 20-byte local the compiled code never touches; the
+ *   ROM's frame is 20 bytes with no sp-relative access.
+ * - `if (car->unk175 != 0) v = 0; else v = sub_0800D248(car);`: the
+ *   redundant `v = 0` lets cse fold the following `v != 0` test on that
+ *   path, so the branch is threaded past it. Without the else the branch
+ *   lands on the test.
+ * - The sound call is one call behind `DC == 0 ? car == base : car ==
+ *   base + idx`, which gives the `beq/b` then `bne` layout.
+ * - The `gUnk_020020BC` loop is written with a goto so loop.c does not
+ *   hoist the store address out of it.
+ * - Everything from the sound check to the unk40 division is inside
+ *   `if (v != 0)`.
+ */
 
 struct Car {
     s32 unk00;                          /* 0x00 */
@@ -12,13 +31,14 @@ struct Car {
     s32 unk2C;                          /* 0x2C */
     u8 pad30[4];
     u16 unk34;                          /* 0x34 */
+    u8 pad36[0x3C - 0x36];
     u16 unk3C;                          /* 0x3C */
     u8 unk3E;                           /* 0x3E */
     u8 pad3F;
     s16 unk40;                          /* 0x40 */
-    u8 pad42[6];
+    u8 pad42[0x48 - 0x42];
     s32 unk48;                          /* 0x48 */
-    u8 pad4C[8];
+    u8 pad4C[4];
     s32 unk50;                          /* 0x50 */
     u8 pad54;
     u8 unk55;                           /* 0x55 */
@@ -64,7 +84,7 @@ void sub_0800A084(struct Car *a, u32 b);
 void sub_08008480(struct Car *a, u8 b);
 void sub_0800A310(struct Car *a);
 s32 sub_0800D248(struct Car *a);
-u8 sub_0800C164(struct Car *a);
+s32 sub_0800C164(struct Car *a);
 void sub_0800B618(u8 a, u8 b);
 u8 sub_0800D684(struct Car *a);
 u8 sub_08006A34(struct Car *p, u8 a1);
@@ -72,16 +92,13 @@ void sub_08001208(u16 idx);
 
 void sub_0800A80C(struct Car *car, u32 b, u8 c)
 {
-    u8 unused[0x10];
+    s32 unused[5];
     s32 v;
     s32 t;
-    u32 off;
 
     car->unk140 = 0;
-    off = 0x144;
-    *(s32 *)((u8 *)car + off) = 0;
-    off += 4;
-    *(s32 *)((u8 *)car + off) = 0;
+    car->unk144 = 0;
+    car->unk148 = 0;
     sub_08007C44(car);
     if (car->unk55 != 0)
         car->unk55--;
@@ -92,7 +109,9 @@ void sub_0800A80C(struct Car *car, u32 b, u8 c)
     v = 0;
     sub_0800A310(car);
     if (gUnk_0200215C == 4 || gUnk_020020CC <= 0xB) {
-        if (car->unk175 == 0)
+        if (car->unk175 != 0)
+            v = 0;
+        else
             v = sub_0800D248(car);
     }
     if (v != 0 && (u8)(car->unk7C - 1) <= 2)
@@ -123,7 +142,7 @@ void sub_0800A80C(struct Car *car, u32 b, u8 c)
             && (sub_0800C164(car) != 0 || car->unk176 != 0)) {
             if (car->unk176 != 0)
                 car->unk176--;
-            car->unk14C = car->unk14C * 3 / 4;
+            car->unk14C = (car->unk14C * 3) >> 2;
             sub_0800B618(c, 0);
             sub_0800B618(c, 1);
         }
@@ -131,32 +150,30 @@ void sub_0800A80C(struct Car *car, u32 b, u8 c)
     if (gUnk_0200215C != 2)
         sub_0800D684(car);
     car->unk18C = car->unk50;
-    do {
-        gUnk_020020BC = sub_08006A34(car, c);
-    } while (gUnk_020020BC != 0);
+again:
+    gUnk_020020BC = sub_08006A34(car, c);
+    if (gUnk_020020BC != 0)
+        goto again;
     car->unk00 += car->unk0C;
     car->unk08 += car->unk14;
     car->unk34 = car->unk34 + car->unk3C;
     if (v != 0) {
         if (gUnk_020020E0 == 0 && gUnk_020021E0 == 0 && gUnk_0202EF00[3] != 0) {
-            if (gUnk_020020DC != 0) {
-                if (car == gUnk_0202A550 + gUnk_0202EF90)
-                    sub_08001208(0x12);
-            } else if (car == gUnk_0202A550) {
+            if (gUnk_020020DC == 0 ? car == gUnk_0202A550
+                                    : car == gUnk_0202A550 + gUnk_0202EF90)
                 sub_08001208(0x12);
-            }
         }
+        if ((u8)(car->unk7C - 5) > 2 && gUnk_0202EEB0 != 0)
+            car->unk88 -= v >> 12;
+        car->unk55 = 6;
+        sub_0800A2D4(car);
+        car->unk48 = car->unk2C;
+        if (car->unk2C > 0)
+            car->unk48 = 0;
+        car->unk40 = (car->unk48 << 8) / -car->unkE8[car->unk3E];
     }
-    if ((u8)(car->unk7C - 5) > 2 && gUnk_0202EEB0 != 0)
-        car->unk88 -= v >> 12;
-    car->unk55 = 6;
-    sub_0800A2D4(car);
-    car->unk48 = car->unk2C;
-    if (car->unk2C > 0)
-        car->unk48 = 0;
-    car->unk40 = (car->unk48 << 8) / -car->unkE8[car->unk3E];
     car->unk0C += car->unk140;
     car->unk14 += car->unk144;
-    car->unk3C = car->unk3C + *(u16 *)&car->unk148;
+    car->unk3C = *(u16 *)&car->unk148 + car->unk3C;
     car->unk3C = ((s16)car->unk3C * 31) >> 5;
 }
