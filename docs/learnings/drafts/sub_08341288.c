@@ -1,3 +1,31 @@
+/*
+ * sub_08341288 — NEAR-MISS (session 4, 2026-09-22): 804/804 bytes,
+ * 395/401 instructions, TWO hunks; both root-caused to RELOAD/REMAT
+ * micro-behavior, not source shape (~20 spellings tried, all invariant):
+ *
+ * Q-BLOCK (0x083414fa): target {addr=r1, q=r0}; ours {addr=r0, q=r1}.
+ * First-cse RTL with this source: [q=99 (687), const 336 (692),
+ * addr=car+336 (693), strb (696)]. q's pseudo carries REG_EQUAL(const
+ * 99) -> reload rematerializes it AT THE STRB (deleting the early def),
+ * and find_reloads processes the MEM's address reload (operand 0)
+ * before the value (operand 1), so addr takes r0 and the remat'd q
+ * gets r1. Target keeps q in r0 across BOTH uses (strb + q+255 RMW)
+ * = no remat = local-alloc homed it; no agbcc C shape found that keeps
+ * a 2-use const pseudo un-remat'd (asm pins cascade, +12B).
+ *
+ * TAIL (0x08341568): the *p4e zero must materialize BEFORE the a5
+ * sp-chain. Post-cse RTL: any early source-level zero (z4e def insn
+ * 807, before the a5 stmt) is deleted and the store's operand is
+ * rewritten to the LATER HI zero (insn 814, the 0x38 store's) — the
+ * cse const-0 mode-table cross-wiring (same family as sub_080047E8,
+ * which was solved with an asm pin; pins here cascade).
+ *
+ * Permuter machinery for RAM-linked functions is FIXED this session
+ * (EWRAM-base link both sides + case-body oracle repair, commit
+ * 1d7bc94). Base floors at STRUCT_FLOOR=1000 (the tail is a true
+ * reordering); 2800 iterations found nothing — the fixes need
+ * def-early/store-late splits that are not statement permutations.
+ */
 #include "global.h"
 
 extern u8 gUnk_0203916C;
@@ -29,6 +57,7 @@ void sub_08341288(u8 idx, u8 *car, s32 a3, s32 a4, s32 a5)
     u8 *pec;
     u8 *p7d;
     u8 *p4e;
+    s32 z4e;
 
     if (gUnk_0203916C == 4)
         *(u8 *)(car + 0x162) = 0;
@@ -145,8 +174,8 @@ void sub_08341288(u8 idx, u8 *car, s32 a3, s32 a4, s32 a5)
     *(s32 *)(car + 0x14C) = 0;
     {
         s32 q;
-
-        *(u8 *)(car + 0x150) = (q = 0x63);
+        q = 0x63;
+        *(u8 *)(car + 0x150) = q;
         *(s32 *)(pe4) = gUnk_02027500[car[q = q + 255]];
         *(s32 *)(pe8) = gUnk_02027578[car[q]];
         *(s32 *)(pec) = gUnk_020275F0[car[q]];
@@ -163,10 +192,11 @@ void sub_08341288(u8 idx, u8 *car, s32 a3, s32 a4, s32 a5)
 
     *(s32 *)(car + 0x158) = 0;
     *p7d = 0;
+    z4e = 0;
     *(u16 *)(car + 0x36) = a5;
     *(u16 *)(car + 0x38) = 0;
     *(u16 *)(car + 0x160) = 0;
-    *p4e = 0;
+    *p4e = z4e;
     *(u16 *)(car + 0x3C) = 0;
 }
 

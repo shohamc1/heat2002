@@ -880,6 +880,23 @@ banked with updated headers. New levers and walls:
   at 1000; (c) BEA4's pin-free base floors at 1430 after 1.2k iters
   (the r10 pin the match needs is unparseable). Manual iteration beat
   all three runs.
+- **Continuation session (same day): the RAM-link permuter is FIXED and
+  the 08341288 fragment repaired** (commit 1d7bc94): permute.py now links
+  BOTH target and candidate at the EWRAM base (mixed bases made every
+  objdump annotation line differ), and the luvdis-mangled switch case
+  bodies in asm/rom_08341282.s are real instructions again (verified by
+  the make-check byte oracle). sub_08341288 is now 804/804 bytes,
+  395/401 instructions, TWO hunks, both root-caused to reload/remat
+  behavior (see its draft header): (a) the q pseudo's const def is
+  rematerialized at the strb (operand-0 address reload processed first
+  -> addr steals r0) where the retail build homed q in r0 un-remat'd;
+  (b) the *p4e zero's early def is deleted by the cse const-0 mode
+  table and rewired to the later HI zero. ~20 source spellings each,
+  invariant; asm pins cascade. The permuter ran 2800 iterations at
+  STRUCT_FLOOR=1000 without luck — the needed def-early/store-late
+  split is not a statement permutation. These two are the best
+  compiler-side-look candidates found so far (right alongside
+  08343EA8's libgcc-alias need).
 - 17000's "one allocation decision" is `dest` homed r5 in target vs r8
   in ours (r7-push cascade); parameter pins (`register ... asm()` on a
   PARAMETER) are a syntax error in agbcc, and a pinned LOCAL copy costs
