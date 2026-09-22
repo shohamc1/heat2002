@@ -368,6 +368,31 @@ luvdis names with `objcopy --redefine-sym`, because one link cannot hold three
 Not covered: the two `svc 0x2A` (`SoundGetJumpList`) stubs at 0x0800151C
 and 0x0833ABDC. That syscall is not in pokeemerald's newer SDK.
 
+#### EEPROM_V120 from kl-eod-decomp (2026-09-23)
+
+The ROM links Nintendo's EEPROM save library, revision `EEPROM_V120` (the
+version string is at 0x083393E0). Its nine functions fill
+0x08016E38-0x080171F4 in source order. Six were matched in `src/` as game
+code, `sub_08017000` (`ReadEepromDword`) and `sub_080170B8`
+(`ProgramEepromDword`) were parked, and the timer interrupt handler at
+0x08016E7C was never a luvdis block. All nine now build from `lib/eeprom.c`,
+which is `src/eeprom.c` from Dream-Atelier/kl-eod-decomp (Klonoa: Empire of
+Dreams links the same revision) without `ProgramEepromDwordEx`. This ROM
+doesn't link that function: `_call_via_r0` sits at its address.
+
+**The library was built at `-O1`.** Klonoa's Makefile builds it with
+`old_agbcc -O1`, and pokeemerald builds Nintendo's Flash library at `-O`.
+At `-O2`, seven of the nine functions differ. That explains the two parked
+drafts: their recorded wall was gcse PRE hoisting, and gcse doesn't run at
+`-O1`. Both drafts, tuned for `-O2`, still scored closer to the ROM at `-O1`.
+
+At `-O1`, agbcc also emits a table of every global each function
+references into `.rodata`. The ROM's 88 bytes at 0x0833940C are that table,
+so the object carries its whole `.rodata` (0x083393E0-0x08339464): the
+version string, both configs, the timer reload values, then the table.
+Its RAM stays extern, fixed in `ldscript.ld`. Game code calls the library
+by its luvdis names through `ldscript.ld` aliases.
+
 #### Why `pop {rN, pc}` appears at all
 
 `thumb_pushpop` (`tools/agbcc/gcc/thumb.c:601`) refuses a direct PC pop
@@ -420,11 +445,11 @@ overlapping definitions, would put the current 250 matches at risk.
 
 The 743 count includes the runtime library, the SDK code and the 7 luvdis
 false positives recorded above. None is a decompilation target.
-`scripts/progress.py` counts 134 non-targets: the 33 libgcc blocks still in
-asm, the 93 `LIBRARY_BLOCKS` (73 newlib, 14 libagbsyscall, 6 `m4a_1.s`),
-libgcc's `__div0` leaf in `src/` (`RUNTIME_LEAVES`, which the asm-only
-epilogue check cannot see), and the 7 false positives. The game-code
-denominator is **609**.
+`scripts/progress.py` counts 142 non-targets: the 33 libgcc blocks still in
+asm, the 101 `LIBRARY_BLOCKS` (73 newlib, 14 libagbsyscall, 6 `m4a_1.s`,
+8 EEPROM), libgcc's `__div0` leaf in `src/` (`RUNTIME_LEAVES`, which the
+asm-only epilogue check cannot see), and the 7 false positives. The
+game-code denominator is **601**.
 
 ### One or two instructions, cause identified in the compiler (5)
 
@@ -909,7 +934,8 @@ of code bytes). `make check` MATCH at every commit.
 
 **Wall classes now precisely characterized (drafts in drafts/, residuals
 in their headers):**
-- **gcse PRE hoisting** (sub_08017000, sub_080170B8, sub_08004B1C): the
+- **gcse PRE hoisting** (sub_08004B1C; sub_08017000 and sub_080170B8 were
+  the EEPROM library, built at -O1 where gcse doesn't run): the
   earlier "goto loops suppress invariant hoisting" note was INCOMPLETE —
   gcse runs on the raw CFG before loop.c; goto only suppresses LICM.
   `-dG` dumps name each insert. Partial counter-levers: volatile-cast one
@@ -1086,7 +1112,8 @@ function, `make check` MATCH throughout). Progress 514 -> 565 / 646.
 `sub_0833EE88` (glyph-arm r0/r1 tie, floor 50), `sub_08004B1C` (3-qty
 key-test rotation — the block_alloc sort-bug case), `sub_083415B0`
 (q stashed to r8 too early), `sub_0833BCF8` (np r8 vs r10),
-`sub_08017000` / `sub_080170B8` (r7-push cascade + CSE2 pool fusion),
+`sub_08017000` / `sub_080170B8` (r7-push cascade + CSE2 pool fusion; since
+built at -O1 as the EEPROM library),
 `sub_0833D31C` (asrs-vs-lsrs lever conflict, floor 505). All are
 register-allocation ties; none hits a documented compiler wall.
 

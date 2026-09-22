@@ -60,8 +60,13 @@ M4A_HIGH_EXTERNS := Clear64byte=sub_0833ABF4 ClearChain=sub_0833ABE0 \
 	FadeOutBody=sub_0833B0B4 MidiKeyToFreq=sub_0833A78C TrkVolPitSet=sub_0833B134 \
 	gClockTable=gUnk_0200C8DC gMPlayJumpTableTemplate=gUnk_0200C668
 
+# Nintendo's EEPROM save library (lib/eeprom.c, revision EEPROM_V120). The
+# SDK built its save libraries at -O1, as pokeemerald's Makefile does for
+# agb_flash; at -O2 seven of its nine functions differ.
+EEPROM_OBJ := $(BUILD)/lib/eeprom.o
+
 OBJS     := $(filter-out $(RAM_MODULE_OBJS),$(C_SRCS:%.c=$(BUILD)/%.o) $(ASM_SRCS:%.s=$(BUILD)/%.o)) \
-	$(NEWLIB_OBJS) $(AGBSYSCALL_OBJS) $(AGBSYSCALL_COPY_OBJS) $(M4A_OBJS)
+	$(NEWLIB_OBJS) $(AGBSYSCALL_OBJS) $(AGBSYSCALL_COPY_OBJS) $(M4A_OBJS) $(EEPROM_OBJ)
 
 .PHONY: all check test clean disasm
 all: $(TARGET).gba
@@ -129,6 +134,13 @@ $(AGBSYSCALL_COPY_OBJS): $(BUILD)/lib/agbsyscall/%.o: lib/libagbsyscall.s lib/fu
 	@mkdir -p $(@D)
 	$(AS) -mcpu=arm7tdmi -I lib --defsym L_$(call syscall_of,$*)=1 -o $@ $<
 	$(OBJCOPY) --redefine-sym $(call syscall_of,$*)=$* $@
+
+$(EEPROM_OBJ): lib/eeprom.c $(wildcard include/*.h include/gba/*.h) Makefile
+	@mkdir -p $(@D)
+	$(CPP) $(CPPFLAGS) $< -o $(@:.o=.i)
+	$(CC1) $(subst -O2,-O1,$(CFLAGS)) $(@:.o=.i) -o $(@:.o=.s)
+	printf '.text\n\t.align\t2, 0\n' >> $(@:.o=.s)
+	$(AS) $(ASFLAGS) -o $@ $(@:.o=.s)
 
 $(BUILD)/lib/m4a/m4a_1.o: lib/m4a_1.s lib/function.inc lib/m4a_constants.inc Makefile
 	@mkdir -p $(@D)

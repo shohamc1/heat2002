@@ -84,8 +84,15 @@ M4A_BLOCKS = frozenset((
     "sub_0833A018", "sub_0833A032", "sub_0833A488",
 ))
 
+# luvdis blocks now built from Nintendo's EEPROM_V120 save library
+# (lib/eeprom.c). Its timer interrupt handler was never a luvdis block.
+EEPROM_BLOCKS = frozenset((
+    "sub_08016E38", "sub_08016EA0", "sub_08016ED8", "sub_08016F3C", "sub_08016F80",
+    "sub_08017000", "sub_080170B8", "sub_0801719C",
+))
+
 # Every luvdis block whose bytes now come from a source-built library object.
-LIBRARY_BLOCKS = NEWLIB_BLOCKS | AGBSYSCALL_BLOCKS | M4A_BLOCKS
+LIBRARY_BLOCKS = NEWLIB_BLOCKS | AGBSYSCALL_BLOCKS | M4A_BLOCKS | EEPROM_BLOCKS
 
 # Runtime-library functions the epilogue check cannot see, because they are
 # in src/ rather than asm/: libgcc's __div0.
@@ -363,14 +370,14 @@ def _selftest():
     assert "sub_08006734" not in insns, "sub_08006734 should be decompiled, not in asm"
     # 92 runtime-library functions were flagged in asm; the 59 newlib ones
     # are now built from source, so the 33 libgcc ones remain. With the 7
-    # luvdis false positives, the 93 library blocks (73 newlib, 14
-    # libagbsyscall, 6 m4a_1) and libgcc's __div0 leaf in src/, 134 blocks
-    # are not decompilation targets: the game-code denominator is 609.
+    # luvdis false positives, the 101 library blocks (73 newlib, 14
+    # libagbsyscall, 6 m4a_1, 8 EEPROM) and libgcc's __div0 leaf in src/, 142
+    # blocks are not decompilation targets: the game-code denominator is 601.
     rt = runtime_library()
     assert len(rt) == 33, f"expected 33 runtime-library functions in asm, got {len(rt)}"
     non_targets = rt | LUVDIS_FALSE_POSITIVES | LIBRARY_BLOCKS | RUNTIME_LEAVES
-    assert total - len(non_targets) == 609, (
-        f"game-code denominator should be 609, got {total - len(non_targets)}"
+    assert total - len(non_targets) == 601, (
+        f"game-code denominator should be 601, got {total - len(non_targets)}"
     )
     # Every address in the verified newlib map must be one of them.
     import json as _json

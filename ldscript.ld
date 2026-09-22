@@ -27,6 +27,20 @@ sub_0801AFD0 = strlen;
 sub_0801B52C = __errno;
 sub_0801B564 = abort;
 
+/* Game code calls the EEPROM library by its luvdis names. Its RAM is
+   declared extern in lib/eeprom.c and fixed here. */
+sub_08016E38 = IdentifyEeprom;
+sub_08016EA0 = SetEepromTimerIntr;
+sub_08017000 = ReadEepromDword;
+sub_080170B8 = ProgramEepromDword;
+sub_0801719C = VerifyEepromDword;
+timer_No = 0x02000494;
+timer_Count = 0x02000496;
+timeoutFlag = 0x02000498;
+timerReg = 0x0200049C;
+shelt_ime = 0x020004A0;
+gEEPROMConfig = 0x0202F240;
+
 /* include/gba/compat.h maps pokeemerald-style CpuSet/CpuFastSet/RLUnCompVram
    calls onto these names with u32 prototypes; they are libagbsyscall's. */
 sub_08016E0C = CpuFastSet;
@@ -565,14 +579,8 @@ SECTIONS
         build/lib/agbsyscall/RLUnCompVram.o(.text);
         build/lib/agbsyscall/RegisterRamReset.o(.text);
         build/lib/agbsyscall/VBlankIntrWait.o(.text);
-        build/src/sub_08016E38.o(.text*);
-        build/asm/rom_08016E7C.o(.text*);
-        build/src/sub_08016EA0.o(.text*);
-        build/src/sub_08016ED8.o(.text*);
-        build/src/sub_08016F3C.o(.text*);
-        build/src/sub_08016F80.o(.text*);
-        build/asm/rom_08017000.o(.text*);
-        build/src/sub_0801719C.o(.text*);
+        /* EEPROM_V120, from lib/eeprom.c */
+        build/lib/eeprom.o(.text);
         build/asm/rom_080171F2.o(.text*);
         build/src/sub_080172C4.o(.text*);
         build/asm/rom_080172C6.o(.text*);
@@ -612,6 +620,7 @@ SECTIONS
         build/lib/newlib/reent/lseekr.o(.text);
         build/lib/newlib/reent/readr.o(.text);
         build/asm/rom_0801B5EC.o(.text*);
+        build/lib/eeprom.o(.rodata);
         /* newlib .rodata, in link order */
         build/lib/newlib/stdio/vfprintf.o(.rodata);
         build/lib/newlib/stdlib/dtoa.o(.rodata);

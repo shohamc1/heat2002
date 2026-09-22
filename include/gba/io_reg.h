@@ -775,6 +775,7 @@ enum
 
 #define WAITCNT_WS2_S_8         (0 << 10)
 #define WAITCNT_WS2_S_1         (1 << 10)
+#define WAITCNT_WS2_S_MASK      (1 << 10)
 
 #define WAITCNT_PHI_OUT_NONE    (0 << 11)
 #define WAITCNT_PHI_OUT_4MHZ    (1 << 11)

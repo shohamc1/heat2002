@@ -36,11 +36,9 @@ Ranked by original caller count. Drafts for functions since resolved into
 | `sub_08003330` | 1032 b | 9 | unmatched draft; record in `docs/learnings/sub_08003330.md` |
 | `sub_08004DB4` | 240 b | 4 | bare code draft, no quarantine header |
 | `sub_0800BD98` | 104 b | 3 | bare code draft, no quarantine header |
-| `sub_08016F80` | 128 b | 2 | 108/120 bytes, structure matches; DISPCNT `ands r4,r3` vs our `ands r3,r4` |
 | `sub_08003F84` | 148 b | 2 | loop tail 2 insns short (reload scratch r0 vs r2) + high-register permutation |
 | `sub_080112E0` | 156 b | 2 | structure fully solved; one pairwise register permutation |
 | `sub_0800930C` | 176 b | 2 | bare code draft, no quarantine header |
-| `sub_08017000` | 184 b | 2 | one allocation decision plus its register fallout (190/184 bytes) |
 | `sub_08004018` | 200 b | 2 | 2 insn-shape issues in the loop body |
 | `sub_0800F0BC` | 24 b | 1 | BLOCKED — reachable/unreachable insn mix (`mov r2, pc` self-check) |
 | `sub_08007304` | 64 b | 1 | wave-1 closeout: 4-byte floor with r7 pin (mov r7,ip constructible); pure-C r0-occupant impossible |
@@ -50,7 +48,6 @@ Ranked by original caller count. Drafts for functions since resolved into
 | `sub_0800A628` | 224 b | 1 | 220/220 bytes; one diff cluster around the j-chain 0x800a66a-0x800a686 |
 | `sub_0800CBB8` | 224 b | 1 | structure 100% solved; only a register swap (mask results r3,r2) |
 | `sub_08008AB0` | 228 b | 1 | 132 b code, identical control flow/block layout; register allocation differs |
-| `sub_080170B8` | 228 b | 1 | register-allocation and block-ordering artifacts after ~18 iterations |
 | `sub_080046D0` | 268 b | 1 | batch3 register permutation only (batches 1&2, flags, masks all MATCH) |
 | `sub_0800DE9C` | 304 b | 1 | everything matches except 2 insns in the loop's tile computation |
 | `sub_08011B08` | 316 b | 1 | compiles; one allocation-race cluster left (324/324, diff at words 9-82) |
