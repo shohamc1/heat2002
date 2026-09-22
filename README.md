@@ -11,9 +11,9 @@ match, the change is wrong — no exceptions.
 
 | Metric | Value |
 | --- | ---: |
-| Functions decompiled | **603 / 646** |
-| Code matched | **86,838 / 105,876 bytes** |
-| Percent complete | **82.0186%** |
+| Functions decompiled | **605 / 646** |
+| Code matched | **87,718 / 106,648 bytes** |
+| Percent complete | **82.25%** |
 
 Progress is measured in **bytes of code**, not function count — a 1,500-instruction
 function is not worth the same as a 1-instruction stub. The denominator is the
@@ -107,6 +107,7 @@ candidates to 593 solid seeds, which Luvdis expanded to 743.
 ```
 asm/*.s          ROM disassembly, one fragment per gap between decompiled
                  functions; reassembles exactly
+ram/             Alias stubs for RAM-module builds (never in the main link)
 src/             Decompiled C — one function per file, named for it
 include/         Headers
 include/gba/     GBA hardware headers vendored from fireemblem8u (pret)
