@@ -32,12 +32,6 @@
 	.size \name, .-\name
 	.endm
 @ End embedded Luvdis macros
-	thumb_func_start sub_083434AC
-sub_083434AC:
-	movs r0, #0xC0
-	lsls r0, r0, #0x04
-	bx lr
-	.byte 0x00, 0x00
 	thumb_func_start sub_083434B4
 sub_083434B4:
 	movs r0, #0xC0
