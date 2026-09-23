@@ -59,7 +59,7 @@ Ranked by original caller count. Drafts for functions since resolved into
 | `sub_08007C44` | 692 b | 1 | MATCHED 2026-09-23 (`2bc9c85`): literal 1s instead of a `bit` variable; split shift and `+=` for the tile coordinates |
 | `sub_08009C4C` | 764 b | 1 | MATCHED 2026-09-23 (`6d50015`): last pin removed; reload shifts its round-robin to the ROM picks |
 | `sub_0800A80C` | 876 b | 1 | 896/876 bytes; GCSE PRE hoists at the `sub_0800D248` join |
-| `sub_080097A4` | 892 b | 1 | plainest-source rewrite (GCSE hoists the six addresses); switch arm merge + home rotation block |
+| `sub_080097A4` | 892 b | 1 | MATCHED 2026-09-23: store `car->f4C` in every switch arm, and write the three constants as symbol addresses |
 | `sub_0800D248` | 908 b | 1 | best build 868/908 bytes (64-bit math / MIN/MAX chains) |
 | `sub_0800D684` | 2012 b | 1 | 1990/2012 bytes; 39-instruction multiset diff, fully characterized |
 | `sub_08006A34` | 2240 b | 1 | 2240/2240 bytes, 10 bytes differ at 3 sites; root causes identified |

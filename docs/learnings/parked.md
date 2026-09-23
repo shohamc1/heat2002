@@ -1465,6 +1465,26 @@ structs are passed SImode and integrate like scalars) do NOT work.
   HIGH get `movs #imm; adds rN,rM,rm` (shape B), low ones get
   `adds rN,rM,#0; adds rN,#imm` — so the shapes follow the homes.
 
+**Resolved 2026-09-23.** Both blockers had one cause: the switch
+assigned a `v` local and stored it once after the if/else. The original
+stores in every arm (`case 3: car->f4C = 0x28; break;`) and in the
+else (`car->f4C = 0;`). Fixing that took the diff from 370 lines to 8,
+and the six pointer homes fell into place with no pins.
+
+The mechanism is in `jump_optimize` (jump.c, around line 1961). In
+jump2's first sweep, each arm's jump is cross-jumped against the code
+that falls into its target, which is the else's `movs; strb`. The
+`strb` matches, so the arm's store is deleted and its jump goes to a
+label that `get_label_before` creates. That label's UID is at least
+`max_uid`, so jumps to it are never added to `jump_chain` or compared
+with each other. The equal-valued arms stay separate. The default arm
+matches the else in full and merges into it, as in the ROM.
+
+The last 8 lines were the three constants in the `gUnk_020020DC == 0`
+block. They're addresses of symbols, not integers: with
+`(s32)gUnk_08367BFA` the compiler can't build the next two with
+`adds`.
+
 ### sub_08009C4C — 764/764 bytes, 28 diff lines (2026-09-23, second pass)
 
 The 28 lines are five reload-scratch register picks, all in the

@@ -11,9 +11,9 @@ match, the change is wrong — no exceptions.
 
 | Metric | Value |
 | --- | ---: |
-| Functions decompiled | **583 / 592** |
-| Code matched | **100,474 / 104,544 bytes** |
-| Percent complete | **96.11%** |
+| Functions decompiled | **584 / 592** |
+| Code matched | **101,362 / 104,704 bytes** |
+| Percent complete | **96.81%** |
 
 Progress is measured in **bytes of code**, not function count — a 1,500-instruction
 function is not worth the same as a 1-instruction stub. The denominator is the
@@ -23,7 +23,7 @@ are built from source: 34 newlib from `tools/agbcc/libc`, 18 libgcc from
 `tools/agbcc/libgcc` (two copies), and from `lib/` 18 libagbsyscall members,
 two copies of the sound driver's `m4a_1.s` and the MultiBoot library, all
 adapted from pret/pokeemerald, and Nintendo's EEPROM save library, from
-Dream-Atelier/kl-eod-decomp. Counting them, 97.0101% of the whole ROM's code
+Dream-Atelier/kl-eod-decomp. Counting them, 97.5420% of the whole ROM's code
 comes from source. Regenerate with `python3 scripts/progress.py`;
 `--json` emits an [objdiff](https://github.com/encounter/objdiff) `report.json`
 v2 compatible with [decomp.dev](https://decomp.dev).
