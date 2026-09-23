@@ -940,14 +940,18 @@ of code bytes). `make check` MATCH at every commit.
   `movs rX,#0` at the store (sub_08011B08's `zero` is load-bearing).
 - The jump pass ALWAYS converts `if (c) p=&A; else p=&B;` into
   default+override at -O2; write `x = *(p = &A)` / `x = *(p = &B)` inside
-  the arms instead, and cross-jumping re-merges the derefs (sub_0833F468).
+  the arms instead, and cross-jumping re-merges the derefs. (The matched
+  sub_0833F468 needs neither: `if (c) x = A[0]; else x = B[0];` gives the
+  same code.)
 - Busy-wait shape: `first = gFlag; t -= 3; if (first == 0) do ;
   while (gFlag == 0);` with gFlag volatile (sub_0833BF80).
 - `t = arg1; ... t -= 3;` (plain copy, then compound sub) defeats the
   tree fold of `(u8)(x-3)` into `(u8)(x+253)`; loop bounds `i != N`, not
   `i < N` (GCC reverses `<` into a countdown).
-- Explicit `*24` pointer scaling synthesizes `((i*3)<<3)` where implicit
-  array scaling picks a different shift (sub_0833F468).
+- ~~Explicit `*24` pointer scaling synthesizes `((i*3)<<3)` where implicit
+  array scaling picks a different shift (sub_0833F468).~~ Wrong: the
+  matched sub_0833F468 uses `&gUnk_0203B860[p->unk4D]` for a 24-byte
+  struct and gets `((i*3)<<3)`.
 
 **Wall classes now precisely characterized (drafts in drafts/, residuals
 in their headers):**
@@ -1010,7 +1014,7 @@ in their headers):**
   out-of-line bodies land after the function.
 - **Allocation battles** (~15 drafts, several ONE instruction from
   matching: sub_0800BEA4 one reload copy, ~~sub_080047E8 one zero-pseudo
-  swap~~ MATCHED 2026-09-22, sub_0833F468 and ~~sub_0833BF80~~ (MATCHED 2026-09-23;
+  swap~~ MATCHED 2026-09-22, ~~sub_0833F468~~ (MATCHED 2026-09-23, see below) and ~~sub_0833BF80~~ (MATCHED 2026-09-23;
   its pool word was a `gUnk_08338FB0` typo) one pool word
   each at FULL instruction parity — NB: re-verified 2026-09-22, the
   BANKED drafts for F468/BF80 are NOT at parity (89%/72% of instructions
@@ -1363,3 +1367,23 @@ reg is R`) — diagnose there first. The surviving hypothesis: the original
 source split the value across two pseudos gcse could not canonicalize,
 or its bb structure around the first site's predecessors differs in a way
 that breaks partial availability.
+
+## Resolved 2026-09-23: sub_0833F468 (1264B) — MATCHED
+
+The high module's copy of the matched `sub_08006A34`. The two ROM
+functions share their first ~230 instructions (the whole gate-crossing
+test); the low copy then carries extra mode-0x10 challenge code that the
+high copy drops. Porting the low copy's source and deleting those blocks
+matched on the first compile.
+
+The fitted draft had got to 10 differing lines with the same three
+levers the low copy documents (dx/dy `asm` pins, the shared `time`
+variable, `m = z - 1`), plus explicit pointer locals declared in
+spill-slot order. None of that fitting was needed: plain field access
+makes the compiler create the same address pseudos in the same slots.
+
+**Lesson:** the twin check in CLAUDE.md looks for instruction-identical
+twins. Look for partial twins too. A normalized sequence diff of the
+target against every matched function of similar size finds a shared
+prefix in seconds, and a shared prefix of a few hundred instructions
+means the rest of the source is a small edit away.
