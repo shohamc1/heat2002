@@ -56,8 +56,8 @@ whole-ROM figure underneath.
 
 ## The loop
 
-1. Pick an open function from `parked.md`'s twin map. Most have a draft in
-   `docs/learnings/drafts/`.
+1. Pick an unmatched function and read `parked.md` first: it records what
+   was already tried.
 2. Write C in `src/` implementing that function. For a first draft, read
    m2c's output (see "Helper tools").
 3. `python3 scripts/match.py <name>`. It builds only `build/src/<name>.o`
@@ -164,7 +164,7 @@ draft at random and scores each compile against the target. Use it when the
 structure matches and the diff is register names or a few reordered
 instructions:
 
-    python3 scripts/permute.py sub_080112E0 docs/learnings/drafts/sub_080112E0.c -j8
+    python3 scripts/permute.py sub_080112E0 DRAFT.c -j8
 
 - It writes `nonmatchings/NAME/` (gitignored) and runs until you press
   Ctrl+C. Each better candidate lands in

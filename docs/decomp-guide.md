@@ -24,8 +24,8 @@ Makefile's `check` rule. Those are never the problem.
 ## 1. Pick the function
 
 Take one **open** function from the twin map in `docs/learnings/parked.md`.
-Do not pick two. If it has a draft in `docs/learnings/drafts/`, read the
-draft's header first: it records what was already tried.
+Do not pick two. Read its entry in `docs/learnings/parked.md` first: it
+records what was already tried.
 
 Then find the function in asm:
 
@@ -174,9 +174,9 @@ one into `src/` and run `match.py` again. A score of 0 isn't a match until
 `match.py` says so. For setup and limits, see "Helper tools" in `CLAUDE.md`.
 
 Do not loop forever. If after ~10 tries and a permuter run the diff is one
-stubborn instruction, write down what you tried in the draft's header in
-`docs/learnings/drafts/`. A draft with notes is useful; a guessed "match"
-that is not one is not.
+stubborn instruction, write down what you tried in
+`docs/learnings/parked.md`, and keep the unmatched C out of `src/`. Notes
+are useful; a guessed "match" that is not one is not.
 
 Things that are NOT fixes and must never be done:
 - adding `-O1`, `-O0`, `-fno-...` or any flag to the Makefile

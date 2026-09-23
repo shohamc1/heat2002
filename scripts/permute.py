@@ -6,7 +6,7 @@
 
 For example:
 
-    python3 scripts/permute.py sub_080112E0 docs/learnings/drafts/sub_080112E0.c -j8
+    python3 scripts/permute.py sub_080112E0 DRAFT.c -j8
 
 This writes nonmatchings/NAME/ (base.c, target.o, compile.sh, settings.toml)
 and starts tools/decomp-permuter/permuter.py on it. Each better candidate

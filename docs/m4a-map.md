@@ -4,8 +4,7 @@ This ROM runs the MP2K/m4a sound driver twice: a low copy near
 `0x08000260` and a high copy near `0x08339920` (see
 `docs/learnings/parked.md`, "The m4a engine is duplicated at delta
 0x3396C0"). Each row below is one engine function, identified by
-comparing its decompiled C body (or, for asm-only rows, the drafts in
-`docs/learnings/drafts/`) against a reference decompilation of the same
+comparing its decompiled C body against a reference decompilation of the same
 MP2K/m4a driver used across many licensed GBA titles from this era.
 
 Every "certain" row was confirmed by matching struct-field offsets or
@@ -36,8 +35,8 @@ addresses.
 | `sub_08001170` | `sub_0833A830` | `m4aSoundInit` | certain | yes | n/a (no offset casts; see the build constants below) |
 | `sub_08001150` | `sub_0833A810` | fade-control setter (`m4aMPlayFadeIn`/`m4aMPlayFadeOutTemporarily` family) | likely | yes | not touched (confidence is only "likely", not certain) |
 | `sub_08000DC8` | `sub_0833A488` | `TrackStop` | certain | n/a (hand-written asm in `m4a_1.s`; built from `lib/m4a_1.s`) | n/a |
-| `sub_080019F4` | `sub_0833B0B4` | `FadeOutBody` | certain | **no** (near-miss draft: `docs/learnings/drafts/sub_080019F4.c`) | n/a, not decompiled |
-| `sub_08001A74` | `sub_0833B134` | `TrkVolPitSet` | certain | **no** (near-miss draft: `docs/learnings/drafts/sub_08001A74.c`) | n/a, not decompiled |
+| `sub_080019F4` | `sub_0833B0B4` | `FadeOutBody` | certain | yes | not converted |
+| `sub_08001A74` | `sub_0833B134` | `TrkVolPitSet` | certain | yes | not converted |
 
 All 20 files across the 10 "converted" rows still print `MATCH` individually
 (`python3 scripts/match.py <name>`), and `make check` prints `MATCH` for the

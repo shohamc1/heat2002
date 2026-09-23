@@ -5,6 +5,10 @@ before picking a function: several of these look like easy leaves and are not.
 A park is not a permanent verdict — it is a record of what was already tried,
 so the next attempt starts from the failure instead of rediscovering it.
 
+The `docs/learnings/drafts/` files cited below were removed on 2026-09-23,
+once every game-code function matched. `git log -- docs/learnings/drafts`
+recovers them.
+
 ## Not functions at all (luvdis false positives)
 
 Seven entries in the 743 count are data runs that the seed heuristic
