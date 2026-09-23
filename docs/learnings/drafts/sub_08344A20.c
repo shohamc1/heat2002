@@ -1,4 +1,17 @@
 /*
+ * ADDENDUM 2026-09-23 (11B08 session 4): the twin's remaining wall is now
+ * FULLY characterized — read docs/learnings/drafts/sub_08011B08.c first.
+ * The ctr ops need the promoted-SImode discipline (mask-on-write); the
+ * u8 pin gives promote-on-read (same 5-insn multiset, wrong order), the
+ * u32 pin loses the inc's mask to a fold, and the unpinned route needs
+ * the KEYINPUT address pseudo pinned out of r8's way, which scrambles
+ * the post-call OR block (EFA0-equiv base r2<->r3 cascade). The 11B08
+ * draft at 18 diff lines is the reference shape to port once the state
+ * op cracks; everything else in this draft is already aligned with it
+ * (direct-mention tails, raw-value -1 via (s32)E160[0]-1, direct-cast
+ * KEYINPUT reads).
+ */
+/*
  * sub_08344A20 — NEAR-MISS UPDATE 2026-09-22 (session 2): 312/316 bytes,
  * 151/151 instructions, structure COMPLETE. Port of the sub_08011B08
  * session-2 shape: pins ctr=r8, e004=r6, e110=r5; m UNPINNED; NO v local;
