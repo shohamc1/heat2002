@@ -1485,6 +1485,13 @@ block. They're addresses of symbols, not integers: with
 `(s32)gUnk_08367BFA` the compiler can't build the next two with
 `adds`.
 
+The high twin sub_08341288 matched the same day as a direct port: rename
+the globals, and drop the `f17C` store, the `sub_0800C0E8` call and the
+`gUnk_0203916C == 4` test on `f58`, which the high copy doesn't have. The
+two reload hunks in its old draft's header came from the same `v` local
+and needed no other fix. It builds as a RAM module at 0x02008808, like
+sub_08340EFC.
+
 ### sub_08009C4C — 764/764 bytes, 28 diff lines (2026-09-23, second pass)
 
 The 28 lines are five reload-scratch register picks, all in the

@@ -20,7 +20,8 @@ ASM_SRCS := $(wildcard asm/*.s)
 # build/ram rule below); the main ROM embeds the image as data. They must
 # not reach the main link, or the trailing *(.text*) catch-all places them
 # twice over.
-RAM_MODULE_OBJS := build/src/sub_08364550.o build/src/sub_08340EFC.o
+RAM_MODULE_OBJS := build/src/sub_08364550.o build/src/sub_08340EFC.o \
+	build/src/sub_08341288.o
 
 # Runtime library: newlib objects built from the vendored source with the
 # flags of tools/agbcc/libc/Makefile (no interwork, -fno-builtin), in ROM
@@ -238,8 +239,14 @@ build/ram/sub_08340EFC.bin: build/src/sub_08340EFC.o build/ram/aliases_0834.o sy
 	$(LD) -Ttext=0x0200847C -e 0x0200847C -T symbols.ld $(RAM_DEFSYMS) -o $@.elf $< build/ram/aliases_0834.o
 	$(OBJCOPY) -O binary --only-section=.text $@.elf $@
 
+build/ram/sub_08341288.bin: build/src/sub_08341288.o build/ram/aliases_0834.o symbols.ld Makefile
+	@mkdir -p $(dir $@)
+	$(LD) -Ttext=0x02008808 -e 0x02008808 -T symbols.ld $(RAM_DEFSYMS) -o $@.elf $< build/ram/aliases_0834.o
+	$(OBJCOPY) -O binary --only-section=.text $@.elf $@
+
 build/asm/ram_08364550.o: build/ram/sub_08364550.bin
 build/asm/ram_08340EFC.o: build/ram/sub_08340EFC.bin
+build/asm/ram_08341288.o: build/ram/sub_08341288.bin
 
 $(TARGET).elf: ldscript.ld symbols.ld $(OBJS)
 	$(LD) -T ldscript.ld -T symbols.ld -o $@ $(OBJS)
