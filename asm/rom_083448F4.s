@@ -83,7 +83,3 @@ _0834493E:
 _08344958: .4byte 0x0203E160
 _0834495C: .4byte 0x04000208
 _08344960: .4byte 0x03007FF8
-	thumb_func_start sub_08344964
-sub_08344964:
-	bx lr
-	.byte 0x00, 0x00

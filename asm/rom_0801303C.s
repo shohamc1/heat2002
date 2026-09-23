@@ -89,15 +89,3 @@ _0801309A:
 _080130B0: .4byte 0xFFFFFE00
 _080130B4: .4byte 0x020005CC
 _080130B8: .4byte 0x0202EF00
-	thumb_func_start sub_080130BC
-sub_080130BC:
-	bx lr
-	.byte 0x00, 0x00
-	thumb_func_start sub_080130C0
-sub_080130C0:
-	bx lr
-	.byte 0x00, 0x00
-	thumb_func_start sub_080130C4
-sub_080130C4:
-	bx lr
-	.byte 0x00, 0x00

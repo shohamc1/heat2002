@@ -50,7 +50,3 @@ _0800BBE2:
 	str r0, [r1, #0x00]
 	bx lr
 	.byte 0x00, 0x00
-	thumb_func_start sub_0800BBF8
-sub_0800BBF8:
-	bx lr
-	.byte 0x00, 0x00

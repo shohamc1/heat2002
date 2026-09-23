@@ -161,31 +161,3 @@ _0800BB2E:
 	bx r0
 _0800BB34: .4byte 0x0200215C
 _0800BB38: .4byte sub_0800BA38
-	thumb_func_start sub_0800BB3C
-sub_0800BB3C:
-	bx lr
-	.byte 0x00, 0x00
-	thumb_func_start sub_0800BB40
-sub_0800BB40:
-	bx lr
-	.byte 0x00, 0x00
-	thumb_func_start sub_0800BB44
-sub_0800BB44:
-	bx lr
-	.byte 0x00, 0x00
-	thumb_func_start sub_0800BB48
-sub_0800BB48:
-	bx lr
-	.byte 0x00, 0x00
-	thumb_func_start sub_0800BB4C
-sub_0800BB4C:
-	bx lr
-	.byte 0x00, 0x00
-	thumb_func_start sub_0800BB50
-sub_0800BB50:
-	bx lr
-	.byte 0x00, 0x00
-	thumb_func_start sub_0800BB54
-sub_0800BB54:
-	bx lr
-	.byte 0x00, 0x00

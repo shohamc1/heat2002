@@ -175,15 +175,3 @@ sub_083640B0:
 	.4byte 0x02000415 @ literal
 	.4byte 0x02000980 @ literal
 	arm_func_end sub_083640B0
-	thumb_func_start sub_0836418C
-sub_0836418C:
-	bx lr
-	.byte 0x00, 0x00
-	thumb_func_start sub_08364190
-sub_08364190:
-	ldr r1, _08364198 @ =0x03007FF8
-	movs r0, #0x01
-	strh r0, [r1, #0x00]
-	bx lr
-	.global _08364198
-_08364198: .4byte 0x03007FF8

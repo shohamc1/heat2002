@@ -443,7 +443,3 @@ sub_0833BC64:
 	str r0, [r1, #0x40]
 	bx lr
 	.byte 0x00, 0x00
-	thumb_func_start sub_0833BC78
-sub_0833BC78:
-	bx lr
-	.byte 0x00, 0x00

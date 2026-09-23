@@ -49,35 +49,3 @@ _0800B5EE:
 	pop {r4}
 	pop {r0}
 	bx r0
-	thumb_func_start sub_0800B5F4
-sub_0800B5F4:
-	bx lr
-	.byte 0x00, 0x00
-	thumb_func_start sub_0800B5F8
-sub_0800B5F8:
-	bx lr
-	.byte 0x00, 0x00
-	thumb_func_start sub_0800B5FC
-sub_0800B5FC:
-	bx lr
-	.byte 0x00, 0x00
-	thumb_func_start sub_0800B600
-sub_0800B600:
-	bx lr
-	.byte 0x00, 0x00
-	thumb_func_start sub_0800B604
-sub_0800B604:
-	bx lr
-	.byte 0x00, 0x00
-	thumb_func_start sub_0800B608
-sub_0800B608:
-	bx lr
-	.byte 0x00, 0x00
-	thumb_func_start sub_0800B60C
-sub_0800B60C:
-	bx lr
-	.byte 0x00, 0x00
-	thumb_func_start sub_0800B610
-sub_0800B610:
-	bx lr
-	.byte 0x00, 0x00

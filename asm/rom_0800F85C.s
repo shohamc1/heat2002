@@ -83,7 +83,3 @@ _0800F8A6:
 _0800F8C0: .4byte 0x0202EF40
 _0800F8C4: .4byte 0x04000208
 _0800F8C8: .4byte 0x03007FF8
-	thumb_func_start sub_0800F8CC
-sub_0800F8CC:
-	bx lr
-	.byte 0x00, 0x00

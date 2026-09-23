@@ -60,16 +60,3 @@ sub_08339A00:
 	pop {r1}
 	bx r1
 	.byte 0x00, 0x00
-	thumb_func_start sub_08339A18
-sub_08339A18:
-	push {lr}
-	adds r1, r0, #0x0
-	movs r0, #0x80
-	lsls r0, r0, #0x09
-	lsls r1, r1, #0x10
-	asrs r1, r1, #0x10
-	bl sub_08344BB8
-	lsls r0, r0, #0x10
-	asrs r0, r0, #0x10
-	pop {r1}
-	bx r1

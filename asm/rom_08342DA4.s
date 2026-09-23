@@ -49,35 +49,3 @@ _08342DBE:
 	pop {r4}
 	pop {r0}
 	bx r0
-	thumb_func_start sub_08342DC4
-sub_08342DC4:
-	bx lr
-	.byte 0x00, 0x00
-	thumb_func_start sub_08342DC8
-sub_08342DC8:
-	bx lr
-	.byte 0x00, 0x00
-	thumb_func_start sub_08342DCC
-sub_08342DCC:
-	bx lr
-	.byte 0x00, 0x00
-	thumb_func_start sub_08342DD0
-sub_08342DD0:
-	bx lr
-	.byte 0x00, 0x00
-	thumb_func_start sub_08342DD4
-sub_08342DD4:
-	bx lr
-	.byte 0x00, 0x00
-	thumb_func_start sub_08342DD8
-sub_08342DD8:
-	bx lr
-	.byte 0x00, 0x00
-	thumb_func_start sub_08342DDC
-sub_08342DDC:
-	bx lr
-	.byte 0x00, 0x00
-	thumb_func_start sub_08342DE0
-sub_08342DE0:
-	bx lr
-	.byte 0x00, 0x00

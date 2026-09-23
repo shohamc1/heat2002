@@ -97,15 +97,3 @@ _08014C38: .4byte 0xFFFFFE00
 _08014C3C: .4byte 0x00001341
 _08014C40: .4byte 0x020020C0
 _08014C44: .4byte 0x020005CC
-	thumb_func_start sub_08014C48
-sub_08014C48:
-	push {lr}
-	ldr r0, _08014C5C @ =0x0829F504
-	movs r1, #0x38
-	movs r2, #0x4C
-	bl sub_08012384
-	lsls r0, r0, #0x18
-	lsrs r0, r0, #0x18
-	pop {r1}
-	bx r1
-_08014C5C: .4byte 0x0829F504

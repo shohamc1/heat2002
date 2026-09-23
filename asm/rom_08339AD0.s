@@ -46,7 +46,3 @@ _08339ADE:
 	bx r0
 	.byte 0x00, 0x00
 _08339AE8: .4byte 0x020375D0
-	thumb_func_start sub_08339AEC
-sub_08339AEC:
-	bx lr
-	.byte 0x00, 0x00

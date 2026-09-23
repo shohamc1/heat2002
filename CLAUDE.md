@@ -230,6 +230,19 @@ pools hold relocations. `import.py` can't link, because it builds every
 `compile.sh` from one project-wide command, and the address differs per
 function. On an already-matched function this setup scores 0.
 
+**`scripts/find_twins.py`** finds functions that are copies or near-copies of
+already-decompiled ones (`make disasm && python3 scripts/find_twins.py >
+docs/function-twins.md`). It normalizes each function's instructions so a
+relocated copy matches its original (branch targets become offsets from
+function start; pool and `bl` targets are masked), so most of the high
+0x0834 module shows up as exact copies of low-region functions whose C only
+needs the globals and callees renamed (the positional pool/call
+correspondence between twin and copy in `rom_reference.s` gives the address
+map mechanically — that is how the 2026-09-24 batch of 188 functions was
+ported). Read `docs/function-twins.md` before picking a target; regenerate
+it after any batch of matches — it also lists remaining-vs-remaining
+families where decompiling one member makes its relatives ports.
+
 ## Extracting a function: linker placement
 
 Solved once for `sub_08006734`; repeat this shape for every function. The
