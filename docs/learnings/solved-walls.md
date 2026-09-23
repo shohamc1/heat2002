@@ -37,6 +37,7 @@ with the target and ours asm, the cause and the fix.
 | Only the scratch register of a `mov rX, r10` or similar copy differs | A register pin on a variable | [11](#11-only-a-reload-scratch-register-differs) |
 | A fix to one expression rotates every callee-saved register | A temporary lengthened a live range | [12](#12-one-change-rotates-every-register) |
 | Ours pushes one more callee-saved register, holding a global's address | A fresh mention of a global where the source reused a pointer | [13](#13-an-extra-pushed-register-holding-a-global-address) |
+| Target loads the `ands` constant into the output register and the spilled value into the other (`movs r0, #15; ldr r1, [sp, #N]; ands r0, r1`); ours swaps them | The variable's declared type is wider than the source's | [14](#14-an-ands-constant-in-the-wrong-register) |
 | Your notes say the difference is invariant under many variants | The variants shared a wrong structure | [Start from a plain rewrite](#start-from-a-plain-rewrite) |
 
 ## Start from a plain rewrite
@@ -60,6 +61,12 @@ To start again, do the following:
    with the Makefile's own commands and link it the way `match.py` does.
 4. Fix the instruction sequence and sizes first. Look at register names only
    once the instructions line up.
+
+`sub_08001C88` (m4a `CgbSound`) was parked at 228 diff lines with a
+register pin, a status local and pointer arithmetic fitted to the ROM.
+tmc's `CgbSound`, edited for the older revision, scored 82 on its first
+build and matched after two changes. For m4a code, start from
+`tools/tmc/src/gba/m4a.c`.
 
 `sub_0800E008`'s old struct draft was stuck at 516 bytes. The plain rewrite
 built at 504 bytes with three diff lines after two changes.
@@ -460,6 +467,40 @@ naming the global again. In `sub_08004B1C`, an embedded index assignment,
 `p[j = idx - 5] = val;`, kept one pointer pseudo.
 
 **Seen in:** `sub_08004B1C` (`24c1c59`).
+
+### 14. An `ands` constant in the wrong register
+
+The instructions match, but the constant and a spilled variable trade
+registers around an `ands`:
+
+```
+-   movs r0, #15
+-   ldr r1, [sp, #24]
++   movs r1, #15
++   ldr r0, [sp, #24]
+    ands r0, r1
+```
+
+**Cause.** The expression is stored to a `u8`, so `convert_to_integer`
+narrows the `&` to 8 bits (convert.c:280). With an `s32` variable, the
+widened `andsi3` gets the constant as `(subreg:SI (reg:QI))`. Regmove's
+backward pass skips any operand that isn't a plain `REG` (regmove.c:2713),
+so it can't make the dying constant the output. It copies the variable into
+the output instead (regmove.c:2951), and reload loads the variable there.
+Declared `u8`, the variable is promoted to an `SImode` pseudo
+(`PROMOTE_MODE`, thumb.h:344) and the constant arrives as a plain `SImode`
+register, which regmove ties to the output.
+
+**Fix.** Declare the variable `u8`. A `(u8)` cast on each assignment gives
+the same `lsls`/`lsrs` zero-extension but not this tie:
+
+```c
+u8 envelopeStepTimeAndDir;
+/* ... */
+*nrx2ptr = (envelopeStepTimeAndDir & 0xf) + (channels->envelopeVolume << 4);
+```
+
+**Seen in:** `sub_08001C88` (CgbSound).
 
 ## Other signs of source structure
 
