@@ -40,7 +40,6 @@ Ranked by original caller count. Drafts for functions since resolved into
 | `sub_080112E0` | 156 b | 2 | structure fully solved; one pairwise register permutation |
 | `sub_0800930C` | 176 b | 2 | bare code draft, no quarantine header |
 | `sub_08004018` | 200 b | 2 | 2 insn-shape issues in the loop body |
-| `sub_0800F0BC` | 24 b | 1 | BLOCKED — reachable/unreachable insn mix (`mov r2, pc` self-check) |
 | `sub_08007304` | 64 b | 1 | wave-1 closeout: 4-byte floor with r7 pin (mov r7,ip constructible); pure-C r0-occupant impossible |
 | `sub_0800383C` | 84 b | 1 | one register permutation away |
 | `sub_0800C2CC` | 140 b | 1 | wave-5d state compiles; agent died mid-work |
@@ -62,7 +61,6 @@ Ranked by original caller count. Drafts for functions since resolved into
 | `sub_0800A80C` | 876 b | 1 | 896/876 bytes; GCSE PRE hoists at the `sub_0800D248` join |
 | `sub_080097A4` | 892 b | 1 | wave-4 dead-agent state; allocation pattern differs (adds-chain vs movs+adds) |
 | `sub_0800D248` | 908 b | 1 | best build 868/908 bytes (64-bit math / MIN/MAX chains) |
-| `sub_0800EAA0` | 1004 b | 1 | control-flow transcription believed correct after ~12 iterations |
 | `sub_0800D684` | 2012 b | 1 | 1990/2012 bytes; 39-instruction multiset diff, fully characterized |
 | `sub_08006A34` | 2240 b | 1 | 2240/2240 bytes, 10 bytes differ at 3 sites; root causes identified |
 

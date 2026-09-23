@@ -18,10 +18,10 @@ SHA1 is wrong, no matter how clean the C looks. Never edit `baserom.gba`,
   here, it goes stale within a day.
 - `docs/recon.md` — function inventory, call graph, entry-point trace, candidate ranking.
 - `docs/learnings/parked.md` — **read before picking a target.** What was
-  already tried and does not match, why the compiler patch was reverted, and the 142
+  already tried and does not match, why the compiler patch was reverted, and the 151
   blocks that are not decompilation targets: runtime-library and SDK code
-  (libgcc, newlib, libagbsyscall, the sound driver's `m4a_1.s`, the EEPROM
-  save library) and 7 luvdis
+  (libgcc, newlib, libagbsyscall, the sound driver's `m4a_1.s`, the MultiBoot
+  and EEPROM libraries) and 7 luvdis
   false positives that are not functions at all.
 - `build/lib/newlib/` — all 34 newlib code objects (plus `impure.o`'s data)
   built from `tools/agbcc/libc` with the library's own flags (see the
@@ -31,9 +31,9 @@ SHA1 is wrong, no matter how clean the C looks. Never edit `baserom.gba`,
   object per syscall; all three copies in the ROM build from it) and
   `m4a_1.s` (the sound driver's hand-written asm, edited to this ROM's older
   revision; both engine copies build from it). Copies outside the main
-  program keep their luvdis names. Also `eeprom.c`, Nintendo's
-  `EEPROM_V120` save library from Dream-Atelier/kl-eod-decomp, built at
-  `-O1` as the SDK built it. A library object keeps its own flags; the
+  program keep their luvdis names. Also `multiboot.c` (pokeemerald's), and
+  `eeprom.c`, Nintendo's `EEPROM_V120` save library from
+  Dream-Atelier/kl-eod-decomp, built at `-O1` as the SDK built it. A library object keeps its own flags; the
   rule against adding flags is about game code in `src/`.
 - `docs/tickets/` — one markdown ticket per function. Lowest open number first.
 - `docs/decomp-guide.md` — **read this before your first ticket.** Step-by-step
@@ -46,10 +46,10 @@ preamble (through `@ End embedded Luvdis macros`) or you get a phantom
 function named `name` from the `.macro` definition. `scripts/progress.py
 --selftest` asserts all three.
 
-Of those 743 blocks, **142 are not decompilation targets** — see
-`parked.md` — so the game-code denominator is **601**. The 101 blocks now
+Of those 743 blocks, **151 are not decompilation targets** — see
+`parked.md` — so the game-code denominator is **592**. The 110 blocks now
 built from library source are listed in `progress.py` (`LIBRARY_BLOCKS`) so
-the 743 still adds up. `progress.py` reports against 601 and prints the
+the 743 still adds up. `progress.py` reports against 592 and prints the
 whole-ROM figure underneath.
 
 ## The loop

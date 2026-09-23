@@ -11,19 +11,20 @@ match, the change is wrong — no exceptions.
 
 | Metric | Value |
 | --- | ---: |
-| Functions decompiled | **582 / 601** |
-| Code matched | **94,412 / 105,690 bytes** |
-| Percent complete | **89.33%** |
+| Functions decompiled | **575 / 592** |
+| Code matched | **93,742 / 104,058 bytes** |
+| Percent complete | **90.09%** |
 
 Progress is measured in **bytes of code**, not function count — a 1,500-instruction
 function is not worth the same as a 1-instruction stub. The denominator is the
-601 game-code functions: 743 blocks minus 142 that are runtime library, SDK
-or luvdis false positives (see `docs/learnings/parked.md`). 55 library objects
+592 game-code functions: 743 blocks minus 151 that are runtime library, SDK
+or luvdis false positives (see `docs/learnings/parked.md`). 56 library objects
 are built from source: 34 newlib from `tools/agbcc/libc`, and from `lib/` 18
-libagbsyscall members plus two copies of the sound driver's `m4a_1.s`, both
-adapted from pret/pokeemerald, and Nintendo's EEPROM save library, from
-Dream-Atelier/kl-eod-decomp. Counting them, 87.5993% of the whole ROM's
-code comes from source. Only libgcc (33 functions) is still vendored asm. Regenerate with `python3 scripts/progress.py`;
+libagbsyscall members, two copies of the sound driver's `m4a_1.s` and the
+MultiBoot library, all adapted from pret/pokeemerald, and Nintendo's EEPROM
+save library, from Dream-Atelier/kl-eod-decomp. Counting them, 88.3190% of
+the whole ROM's code comes from source. Only libgcc (33 functions) is still
+vendored asm. Regenerate with `python3 scripts/progress.py`;
 `--json` emits an [objdiff](https://github.com/encounter/objdiff) `report.json`
 v2 compatible with [decomp.dev](https://decomp.dev).
 

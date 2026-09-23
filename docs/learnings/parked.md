@@ -368,6 +368,23 @@ luvdis names with `objcopy --redefine-sym`, because one link cannot hold three
 Not covered: the two `svc 0x2A` (`SoundGetJumpList`) stubs at 0x0800151C
 and 0x0833ABDC. That syscall is not in pokeemerald's newer SDK.
 
+#### MultiBoot from pokeemerald (2026-09-23)
+
+The ROM links Nintendo's MultiBoot library at 0x0800EA64-0x0800F110: the
+nine functions of pokeemerald's `src/multiboot.c`, in source order. Seven
+were matched in `src/` as game code. The other two were parked:
+`sub_0800EAA0` (`MultiBootMain`, 1,004 bytes) and `sub_0800F0BC`
+(`MultiBootWaitCycles`). `MultiBootWaitCycles` is hand-written: pokeemerald
+declares it `naked` with an inline-asm body, which is why its `subs; bgt`
+had no `cmp` and no C reached it.
+
+All nine build from `lib/multiboot.c`, pokeemerald's file compiled with the
+project's own flags. Eight functions are pokeemerald's text unchanged.
+`MultiBootStartMaster` is an older revision with the same checks and
+palette encoding, so its body is the matched `src/sub_0800EEFC.c` rewritten
+with struct fields. The static `MultiBoot_required_data` is the object's
+`.bss`, placed at 0x0200048C in a NOLOAD section.
+
 #### EEPROM_V120 from kl-eod-decomp (2026-09-23)
 
 The ROM links Nintendo's EEPROM save library, revision `EEPROM_V120` (the
@@ -445,11 +462,11 @@ overlapping definitions, would put the current 250 matches at risk.
 
 The 743 count includes the runtime library, the SDK code and the 7 luvdis
 false positives recorded above. None is a decompilation target.
-`scripts/progress.py` counts 142 non-targets: the 33 libgcc blocks still in
-asm, the 101 `LIBRARY_BLOCKS` (73 newlib, 14 libagbsyscall, 6 `m4a_1.s`,
-8 EEPROM), libgcc's `__div0` leaf in `src/` (`RUNTIME_LEAVES`, which the
-asm-only epilogue check cannot see), and the 7 false positives. The
-game-code denominator is **601**.
+`scripts/progress.py` counts 151 non-targets: the 33 libgcc blocks still in
+asm, the 110 `LIBRARY_BLOCKS` (73 newlib, 14 libagbsyscall, 6 `m4a_1.s`,
+8 EEPROM, 9 MultiBoot), libgcc's `__div0` leaf in `src/` (`RUNTIME_LEAVES`,
+which the asm-only epilogue check cannot see), and the 7 false positives.
+The game-code denominator is **592**.
 
 ### One or two instructions, cause identified in the compiler (5)
 
@@ -1123,14 +1140,15 @@ register-allocation ties; none hits a documented compiler wall.
 `073d5a9..6b7e9a5`, one function per commit, `make check` MATCH at every step).
 Findings worth keeping:
 
-- **`sub_0800F0BC` is blocked, corroborated** (already marked BLOCKED in
-  `docs/decomp-queue.md`): the tail is `subs r0, r0, r1; bgt _label` — the
+- **`sub_0800F0BC` is blocked, corroborated** (resolved 2026-09-23: it is
+  the MultiBoot library's `MultiBootWaitCycles`, a `naked` function whose
+  body is inline asm; see "MultiBoot from pokeemerald"): the tail is
+  `subs r0, r0, r1; bgt _label` — the
   branch reads the SUBS flags with no `cmp`. agbcc's thumb.md has no
   `*subsi_compare0` pattern, and a corpus scan of all matched objects found
   zero `sub`+`bcc` sites. The `register u32 pcv asm("r15")` idiom does
   reproduce the `mov r2, pc` prologue, but the residual diff is exactly the
-  missing `cmp r0, #0` (26 vs 24 bytes). Draft kept at
-  `docs/learnings/drafts/sub_0800F0BC.c`.
+  missing `cmp r0, #0` (26 vs 24 bytes).
 - **Two more luvdis false positives**: `sub_08120E3A` and `sub_08248272`
   (both `non_word_aligned_thumb_func_start`). A `push {…}` opcode byte
   (0xB5xx) inside a data run; each "function" is one instruction followed by

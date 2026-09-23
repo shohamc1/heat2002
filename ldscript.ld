@@ -27,6 +27,12 @@ sub_0801AFD0 = strlen;
 sub_0801B52C = __errno;
 sub_0801B564 = abort;
 
+/* Game code calls the MultiBoot library by its luvdis names. */
+sub_0800EA64 = MultiBootInit;
+sub_0800EAA0 = MultiBootMain;
+sub_0800EEFC = MultiBootStartMaster;
+sub_0800EFC0 = MultiBootCheckComplete;
+
 /* Game code calls the EEPROM library by its luvdis names. Its RAM is
    declared extern in lib/eeprom.c and fixed here. */
 sub_08016E38 = IdentifyEeprom;
@@ -374,16 +380,8 @@ SECTIONS
         build/asm/rom_0800E70A.o(.text*);
         build/src/sub_0800E730.o(.text*);
         build/asm/rom_0800E732.o(.text*);
-        build/src/sub_0800EA64.o(.text*);
-        build/asm/rom_0800EAA0.o(.text*);
-        build/src/sub_0800EE8C.o(.text*);
-        build/asm/rom_0800EED4.o(.text*);
-        build/src/sub_0800EED8.o(.text*);
-        build/src/sub_0800EEFC.o(.text*);
-        build/src/sub_0800EFC0.o(.text*);
-        build/src/sub_0800EFD0.o(.text*);
-        build/asm/rom_0800F0BA.o(.text*);
-        build/src/sub_0800F0D4.o(.text*);
+        /* MultiBoot, from lib/multiboot.c */
+        build/lib/multiboot.o(.text);
         build/src/sub_0800F110.o(.text*);
         build/src/sub_0800F120.o(.text*);
         build/src/sub_0800F14C.o(.text*);
@@ -916,6 +914,10 @@ SECTIONS
         *(.text*);
     }
     /* arm/syscalls.o's statics, in EWRAM; no bytes in the ROM */
+    .bss_multiboot 0x0200048C (NOLOAD) :
+    {
+        build/lib/multiboot.o(.bss);
+    }
     .bss 0x020004A8 (NOLOAD) :
     {
         build/lib/newlib/arm/syscalls.o(.bss);
