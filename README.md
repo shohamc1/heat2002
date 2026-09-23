@@ -11,13 +11,13 @@ match, the change is wrong — no exceptions.
 
 | Metric | Value |
 | --- | ---: |
-| Functions decompiled | **592 / 592** |
-| Code matched | **105,114 / 105,114 bytes** |
-| Percent complete | **100.00%** |
+| Functions decompiled | **592 / 999** |
+| Code matched | **105,114 / 128,052 bytes** |
+| Percent complete | **82.09%** |
 
 Progress is measured in **bytes of code**, not function count — a 1,500-instruction
 function is not worth the same as a 1-instruction stub. The denominator is the
-592 game-code functions: 743 blocks minus 151 that are runtime library, SDK
+999 game-code functions: 1150 blocks minus 151 that are runtime library, SDK
 or luvdis false positives (see `docs/learnings/parked.md`). 74 library objects
 are built from source: 34 newlib from `tools/agbcc/libc`, 18 libgcc from
 `tools/agbcc/libgcc` (two copies), and from `lib/` 18 libagbsyscall members,
@@ -105,7 +105,9 @@ Function discovery cross-references two signals: addresses that something `bl`s
 to, **and** that begin with a `push {..., lr}` prologue. Either alone is mostly
 noise (a bare `0xB5` byte scan hits roughly 1-in-256 by chance, and Luvdis'
 own call-graph reachability stalls at `0x801A56C`). Requiring both cut ~1,300
-candidates to 593 solid seeds, which Luvdis expanded to 743.
+candidates to 593 solid seeds, which Luvdis expanded to 743. That rule misses
+every function nothing `bl`s to, so 407 more are seeded explicitly
+(`POINTER_ONLY` in `scripts/seed_functions.py`), for 1,150.
 
 ## Layout
 

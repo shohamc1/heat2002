@@ -32,4 +32,7 @@
 	.size \name, .-\name
 	.endm
 @ End embedded Luvdis macros
-	.byte 0x70, 0x47, 0x00, 0x00
+	thumb_func_start sub_0833D9E4
+sub_0833D9E4:
+	bx lr
+	.byte 0x00, 0x00

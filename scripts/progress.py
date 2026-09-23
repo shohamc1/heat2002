@@ -47,7 +47,7 @@ LUVDIS_FALSE_POSITIVES = frozenset((
 
 # luvdis blocks whose bytes now come from newlib objects built from source
 # (build/lib/newlib, placed by ldscript.ld). They left asm/ and src/ without
-# being game code; listing them keeps the 743-block accounting closed.
+# being game code; listing them keeps the 1150-block accounting closed.
 NEWLIB_BLOCKS = frozenset((
     "sub_08017594", "sub_080175D4", "sub_080175F4", "sub_08017668", "sub_0801767C",
     "sub_080185DC", "sub_080186D0", "sub_08018740", "sub_080187EC", "sub_08018948",
@@ -378,24 +378,24 @@ def _selftest():
     # The macro preamble defines `thumb_func_start name`; a bad parse yields a
     # phantom function literally called "name" -- once per split asm file.
     assert "name" not in insns, "preamble leaked into the parse"
-    # 743 total, minus however many have been decompiled out of asm/*.s and
-    # into src/*.c so far -- computed, not hardcoded, so this doesn't need
-    # editing as functions land.
+    # 1150 total: luvdis's original 743 blocks plus the 407 pointer-only
+    # functions it missed (seed_functions.py's POINTER_ONLY), whether still in
+    # asm/*.s or already matched in src/*.c.
     done = decompiled()
     assert not LIBRARY_BLOCKS & (set(insns) | done), "a library block is back in asm/ or src/"
     total = len(set(insns) | done | LIBRARY_BLOCKS)
-    assert total == 743, f"expected 743 functions across asm + matched C + libraries, got {total}"
+    assert total == 1150, f"expected 1150 functions across asm + matched C + libraries, got {total}"
     assert "sub_08006734" not in insns, "sub_08006734 should be decompiled, not in asm"
     # All 92 runtime-library functions once flagged in asm now build from
     # source. The 7 luvdis false positives and the 144 library blocks (73
     # newlib, 14 libagbsyscall, 6 m4a_1, 8 EEPROM, 9 MultiBoot, 34 libgcc) make
     # 151 blocks that are not decompilation targets: the game-code
-    # denominator is 592.
+    # denominator is 999.
     rt = runtime_library()
     assert not rt, f"runtime-library code is back in asm: {sorted(rt)}"
     non_targets = rt | LUVDIS_FALSE_POSITIVES | LIBRARY_BLOCKS
-    assert total - len(non_targets) == 592, (
-        f"game-code denominator should be 592, got {total - len(non_targets)}"
+    assert total - len(non_targets) == 999, (
+        f"game-code denominator should be 999, got {total - len(non_targets)}"
     )
     # Every address in the verified newlib map must be one of them.
     import json as _json

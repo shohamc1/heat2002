@@ -11,8 +11,12 @@ SHA1 is wrong, no matter how clean the C looks. Never edit `baserom.gba`,
 
 ## Current state
 
-- `asm/*.s` — ROM disassembly, **743 functions** originally, split into one
+- `asm/*.s` — ROM disassembly, **1150 functions** originally, split into one
   fragment per gap between decompiled functions; reassembles to an exact match.
+  luvdis found 743 of them. The other 407 are reached only through a pointer
+  or never called (callbacks, leaf functions, empty `bx lr` stubs), so the
+  `bl`-and-`push` seed rule missed them and luvdis left them as `.byte` rows.
+  `scripts/seed_functions.py` now seeds them explicitly (`POINTER_ONLY`).
 - `src/` — **257 functions decompiled**. One function per file, named for
   it. Run `scripts/progress.py` for the live figure; do not hand-copy it
   here, it goes stale within a day.
@@ -46,15 +50,15 @@ SHA1 is wrong, no matter how clean the C looks. Never edit `baserom.gba`,
 - `scripts/progress.py` — progress in bytes of code; `--json` emits decomp.dev `report.json`.
 
 Counting functions: match **both** `thumb_func_start` and
-`non_word_aligned_thumb_func_start` (735 + 8 = 743), and skip the macro
+`non_word_aligned_thumb_func_start` (1142 + 8 = 1150), and skip the macro
 preamble (through `@ End embedded Luvdis macros`) or you get a phantom
 function named `name` from the `.macro` definition. `scripts/progress.py
 --selftest` asserts all three.
 
-Of those 743 blocks, **151 are not decompilation targets** — see
-`parked.md` — so the game-code denominator is **592**. The 144 blocks now
+Of those 1150 blocks, **151 are not decompilation targets** — see
+`parked.md` — so the game-code denominator is **999**. The 144 blocks now
 built from library source are listed in `progress.py` (`LIBRARY_BLOCKS`) so
-the 743 still adds up. `progress.py` reports against 592 and prints the
+the 1150 still adds up. `progress.py` reports against 999 and prints the
 whole-ROM figure underneath.
 
 ## The loop
@@ -212,11 +216,15 @@ mechanical steps:
    `asm/*.s` fragment currently holds it.
 2. Truncate that fragment right before the block. Delete ONLY the
    function's own bytes: its instructions and its literal pool (the
-   `_XXXXXXXX: .4byte` lines that `ldr rN, _XXXXXXXX` refers to). 312 of the
-   742 blocks end in trailing `.byte` rows -- data that luvdis lumped in
-   before the next `thumb_func_start` (e.g. 52 bytes after `sub_08016558`'s
-   pool). Those bytes are not the function; `match.py`'s size comes from the
+   `_XXXXXXXX: .4byte` lines that `ldr rN, _XXXXXXXX` refers to). Some
+   blocks end in trailing `.byte` rows that luvdis never decoded: zero fill,
+   small tables, the high module's ARM startup code. A `.byte` row can also
+   be code: luvdis leaves every switch jump table and its case bodies as
+   `.byte` inside the function that owns them. Bytes after the function's
+   own pool are not the function; `match.py`'s size comes from the
    compiled object, so they would silently vanish from the ROM. Keep them.
+   (Before `POINTER_ONLY`, most such rows were missed functions: the 52
+   bytes after `sub_08016558`'s pool are `sub_08016568`.)
    Also check that no `ldr rN, _XXXXXXXX` in the block refers to a pool
    label defined in a *different* function's block, or vice versa. A
    PC-relative load cannot cross an object boundary (assembly fails with

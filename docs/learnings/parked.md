@@ -11,7 +11,7 @@ recovers them.
 
 ## Not functions at all (luvdis false positives)
 
-Seven entries in the 743 count are data runs that the seed heuristic
+Seven entries in the 1150 count are data runs that the seed heuristic
 (`BL` target ∩ `push {..., lr}` prologue) misclassified. A `0xB5` byte
 appears in data roughly 1-in-256 of the time, and these landed on one
 that a `bl` also happens to point near.
@@ -27,8 +27,8 @@ that a `bl` also happens to point near.
 | `sub_08248272` | one `push`, then `0xB1xx`/`0xB5xx` table halfwords; no references |
 
 They are left in `asm/` and must stay there. Do not write C for them. The
-743 denominator is therefore ~738 real functions; the count is left at 743
-so it agrees with the disassembly and with `progress.py --selftest`.
+1150 denominator is therefore ~1143 real functions; the count is left at
+1150 so it agrees with the disassembly and with `progress.py --selftest`.
 
 ## Non-interwork epilogues
 
@@ -465,12 +465,12 @@ against the object's end: `_lshrdi3.o` ends in two pad bytes, while
 
 #### Consequence for the denominator
 
-The 743 count includes the runtime library, the SDK code and the 7 luvdis
+The 1150 count includes the runtime library, the SDK code and the 7 luvdis
 false positives recorded above. None is a decompilation target.
 `scripts/progress.py` counts 151 non-targets: the 144 `LIBRARY_BLOCKS`
 (73 newlib, 14 libagbsyscall, 6 `m4a_1.s`, 8 EEPROM, 9 MultiBoot, 34
 libgcc including `__div0`) and the 7 false positives. The game-code
-denominator is **592**.
+denominator is **999**.
 
 ### One or two instructions, cause identified in the compiler (5)
 
@@ -1592,7 +1592,8 @@ counter.
 
 All 592 game-code blocks match as of this entry. The `.byte` runs
 between blocks still hold code luvdis never labelled, so the ROM isn't
-fully decompiled.
+fully decompiled. `POINTER_ONLY` in `scripts/seed_functions.py` now labels
+407 of those functions, which puts the game-code denominator at 999.
 
 ### sub_08009C4C — 764/764 bytes, 28 diff lines (2026-09-23, second pass)
 
