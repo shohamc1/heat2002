@@ -26,9 +26,16 @@ divides. `options {"raw": true}` keeps a stream as .bin only: the blob at
 0x080C0000 came from a weaker compressor than gbagfx's, so it has no
 round-trip to check.
 
+`blank` writes each asset as zero fill of its listed size, for a build with
+no baserom.gba (CI). The code still links at its real addresses, and `mask`
+zeroes the same ranges in any ROM, so `make check-code` can compare the
+build against the retail ROM's code without the ROM being present.
+
 Usage:
     python3 scripts/assets.py extract
+    python3 scripts/assets.py blank
     python3 scripts/assets.py convert
+    python3 scripts/assets.py mask ROM_IN ROM_OUT
 """
 
 import json
@@ -62,6 +69,23 @@ def extract():
         path = OUT / asset["path"]
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(rom[start:start + asset["size"]])
+
+
+def blank():
+    """Zero-fill every asset at its listed size, for a build with no ROM."""
+    for asset in assets():
+        path = OUT / asset["path"]
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(bytes(asset["size"]))
+
+
+def mask(rom_in, rom_out):
+    """Copy a ROM with every asset's range zeroed."""
+    rom = bytearray(Path(rom_in).read_bytes())
+    for asset in assets():
+        start = int(asset["start"], 16) - ROM_BASE
+        rom[start:start + asset["size"]] = bytes(asset["size"])
+    Path(rom_out).write_bytes(rom)
 
 
 def rebuild_song(mid, asset, flags, tmp):
@@ -148,7 +172,9 @@ def convert():
 
 
 if __name__ == "__main__":
-    modes = {"extract": extract, "convert": convert}
-    if len(sys.argv) != 2 or sys.argv[1] not in modes:
+    modes = {"extract": extract, "blank": blank, "convert": convert, "mask": mask}
+    args = {"mask": 2}
+    if len(sys.argv) < 2 or sys.argv[1] not in modes \
+            or len(sys.argv) - 2 != args.get(sys.argv[1], 0):
         sys.exit(__doc__)
-    modes[sys.argv[1]]()
+    modes[sys.argv[1]](*sys.argv[2:])

@@ -23,6 +23,10 @@ SHA1 is wrong, no matter how clean the C looks. Never edit `baserom.gba`,
 - `assets/*.json` — data assets in zeldaret/tmc's format. `make` runs
   `scripts/assets.py extract` to copy each one out of `baserom.gba` into
   `build/assets/`, and the asm `.incbin`s it, so the data stays out of git.
+  CI has no ROM, so it runs `make check-code`: the build with zero-filled
+  assets, compared against `nascar-heat.code.sha1`. `make` regenerates that
+  file from `baserom.gba` when `assets/*.json` changes; commit the two
+  together.
   Only the sound data is extracted so far; see "Extracted data assets" in
   `docs/learnings/parked.md`.
 - `docs/recon.md` — function inventory, call graph, entry-point trace, candidate ranking.
@@ -326,6 +330,7 @@ functions need no further tooling changes for either of these.
 
     make            # build
     make check      # build + verify SHA1 (the only test that counts)
+    make check-code # every byte outside assets/*.json; what CI runs, no ROM
     make disasm     # full-ROM reference disasm -> build/rom_reference.s (never touches asm/)
     python3 scripts/match.py NAME       # diff one function against the target
     python3 tools/m2c/m2c.py -t gba -f NAME FRAGMENT.s   # draft C from asm

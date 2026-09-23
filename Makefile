@@ -90,7 +90,7 @@ $(BUILD)/lib/eeprom.o: CFLAGS := $(subst -O2,-O1,$(CFLAGS))
 OBJS     := $(filter-out $(RAM_MODULE_OBJS),$(C_SRCS:%.c=$(BUILD)/%.o) $(ASM_SRCS:%.s=$(BUILD)/%.o)) \
 	$(NEWLIB_OBJS) $(AGBSYSCALL_OBJS) $(AGBSYSCALL_COPY_OBJS) $(M4A_OBJS) $(LIB_C_OBJS) $(LIBGCC_OBJS)
 
-.PHONY: all check test clean disasm tools convert
+.PHONY: all check check-code test clean disasm tools convert
 all: $(TARGET).gba
 
 # Each C file is preprocessed, run through agbcc, then assembled. The .s
@@ -208,10 +208,29 @@ $(BUILD)/lib/m4a/m4a_1_high.o: $(BUILD)/lib/m4a/m4a_1.o Makefile
 
 # Data assets: scripts/assets.py copies each file that assets/*.json lists
 # out of baserom.gba, and the asm pulls them in with .incbin.
+ASSETS_JSON := $(wildcard assets/*.json)
+ifneq ($(wildcard baserom.gba),)
 ASSET_STAMP := $(BUILD)/assets/.extracted
-$(ASSET_STAMP): baserom.gba scripts/assets.py $(wildcard assets/*.json)
+$(ASSET_STAMP): baserom.gba scripts/assets.py $(ASSETS_JSON)
 	python3 scripts/assets.py extract
 	touch $@
+
+# check-code's reference: the retail ROM with every asset range zeroed.
+# Derived from baserom.gba alone, never from the build, and remade whenever
+# the asset list changes. Commit it with the assets/*.json change.
+$(TARGET).code.sha1: baserom.gba scripts/assets.py $(ASSETS_JSON)
+	@mkdir -p $(BUILD)
+	python3 scripts/assets.py mask baserom.gba $(BUILD)/baserom.code.gba
+	printf '%s  $(BUILD)/$(TARGET).code.gba\n' \
+		"$$(shasum < $(BUILD)/baserom.code.gba | cut -d' ' -f1)" > $@
+else
+# No baserom.gba (CI): every asset is zero fill of its listed size, so the
+# code still links at its real addresses. Only check-code can pass.
+ASSET_STAMP := $(BUILD)/assets/.blank
+$(ASSET_STAMP): scripts/assets.py $(ASSETS_JSON)
+	python3 scripts/assets.py blank
+	touch $@
+endif
 
 # Asset conversion tools, built from zeldaret/tmc's sources (tools/tmc).
 # Only `make convert` needs them; `make check` doesn't. gbagfx needs libpng.
@@ -234,7 +253,7 @@ tools/bin/gbagfx: $(wildcard $(TMC_SRC)/gbagfx/*)
 
 # Turn the extracted assets into editable files (songs to .mid, samples to
 # .aif) next to their .bin, and check that each one converts back exactly.
-convert: $(ASSET_TOOLS) $(ASSET_STAMP)
+convert: baserom.gba $(ASSET_TOOLS) $(ASSET_STAMP)
 	python3 scripts/assets.py convert
 
 $(BUILD)/asm/%.o: asm/%.s Makefile $(ASSET_STAMP)
@@ -286,8 +305,14 @@ $(TARGET).gba: $(TARGET).elf
 	$(OBJCOPY) -O binary $< $@
 
 # The only thing that matters: does it reproduce the ROM?
-check: $(TARGET).gba
+check: $(TARGET).gba check-code
 	@shasum -c $(TARGET).sha1 && echo "MATCH" || (echo "MISMATCH"; exit 1)
+
+# Every byte outside the extracted assets: the code and the data still in
+# asm/. This is all CI can verify, since it never has baserom.gba.
+check-code: $(TARGET).gba $(TARGET).code.sha1
+	python3 scripts/assets.py mask $< $(BUILD)/$(TARGET).code.gba
+	@shasum -c $(TARGET).code.sha1 && echo "CODE MATCH" || (echo "CODE MISMATCH"; exit 1)
 
 # Tool selftests. These check the verification scripts themselves -- a broken
 # matcher that reports MATCH is worse than no matcher.

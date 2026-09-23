@@ -19,10 +19,10 @@ jobs:
       - name: Build agbcc
         run: cd tools/agbcc && ./build.sh
 
-      # baserom.gba is deliberately never supplied to CI: nothing in the
-      # build reads it (only `make disasm` does), and `make check` compares
-      # the produced ROM against the sha1 committed in nascar-heat.sha1 --
-      # the same fingerprint the project's correctness rule is written on.
-      # The ROM stays on the developer's machine in every form.
-      - name: Build and verify byte-for-byte match
-        run: make -j"$(nproc)" check
+      # baserom.gba is deliberately never supplied to CI; the ROM stays on
+      # the developer's machine in every form. Without it the build fills
+      # each assets/*.json range with zeros, and check-code compares every
+      # other byte (the code and the data still in asm/) against
+      # nascar-heat.code.sha1: the retail ROM with those ranges zeroed.
+      - name: Build and verify every byte outside the extracted assets
+        run: make -j"$(nproc)" check-code
