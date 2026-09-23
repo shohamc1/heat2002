@@ -136,9 +136,3 @@ _0833D7C2:
 	pop {r4, r5, r6, r7}
 	pop {r1}
 	bx r1
-	thumb_func_start sub_0833D7CC
-sub_0833D7CC:
-	add sp, #-0x028
-	add sp, #0x028
-	bx lr
-	.byte 0x00, 0x00
