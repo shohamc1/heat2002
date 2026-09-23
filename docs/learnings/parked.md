@@ -63,21 +63,43 @@ option is not in tmc's asset lists: agb2mid drops each track's opening
 `-V` set to its opening volume (the `V` option in `sound.json`). Every
 track in a song opens at the same volume.
 
+Graphics, compressed, `0x0807CA7C`-`0x08339xxx` + three island copies
+(341 KB), established 2026-09-23 (step 1 of
+`docs/graphics-extraction.md`):
+
+- `assets/graphics.json` lists 660 blobs: 654 RL and 3 LZ77 found by
+  walking every 4-byte-aligned word that points at a 4-byte-aligned ROM
+  address (657 valid streams), plus the multiboot island's three LZ77
+  copies at `0x083648A8`/`0x083648F4`/`0x08364940`, which no pointer
+  reaches and which are byte-identical to the main program's three. A
+  decompressed size above VRAM's 96 KB is impossible for
+  `RLUnCompVram`/`LZ77UnCompVram`; that cap rejects one lucky 2.9 MB walk
+  through random data that starts with `0x30` and lands the exact bogus
+  size.
+- The blobs sit in 112 back-to-back runs, mostly `0x08280000`-`0x08340000`,
+  all inside `rom_0801CD08.s` (island copies in `rom_08364810.s`). Every
+  stream ends with zero fill to a 4-byte boundary, which the `.incbin`
+  lines emit as `.align 2, 0`. The two 38,400-byte blobs at `0x082B370C`
+  and `0x0830EE78` are the Crawfish and Infogrames 240x160 8bpp boot
+  logos.
+- The exception is the 12,544-byte RL blob at `0x080C0000`: a 13,437-byte
+  stream from a weaker compressor (gbagfx makes 11,836), followed by
+  non-zero bytes, so it gets no align. Its `.bin` keeps the exact stream
+  and `make convert` leaves it raw (no PNG round-trip).
+- `scripts/incbin_assets.py` rewrote the asm: it maps every line to its
+  ROM address, checks each `_`/`sub_` label against that address, and
+  compares every removed byte with `baserom.gba` before deleting it, so a
+  wrong map stops instead of eating the wrong range.
+- Remaining for graphics: each blob's format, width and palette (step 3,
+  one loader at a time) and the ~3.3 MB of uncompressed BG tilemaps and
+  4bpp tiles in `0x08080000`-`0x08280000` (step 4; few direct pointers
+  reach them, so naming them means walking the game's pointer tables).
+
 Not extracted yet:
 
 - `0x0801CF88`-`0x0801D29C`: `gMPlayJumpTableTemplate` (36 words), then
   bytes not yet identified. A rhythm voice in the first voicegroup points
   at `0x0801CF90`, inside the jump table, so a drum kit overlaps it.
-- Graphics. The game calls `RLUnCompVram` and `LZ77UnCompVram`. ROM
-  pointers reach 657 compressed blobs (654 RL, 3 LZ77, 340 KB), most in
-  `0x08280000`-`0x08340000`. gbagfx recompresses 656 of them byte for byte.
-  The exception, a 12,544-byte blob at `0x080C0000`, came from a weaker
-  compressor (13,437 bytes against gbagfx's 11,836) and must stay raw. The
-  240x160 8bpp bitmaps at `0x082B370C` and `0x0830EE78` are the Crawfish
-  and Infogrames boot logos.
-- About 3.3 MB of uncompressed data, mostly BG tilemaps and 4bpp tiles in
-  `0x08080000`-`0x08280000`. Few direct pointers reach it; naming it means
-  walking the game's pointer tables.
 
 ## Non-interwork epilogues
 
