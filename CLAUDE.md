@@ -17,6 +17,9 @@ SHA1 is wrong, no matter how clean the C looks. Never edit `baserom.gba`,
   it. Run `scripts/progress.py` for the live figure; do not hand-copy it
   here, it goes stale within a day.
 - `docs/recon.md` — function inventory, call graph, entry-point trace, candidate ranking.
+- `docs/learnings/solved-walls.md`: **read when a function stalls.** It maps
+  `match.py` diff symptoms to the source fixes that matched earlier walls,
+  and you must update it when you match or abandon a stalled function.
 - `docs/learnings/parked.md` — **read before picking a target.** What was
   already tried and does not match, why the compiler patch was reverted, and the 151
   blocks that are not decompilation targets: runtime-library and SDK code
@@ -67,7 +70,7 @@ whole-ROM figure underneath.
 4. `MISMATCH` prints an instruction diff — adjust the C and repeat. If the
    structure matches and only registers or a few instructions differ, run
    the permuter and trace the compiler passes before you park the function
-   (see "Helper tools").
+   (see "Helper tools" and `docs/learnings/solved-walls.md`).
 5. On `MATCH`, delete the function from its `asm/*.s` fragment and place the
    C object at the same address in `ldscript.ld`.
 6. `make check` must still print `MATCH`.

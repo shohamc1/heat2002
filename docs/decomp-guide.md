@@ -173,6 +173,10 @@ Press Ctrl+C when the score stops falling. Candidates land in
 one into `src/` and run `match.py` again. A score of 0 isn't a match until
 `match.py` says so. For setup and limits, see "Helper tools" in `CLAUDE.md`.
 
+Before you park a function, look up your diff in
+`docs/learnings/solved-walls.md`. Every function that earlier sessions
+parked as a compiler wall matched through one of its entries.
+
 Do not loop forever. If after ~10 tries and a permuter run the diff is one
 stubborn instruction, write down what you tried in
 `docs/learnings/parked.md`, and keep the unmatched C out of `src/`. Notes
