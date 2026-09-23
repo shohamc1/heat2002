@@ -728,6 +728,8 @@ SECTIONS
         build/lib/newlib/stdlib/mprec.o(.rodata);
         build/lib/newlib/arm/syscalls.o(.rodata);
         build/asm/rom_08339680.o(.text*);
+        build/src/sub_083398CC.o(.text*);
+        build/asm/rom_083398D4.o(.text*);
         build/src/sub_08339920.o(.text*);
         build/src/sub_08339934.o(.text*);
         build/src/sub_0833995C.o(.text*);
