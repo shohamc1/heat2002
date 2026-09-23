@@ -1492,6 +1492,28 @@ two reload hunks in its old draft's header came from the same `v` local
 and needed no other fix. It builds as a RAM module at 0x02008808, like
 sub_08340EFC.
 
+### sub_0800AB78 — resolved 2026-09-23
+
+The draft was 512 of 520 bytes, and the six `sub_0800A80C` call sites
+shared their code in the wrong pattern. The fix was one source change:
+the last two `idx == 0` arms call `sub_0800A628` once, after an if/else,
+the same shape as the `gUnk_020020DC` branch. The draft called it in
+each arm.
+
+Why that decides the merge: flow (flow.c, around line 350) inserts a
+`(use (const_int 0))` insn after any call that ends a block right
+before a label. In jump2, `find_cross_jump` stops at that insn, because
+an INSN never equals a CALL_INSN. So a "then" arm, whose call ends in a
+jump, keeps its own call. An "else" arm, whose call falls into the
+shared `sub_0800A628` block, gets a USE; once that block is merged away,
+the arm's jump compares USE with USE and then call with call, so it
+shares the other arm's call.
+
+To read a cross-jump pattern in the ROM, check which calls were followed
+by a jump and which fell into a label at flow time. A call with a USE
+after it can only merge with another call that has one, and a call
+followed by a jump only with another call followed by a jump.
+
 ### sub_08009C4C — 764/764 bytes, 28 diff lines (2026-09-23, second pass)
 
 The 28 lines are five reload-scratch register picks, all in the

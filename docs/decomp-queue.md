@@ -52,7 +52,7 @@ Ranked by original caller count. Drafts for functions since resolved into
 | `sub_08011B08` | 316 b | 1 | compiles; one allocation-race cluster left (324/324, diff at words 9-82) |
 | `sub_0800E200` | 452 b | 1 | wave-5d state compiles; agent died mid-experiment |
 | `sub_0800E008` | 504 b | 1 | best build 540/532 bytes (retry-wave notes in header) |
-| `sub_0800AB78` | 520 b | 1 | 520/520 bytes; cross-jump sharing of the four `sub_0800A80C` call sites |
+| `sub_0800AB78` | 520 b | 1 | MATCHED 2026-09-23: one shared `sub_0800A628` call after the last `idx == 0` if/else |
 | `sub_0800BEA4` | 580 b | 1 | wave-4 dead-agent state; mid-function code 4 bytes short |
 | `sub_0800CD38` | 580 b | 1 | best build 572/580 bytes |
 | `sub_0800A084` | 592 b | 1 | MATCHED 2026-09-23 (`4832f44`): plain field accesses, GCSE builds pointer copies; product operand order fixes priority |
