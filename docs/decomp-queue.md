@@ -49,7 +49,7 @@ Ranked by original caller count. Drafts for functions since resolved into
 | `sub_08008AB0` | 228 b | 1 | 132 b code, identical control flow/block layout; register allocation differs |
 | `sub_080046D0` | 268 b | 1 | batch3 register permutation only (batches 1&2, flags, masks all MATCH) |
 | `sub_0800DE9C` | 304 b | 1 | everything matches except 2 insns in the loop's tile computation |
-| `sub_08011B08` | 316 b | 1 | compiles; one allocation-race cluster left (324/324, diff at words 9-82) |
+| `sub_08011B08` | 316 b | 1 | MATCHED 2026-09-23 with its twin sub_08344A20: plain rewrite, `u16` OR, pointer store, `edd0` user variable |
 | `sub_0800E200` | 452 b | 1 | wave-5d state compiles; agent died mid-experiment |
 | `sub_0800E008` | 504 b | 1 | MATCHED 2026-09-23: `DmaFill32` macro for the fill value, `goto` out of the main loop |
 | `sub_0800AB78` | 520 b | 1 | MATCHED 2026-09-23: one shared `sub_0800A628` call after the last `idx == 0` if/else |

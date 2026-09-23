@@ -1534,6 +1534,31 @@ form. A fresh plain-C rewrite needed no struct. Two things fixed it:
 If a ROM loop has a mid-body exit but no jump into the loop from above,
 the exit was a `goto` or a `return`.
 
+### sub_08011B08 and sub_08344A20 — resolved 2026-09-23
+
+A fresh plain-C rewrite with no register pins matched after four
+changes. The high twin is a direct port with renamed globals and callees.
+
+- **Store to `gUnk_0202ED78` through a `vu16 *` local.** A store to a
+  volatile array element by name, `gUnk_0202ED78[0] = t`, compiles to a
+  read-modify-write in agbcc (`ldrh` then `strh`). Through a pointer, it's
+  a plain `strh`.
+- **Write the 0x100 OR in `u16`:** `((u16)(A << 12) | 0x100) | B`. The
+  shortened OR loads 0x100 into a HImode pseudo, which gives the ROM's
+  `movs r3; lsls; adds r0, r3, #0; orrs` copy. Without the cast, fold
+  moves 0x100 onto B.
+- **Keep the loop counter `u8` and unpinned.** The old draft's state-op
+  wall came from pinning it to r8.
+- **Make the `gUnk_0202EDD0` address a user variable, assigned inside
+  the expression:** `(*(edd0 = &gUnk_0202EDD0) + 1)`. That pointer and the
+  SIOCNT address temp tie on allocation priority (6 refs over 90 insns
+  each), and `allocno_compare` breaks ties by pseudo number. A user
+  variable gets its pseudo at its declaration, so it's older than the
+  temp and gets r6, as in the ROM.
+
+To break an exact priority tie between two pseudos, check which one the
+ROM gives the lower register, and make that one a declared variable.
+
 ### sub_08009C4C — 764/764 bytes, 28 diff lines (2026-09-23, second pass)
 
 The 28 lines are five reload-scratch register picks, all in the
