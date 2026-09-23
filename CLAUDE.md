@@ -11,12 +11,16 @@ SHA1 is wrong, no matter how clean the C looks. Never edit `baserom.gba`,
 
 ## Current state
 
-- `asm/*.s` — ROM disassembly, **1150 functions** originally, split into one
+- `asm/*.s` — ROM disassembly, **1159 functions** originally, split into one
   fragment per gap between decompiled functions; reassembles to an exact match.
-  luvdis found 743 of them. The other 407 are reached only through a pointer
-  or never called (callbacks, leaf functions, empty `bx lr` stubs), so the
-  `bl`-and-`push` seed rule missed them and luvdis left them as `.byte` rows.
-  `scripts/seed_functions.py` now seeds them explicitly (`POINTER_ONLY`).
+  luvdis found 743 of them. The other 409 Thumb functions are reached only
+  through a pointer or never called (callbacks, leaf functions, empty `bx lr`
+  stubs), so the `bl`-and-`push` seed rule missed them and luvdis left them as
+  `.byte` rows. `scripts/seed_functions.py` now seeds them explicitly
+  (`POINTER_ONLY`). The last 7 are hand-written ARM (the SDK start routine and
+  interrupt dispatcher, in the main program, the high module and the
+  multiboot island), written as `arm_func_start` blocks of exact `.4byte`
+  words, since luvdis decodes only Thumb (`ARM_BLOCKS` in `progress.py`).
 - `src/` — **257 functions decompiled**. One function per file, named for
   it. Run `scripts/progress.py` for the live figure; do not hand-copy it
   here, it goes stale within a day.
@@ -27,17 +31,18 @@ SHA1 is wrong, no matter how clean the C looks. Never edit `baserom.gba`,
   assets, compared against `nascar-heat.code.sha1`. `make` regenerates that
   file from `baserom.gba` when `assets/*.json` changes; commit the two
   together.
-  Only the sound data is extracted so far; see "Extracted data assets" in
-  `docs/learnings/parked.md`.
+  Sound and compressed graphics are typed and convert to `.mid`, `.aif` and
+  `.png`; the rest of the data is untyped raw blobs (`assets/unknown.json`).
+  See "Extracted data assets" in `docs/learnings/parked.md`.
 - `docs/recon.md` — function inventory, call graph, entry-point trace, candidate ranking.
 - `docs/learnings/solved-walls.md`: **read when a function stalls.** It maps
   `match.py` diff symptoms to the source fixes that matched earlier walls,
   and you must update it when you match or abandon a stalled function.
 - `docs/learnings/parked.md` — **read before picking a target.** What was
-  already tried and does not match, why the compiler patch was reverted, and the 151
+  already tried and does not match, why the compiler patch was reverted, and the 158
   blocks that are not decompilation targets: runtime-library and SDK code
   (libgcc, newlib, libagbsyscall, the sound driver's `m4a_1.s`, the MultiBoot
-  and EEPROM libraries) and 7 luvdis
+  and EEPROM libraries, the 7 hand-written ARM blocks) and 7 luvdis
   false positives that are not functions at all.
 - `build/lib/libgcc/` — every libgcc block, built from `tools/agbcc/libgcc`
   with its own Makefile's flags, plus the high 0x0834 module's renamed
@@ -58,16 +63,17 @@ SHA1 is wrong, no matter how clean the C looks. Never edit `baserom.gba`,
   with the failure modes; the loop below is the summary.
 - `scripts/progress.py` — progress in bytes of code; `--json` emits decomp.dev `report.json`.
 
-Counting functions: match **both** `thumb_func_start` and
-`non_word_aligned_thumb_func_start` (1142 + 8 = 1150), and skip the macro
+Counting functions: match `thumb_func_start`,
+`non_word_aligned_thumb_func_start` and `arm_func_start` (1144 + 8 + 7 =
+1159), and skip the macro
 preamble (through `@ End embedded Luvdis macros`) or you get a phantom
 function named `name` from the `.macro` definition. `scripts/progress.py
 --selftest` asserts all three.
 
-Of those 1150 blocks, **151 are not decompilation targets** — see
-`parked.md` — so the game-code denominator is **999**. The 144 blocks now
+Of those 1159 blocks, **158 are not decompilation targets** — see
+`parked.md` — so the game-code denominator is **1001**. The 144 blocks now
 built from library source are listed in `progress.py` (`LIBRARY_BLOCKS`) so
-the 1150 still adds up. `progress.py` reports against 999 and prints the
+the 1159 still adds up. `progress.py` reports against 1001 and prints the
 whole-ROM figure underneath.
 
 ## The loop

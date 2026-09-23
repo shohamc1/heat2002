@@ -216,25 +216,34 @@ Unidentified data, `assets/unknown.json`, established 2026-09-24:
   - `rom_0801CD08.s`: the five luvdis false positives already noted
     above (`sub_08120E3A`, `sub_08121316`, `sub_08248272`, `sub_0824C6F0`,
     `sub_0827B7CA`), 2-16 bytes each.
-  - `rom_08344E68.s`, `0x08364180`-`0x0836419C` (28 bytes): a tiny
-    two-instruction function (`ldr`/`movs`/`strh`/`bx lr`, setting an
-    IWRAM flag) plus the trailing `bx lr` and pad of whatever precedes
-    it, sitting immediately before the already-decompiled
-    `sub_0836419C`. Not a decompilation target by itself yet; nobody
-    seeded it, so it stayed as `.byte` rows even though `sub_0836419C`
-    right after it matched.
+  - The multiboot island's code at `0x08363FC8`-`0x0836419C`, corrected
+    on 2026-09-24. The extraction first swallowed its ARM code into
+    `unknown/data_08363EE8.bin`: the "lone ARM `bx lr` word" it ruled out
+    was the end of real code, and the island's multiboot header branches
+    to EWRAM `0x020000C0` (ROM `0x08363FA8`), which the check never
+    followed. `data_08363EE8.bin` now covers only the header, the entry
+    branch and its reserved fields (`0x08363EE8`-`0x08363FC8`). After it
+    come three ARM blocks (`progress.py`'s `ARM_BLOCKS`): a link-port
+    wait routine (`sub_08363FC8`), the start routine (`sub_08363FF4`:
+    handshake, CPU modes, stacks, jump to the island's main), and the
+    interrupt dispatcher (`sub_083640B0`), whose literal pool at
+    `0x08364178` the start routine also reads. Then two uncalled Thumb
+    functions, which are decompilation targets: a `bx lr` stub
+    (`sub_0836418C`) and `sub_08364190`, which writes 1 to the BIOS
+    interrupt-check flag at `0x03007FF8`. Neither is reached by `bl` or by
+    any pointer: the island runs at `0x02000000`, so a ROM-address scan
+    can't see its references, and an EWRAM-pointer scan of both EWRAM
+    images (the island, and the high module at base `0x08338A80`) found
+    no other unknown targets.
   - `rom_08364810.s`, `0x08364810`-`0x0836484C` (60 bytes): a 15-entry
     `call_via_rX` trampoline table (`bx r0` through `bx lr`, each padded
     to 4 bytes), byte-identical to the copies already built from library
     source at `0x080171F4` and `0x08344B7C`. A third, still-raw copy for
     the multiboot island.
-  - Checked and ruled out as code before extracting: a lone ARM `bx lr`
-    word and a handful of Thumb `push {..., lr}`/`pop`+`bx` byte patterns
-    scattered through both fragments, all sitting inside disassembly that
-    was otherwise incoherent (branches to unrelated addresses, undefined
-    opcodes) with no matching prologue nearby; and a ROM-wide scan for
-    odd (Thumb) function-pointer values landing in either fragment, which
-    found no aligned run, just the count random data would produce.
+  - The main program's and the high module's copies of the same start
+    routine and interrupt dispatcher (`sub_080000C0`/`sub_08000104` in
+    `rom.s`, `sub_08339780`/`sub_083397C4` in `rom_08339680.s`) were
+    `.byte` rows too, never counted as functions. They're ARM blocks now.
 
 ## Non-interwork epilogues
 

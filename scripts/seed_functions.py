@@ -13,11 +13,15 @@ That rule misses every function nothing BL's to: callbacks and handlers
 reached only through a pointer (the MP2K driver's CgbSound and ply_* table,
 the high module's copies, whose pointers hold EWRAM addresses), leaf
 functions without a push, empty `bx lr` stubs, and dead code nothing calls.
-POINTER_ONLY lists the 407 of them, found by seeding luvdis with pointer
+POINTER_ONLY lists the 409 of them, found by seeding luvdis with pointer
 targets and run starts until every Thumb byte between known functions
 decoded, then dropping any seed that another function branches or falls
 through into. A pointer alone proves nothing: a data word equal to
 0x0833E4E9 once split sub_0833E4A4's tail off as a "function".
+
+Two of them, 0x0836418C and 0x08364190, are uncalled multiboot-island code
+that sat inside ARM routines' .byte rows until 2026-09-24. The ARM routines
+themselves (progress.py's ARM_BLOCKS) aren't listed: luvdis decodes only Thumb.
 """
 
 import sys
@@ -93,7 +97,8 @@ POINTER_ONLY = (
     0x08343144, 0x083432F4, 0x08343388, 0x0834341C, 0x083434AC, 0x083434B4,
     0x08344684, 0x08344688, 0x0834468C, 0x0834469C, 0x083446C8, 0x0834470C,
     0x08344730, 0x08344734, 0x08344738, 0x08344778, 0x0834477C, 0x083447E8,
-    0x08344804, 0x083448F4, 0x08344964, 0x08344B5C, 0x083642FC, 0x08364730,
+    0x08344804, 0x083448F4, 0x08344964, 0x08344B5C, 0x0836418C, 0x08364190,
+    0x083642FC, 0x08364730,
 )
 
 
