@@ -150,6 +150,14 @@ maps closely onto the source:
 - Before drafting from scratch, check whether an instruction-identical twin
   is already matched: the 0x0834 module duplicates parts of the low region
   (`sub_08343EA8` is `sub_0800D684` with renamed globals).
+- Never write a ROM address (`0x08xxxxxx`) as a number in C. A shiftable
+  build is a project goal, and each raw address means another edit and
+  re-match later. For a function, declare it and use its name:
+  `(u32)sub_0800042C` links to `0x0800042D`, Thumb bit included, with
+  identical bytes (tested on `sub_08000380`). For ROM data, declare an
+  `extern` and add one line to `symbols.ld`. When the shiftability pass
+  replaces that line with a real label, the C doesn't change. Older files
+  still hold raw literals; leave them for that pass.
 
 ## Helper tools
 
