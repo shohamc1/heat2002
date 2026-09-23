@@ -58,9 +58,3 @@ _080032D2:
 	pop {r0}
 	bx r0
 _080032D8: .4byte 0x03007FF8
-	thumb_func_start sub_080032DC
-sub_080032DC:
-	add sp, #-0x028
-	add sp, #0x028
-	bx lr
-	.byte 0x00, 0x00
