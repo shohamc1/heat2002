@@ -94,7 +94,12 @@ Commit after each step. Each commit needs `make check` to print `MATCH` and
    `0x080C0000` raw. This takes about two hours.
 3. **Identify the formats.** Use the loaders to record each blob's format,
    width, and palette in its `options`, so the PNGs show real colours. This
-   is open-ended, so work in batches, one loader at a time.
+   is open-ended, so work in batches, one loader at a time. The logos and
+   the 60 car sprites are done; `parked.md` shows how each was found. For
+   a sprite, the OAM attributes the loader writes give its colour mode
+   (`0x2000` in attribute 0 means 256 colours) and size, and its width in
+   tiles is the sprite's width. The `palette` option takes the ROM address
+   that the loader copies into palette RAM.
 4. **Optional: extract uncompressed data.** Walk the loaders' pointer tables
    to find the tilemaps and tiles in `0x08080000` to `0x08280000`.
 

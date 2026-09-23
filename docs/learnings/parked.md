@@ -93,13 +93,47 @@ Graphics, compressed, `0x0807CA7C`-`0x08339xxx` + three island copies
 - `make convert` writes a greyscale `.png` next to each blob and
   recompresses it: all 659 convert back byte for byte. gbagfx maps a
   color index to 255-index in both directions, so no palette is needed
-  for the round trip. The two boot logos convert at 8bpp 240x160 (the
-  `bitDepth`/`width` options, width in 8-pixel tiles); everything else
-  at 4bpp with the widest width up to 16 tiles that divides the tile
-  count -- a ragged width would round the PNG's tile rows up and convert
-  back to extra bytes. `rl_080C0000` is `{"raw": true}`: .bin only.
-- Remaining for graphics: each blob's format, width and palette (step 3,
-  one loader at a time) and the ~3.3 MB of uncompressed BG tilemaps and
+  for the round trip. A blob with no options converts at 4bpp with the
+  widest width up to 16 tiles that divides the tile count -- a ragged
+  width would round the PNG's tile rows up and convert back to extra
+  bytes. That default suits the 551 small blobs (32 to 2,048 bytes): they
+  render recognisably in greyscale (digits, `P1`/`P2` labels, arrows,
+  sprite pieces, a trophy), though a sprite taller than one tile might
+  come out as a row of pieces. It garbles every 4,096-byte blob, which
+  are 8bpp. `rl_080C0000` is `{"raw": true}`: .bin only.
+- The other 46 4,096-byte blobs are 64x64 pieces of the 12 track overview
+  maps, rendering correctly in colour at `{"bitDepth": 8, "width": 8}`
+  with their track's palette. `sub_08010FE4` reads the 24-byte track
+  records at `gUnk_083FDA78`: `+0x10` points at four piece pointers, placed
+  2x2 (x `0x38`/`0x78`, y `0x20`/`0x60`) into a 128x128 map, and `+0x14`
+  is the track's 256-colour OBJ palette. Track 7's map still carries a
+  "PLACEHOLDER" label in the retail ROM.
+- Missed by steps 1-2: 19 pointer-reached RL streams, including the
+  top-right pieces of tracks 5 and 8 (`0x082FC150`, `0x08306D38`). 18 of
+  them end in a run that writes 128 bytes past the declared size. The
+  BIOS stops at the declared size, so the game uses them, but gbagfx
+  rejects them and both scans required the output to end exactly at the
+  size. The 19th, `0x08358070` (12,544 bytes, overshoots by 35, non-zero
+  bytes after it), needs checking before it's trusted. All 19 are still
+  `.byte` rows in `asm/`.
+- Identified formats, 62 blobs (options `bitDepth`, `width` in tiles,
+  `palette` as the ROM address of a GBA palette, `bitmap`), all rendering
+  correctly in colour and still round-tripping:
+  - The boot logos are mode 4 bitmaps: `sub_080102F0` and `sub_08010334`
+    set `DISPCNT` to `0x444` and decompress them to `VRAM`. Their pixels
+    are linear, not 8x8 tiles, so `"bitmap": true` reorders them for
+    gbagfx. Each palette sits 512 bytes before its bitmap
+    (`0x082B350C`, `0x0830EC78`), passed to the `sub_08004238` fade.
+  - The 60 driver-select car sprites are the blobs behind the
+    pointer-to-pointer tables `gUnk_083FDF74` and `gUnk_083FDFEC` (30
+    entries each, left and right halves), loaded by `sub_08010BA8` and `sub_08010E04`.
+    `sub_08010194` writes their OAM as `0x2000` (256 colours) and size 3
+    (64x64), so they're 8bpp, 8 tiles wide. `sub_08010BA8` copies their
+    one 256-colour palette from `gUnk_083FDEF4[0]` (`0x082CC5D8`).
+- Remaining for graphics: palettes for everything but the logos, cars and
+  track maps,
+  and exact widths for the multi-tile sprites (step 3, one loader at a
+  time), and the ~3.3 MB of uncompressed BG tilemaps and
   4bpp tiles in `0x08080000`-`0x08280000` (step 4; few direct pointers
   reach them, so naming them means walking the game's pointer tables).
 

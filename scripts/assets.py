@@ -104,6 +104,23 @@ def rebuild_song(mid, asset, flags, tmp):
     return out
 
 
+def tile_order(data, width, depth, inverse=False):
+    """Reorder a linear bitmap (rows of `width` tiles) into 8x8 tiles, or
+    back. gbagfx only reads tiles; mode 3-5 bitmaps are linear."""
+    row = width * depth                    # bytes in one 8-pixel tile row
+    out = bytearray(len(data))
+    for i in range(len(data) // (depth * 8)):
+        ty, tx = divmod(i, width)
+        for y in range(8):
+            lin = (ty * 8 + y) * row + tx * depth
+            til = i * depth * 8 + y * depth
+            if inverse:
+                out[lin:lin + depth] = data[til:til + depth]
+            else:
+                out[til:til + depth] = data[lin:lin + depth]
+    return bytes(out)
+
+
 def convert_graphics(asset, raw, tmp):
     """gbagfx round trip: .rl/.lz -> .4bpp/.8bpp -> .png -> back."""
     kind, opts = asset["type"], asset.get("options", {})
@@ -116,10 +133,19 @@ def convert_graphics(asset, raw, tmp):
     width = opts.get("width") or max(w for w in range(1, 17) if tiles % w == 0)
     if tiles % width:
         sys.exit(f"{asset['path']}: width {width} doesn't divide {tiles} tiles")
-    png = raw.with_suffix(".png")
-    run(TOOLS / "gbagfx", flat, png, "-width", width)
+    if opts.get("bitmap"):
+        flat.write_bytes(tile_order(flat.read_bytes(), width, depth))
+    png, extra = raw.with_suffix(".png"), []
+    if "palette" in opts:
+        pal = tmp / "blob.gbapal"
+        start = int(opts["palette"], 16) - ROM_BASE
+        pal.write_bytes(BASEROM.read_bytes()[start:start + (2 << depth)])
+        extra = ["-palette", pal]
+    run(TOOLS / "gbagfx", flat, png, "-width", width, *extra)
     back_flat = tmp / f"back.{depth}bpp"
     run(TOOLS / "gbagfx", png, back_flat)
+    if opts.get("bitmap"):
+        back_flat.write_bytes(tile_order(back_flat.read_bytes(), width, depth, True))
     back = tmp / f"back.{kind}"
     run(TOOLS / "gbagfx", back_flat, back)
     # gbagfx pads a compressed stream up to 4 bytes; the .bin is the bare
