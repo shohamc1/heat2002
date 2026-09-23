@@ -166,8 +166,15 @@ def rewrite(path, lines, end, assets, rom):
     for a in assets:
         start, size = int(a["start"], 16), a["size"]
         stop = start + size
-        tail = rom[stop - ROM_BASE:(stop + 3 & ~3) - ROM_BASE]
-        pad = (stop + 3 & ~3) - stop if not any(tail) else 0
+        pad = 0
+        # Only a typed (compressed-stream) asset's zero tail is its own
+        # padding to the next 4-byte boundary. An untyped raw blob sits
+        # back to back with whatever follows, so its tail -- zero or not
+        # -- belongs to the next asset; absorbing it here would overlap.
+        if a.get("type"):
+            tail = rom[stop - ROM_BASE:(stop + 3 & ~3) - ROM_BASE]
+            if not any(tail):
+                pad = (stop + 3 & ~3) - stop
         ranges.append((start, stop, stop + pad, a))
     for (s1, _, e1, _), (s2, _, _, _) in zip(ranges, ranges[1:]):
         if e1 > s2:
