@@ -97,5 +97,4 @@ check the port against.
 
 ## Current status
 
-0 of 743 functions decompiled. Both questions above are still theoretical —
-the immediate blocker is `DECOMP-001`, which is about linker placement.
+Run `python3 scripts/progress.py` for the live figure.

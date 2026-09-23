@@ -73,7 +73,7 @@ deliberate fork, not something to do accidentally.
 
 ## Suggested parallel tracks
 
-1. **Matching** — `docs/tickets/`, one function per commit. Currently
+1. **Matching** — one function per commit. Currently
    103/743 (2,844/109,370 bytes). See `docs/learnings/parked.md` for what
    has already been tried and does not match.
 2. **Asset research** — decompress the LZ77/RLE blocks, map the string tables,

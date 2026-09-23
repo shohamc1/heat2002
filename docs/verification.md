@@ -107,7 +107,7 @@ Concrete failure modes worth watching for:
 
 - `make check` prints MISMATCH → the change is wrong. No interpretation needed.
 - `match.py` says MATCH but `make check` fails → placement/linker-order bug, not
-  a codegen bug. Expect this on the first extraction (see DECOMP-001).
+  a codegen bug. See "Extracting a function: linker placement" in `CLAUDE.md`.
 - `match.py` says INCONCLUSIVE → not a match. Do not record it as one.
 - A function matches only with contrived C (`volatile` sprinkles, unreachable
   branches, dead locals) → suspect the *shape* is wrong. A struct field,

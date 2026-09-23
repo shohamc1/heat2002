@@ -38,8 +38,7 @@ SHA1 is wrong, no matter how clean the C looks. Never edit `baserom.gba`,
   `eeprom.c`, Nintendo's `EEPROM_V120` save library from
   Dream-Atelier/kl-eod-decomp, built at `-O1` as the SDK built it. A library object keeps its own flags; the
   rule against adding flags is about game code in `src/`.
-- `docs/tickets/` — one markdown ticket per function. Lowest open number first.
-- `docs/decomp-guide.md` — **read this before your first ticket.** Step-by-step
+- `docs/decomp-guide.md` — **read this before your first function.** Step-by-step
   with the failure modes; the loop below is the summary.
 - `scripts/progress.py` — progress in bytes of code; `--json` emits decomp.dev `report.json`.
 
@@ -57,7 +56,8 @@ whole-ROM figure underneath.
 
 ## The loop
 
-1. Take the lowest-numbered open ticket in `docs/tickets/`.
+1. Pick an open function from `parked.md`'s twin map. Most have a draft in
+   `docs/learnings/drafts/`.
 2. Write C in `src/` implementing that function. For a first draft, read
    m2c's output (see "Helper tools").
 3. `python3 scripts/match.py <name>`. It builds only `build/src/<name>.o`
@@ -146,7 +146,7 @@ maps closely onto the source:
 
 ## Helper tools
 
-Two vendored submodules help at opposite ends of a ticket. Neither decides a
+Two vendored submodules help at opposite ends of a function. Neither decides a
 match: only `match.py` and `make check` do.
 
 **m2c** (`tools/m2c`) turns asm into draft C. Use it when you start a
@@ -202,8 +202,8 @@ function. On an already-matched function this setup scores 0.
 
 ## Extracting a function: linker placement
 
-Solved once in DECOMP-001 (`sub_08006734`); repeat this shape for every
-ticket. The mechanical steps:
+Solved once for `sub_08006734`; repeat this shape for every function. The
+mechanical steps:
 
 1. Find the function's `thumb_func_start`/`arm_func_start` block in whichever
    `asm/*.s` fragment currently holds it.
@@ -270,14 +270,14 @@ object.
 
 `scripts/match.py` and `scripts/progress.py` both scan every `asm/*.s`
 fragment now, never a hardcoded `asm/rom.s` (match.py's *target* lookup was
-still hardcoded through DECOMP-001's first review pass -- fixed since).
+still hardcoded through `sub_08006734`'s first review pass -- fixed since).
 `progress.py` also learned that a fully-decompiled function disappears from
 `asm/*.s` entirely (sized instead from its compiled object in
 `build/src/*.o`), and that "is this function decompiled" must check for a
 `name(` at column 0 in a `src/*.c` file, not merely the name appearing
 anywhere in one -- otherwise a decompiled function calling a still-asm one
 counts that callee as done too. Already fixed; new fragments and new
-tickets need no further tooling changes for either of these.
+functions need no further tooling changes for either of these.
 
 ## Never do these
 

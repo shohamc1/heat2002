@@ -1,7 +1,7 @@
 # Parked functions and known dead ends
 
 Things that were attempted and did *not* match, with the reason. Read this
-before picking a ticket: several of these look like easy leaves and are not.
+before picking a function: several of these look like easy leaves and are not.
 A park is not a permanent verdict — it is a record of what was already tried,
 so the next attempt starts from the failure instead of rediscovering it.
 
@@ -1387,3 +1387,28 @@ twins. Look for partial twins too. A normalized sequence diff of the
 target against every matched function of similar size finds a shared
 prefix in seconds, and a shared prefix of a few hundred instructions
 means the rest of the source is a small edit away.
+
+## Twin map of the 16 unmatched functions (2026-09-23)
+
+A normalized diff of each unmatched function against every other function
+in the ROM found no matched twin, so no function can be ported outright.
+Ten of the 16 do pair up with each other, so matching one member makes
+its partner a port:
+
+| Low function | High twin | Size | Instructions shared |
+| --- | --- | ---: | ---: |
+| sub_08003330 | sub_0833C874 | 954 B | 94% |
+| sub_080097A4 | sub_08341288 | 728 / 702 B | 50% (73% by opcode) |
+| sub_08009C4C | sub_083416DC | 690 B | 93% |
+| sub_0800A084 | sub_08341B14 | 568 B | 96% |
+| sub_08011B08 | sub_08344A20 | 288 B | 99% |
+
+"Instructions shared" is the fraction of the low function's instructions
+that line up exactly after stripping branch targets and literal-pool
+offsets. Every pair member has a draft in `drafts/` except sub_0833C874;
+start it from sub_08003330's draft.
+
+The other six have no useful twin: sub_08004B1C, sub_08006738,
+sub_08007C44, sub_0800AB78, sub_0800BEA4 and sub_0800E008. Their best
+candidates cover 41% or less, with no shared run longer than 26
+instructions.

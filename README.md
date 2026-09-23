@@ -130,13 +130,13 @@ tools/decomp-permuter  Vendored C permuter (agbcc fork); do not modify
 docs/recon.md    Binary recon: inventory, call graph, entry point
 docs/verification.md  What MATCH proves, and what it doesn't
 docs/learnings/  Parked functions and known dead ends — read before picking
-docs/tickets/    One ticket per function
 CLAUDE.md        Agent instructions (AGENTS.md symlinks here)
 ```
 
 ## Contributing
 
-Work the lowest-numbered open ticket in [`docs/tickets/`](docs/tickets/). The loop:
+Pick an open function from the twin map in
+[`docs/learnings/parked.md`](docs/learnings/parked.md). The loop:
 
 1. Write C in `src/` implementing the target function.
 2. `make && python3 scripts/match.py <function>`

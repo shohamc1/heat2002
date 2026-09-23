@@ -16,17 +16,18 @@ make check          # must print MATCH -- if not, STOP, something is broken alre
 make test           # every check must pass
 ```
 
-If `make check` does not print MATCH on a clean tree, do not start a ticket.
+If `make check` does not print MATCH on a clean tree, do not start a function.
 Do `make clean && make check`. If it still fails, report it; do not "fix" it
 by editing `baserom.gba`, `nascar-heat.sha1`, `ldscript.ld` guesses, or the
 Makefile's `check` rule. Those are never the problem.
 
 ## 1. Pick the function
 
-Take the lowest-numbered **open** ticket in `docs/tickets/README.md`. Do not
-pick a function because it looks interesting. Do not pick two.
+Take one **open** function from the twin map in `docs/learnings/parked.md`.
+Do not pick two. If it has a draft in `docs/learnings/drafts/`, read the
+draft's header first: it records what was already tried.
 
-Read the ticket. Then find the function in asm:
+Then find the function in asm:
 
 ```
 grep -n 'thumb_func_start sub_0800048C' asm/*.s
@@ -68,8 +69,7 @@ many callee-saved locals the compiler needed, which constrains how many
 locals you declare.
 
 **`bl sub_XXXXXXXX`** is a call. `bx lr` with no push is a leaf. `swi #N` is
-a BIOS call and needs inline asm -- skip those tickets unless the ticket says
-how.
+a BIOS call and needs inline asm -- skip those functions.
 
 **`mov r12, lr` / `bx r12`** is a leaf that calls something without saving
 lr on the stack. Rare; see the shared-pool note in step 6.
@@ -111,8 +111,7 @@ Rules that decide whether this matches:
 - **RAM/ROM addresses become `extern` symbols**, not casts. Write
   `extern u32 gFoo[];` and add `gFoo = 0x083FE6C4;` to `symbols.ld`
   (one line, semicolon, hex). A cast like `((u32 *)0x083FE6C4)[i]` produces
-  the same instructions in a *different order* and will not match (this was
-  DECOMP-002). Hardware registers (`0x04xxxxxx`) are the exception: cast
+  the same instructions in a *different order* and will not match. Hardware registers (`0x04xxxxxx`) are the exception: cast
   those, `*(volatile u16 *)0x04000130`.
 - **Name the symbol after its address** until you know what it is:
   `gUnk_083FE6C4`. Renaming later is a one-line change in two places.
@@ -175,9 +174,9 @@ one into `src/` and run `match.py` again. A score of 0 isn't a match until
 `match.py` says so. For setup and limits, see "Helper tools" in `CLAUDE.md`.
 
 Do not loop forever. If after ~10 tries and a permuter run the diff is one
-stubborn instruction, write down what you tried in the ticket under "Risks"
-and move on to the next ticket. A half-done ticket with notes is useful; a
-guessed "match" that is not one is not.
+stubborn instruction, write down what you tried in the draft's header in
+`docs/learnings/drafts/`. A draft with notes is useful; a guessed "match"
+that is not one is not.
 
 Things that are NOT fixes and must never be done:
 - adding `-O1`, `-O0`, `-fno-...` or any flag to the Makefile
@@ -265,8 +264,7 @@ make test                               # every check passes
 ## 7. Commit
 
 One function per commit. Include: `src/NAME.c`, both asm fragments,
-`ldscript.ld`, `symbols.ld` if touched, the ticket (status -> done, commit
-hash), `docs/tickets/README.md` row. Message: `Decompile sub_0800048C`.
+`ldscript.ld`, `symbols.ld` if touched. Message: `Decompile sub_0800048C`.
 
 Never commit: `build/`, `*.elf`, `nascar-heat.gba`, `report.json`,
 `__pycache__`, `*.sav`. They are gitignored; if `git status` shows them,

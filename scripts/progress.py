@@ -370,7 +370,7 @@ def main():
                 "\n  counted as 0 bytes. Run `make` for accurate totals."
             )
         if not done:
-            print("\n  nothing decompiled yet — see docs/tickets/")
+            print("\n  nothing decompiled yet — see docs/decomp-guide.md")
 
 
 def _selftest():
@@ -380,7 +380,7 @@ def _selftest():
     assert "name" not in insns, "preamble leaked into the parse"
     # 743 total, minus however many have been decompiled out of asm/*.s and
     # into src/*.c so far -- computed, not hardcoded, so this doesn't need
-    # editing as tickets land.
+    # editing as functions land.
     done = decompiled()
     assert not LIBRARY_BLOCKS & (set(insns) | done), "a library block is back in asm/ or src/"
     total = len(set(insns) | done | LIBRARY_BLOCKS)
