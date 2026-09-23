@@ -64,7 +64,7 @@ option is not in tmc's asset lists: agb2mid drops each track's opening
 track in a song opens at the same volume.
 
 Graphics, compressed, `0x0807CA7C`-`0x08339xxx` + three island copies
-(341 KB), established 2026-09-23 (step 1 of
+(341 KB), established 2026-09-23 (steps 1-2 of
 `docs/graphics-extraction.md`):
 
 - `assets/graphics.json` lists 660 blobs: 654 RL and 3 LZ77 found by
@@ -90,6 +90,14 @@ Graphics, compressed, `0x0807CA7C`-`0x08339xxx` + three island copies
   ROM address, checks each `_`/`sub_` label against that address, and
   compares every removed byte with `baserom.gba` before deleting it, so a
   wrong map stops instead of eating the wrong range.
+- `make convert` writes a greyscale `.png` next to each blob and
+  recompresses it: all 659 convert back byte for byte. gbagfx maps a
+  color index to 255-index in both directions, so no palette is needed
+  for the round trip. The two boot logos convert at 8bpp 240x160 (the
+  `bitDepth`/`width` options, width in 8-pixel tiles); everything else
+  at 4bpp with the widest width up to 16 tiles that divides the tile
+  count -- a ragged width would round the PNG's tile rows up and convert
+  back to extra bytes. `rl_080C0000` is `{"raw": true}`: .bin only.
 - Remaining for graphics: each blob's format, width and palette (step 3,
   one loader at a time) and the ~3.3 MB of uncompressed BG tilemaps and
   4bpp tiles in `0x08080000`-`0x08280000` (step 4; few direct pointers

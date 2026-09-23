@@ -8,12 +8,23 @@ data stays out of git and a build needs your own baserom.gba.
 
 `extract` copies each asset's raw bytes to build/assets/PATH. They keep the
 .bin name: they're the GBA's own formats (m4a song bytecode, PCM samples
-with their header), not MIDI or AIFF yet.
+with their header, RL/LZ77 graphics streams), not MIDI, AIFF or PNG yet.
 
 `convert` writes an editable file next to each .bin -- .mid for "midi"
-songs (agb2mid), .aif for "aif" samples (aif2pcm) -- then converts it back
-and checks that the result matches the .bin byte for byte. It needs the
-tools from `make tools`; `make convert` builds them and runs this.
+songs (agb2mid), .aif for "aif" samples (aif2pcm), .png for "rl"/"lz"
+graphics (gbagfx) -- then converts it back and checks that the result
+matches the .bin byte for byte. It needs the tools from `make tools`;
+`make convert` builds them and runs this.
+
+The PNGs are greyscale (no palette identified yet): gbagfx maps a color
+index to 255-index both ways, so the round trip is exact without knowing
+the palette. Its width is in 8-pixel tiles and must divide the tile count
+exactly, or the PNG grows a partial row of padding tiles that convert back
+to extra bytes. `options` carries "bitDepth" (4 or 8) and "width" (tiles);
+without them convert picks 4bpp and the widest width up to 16 tiles that
+divides. `options {"raw": true}` keeps a stream as .bin only: the blob at
+0x080C0000 came from a weaker compressor than gbagfx's, so it has no
+round-trip to check.
 
 Usage:
     python3 scripts/assets.py extract
@@ -69,8 +80,33 @@ def rebuild_song(mid, asset, flags, tmp):
     return out
 
 
+def convert_graphics(asset, raw, tmp):
+    """gbagfx round trip: .rl/.lz -> .4bpp/.8bpp -> .png -> back."""
+    kind, opts = asset["type"], asset.get("options", {})
+    depth = opts.get("bitDepth", 4)
+    src = tmp / f"blob.{kind}"
+    src.write_bytes(raw.read_bytes())
+    flat = tmp / f"blob.{depth}bpp"
+    run(TOOLS / "gbagfx", src, flat)
+    tiles = flat.stat().st_size // (depth * 8)
+    width = opts.get("width") or max(w for w in range(1, 17) if tiles % w == 0)
+    if tiles % width:
+        sys.exit(f"{asset['path']}: width {width} doesn't divide {tiles} tiles")
+    png = raw.with_suffix(".png")
+    run(TOOLS / "gbagfx", flat, png, "-width", width)
+    back_flat = tmp / f"back.{depth}bpp"
+    run(TOOLS / "gbagfx", png, back_flat)
+    back = tmp / f"back.{kind}"
+    run(TOOLS / "gbagfx", back_flat, back)
+    # gbagfx pads a compressed stream up to 4 bytes; the .bin is the bare
+    # stream, so accept zero fill after it but nothing else
+    data, want = back.read_bytes(), raw.read_bytes()
+    return data[:len(want)] == want and not any(data[len(want):])
+
+
 def convert():
-    done, bad = {"midi": 0, "aif": 0}, []
+    done = {"midi": 0, "aif": 0, "graphics": 0}
+    raw_kept, bad = [], []
     with tempfile.TemporaryDirectory() as t:
         tmp = Path(t)
         for asset in assets():
@@ -89,12 +125,23 @@ def convert():
                 mid = raw.with_suffix(".mid")
                 run(TOOLS / "agb2mid", BASEROM, hex(header), BASEROM, mid, *flags)
                 back = rebuild_song(mid, asset, flags, tmp)
+            elif kind in ("rl", "lz") and asset.get("options", {}).get("raw"):
+                raw_kept.append(asset["path"])
+                continue
+            elif kind in ("rl", "lz"):
+                done["graphics"] += 1
+                if not convert_graphics(asset, raw, tmp):
+                    bad.append(asset["path"])
+                continue
             else:
                 continue
             done[kind] += 1
             if back.read_bytes() != raw.read_bytes():
                 bad.append(asset["path"])
-    print(f"converted {done['midi']} songs to .mid, {done['aif']} samples to .aif")
+    print(f"converted {done['midi']} songs to .mid, {done['aif']} samples to .aif, "
+          f"{done['graphics']} graphics blobs to .png")
+    if raw_kept:
+        print(f"kept raw (no round-trip): {', '.join(raw_kept)}")
     if bad:
         sys.exit("these don't convert back exactly:\n  " + "\n  ".join(bad))
     print("every one converts back byte for byte")
