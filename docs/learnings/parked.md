@@ -97,11 +97,34 @@ Graphics, compressed, `0x0807CA7C`-`0x08339xxx` + three island copies
   for the round trip. A blob with no options converts at 4bpp with the
   widest width up to 16 tiles that divides the tile count -- a ragged
   width would round the PNG's tile rows up and convert back to extra
-  bytes. That default suits the 551 small blobs (32 to 2,048 bytes): they
-  render recognisably in greyscale (digits, `P1`/`P2` labels, arrows,
-  sprite pieces, a trophy), though a sprite taller than one tile might
-  come out as a row of pieces. It garbles every 4,096-byte blob, which
-  are 8bpp. `rl_080C0000` is `{"raw": true}`: .bin only.
+  bytes. It garbles most multi-tile sprites, so every blob now has an
+  explicit `width` from the OAM its loader writes (below).
+  `rl_080C0000` is `{"raw": true}`: .bin only.
+- Sprite widths, all 567 small blobs. Nearly all come through one table
+  of 561 blob pointers at `0x083FEEF8`. A slot loader
+  (`sub_0800754C`, `sub_08007598`, `sub_080075E4`, `sub_08007630`,
+  `sub_0800767C`, `sub_080076C8`) queues a blob into OBJ VRAM, and the
+  caller writes the OAM through `sub_080044A4`/`sub_080044DC` with the
+  attributes packed as `attr0 | attr1 << 16`: bits 14-15 are the shape
+  and bits 30-31 the size. By table entry:
+  - 34-429: in-race cars, six models x 33 angles x 2 sprites, drawn side
+    by side by `sub_08009C4C`. `gUnk_08367640[car]` gives the 16x32
+    fronts (shape 2, size 2) and `gUnk_083676B8[car]` the 32x32 rears
+    (size 2).
+  - 4-33: 16x8 tags (`gUnk_083681F8[car]`, shape 1, size 0).
+  - 523-550: the 16x16 `P1`-`P4` markers, four rows of 7 frames
+    (`gUnk_083681E8`, size 1).
+  - 430-452 (23 frames, `sub_0800B0A0`/`B120`/`B1A4`) and 553-560
+    (`sub_080047E8`): 32x32.
+  - 485-490 (`sub_08008160` via `sub_08007A7C`) and 491-522
+    (`sub_0800B8EC`, 32 frames): 16x16.
+  - 2: 64x64 4bpp (`sub_08012C4C` via `sub_080100CC`, `0xC0000000`).
+  - 3 and 453-484: one tile each, 8x8. 551: 16 tiles, so 32x32.
+  - 0, 1 and 552 have no reference found; they're set to 16x16 because
+    that's the only layout that renders cleanly (left and right arrows,
+    a small capsule).
+  - The three LZ77 blobs and their island copies: 16 tiles at 4bpp
+    (`sub_0800E008` loads a 16-colour palette), so 32x32.
 - The other 46 4,096-byte blobs are 64x64 pieces of the 12 track overview
   maps, rendering correctly in colour at `{"bitDepth": 8, "width": 8}`
   with their track's palette. `sub_08010FE4` reads the 24-byte track
@@ -135,9 +158,8 @@ Graphics, compressed, `0x0807CA7C`-`0x08339xxx` + three island copies
     (64x64), so they're 8bpp, 8 tiles wide. `sub_08010BA8` copies their
     one 256-colour palette from `gUnk_083FDEF4[0]` (`0x082CC5D8`).
 - Remaining for graphics: palettes for everything but the logos, cars and
-  track maps,
-  and exact widths for the multi-tile sprites (step 3, one loader at a
-  time), and the ~3.3 MB of uncompressed BG tilemaps and
+  track maps (step 3, one loader at a time), and the ~3.3 MB of
+  uncompressed BG tilemaps and
   4bpp tiles in `0x08080000`-`0x08280000` (step 4; few direct pointers
   reach them, so naming them means walking the game's pointer tables).
 
