@@ -1069,7 +1069,7 @@ SECTIONS
         build/lib/libgcc/high/_umodsi3.o(.text);
         build/asm/rom_08344E68.o(.text*);
         build/src/sub_0836418C.o(.text*);
-        build/asm/rom_08364190.o(.text*);
+        build/src/sub_08364190.o(.text*);
         build/src/sub_0836419C.o(.text*);
         build/src/sub_083641D8.o(.text*);
         build/asm/rom_083642FC.o(.text*);
