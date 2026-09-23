@@ -178,15 +178,63 @@ Graphics, compressed, `0x0807CA7C`-`0x08339xxx` + three island copies
     at runtime), and entries 0, 1, 453-460, 551 and 552 (no reference
     found).
 - Remaining for graphics: the 13 greyscale blobs, and the ~3.3 MB of
-  uncompressed BG tilemaps and
-  4bpp tiles in `0x08080000`-`0x08280000` (step 4; few direct pointers
-  reach them, so naming them means walking the game's pointer tables).
+  uncompressed BG tilemaps and 4bpp tiles in `0x08080000`-`0x08280000`
+  (step 4; few direct pointers reach them, so naming them means walking
+  the game's pointer tables). This range is now extracted as untyped
+  raw blobs in `assets/unknown.json` (see below), just not yet given a
+  graphics type.
 
-Not extracted yet:
+Unidentified data, `assets/unknown.json`, established 2026-09-24:
 
-- `0x0801CF88`-`0x0801D29C`: `gMPlayJumpTableTemplate` (36 words), then
-  bytes not yet identified. A rhythm voice in the first voicegroup points
-  at `0x0801CF90`, inside the jump table, so a drum kit overlaps it.
+- The three fragments with no real functions in them (`rom_0801CD08.s`,
+  `rom_08344E68.s`, `rom_08364810.s`) held about 3.35 MB of `.byte` rows
+  that were not yet a graphics or sound asset: tables, tilemaps and other
+  data with no format identified. `assets/unknown.json` extracts all of
+  it as 1,963 untyped raw blobs, so `asm/` is left holding code (plus a
+  few genuine exceptions, below). A blob has no `type`, so
+  `scripts/assets.py convert` skips it; giving one a real type and format
+  later needs no change to how it was split.
+- Split points: every existing graphics/sound asset (padded to its own
+  4-byte alignment the same way `incbin_assets.py` already pads a
+  compressed stream's zero tail, so a blob never eats a pad byte that
+  belongs to the next asset), every luvdis false-positive or genuine code
+  span left in `asm/` (below), and every 4-byte-aligned ROM address that
+  a 4-byte-aligned word anywhere in the ROM points at (ignoring targets
+  inside an existing asset). The last rule is the same pointer walk
+  step 1-2 of the graphics extraction used, so a blob boundary is
+  usually a table or image the game actually references. `rom_0801CD08.s`
+  gave 1,419 blobs (2,588,963 bytes); `rom_08344E68.s` and
+  `rom_08364810.s` gave 20 and 524 more (127,768 and 634,516 bytes).
+  This also picked up the `0x0801CF88`-`0x0801D29C` jump-table-template
+  region noted below previously as not extracted, and the ~3.3 MB of
+  uncompressed BG tilemaps and tiles at `0x08080000`-`0x08280000`.
+- `incbin_assets.py`'s zero-tail absorption into `.align 2, 0` now only
+  applies to a typed asset. An untyped raw blob sits back to back with
+  whatever follows it, so its tail -- zero or not -- belongs to the next
+  blob, and absorbing it would make the overlap check fire.
+- Left in `asm/` as code, not extracted:
+  - `rom_0801CD08.s`: the five luvdis false positives already noted
+    above (`sub_08120E3A`, `sub_08121316`, `sub_08248272`, `sub_0824C6F0`,
+    `sub_0827B7CA`), 2-16 bytes each.
+  - `rom_08344E68.s`, `0x08364180`-`0x0836419C` (28 bytes): a tiny
+    two-instruction function (`ldr`/`movs`/`strh`/`bx lr`, setting an
+    IWRAM flag) plus the trailing `bx lr` and pad of whatever precedes
+    it, sitting immediately before the already-decompiled
+    `sub_0836419C`. Not a decompilation target by itself yet; nobody
+    seeded it, so it stayed as `.byte` rows even though `sub_0836419C`
+    right after it matched.
+  - `rom_08364810.s`, `0x08364810`-`0x0836484C` (60 bytes): a 15-entry
+    `call_via_rX` trampoline table (`bx r0` through `bx lr`, each padded
+    to 4 bytes), byte-identical to the copies already built from library
+    source at `0x080171F4` and `0x08344B7C`. A third, still-raw copy for
+    the multiboot island.
+  - Checked and ruled out as code before extracting: a lone ARM `bx lr`
+    word and a handful of Thumb `push {..., lr}`/`pop`+`bx` byte patterns
+    scattered through both fragments, all sitting inside disassembly that
+    was otherwise incoherent (branches to unrelated addresses, undefined
+    opcodes) with no matching prologue nearby; and a ROM-wide scan for
+    odd (Thumb) function-pointer values landing in either fragment, which
+    found no aligned run, just the count random data would produce.
 
 ## Non-interwork epilogues
 
