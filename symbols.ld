@@ -12,7 +12,6 @@ gUnk_020253BC = 0x020253BC;
 gUnk_020020A0 = 0x020020A0;
 gUnk_02024820 = 0x02024820;
 gUnk_02024824 = 0x02024824;
-_call_via_r1 = _080171F8;
 gUnk_020253CC = 0x020253CC;
 gUnk_020251FC = 0x020251FC;
 gUnk_02025218 = 0x02025218;
@@ -243,7 +242,6 @@ gUnk_0203B6F8 = 0x0203B6F8;
 gUnk_0200CF48 = 0x0200CF48;
 gUnk_0200CF5C = 0x0200CF5C;
 gUnk_0202A3E0 = 0x0202A3E0;
-_call_via_r2 = 0x080171FA;
 gUnk_0801CD08 = 0x0801CD08;
 gUnk_0202CC68 = 0x0202CC68;
 gUnk_0202CC6C = 0x0202CC6C;
@@ -347,15 +345,6 @@ gUnk_020028C9 = 0x020028C9;
 gUnk_02002811 = 0x02002811;
 gUnk_02002769 = 0x02002769;
 
-/* libgcc integer division helpers, still present as vendored asm. agbcc emits
- * a bare `bl __divsi3` (and friends) for `/` and `%`, so decompiled C can use
- * the operators instead of calling the sub_ names. Identified by shape in
- * docs/recon.md; the ROM carries a second copy of each in the 0x0834xxxx
- * region, so these aliases serve callers in the main region only. */
-__divsi3 = sub_08017230;
-__modsi3 = sub_080172C8;
-__udivsi3 = _08017420;
-__umodsi3 = sub_08017498;
 gUnk_08365340 = 0x08365340;
 gUnk_0202EDD0 = 0x0202EDD0;
 gUnk_0202EDD4 = 0x0202EDD4;
@@ -556,7 +545,6 @@ gUnk_0202CC4C = 0x0202CC4C;
 gUnk_0202CC50 = 0x0202CC50;
 gUnk_0202CC64 = 0x0202CC64;
 gUnk_0202CC70 = 0x0202CC70;
-__muldi3 = sub_08017398;
 gCallback_0800B8ED = 0x0800B8ED;
 gUnk_0202CCB0 = 0x0202CCB0;
 gUnk_0202CD30 = 0x0202CD30;

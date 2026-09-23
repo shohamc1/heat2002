@@ -60,6 +60,24 @@ M4A_HIGH_EXTERNS := Clear64byte=sub_0833ABF4 ClearChain=sub_0833ABE0 \
 	FadeOutBody=sub_0833B0B4 MidiKeyToFreq=sub_0833A78C TrkVolPitSet=sub_0833B134 \
 	gClockTable=gUnk_0200C8DC gMPlayJumpTableTemplate=gUnk_0200C668
 
+# libgcc, built from tools/agbcc/libgcc as its own Makefile builds it: the
+# division helpers and _call_via_rX are the hand-written lib1thumb.asm, the
+# rest is libgcc2.c and the generated fp-bit.c/dp-bit.c at -O2 with no
+# interwork. The main program links nine objects. The high 0x0834 module
+# links its own copy of seven, renamed to their luvdis names: functions to
+# sub_<address>, the _call_via_rN stubs to _<address>, and each __div0
+# reference to the high copy's.
+LIBGCC_DIR := tools/agbcc/libgcc
+LIBGCC1_OBJS := $(addprefix $(BUILD)/lib/libgcc/,$(addsuffix .o, \
+	_call_via_rX _divsi3 _dvmd_tls _modsi3 _udivsi3 _umodsi3))
+LIBGCC2_OBJS := $(addprefix $(BUILD)/lib/libgcc/,_muldi3.o _negdi2.o _lshrdi3.o)
+LIBGCC_FP_OBJS := $(BUILD)/lib/libgcc/dp-bit.o $(BUILD)/lib/libgcc/fp-bit.o
+LIBGCC_HIGH := _call_via_rX:08344B7C _divsi3:08344BB8 _dvmd_tls:08344C4C \
+	_modsi3:08344C50 _muldi3:08344D20 _negdi2:08344D90 _umodsi3:08344DA8
+LIBGCC_HIGH_OBJS := $(foreach c,$(LIBGCC_HIGH),$(BUILD)/lib/libgcc/high/$(firstword $(subst :, ,$(c))).o)
+libgcc_high_base = $(lastword $(subst :, ,$(filter $(1):%,$(LIBGCC_HIGH))))
+LIBGCC_OBJS := $(LIBGCC1_OBJS) $(LIBGCC2_OBJS) $(LIBGCC_FP_OBJS) $(LIBGCC_HIGH_OBJS)
+
 # Nintendo SDK libraries written in C: MultiBoot (lib/multiboot.c,
 # pokeemerald's) and the EEPROM_V120 save library (lib/eeprom.c). Each keeps
 # the flags the SDK built it with. The SDK built its save libraries at -O1,
@@ -69,7 +87,7 @@ LIB_C_OBJS := $(BUILD)/lib/multiboot.o $(BUILD)/lib/eeprom.o
 $(BUILD)/lib/eeprom.o: CFLAGS := $(subst -O2,-O1,$(CFLAGS))
 
 OBJS     := $(filter-out $(RAM_MODULE_OBJS),$(C_SRCS:%.c=$(BUILD)/%.o) $(ASM_SRCS:%.s=$(BUILD)/%.o)) \
-	$(NEWLIB_OBJS) $(AGBSYSCALL_OBJS) $(AGBSYSCALL_COPY_OBJS) $(M4A_OBJS) $(LIB_C_OBJS)
+	$(NEWLIB_OBJS) $(AGBSYSCALL_OBJS) $(AGBSYSCALL_COPY_OBJS) $(M4A_OBJS) $(LIB_C_OBJS) $(LIBGCC_OBJS)
 
 .PHONY: all check test clean disasm
 all: $(TARGET).gba
@@ -137,6 +155,39 @@ $(AGBSYSCALL_COPY_OBJS): $(BUILD)/lib/agbsyscall/%.o: lib/libagbsyscall.s lib/fu
 	@mkdir -p $(@D)
 	$(AS) -mcpu=arm7tdmi -I lib --defsym L_$(call syscall_of,$*)=1 -o $@ $<
 	$(OBJCOPY) --redefine-sym $(call syscall_of,$*)=$* $@
+
+$(LIBGCC1_OBJS): $(BUILD)/lib/libgcc/%.o: $(LIBGCC_DIR)/lib1thumb.asm Makefile
+	@mkdir -p $(@D)
+	cc -E -undef -nostdinc -DL$* -x assembler-with-cpp -o $(@:.o=.s) $<
+	printf '.text\n\t.align\t2, 0\n' >> $(@:.o=.s)
+	$(AS) -mcpu=arm7tdmi -o $@ $(@:.o=.s)
+
+define libgcc_compile
+@mkdir -p $(@D)
+$(CPP) -undef -I tools/agbcc/ginclude -I $(LIBGCC_DIR) -nostdinc $(1) $< -o $(@:.o=.i)
+$(CC1) -O2 $(@:.o=.i) -o $(@:.o=.s)
+printf '.text\n\t.align\t2, 0\n' >> $(@:.o=.s)
+$(AS) -mcpu=arm7tdmi -o $@ $(@:.o=.s)
+endef
+$(LIBGCC2_OBJS): $(BUILD)/lib/libgcc/%.o: $(LIBGCC_DIR)/libgcc2.c $(LIBGCC_DIR)/longlong.h Makefile
+	$(call libgcc_compile,-DL$*)
+$(LIBGCC_FP_OBJS): %.o: %.c
+	$(call libgcc_compile,)
+$(BUILD)/lib/libgcc/fp-bit.c: $(LIBGCC_DIR)/fp-bit-base.c Makefile
+	@mkdir -p $(@D)
+	printf '#define FLOAT\n#define FLOAT_BIT_ORDER_MISMATCH\n' | cat - $< > $@
+$(BUILD)/lib/libgcc/dp-bit.c: $(LIBGCC_DIR)/fp-bit-base.c Makefile
+	@mkdir -p $(@D)
+	printf '#define FLOAT_BIT_ORDER_MISMATCH\n#define FLOAT_WORD_ORDER_MISMATCH\n' | cat - $< > $@
+
+$(LIBGCC_HIGH_OBJS): $(BUILD)/lib/libgcc/high/%.o: $(BUILD)/lib/libgcc/%.o Makefile
+	@mkdir -p $(@D)
+	arm-none-eabi-nm $< | while read a b c; do \
+		if [ "$$a" = U ]; then [ "$$b" != __div0 ] || echo "__div0 sub_08344C4C"; \
+		elif [ "$$b" = T ]; then case $$c in _call_via_*) p=_;; *) p=sub_;; esac; \
+			printf '%s %s%08X\n' $$c $$p $$((0x$$a + 0x$(call libgcc_high_base,$*))); fi; \
+	done > $@.syms
+	$(OBJCOPY) --redefine-syms=$@.syms $< $@
 
 $(LIB_C_OBJS): $(BUILD)/lib/%.o: lib/%.c $(wildcard include/*.h include/gba/*.h) Makefile
 	@mkdir -p $(@D)

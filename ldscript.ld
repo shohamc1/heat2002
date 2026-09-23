@@ -1,24 +1,14 @@
 ENTRY(rom_entry)
 
-/* newlib objects call these; they are still asm (libgcc soft-float,
-   _call_via_rN) or linker-level data. Kept here, not in symbols.ld: the
+/* Linker-level data newlib needs. Kept here, not in symbols.ld: the
    RAM-module links read symbols.ld and have no newlib. */
-__adddf3 = sub_0801BA78;
-__subdf3 = sub_0801BAA8;
-__muldf3 = sub_0801BAE0;
-__divdf3 = sub_0801BD88;
-__eqdf2 = sub_0801C03C;
-__nedf2 = sub_0801C088;
-__gtdf2 = sub_0801C0D4;
-__ltdf2 = sub_0801C16C;
-__ledf2 = sub_0801C1B8;
-__floatsidf = sub_0801C204;
-__fixdfsi = sub_0801C280;
-__negdf2 = sub_0801C2F4;
-_call_via_r3 = _08017200;
-_call_via_r8 = _08017214;
 errno = 0x0202F244;
 end = 0x0202F248;
+
+/* Game code and the remaining asm call libgcc's main copy by its luvdis
+   names; the high module's copy is renamed in the Makefile. */
+sub_08017230 = __divsi3;
+sub_080172C8 = __modsi3;
 
 /* Game code and the remaining asm call newlib by its luvdis names. */
 sub_08017594 = sprintf;
@@ -579,9 +569,15 @@ SECTIONS
         build/lib/agbsyscall/VBlankIntrWait.o(.text);
         /* EEPROM_V120, from lib/eeprom.c */
         build/lib/eeprom.o(.text);
-        build/asm/rom_080171F2.o(.text*);
-        build/src/sub_080172C4.o(.text*);
-        build/asm/rom_080172C6.o(.text*);
+        /* libgcc, built from tools/agbcc/libgcc (see the Makefile) */
+        build/lib/libgcc/_call_via_rX.o(.text);
+        build/lib/libgcc/_divsi3.o(.text);
+        build/lib/libgcc/_dvmd_tls.o(.text);
+        build/lib/libgcc/_modsi3.o(.text);
+        build/lib/libgcc/_muldi3.o(.text);
+        build/lib/libgcc/_negdi2.o(.text);
+        build/lib/libgcc/_udivsi3.o(.text);
+        build/lib/libgcc/_umodsi3.o(.text);
         /* newlib, built from tools/agbcc/libc (see the Makefile) */
         build/lib/newlib/stdio/sprintf.o(.text);
         build/lib/newlib/stdio/vfprintf.o(.text);
@@ -617,7 +613,10 @@ SECTIONS
         build/lib/newlib/arm/libcfunc.o(.text);
         build/lib/newlib/reent/lseekr.o(.text);
         build/lib/newlib/reent/readr.o(.text);
-        build/asm/rom_0801B5EC.o(.text*);
+        build/lib/libgcc/dp-bit.o(.text);
+        build/lib/libgcc/fp-bit.o(.text);
+        build/lib/libgcc/_lshrdi3.o(.text);
+        build/asm/rom_0801CD08.o(.text*);
         build/lib/eeprom.o(.rodata);
         /* newlib .rodata, in link order */
         build/lib/newlib/stdio/vfprintf.o(.rodata);
@@ -885,7 +884,15 @@ SECTIONS
         build/lib/agbsyscall/sub_08344B68.o(.text);
         build/lib/agbsyscall/sub_08344B70.o(.text);
         build/lib/agbsyscall/sub_08344B74.o(.text);
-        build/asm/rom_08344B7A.o(.text*);
+        /* the high module's libgcc copy, renamed (see the Makefile) */
+        build/lib/libgcc/high/_call_via_rX.o(.text);
+        build/lib/libgcc/high/_divsi3.o(.text);
+        build/lib/libgcc/high/_dvmd_tls.o(.text);
+        build/lib/libgcc/high/_modsi3.o(.text);
+        build/lib/libgcc/high/_muldi3.o(.text);
+        build/lib/libgcc/high/_negdi2.o(.text);
+        build/lib/libgcc/high/_umodsi3.o(.text);
+        build/asm/rom_08344E68.o(.text*);
         build/src/sub_0836419C.o(.text*);
         build/src/sub_083641D8.o(.text*);
         build/asm/rom_083642FC.o(.text*);
@@ -921,6 +928,11 @@ SECTIONS
     .bss 0x020004A8 (NOLOAD) :
     {
         build/lib/newlib/arm/syscalls.o(.bss);
+    }
+    .bss_libgcc 0x02000558 (NOLOAD) :
+    {
+        build/lib/libgcc/dp-bit.o(.bss);
+        build/lib/libgcc/fp-bit.o(.bss);
     }
     /DISCARD/ : { *(*); }
 }

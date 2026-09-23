@@ -3,7 +3,7 @@
 
 `sub_08015364` is the main game loop; finishing it means finishing the whole
 subtree under it. This walks the `bl` graph over `asm/*.s` and `src/*.c`,
-stops at the vendored runtime (those blocks stay as assembly -- see
+stops at library code (built from source, not decompiled -- see
 docs/learnings/parked.md), and reports what is left.
 
 Usage:
@@ -18,6 +18,8 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "scripts"))
+from progress import LIBRARY_BLOCKS  # noqa: E402
 DEFAULT_ROOT = "sub_08015364"
 
 # Same rule progress.py uses: the vendored runtime was built without
@@ -48,6 +50,8 @@ def graph():
                 calls[cur] |= set(CALL.findall(ln))
         if cur and RUNTIME.search("\n".join(body)):
             vendored.add(cur)
+    # Blocks now built from library source have left asm/ and src/.
+    vendored |= LIBRARY_BLOCKS
 
     decompiled = set()
     for f in sorted((ROOT / "src").glob("*.c")):
@@ -97,7 +101,7 @@ def main():
 
     print(f"{root}: {len(depth)} functions reached")
     print(f"  decompiled: {len(set(depth) & decompiled)}")
-    print(f"  vendored:   {len(set(depth) & vendored)} (stay as asm)")
+    print(f"  vendored:   {len(set(depth) & vendored)} (library code)")
     print(f"  remaining:  {len(todo)}, {sum(size.get(n, 0) for n in todo)} bytes")
 
     if "--list" in sys.argv:

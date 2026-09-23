@@ -23,6 +23,9 @@ SHA1 is wrong, no matter how clean the C looks. Never edit `baserom.gba`,
   (libgcc, newlib, libagbsyscall, the sound driver's `m4a_1.s`, the MultiBoot
   and EEPROM libraries) and 7 luvdis
   false positives that are not functions at all.
+- `build/lib/libgcc/` — every libgcc block, built from `tools/agbcc/libgcc`
+  with its own Makefile's flags, plus the high 0x0834 module's renamed
+  copy (see the Makefile).
 - `build/lib/newlib/` — all 34 newlib code objects (plus `impure.o`'s data)
   built from `tools/agbcc/libc` with the library's own flags (see the
   Makefile), placed whole by `ldscript.ld` with their `.rodata`, `.data` and
@@ -47,7 +50,7 @@ function named `name` from the `.macro` definition. `scripts/progress.py
 --selftest` asserts all three.
 
 Of those 743 blocks, **151 are not decompilation targets** — see
-`parked.md` — so the game-code denominator is **592**. The 110 blocks now
+`parked.md` — so the game-code denominator is **592**. The 144 blocks now
 built from library source are listed in `progress.py` (`LIBRARY_BLOCKS`) so
 the 743 still adds up. `progress.py` reports against 592 and prints the
 whole-ROM figure underneath.

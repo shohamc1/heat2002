@@ -181,12 +181,15 @@ def _selftest():
         return
 
     # The target must be the ROM's own bytes, or the permuter chases the
-    # wrong thing. Runtime-library functions never leave asm, so this check
-    # has a subject for as long as the repo exists.
-    from progress import runtime_library
+    # wrong thing. Check the first game function still in asm. The runtime
+    # library that used to serve here builds from source now; the
+    # word-aligned luvdis false positive never leaves asm, so it is the
+    # fallback once every game function is decompiled.
+    from progress import LUVDIS_FALSE_POSITIVES, parse_asm
 
     texts = [f.read_text().splitlines() for f in fragments()]
-    name = next(n for n in sorted(runtime_library()) if function_asm(n, texts))
+    game = sorted(n for n in parse_asm() if n not in LUVDIS_FALSE_POSITIVES)
+    name = next(n for n in game + ["sub_0824C6F0"] if function_asm(n, texts))
     with tempfile.TemporaryDirectory() as tmp:
         out = Path(tmp) / "target.o"
         build_target(name, out, texts)

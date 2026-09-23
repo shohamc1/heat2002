@@ -34,14 +34,16 @@ Two functions end in `pop {r4, pc}` (and `sub_080172C4`'s sibling shape
 C with the flags the original build used.
 
 `sub_080172C4` itself is solved: it is the `__div0` hook, a bare
-`mov pc, lr`, and `__attribute__((naked))` reproduces it exactly
-(`src/sub_080172C4.c`). That trick does **not** generalize — a naked
+`mov pc, lr`. `__attribute__((naked))` reproduced it exactly; since
+2026-09-23 it builds from libgcc's `_dvmd_tls.o` instead. That trick does
+**not** generalize — a naked
 function with a real body means hand-writing the whole body in asm, which
 is not decompilation.
 
-27 `pop {r4, pc}` / `mov pc, lr` sites exist across `asm/`. Any ticket
-whose target ends that way is blocked on the same wall. Do not add a
-compiler flag to work around it (see `CLAUDE.md`, "Never do these").
+No `pop {rN, pc}` / `mov pc, lr` site is left in `asm/`: every one was
+runtime library, which now builds from source. A new site means library
+code, not game code. Do not add a compiler flag to work around it (see
+`CLAUDE.md`, "Never do these").
 
 ## The `lsls rB, rA` cross-register-scale family
 
@@ -261,8 +263,8 @@ noted.
 ### Resolved: the 92 non-interwork epilogues are all runtime library
 
 **All 92 are runtime-library code: 33 libgcc and 59 newlib. None is game
-code.** They are not decompilation targets and should stay as assembly, or
-later be replaced by verified library objects. Two independent reviews and
+code.** They are not decompilation targets. Since 2026-09-23 all of them
+build from library source (see "libgcc from tools/agbcc/libgcc" below). Two independent reviews and
 a byte-level identification of every one of the 59 newlib functions agree.
 
 `docs/learnings/runtime-newlib-map.json` maps each newlib address to its
@@ -271,23 +273,13 @@ symbol and source file.
 The libgcc side is identified by shape in `docs/recon.md`. Four of those
 helpers are reachable from plain C, because agbcc emits a bare
 `bl __divsi3`, `bl __modsi3`, `bl __udivsi3` or `bl __umodsi3` for `/` and
-`%`. `symbols.ld` aliases each name onto the vendored block, so decompiled
-C writes the operator instead of calling the `sub_` name:
-
-    __divsi3 = sub_08017230;
-    __modsi3 = sub_080172C8;
-    __udivsi3 = _08017420;
-    __umodsi3 = sub_08017498;
-
-Verified by linking `int t(int a, int b) { return a % b; }` with
-`symbols.ld`: the `bl` resolves to `0x080172C8`.
+`%`. Those names are the libgcc objects' own symbols, so decompiled C
+writes the operator instead of calling the `sub_` name.
 
 The ROM carries a second copy of each helper in the `0x0834xxxx` region
-(`sub_08344BB8`, `sub_08344C50`, `sub_08344DA8`). A linker symbol has one
-value, so these aliases serve the main region. A function in the high
-region that needs `/` or `%` will link to the low copy, emit a different
-`bl` offset than the ROM, and fail `make check` -- call the `sub_` name
-directly there.
+(`sub_08344BB8`, `sub_08344C50`, `sub_08344DA8`). The Makefile renames the
+libcall symbols in objects from `src/sub_083[3-9]*.c` onto that copy, so
+write the operators there too.
 
 | Cluster | Range | Funcs | libgcc | newlib |
 |---|---|---|---|---|
@@ -442,31 +434,39 @@ bytes in all eight cells, failures included) but discriminates for
 `__pack_d`, where every `agbcc` cell fails -- further independent support
 for `old_agbcc`. No test so far separates O2 from O3.
 
-#### Build architecture
+#### libgcc from tools/agbcc/libgcc (2026-09-23)
 
-Leave `src/` and its flags alone. Newlib now builds this way (above). For
-the rest of the runtime assembly, use a separate build group with its own flags:
-clusters 1-2 as explicit newlib objects (`vfprintf.o` spans both), libgcc2
-source for multiplication and negation while keeping the handwritten
-division assembly, cluster 3 as explicit newlib plus float-runtime objects
-plus `__lshrdi3`, and cluster 4 left as the duplicate runtime assembly it
-is. Reusing identical global library symbols needs separate names or
-isolation. Avoid blanket archive linking: member order, extra functions,
-data placement and duplicate symbols all matter, and some runtime objects
-contain functions already present in the current build. Keep the existing
-assembly until each replacement passes placement and full ROM checks.
-Changing global flags, or replacing library objects without removing
-overlapping definitions, would put the current 250 matches at risk.
+The vendored libgcc builds every libgcc block in the ROM, with the flags
+of its own Makefile: `lib1thumb.asm` (the hand-written division helpers,
+`__div0` and `_call_via_rX`) assembled once per `-DL_<name>`, and
+`libgcc2.c` (`__muldi3`, `__negdi2`, `__lshrdi3`) plus the generated
+`dp-bit.c` and `fp-bit.c` at `old_agbcc -O2` with no interwork. The main
+program links nine objects: 0x080171F4-0x08017558 ahead of newlib, and
+`dp-bit.o`, `fp-bit.o` and `_lshrdi3.o` at 0x0801B5EC-0x0801CD08 after it.
+The float objects' `.bss` (a NaN constant each) sits at 0x02000558 and
+0x02000570.
+
+The high 0x0834 module links its own copy of seven objects at
+0x08344B7C-0x08344E68, with no `_udivsi3`. The Makefile renames each copy's
+symbols to their luvdis names (`sub_<address>` for functions,
+`_<address>` for the `_call_via_rN` stubs, which the high m4a C calls as
+`_08344B80`) and points its `__div0` references at the high `__div0`.
+
+Two traps in cutting the fragments. An asm fragment starts in ARM mode;
+the original fragments reached Thumb mode at a `thumb_func_start` in the
+cut head, so the remainder needs an explicit `.thumb`, or luvdis
+instructions in its data assemble as 4-byte ARM. And check each cut
+against the object's end: `_lshrdi3.o` ends in two pad bytes, while
+`_umodsi3.o`'s code runs to its last byte.
 
 #### Consequence for the denominator
 
 The 743 count includes the runtime library, the SDK code and the 7 luvdis
 false positives recorded above. None is a decompilation target.
-`scripts/progress.py` counts 151 non-targets: the 33 libgcc blocks still in
-asm, the 110 `LIBRARY_BLOCKS` (73 newlib, 14 libagbsyscall, 6 `m4a_1.s`,
-8 EEPROM, 9 MultiBoot), libgcc's `__div0` leaf in `src/` (`RUNTIME_LEAVES`,
-which the asm-only epilogue check cannot see), and the 7 false positives.
-The game-code denominator is **592**.
+`scripts/progress.py` counts 151 non-targets: the 144 `LIBRARY_BLOCKS`
+(73 newlib, 14 libagbsyscall, 6 `m4a_1.s`, 8 EEPROM, 9 MultiBoot, 34
+libgcc including `__div0`) and the 7 false positives. The game-code
+denominator is **592**.
 
 ### One or two instructions, cause identified in the compiler (5)
 

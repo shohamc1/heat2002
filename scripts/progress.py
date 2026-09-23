@@ -29,16 +29,14 @@ PREAMBLE_END = "@ End embedded Luvdis macros"
 # undercounts by 8 on this ROM.
 START = re.compile(r"^\s+(?:non_word_aligned_)?(?:thumb|arm)_func_start\s+(\S+)\s*$")
 
-# Vendored runtime library still in asm: libgcc, and the newlib objects not
-# yet built from source (docs/learnings/parked.md, runtime-newlib-map.json).
-# They were
-# built without -mthumb-interwork, so they end in `pop {rN, pc}` or
-# `mov pc, lr`, which agbcc cannot emit under the project's flags. They are
-# not decompilation targets: they stay as asm, or are replaced by verified
-# library objects. That epilogue is what identifies them -- an address range
-# would be wrong, because ten already-matched functions sit inside the same
-# spans (a linker interleaves objects; a matched leaf whose epilogue is a bare
-# `bx lr` is flag-insensitive and matches either way).
+# Runtime library still in asm. All of it -- libgcc and newlib -- now builds
+# from source, so this finds nothing; it stays as a guard. The runtime was
+# built without -mthumb-interwork, so it ends in `pop {rN, pc}` or
+# `mov pc, lr`, which agbcc cannot emit under the project's flags. That
+# epilogue is what identifies it -- an address range would be wrong, because
+# ten already-matched functions sat inside the same spans (a linker
+# interleaves objects; a matched leaf whose epilogue is a bare `bx lr` is
+# flag-insensitive and matches either way).
 NON_INTERWORK_EPILOGUE = re.compile(r"\bpop \{[^}]*pc\}|\bmov pc, lr\b")
 
 # luvdis misread these seven data runs as functions; see parked.md.
@@ -98,14 +96,25 @@ MULTIBOOT_BLOCKS = frozenset((
     "sub_0800EFC0", "sub_0800EFD0", "sub_0800F0BC", "sub_0800F0D4",
 ))
 
+# luvdis blocks now built from tools/agbcc/libgcc: the main program's copy
+# (lib1thumb.asm helpers, __muldi3, __negdi2, dp-bit, fp-bit, __lshrdi3) and
+# the high 0x0834 module's.
+LIBGCC_BLOCKS = frozenset((
+    "sub_08017230", "sub_080172C4", "sub_080172C8", "sub_08017398", "sub_08017408",
+    "sub_08017498", "sub_0801B5EC", "sub_0801B734", "sub_0801B80C", "sub_0801BA78",
+    "sub_0801BAA8", "sub_0801BAE0", "sub_0801BD88", "sub_0801BF10", "sub_0801C03C",
+    "sub_0801C088", "sub_0801C0D4", "sub_0801C16C", "sub_0801C1B8", "sub_0801C204",
+    "sub_0801C280", "sub_0801C2F4", "sub_0801C388", "sub_0801C440", "sub_0801C4BC",
+    "sub_0801C8E8", "sub_0801CC90", "sub_0801CCD4", "sub_08344BB8", "sub_08344C4C",
+    "sub_08344C50", "sub_08344D20", "sub_08344D90", "sub_08344DA8",
+))
+
 # Every luvdis block whose bytes now come from a source-built library object.
 LIBRARY_BLOCKS = (
     NEWLIB_BLOCKS | AGBSYSCALL_BLOCKS | M4A_BLOCKS | EEPROM_BLOCKS | MULTIBOOT_BLOCKS
+    | LIBGCC_BLOCKS
 )
 
-# Runtime-library functions the epilogue check cannot see, because they are
-# in src/ rather than asm/: libgcc's __div0.
-RUNTIME_LEAVES = frozenset(("sub_080172C4",))
 
 
 def runtime_library():
@@ -256,7 +265,7 @@ def main():
     # loop, step 5), so `insns` alone would lose it from the report. Track it
     # separately, sized from its compiled object instead of asm bytes.
     names = sorted(set(insns) | done)
-    non_targets = runtime_library() | LUVDIS_FALSE_POSITIVES | RUNTIME_LEAVES
+    non_targets = runtime_library() | LUVDIS_FALSE_POSITIVES
 
     units, total, matched = [], 0, 0
     for name in names:
@@ -377,15 +386,14 @@ def _selftest():
     total = len(set(insns) | done | LIBRARY_BLOCKS)
     assert total == 743, f"expected 743 functions across asm + matched C + libraries, got {total}"
     assert "sub_08006734" not in insns, "sub_08006734 should be decompiled, not in asm"
-    # 92 runtime-library functions were flagged in asm; the 59 newlib ones
-    # are now built from source, so the 33 libgcc ones remain. With the 7
-    # luvdis false positives, the 110 library blocks (73 newlib, 14
-    # libagbsyscall, 6 m4a_1, 8 EEPROM, 9 MultiBoot) and libgcc's __div0 leaf
-    # in src/, 151 blocks are not decompilation targets: the game-code
+    # All 92 runtime-library functions once flagged in asm now build from
+    # source. The 7 luvdis false positives and the 144 library blocks (73
+    # newlib, 14 libagbsyscall, 6 m4a_1, 8 EEPROM, 9 MultiBoot, 34 libgcc) make
+    # 151 blocks that are not decompilation targets: the game-code
     # denominator is 592.
     rt = runtime_library()
-    assert len(rt) == 33, f"expected 33 runtime-library functions in asm, got {len(rt)}"
-    non_targets = rt | LUVDIS_FALSE_POSITIVES | LIBRARY_BLOCKS | RUNTIME_LEAVES
+    assert not rt, f"runtime-library code is back in asm: {sorted(rt)}"
+    non_targets = rt | LUVDIS_FALSE_POSITIVES | LIBRARY_BLOCKS
     assert total - len(non_targets) == 592, (
         f"game-code denominator should be 592, got {total - len(non_targets)}"
     )
