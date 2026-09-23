@@ -22,7 +22,10 @@ the palette. Its width is in 8-pixel tiles and must divide the tile count
 exactly, or the PNG grows a partial row of padding tiles that convert back
 to extra bytes. `options` carries "bitDepth" (4 or 8) and "width" (tiles);
 without them convert picks 4bpp and the widest width up to 16 tiles that
-divides. `options {"raw": true}` keeps a stream as .bin only: the blob at
+divides. "palette" is the ROM address of a GBA palette for the PNG,
+"bitmap" marks linear (mode 3-5) pixels, and "overrun" is how far the
+stream's last run writes past its size (see convert_graphics).
+`options {"raw": true}` keeps a stream as .bin only: the blob at
 0x080C0000 came from a weaker compressor than gbagfx's, so it has no
 round-trip to check.
 
@@ -125,10 +128,17 @@ def convert_graphics(asset, raw, tmp):
     """gbagfx round trip: .rl/.lz -> .4bpp/.8bpp -> .png -> back."""
     kind, opts = asset["type"], asset.get("options", {})
     depth = opts.get("bitDepth", 4)
+    # "overrun": the stream's last run writes this many bytes past the size
+    # in its header. The BIOS stops at the size; gbagfx rejects the stream.
+    # The original tool compressed that many extra copies of the last byte.
+    over = opts.get("overrun", 0)
+    data = raw.read_bytes()
+    size = int.from_bytes(data[1:4], "little")
     src = tmp / f"blob.{kind}"
-    src.write_bytes(raw.read_bytes())
+    src.write_bytes(data[:1] + (size + over).to_bytes(3, "little") + data[4:])
     flat = tmp / f"blob.{depth}bpp"
     run(TOOLS / "gbagfx", src, flat)
+    flat.write_bytes(flat.read_bytes()[:size])
     tiles = flat.stat().st_size // (depth * 8)
     width = opts.get("width") or max(w for w in range(1, 17) if tiles % w == 0)
     if tiles % width:
@@ -146,8 +156,14 @@ def convert_graphics(asset, raw, tmp):
     run(TOOLS / "gbagfx", png, back_flat)
     if opts.get("bitmap"):
         back_flat.write_bytes(tile_order(back_flat.read_bytes(), width, depth, True))
+    if over:
+        pixels = back_flat.read_bytes()
+        back_flat.write_bytes(pixels + pixels[-1:] * over)
     back = tmp / f"back.{kind}"
     run(TOOLS / "gbagfx", back_flat, back)
+    if over:
+        stream = back.read_bytes()
+        back.write_bytes(stream[:1] + size.to_bytes(3, "little") + stream[4:])
     # gbagfx pads a compressed stream up to 4 bytes; the .bin is the bare
     # stream, so accept zero fill after it but nothing else
     data, want = back.read_bytes(), raw.read_bytes()

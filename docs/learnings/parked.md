@@ -67,7 +67,8 @@ Graphics, compressed, `0x0807CA7C`-`0x08339xxx` + three island copies
 (341 KB), established 2026-09-23 (steps 1-2 of
 `docs/graphics-extraction.md`):
 
-- `assets/graphics.json` lists 660 blobs: 654 RL and 3 LZ77 found by
+- `assets/graphics.json` lists 678 blobs (660 from steps 1-2 plus the 18
+  overrun streams below): 654 RL and 3 LZ77 found by
   walking every 4-byte-aligned word that points at a 4-byte-aligned ROM
   address (657 valid streams), plus the multiboot island's three LZ77
   copies at `0x083648A8`/`0x083648F4`/`0x08364940`, which no pointer
@@ -108,14 +109,17 @@ Graphics, compressed, `0x0807CA7C`-`0x08339xxx` + three island copies
   2x2 (x `0x38`/`0x78`, y `0x20`/`0x60`) into a 128x128 map, and `+0x14`
   is the track's 256-colour OBJ palette. Track 7's map still carries a
   "PLACEHOLDER" label in the retail ROM.
-- Missed by steps 1-2: 19 pointer-reached RL streams, including the
-  top-right pieces of tracks 5 and 8 (`0x082FC150`, `0x08306D38`). 18 of
-  them end in a run that writes 128 bytes past the declared size. The
-  BIOS stops at the declared size, so the game uses them, but gbagfx
-  rejects them and both scans required the output to end exactly at the
-  size. The 19th, `0x08358070` (12,544 bytes, overshoots by 35, non-zero
-  bytes after it), needs checking before it's trusted. All 19 are still
-  `.byte` rows in `asm/`.
+- 18 more RL streams, extracted after steps 1-2 missed them, including the
+  top-right pieces of tracks 5 and 8 (`0x082FC150`, `0x08306D38`). Each
+  ends in a run that writes 128 bytes past the size in its header. The
+  BIOS stops at the size, so the game uses them, but gbagfx rejects them
+  and both scans required the output to end exactly at the size. The
+  original tool compressed 128 extra copies of the last byte, so
+  `"overrun": 128` rebuilds all 18 byte for byte: pad with the last byte,
+  compress with gbagfx, and write the real size back into the header. A
+  scan under the BIOS rule also found `0x08358070`, which isn't a stream:
+  its bytes are the characters "0" to "7" as 16-bit values, and its only
+  "pointer" sits inside another blob's compressed data.
 - Identified formats, 62 blobs (options `bitDepth`, `width` in tiles,
   `palette` as the ROM address of a GBA palette, `bitmap`), all rendering
   correctly in colour and still round-tripping:
