@@ -1,4 +1,4 @@
-<!-- parsed 1158 functions; 778 decompiled, 223 remaining targets, 158 non-targets -->
+<!-- parsed 1158 functions; 780 decompiled, 221 remaining targets, 158 non-targets -->
 <!-- luvdis blocks not tracked by the project (skipped): sub_08000B1C, sub_0833A1DC, sub_083647F8, sub_08364800, sub_08364804, sub_08364808 -->
 <!-- NOTE: sub_080000C0 not in rom_reference.s -->
 <!-- NOTE: sub_08000104 not in rom_reference.s -->
@@ -17,7 +17,7 @@ Regenerate after any batch of matches: `make disasm && python3 scripts/find_twin
 
 ## Summary — 0 exact copies, 17 near matches
 
-Of 223 remaining game-code functions, 0 are instruction-identical (modulo relocated pool/call targets) to an already-decompiled function, and 17 are ≥80% similar. 3 are trivial (<6 tokens).
+Of 221 remaining game-code functions, 0 are instruction-identical (modulo relocated pool/call targets) to an already-decompiled function, and 17 are ≥80% similar. 3 are trivial (<6 tokens).
 
 ## Exact copies (start here — the twin's C is nearly the whole answer)
 
@@ -52,11 +52,10 @@ Of 223 remaining game-code functions, 0 are instruction-identical (modulo reloca
 
 ## Families among the remaining (identical to each other)
 
-73 families: decompile the first column once and its relatives are 5666 bytes of porting, not reverse engineering.
+72 families: decompile the first column once and its relatives are 4632 bytes of porting, not reverse engineering.
 
 | decompile first | then get for near-free | bytes |
 |---|---|---|
-| `sub_08001C88` | `sub_0833B348` | 1034 |
 | `sub_08006094` | `sub_0833EB90` | 286 |
 | `sub_0800306C` | `sub_0833C5B0` | 258 |
 | `sub_0800B8EC` | `sub_08342FF0` | 256 |

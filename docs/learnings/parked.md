@@ -1885,7 +1885,12 @@ splits in a far-away branch) can rotate the whole function's
 callee-saved assignment; when that happens, re-pin the anchor
 (`row` → r5 here) rather than the rotated locals.
 
-## Resolved 2026-09-24: sub_08001C88 (CgbSound, 1092 bytes; twin sub_0833B348)
+## Resolved 2026-09-24: sub_08001C88 (CgbSound, 1092 bytes) and sub_0833B348
+
+The high module's copy sub_0833B348 matched as a straight port of the
+same source (callees renamed to sub_0833B2E0/sub_0833B290; gCgb3Vol is
+the module's EWRAM image, gUnk_0200C8CC = 0x0200C8CC in symbols.ld) on
+its first compile.
 
 Matched from a plain rewrite of tmc's `CgbSound`
 (`tools/tmc/src/gba/m4a.c`). The parked draft, with an `r10` pin, a status
