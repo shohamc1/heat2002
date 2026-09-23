@@ -53,7 +53,7 @@ Ranked by original caller count. Drafts for functions since resolved into
 | `sub_0800E200` | 452 b | 1 | wave-5d state compiles; agent died mid-experiment |
 | `sub_0800E008` | 504 b | 1 | MATCHED 2026-09-23: `DmaFill32` macro for the fill value, `goto` out of the main loop |
 | `sub_0800AB78` | 520 b | 1 | MATCHED 2026-09-23: one shared `sub_0800A628` call after the last `idx == 0` if/else |
-| `sub_0800BEA4` | 580 b | 1 | wave-4 dead-agent state; mid-function code 4 bytes short |
+| `sub_0800BEA4` | 580 b | 1 | MATCHED 2026-09-23: s16 minus stored straight to the field, duplicated `x -= a3 * 3 / 2` arms, no pins |
 | `sub_0800CD38` | 580 b | 1 | best build 572/580 bytes |
 | `sub_0800A084` | 592 b | 1 | MATCHED 2026-09-23 (`4832f44`): plain field accesses, GCSE builds pointer copies; product operand order fixes priority |
 | `sub_08007C44` | 692 b | 1 | MATCHED 2026-09-23 (`2bc9c85`): literal 1s instead of a `bit` variable; split shift and `+=` for the tile coordinates |

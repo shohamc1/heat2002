@@ -1559,6 +1559,37 @@ changes. The high twin is a direct port with renamed globals and callees.
 To break an exact priority tie between two pseudos, check which one the
 ROM gives the lower register, and make that one a declared variable.
 
+### sub_0800BEA4 — resolved 2026-09-23
+
+The draft needed an r10 pin on a `step` variable and still had three
+reload scratch picks wrong. Two source changes matched it with no pins:
+
+- **Store the minus straight into the `s16` field:**
+  `car->unk34 = -0x7C00 - (t << 8);`. The narrowing moves into the
+  minus, which runs in HImode, and the constant load plus copy
+  (`ldr r2; adds r1, r2, #0; subs`) come out as in the ROM.
+- **Write the `x -= a3 * 3 / 2` block twice,** once under `a4 != 0` and
+  once under `i & 1`. loop.c hoists the two matching invariants as one
+  pseudo with two uses in the loop. That outranks the hoisted `&out`
+  pseudo for r10, and jump2 later cross-jumps the two copies into the
+  ROM's single block. The ROM sets `&out` before `step` in the loop
+  preheader, which means both were hoisted by loop.c. A `step`
+  computed in the source before the loop would come first.
+
+### sub_08006738 — resolved 2026-09-23
+
+A plain rewrite with no pins. The glyph index is
+`u16 base = (ch >> 5) * 64 + 0x60;` plus `ch & 0x1F`, which gives the
+ROM's `lsls #22; adds 0x600000; lsrs #16`. The fourth loop draws the
+space glyph with the same formula and `ch = ' ' - 0x20;` set inside the
+loop. Set before the loop, the index folds to a constant address and
+the table base never gets a register. The last loop needs its own
+counter.
+
+All 592 game-code blocks match as of this entry. The `.byte` runs
+between blocks still hold code luvdis never labelled, so the ROM isn't
+fully decompiled.
+
 ### sub_08009C4C — 764/764 bytes, 28 diff lines (2026-09-23, second pass)
 
 The 28 lines are five reload-scratch register picks, all in the
