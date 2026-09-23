@@ -157,8 +157,27 @@ Graphics, compressed, `0x0807CA7C`-`0x08339xxx` + three island copies
     `sub_08010194` writes their OAM as `0x2000` (256 colours) and size 3
     (64x64), so they're 8bpp, 8 tiles wide. `sub_08010BA8` copies their
     one 256-colour palette from `gUnk_083FDEF4[0]` (`0x082CC5D8`).
-- Remaining for graphics: palettes for everything but the logos, cars and
-  track maps (step 3, one loader at a time), and the ~3.3 MB of
+- Sprite palettes, 554 more blobs. `sub_08007714(address)` claims one of
+  16 OBJ palette banks for the 16-colour palette at `address`, and
+  `sub_08007760` copies it in (`CpuSet`, 16 halfwords). So each
+  loader's `sub_08007714` argument is the sprite's palette:
+  - In-race cars: `gUnk_08367730[driver]`, 29 distinct liveries over the
+    six models. A PNG takes one palette, so each model uses its first
+    driver's (drivers 0, 2, 3, 5, 6, 7).
+  - Tags 4-33: `0x0831D0EC`. Markers 523-550: `0x08337C20`. 430-452:
+    `0x08330AD4`. 461-468 (`sub_0800B7E0` reads 453 + 8 + (n & 7)):
+    `0x08330D18`. 469-484: `0x08331188`. 485-490: `0x08331360`. 491-522:
+    `0x08331F88`. 553-560: `0x083393C0`.
+  - Entry 2, the trophy: `sub_08012C4C` picks `0x08310160`,
+    `0x0830EC58` or `0x08310140` for first, second or third place; the
+    PNG uses first place.
+  - The LZ77 sprites clear their OAM palette bits, so they use bank 0 of
+    the palette `sub_0800E008` loads, `0x0807CB58`. The island copies use
+    the island's identical palette at `0x08364984`.
+  - Still greyscale, 13 blobs: entry 3 (drawn with whatever is in bank 2
+    at runtime), and entries 0, 1, 453-460, 551 and 552 (no reference
+    found).
+- Remaining for graphics: the 13 greyscale blobs, and the ~3.3 MB of
   uncompressed BG tilemaps and
   4bpp tiles in `0x08080000`-`0x08280000` (step 4; few direct pointers
   reach them, so naming them means walking the game's pointer tables).
