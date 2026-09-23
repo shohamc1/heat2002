@@ -2,6 +2,7 @@
 
 struct Ent {
     s32 f00;
+    u8 pad04[4];
     s32 f08;
     s32 f0C;
     u8 pad10[4];
@@ -13,6 +14,7 @@ struct Ent {
     u16 f34;
     u16 f36;
     u16 f38;
+    u8 pad3A[2];
     u16 f3C;
     u8 f3E;
     u8 pad3F;
@@ -66,8 +68,8 @@ struct Ent {
     u8 pad163[3];
     u8 f166;
     u8 f167;
-    s32 f168;
-    u8 pad16C[0x16C - 0x16C];
+    u8 f168;
+    u8 pad169[3];
     s32 f16C;
     u8 f170;
     u8 f171;
@@ -102,16 +104,10 @@ extern u32 gUnk_083680AC[];
 void sub_0800C0E8(u32 a, u8 b);
 void sub_0800C984(u32 *p, u32 v);
 
-void sub_080097A4(u8 a, struct Ent *car, s32 b, s32 c, u16 d)
+void sub_080097A4(u8 a, struct Ent *car, s32 b, s32 c, u32 d)
 {
     u8 i;
     u8 v;
-    u8 *p4c;
-    s32 *pe4;
-    s32 *pe8;
-    s32 *pec;
-    u8 *p7d;
-    u8 *p4e;
 
     if (gUnk_0200215C == 4)
         car->f162 = 0;
@@ -136,11 +132,10 @@ void sub_080097A4(u8 a, struct Ent *car, s32 b, s32 c, u16 d)
     car->f4D = 0;
     car->f174 = 0;
     if (gUnk_0200215C == 4) {
-        v = a * 3;
+        car->f58 = gUnk_08367730[a * 3];
     } else {
-        v = car->f162;
+        car->f58 = gUnk_08367730[car->f162];
     }
-    car->f58 = gUnk_08367730[v];
     car->f7C = 0;
     car->f84 = 1;
     car->f30 = 0;
@@ -166,12 +161,6 @@ void sub_080097A4(u8 a, struct Ent *car, s32 b, s32 c, u16 d)
     car->f173 = 0;
     car->f171 = 0;
     i = 0;
-    p4c = &car->f4C;
-    pe4 = &car->fE4;
-    pe8 = &car->fE8;
-    pec = &car->fEC;
-    p7d = &car->f7D;
-    p4e = &car->f4E;
     do {
         gUnk_0202CBC8[i] = 0;
         i++;
@@ -219,9 +208,9 @@ void sub_080097A4(u8 a, struct Ent *car, s32 b, s32 c, u16 d)
         v = 0;
     }
 out:
-    *p4c = v;
+    car->f4C = v;
     if ((u8)(gUnk_0200215C - 3) > 1)
-        (*p4c)--;
+        car->f4C--;
     car->f50 = 0;
     car->f15C = 0x12C;
     car->f0C = 0;
@@ -233,22 +222,22 @@ out:
     car->f148 = 0;
     car->f14C = 0;
     car->f150 = 0x63;
-    *pe4 = gUnk_08367FBC[car->f162];
-    *pe8 = gUnk_08368034[car->f162];
-    *pec = gUnk_083680AC[car->f162];
+    car->fE4 = gUnk_08367FBC[car->f162];
+    car->fE8 = gUnk_08368034[car->f162];
+    car->fEC = gUnk_083680AC[car->f162];
     if (gUnk_020020DC == 0 && a != 0 && gUnk_0200215C != 2) {
-        *pe4 = 0x08367BFA;
-        *pe8 = 0x08367C06;
-        *pec = 0x08367C10;
-        *pe4 = gUnk_08367FBC[0];
-        *pe8 = gUnk_08368034[0];
-        *pec = gUnk_083680AC[0];
+        car->fE4 = 0x08367BFA;
+        car->fE8 = 0x08367C06;
+        car->fEC = 0x08367C10;
+        car->fE4 = gUnk_08367FBC[0];
+        car->fE8 = gUnk_08368034[0];
+        car->fEC = gUnk_083680AC[0];
     }
     car->f158 = 0;
-    *p7d = 0;
+    car->f7D = 0;
     car->f36 = d;
     car->f38 = 0;
     car->f160 = 0;
-    *p4e = 0;
+    car->f4E = 0;
     car->f3C = 0;
 }

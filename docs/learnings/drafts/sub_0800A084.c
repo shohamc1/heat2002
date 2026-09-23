@@ -41,8 +41,8 @@ void sub_0800A084(struct Car *car, s32 arg1)
     u8 pad[0x28];
     register s32 v __asm__("r7");
     register s32 mode __asm__("r8");
-    register u16 **tbl __asm__("r9");
     register u16 *pa __asm__("ip");
+    register u16 **tbl __asm__("r9");
     struct Car *base;
     s32 t1;
     s32 t2;
@@ -68,14 +68,15 @@ void sub_0800A084(struct Car *car, s32 arg1)
                 *pa = t1;
         }
         if (gUnk_020020A8 != 0) {
+            t2 = (*pa * car->unkE4[car->unk3E]) >> 6;
+            gear = &car->unk3E;
             tbl = &car->unkE4;
-            t2 = (*pa * (*tbl)[car->unk3E]) >> 6;
         } else {
+            t2 = (*pa * car->unkE4[car->unk3E]) >> 8;
+            gear = &car->unk3E;
             tbl = &car->unkE4;
-            t2 = (*pa * (*tbl)[car->unk3E]) >> 8;
         }
         v += t2;
-        gear = &car->unk3E;
         spd = &car->unk40;
         if (car->unk2C > 0)
             v += (*pa * (*tbl)[car->unk3E]) >> 5;

@@ -1412,3 +1412,130 @@ The other six have no useful twin: sub_08004B1C, sub_08006738,
 sub_08007C44, sub_0800AB78, sub_0800BEA4 and sub_0800E008. Their best
 candidates cover 41% or less, with no shared run longer than 26
 instructions.
+
+## 2026-09-23 twin-port session: three functions fitted, none matched
+
+Full experiment log with every variant tried (including the failures
+and the compiler-internals map): `docs/learnings/2026-09-23-twin-sweep.md`.
+
+Fresh drafts for sub_080097A4, sub_08009C4C and sub_0800A084 (all in
+`drafts/`, replacing the dead-agent states). None reaches MATCH; where
+each stopped and why is below. One discovery is reusable everywhere.
+
+### u16 stack parms must be written u32 (the d-parameter lever)
+
+`sub_080097A4`'s 6th argument arrives on the stack and is read three
+times: twice as `ldrh` into the `f34`/`f36` stores and once as a full
+`ldr` word at the `sub_0800C984` call — always straight from the
+incoming slot, never cached in a register. Drafting it as `u16 d`
+makes old_agbcc integrate the parm into a pseudo at entry
+(`ldr r1,[sp]; lsls #16; lsrs #16; mov r10,r1`): GCC 2.95's
+`assign_parms` (function.c:4174) puts every scalar parm in a pseudo
+unless it is volatile or address-taken — and both of those instead
+create a *home copy* at entry, which is also wrong. The parm keeps a
+REG_EQUIV to its slot only when `nominal_mode == passed_mode`, i.e.
+when it is word-sized. Writing the parameter `u32 d` reproduces the
+target exactly: under register pressure reload demotes the equiv to
+per-use slot reads, and `convert_move` truncates from memory with a
+narrow load, so the two u16 stores still compile to `ldrh`+`strh`.
+Volatile/addressable (tested) and struct-by-value (tested: small
+structs are passed SImode and integrate like scalars) do NOT work.
+
+### sub_080097A4 — struct fixed, two blockers left
+
+- `struct Ent` was missing 4 bytes after `f00` and 2 between `f38` and
+  `f3C` (every field compiled to name-minus-4/-2); `f168` is `u8`, not
+  `s32`. All fixed in the draft.
+- `car->f58 = gUnk_08367730[...]` is TWO array refs, one per arm of the
+  `gUnk_0200215C == 4` test (each arm has its own pool load); the scale/
+  load/store tail merges by cross-jumping. A ternary index hoists the
+  base load and is wrong.
+- Blocker 1: the switch's duplicate-valued arms. The ROM keeps 11
+  separate bodies (`0x28`/`0x28`, `0xF`/`0xF`, `5`/`5` adjacent pairs),
+  but every switch shape tried (plain breaks, gotos to `out:` after the
+  if/else, nested switch, else-goto) gets them merged — either by
+  expand_case (adjacent case labels share a body) or by jump2
+  cross-jumping (find_cross_jump merges identical `movs rX,#C; b join`
+  arms once the jumps share a label, and jump tensioning unifies the
+  labels first). Need a form where the duplicate arms sit in different
+  jump_chains at jump2 time; the arms' `b` all encode to the same
+  address in the end, so this is invisible in the final ROM.
+- Blocker 2: the six pointer locals' homes (target p4c=r2, pe4=r6,
+  pe8=r7, pec=r12, p7d=r10, p4e=[sp]; ours permutes). Pointers homed
+  HIGH get `movs #imm; adds rN,rM,rm` (shape B), low ones get
+  `adds rN,rM,#0; adds rN,#imm` — so the shapes follow the homes.
+
+### sub_08009C4C — 764/764 bytes, 28 diff lines (2026-09-23, second pass)
+
+The 28 lines are five reload-scratch register picks, all in the
+`car->unk162` chains (offset 0x162 needs a movs+lsls constant split):
+the t5-site chain (target r3, ours r2), the flip==0 first-lookup value
+(r3/r2), the flip lookup1 value (r2/r0), the flip lookup2 pointer+value
+(r3/r0), and the else-branch chain (r3/r2). Everything else — all 764
+bytes of structure, all other registers — matches. The five sites are
+also identical under the `agbcc` (non-old) binary, so they are not a
+compiler-fork artifact. Exactly one anchor pin is needed to hold the
+allocation: any one of a(r4)/row(r5) suffices (the draft keeps only
+the a-pin plus a function-scope unpinned row); with zero anchors the
+allocation rotates (car→r8 etc.).
+
+What was tried and did not move any of the five: splitting k/t/t5/t
+into per-branch variables (the sub_0833C874 counter lesson); hoisting
+table rows into locals; pointer-arith and cast-style address forms;
+commuted operand orders (0x200+field, 0x20&k); a random search over 9
+binary source-shape knobs (24+ combinations, best was still the base);
+embedded `*(p162 = &car->unk162)` assignment (compiles identically to
+the hoisted form and is now in the draft — it drops the invented `tbl`
+local); declaration permutations and scoping changes (GCC 2.95 creates
+scalar pseudos at first reference, so declaration order is irrelevant).
+
+Mechanism, traced through -dc/-dl/-dg dumps: at local-alloc time the
+`plus (reg) 0x162` insns still hold their constants inline; the
+movs/lsls split and the ldrb input reloads are created by reload
+(after global alloc). The split pseudo's register comes from reload's
+scratch selection (allocate_reload_reg, round-robin over spill_regs
+with a reuse pass; constants can also take the first-fit path). Ours
+picks first-fit (r0 up, skipping the live table pseudo in r1); the ROM
+shows a rotated pattern (r2→r3→r2→r3...), which implies one additional
+occupied/forbidden register at each site in the original compile that
+no source shape I found reproduces. The four flip-branch registers
+homed correctly (p162→r8 natural, k*4→r7, a→r4 via pin, both rows→r5
+via pins) — the a/row pins are still required; without them the
+allocation rotates (car→r8 etc.).
+
+Fixed from the old draft: `k = (car->unk34 + 0x200) >> 10; k += 0x28;`
+split so `asrs` lands in k's reg; flip branch's OR constant is
+`0x10000000` (the old draft had `0x1000000`); `a |= 0x10000000;` as a
+statement (gives `orrs r4,r0; adds r0,r4,#0`); `&car->unk162` pinned
+r8 and the table hoisted (`u32 **tbl = gUnk_083676B8;` before the pin
+assignment, since ARRAY base addresses expand before their index);
+both `row` locals pinned r5 with the E38 row split
+(`row = gUnk_083681E8[idx]; row += sub_080172C8(...)` — the
+single-expression form evaluates the call first).
+Remaining: four reload-scratch regs for the `movs #0xB1; lsls #1`
+chains (target r3/r2, ours r2/r0). Declaration permutations, scoping
+changes and cast-style address expressions do not move them; they are
+decided by reload scratch availability against invisible artifacts.
+
+### sub_0800A084 — arm structure solved, allocation cascade blocks
+
+Target computes the `&car->unk3E` index address BEFORE the
+`&car->unkE4` chain: the original had no tbl/gear variables *before*
+the t2 expression — `(*pa * car->unkE4[car->unk3E])` computes both
+addresses in order, and `gear = &car->unk3E; tbl = &car->unkE4;`
+afterward bind by CSE (that is what makes `mov r9,r5` and
+`adds r6,r2` copies appear). Restructuring the draft this way fixes
+the whole t2 region but moves car from r4 to r5 (a pa-pointer cache
+pseudo then wins r4), which cascades everywhere. Pinning car to r4
+via a register-local alias kills address CSE (the `unk9C -= 0xA`
+block computes its address twice). The original four pins
+(v r7, mode r8, pa ip, tbl r9) with the OLD arm order keep car in r4
+and match through 0x800a0e4 but pay two extra reloads in each arm.
+
+### General lesson
+
+Pins fix pointer homes but not reload scratches, and pinning a base
+pointer breaks address CSE. Late-code structure changes (statement
+splits in a far-away branch) can rotate the whole function's
+callee-saved assignment; when that happens, re-pin the anchor
+(`row` → r5 here) rather than the rotated locals.

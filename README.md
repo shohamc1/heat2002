@@ -128,14 +128,18 @@ tools/luvdis     Vendored disassembler — do not modify
 tools/m2c        Vendored asm-to-C decompiler for first drafts; do not modify
 tools/decomp-permuter  Vendored C permuter (agbcc fork); do not modify
 docs/recon.md    Binary recon: inventory, call graph, entry point
+docs/decomp-queue.md  Pending functions with remaining diff, largest first
 docs/verification.md  What MATCH proves, and what it doesn't
 docs/learnings/  Parked functions and known dead ends — read before picking
+                 (2026-09-23-twin-sweep.md: the matching-lever catalog)
 CLAUDE.md        Agent instructions (AGENTS.md symlinks here)
 ```
 
 ## Contributing
 
-Pick an open function from the twin map in
+Pick an open function from [`docs/decomp-queue.md`](docs/decomp-queue.md)
+(pending functions with their remaining diff, largest first) or the
+"no useful twin" list in
 [`docs/learnings/parked.md`](docs/learnings/parked.md). The loop:
 
 1. Write C in `src/` implementing the target function.
@@ -152,6 +156,40 @@ Pick an open function from the twin map in
 Read [`CLAUDE.md`](CLAUDE.md) first — it documents the agbcc-specific tells that
 make a function match (loop shape from branch placement, stray `lsl`/`asr` pairs
 meaning a width mismatch, locals assigned in declaration order).
+
+### Matching levers that closed recent functions
+
+The last dozen functions each came down to one or two small source
+shapes; the catalog with mechanisms and failures is in
+[`docs/learnings/2026-09-23-twin-sweep.md`](docs/learnings/2026-09-23-twin-sweep.md).
+The short list:
+
+- **Write the plainest source first**: no pointer locals, no pins, plain
+  field expressions. GCSE builds the spanning address pseudos (the
+  `mov r9, r5`-style copies in the ROM) and the allocator finds the
+  ROM's homes on its own more often than not. Pointer locals and
+  `register ... asm("rN")` pins are last-resort crutches — and test pin
+  removals as *combinations*, not one at a time (a missed combination
+  cost sub_08009C4C a full session).
+- **A stack parameter read as both `ldrh` and `ldr` is a u32 in the
+  source.** GCC 2.95 integrates narrower parms into entry pseudos; only
+  word-sized parms keep the slot equivalence that reload turns into
+  per-use reads under pressure (the narrow loads still come out
+  narrow).
+- **Statement order is the lever, declaration order is not** — pseudos
+  are created at first reference. Split `k = x >> N; k += C;`,
+  `a |= CONST;` before a call, and `row = table[i]; row += f(...)` so
+  the non-call side evaluates first.
+- **Operand order tunes live ranges**: writing `element * pointer` vs
+  `pointer * element` changed which pseudo global allocation ranks
+  first (sub_0800A084's final fix).
+- **Registers that "skip" a free register are reload scratches**, not
+  global-alloc homes: the `movs #imm; lsls` constant splits (>255
+  offsets) and fused load+shift input reloads are created by reload
+  after global allocation, round-robin from its spill set. If the ROM
+  rotates r2→r3→r2 where yours first-fits from r0, look for what adds a
+  register to that spill set.
+
 
 **Never modify anything under `tools/`.** Those are vendored submodules; the
 compiler's exact behavior is what makes matching possible. They're fenced off

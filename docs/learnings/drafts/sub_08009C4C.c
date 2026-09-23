@@ -44,10 +44,10 @@ void sub_08009C4C(struct Car *car, u8 idx)
     s32 pos[2];
     struct Thing *t;
     u32 t5;
-    u32 a, b;
     u16 y;
     u8 flip;
     s32 k;
+    u32 *row;
 
     if ((u8)sub_08009BB4(car->unk00, car->unk08, pos) == 0)
         return;
@@ -56,7 +56,8 @@ void sub_08009C4C(struct Car *car, u8 idx)
     pos[1] -= 0x10;
     if (car->unk7D != 0 && gUnk_020020DC != 0 && (gUnk_0200209C & 8) != 0)
         return;
-    k = ((car->unk34 + 0x200) >> 10) + 0x28;
+    k = (car->unk34 + 0x200) >> 10;
+    k += 0x28;
     k &= 0x3F;
     flip = k & 0x20;
     k &= 0x1F;
@@ -79,21 +80,31 @@ void sub_08009C4C(struct Car *car, u8 idx)
                          t->unk10 | t5, (u16)(y + 0x40));
         }
     } else {
-        t = sub_0800754C(gUnk_083676B8[car->unk162][k]);
+        register u8 *p162 asm("r8");
+        register u32 a asm("r4");
+        u32 b;
+        u32 **tbl;
+
+        tbl = gUnk_083676B8;
+        p162 = &car->unk162;
+        t = sub_0800754C(tbl[*p162][k]);
         if (t != NULL) {
             a = (pos[1] & 0xFF) | ((pos[0] & 0x1FF) << 16) | 0x80000000;
             b = t->unk10 | t5;
-            sub_080044DC(a | 0x1000000, b, (u16)(y + 0x40));
+            a |= 0x10000000;
+            sub_080044DC(a, b, (u16)(y + 0x40));
         }
-        t = sub_080075E4(gUnk_08367640[car->unk162][k]);
+        t = sub_080075E4(gUnk_08367640[*p162][k]);
         if (t != NULL) {
             a = (pos[1] & 0xFF) | (((pos[0] + 0x20) & 0x1FF) << 16) | 0x80008000;
             b = t->unk10 | t5;
-            sub_080044DC(a | 0x1000000, b, (u16)(y + 0x40));
+            a |= 0x10000000;
+            sub_080044DC(a, b, (u16)(y + 0x40));
         }
     }
     if (gUnk_020020DC != 0) {
-        u32 *row = gUnk_083681E8[idx] + sub_080172C8(gUnk_0200209C >> 1, 7);
+        row = gUnk_083681E8[idx];
+        row += sub_080172C8(gUnk_0200209C >> 1, 7);
         pos[1] -= 0xC;
         pos[0] += 0x10;
         k = (pos[1] & 0xFF) | ((pos[0] & 0x1FF) << 16) | 0x40000000;
@@ -104,7 +115,7 @@ void sub_08009C4C(struct Car *car, u8 idx)
         t5 |= (u32)(sub_08007714(gUnk_08337C20) << 24) >> 12;
         sub_080044DC(k, t5, (u16)(y + 0x40));
     } else {
-        u32 *row = gUnk_083681F8[car->unk162];
+        row = gUnk_083681F8[car->unk162];
         pos[1] -= 8;
         pos[0] += 0x10;
         k = (pos[1] & 0xFF) | ((pos[0] & 0x1FF) << 16) | 0x4000;

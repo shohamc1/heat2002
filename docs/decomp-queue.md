@@ -55,11 +55,11 @@ Ranked by original caller count. Drafts for functions since resolved into
 | `sub_0800AB78` | 520 b | 1 | 520/520 bytes; cross-jump sharing of the four `sub_0800A80C` call sites |
 | `sub_0800BEA4` | 580 b | 1 | wave-4 dead-agent state; mid-function code 4 bytes short |
 | `sub_0800CD38` | 580 b | 1 | best build 572/580 bytes |
-| `sub_0800A084` | 592 b | 1 | wave-4 dead-agent state; code 2 bytes short, branch/pool offsets drift |
-| `sub_08007C44` | 692 b | 1 | 700/700 bytes; register+slot allocation only, pools match |
-| `sub_08009C4C` | 764 b | 1 | wave-5d state replaces older draft; agent died mid-work |
+| `sub_0800A084` | 592 b | 1 | MATCHED 2026-09-23 (`4832f44`): plain field accesses, GCSE builds pointer copies; product operand order fixes priority |
+| `sub_08007C44` | 692 b | 1 | MATCHED 2026-09-23 (`2bc9c85`): literal 1s instead of a `bit` variable; split shift and `+=` for the tile coordinates |
+| `sub_08009C4C` | 764 b | 1 | MATCHED 2026-09-23 (`6d50015`): last pin removed; reload shifts its round-robin to the ROM picks |
 | `sub_0800A80C` | 876 b | 1 | 896/876 bytes; GCSE PRE hoists at the `sub_0800D248` join |
-| `sub_080097A4` | 892 b | 1 | wave-4 dead-agent state; allocation pattern differs (adds-chain vs movs+adds) |
+| `sub_080097A4` | 892 b | 1 | plainest-source rewrite (GCSE hoists the six addresses); switch arm merge + home rotation block |
 | `sub_0800D248` | 908 b | 1 | best build 868/908 bytes (64-bit math / MIN/MAX chains) |
 | `sub_0800D684` | 2012 b | 1 | 1990/2012 bytes; 39-instruction multiset diff, fully characterized |
 | `sub_08006A34` | 2240 b | 1 | 2240/2240 bytes, 10 bytes differ at 3 sites; root causes identified |

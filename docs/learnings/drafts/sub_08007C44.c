@@ -1,4 +1,13 @@
-/* 2026-09-22: pad must be 0x2C (frame 64, matches target `sub sp,#64`; 0x28 gives 60). Remaining diff after frame fix: register-rename cascade only ({zero,car+0x171} r4/r3 vs r5/r4 at the head). */
+/* 2026-09-23: 692/692 bytes, 53 normalized differing instructions (of ~330).
+   Root causes fixed this session: bit must be its own variable assigned between
+   the loops (per outer iteration) -- its spill slot is the frame's 6th, so pad
+   is 0x28 not 0x2C; the unk00/unk08 loads must be pulled ahead via two field
+   temps (yend/y) assigned before the shifts; bit u8; yend/cnt/p2 statement
+   order yend,cnt,p2; cnt declared last. Remaining: &170/&172 homes (target r8/r5,
+   ours r9/r8 -- target skips a free low, the sub_08009C4C r2/r3 phenomenon),
+   the p-zero scratch (r0 vs r7), and the xc/yc chain order (target does both
+   shifts before both adds; no statement form found that defers xc's add+store
+   past yc's shift -- split adds double the spilled- xc store). */
 #include "global.h"
 
 struct Car {
@@ -38,17 +47,17 @@ void sub_080019B4(s32 a);
 
 void sub_08007C44(struct Car *car)
 {
-    u8 pad[0x2C];
+    u8 pad[0x28];
     s32 p;
     s32 yend;
     s32 p2;
     s32 yc;
-    s32 bit;
+    u8 bit;
     s32 xc;
     s32 x, y;
-    u8 cnt;
     u8 v;
     u8 f2;
+    u8 cnt;
 
     car->unk170 = 0;
     car->unk173 = car->unk171;
@@ -61,17 +70,19 @@ void sub_08007C44(struct Car *car)
     p = 0;
     if (gUnk_020020DC != 0)
         p = gUnk_0202EF90;
-    xc = (car->unk00 >> 19) + 1;
-    yc = (car->unk08 >> 19) + 2;
+    yend = car->unk00;
+    y = car->unk08;
+    xc = (yend >> 19) + 1;
+    yc = (y >> 19) + 2;
     car->unk170 = 0;
     car->unk171 = 0;
     car->unk172 = 0;
+    yend = yc + 2;
     cnt = 0;
     p2 = p * 2;
-    yend = yc + 2;
     for (y = yc - 1; y != yend; y++) {
+        bit = 1;
         for (x = xc - 1; x != xc + 2; x++) {
-            bit = 1;
             v = sub_0800CBB8(x, y);
             if (v & bit)
                 car->unk172 = bit;
