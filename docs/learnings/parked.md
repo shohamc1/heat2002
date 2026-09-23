@@ -1884,3 +1884,76 @@ pointer breaks address CSE. Late-code structure changes (statement
 splits in a far-away branch) can rotate the whole function's
 callee-saved assignment; when that happens, re-pin the anchor
 (`row` → r5 here) rather than the rotated locals.
+
+## Parked 2026-09-24: sub_08001C88 (CgbSound, 1088 bytes; twin sub_0833B348)
+
+The largest remaining family original (`docs/function-twins.md`). It is
+m4a's `CgbSound` at an **older revision than pokeemerald's**: installed as
+`soundInfo->CgbSound` by the already-matched `sub_080013F8`. Draft at
+`docs/learnings/drafts/sub_08001C88.c` — 1094/1088 bytes, instruction
+stream matches except for a register-allocation rotation; ~294 differing
+disasm lines. The structure is fully solved; everything below is
+allocation-level.
+
+Older-revision differences from tmc/pokeemerald's `CgbSound` (all verified
+against the asm):
+
+- Envelope-state encoding **inverted**: attack=3, decay=2, sustain=1,
+  release=0; `statusFlags = 3` on start, `statusFlags--` walks the phases.
+- No `NR52` channel-status check next to `SF_IEC`, and no `sp1C`/`sp00`
+  channel-index slot at all (sp+0 holds prevC15 instead).
+- Pseudo-echo does **not** set `envelopeStepTimeAndDir = 0|ENV_DIR_INC`.
+- `nrx3ptr`/`nrx4ptr` are *plain constants* in the source
+  (`nrx3ptr = (vu8 *)REG_ADDR_NR13;`); the ROM's `adds r0, #4` /
+  `adds r2, #2` come from **reload's move2add** (reload_cse_move2add) when
+  the constant-load temp lands on a register that already holds the base
+  constant (NR10 in r0, NR12 in r2). Verified in isolation: four
+  `REG_WAVE_RAMn = ((u32 *)channels->wavePointer)[n];` macro writes
+  compile to exactly the ROM's one `ldr =0x04000090` + three `adds #4`
+  walk — that spelling is in the draft and matches.
+- A **status local** `u8 sf = channels->statusFlags;` spans the loop body:
+  the head `0xC7` test, the START/STOP/IEC tests and E74's `~3` store use
+  it (r1 lives from the head to E74); the E74 `& 3` *test* re-reads the
+  field, and the store is `sf & ~3` (mask-tied ands on r1).
+- `sf_start` (0x80) is kept in r10 across the CgbModVol call
+  (`movs r0,#0x80; mov sl,r0` at the START test, reused by the case-3
+  `n4 = 0x80` arm). Reproduced with `register u32 sf_start asm("r10")`.
+  Without a pin the plain `0x80` literals CSE-share *sometimes* (the
+  switch can kill the share, leaving a `movs #0x80; negs r2,r2` — the
+  QImode-canonical -128 leak).
+- The `for` increment order matters for codegen: `channels++, ch++`
+  (channels first) reproduces the ROM's `movs r2,#0x40; adds r2,r2,r4;
+  mov r8,r2` next-channel form; `ch++, channels++` reproduces the ROM's
+  *order* (ch+1 first, homed r9) but emits `channels+0x40` as copy+bump.
+  The ROM has both right; no spelling found gives both (body-final
+  `ch++; channels++;` moves the whole increment to the tail, worse).
+- Wave copy, both switch fallthrough/goto shapes, the `n4` if/else arms,
+  the apply-pitch/apply-volume sections and the whole envelope state
+  machine match the draft byte-for-byte in isolation.
+
+What blocks the match (all one allocation web):
+
+1. next-ch/next-chan homes: with the hybrid `nrx4ptr = nrx2ptr + 2/4`
+   arithmetic (needed for the switch adds), nrx2ptr's density beats
+   next-ch and takes r9 (next-ch then lives in r3 with save/restore
+   around both CgbModVol calls). Without the arithmetic (all plain
+   constants) the nexts land r9/r8 correctly but the switch's five
+   pool constants never pair up into the ROM's 3+adds.
+2. The D48 trio order: ROM `adds r2,r1,#0` (status copy) / `movs r0,#0x80`
+   / `mov sl,r0`; ours emits the 0x80 first. An explicit `sf2 = sf` local
+   is copy-propagated away; volatile or separate-statement forms all
+   reorder.
+3. ands tie directions (STOP test `ands r1,r3` in-place vs ROM's
+   mask-copy `adds r0,r3,#0; ands r0,r2`) and the slot sharing
+   (ours lets soundInfo share prevC15's slot 0; the ROM keeps them
+   apart at 0 and 4).
+
+Permuter: `scripts/permute.py` ran 69k iterations from the draft (its
+parser needs the self-contained-header trick: m4a_internal.h's
+`__attribute__((aligned(4)))` breaks pycparser, and `register asm()`
+pins must be removed) — best found was worse than the hand draft.
+The known levers (declaration order, operand order, `& mask` presence,
+u8/u32 of sf, pin/no-pin, half/full hybrid) are all swept above.
+
+`gUnk_0801D1EC = 0x0801D1EC` (gCgb3Vol, the ch3 NR32 volume table,
+32 entries) is already in symbols.ld for the next attempt.
