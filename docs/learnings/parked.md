@@ -1514,6 +1514,26 @@ by a jump and which fell into a label at flow time. A call with a USE
 after it can only merge with another call that has one, and a call
 followed by a jump only with another call followed by a jump.
 
+### sub_0800E008 — resolved 2026-09-23
+
+The draft's header blamed a DImode ADDRESSOF pseudo for the struct
+form. A fresh plain-C rewrite needed no struct. Two things fixed it:
+
+- The 0xA0 fill value at `sp+0` is the `vu32 tmp` inside the
+  `DmaFill32` macro from `gba/macro.h`. A volatile block-scope local
+  gets its stack slot when it's declared, before the address-taken
+  `frame` counter is moved to the stack, so `tmp` takes `sp+0` and
+  `frame` takes `sp+4`. Both fills reuse the same slot.
+- The loop exit is `goto done;`, not `break;`. `expand_end_loop`
+  (stmt.c, around line 2009) scans the whole loop body for any jump to
+  the loop's end label. If it finds one, it moves everything from the
+  loop top through that jump to the bottom and enters the loop with a
+  jump. A `goto` to a label after the loop isn't the end label, so the
+  loop stays in source order, as in the ROM.
+
+If a ROM loop has a mid-body exit but no jump into the loop from above,
+the exit was a `goto` or a `return`.
+
 ### sub_08009C4C — 764/764 bytes, 28 diff lines (2026-09-23, second pass)
 
 The 28 lines are five reload-scratch register picks, all in the
