@@ -194,8 +194,7 @@ The short list:
 
 
 **Never modify anything under `tools/`.** Those are vendored submodules; the
-compiler's exact behavior is what makes matching possible. They're fenced off
-from linting and autofix via per-submodule `.pi-lens.json`.
+compiler's exact behavior is what makes matching possible.
 
 ## What's known about the binary
 

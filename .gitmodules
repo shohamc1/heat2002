@@ -10,3 +10,6 @@
 [submodule "tools/decomp-permuter"]
 	path = tools/decomp-permuter
 	url = https://github.com/WhenGryphonsFly/decomp-permuter-agbcc.git
+[submodule "tools/tmc"]
+	path = tools/tmc
+	url = https://github.com/zeldaret/tmc.git

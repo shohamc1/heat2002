@@ -383,7 +383,9 @@ def _selftest():
     # asm/*.s or already matched in src/*.c.
     done = decompiled()
     assert not LIBRARY_BLOCKS & (set(insns) | done), "a library block is back in asm/ or src/"
-    total = len(set(insns) | done | LIBRARY_BLOCKS)
+    # False positives count whether or not they're still in asm: the ones
+    # inside extracted data (assets/*.json) left with it.
+    total = len(set(insns) | done | LIBRARY_BLOCKS | LUVDIS_FALSE_POSITIVES)
     assert total == 1150, f"expected 1150 functions across asm + matched C + libraries, got {total}"
     assert "sub_08006734" not in insns, "sub_08006734 should be decompiled, not in asm"
     # All 92 runtime-library functions once flagged in asm now build from

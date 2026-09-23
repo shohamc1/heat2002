@@ -17,3 +17,5 @@ report.json
 nonmatchings/
 *.sav
 __pycache__/
+# Asset conversion tools built from tools/tmc (make tools).
+tools/bin/

@@ -26,9 +26,58 @@ that a `bl` also happens to point near.
 | `sub_08120E3A` | one `push`, then `0xB1xx`/`0xB5xx` table halfwords; no references |
 | `sub_08248272` | one `push`, then `0xB1xx`/`0xB5xx` table halfwords; no references |
 
-They are left in `asm/` and must stay there. Do not write C for them. The
-1150 denominator is therefore ~1143 real functions; the count is left at
-1150 so it agrees with the disassembly and with `progress.py --selftest`.
+Do not write C for them. They're data, so each one leaves `asm/` when the
+data around it becomes an extracted asset (`assets/*.json`, see
+`scripts/assets.py`). `sub_08026DB6` and `sub_080462B2` sat inside PCM
+samples and left with the sound data on 2026-09-23 (`assets/sound.json`).
+The other five stay in `asm/` until their data is identified. The 1150
+denominator is therefore ~1143 real functions. The count stays at 1150 so it
+agrees with the original disassembly: `progress.py --selftest` counts all
+seven whether or not they're still in `asm/`.
+
+## Extracted data assets
+
+`scripts/assets.py extract` copies every asset listed in `assets/*.json` out
+of `baserom.gba` into `build/assets/`, and the asm pulls each one in with
+`.incbin`. `make` runs it; `make check` still prints MATCH.
+
+Sound, `0x0801D29C`-`0x0806C664` (324 KB), established 2026-09-23:
+
+- `m4aSongNumStart` (`sub_08001208`) reads the song table
+  (`gUnk_0801DACC`, pret's `gSongTable`, 30 entries of 8 bytes) and the
+  music player table (`gUnk_0801DA90`, pret's `gMPlayTable`). The song table
+  holds 3 music songs of 10 tracks, 22 one-track sound effects, and 5 empty
+  slots that all point at a 4-byte dummy header at `0x0801DBBC`.
+- Two voicegroups, at `0x0801D29C` (128 voices) and `0x0801D89C` (31),
+  then eight 16-byte CGB waveforms at `0x0801DA10`.
+- 36 PCM samples tile `0x0801DBC0`-`0x0806AA64`. Each is a 16-byte header,
+  `size + 1` data bytes, then zero fill to 4 bytes.
+- 25 distinct songs tile `0x0806AA64`-`0x0806C664`, tracks first, header
+  last.
+
+`make convert` builds agb2mid, mid2agb, aif2pcm and gbagfx from
+`tools/tmc` and writes a `.mid` or `.aif` next to each song and sample
+`.bin`. All 25 songs and all 36 samples convert back byte for byte. One
+option is not in tmc's asset lists: agb2mid drops each track's opening
+`VOL`, and mid2agb writes it back as `127*mvl/mxv`, so each song needs
+`-V` set to its opening volume (the `V` option in `sound.json`). Every
+track in a song opens at the same volume.
+
+Not extracted yet:
+
+- `0x0801CF88`-`0x0801D29C`: `gMPlayJumpTableTemplate` (36 words), then
+  bytes not yet identified. A rhythm voice in the first voicegroup points
+  at `0x0801CF90`, inside the jump table, so a drum kit overlaps it.
+- Graphics. The game calls `RLUnCompVram` and `LZ77UnCompVram`. ROM
+  pointers reach 657 compressed blobs (654 RL, 3 LZ77, 340 KB), most in
+  `0x08280000`-`0x08340000`. gbagfx recompresses 656 of them byte for byte.
+  The exception, a 12,544-byte blob at `0x080C0000`, came from a weaker
+  compressor (13,437 bytes against gbagfx's 11,836) and must stay raw. The
+  240x160 8bpp bitmaps at `0x082B370C` and `0x0830EE78` are the Crawfish
+  and Infogrames boot logos.
+- About 3.3 MB of uncompressed data, mostly BG tilemaps and 4bpp tiles in
+  `0x08080000`-`0x08280000`. Few direct pointers reach it; naming it means
+  walking the game's pointer tables.
 
 ## Non-interwork epilogues
 

@@ -20,6 +20,11 @@ SHA1 is wrong, no matter how clean the C looks. Never edit `baserom.gba`,
 - `src/` — **257 functions decompiled**. One function per file, named for
   it. Run `scripts/progress.py` for the live figure; do not hand-copy it
   here, it goes stale within a day.
+- `assets/*.json` — data assets in zeldaret/tmc's format. `make` runs
+  `scripts/assets.py extract` to copy each one out of `baserom.gba` into
+  `build/assets/`, and the asm `.incbin`s it, so the data stays out of git.
+  Only the sound data is extracted so far; see "Extracted data assets" in
+  `docs/learnings/parked.md`.
 - `docs/recon.md` — function inventory, call graph, entry-point trace, candidate ranking.
 - `docs/learnings/solved-walls.md`: **read when a function stalls.** It maps
   `match.py` diff symptoms to the source fixes that matched earlier walls,
@@ -300,10 +305,8 @@ functions need no further tooling changes for either of these.
 
 ## Never do these
 
-- Do not modify `tools/luvdis/`, `tools/m2c/`, or `tools/decomp-permuter/`,
-  and do not casually modify the compiler.
-  Both are fenced off from linting via a per-submodule `.pi-lens.json` —
-  leave it in place.
+- Do not modify `tools/luvdis/`, `tools/m2c/`, `tools/decomp-permuter/`, or
+  `tools/tmc/`, and do not casually modify the compiler.
 
   The compiler is stock upstream agbcc. A `calls.c` patch was carried
   until 2026-09-23 and reverted once register pins matched the one function
@@ -329,3 +332,5 @@ functions need no further tooling changes for either of these.
     python3 scripts/permute.py NAME DRAFT.c -j8          # permute a near-miss
     python3 scripts/progress.py         # progress summary
     python3 scripts/progress.py --json  # report.json for decomp.dev
+    make tools      # build agb2mid, mid2agb, aif2pcm, gbagfx from tools/tmc
+    make convert    # extracted songs -> .mid, samples -> .aif, round-trip checked

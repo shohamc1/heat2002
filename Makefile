@@ -90,7 +90,7 @@ $(BUILD)/lib/eeprom.o: CFLAGS := $(subst -O2,-O1,$(CFLAGS))
 OBJS     := $(filter-out $(RAM_MODULE_OBJS),$(C_SRCS:%.c=$(BUILD)/%.o) $(ASM_SRCS:%.s=$(BUILD)/%.o)) \
 	$(NEWLIB_OBJS) $(AGBSYSCALL_OBJS) $(AGBSYSCALL_COPY_OBJS) $(M4A_OBJS) $(LIB_C_OBJS) $(LIBGCC_OBJS)
 
-.PHONY: all check test clean disasm
+.PHONY: all check test clean disasm tools convert
 all: $(TARGET).gba
 
 # Each C file is preprocessed, run through agbcc, then assembled. The .s
@@ -206,7 +206,38 @@ $(BUILD)/lib/m4a/m4a_1_high.o: $(BUILD)/lib/m4a/m4a_1.o Makefile
 	$(OBJCOPY) --redefine-syms=$@.syms \
 		$(foreach e,$(M4A_HIGH_EXTERNS),--redefine-sym $(e)) $< $@
 
-$(BUILD)/asm/%.o: asm/%.s Makefile
+# Data assets: scripts/assets.py copies each file that assets/*.json lists
+# out of baserom.gba, and the asm pulls them in with .incbin.
+ASSET_STAMP := $(BUILD)/assets/.extracted
+$(ASSET_STAMP): baserom.gba scripts/assets.py $(wildcard assets/*.json)
+	python3 scripts/assets.py extract
+	touch $@
+
+# Asset conversion tools, built from zeldaret/tmc's sources (tools/tmc).
+# Only `make convert` needs them; `make check` doesn't. gbagfx needs libpng.
+TMC_SRC := tools/tmc/tools/src
+ASSET_TOOLS := tools/bin/agb2mid tools/bin/mid2agb tools/bin/aif2pcm tools/bin/gbagfx
+tools: $(ASSET_TOOLS)
+
+tools/bin/agb2mid: $(wildcard $(TMC_SRC)/agb2mid/*)
+	@mkdir -p $(@D)
+	c++ -std=c++17 -O2 -w -I $(TMC_SRC)/agb2mid -o $@ $(TMC_SRC)/agb2mid/*.cpp
+tools/bin/mid2agb: $(wildcard $(TMC_SRC)/mid2agb/*)
+	@mkdir -p $(@D)
+	c++ -std=c++17 -O2 -w -I $(TMC_SRC)/mid2agb -o $@ $(TMC_SRC)/mid2agb/*.cpp
+tools/bin/aif2pcm: $(wildcard $(TMC_SRC)/aif2pcm/*)
+	@mkdir -p $(@D)
+	cc -O2 -w -o $@ $(TMC_SRC)/aif2pcm/*.c -lm
+tools/bin/gbagfx: $(wildcard $(TMC_SRC)/gbagfx/*)
+	@mkdir -p $(@D)
+	cc -O2 -w $(shell pkg-config --cflags libpng) -o $@ $(TMC_SRC)/gbagfx/*.c $(shell pkg-config --libs libpng)
+
+# Turn the extracted assets into editable files (songs to .mid, samples to
+# .aif) next to their .bin, and check that each one converts back exactly.
+convert: $(ASSET_TOOLS) $(ASSET_STAMP)
+	python3 scripts/assets.py convert
+
+$(BUILD)/asm/%.o: asm/%.s Makefile $(ASSET_STAMP)
 	@mkdir -p $(@D)
 	cat $< > $(BUILD)/asm/$*.s
 	printf '\t.align 2, 0\n' >> $(BUILD)/asm/$*.s
