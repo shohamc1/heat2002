@@ -32,65 +32,6 @@
 	.size \name, .-\name
 	.endm
 @ End embedded Luvdis macros
-	thumb_func_start sub_0800B120
-sub_0800B120:
-	push {r4, r5, r6, lr}
-	adds r5, r0, #0x0
-	ldr r4, [r5, #0x18]
-	ldrb r0, [r5, #0x18]
-	movs r1, #0x17
-	bl __umodsi3
-	lsls r0, r0, #0x18
-	lsrs r1, r0, #0x18
-	adds r4, #0x01
-	str r4, [r5, #0x18]
-	cmp r4, #0x1E
-	ble _0800B170
-	ldr r0, _0800B190 @ =0x083FF5B0
-	lsls r1, r1, #0x02
-	adds r1, r1, r0
-	ldr r0, [r1, #0x00]
-	bl sub_0800754C
-	adds r4, r0, #0x0
-	cmp r4, #0x00
-	beq _0800B170
-	ldr r6, _0800B194 @ =0x80680040
-	ldr r0, _0800B198 @ =0x08330AD4
-	bl sub_08007714
-	lsls r0, r0, #0x18
-	lsrs r0, r0, #0x0C
-	movs r1, #0x80
-	lsls r1, r1, #0x03
-	orrs r0, r1
-	ldr r1, [r4, #0x10]
-	orrs r1, r0
-	ldr r0, _0800B19C @ =0x020020DC
-	ldrb r0, [r0, #0x00]
-	cmp r0, #0x00
-	bne _0800B170
-	adds r0, r6, #0x0
-	bl sub_080044A4
-_0800B170:
-	ldr r0, [r5, #0x18]
-	cmp r0, #0x4E
-	bne _0800B188
-	adds r0, r5, #0x0
-	bl sub_08007950
-	adds r0, r5, #0x0
-	bl sub_0800792C
-	ldr r1, _0800B1A0 @ =0x020020C4
-	movs r0, #0x01
-	strb r0, [r1, #0x00]
-_0800B188:
-	pop {r4, r5, r6}
-	pop {r0}
-	bx r0
-	.byte 0x00, 0x00
-_0800B190: .4byte 0x083FF5B0
-_0800B194: .4byte 0x80680040
-_0800B198: .4byte 0x08330AD4
-_0800B19C: .4byte 0x020020DC
-_0800B1A0: .4byte 0x020020C4
 	thumb_func_start sub_0800B1A4
 sub_0800B1A4:
 	push {r4, r5, r6, lr}
