@@ -280,8 +280,9 @@ mechanical steps:
    macros already `.global`) must be `.global` in whichever fragment defines
    it, or cross-fragment references fail to link with "undefined reference".
    One-time fix, not needed again once a symbol has been globalized.
-5. List the new object explicitly in `ldscript.ld`'s `.text` block, in
-   address order: `build/asm/<fragment-before>.o(.text*);` then
+5. List the new object explicitly in the `ldscript.ld` section that holds
+   its address (`.text` for most functions; see "Functions that run from
+   EWRAM"), in address order: `build/asm/<fragment-before>.o(.text*);` then
    `build/src/<name>.o(.text*);` then `build/asm/<fragment-after>.o(.text*);`.
    name the C file after the function (`src/sub_08006734.c`, not
    `src/stub.c`) so this line is mechanical to write. A trailing `*(.text*);`
@@ -289,14 +290,6 @@ mechanical steps:
    exists so a forgotten explicit line still links -- landing past the real
    ROM's end and breaking the SHA1 loudly -- instead of silently vanishing
    into `/DISCARD/` with `make check` still printing MATCH.
-
-Two blocks of the ROM run from EWRAM: the high module (ROM `0x08339780`-
-`0x08363EE8`, runs at `0x02000D00`) and the multiboot island (ROM
-`0x08363EE8`-`0x08364AC8`, runs at `0x02000000`). `ldscript.ld` links each
-in its own section (`.high_module`, `.island`) at its run address and
-stores it at its ROM address, so a function there is placed exactly like
-any other. `match.py` and `permute.py` read the run address from the ELF's
-sections.
 
 Do not hand-add filler bytes for the gap between a short C function and
 whatever follows. `ld` automatically zero-pads the location counter up to
@@ -333,6 +326,57 @@ still hardcoded through `sub_08006734`'s first review pass -- fixed since).
 anywhere in one -- otherwise a decompiled function calling a still-asm one
 counts that callee as done too. Already fixed; new fragments and new
 functions need no further tooling changes for either of these.
+
+## Functions that run from EWRAM
+
+Two images in the ROM run from EWRAM on a second GBA, not from the
+cartridge. The main program sends the multiboot island with the BIOS
+MultiBoot call. The island then receives the high module over the link
+cable in 32 KB chunks. The following table lists both images:
+
+| Image | ROM range | Runs at | `ldscript.ld` section |
+|---|---|---|---|
+| High module | `0x08339780`-`0x08363EE8` | `0x02000D00` | `.high_module` |
+| Multiboot island | `0x08363EE8`-`0x08364AC8` | `0x02000000` | `.island` |
+
+`ldscript.ld` links each section at its run address and stores it at its
+ROM address. Every symbol inside takes its EWRAM value: `sub_08339AEC`
+links to `0x0200106C`, so `(u32)sub_08339AEC` gives `0x0200106D`. Names
+keep the ROM address, because `match.py` and `progress.py` read the ROM
+address from the name.
+
+The main link uses `--no-check-sections`, because the island's run
+addresses overlap the main program's EWRAM `.bss`. The overlap is real:
+the two run on different GBAs. Don't remove the flag.
+
+### Decompile a function in an EWRAM image
+
+Follow the same loop as for any other function. Only these points differ:
+
+- Place the `build/src/<name>.o(.text*);` line inside the image's section
+  block in `ldscript.ld`, in address order. There's no link base, alias, or
+  `match.py` entry to add.
+- `match.py` and `permute.py` link the function at its run address, which
+  they read from the section table in `nascar-heat.elf`. They still report
+  the ROM address.
+- To reference a function or label in the same image, use its name. The
+  linker resolves it to the EWRAM address. For image data with no label
+  yet, declare an `extern` and add its EWRAM address to `symbols.ld`, as
+  for ROM data. Don't write a new raw `0x0200xxxx` literal in C. Older
+  module C still holds some; leave them for the shiftability pass.
+- Keep each asm fragment inside one image. The fragments
+  `rom_08339780.s`, `rom_08363EE8.s`, and `rom_08364AC8.s` start exactly
+  at a section boundary, so never merge one into the fragment before it.
+
+### Troubleshoot an EWRAM function
+
+- If `match.py` shows jump-table or pointer words that differ from the ROM
+  by exactly `0x6338A80` (high module) or `0x6363EE8` (island), the
+  function linked at its ROM address. Run `make` to refresh
+  `nascar-heat.elf`: `match.py` reads the run address from it, and falls
+  back to the ROM address when the ELF is missing.
+- If `make check` fails with the same offsets, the object's `ldscript.ld`
+  line is outside its image's section block. Move the line inside it.
 
 ## Never do these
 
