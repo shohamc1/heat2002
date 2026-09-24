@@ -20,5 +20,9 @@ extern const u16 gUnk_0833553C[];
 extern const u16 gUnk_08335A8C[];
 extern const u8 gUnk_08337C20[];
 extern const u8 gUnk_08338788[];
+extern const u8 gUnk_08367C10[];
+extern const u32 gUnk_083FDEF4[];
+extern const u32 gUnk_083FED18[];
+extern const u32 gUnk_083FF5B0[];
 
 #endif

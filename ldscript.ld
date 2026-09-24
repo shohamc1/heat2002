@@ -1259,7 +1259,25 @@ SECTIONS
     .text_tail LOADADDR(.island) + SIZEOF(.island) (READONLY) :
         AT(LOADADDR(.island) + SIZEOF(.island))
     {
-        build/data/rom_08364AC8.o(.text*);
+        build/src/data/rom_08364AC8.o(.rodata);
+        build/data/rom_08364FBC.o(.text*);
+        build/src/data/rom_0836524C.o(.rodata);
+        build/data/rom_08365348.o(.text*);
+        build/src/data/rom_083671C0.o(.rodata);
+        build/data/rom_08367C38.o(.text*);
+        build/src/data/rom_08367FBC.o(.rodata);
+        build/data/rom_083682BC.o(.text*);
+        build/src/data/rom_083C9574.o(.rodata);
+        build/data/rom_083CA0C4.o(.text*);
+        build/src/data/rom_083FD91C.o(.rodata);
+        build/data/rom_083FE064.o(.text*);
+        build/src/data/rom_083FE080.o(.rodata);
+        build/data/rom_083FED48.o(.text*);
+        build/src/data/rom_083FEF00.o(.rodata);
+        build/data/rom_083FEF08.o(.text*);
+        build/src/data/rom_083FF5B0.o(.rodata);
+        build/data/rom_083FF724.o(.text*);
+        build/src/data/rom_083FF79C.o(.rodata);
         /* newlib .data, which the ROM uses in place */
         build/lib/newlib/reent/impure.o(.data);
         build/lib/newlib/locale/locale.o(.data);

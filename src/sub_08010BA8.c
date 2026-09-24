@@ -1,7 +1,7 @@
 #include "global.h"
 #include "gba/compat.h"
+#include "data.h"
 
-extern u32 gUnk_083FDEF4[];
 extern u32 *gUnk_083FDF74[];
 extern u32 *gUnk_083FDFEC[];
 

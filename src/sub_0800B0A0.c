@@ -6,7 +6,6 @@ struct EntityB0A0 {
     /* 0x18 */ u32 unk18;
 };
 
-extern u32 gUnk_083FF5B0[];        /* 0x083FF5B0 */
 extern volatile u8 gIsLinkRace;  /* 0x020020DC */
 
 u32 *sub_0800754C(u32 a);

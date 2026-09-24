@@ -1,4 +1,5 @@
 #include "global.h"
+#include "data.h"
 
 struct Ent {
     s32 posX;
@@ -101,7 +102,6 @@ extern u32 gUnk_08368034[];
 extern u32 gUnk_083680AC[];
 extern u8 gUnk_08367BFA[];
 extern u8 gUnk_08367C06[];
-extern u8 gUnk_08367C10[];
 
 void sub_0800C0E8(u32 a, u8 b);
 void sub_0800C984(u32 *p, u32 v);

@@ -9,7 +9,6 @@ struct Tbl8 {
 };
 
 extern struct Tbl8 gUnk_083FDB98[];
-extern u32 gUnk_083FDEF4[];
 extern u32 *gUnk_083FDF74[];
 extern u32 *gUnk_083FDFEC[];
 void sub_08010194(u32 a, u32 b, u32 c);

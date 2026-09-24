@@ -1,9 +1,9 @@
 #include "global.h"
+#include "data.h"
 
 extern volatile u8 gUnk_0200215C[];
 extern u8 gUnk_08367BFA[];
 extern u8 gUnk_08367C06[];
-extern u8 gUnk_08367C10[];
 
 void sub_08008394(u32 a)
 {

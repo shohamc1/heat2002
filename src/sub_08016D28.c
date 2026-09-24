@@ -1,4 +1,5 @@
 #include "global.h"
+#include "data.h"
 struct Unk0202A550 {
     u8 filler0[0x4C];
     s8 lap;
@@ -15,7 +16,6 @@ struct Unk0202A550 {
     u8 filler170[400 - 0x170];
 };
 extern struct Unk0202A550 gCars[];
-extern u32 gUnk_083FED18[];
 extern u8 gTrackId;
 extern u32 sub_08017230(u32 a, s32 b);
 extern u32 sub_08016D08(u32 a, u8 b);

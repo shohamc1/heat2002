@@ -1,6 +1,6 @@
 #include "global.h"
+#include "data.h"
 
-extern u32 gUnk_083FED18[];
 
 u32 sub_08016D08(s32 a, u8 b)
 {
