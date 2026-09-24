@@ -577,7 +577,10 @@ luvdis names with `objcopy --redefine-sym`, because one link cannot hold three
 `syscall.h`'s pointer prototypes adds about 100 int-to-pointer warnings.
 
 Not covered: the two `svc 0x2A` (`SoundGetJumpList`) stubs at 0x0800151C
-and 0x0833ABDC. That syscall is not in pokeemerald's newer SDK.
+and 0x0833ABDC. That syscall is not in pokeemerald's newer SDK. Both
+matched as ordinary C on 2026-09-24 anyway — `void f(u32 *jt)
+{ asm("swi 0x2A"); }`, the solved-walls entry 15 inline-asm pattern — so
+they are decompiled in `src/`, not library blocks.
 
 #### MultiBoot from pokeemerald (2026-09-23)
 

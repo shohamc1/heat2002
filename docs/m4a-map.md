@@ -58,6 +58,52 @@ this ROM's revision writes a plain `0x100` to `fadeOV` and never touches
 does not reproduce either split function's body exactly. Likely the same
 family, not a certain single upstream name.
 
+## Tier 1 batch (2026-09-24, all decompiled and matched)
+
+The 2026-09-24 Tier 1 queue decompiled the remaining driver functions
+(`docs/decomp-queue.md`). Every pair below was matched byte-for-byte from
+`tmc`'s `m4a.c` shapes (one revision older), so the identification is
+certain unless noted. Names follow tmc; where the older revision's body
+differs, the note in `docs/decomp-queue.md`'s Tier 1 section is the record.
+
+| Low address | High address | Name |
+|---|---|---|
+| `sub_08001134` | `sub_0833A7F4` | `MPlayContinue` |
+| `sub_08001234` | `sub_0833A8F4` | `m4aSongNumStartOrChange` |
+| `sub_08001280` | `sub_0833A940` | `m4aSongNumStartOrContinue` |
+| `sub_0800133C` | `sub_0833A9FC` | `m4aMPlayAllStop` |
+| `sub_08001374` | `sub_0833AA34` | `m4aMPlayAllContinue` |
+| `sub_080013B0` | `sub_0833AA70` | track reinit (ImmInit-style; see queue notes) |
+| `sub_0800151C` | `sub_0833ABDC` | `SoundGetJumpList` (`svc 0x2A` stub, inline asm) |
+| `sub_0800177C` | `sub_0833AE3C` | `SoundClear` |
+| `sub_08001B28` | `sub_0833B1E8` | `MidiKeyToCgbFreq` |
+| `sub_08001BD0` | `sub_0833B290` | `CgbOscOff` |
+| `sub_080020CC` | `sub_0833B78C` | `m4aMPlayTempoControl` |
+| `sub_080020F4` | `sub_0833B7B4` | `m4aMPlayVolumeControl` |
+| `sub_080021D0` | `sub_0833B890` | `m4aMPlayPanpotControl` (3rd param `u8`, not `s8`) |
+| `sub_08002238` | `sub_0833B8F8` | `ClearModM` |
+| `sub_08002258` | `sub_0833B918` | `m4aMPlayModDepthSet` |
+| `sub_080022CC` | `sub_0833B98C` | `m4aMPlayLFOSpeedSet` |
+| `sub_08002340` | `sub_0833BA00` | `ply_memacc` (high copy is a RAM module, base 0x02002F80) |
+| `sub_08002498` | `sub_0833BB58` | `ply_xcmd` |
+| `sub_080024B8` | `sub_0833BB78` | `ply_xxx` (revision difference; see queue notes) |
+| `sub_080024CC` | `sub_0833BB8C` | `ply_xwave` |
+| `sub_08002514` | `sub_0833BBD4` | `ply_xtype` |
+| `sub_08002528` | `sub_0833BBE8` | `ply_xatta` |
+| `sub_0800253C` | `sub_0833BBFC` | `ply_xdeca` |
+| `sub_08002550` | `sub_0833BC10` | `ply_xsust` |
+| `sub_08002564` | `sub_0833BC24` | `ply_xrele` |
+| `sub_08002578` | `sub_0833BC38` | `ply_xiecv` |
+| `sub_08002584` | `sub_0833BC44` | `ply_xiecl` |
+| `sub_08002590` | `sub_0833BC50` | `ply_xleng` |
+| `sub_080025A4` | `sub_0833BC64` | `ply_xswee` |
+
+The high module's song-num family reads its own EWRAM copies of the song
+and player tables (`gUnk_0200CA74`, `gUnk_0200CAA4`), and its table data
+sits at one fixed delta 0x17FF6E0 from the low ROM tables (already recorded
+for `gCgb3Vol`); code addresses in the module map at delta 0x6338A80
+(0x08338A80 ↔ 0x02000000).
+
 ## Not part of the engine
 
 `sub_08001170` and `sub_08001208` reference sound-engine internals

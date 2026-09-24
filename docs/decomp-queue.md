@@ -1,6 +1,6 @@
 # Decompilation queue: the last 208 functions
 
-This file ranks the 208 game-code functions left at 793 / 1001 matched
+This file ranks the 150 game-code functions left at 852 / 1001 matched
 (2026-09-24). Work top to bottom. Each tier makes the next one cheaper, and
 inside a tier, each family's first member makes the rest ports.
 
@@ -62,9 +62,52 @@ The queue's byte column undercounts four of them: BL is 4 bytes, not 2,
 and the pool is part of the function (`sub_0800020C` 8, `sub_080079A0`
 12, `sub_0800DFC0` 12, `sub_08016CF8` 14).
 
-## Tier 1: m4a driver, reference C in tmc
+## Tier 1: m4a driver, reference C in tmc — finished 2026-09-24
 
-58 functions, 2848 bytes, about 8 hours.
+All 58 matched, one per commit; `make check` MATCH throughout.
+794 → 852 / 1001. Five parallel drafting agents produced the C (each
+family's fresh member plus its ports); integration was serial.
+
+What the source shapes turned out to be, for the next m4a batch:
+
+- Every `ply_*` byte setter (`sub_0800253C` family, 20 functions) compiles
+  byte-exact from tmc's two-statement shape
+  `track->X = *track->cmdPtr; track->cmdPtr++;` — including the register
+  split that differs between field offsets; it falls out of agbcc alone.
+  `ply_xxx` (`sub_080024B8`) is the revision difference: it tail-calls one
+  function pointer from the RAM jump table (`gUnk_02001D90` /
+  `gUnk_02038DE0`), not tmc's double indirection nor pokeemerald's
+  `cmdPtr += 4`.
+- The queue's semantic names were partly wrong (the asm is ground truth):
+  `sub_0800133C`/`sub_08001374` are **m4aMPlayAllStop/AllContinue**
+  (player-table loops, count from `gNumMusicPlayersLow/High` linker
+  symbols, not literals); `sub_080013B0` is the old revision's track-reinit
+  (ImmInit-style, writes `flags=0x80; bendRange=2; volX=0x40;
+  lfoSpeed=0x16; tone.type=1` and passes the *track* to ClearChain);
+  `sub_08001234` = m4aSongNumStartOrChange, `sub_08001280` =
+  m4aSongNumStartOrContinue. The high module's song-num family reads its
+  **own EWRAM tables** (`gUnk_0200CA74`, `gUnk_0200CAA4`), not the ROM
+  tables.
+- Both `ply_memacc` copies were mis-scoped (jump table + 18 case bodies as
+  `.byte` rows; 344 bytes each, not 54). The low copy hand-cut like
+  `sub_0800F8D0`. The high copy `sub_0833BA00` is a fourth RAM-module
+  function (EWRAM link base 0x02002F80, alias `_08344B84 → 0x0200C105` in
+  `ram/aliases_0834.s`, `RAM_LINK_OVERRIDES` in `scripts/match.py`): its
+  switch table embeds EWRAM addresses, off by exactly the module delta
+  0x6338A80 under a ROM-address link.
+- The two `svc 0x2A` stubs (`sub_0800151C`, `sub_0833ABDC`) are C after
+  all: `void f(u32 *jt) { asm("swi 0x2A"); }` — the solved-walls entry 15
+  inline-asm pattern; agbcc supplies the `bx lr`.
+- Matching tricks that recurred: the dead write-back store
+  (`mplayInfo->ident = ident;`, house trick from `src/sub_08001150.c`)
+  decided MPlayContinue and TempoControl's allocation; PanpotControl's
+  third parameter is `u8` (zero-extend), not tmc's `s8`; ClearModM needs
+  the constant-first `flags = MPT_FLG_PITCHG | track->flags;` duplicated
+  per arm so cross-jumping merges the tails; ModDepth/LFOSpeed need the
+  CSE'd re-read `if (!track->mod)` rather than testing the parameter.
+- Footgun hit once: a comment above a definition that mentions
+  `sub_XXXXXXXX (` makes `progress.py`'s `decompiled()` regex credit the
+  comment instead of the signature (`sub_0833ABDC`, fixed by rewording).
 
 | # | Function | Bytes | Notes |
 |---:|---|---:|---|

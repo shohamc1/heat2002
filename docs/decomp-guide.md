@@ -294,6 +294,11 @@ something is wrong with your setup.
   your object; `make check` is the real test.
 - A green `make check` right after `make disasm`. `make disasm` writes to
   `build/rom_reference.s` and is only for reference reading.
+- A comment above a definition that mentions `sub_XXXXXXXX (` — a name
+  followed by an opening paren. `progress.py`'s `decompiled()` regex
+  matches it as if it were the signature, and the real definition (inside
+  the same match) never gets counted. Reword the comment (hit on
+  `sub_0833ABDC`, 2026-09-24).
 - Editing `include/global.h` types to make a width match. The types are
   fixed-width; change your variable, not the typedef.
 - Touching a header and trusting the next `make`. Headers are tracked as
