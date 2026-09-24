@@ -32,14 +32,6 @@
 	.size \name, .-\name
 	.endm
 @ End embedded Luvdis macros
-	thumb_func_start sub_08002584
-sub_08002584:
-	ldr r0, [r1, #0x40]
-	ldrb r2, [r0, #0x00]
-	strb r2, [r1, #0x1F]
-	adds r0, #0x01
-	str r0, [r1, #0x40]
-	bx lr
 	thumb_func_start sub_08002590
 sub_08002590:
 	ldr r0, [r1, #0x40]
