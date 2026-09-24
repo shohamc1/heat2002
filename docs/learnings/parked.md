@@ -1996,3 +1996,41 @@ Idioms that carried the -O1 build: a `vu32 *sio` local for SIODATA32
 (keeps r2 alive across the mode-1 arm without cse-follow-jumps, an
 -O2-only pass), a `cnt` local assigned in the then-arm, an `n` local in
 the else-arm.
+
+## Session record 2026-09-24/25: the endgame — 1001/1001
+
+Every remaining game-code function is matched. The last 26 went in one
+parallel campaign (one agent per function, `match.py`-verified before any
+tree integration), followed by a serial one-commit-per-function
+integration with `make check` MATCH at every step. A 381-file naming
+pass (real names for core functions and globals) landed in the middle,
+commit `2f80090`; new decompiles after it resolve renamed callees
+through the fresh ELF rather than the patch text.
+
+Menu-loop family refinements from this campaign (both first-try matches):
+
+- **u8 vs s8 cursor discriminator:** a narrowing `lsls/lsrs` pair only
+  at the assignment says `u8`; a pair before *each use* says `s8`. An
+  `s8` variable passed to a `u8` parameter compiles to a plain
+  `adds r0, rN, #0` (the promoted-mode flag proves the conversion
+  redundant), while `u32`/`s32` parameters sign-extend. Getting the
+  cursor and the callee parameter types right fixed both remaining
+  register picks at once (`sub_08014BA4`, `3eb6f2a`).
+- **Degenerate single-item member:** when the loop never reassigns `v`,
+  write `v = 0;` before the setup calls — the constant folds, loop
+  rotation hoists the `v<<24` conversion temp into the preheader AFTER
+  `sel`'s initializer (exactly the ROM's late `movs r5, #0`), and the
+  in-loop `asrs`/`lsrs` read that temp (`sub_08012784`, `f96c802`).
+
+New solved-walls entries from this campaign: 24 (address argument after
+a stack-argument store), 25 (three-address negation), 26 (accumulator as
+op2), 27 (call result stuck in r0 — pin + `asm volatile("" : "+r"(v))`
+barriers), 28 (equality loop exit), 29 (counter increment at the tail),
+30 (zero-emission liveness keepers), plus variants on entries 1 and 4.
+`sub_080132F8` and `sub_08341F64` closed as entries 22 and 23.
+
+Campaign negatives worth keeping: the permuter never found a fix that
+needed a `register`-asm pin (three functions it floored on — 0CC00,
+0A4D4, 132F8 — all closed by manual pins or source shapes its parser
+cannot express); and `m2c` output never survived to a match unchanged —
+it was useful only as an operation listing.

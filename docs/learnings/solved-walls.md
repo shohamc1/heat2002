@@ -41,6 +41,13 @@ with the target and ours asm, the cause and the fix.
 | Target is a bare `bx rN` with no `push`/`pop`, often followed by a dead `bx lr` | Inline asm in a non-naked function | [15](#15-a-bare-bx-rn-with-no-pop) |
 | Target copies a call result (`adds r1, r0, #0`) and stores the original r0; ours stores the copy's register | CSE folded the copy into the call result's pseudo | [22](#22-a-store-reads-the-copy-instead-of-the-call-result) |
 | A high-module copy of a matched function diverges in registers and reloads around a dead read, with no branch in the target | The branch that used the read was still in the source | [23](#23-registers-drift-around-a-dead-read-that-ends-no-branch) |
+| An address argument's pool load lands AFTER the `str` of a stack argument; ours loads it first | The address was precomputed before the stack store | [24](#24-an-address-argument-loaded-after-a-stack-argument-store) |
+| Target negates 3-address (`negs r1, r0; adds r0, r1, #0`); ours is 2-address (`negs r0, r0`) | Unary minus folded into the two-address negation | [25](#25-a-three-address-negation) |
+| A final add reads the accumulator as its SECOND input (`adds r0, r2, r0`) and ours emits `adds r0, r0, r2` or copies around it | The expander canonicalises `v = x + v` to `(v, x)` | [26](#26-a-final-add-reads-the-accumulator-as-its-second-input) |
+| A call result must move out of r0 before its first use (`adds r1, r0, #0` then in-place shifts) and no plain shape moves it | The call's return register wins every local-alloc tie | [27](#27-a-call-result-stuck-in-r0) |
+| Ours ends a loop `cmp #N-1; bls`; target has `cmp #N; bne` | The loop condition was an equality test, not `<` | [28](#28-cmp-n-1bls-vs-cmp-nbne) |
+| Ours emits `movs rX,#4; add ip,rX` at a loop head plus an extra entry home store; target has `adds rY,#4; mov ip,rY` | The counter increment was written at the loop head | [29](#29-a-counter-increment-at-the-loop-head) |
+| A pseudo dies or rematerialises where the target keeps it homed, and no source shape stops it | Zero-emission liveness keepers and hard-register materialisation | [30](#30-zero-emission-liveness-keepers) |
 | Your notes say the difference is invariant under many variants | The variants shared a wrong structure | [Start from a plain rewrite](#start-from-a-plain-rewrite) |
 
 ## Start from a plain rewrite
@@ -125,6 +132,12 @@ HImode pseudo, and reload copies it into the SImode operand register.
 **Seen in:** `sub_0800BEA4` (`ab803a6`), `sub_08011B08` (`2e66b02`),
 `sub_0800E008` (`b3dc387`).
 
+**Variant:** plain `REG_*` macro stores also synthesise the *derived*
+constants and descending register addresses automatically — consecutive
+`REG_BG3CNT = 0x1D0B; REG_BG2CNT = 0x1E01; ...` produce `adds r2, #0xF6`
+(0x1E01 from 0x1D0B), `subs r2, #0xC8`, `subs r1, #2`, `adds r1, #0x4A`
+— no pointer walk or staging locals. Seen in `sub_08002718` (`a6b058e`).
+
 ### 2. An extra `ldrh` before a `strh`
 
 ```
@@ -193,6 +206,14 @@ done:
 ```
 
 A `return` inside the loop also avoids the rotation.
+
+**Variant (both directions exist in the ROM):** the *same source loop*
+appears unrolled in one copy and rolled in its twin — the unrolled copy
+needs `goto done`, the rolled copy needs `break`. When a loop's layout
+argues for the "wrong" keyword, check for a same-shape twin in the other
+engine copy before assuming a different source. Seen in `sub_083642FC`
+(`4cf7e72`, rolled, `break`) vs `sub_0800E008` (`b3dc387`, unrolled,
+`goto done`).
 
 **Seen in:** `sub_0800E008` (`b3dc387`).
 
@@ -787,12 +808,193 @@ and no index tricks.
 
 **Seen in:** `sub_08341F64` (twin of `sub_0800A4D4`).
 
+### 24. An address argument loaded after a stack-argument store
+
+A call with an address argument and a 5th stack argument: the target
+stores the stack argument first and loads the address's pool word after
+it; ours loads the address before everything.
+
+```
+-   movs r3, #0x00
+-   str  r3, [sp, #0x00]
+-   ldr  r3, =0x08331360
++   ldr  r3, =0x08331360
++   movs r2, #0x00
++   str  r2, [sp, #0x00]
+    bl   QueueSprite
+```
+
+**Cause.** `precompute_register_parameters` (calls.c:585) copies any
+argument whose `rtx_cost` exceeds 2 into a pseudo before the cheaper
+constants and stack stores are emitted, in a forward scan. A symbol
+address costs 10 (`thumb.h` `CONST_COSTS`), so it is always precomputed
+and its pool load lands before the stack store. A register pin cannot
+fix this: the stack-arg scratch clobbers r3.
+
+**Fix.** Pass the address through a local assigned just before the call,
+inside the loop, so precompute sees a cheap REG:
+
+```c
+pal = (u32)gUnk_08331360;
+QueueSprite(t, x, y, pal, 0);
+```
+
+The load then lands in the register-load loop after the stack store, and
+the separate def is folded away.
+
+**Variant:** `fold-const`'s `associate:` reassociation reorders
+`(out[0] - 0x78) + g[6]` to evaluate the global first. Split it with a
+temp: `t = out[0] - 0x78; out[0] = t + g[6];`.
+
+**Seen in:** `sub_08008160` (`c227b68`).
+
+### 25. A three-address negation
+
+The target negates into a second register and copies back:
+
+```
+-   negs r1, r0
+-   adds r0, r1, #0
++   negs r0, r0
+```
+
+**Cause.** Every plain spelling (inline `-a`, `n = -a;`, `0 - a`,
+operand reorders) folds the minus into the two-address `negs`.
+
+**Fix.** Pin the negation to the other register:
+
+```c
+register s32 n asm("r1") = -a;
+Modulo(n, 6);
+```
+
+**Seen in:** `sub_08010768` (`d41d047`).
+
+### 26. A final add reads the accumulator as its second input
+
+The target's last add has the accumulator as op2 (`adds r0, r2, r0`);
+ours emits `adds r0, r0, r2` or inserts `adds rN, rM, #0` copies around
+the multiplies.
+
+**Cause.** Three rules stack up: the expander canonicalises `v = x + v`
+to `(v, x)` when the destination matches an operand; `mulsi3`'s
+early-clobber `=&l` destination cannot share its parameter's register,
+so separate-dest spellings pay reload copies; and local-alloc's priority
+`log2(refs)*refs/lifetime` decides which product takes r0.
+
+**Fix.** Pin the accumulated value to the outgoing argument register and
+let the products allocate around it:
+
+```c
+register u32 s asm("r0") = a * a + b * b;
+return sub_0800CAB4(s);
+```
+
+**Seen in:** `sub_0800CB5C` (`7b4b9c1`).
+
+### 27. A call result stuck in r0
+
+The target copies a call result out of r0 immediately and transforms it
+in place in the copy register (`adds r1, r0, #0; lsls r1, r1, #24`); in
+ours the whole chain runs in r0, whatever the source shape.
+
+**Cause.** The assignment from a call records an r0 copy *suggestion*
+for the destination quantity (local-alloc's `combine_regs` hard-reg
+case), and the suggestion pass runs before priority allocation, so r0
+always wins. A bare `register u32 t asm("r1")` pin fails too: CSE
+propagates the hard-register copy and deletes it.
+
+**Fix.** Pin plus a no-op barrier after every assignment, with the
+transforms written as compound assignments so they compute in place in
+the pinned register (the `sub_0800CBB8` idiom):
+
+```c
+register u32 t asm("r1");
+t = GetTrackTileType(...);
+asm volatile("" : "+r"(t));
+t = t << 24;
+asm volatile("" : "+r"(t));
+```
+
+With r1 occupied, the next mask reloads into r0 and the `ands`'s
+commutative tie produces the target's operand order.
+
+**Seen in:** `sub_0800CC00` + `sub_0800CC4C` (`1fd5d13`).
+
+### 28. `cmp #N-1; bls` vs `cmp #N; bne`
+
+Ours ends a loop with `cmp r6, #15; bls` where the target has
+`cmp r6, #16; bne`.
+
+**Cause.** Thumb has no unsigned compare-below-immediate, so a `< N`
+condition compiles to `<= N-1`. The source loop condition was an
+equality test.
+
+**Fix.** Write the exit as an equality: `} while (i != 16);`. Related:
+an operand's narrowing shift appearing *before* an earlier statement's
+arithmetic means the narrowing was a separate statement, not part of a
+later initializer — GCC 2.95 never interleaves straight-line statement
+evaluation.
+
+**Seen in:** `sub_080069D8` (`3300818`).
+
+### 29. A counter increment at the loop head
+
+Ours emits `movs r1, #4; add ip, r1` at a do-while's head and an extra
+`mov ip, r0` home store at entry; the target has `adds r0, #4; mov ip, r0`.
+
+**Cause.** The counter's `+=` was written at the head of the loop body
+in C. Written as the last statement before the test, GCC 2.95 rotates
+it: the increment lands at the tail and the old value rides in the
+counter register across the loop boundary with no entry reload.
+
+**Fix.** Move the `+=` to the tail:
+
+```c
+do {
+    /* body */
+    row += 4;
+} while (row != 24);
+```
+
+**Seen in:** `sub_08003C78` (`d04f498`); same shape as the matched
+`sub_08003BFC`.
+
+### 30. Zero-emission liveness keepers
+
+A pseudo (usually a pointer or a pooled address) dies early or is
+rematerialised by reload where the target keeps it homed across the
+region, and no declaration order, type or spelling stops it. Three tools
+from the same family, all proven on one function:
+
+1. **A hard-register copy survives cse.** Assign the address to a soft
+   local, then copy it into a `register ... asm("rN")` pin. cse's
+   `canon_reg` never substitutes a hard register, so `ldr r0,=X;
+   adds r5, r0, #0` keeps both insns.
+2. **A u32 load/store-back pair keeps a pseudo homed.** Reading
+   `*(u32 *)p` and writing the value back emits nothing —
+   `reload_cse_noop_set_p` deletes the store after reload while every
+   earlier pass sees both insns — but the use keeps the pointer's
+   allocation alive. Use u32 views: under `PROMOTE_MODE` a u8
+   load-back store never matches, so the pair would emit.
+3. **A hard-register destination escapes cse path reprocessing.** cse's
+   first pass reprocesses fallthrough arms and ties any later read of
+   the same symbol to the first pseudo. Materialising the address into
+   a pinned register at the first read records no pool-load set, so a
+   later arm re-loads the pool word fresh — sharing the pool entry, as
+   the target shows (`ldr r0, [pc, #8]` next to `ldr r0, [pc, #48]`).
+
+**Seen in:** `sub_0800A4D4` (`ecc2fa4`) — its source header carries the
+full campaign log. `sub_08341F64` closed by entry 23 instead; these
+levers remain the toolkit for allocation webs that survive a plain
+rewrite.
+
 ## Open walls
 
 Stalled functions whose symptom has no fix yet. Start here if you pick one
 of them, and move the entry into the symptom index once it matches.
 
-None as of 2026-09-23.
+None as of 2026-09-25 — every game-code function (1001/1001) is matched.
 
 ## Keep this page current
 
