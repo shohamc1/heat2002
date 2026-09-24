@@ -1,6 +1,15 @@
 #include "global.h"
 #include "data.h"
 
+extern const u8 gUnk_0829F24C[];
+extern const u8 gUnk_0829F258[];
+extern const u8 gUnk_0829F264[];
+extern const u8 gUnk_0829F270[];
+extern const u8 gUnk_0829F27C[];
+extern const u8 gUnk_0829F288[];
+extern const u8 gUnk_0829F294[];
+extern const u8 gUnk_0829F2A0[];
+
 extern const u8 gUnk_0807C97C[];
 extern const u8 gUnk_0807C988[];
 extern const u8 gUnk_0807C994[];
@@ -346,7 +355,14 @@ const u32 gUnk_083FDE18[] = {
     (u32)gUnk_0829F22C
 };
 const u8 gUnk_083FDE1C[] = INCBIN_U8("build/assets/unknown/data_083FDE1C.bin");
-const u8 gUnk_083FDE78[] = INCBIN_U8("build/assets/unknown/data_083FDE78.bin");
+const u32 gUnk_083FDE78[] = {
+    0x3020100, 0x7060504, 0xB0A0908, 0x50403, 0x50403, 0x40403, 0x50702,
+    0x30603, 0x50203, 0x50403, 0x50503, 0x30403, 0x50803, 0x70404, 0x50403,
+    0x50303, 0x60402, 0x50103, 0x10203, 0x50103, 0x10403, 0x50403, 0x50203,
+    (u32)gUnk_0829F2A0, (u32)gUnk_0829F294, (u32)gUnk_0829F288,
+    (u32)gUnk_0829F27C, (u32)gUnk_0829F270, (u32)gUnk_0829F264,
+    (u32)gUnk_0829F258, (u32)gUnk_0829F24C
+};
 const u32 gUnk_083FDEF4[] = {
     (u32)gUnk_082CC5D8, (u32)gUnk_082CC5D8, (u32)gUnk_082CC5D8,
     (u32)gUnk_082CC5D8, (u32)gUnk_082CC5D8, (u32)gUnk_082CC5D8,

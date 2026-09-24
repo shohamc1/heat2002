@@ -1,7 +1,15 @@
 #include "global.h"
 #include "data.h"
 
-const u32 gUnk_0807C9CC[] = INCBIN_U32("build/assets/unknown/data_0807C9CC.bin");
+extern const u8 gHighModuleRom[];
+
+// The high module's 32 KB chunks, as SendMultibootPayload sends them.
+const u32 gUnk_0807C9CC[] = {
+    (u32)gHighModuleRom, (u32)gHighModuleRom + 0x8000,
+    (u32)gHighModuleRom + 0x10000, (u32)gHighModuleRom + 0x18000,
+    (u32)gHighModuleRom + 0x20000, (u32)gHighModuleRom + 0x28000,
+    (u32)gHighModuleRom + 0x30000
+};
 // Its users declare it as u32 x.
 const u32 gUnk_0807C9E8[] = INCBIN_U32("build/assets/unknown/data_0807C9E8.bin");
 const u8 gUnk_0807C9F0[] = INCBIN_U8("build/assets/unknown/data_0807C9F0.bin");

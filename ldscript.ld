@@ -1251,6 +1251,13 @@ SECTIONS
         build/lib/libgcc/island/_call_via_rX.o(.text);
         build/data/rom_0836484C.o(.text*);
     }
+    /* Where each EWRAM image sits in the ROM and where it runs. The main
+       program sends the island from its ROM address and the high module in
+       32 KB chunks from its own; the island receives those chunks at the
+       high module's run address. */
+    gHighModule = ADDR(.high_module);
+    gHighModuleRom = LOADADDR(.high_module);
+    gUnk_08363EE8 = LOADADDR(.island);
     /* Back to ROM-linked data. The explicit AT stops ld from carrying the
        island's VMA-to-LMA offset over to this section, and READONLY stops
        newlib's in-ROM .data from marking it writable. */
