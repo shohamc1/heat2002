@@ -205,10 +205,17 @@ maps closely onto the source:
   `(u32)sub_0800042C` links to `0x0800042D`, Thumb bit included, with
   identical bytes (tested on `sub_08000380`). For ROM data that starts an
   `assets/unknown.json` blob, define it in `src/data/` (see "Define ROM
-  data in C"). For any other ROM address, declare an `extern` and add one
-  line to `symbols.ld`. When the shiftability pass replaces that line with
-  a real label, the C doesn't change. Older files still hold raw literals;
-  leave them for that pass.
+  data in C"). For any other ROM address, give the data a label where its
+  bytes are: a `NAME:` line before its `.incbin` in `data/*.s`, splitting
+  the blob in `assets/unknown.json` if the address falls inside one. For an
+  offset inside a C-defined blob, add an alias to `symbols.ld`, such as
+  `gUnk_083FDA67 = gUnk_083FDA60 + 0x7;`. `symbols.ld` holds no ROM
+  address: never add one. Older C still holds raw literals; leave them for
+  the shiftability pass.
+- A table of pointers names its targets: `(u32)gUnk_X` or `(u32)sub_X` in
+  C, `.4byte NAME` in `data/*.s`. See "Pointers" in
+  `docs/learnings/parked.md`, and run `make pointers` to count the raw
+  pointers left in the ROM.
 
 ## Helper tools
 
@@ -467,9 +474,11 @@ Follow the same loop as for any other function. Only these points differ:
   the ROM address.
 - To reference a function or label in the same image, use its name. The
   linker resolves it to the EWRAM address. For image data with no label
-  yet, declare an `extern` and add its EWRAM address to `symbols.ld`, as
-  for ROM data. Don't write a new raw `0x0200xxxx` literal in C. Older
-  module C still holds some; leave them for the shiftability pass.
+  yet, add a label in the image's data fragment, as for ROM data; the
+  label takes the run address. `gHighModule`, `gHighModuleRom` and
+  `gUnk_08363EE8` (`ldscript.ld`) give an image's run and ROM addresses.
+  Don't write a new raw `0x0200xxxx` literal in C. Older module C still
+  holds some; leave them for the shiftability pass.
 - Keep each asm fragment inside one image. The fragments
   `rom_08363EE8.s` and `rom_08364AC8.s` start exactly at a section
   boundary, so never merge one into the fragment before it.
@@ -516,3 +525,4 @@ Follow the same loop as for any other function. Only these points differ:
     python3 scripts/progress.py --json  # report.json for decomp.dev
     make tools      # build agb2mid, mid2agb, aif2pcm, gbagfx from tools/tmc
     make convert    # extracted graphics -> .png, round-trip checked (needs libpng)
+    make pointers   # count the ROM's raw pointers (scripts/pointers.py)

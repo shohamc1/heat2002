@@ -454,56 +454,25 @@ thing. When you rename module data, never change a name that
 main-program code uses. `gUnk_02025220` and `gUnk_0202522C` have users
 on both sides, so give the module its own name for each.
 
-### Function pointers held in symbols.ld: 20 names, 0.5 hours
+### Done: symbols.ld names for image code and data
 
-These `symbols.ld` entries are odd EWRAM values that module code uses as
-function pointers. Each target already has a name. Replace the `gUnk_`
-name with `(u32)FUNCTION` in the listed file, then delete the
-`symbols.ld` line when nothing else uses it.
+The pointer pass on 2026-09-25 (see "Pointers" in
+`docs/learnings/parked.md`) cleared the image's `symbols.ld` names:
 
-| `symbols.ld` name | Function | Used in |
-|---|---|---|
-| `gCallback_0200A1BD` | `sub_08342C3C` | `sub_08342D10` |
-| `gUnk_0200118D` | `sub_08339C0C` | `sub_0833A830` |
-| `gUnk_02001A09` | `sub_0833A488` | `sub_0833AAB8` |
-| `gUnk_02001C7D` | `sub_0833A6FC` | `sub_0833AAB8` |
-| `gUnk_02001CE5` | `sub_0833A764` | `sub_0833AAB8` |
-| `gUnk_02001CF9` | `sub_0833A778` | `sub_0833AAB8` |
-| `gUnk_02002281` | `sub_0833AD00` | `sub_0833AAB8` |
-| `gUnk_02002635` | `sub_0833B0B4` | `sub_0833AAB8` |
-| `gUnk_020026B5` | `sub_0833B134` | `sub_0833AAB8` |
-| `gUnk_02002769` | `sub_0833B1E8` | `sub_0833AAB8` |
-| `gUnk_02002811` | `sub_0833B290` | `sub_0833AAB8` |
-| `gUnk_020028C9` | `sub_0833B348` | `sub_0833AAB8` |
-| `gUnk_02002F81` | `sub_0833BA00` | `sub_0833AAB8` |
-| `gUnk_020030D9` | `sub_0833BB58` | `sub_0833AAB8` |
-| `gUnk_02003B31` | `sub_0833C5B0` | `sub_0833BDB4` |
-| `gUnk_02009D5D` | `sub_083427DC` | `sub_08342868` |
-| `gUnk_02009E0D` | `sub_0834288C` | `sub_08342908` |
-| `gUnk_02009F39` | `sub_083429B8` | `sub_08342A94` |
-| `gUnk_0200A0D5` | `sub_08342B54` | `sub_08342BA4` |
-| `gUnk_0200A4CD` | `sub_08342F4C` | `sub_08342ED0` |
+- 21 odd names that module C used as function pointers, such as
+  `gUnk_02001A09`, became the functions' own names.
+- 110 data names, such as `gUnk_0200CA74`, became labels in the image's
+  data fragments. Each label keeps its `gUnk_<EWRAM address>` name, and a
+  blob splits where a label falls inside it. `gUnk_0200C668` and
+  `gUnk_0200C8DC` moved from `ldscript.ld` to labels the same way.
+- `gUnk_02025220` and `gUnk_0202522C` stay in `symbols.ld`, because
+  main-program code uses them too.
 
-### Data inside the image: 118 references, 3 hours
+### Data inside the image: 17 raw literals, 1 hour
 
-These references point at initialised data that's stored in the image,
-so each one has a ROM address. They take two forms:
-
-- 17 raw literals in module C, at 14 addresses (table below).
-- 101 `symbols.ld` names with module users, such as `gUnk_0200CA74`,
-  plus `gUnk_0200C8DC` and `gUnk_0200C668` in `ldscript.ld`, which the
-  Makefile's `M4A_HIGH_EXTERNS` uses.
-
-Name each one for its ROM address, the way functions are named:
-`0x0200C3E8` is stored at ROM `0x08344E68`, so it becomes
-`gUnk_08344E68`. Define the name in the asm fragment that holds the
-bytes, not in `symbols.ld`, so its value moves with the section:
-
-- If the address starts a blob, put the label directly before that
-  blob's `.incbin` line. Only `0x08344E68` does.
-- Otherwise, add a label before the containing blob's `.incbin` line and
-  define `.set NAME, BLOB_LABEL + OFFSET`. This leaves `assets/*.json` and
-  `nascar-heat.code.sha1` unchanged.
+17 raw literals in module C, at 14 addresses, still point at initialised
+data stored in the image. Replace each with an `extern` for a label in
+the fragment that holds the bytes, as the pointer pass did.
 
 The following table lists the raw literals:
 

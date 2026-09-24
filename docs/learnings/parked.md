@@ -387,7 +387,8 @@ Types follow the users' `extern` declarations, with these exceptions:
   definition is an array: `gUnk_0807C9E8` (a `u32`, 8 bytes) and
   `gUnk_08364ADC` (a `u8`, 4 bytes).
 
-These ROM symbols stay in `symbols.ld`, and their data stays `.incbin`:
+The following ROM symbols stayed in `symbols.ld` after that pass, and their
+data stayed `.incbin`. "Pointers" below replaced every one of them:
 
 - `gUnk_08363EE8`, the multiboot island's first 224 bytes. The main program
   reads it by its ROM address to send the island, but a C definition inside
@@ -402,6 +403,115 @@ These ROM symbols stay in `symbols.ld`, and their data stays `.incbin`:
 - The sound range `0x0801D29C`-`0x0806C664` and `assets/graphics.json` were
   out of scope. Apart from `gUnk_08363EE8`, C reads no blob start in the
   two EWRAM images.
+
+## Pointers
+
+Since 2026-09-25, the ROM's pointer tables name their targets, and the
+linker computes each pointer. A song, a sample or a blob that changes size
+moves its table entries with it. This section covers what changed, how to
+measure what's left, and what's left.
+
+### What changed
+
+The pass rewrote 181 tables, in this order:
+
+1. Sound, in `data/rom_0801D29C.s`: the song table (`gUnk_0801DACC`), the
+   music player table (`gUnk_0801DA90`) and both voicegroups, written with
+   tmc's `song`, `music_player` and `voice_*` macros
+   (`tools/tmc/asm/macros/`). Each sample has a global label, and a
+   no-ROM build keeps each song's header label, so CI still links. The last
+   12 entries of the second voicegroup are runs of 0 and 1, not voices, so
+   they're `.fill` rows. Voice 127 of the first group is a keysplit whose
+   pointer lands 8 bytes into `gMPlayJumpTableTemplate`.
+2. 53 tables in `src/data/` that C reads. Each is a C initialiser:
+   `(u32)gUnk_X` for data, `(u32)sub_X` for a function (the linker adds
+   the Thumb bit), and numbers for the other words. The definition stays a
+   `u32` array, so no user's type changes.
+3. 124 tables in `data/*.s` as `.4byte NAME` rows: the m4a jump table
+   template, the graphics pointer tables at `0x083FED48`-`0x083FF79C`, the
+   high module's jump table template and callback table, and the island's
+   sprite and chunk tables.
+
+Targets got names this way:
+
+- A blob start gets a global label on its `.incbin` line, named
+  `gUnk_ADDR`.
+- A target inside a blob in a `data/*.s` fragment splits the blob in
+  `assets/unknown.json`. The track pointer tables at `0x083C9C34` and
+  `0x083C9E74`, for example, point at 2-byte-aligned offsets in the track
+  data, which now splits there.
+- An offset inside a C-defined blob, which can't split at an odd address,
+  gets a `symbols.ld` alias such as `gUnk_083FDA67 = gUnk_083FDA60 + 0x7;`.
+- The chunk tables use `ldscript.ld` symbols: `gHighModuleRom` is the high
+  module's ROM address and `gHighModule` its run address, so the main
+  program's `gUnk_0807C9CC` is `gHighModuleRom + 0x8000 * n` and the
+  island's receive table is `gHighModule + 0x8000 * n`. `gUnk_08363EE8`
+  is `LOADADDR(.island)`.
+
+`symbols.ld` holds no ROM address now. Its 58 ROM lines went this way: 22
+Thumb entry points became the functions' names in C, 11 offsets became
+aliases, six became labels (the two sound tables, the two boot logos,
+`gUnk_08338720` and `gUnk_083387A8`), `gUnk_08363EE8` moved to
+`ldscript.ld`, and 18 lines that nothing used were deleted. The high module's 136 `symbols.ld`
+names for its own code and data went the same way: 21 function names, 110
+labels and five aliases. `gClockTable`, `gMPlayJumpTableTemplate`,
+`gUnk_0200C668` and `gUnk_0200C8DC` moved from fixed `ldscript.ld`
+addresses to labels.
+
+To check that the tables follow a size change, pad one song and one
+sample by 4 bytes in a scratch copy and rebuild. On 2026-09-25 that moved
+`song_02` and every later song by 4 or 8 bytes, and the song table held
+the new addresses; the voicegroup entries for the samples after the
+padded one moved by 4. The song headers' voicegroup and track pointers
+followed too.
+
+### Measure what's left
+
+`make pointers` links `build/nascar-heat.relocs.elf` with `--emit-relocs`
+and runs `scripts/pointers.py`. The script counts each aligned word that
+holds a ROM address, or, inside an EWRAM image, an address in that image's
+run range, and that no relocation produced. A relocation against a symbol
+that a linker script sets to a number counts as raw. The script also
+counts the words whose target is a known start (a 4-byte-aligned asset or
+label, or a function entry), and lists the biggest sources by asset or
+symbol. `make test` runs its `--selftest`.
+
+The following table compares the count before and after the pass:
+
+| Build | Raw words | On a known start | From a linker-script number |
+|---|---|---|---|
+| Before (`8cd3bef`) | 17,693 | 5,646 | 298 |
+| After | 14,570 | 2,961 | 2 |
+
+The linker computes 4,506 words after the pass, up from 1,376.
+
+### What's left
+
+Nearly all of the remaining raw words are chance values. Tilemaps and
+4bpp tiles are full of `0x08` bytes, which read as `0x08080808` or
+`0x0824FC2F`-style words. The unknown-blob split walked those same words,
+so many of them even land on a blob start, such as `data_08080808.bin`:
+the "known start" count overstates the real pointers. The biggest sources
+are `data_081D2D34.bin` (1,879 words), `data_08132D3C.bin` (1,808),
+`data_080C347D.bin` (1,780), `data_08236844.bin` (1,307),
+`data_08101000.bin` (1,030) and `rl_080C0000.bin` (616); the PCM samples
+hold 336 more. A scan for runs of words that land on a function entry or
+on a C-defined symbol found none left in the data.
+
+The following items are real or doubtful and still raw:
+
+- 95 words in C code, written as numbers in older C: the interrupt
+  handlers in `InitIntrHandlers` (`sub_08000380`), `0x08332BC8` and
+  `0x0833338C` in the `sub_0800F434` family, `0x082E4328` in
+  `DrawTrackSelect` and others. They're the code half of the shiftable
+  build.
+- 17 raw EWRAM literals in high-module C (see "After the queue" in
+  `docs/decomp-queue.md`).
+- `gUnk_02025220` and `gUnk_0202522C`: `symbols.ld` numbers that both the
+  main program and the high module use.
+- Two words that hit a function entry, probably by chance: `0x080107A5` at
+  `0x083BBBA4` in track data, and `0x0833A8F5` at `0x08066E38` inside a
+  sample.
 
 ## Non-interwork epilogues
 

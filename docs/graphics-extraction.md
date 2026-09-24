@@ -135,7 +135,8 @@ following:
 
 - Don't modify `baserom.gba`, `nascar-heat.sha1`, or anything in `tools/`.
 - Leave the pointer tables that reference the blobs as `.byte` rows. The
-  later shiftability pass labels them.
+  pointer pass (see "Pointers" in `docs/learnings/parked.md`) wrote the
+  real tables as symbols later.
 - The five luvdis false positives that sat in `rom_0801CD08.s`
   (`sub_08120E3A`, `sub_08121316`, `sub_08248272`, `sub_0824C6F0`, and
   `sub_0827B7CA`) are part of the untyped blobs in `assets/unknown.json`.

@@ -111,8 +111,9 @@ Rules that decide whether this matches:
   unless the asm shows no narrowing at all. `int` and `s32` are the same
   thing to the compiler, but be explicit anyway.
 - **RAM/ROM addresses become `extern` symbols**, not casts. Write
-  `extern u32 gFoo[];` and add `gFoo = 0x083FE6C4;` to `symbols.ld`
-  (one line, semicolon, hex). A cast like `((u32 *)0x083FE6C4)[i]` produces
+  `extern u32 gFoo[];`. For RAM, add `gFoo = 0x0202EF00;` to `symbols.ld`
+  (one line, semicolon, hex). For ROM, label the data where it's defined
+  instead (see "Never write a ROM address" in `CLAUDE.md`). A cast like `((u32 *)0x083FE6C4)[i]` produces
   the same instructions in a *different order* and will not match. Hardware registers (`0x04xxxxxx`) are the exception: cast
   those, `*(volatile u16 *)0x04000130`.
 - **Name the symbol after its address** until you know what it is:
