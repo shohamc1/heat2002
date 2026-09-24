@@ -602,7 +602,7 @@ SECTIONS
         build/src/sub_08012EE8.o(.text*);
         build/src/sub_08012F1C.o(.text*);
         build/src/sub_08012FB0.o(.text*);
-        build/asm/rom_0801303C.o(.text*);
+        build/src/sub_0801303C.o(.text*);
         build/src/sub_080130BC.o(.text*);
         build/src/sub_080130C0.o(.text*);
         build/src/sub_080130C4.o(.text*);
