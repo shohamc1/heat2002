@@ -2,7 +2,7 @@
 """Progress against everything a function reaches, not just its direct callees.
 
 `MainMenuLoop` is the main game loop; finishing it means finishing the whole
-subtree under it. This walks the `bl` graph over `asm/*.s` and `src/*.c`,
+subtree under it. This walks the `bl` graph over `data/*.s` and `src/*.c`,
 stops at library code (built from source, not decompiled -- see
 docs/learnings/parked.md), and reports what is left.
 
@@ -48,7 +48,7 @@ def graph():
     calls = collections.defaultdict(set)
     vendored = set()
 
-    for f in sorted((ROOT / "asm").glob("*.s")):
+    for f in sorted((ROOT / "data").glob("*.s")):
         cur, body = None, []
         for ln in f.read_text().splitlines():
             m = FUNC_START.match(ln)

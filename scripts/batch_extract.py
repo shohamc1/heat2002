@@ -46,15 +46,15 @@ def objects_in_order():
     address each lands at. asm fragment rom_XXXX.s lands at 0x0XXXX; src
     object sub_XXXX.c lands at its function address."""
     lines = []
-    for f in sorted((ROOT / "asm").glob("*.s")):
+    for f in sorted((ROOT / "data").glob("*.s")):
         mm = re.match(r"rom_([0-9A-F]{8})\.s", f.name)
         if mm:
-            lines.append((int(mm.group(1), 16), f"build/asm/{f.stem}.o(.text*);"))
+            lines.append((int(mm.group(1), 16), f"build/data/{f.stem}.o(.text*);"))
     for f in sorted((ROOT / "src").glob("sub_*.c")):
         addr = int(f.stem[4:], 16)
         lines.append((addr, f"build/src/{f.stem}.o(.text*);"))
     # rom.o (the head fragment) has no address in its name; it goes first
-    return [(0x08000000, "build/asm/rom.o(.text*);")] + sorted(lines)
+    return [(0x08000000, "build/data/rom.o(.text*);")] + sorted(lines)
 
 
 def rewrite_ldscript():

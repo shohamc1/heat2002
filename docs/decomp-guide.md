@@ -1,6 +1,6 @@
 # How to decompile one function (read this whole file first)
 
-This is the step-by-step for turning one `sub_XXXXXXXX` from `asm/*.s` into
+This is the step-by-step for turning one `sub_XXXXXXXX` from `data/*.s` into
 C in `src/`. It is written for someone who has never done a matching
 decompilation. Every rule here exists because someone got it wrong.
 
@@ -30,7 +30,7 @@ records what was already tried.
 Then find the function in asm:
 
 ```
-grep -n 'thumb_func_start sub_0800048C' asm/*.s
+grep -n 'thumb_func_start sub_0800048C' data/*.s
 ```
 
 It is in exactly one file. Print the block from that line to the next
@@ -187,7 +187,7 @@ are useful; a guessed "match" that is not one is not.
 Things that are NOT fixes and must never be done:
 - adding `-O1`, `-O0`, `-fno-...` or any flag to the Makefile
 - editing anything under `tools/`
-- editing `asm/*.s` to look more like your output
+- editing `data/*.s` to look more like your output
 - inline asm to force bytes (the point is C)
 
 ## 5. Verify it is a real match
@@ -225,10 +225,10 @@ exactly two such pairs in this ROM: `sub_08000958`+`sub_08000972` and
 - Fragment A = original file up to (not including) START.
 - Fragment B = the macro preamble (lines 1 through
   `@ End embedded Luvdis macros`, copied verbatim from the top of any
-  `asm/*.s`) followed by everything from END to the end of the original.
-- Name B `asm/rom_ADDR.s` where ADDR is the ROM address of its first byte:
+  `data/*.s`) followed by everything from END to the end of the original.
+- Name B `data/rom_ADDR.s` where ADDR is the ROM address of its first byte:
   function address + function size (the N from `match.py`), in uppercase
-  hex, 8 digits. E.g. `sub_08016558` is 16 bytes -> `asm/rom_08016568.s`.
+  hex, 8 digits. E.g. `sub_08016558` is 16 bytes -> `data/rom_08016568.s`.
 - Overwrite the original with A.
 
 **6d. `ldscript.ld`.** Insert two lines right after the fragment-A line:

@@ -249,8 +249,9 @@ Unidentified data, `assets/unknown.json`, established 2026-09-24:
 
 ## Code that left asm/ last (2026-09-25)
 
-After these changes, every `asm/*.s` fragment holds only `.incbin` lines for
-data assets. The following list gives where each last piece went:
+After these changes, every fragment holds only `.incbin` lines for data
+assets, so the folder was renamed from `asm/` to `data/`. The following list
+gives where each last piece went:
 
 - **Hand-written ARM.** The 7 `ARM_BLOCKS` build from source. The main
   program's and the high module's start routine and interrupt dispatcher

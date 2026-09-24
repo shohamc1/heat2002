@@ -11,10 +11,11 @@ SHA1 is wrong, no matter how clean the C looks. Never edit `baserom.gba`,
 
 ## Current state
 
-- `asm/*.s` — ROM disassembly, **1159 functions** originally, split into one
-  fragment per gap between decompiled functions; reassembles to an exact match.
-  No code is left in it: every fragment holds only `.incbin` lines for data
-  assets. luvdis found 743 of the functions. The other 409 Thumb functions are reached only
+- `data/*.s` — the fragments left of the ROM disassembly, which held
+  **1159 functions** originally, split into one fragment per gap between
+  decompiled functions. The folder was `asm/` until 2026-09-25. No code is
+  left in it: every fragment holds only `.incbin` lines for data assets.
+  luvdis found 743 of the functions. The other 409 Thumb functions are reached only
   through a pointer or never called (callbacks, leaf functions, empty `bx lr`
   stubs), so the `bl`-and-`push` seed rule missed them and luvdis left them as
   `.byte` rows. `scripts/seed_functions.py` now seeds them explicitly
@@ -107,7 +108,7 @@ block before it.
    structure matches and only registers or a few instructions differ, run
    the permuter and trace the compiler passes before you park the function
    (see "Helper tools" and `docs/learnings/solved-walls.md`).
-5. On `MATCH`, delete the function from its `asm/*.s` fragment and place the
+5. On `MATCH`, delete the function from its `data/*.s` fragment and place the
    C object at the same address in `ldscript.ld`.
 6. `make check` must still print `MATCH`.
 7. `python3 scripts/progress.py`, then commit. One function per commit.
@@ -200,9 +201,9 @@ match: only `match.py` and `make check` do.
 
 **m2c** (`tools/m2c`) turns asm into draft C. Use it when you start a
 function, especially a large one with no draft. To find the fragment, run
-`grep -l 'func_start sub_080112E0$' asm/*.s`, then:
+`grep -l 'func_start sub_080112E0$' data/*.s`, then:
 
-    python3 tools/m2c/m2c.py -t gba -f sub_080112E0 asm/rom_080112DE.s
+    python3 tools/m2c/m2c.py -t gba -f sub_080112E0 data/rom_080112DE.s
 
 Treat the output as notes, not source. It casts addresses instead of using
 `extern` symbols, guesses types, and ignores declaration order. Rewrite it
@@ -268,7 +269,7 @@ Solved once for `sub_08006734`; repeat this shape for every function. The
 mechanical steps:
 
 1. Find the function's `thumb_func_start`/`arm_func_start` block in whichever
-   `asm/*.s` fragment currently holds it.
+   `data/*.s` fragment currently holds it.
 2. Truncate that fragment right before the block. Delete ONLY the
    function's own bytes: its instructions and its literal pool (the
    `_XXXXXXXX: .4byte` lines that `ldr rN, _XXXXXXXX` refers to). Some
@@ -288,7 +289,7 @@ mechanical steps:
    `sub_0833A018`/`sub_0833A032` (share `_0833A048`) -- each is really one
    routine that `bl`s into its own tail. Decompile each pair together in
    one `src/*.c` file or leave both in asm; never split between them.
-3. Create a new fragment `asm/rom_ADDR.s` (named for the ROM address where
+3. Create a new fragment `data/rom_ADDR.s` (named for the ROM address where
    the fragment's first byte lands: the end of the removed function, i.e.
    where the kept `.byte` rows or the next function begin) containing: the
    macro preamble (everything through `@ End embedded Luvdis macros`, copied
@@ -301,8 +302,8 @@ mechanical steps:
    One-time fix, not needed again once a symbol has been globalized.
 5. List the new object explicitly in the `ldscript.ld` section that holds
    its address (`.text` for most functions; see "Functions that run from
-   EWRAM"), in address order: `build/asm/<fragment-before>.o(.text*);` then
-   `build/src/<path>.o(.text*);` then `build/asm/<fragment-after>.o(.text*);`,
+   EWRAM"), in address order: `build/data/<fragment-before>.o(.text*);` then
+   `build/src/<path>.o(.text*);` then `build/data/<fragment-after>.o(.text*);`,
    where `<path>` is the C file's path under `src/` without `.c`. To add a
    function to an existing file instead, put it in the file in ROM order;
    the file's line stays where it is. A trailing `*(.text*);`
@@ -331,11 +332,11 @@ explicit align pads with its fill byte (zero) instead of NOPs, and that zero
 is exactly the linker fill the ROM has. Verified on a 2-mod-4 fragment cut at
 `sub_08000274` and on a C function with a mid-body pool and odd tail.
 
-`scripts/match.py` and `scripts/progress.py` both scan every `asm/*.s`
+`scripts/match.py` and `scripts/progress.py` both scan every `data/*.s`
 fragment now, never a hardcoded `asm/rom.s` (match.py's *target* lookup was
 still hardcoded through `sub_08006734`'s first review pass -- fixed since).
 `progress.py` also learned that a fully-decompiled function disappears from
-`asm/*.s` entirely (sized instead from its compiled object in
+`data/*.s` entirely (sized instead from its compiled object in
 `build/src/**/*.o`). New fragments and new functions need no further
 tooling changes.
 
@@ -446,7 +447,7 @@ Follow the same loop as for any other function. Only these points differ:
   regression-tested, the whole corpus still matching, and the reasoning
   written down. A change that merely makes one function match is not
   acceptable.
-- Do not "fix" warnings in `asm/*.s`. It reproduces the ROM as-is.
+- Do not "fix" warnings in `data/*.s`. It reproduces the ROM as-is.
 - Do not add compiler flags to make something match. The flags in the
   Makefile are the ones the original build used, and `-O2`, interwork and
   every other flag have each been swept and eliminated as explanations —
@@ -457,7 +458,7 @@ Follow the same loop as for any other function. Only these points differ:
     make            # build
     make check      # build + verify SHA1 (the only test that counts)
     make check-code # every byte outside assets/*.json; what CI runs, no ROM
-    make disasm     # full-ROM reference disasm -> build/rom_reference.s (never touches asm/)
+    make disasm     # full-ROM reference disasm -> build/rom_reference.s (never touches data/)
     python3 scripts/match.py NAME       # diff one function against the target
     python3 tools/m2c/m2c.py -t gba -f NAME FRAGMENT.s   # draft C from asm
     python3 scripts/permute.py NAME DRAFT.c -j8          # permute a near-miss

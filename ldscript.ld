@@ -692,7 +692,7 @@ SECTIONS
         build/src/sub_08016558.o(.text*);
         build/src/sub_08016568.o(.text*);
         build/src/sub_0801659C.o(.text*);
-        build/asm/rom_080165DC.o(.text*);
+        build/data/rom_080165DC.o(.text*);
         build/src/sub_080165E0.o(.text*);
         build/src/sub_0801661C.o(.text*);
         build/src/sub_08016634.o(.text*);
@@ -770,7 +770,7 @@ SECTIONS
         build/lib/libgcc/dp-bit.o(.text);
         build/lib/libgcc/fp-bit.o(.text);
         build/lib/libgcc/_lshrdi3.o(.text);
-        build/asm/rom_0801CD08.o(.text*);
+        build/data/rom_0801CD08.o(.text*);
         build/lib/eeprom.o(.rodata);
         /* newlib .rodata, in link order */
         build/lib/newlib/stdio/vfprintf.o(.rodata);
@@ -1164,13 +1164,13 @@ SECTIONS
         build/lib/libgcc/high/_muldi3.o(.text);
         build/lib/libgcc/high/_negdi2.o(.text);
         build/lib/libgcc/high/_umodsi3.o(.text);
-        build/asm/rom_08344E68.o(.text*);
+        build/data/rom_08344E68.o(.text*);
     }
     /* The multiboot island: the image the main program sends with the
        BIOS MultiBoot call. It runs from the start of EWRAM. */
     .island 0x02000000 : AT(LOADADDR(.high_module) + SIZEOF(.high_module))
     {
-        build/asm/rom_08363EE8.o(.text*);
+        build/data/rom_08363EE8.o(.text*);
         build/lib/crt0_island.o(.text);
         build/src/sub_0836418C.o(.text*);
         build/src/sub_08364190.o(.text*);
@@ -1187,7 +1187,7 @@ SECTIONS
         build/lib/agbsyscall/sub_08364804.o(.text);
         build/lib/agbsyscall/sub_08364808.o(.text);
         build/lib/libgcc/island/_call_via_rX.o(.text);
-        build/asm/rom_0836484C.o(.text*);
+        build/data/rom_0836484C.o(.text*);
     }
     /* Back to ROM-linked data. The explicit AT stops ld from carrying the
        island's VMA-to-LMA offset over to this section, and READONLY stops
@@ -1195,14 +1195,14 @@ SECTIONS
     .text_tail LOADADDR(.island) + SIZEOF(.island) (READONLY) :
         AT(LOADADDR(.island) + SIZEOF(.island))
     {
-        build/asm/rom_08364AC8.o(.text*);
+        build/data/rom_08364AC8.o(.text*);
         /* newlib .data, which the ROM uses in place */
         build/lib/newlib/reent/impure.o(.data);
         build/lib/newlib/locale/locale.o(.data);
         build/lib/newlib/stdlib/mallocr.o(.data);
         /* Catch-all, not the primary placement mechanism: every object above
            is listed explicitly and must stay in address order. This exists
-           so a *forgotten* listing (a new src/*.c or asm/*.s add without a
+           so a *forgotten* listing (a new src/*.c or data/*.s add without a
            matching line above) still links -- landing past the real ROM's
            end, where it grows the output and breaks the SHA1 loudly --
            instead of silently vanishing into /DISCARD/ with `make check`

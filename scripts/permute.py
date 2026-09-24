@@ -100,7 +100,7 @@ def build_target(name, out, texts=None):
     includes resolved addresses, so both sides need the same base."""
     asm = function_asm(name, texts)
     if asm is None:
-        sys.exit(f"{name}: not found in asm/*.s")
+        sys.exit(f"{name}: not found in data/*.s")
     src = out.with_suffix(".s")
     src.write_text(asm)
     unlinked = out.with_suffix(".u.o")

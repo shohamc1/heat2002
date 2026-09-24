@@ -8,7 +8,7 @@ function still lives in one asm file.
 
 Progress is measured in BYTES OF CODE, not function count: a function is
 "matched" once it is implemented in C under src/ and `scripts/match.py` agrees
-with the target asm. Everything still in asm/*.s, and every ASM_FUNC in a C
+with the target asm. Everything still in data/*.s, and every ASM_FUNC in a C
 file, counts as unmatched. One function per luvdis block (scripts/blocks.txt),
 keyed by ROM address, so names, files and folders don't matter.
 
@@ -26,8 +26,8 @@ from pathlib import Path
 import match
 
 ROOT = Path(__file__).resolve().parent.parent
-ASM_DIR = ROOT / "asm"
-OBJ_DIR = ROOT / "build" / "asm"
+ASM_DIR = ROOT / "data"
+OBJ_DIR = ROOT / "build" / "data"
 PREAMBLE_END = "@ End embedded Luvdis macros"
 
 # Both macro forms start a real function. Missing the non-word-aligned variant
@@ -177,7 +177,7 @@ def parse_asm():
     Once a function is decompiled, its `thumb_func_start`..`thumb_func_end`
     block moves out of the monolithic asm/rom.s and the file gets split at
     that boundary (see CLAUDE.md's placement notes), so functions still in
-    asm are spread across every asm/*.s fragment, not just rom.s.
+    asm are spread across every data/*.s fragment, not just rom.s.
     """
     funcs = {}
     for path in sorted(ASM_DIR.glob("*.s")):
@@ -310,7 +310,7 @@ def main():
         if not (ROOT / "build" / "src" / c.relative_to(src).with_suffix(".o")).exists()
     )
 
-    # A matched function is deleted from asm/*.s entirely (see CLAUDE.md's
+    # A matched function is deleted from data/*.s entirely (see CLAUDE.md's
     # loop, step 5), so `insns` alone would lose it from the report. Track it
     # separately, sized from its compiled object instead of asm bytes. Before
     # its asm block is deleted, both copies share one address and one unit.
@@ -431,7 +431,7 @@ def _selftest():
     assert "name" not in insns, "preamble leaked into the parse"
     # 1159 total: luvdis's original 743 blocks, the 409 pointer-only or
     # uncalled Thumb functions it missed (seed_functions.py's POINTER_ONLY),
-    # and the 7 ARM_BLOCKS, whether still in asm/*.s or already matched in
+    # and the 7 ARM_BLOCKS, whether still in data/*.s or already matched in
     # src/*.c. blocks.txt holds them all, and asm/ plus src/ must account
     # for every one outside the libraries.
     assert len(BLOCKS) == len(set(BLOCKS)) == 1159, f"blocks.txt holds {len(set(BLOCKS))} blocks"

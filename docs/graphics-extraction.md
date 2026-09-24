@@ -15,7 +15,7 @@ the game draws them. Step 3 fixes that.
 2. `docs/learnings/parked.md`, section "Extracted data assets": what the
    sound pass found and what's left.
 3. `git show 6b46339`: the sound pass. Copy its shape: `assets/sound.json`,
-   `scripts/assets.py`, the `.incbin` block in `asm/rom_0801CD08.s`, and the
+   `scripts/assets.py`, the `.incbin` block in `data/rom_0801CD08.s`, and the
    `ASSET_STAMP`, `tools`, and `convert` rules in the `Makefile`.
 
 ## What's known
@@ -35,7 +35,7 @@ committed, so re-derive any number you depend on.
   (106), 128 (64), 32 (29), 64 (23), 38,400 (2), and 12,544 (1).
 - The blobs sit in 112 runs of back-to-back streams. Most of them are in
   `0x08280000` to `0x08340000`, and all of them are in
-  `asm/rom_0801CD08.s`, which covers `0x0801CD08` to `0x083393E0`.
+  `data/rom_0801CD08.s`, which covers `0x0801CD08` to `0x083393E0`.
 - Every stream but one ends with zero fill to a 4-byte boundary.
 - `gbagfx` recompresses 656 of the 657 byte for byte. Its output sometimes
   adds zero fill to 4 bytes, which matches the ROM's own fill.
@@ -125,7 +125,7 @@ following:
    address. If any label disagrees, the map is wrong, so stop.
 3. Split a `.byte` row when an asset boundary falls inside it.
 4. Before you remove a label, confirm that nothing outside the removed range
-   references it. Search the rest of the fragment, the other `asm/*.s`
+   references it. Search the rest of the fragment, the other `data/*.s`
    files, `src/*.c`, `ldscript.ld`, and `symbols.ld`.
 5. Write the `.incbin` lines. `.align 2, 0` aligns relative to the
    fragment's start, so it only matches the ROM when the fragment starts on

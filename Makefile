@@ -15,9 +15,9 @@ CFLAGS  := -O2 -mthumb-interwork -fhex-asm -Wimplicit -Wparentheses
 CPPFLAGS := -I include -I tools/agbcc/include -iquote include -nostdinc -undef
 
 C_SRCS   := $(shell find src -name '*.c')
-ASM_SRCS := $(wildcard asm/*.s)
+DATA_SRCS := $(wildcard data/*.s)
 # Bodies of ASM_FUNC functions (include/global.h), included from C.
-ASM_INCS := $(shell find asm -name '*.inc')
+ASM_INCS := $(shell find asm -name '*.inc' 2>/dev/null)
 # Runtime library: newlib objects built from the vendored source with the
 # flags of tools/agbcc/libc/Makefile (no interwork, -fno-builtin), in ROM
 # order. ldscript.ld places each one whole, plus its .rodata, .data and .bss.
@@ -96,7 +96,7 @@ $(BUILD)/lib/eeprom.o: CFLAGS := $(subst -O2,-O1,$(CFLAGS))
 $(BUILD)/src/sub_0800E640.o: CFLAGS := $(subst -O2,-O1,$(CFLAGS))
 $(BUILD)/src/sub_08364730.o: CFLAGS := $(subst -O2,-O1,$(CFLAGS))
 
-OBJS     := $(C_SRCS:%.c=$(BUILD)/%.o) $(ASM_SRCS:%.s=$(BUILD)/%.o) \
+OBJS     := $(C_SRCS:%.c=$(BUILD)/%.o) $(DATA_SRCS:%.s=$(BUILD)/%.o) \
 	$(NEWLIB_OBJS) $(AGBSYSCALL_OBJS) $(AGBSYSCALL_COPY_OBJS) $(M4A_OBJS) $(LIB_C_OBJS) $(LIBGCC_OBJS) $(CRT0_OBJS)
 
 .PHONY: all check check-code test clean disasm tools convert
@@ -288,11 +288,11 @@ tools/bin/gbafix: $(TMC_SRC)/gbafix/gbafix.c
 convert: baserom.gba $(ASSET_TOOLS) $(ASSET_STAMP)
 	python3 scripts/assets.py convert
 
-$(BUILD)/asm/%.o: asm/%.s Makefile $(ASSET_STAMP)
+$(BUILD)/data/%.o: data/%.s Makefile $(ASSET_STAMP)
 	@mkdir -p $(@D)
-	cat $< > $(BUILD)/asm/$*.s
-	printf '\t.align 2, 0\n' >> $(BUILD)/asm/$*.s
-	$(AS) $(ASFLAGS) -I include -o $@ $(BUILD)/asm/$*.s
+	cat $< > $(BUILD)/data/$*.s
+	printf '\t.align 2, 0\n' >> $(BUILD)/data/$*.s
+	$(AS) $(ASFLAGS) -I include -o $@ $(BUILD)/data/$*.s
 
 # --no-check-sections: the multiboot island's run addresses overlap the
 # main program's EWRAM .bss. The overlap is real, since the island runs on a

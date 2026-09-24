@@ -69,7 +69,7 @@ def ins_bytes(l):
 
 
 def fragments():
-    return sorted(ROOT.glob("asm/*.s"))
+    return sorted(ROOT.glob("data/*.s"))
 
 
 def read_preamble():
@@ -263,9 +263,9 @@ def extract_one(name, plan=False):
 
         new_addr = addr + n_bytes
         b_name = f"rom_{new_addr:08X}.s"
-        b_path = ROOT / "asm" / b_name
+        b_path = ROOT / "data" / b_name
         if b_path.exists() and f.name != b_name:
-            raise SystemExit(f"asm/{b_name} already exists -- refusing to overwrite")
+            raise SystemExit(f"data/{b_name} already exists -- refusing to overwrite")
 
         preamble = read_preamble()
         # The 2 gap bytes after a function ending 2-mod-4 must not start
@@ -308,7 +308,7 @@ def extract_one(name, plan=False):
             print(f"{name}: extracted from {f.name} (no tail, no new fragment)")
             return
         b_path.write_text("\n".join(preamble + tail) + "\n")
-        print(f"{name}: extracted from {f.name} -> asm/{b_name}")
+        print(f"{name}: extracted from {f.name} -> data/{b_name}")
         return
     raise SystemExit(f"{name}: not found in any fragment")
 

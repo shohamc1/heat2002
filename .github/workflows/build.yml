@@ -22,7 +22,7 @@ jobs:
       # baserom.gba is deliberately never supplied to CI; the ROM stays on
       # the developer's machine in every form. Without it the build fills
       # each assets/*.json range with zeros, and check-code compares every
-      # other byte (the code and the data still in asm/) against
+      # other byte (the code and the data still in data/) against
       # nascar-heat.code.sha1: the retail ROM with those ranges zeroed.
       - name: Build and verify every byte outside the extracted assets
         run: make -j"$(nproc)" check-code

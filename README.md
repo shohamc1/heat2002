@@ -92,7 +92,7 @@ matches and false mismatches).
 ```sh
 make            # build nascar-heat.gba
 make check      # build + verify SHA-1 — the only test that counts
-make disasm     # full-ROM reference disasm -> build/rom_reference.s (never touches asm/)
+make disasm     # full-ROM reference disasm -> build/rom_reference.s (never touches data/)
 ```
 
 ## How it works
@@ -116,7 +116,7 @@ from `lib/crt0.s` and `lib/crt0_island.s`.
 ## Layout
 
 ```
-asm/*.s          ROM disassembly, one fragment per gap between decompiled
+data/*.s          ROM disassembly, one fragment per gap between decompiled
                  functions; reassembles exactly
 src/             Decompiled C, in folders; a file holds contiguous functions
 include/         Headers
@@ -150,7 +150,7 @@ Pick an open function from [`docs/decomp-queue.md`](docs/decomp-queue.md)
 1. Write C in `src/` implementing the target function.
 2. `make && python3 scripts/match.py <function>`
 3. `MISMATCH` prints an instruction-level diff — adjust and repeat.
-4. On `MATCH`, cut the function out of its `asm/*.s` fragment
+4. On `MATCH`, cut the function out of its `data/*.s` fragment
    (`python3 scripts/extract.py <function>`) and place the C object at the
    same address in `ldscript.ld`.
 5. `make check` must still print `MATCH`.

@@ -19,7 +19,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import extract
 
-# Every mnemonic in asm/*.s that takes a _XXXXXXXX operand, plus the
+# Every mnemonic in data/*.s that takes a _XXXXXXXX operand, plus the
 # ldr byte/halfword forms, which are never PC-relative in Thumb.
 HAZARD = ["ldr", "b", "beq", "bne", "ble", "bge", "bhi", "bls", "bgt", "blt",
           "bcc", "bcs", "bpl"]

@@ -112,7 +112,7 @@ def parse_reference():
 
 def nm_sizes():
     """{symbol: bytes} for every function object under build/."""
-    objs = list((ROOT / "build" / "asm").glob("*.o")) + list(
+    objs = list((ROOT / "build" / "data").glob("*.o")) + list(
         (ROOT / "build" / "src").glob("*.o")
     )
     sizes = {}
@@ -146,7 +146,7 @@ def main():
         progress.LIBRARY_BLOCKS | progress.LUVDIS_FALSE_POSITIVES | progress.ARM_BLOCKS
     )
     arm = {n for n, f in funcs.items() if f["kind"] == "arm"}
-    # Only functions the project tracks as blocks in asm/*.s or as ASM_FUNCs
+    # Only functions the project tracks as blocks in data/*.s or as ASM_FUNCs
     # are work items; luvdis also finds a few strays inside library-object
     # spans.
     tracked = ref_names(progress.by_address(progress.parse_asm())) | ref_names(

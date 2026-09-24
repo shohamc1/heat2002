@@ -25,7 +25,7 @@ Every byte removed is checked against baserom.gba, so a wrong line map can
 never silently eat the wrong range.
 
 Usage:
-    python3 scripts/incbin_assets.py asm/rom_0801CD08.s [asm/rom_....s ...]
+    python3 scripts/incbin_assets.py data/rom_0801CD08.s [data/rom_....s ...]
 """
 
 import json
@@ -150,7 +150,7 @@ def check_labels(lines, path):
 
 def referenced(name, fragment, new_text):
     """Is `name` used outside the removed ranges? (protocol step 4)"""
-    files = [p for p in (ROOT / "asm").glob("*.s") if p != fragment]
+    files = [p for p in (ROOT / "data").glob("*.s") if p != fragment]
     files += (ROOT / "src").glob("*.c") + (ROOT / "include").glob("*.h")
     files += [ROOT / "ldscript.ld", ROOT / "symbols.ld"]
     pat = re.compile(rf"\b{re.escape(name)}\b")
