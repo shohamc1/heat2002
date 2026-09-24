@@ -92,20 +92,3 @@ _08003EDA:
 	pop {r0}
 	bx r0
 	.byte 0x00, 0x00
-	thumb_func_start sub_08003EF0
-sub_08003EF0:
-	push {r4, lr}
-	adds r2, r0, #0x0
-	adds r4, r1, #0x0
-	movs r3, #0x00
-_08003EF8:
-	ldr r0, [r2, #0x00]
-	ldm r4!, {r1}
-	adds r0, r0, r1
-	stm r2!, {r0}
-	adds r3, #0x01
-	cmp r3, #0x30
-	bne _08003EF8
-	pop {r4}
-	pop {r0}
-	bx r0
