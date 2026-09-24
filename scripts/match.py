@@ -10,7 +10,7 @@ decompiled -- and deleted from the asm -- the tool could no longer verify it.
 The ROM is the ground truth and it never moves, so a matched function stays
 checkable forever.
 
-The object is first linked alone at its ROM address with `-R nascar-heat.elf`
+The object is first linked alone at its run address with `-R nascar-heat.elf`
 (symbol values only, no code) so `bl`/`.word sub_XXX` references resolve to
 their real targets; an unrelocated object cannot match anything that calls
 out. Before extraction the ELF still contains the asm copy of the function,
@@ -43,35 +43,7 @@ OBJDUMP = "arm-none-eabi-objdump"
 LD = "arm-none-eabi-ld"
 ELF = ROOT / "nascar-heat.elf"
 SYMBOLS = ROOT / "symbols.ld"
-_current_name = [None]
 ROM_BASE = 0x8000000
-
-# Functions whose RETAIL build linked at an EWRAM base: the multiboot
-# island and part of the high 0x0834 region are module images that were
-# compiled to run from RAM. Their compiler-generated switch jumptables
-# embed the module's EWRAM link addresses (0x0200xxxx), so the candidate
-# object must be linked at that base or the table words can never
-# reproduce the ROM copy. The comparison itself is unchanged: still
-# byte-for-byte against baserom.gba at the function's ROM address.
-# Each base is derived from the function's own table-base pool constant,
-# which points at the word immediately after itself (self+4):
-#   link_base = rom_addr - (constant - constant_offset - 4)
-RAM_LINK_OVERRIDES = {
-    "sub_08364550": 0x02000668,  # multiboot island module
-    "sub_08340EFC": 0x0200847C,  # high-region RAM module (delta 0x6338A80)
-    "sub_08341288": 0x02008808,  # same module
-    "sub_0833BA00": 0x02002F80,  # m4a high copy, same module image
-}
-
-# Extra objects for RAM-module links: symbols.ld absolutes carry no Thumb
-# function type, so ld would veneer calls to them. These stubs hold the
-# module-internal callee aliases (.thumb_set) at their EWRAM values.
-RAM_LINK_EXTRA_OBJECTS = {
-    "sub_08340EFC": "build/ram/aliases_0834.o",
-    "sub_08341288": "build/ram/aliases_0834.o",
-    "sub_0833BA00": "build/ram/aliases_0834.o",
-}
-
 
 def addr_of(name):
     """`sub_08006734` -> 0x08006734."""
@@ -110,23 +82,30 @@ def _symbol_index():
 
 
 @functools.lru_cache(maxsize=1)
-def ram_defsyms():
-    """--defsym args for every name referenced by a symbols.ld expression
-    whose value derives from its sub_XXXXXXXX / _XXXXXXXX name."""
-    out = []
-    if not SYMBOLS.exists():
-        return out
-    names = set()
-    rhs = re.compile(r"^\w+ = (\w+)")
-    for line in SYMBOLS.read_text().splitlines():
-        m = rhs.match(line)
-        if m:
-            names.add(m.group(1))
-    for n in sorted(names):
-        m = re.fullmatch(r"(?:sub_|_)([0-9A-Fa-f]{8})", n)
-        if m:
-            out.append(f"--defsym={n}=0x{m.group(1)}")
-    return out
+def _sections():
+    """(lma, vma, size) of every section in nascar-heat.elf."""
+    if not ELF.exists():
+        return []
+    out = subprocess.run([OBJDUMP, "-h", str(ELF)], capture_output=True, text=True, check=False).stdout
+    return [
+        (int(lma, 16), int(vma, 16), int(size, 16))
+        for size, vma, lma in re.findall(r"^\s*\d+ \S+\s+([0-9a-f]+)\s+([0-9a-f]+)\s+([0-9a-f]+)", out, re.M)
+    ]
+
+
+def link_address(addr):
+    """The address the code stored at ROM `addr` runs at.
+
+    The high module and the multiboot island are stored in the ROM but
+    linked to run from EWRAM, and their jump tables and pointers hold EWRAM
+    addresses. ldscript.ld places each in its own section, so a section
+    whose load address (LMA) differs from its run address (VMA) gives the
+    mapping.
+    """
+    for lma, vma, size in _sections():
+        if lma <= addr < lma + size:
+            return addr - lma + vma
+    return addr
 
 
 def find_symbol(name):
@@ -134,30 +113,18 @@ def find_symbol(name):
     return list(_symbol_index().get(name, ()))
 
 
-def object_bytes(obj, offset, size, addr, link_addr=None):
-    """Link `obj` alone at `link_addr` (default: its ROM address; symbols
-    from the full ELF), return .text bytes."""
-    if link_addr is None:
-        link_addr = addr
+def object_bytes(obj, offset, size, addr):
+    """Link `obj` alone at the address ROM `addr` runs at (symbols from the
+    full ELF) and return the function's .text bytes."""
+    link_addr = link_address(addr)
     with tempfile.TemporaryDirectory() as d:
         elf = Path(d) / "t.elf"
         bin_ = Path(d) / "t.bin"
-        cmd = [LD, f"-Ttext={link_addr - offset:#x}", "-e", f"{addr:#x}", "-o", str(elf), str(obj)]
-        extra = RAM_LINK_EXTRA_OBJECTS.get(_current_name[0])
-        if extra and (ROOT / extra).exists():
-            cmd.append(str(ROOT / extra))
-        if link_addr is not None and link_addr != addr:
-            # RAM-module link: the main ELF's definitions sit at ROM
-            # addresses and would override the module's EWRAM aliases (and
-            # veneer every call), so link standalone: symbols.ld + the
-            # alias stub + defsyms for symbols.ld's expression names.
-            if SYMBOLS.exists():
-                cmd[1:1] = ["-T", str(SYMBOLS)] + ram_defsyms()
-        else:
-            if ELF.exists():
-                cmd[1:1] = ["-R", str(ELF)]
-            if SYMBOLS.exists():
-                cmd[1:1] = ["-T", str(SYMBOLS)]
+        cmd = [LD, f"-Ttext={link_addr - offset:#x}", "-e", f"{link_addr:#x}", "-o", str(elf), str(obj)]
+        if ELF.exists():
+            cmd[1:1] = ["-R", str(ELF)]
+        if SYMBOLS.exists():
+            cmd[1:1] = ["-T", str(SYMBOLS)]
         r = subprocess.run(cmd, capture_output=True, text=True, check=False)
         if r.returncode != 0:
             sys.stderr.write(r.stderr)
@@ -214,9 +181,7 @@ def compare(name):
     if size == 0:
         sys.exit(f"{name}: nm reports size 0 in {obj.relative_to(ROOT)}")
 
-    _current_name[0] = name
-    ours = object_bytes(obj, offset, size, addr,
-                        link_addr=RAM_LINK_OVERRIDES.get(name))
+    ours = object_bytes(obj, offset, size, addr)
     if ours is None:
         sys.exit(f"{name}: could not link/extract bytes from {obj.relative_to(ROOT)}")
 
@@ -289,6 +254,13 @@ def _selftest():
         rom = ROM.read_bytes()
         # The known contents of sub_08006734: a bare `bx lr`.
         assert rom[0x6734:0x6736] == b"\x70\x47", rom[0x6734:0x6736].hex()
+
+    # Module code links at its EWRAM run address, read from the ELF's
+    # sections; main-program code links where it sits in the ROM.
+    if ELF.exists():
+        assert link_address(0x08340EFC) == 0x0200847C, hex(link_address(0x08340EFC))
+        assert link_address(0x08364550) == 0x02000668, hex(link_address(0x08364550))
+        assert link_address(0x08006734) == 0x08006734
 
     # The symbol index is built once and reused; a second lookup must not
     # re-run nm, or progress.py goes quadratic again.

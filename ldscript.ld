@@ -1,7 +1,6 @@
 ENTRY(rom_entry)
 
-/* Linker-level data newlib needs. Kept here, not in symbols.ld: the
-   RAM-module links read symbols.ld and have no newlib. */
+/* Linker-level data newlib needs. */
 errno = 0x0202F244;
 end = 0x0202F248;
 
@@ -58,6 +57,20 @@ gUnk_0200C668 = 0x0200C668;
 
 SECTIONS
 {
+    /* arm/syscalls.o's statics, in EWRAM; no bytes in the ROM */
+    .bss_multiboot 0x0200048C (NOLOAD) :
+    {
+        build/lib/multiboot.o(.bss);
+    }
+    .bss 0x020004A8 (NOLOAD) :
+    {
+        build/lib/newlib/arm/syscalls.o(.bss);
+    }
+    .bss_libgcc 0x02000558 (NOLOAD) :
+    {
+        build/lib/libgcc/dp-bit.o(.bss);
+        build/lib/libgcc/fp-bit.o(.bss);
+    }
     . = 0x08000000;
     rom_entry = .;
     .text : ALIGN(4)
@@ -747,6 +760,13 @@ SECTIONS
         build/lib/newlib/stdlib/mprec.o(.rodata);
         build/lib/newlib/arm/syscalls.o(.rodata);
         build/asm/rom_08339680.o(.text*);
+    }
+    /* The high module: the image that the multiboot island receives in
+       32 KB chunks and runs from EWRAM. Linked at its run address, stored
+       in the ROM right after the main program's .text. */
+    .high_module 0x02000D00 : AT(LOADADDR(.text) + SIZEOF(.text))
+    {
+        build/asm/rom_08339780.o(.text*);
         build/src/sub_083398CC.o(.text*);
         build/asm/rom_083398D4.o(.text*);
         build/src/sub_08339920.o(.text*);
@@ -808,7 +828,7 @@ SECTIONS
         build/src/sub_0833B8F8.o(.text*);
         build/src/sub_0833B918.o(.text*);
         build/src/sub_0833B98C.o(.text*);
-        build/asm/ram_0833BA00.o(.text*);
+        build/src/sub_0833BA00.o(.text*);
         build/src/sub_0833BB58.o(.text*);
         build/src/sub_0833BB78.o(.text*);
         build/src/sub_0833BB8C.o(.text*);
@@ -987,13 +1007,13 @@ SECTIONS
         build/src/sub_08340E90.o(.text*);
         build/src/sub_08340EAC.o(.text*);
         build/src/sub_08340EE0.o(.text*);
-        build/asm/ram_08340EFC.o(.text*);
+        build/src/sub_08340EFC.o(.text*);
         build/src/sub_0834108C.o(.text*);
         build/src/sub_0834116C.o(.text*);
         build/src/sub_08341180.o(.text*);
         build/src/sub_08341280.o(.text*);
         build/src/sub_08341284.o(.text*);
-        build/asm/ram_08341288.o(.text*);
+        build/src/sub_08341288.o(.text*);
         build/src/sub_083415AC.o(.text*);
         build/src/sub_083415B0.o(.text*);
         build/asm/rom_08341634.o(.text*);
@@ -1106,13 +1126,19 @@ SECTIONS
         build/lib/libgcc/high/_negdi2.o(.text);
         build/lib/libgcc/high/_umodsi3.o(.text);
         build/asm/rom_08344E68.o(.text*);
+    }
+    /* The multiboot island: the image the main program sends with the
+       BIOS MultiBoot call. It runs from the start of EWRAM. */
+    .island 0x02000000 : AT(LOADADDR(.high_module) + SIZEOF(.high_module))
+    {
+        build/asm/rom_08363EE8.o(.text*);
         build/src/sub_0836418C.o(.text*);
         build/src/sub_08364190.o(.text*);
         build/src/sub_0836419C.o(.text*);
         build/src/sub_083641D8.o(.text*);
         build/asm/rom_083642FC.o(.text*);
         build/src/sub_083644B4.o(.text*);
-        build/asm/ram_08364550.o(.text*);
+        build/src/sub_08364550.o(.text*);
         build/asm/rom_08364730.o(.text*);
         /* the multiboot island's libagbsyscall copy */
         build/lib/agbsyscall/sub_083647F8.o(.text);
@@ -1121,6 +1147,14 @@ SECTIONS
         build/lib/agbsyscall/sub_08364804.o(.text);
         build/lib/agbsyscall/sub_08364808.o(.text);
         build/asm/rom_08364810.o(.text*);
+    }
+    /* Back to ROM-linked data. The explicit AT stops ld from carrying the
+       island's VMA-to-LMA offset over to this section, and READONLY stops
+       newlib's in-ROM .data from marking it writable. */
+    .text_tail LOADADDR(.island) + SIZEOF(.island) (READONLY) :
+        AT(LOADADDR(.island) + SIZEOF(.island))
+    {
+        build/asm/rom_08364AC8.o(.text*);
         /* newlib .data, which the ROM uses in place */
         build/lib/newlib/reent/impure.o(.data);
         build/lib/newlib/locale/locale.o(.data);
@@ -1134,20 +1168,6 @@ SECTIONS
            instead of silently vanishing into /DISCARD/ with `make check`
            still printing MATCH. */
         *(.text*);
-    }
-    /* arm/syscalls.o's statics, in EWRAM; no bytes in the ROM */
-    .bss_multiboot 0x0200048C (NOLOAD) :
-    {
-        build/lib/multiboot.o(.bss);
-    }
-    .bss 0x020004A8 (NOLOAD) :
-    {
-        build/lib/newlib/arm/syscalls.o(.bss);
-    }
-    .bss_libgcc 0x02000558 (NOLOAD) :
-    {
-        build/lib/libgcc/dp-bit.o(.bss);
-        build/lib/libgcc/fp-bit.o(.bss);
     }
     /DISCARD/ : { *(*); }
 }

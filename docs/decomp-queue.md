@@ -90,11 +90,9 @@ What the source shapes turned out to be, for the next m4a batch:
   tables.
 - Both `ply_memacc` copies were mis-scoped (jump table + 18 case bodies as
   `.byte` rows; 344 bytes each, not 54). The low copy hand-cut like
-  `sub_0800F8D0`. The high copy `sub_0833BA00` is a fourth RAM-module
-  function (EWRAM link base 0x02002F80, alias `_08344B84 → 0x0200C105` in
-  `ram/aliases_0834.s`, `RAM_LINK_OVERRIDES` in `scripts/match.py`): its
-  switch table embeds EWRAM addresses, off by exactly the module delta
-  0x6338A80 under a ROM-address link.
+  `sub_0800F8D0`. The high copy `sub_0833BA00` runs from EWRAM
+  (0x02002F80): its switch table embeds EWRAM addresses. It links in
+  `ldscript.ld`'s `.high_module` section like the rest of the module.
 - The two `svc 0x2A` stubs (`sub_0800151C`, `sub_0833ABDC`) are C after
   all: `void f(u32 *jt) { asm("swi 0x2A"); }` — the solved-walls entry 15
   inline-asm pattern; agbcc supplies the `bx lr`.

@@ -290,6 +290,14 @@ mechanical steps:
    ROM's end and breaking the SHA1 loudly -- instead of silently vanishing
    into `/DISCARD/` with `make check` still printing MATCH.
 
+Two blocks of the ROM run from EWRAM: the high module (ROM `0x08339780`-
+`0x08363EE8`, runs at `0x02000D00`) and the multiboot island (ROM
+`0x08363EE8`-`0x08364AC8`, runs at `0x02000000`). `ldscript.ld` links each
+in its own section (`.high_module`, `.island`) at its run address and
+stores it at its ROM address, so a function there is placed exactly like
+any other. `match.py` and `permute.py` read the run address from the ELF's
+sections.
+
 Do not hand-add filler bytes for the gap between a short C function and
 whatever follows. `ld` automatically zero-pads the location counter up to
 satisfy the next input section's recorded alignment (from its own internal

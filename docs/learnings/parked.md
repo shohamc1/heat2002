@@ -1202,6 +1202,12 @@ in their headers):**
   elision rule traced); sub_08342258 and sub_08343A6C are ALSO own-libgcc-blocked.
   The luvdis-mangled table/case bodies are repaired by an assemble-and-
   byte-compare oracle (docs: the sub_08364550 commit).
+  **Superseded 2026-09-24:** `ldscript.ld` links the high module
+  (ROM 0x08339780, runs at 0x02000D00) and the island (ROM 0x08363EE8,
+  runs at 0x02000000) as sections with separate load and run addresses.
+  The standalone images, `.incbin` wrappers, `ram/aliases_0834.s` and
+  `RAM_LINK_OVERRIDES` are gone; match.py and permute.py read each
+  section's addresses from the ELF.
 - **High-region own libgcc -- SOLVED as a class** (2026-09-22): the
   high module resolved `/` and `%` to its own libgcc copy (sub_08344BB8,
   sub_08344C50, sub_08344DA8), but symbols.ld's single __divsi3 alias

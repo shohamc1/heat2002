@@ -16,13 +16,6 @@ CPPFLAGS := -I include -I tools/agbcc/include -iquote include -nostdinc -undef
 
 C_SRCS   := $(wildcard src/*.c)
 ASM_SRCS := $(wildcard asm/*.s)
-# RAM-module objects link into their standalone image only (see the
-# build/ram rule below); the main ROM embeds the image as data. They must
-# not reach the main link, or the trailing *(.text*) catch-all places them
-# twice over.
-RAM_MODULE_OBJS := build/src/sub_08364550.o build/src/sub_08340EFC.o \
-	build/src/sub_08341288.o build/src/sub_0833BA00.o
-
 # Runtime library: newlib objects built from the vendored source with the
 # flags of tools/agbcc/libc/Makefile (no interwork, -fno-builtin), in ROM
 # order. ldscript.ld places each one whole, plus its .rodata, .data and .bss.
@@ -87,7 +80,7 @@ LIBGCC_OBJS := $(LIBGCC1_OBJS) $(LIBGCC2_OBJS) $(LIBGCC_FP_OBJS) $(LIBGCC_HIGH_O
 LIB_C_OBJS := $(BUILD)/lib/multiboot.o $(BUILD)/lib/eeprom.o
 $(BUILD)/lib/eeprom.o: CFLAGS := $(subst -O2,-O1,$(CFLAGS))
 
-OBJS     := $(filter-out $(RAM_MODULE_OBJS),$(C_SRCS:%.c=$(BUILD)/%.o) $(ASM_SRCS:%.s=$(BUILD)/%.o)) \
+OBJS     := $(C_SRCS:%.c=$(BUILD)/%.o) $(ASM_SRCS:%.s=$(BUILD)/%.o) \
 	$(NEWLIB_OBJS) $(AGBSYSCALL_OBJS) $(AGBSYSCALL_COPY_OBJS) $(M4A_OBJS) $(LIB_C_OBJS) $(LIBGCC_OBJS)
 
 .PHONY: all check check-code test clean disasm tools convert
@@ -262,50 +255,11 @@ $(BUILD)/asm/%.o: asm/%.s Makefile $(ASSET_STAMP)
 	printf '\t.align 2, 0\n' >> $(BUILD)/asm/$*.s
 	$(AS) $(ASFLAGS) -I include -o $@ $(BUILD)/asm/$*.s
 
-# All symbols.ld expression RHS names (libgcc aliases, call-via tables)
-# resolved for standalone blob links; their values derive from their names.
-RAM_DEFSYMS := $(shell awk -F' = ' '/ = /{split($$2,a,";"); split(a[1],b," +"); print b[1]}' symbols.ld | sort -u | awk '/^(sub_|_)[0-9A-Fa-f]{8}$$/{n=$$0; sub(/^(sub_|_)/,"",n); printf "--defsym %s=0x%s ", $$0, n}')
-
-# Blob-only alias stubs (never in the main link; they would collide with
-# the real matched functions).
-build/ram/aliases_0834.o: ram/aliases_0834.s Makefile
-	@mkdir -p $(dir $@)
-	$(AS) $(ASFLAGS) -o $@ $<
-
-# RAM-module images: functions whose retail build linked at an EWRAM base
-# (match.py's RAM_LINK_OVERRIDES). Compiled to C objects like everything
-# else, but linked into a standalone image at the module's EWRAM base and
-# embedded into the ROM as data at the function's ROM address -- the same
-# way the retail build shipped the module.
-RAM_MODULES := sub_08364550
-
-build/ram/sub_08364550.bin: build/src/sub_08364550.o symbols.ld Makefile
-	@mkdir -p $(dir $@)
-	$(LD) -Ttext=0x02000668 -e 0x02000668 --defsym gUnk_03000C00=0x03000C00 -o $@.elf $<
-	$(OBJCOPY) -O binary --only-section=.text $@.elf $@
-
-build/ram/sub_08340EFC.bin: build/src/sub_08340EFC.o build/ram/aliases_0834.o symbols.ld Makefile
-	@mkdir -p $(dir $@)
-	$(LD) -Ttext=0x0200847C -e 0x0200847C -T symbols.ld $(RAM_DEFSYMS) -o $@.elf $< build/ram/aliases_0834.o
-	$(OBJCOPY) -O binary --only-section=.text $@.elf $@
-
-build/ram/sub_08341288.bin: build/src/sub_08341288.o build/ram/aliases_0834.o symbols.ld Makefile
-	@mkdir -p $(dir $@)
-	$(LD) -Ttext=0x02008808 -e 0x02008808 -T symbols.ld $(RAM_DEFSYMS) -o $@.elf $< build/ram/aliases_0834.o
-	$(OBJCOPY) -O binary --only-section=.text $@.elf $@
-
-build/ram/sub_0833BA00.bin: build/src/sub_0833BA00.o build/ram/aliases_0834.o symbols.ld Makefile
-	@mkdir -p $(dir $@)
-	$(LD) -Ttext=0x02002F80 -e 0x02002F80 -T symbols.ld $(RAM_DEFSYMS) -o $@.elf $< build/ram/aliases_0834.o
-	$(OBJCOPY) -O binary --only-section=.text $@.elf $@
-
-build/asm/ram_08364550.o: build/ram/sub_08364550.bin
-build/asm/ram_08340EFC.o: build/ram/sub_08340EFC.bin
-build/asm/ram_08341288.o: build/ram/sub_08341288.bin
-build/asm/ram_0833BA00.o: build/ram/sub_0833BA00.bin
-
+# --no-check-sections: the multiboot island's run addresses overlap the
+# main program's EWRAM .bss. The overlap is real, since the island runs on a
+# different GBA; make check catches any overlap that isn't.
 $(TARGET).elf: ldscript.ld symbols.ld $(OBJS)
-	$(LD) -T ldscript.ld -T symbols.ld -o $@ $(OBJS)
+	$(LD) --no-check-sections -T ldscript.ld -T symbols.ld -o $@ $(OBJS)
 
 $(TARGET).gba: $(TARGET).elf
 	$(OBJCOPY) -O binary $< $@
