@@ -497,7 +497,7 @@ SECTIONS
         build/src/sub_0800EA30.o(.text*);
         build/src/sub_0800EA34.o(.text*);
         build/src/sub_0800EA38.o(.text*);
-        build/asm/rom_0800EA3C.o(.text*);
+        build/src/sub_0800EA3C.o(.text*);
         build/src/sub_0800EA54.o(.text*);
         build/src/sub_0800EA58.o(.text*);
         build/src/sub_0800EA5C.o(.text*);
