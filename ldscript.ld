@@ -120,7 +120,8 @@ SECTIONS
         build/src/sub_080020CC.o(.text*);
         build/src/sub_080020F4.o(.text*);
         build/src/sub_0800215C.o(.text*);
-        build/asm/rom_080021D0.o(.text*);
+        build/src/sub_080021D0.o(.text*);
+        build/asm/rom_08002238.o(.text*);
         build/src/sub_080025B8.o(.text*);
         build/src/sub_080025BC.o(.text*);
         build/src/sub_080025FC.o(.text*);
