@@ -768,7 +768,7 @@ SECTIONS
         build/lib/m4a/m4a_1_high.o(.text);
         build/src/sub_0833A78C.o(.text*);
         build/src/sub_0833A7F0.o(.text*);
-        build/asm/rom_0833A7F4.o(.text*);
+        build/src/sub_0833A7F4.o(.text*);
         build/src/sub_0833A810.o(.text*);
         build/src/sub_0833A830.o(.text*);
         build/src/sub_0833A8BC.o(.text*);
