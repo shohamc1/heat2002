@@ -1,6 +1,6 @@
 # Decompilation queue: the last 208 functions
 
-This file ranks the 150 game-code functions left at 852 / 1001 matched
+This file ranks the 149 game-code functions left at 852 / 1001 matched
 (2026-09-24). Work top to bottom. Each tier makes the next one cheaper, and
 inside a tier, each family's first member makes the rest ports.
 
