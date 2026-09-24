@@ -1,6 +1,6 @@
 # Decompilation queue: the last 208 functions
 
-This file ranks the 131 game-code functions left at 870 / 1001 matched
+This file ranks the 26 game-code functions left at 975 / 1001 matched
 (2026-09-24). Work top to bottom. Each tier makes the next one cheaper, and
 inside a tier, each family's first member makes the rest ports.
 
@@ -288,9 +288,41 @@ What the source shapes turned out to be:
 | 118 | `sub_0800B658` | 244 |  |
 | 119 | `sub_0800B1A4` | 262 |  |
 
-## Tier 4: Pairs to decompile once and port
+## Tier 4: Pairs to decompile once and port — finished 2026-09-24
 
-76 functions, 6224 bytes, about 39 hours.
+74 of 76 matched at the project's -O2; the comm/IRQ pair needed a
+per-object -O1 (below). One per commit; `make check` MATCH throughout.
+899 → 975 / 1001. Two waves of parallel drafting agents (48 small
+pairs, then 28 including every jump-table row); integration serial.
+A rate-limit outage killed three wave-B agents mid-run; their matched
+work was salvaged, restart agents finished the rest.
+
+What the source shapes turned out to be:
+
+- Nearly every pair ported by the block-diff method with zero
+  iterations: pool constants -> the module's own EWRAM copies, bl
+  targets -> the module's twins. The high module's `_call_via_r0`
+  stub is `_08344B7C` (r1/r2 are B80/B84).
+- `sub_08008B40`/`sub_08008B6C`: symbols.ld still carried their
+  pre-decompilation aliases (`= sub_08008AB0 + off`), which collide
+  with the C definitions under match.py's link. Deleted at
+  extraction; both then matched unchanged.
+- The C98C family (4 copies): the high module's own `__negdi2`
+  (`sub_08344D90`) was missing from `HIGH_LIBGCC_REDEFINES`; added,
+  and both high ports matched (a direct C call loses the libcall's
+  hard-r0 return — the rename is the only way).
+- Jump-table rows were mostly mid-function literal pools, not
+  switches (`sub_0800F85C`'s "table" was a pool after a `.byte` pad);
+  the real sizes exceed the queue's counts by the pool bytes.
+- `sub_0800E640`/`sub_08364730`: the one -O1 pair — the ROM's block
+  order is unproducible at -O2 (merge_blocks), and the surviving
+  3-byte pointer-copy diff needed double register pins. Full story in
+  solved-walls entry 21 and the resolved parked.md entry.
+- New solved-walls entries from this tier: 16 (pointer reassigned per
+  store group lands high), 17 (comparison folded to a bit trick), 18
+  (quotient loses its copy), 19 (volatile u8 load adds a copy), 20
+  (sub-word parm entry copy deferred), 21 (-O1 layouts + pinned
+  pointer splits), plus entry 8's Variant (store in both arms).
 
 | # | Function | Bytes | Notes |
 |---:|---|---:|---|

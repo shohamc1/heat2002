@@ -1966,3 +1966,33 @@ compiler still writes the epilogue.
 Nothing calls it: no `bl` decodes to it, and `baserom.gba` holds no
 pointer to it.
 
+
+## Resolved 2026-09-24: sub_0800E640 / sub_08364730 (200 bytes each)
+
+Parked mid-day as a double compiler wall, resolved the same evening.
+
+The ROM's head is `bge Lpos; b Lneg` with the Lneg body after the
+mode-1 arm, reached by a real `b` — unreachable at the project's -O2:
+the Cygnus-local `merge_blocks` pass (flow.c:3811, `optimize > 1` only)
+always hoists that body. Two per-object -O1 overrides were added
+(eeprom.o precedent, maintainer-authorized):
+
+    $(BUILD)/src/sub_0800E640.o: CFLAGS := $(subst -O2,-O1,$(CFLAGS))
+    $(BUILD)/src/sub_08364730.o: same
+
+At -O1 one 3-byte diff remained: the ROM's
+`ldr r5,=X; adds r4,r5,#0; ldrb r0,[r5]` puts the pool address in r5
+and the copy in r4, and the body reads through the COPY while only the
+head mode test and the Lneg store use the pool register — cse at -O1
+absorbs any source-level copy's uses into the canonical pseudo, so no
+plain spelling separates them. Fixed with two register pins plus a
+per-site split (`cc44719`): `register ... *w asm("r5") = &g;` used only
+for the head test and the Lneg store, `register ... *p asm("r4") = w;`
+for every other access, and separate counter locals for the then-arm
+(r2) and the Ltail RMW (r1). The island twin `sub_08364730` is the same
+file with the one pool word `0x0202CDD0 -> 0x03000C00`.
+
+Idioms that carried the -O1 build: a `vu32 *sio` local for SIODATA32
+(keeps r2 alive across the mode-1 arm without cse-follow-jumps, an
+-O2-only pass), a `cnt` local assigned in the then-arm, an `n` local in
+the else-arm.

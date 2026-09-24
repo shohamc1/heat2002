@@ -687,6 +687,41 @@ void f(s32 *src, u32 pal, s32 *dst)
 
 **Seen in:** `sub_08003E84` (`17214bd`).
 
+
+### 21. A block layout only -O1 produces
+
+The target keeps a distant block behind a real unconditional branch
+(`bge Lpos; b Lneg` with the Lneg body far below); at the project's
+-O2 ours always hoists the body up to the branch.
+
+**Cause.** The vendored compiler's Cygnus-local `merge_blocks` pass
+(flow.c:3811, run from toplev.c only when `optimize > 1`) moves any
+single-predecessor distant successor block up next to its
+unconditional-jump header. No C shape prevents it; ~40 variants and a
+long permuter run never moved it.
+
+**Fix.** A per-object -O1 override in the Makefile (the eeprom.o
+precedent; requires maintainer authorization — the default flags are
+the original build's):
+
+    $(BUILD)/src/NAME.o: CFLAGS := $(subst -O2,-O1,$(CFLAGS))
+
+The -O1 build may then expose a new class of diff: cse (without
+follow-jumps, an -O2-only feature) absorbing a pointer copy's uses.
+If the ROM splits one address across two registers (pool register used
+sparingly, copy register for the body), pin both and split the sites:
+
+```c
+register struct T *w asm("r5") = &g;   /* head test + one store */
+register struct T *p asm("r4") = w;    /* every other access */
+```
+
+Watch also for a pinned variable's read-modify-write re-loading
+clumsily (`adds r0, r1, #0; adds r0, #1`) — route it through a plain
+local, one per distinct temp register the ROM uses.
+
+**Seen in:** `sub_0800E640` (`cc44719`), `sub_08364730` (`b7bc932`).
+
 ## Open walls
 
 Stalled functions whose symptom has no fix yet. Start here if you pick one
