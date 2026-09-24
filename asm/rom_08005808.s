@@ -32,24 +32,6 @@
 	.size \name, .-\name
 	.endm
 @ End embedded Luvdis macros
-	thumb_func_start sub_080057E8
-sub_080057E8:
-	ldr r0, _080057FC @ =0x0202521C
-	ldr r0, [r0, #0x00]
-	cmp r0, #0x00
-	bne _08005804
-	ldr r0, _08005800 @ =0x020253C0
-	ldr r0, [r0, #0x00]
-	cmp r0, #0x00
-	bne _08005804
-	movs r0, #0x00
-	b _08005806
-_080057FC: .4byte 0x0202521C
-_08005800: .4byte 0x020253C0
-_08005804:
-	movs r0, #0x01
-_08005806:
-	bx lr
 	thumb_func_start sub_08005808
 sub_08005808:
 	push {r4, r5, lr}
