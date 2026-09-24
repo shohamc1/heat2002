@@ -36,7 +36,8 @@ SHA1 is wrong, no matter how clean the C looks. Never edit `baserom.gba`,
   goes stale within a day.
 - `assets/*.json` — data assets in zeldaret/tmc's format. `make` runs
   `scripts/assets.py extract` to copy each one out of `baserom.gba` into
-  `build/assets/`, and the asm `.incbin`s it, so the data stays out of git.
+  `build/assets/`, and a `data/*.s` fragment `.incbin`s it, so the data
+  stays out of git.
   CI has no ROM, so it runs `make check-code`: the build with zero-filled
   assets, compared against `nascar-heat.code.sha1`. `make` regenerates that
   file from `baserom.gba` when `assets/*.json` changes; commit the two
@@ -52,6 +53,11 @@ SHA1 is wrong, no matter how clean the C looks. Never edit `baserom.gba`,
   Compressed graphics are typed and convert to `.png` with `make convert`;
   the rest of the data is untyped raw blobs (`assets/unknown.json`).
   See "Extracted data assets" in `docs/learnings/parked.md`.
+- `src/data/*.c`: the ROM data tables that C code reads, defined in C with
+  `INCBIN_U8`/`INCBIN_U16`/`INCBIN_U32`, as pokeemerald's `src/graphics.c`
+  does. `tools/bin/preproc` (built from `tools/tmc`) expands each call
+  between cpp and agbcc. `include/data.h` declares the tables that several
+  files read. See "Define ROM data in C" below.
 - `docs/recon.md` — function inventory, call graph, entry-point trace, candidate ranking.
 - `docs/learnings/solved-walls.md`: **read when a function stalls.** It maps
   `match.py` diff symptoms to the source fixes that matched earlier walls,
@@ -197,10 +203,12 @@ maps closely onto the source:
   build is a project goal, and each raw address means another edit and
   re-match later. For a function, declare it and use its name:
   `(u32)sub_0800042C` links to `0x0800042D`, Thumb bit included, with
-  identical bytes (tested on `sub_08000380`). For ROM data, declare an
-  `extern` and add one line to `symbols.ld`. When the shiftability pass
-  replaces that line with a real label, the C doesn't change. Older files
-  still hold raw literals; leave them for that pass.
+  identical bytes (tested on `sub_08000380`). For ROM data that starts an
+  `assets/unknown.json` blob, define it in `src/data/` (see "Define ROM
+  data in C"). For any other ROM address, declare an `extern` and add one
+  line to `symbols.ld`. When the shiftability pass replaces that line with
+  a real label, the C doesn't change. Older files still hold raw literals;
+  leave them for that pass.
 
 ## Helper tools
 
@@ -338,7 +346,9 @@ hits it too. The Makefile fixes it by appending an explicit `.align 2, 0` to
 every generated `.s` (C and asm fragments alike) before assembling: an
 explicit align pads with its fill byte (zero) instead of NOPs, and that zero
 is exactly the linker fill the ROM has. Verified on a 2-mod-4 fragment cut at
-`sub_08000274` and on a C function with a mid-body pool and odd tail.
+`sub_08000274` and on a C function with a mid-body pool and odd tail. For C,
+the align goes in `.text`, so a `src/data/` file's `.rodata` gets no end
+padding.
 
 `scripts/match.py` and `scripts/progress.py` both scan every `data/*.s`
 fragment now, never a hardcoded `asm/rom.s` (match.py's *target* lookup was
@@ -347,6 +357,38 @@ still hardcoded through `sub_08006734`'s first review pass -- fixed since).
 `data/*.s` entirely (sized instead from its compiled object in
 `build/src/**/*.o`). New fragments and new functions need no further
 tooling changes.
+
+## Define ROM data in C
+
+The Makefile runs every C file through `tools/bin/preproc`, which replaces
+each `INCBIN_U8`, `INCBIN_U16`, or `INCBIN_U32` call with an initialiser
+list read from the named file. To move a data blob from a `data/*.s`
+fragment into C, follow the steps in "Extracting a function: linker
+placement", with these differences:
+
+1. In a `src/data/rom_ADDR.c` file, define the blob with the element type
+   its users declare, reading the file that `scripts/assets.py` extracts:
+
+       const u32 gUnk_0807C9CC[] =
+           INCBIN_U32("build/assets/unknown/data_0807C9CC.bin");
+
+   If users declare a pointer, a struct, or types that disagree, define an
+   integer array of the matching width and add a comment that names the
+   users' declarations.
+2. If several files read the blob, move their `extern` into
+   `include/data.h` as `extern const`, and include `data.h` in each file.
+3. Delete the blob's `symbols.ld` line.
+4. In `ldscript.ld`, place the object's `.rodata`, not its `.text`:
+   `build/src/data/rom_ADDR.o(.rodata);`.
+
+Check alignment before you cut. agbcc aligns each array to its element size,
+and a file's `.rodata` takes the alignment of its widest array. The blobs sit
+back to back, so each blob must start at a multiple of its element size, and
+the file's first blob at a multiple of the widest. Every cut between a C file
+and a `data/*.s` fragment must fall on a 4-byte boundary, because the
+Makefile pads each fragment to 4 bytes. If a blob can't meet these rules,
+leave it as `.incbin`. "ROM data defined in C" in `docs/learnings/parked.md`
+lists the blobs still in `data/*.s` and why.
 
 ## Files, folders, and names
 

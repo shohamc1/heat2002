@@ -39,9 +39,11 @@ seven whether or not they're still in `asm/`.
 ## Extracted data assets
 
 `scripts/assets.py extract` copies every asset listed in `assets/*.json` out
-of `baserom.gba` into `build/assets/`, and the asm pulls each one in with
-`.incbin`. The exceptions are the songs and samples, which build from
-editable files (below). `make` runs it; `make check` still prints MATCH.
+of `baserom.gba` into `build/assets/`. A `data/*.s` fragment pulls each one
+in with `.incbin`, or a `src/data/*.c` file with `INCBIN_*` (see "ROM data
+defined in C" below). The exceptions are the songs and samples, which build
+from editable files (below). `make` runs it; `make check` still prints
+MATCH.
 
 Sound, `0x0801D29C`-`0x0806C664` (324 KB), established 2026-09-23:
 
@@ -327,6 +329,77 @@ end of the main program or at the head of a separately built high module.
 `ldscript.ld` writes it as `. = ALIGN(4) + 0x100;` at the end of `.text`.
 The `ALIGN(4)` matters: the removed asm fragment's own alignment supplied
 the 3 bytes between `0x0833967D` and `0x08339680`.
+
+## ROM data defined in C
+
+Since 2026-09-25, C defines each ROM data table that C code reads, as
+pokeemerald's `src/graphics.c` does. The setup has these parts:
+
+- The Makefile builds `tools/bin/preproc` from zeldaret/tmc's source
+  (`tools/tmc/tools/src/preproc`) and runs every `src/**/*.c` through it
+  between cpp and agbcc. preproc replaces each `INCBIN_U8`, `INCBIN_U16`,
+  or `INCBIN_U32` call with an initialiser list read from the named file.
+  It writes a `.pp.i` file rather than a pipe, so a missing file stops the
+  build. CI builds it too: the workflow checks out `tools/tmc` and the
+  runner has a C++ compiler.
+- `include/global.h` defines the `INCBIN_*` macros only for an IDE, as
+  pokeemerald's does. The build's cpp runs with `-undef`, so the calls
+  reach preproc untouched.
+- `src/data/rom_ADDR.c` holds the definitions, one file per run of adjacent
+  blobs, in ROM order. `ldscript.ld` places each file's `.rodata` between
+  the `data/*.s` fragments around it. Each object depends on the asset
+  stamp, so `make` extracts the blobs first. Without a ROM the blobs are
+  zero fill, as for `.incbin`, and `make check-code` still matches.
+- `include/data.h` declares, as `extern const`, the 21 tables that several
+  files read with one type. Adding `const` to those files' view changed no
+  byte.
+
+The conversion covered every `symbols.ld` ROM line that starts an
+`assets/unknown.json` blob and that C reads, outside the sound range and
+the two EWRAM images: 232 symbols in 43 files. That left 58 ROM lines in
+`symbols.ld`.
+
+Alignment decides whether a blob can move:
+
+- agbcc puts a `const` array in `.rodata`, aligned to its element size,
+  with nothing between arrays. A file's `.rodata` takes the alignment of its
+  widest array. The blobs sit back to back, so each blob must start at a
+  multiple of its element size, and each file's first blob at a multiple of
+  the widest. All 232 did.
+- The Makefile pads each `data/*.s` fragment to 4 bytes, so every cut
+  between a C file and a fragment must fall on a 4-byte boundary. All did.
+- The C rule's trailing `.align 2, 0` goes in `.text`. In `.rodata` it
+  would pad a data file's end and force 4-byte alignment on a file that
+  starts with a `u8` array.
+
+Types follow the users' `extern` declarations, with these exceptions:
+
+- If users declare a pointer, a struct, or types that disagree, the
+  definition is an integer array of the matching width. A comment above
+  it names the users' declarations. INCBIN yields integers, and an integer
+  initialiser for a pointer draws a warning for every element. 37
+  definitions carry such a comment, for example `gUnk_08364B0C`, which its
+  users read as `struct Track[]`, and the pointer tables such as
+  `gUnk_083FDF74`.
+- If users declare a scalar but the blob holds more than one element, the
+  definition is an array: `gUnk_0807C9E8` (a `u32`, 8 bytes) and
+  `gUnk_08364ADC` (a `u8`, 4 bytes).
+
+These ROM symbols stay in `symbols.ld`, and their data stays `.incbin`:
+
+- `gUnk_08363EE8`, the multiboot island's first 224 bytes. The main program
+  reads it by its ROM address to send the island, but a C definition inside
+  `.island` would link at the run address `0x02000000`.
+- Blob starts that no C reads: `gUnk_0806C904`, `gUnk_0829EED8`,
+  `gUnk_0829EEE4`, `gUnk_0829EEF8`, `gUnk_0829F470`, `gUnk_0829F954`,
+  `gUnk_0829FB54`, and `gUnk_082A0130`. Their lines are unused.
+- Addresses that don't start a blob: offsets inside a blob (for example
+  `gUnk_083FDA67` and `gUnk_08367BFA`), Thumb entry points
+  (`gCallback_*`), code labels, and the sound tables `gUnk_0801DA90` and
+  `gUnk_0801DACC`.
+- The sound range `0x0801D29C`-`0x0806C664` and `assets/graphics.json` were
+  out of scope. Apart from `gUnk_08363EE8`, C reads no blob start in the
+  two EWRAM images.
 
 ## Non-interwork epilogues
 

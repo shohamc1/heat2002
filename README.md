@@ -54,7 +54,8 @@ shasum -c nascar-heat.sha1.baserom
 ## Setup
 
 Requires `arm-none-eabi-binutils`, Python 3, a C compiler to bootstrap agbcc,
-and a C++17 compiler for the sound tools.
+and a C++17 compiler for the sound tools and `preproc`, which `make` builds
+from `tools/tmc`.
 
 ```sh
 git clone --recursive https://github.com/shohamc1/heat2002-gba
@@ -137,13 +138,14 @@ from `lib/crt0.s` and `lib/crt0_island.s`.
 ## Layout
 
 ```
-data/*.s          ROM disassembly, one fragment per gap between decompiled
-                 functions; reassembles exactly
+data/*.s         Data assets still pulled in with .incbin, one fragment per gap
+                 between C objects
 assets/*.json    Data asset lists (zeldaret/tmc format)
 assets/sound/    Editable songs (.mid) and samples (.aif); gitignored,
                  written by make from baserom.gba
 src/             Decompiled C, in folders; a file holds contiguous functions
-include/         Headers
+src/data/        ROM data tables that C reads, defined with INCBIN_*
+include/         Headers (include/data.h: tables that several files read)
 include/gba/     GBA hardware headers vendored from fireemblem8u (pret)
 scripts/
   seed_functions.py  Function discovery (BL targets ∩ push prologues)
