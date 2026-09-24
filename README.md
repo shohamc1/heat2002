@@ -11,9 +11,9 @@ match, the change is wrong — no exceptions.
 
 | Metric | Value |
 | --- | ---: |
-| Functions decompiled | **592 / 1001** |
-| Code matched | **105,114 / 128,064 bytes** |
-| Percent complete | **82.08%** |
+| Functions decompiled | **899 / 1001** |
+| Code matched | **120,704 / 130,164 bytes** |
+| Percent complete | **92.73%** |
 
 Progress is measured in **bytes of code**, not function count — a 1,500-instruction
 function is not worth the same as a 1-instruction stub. The denominator is the
