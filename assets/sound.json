@@ -1,9 +1,5 @@
 [
-  {"path": "sound/voicegroup_0801D29C.bin", "start": "0x0801D29C", "size": 1536, "type": "voicegroup"},
-  {"path": "sound/voicegroup_0801D89C.bin", "start": "0x0801D89C", "size": 372, "type": "voicegroup"},
   {"path": "sound/cgb_waves.bin", "start": "0x0801DA10", "size": 128},
-  {"path": "sound/music_players.bin", "start": "0x0801DA90", "size": 60},
-  {"path": "sound/song_table.bin", "start": "0x0801DACC", "size": 240},
   {"path": "sound/song_dummy.bin", "start": "0x0801DBBC", "size": 4},
   {"path": "sound/samples/sample_0801DBC0.bin", "start": "0x0801DBC0", "size": 2309, "type": "aif", "align": 4},
   {"path": "sound/samples/sample_0801E4C8.bin", "start": "0x0801E4C8", "size": 4993, "type": "aif", "align": 4},

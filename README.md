@@ -113,9 +113,11 @@ A sample works the same way. `make check` then prints `MISMATCH`, since the
 ROM has changed. To get the original back, delete the file and run `make`
 again.
 
-Only an edit that keeps the song's or sample's size builds a working ROM. A
-size change moves every byte after it, but the song table, the voicegroups
-and the code still hold the original addresses.
+Only an edit that keeps the song's or sample's size is safe. The song table
+and the voicegroups name each song and sample by its label, so they follow a
+size change, but a size change also moves the data after the sound, and
+some of it still holds raw addresses (see "Pointers" in
+`docs/learnings/parked.md`).
 
 ## How it works
 

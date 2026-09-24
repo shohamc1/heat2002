@@ -93,8 +93,10 @@ tmc's asset_processor does. The following list covers how, and why:
 - Without a ROM, `assets.py blank` writes each song's assembly as a
   `.space` of its size, so CI needs none of the tools.
 
-A song or sample still can't change size: the song table, the voicegroups
-and the code hold absolute addresses.
+The song table, the music player table and the voicegroups are assembly
+in `data/rom_0801D29C.s`, written with tmc's `song`, `music_player` and
+`voice_*` macros (see "Pointers" below), so they follow a song or sample
+that changes size.
 
 Graphics, compressed, `0x0807CA7C`-`0x08339xxx` + three island copies
 (341 KB), established 2026-09-23 (steps 1-2 of
@@ -395,8 +397,8 @@ These ROM symbols stay in `symbols.ld`, and their data stays `.incbin`:
   `gUnk_0829FB54`, and `gUnk_082A0130`. Their lines are unused.
 - Addresses that don't start a blob: offsets inside a blob (for example
   `gUnk_083FDA67` and `gUnk_08367BFA`), Thumb entry points
-  (`gCallback_*`), code labels, and the sound tables `gUnk_0801DA90` and
-  `gUnk_0801DACC`.
+  (`gCallback_*`), and code labels. The sound tables `gUnk_0801DA90` and
+  `gUnk_0801DACC` were here too, until "Pointers" below labelled them.
 - The sound range `0x0801D29C`-`0x0806C664` and `assets/graphics.json` were
   out of scope. Apart from `gUnk_08363EE8`, C reads no blob start in the
   two EWRAM images.

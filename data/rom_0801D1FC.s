@@ -33,4 +33,6 @@
 	.endm
 @ End embedded Luvdis macros
 	.thumb
+	.global gClockTable
+gClockTable:
 	.incbin "build/assets/unknown/data_0801D1FC.bin"

@@ -44,7 +44,8 @@ stream's last run writes past its size (see convert_graphics).
 round-trip to check.
 
 `blank` writes each asset as zero fill of its listed size, for a build with
-no baserom.gba (CI); a song's assembly becomes a `.space` of that size. The
+no baserom.gba (CI); a song's assembly becomes a `.space` of that size,
+with the song's label at its header. The
 code still links at its real addresses, and `mask` zeroes the same ranges
 in any ROM, so `make check-code` can compare the build against the retail
 ROM's code without the ROM being present.
@@ -156,8 +157,7 @@ def song(mid, out):
     asset = find(mid)
     opts = asset["options"]
     out = Path(out)
-    group = next(Path(a["path"]).stem for a in assets()
-                 if a.get("type") == "voicegroup" and a["start"] == opts["voicegroup"])
+    group = f"voicegroup_{int(opts['voicegroup'], 16):08X}"
     with tempfile.TemporaryDirectory() as t:
         s = Path(t) / "song.s"
         run(TOOLS / "mid2agb", mid, s, *song_flags(opts), "-V", opts["V"],
@@ -187,7 +187,10 @@ def blank():
         path = built(asset)
         path.parent.mkdir(parents=True, exist_ok=True)
         if path.suffix == ".s":
-            path.write_text(f"\t.space {asset['size']}\n")
+            # The song table names each song's header label.
+            head = asset["options"]["headerOffset"]
+            path.write_text(f"\t.space {head}\n{path.stem}:\n"
+                            f"\t.space {asset['size'] - head}\n")
         else:
             path.write_bytes(bytes(asset["size"]))
 

@@ -33,5 +33,7 @@
 	.endm
 @ End embedded Luvdis macros
 	.thumb
+	.global gMPlayJumpTableTemplate
+gMPlayJumpTableTemplate:
 	.incbin "build/assets/unknown/data_0801CF88.bin"
 	.incbin "build/assets/unknown/data_0801CF90.bin"
