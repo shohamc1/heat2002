@@ -32,16 +32,6 @@
 	.size \name, .-\name
 	.endm
 @ End embedded Luvdis macros
-	thumb_func_start sub_0833BB78
-sub_0833BB78:
-	push {lr}
-	ldr r2, _0833BB88 @ =0x02038DE0
-	ldr r2, [r2, #0x00]
-	bl _08344B84
-	pop {r0}
-	bx r0
-	.byte 0x00, 0x00
-_0833BB88: .4byte 0x02038DE0
 	thumb_func_start sub_0833BB8C
 sub_0833BB8C:
 	push {r4, lr}
