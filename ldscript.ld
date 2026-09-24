@@ -999,7 +999,7 @@ SECTIONS
         build/src/sub_0833FFF8.o(.text*);
         build/src/sub_08340004.o(.text*);
         build/src/sub_08340028.o(.text*);
-        build/asm/rom_0834009C.o(.text*);
+        build/src/sub_0834009C.o(.text*);
         build/src/sub_083400D4.o(.text*);
         build/src/sub_08340168.o(.text*);
         build/src/sub_0834018C.o(.text*);
