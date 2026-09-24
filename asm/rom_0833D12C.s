@@ -32,35 +32,6 @@
 	.size \name, .-\name
 	.endm
 @ End embedded Luvdis macros
-	thumb_func_start sub_0833D0F8
-sub_0833D0F8:
-	push {r4, r5, r6, lr}
-	adds r4, r1, #0x0
-	adds r3, r0, #0x0
-	movs r6, #0x00
-	movs r5, #0x1F
-_0833D102:
-	ldrh r0, [r3, #0x00]
-	adds r3, #0x02
-	adds r1, r0, #0x0
-	adds r2, r0, #0x0
-	ands r0, r5
-	asrs r1, r1, #0x05
-	ands r1, r5
-	asrs r2, r2, #0x0A
-	ands r2, r5
-	lsls r0, r0, #0x10
-	stm r4!, {r0}
-	lsls r1, r1, #0x10
-	stm r4!, {r1}
-	lsls r2, r2, #0x10
-	stm r4!, {r2}
-	adds r6, #0x01
-	cmp r6, #0x10
-	bne _0833D102
-	pop {r4, r5, r6}
-	pop {r0}
-	bx r0
 	thumb_func_start sub_0833D12C
 sub_0833D12C:
 	push {r4, r5, r6, lr}
