@@ -93,7 +93,7 @@ SECTIONS
         build/src/sub_08000430.o(.text*);
         build/src/sub_08000444.o(.text*);
         build/src/sub_08000458.o(.text*);
-        build/asm/rom_08000478.o(.text*);
+        build/src/sub_08000478.o(.text*);
         build/src/sub_0800048C.o(.text*);
         build/lib/m4a/m4a_1.o(.text);
         build/src/sub_080010CC.o(.text*);
