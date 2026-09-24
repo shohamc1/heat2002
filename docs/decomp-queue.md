@@ -379,3 +379,103 @@ What the source shapes turned out to be:
 | 220 | `sub_08008160` | 382 | jump table or inline data |
 | 221 | `sub_080132F8` | 434 | jump table or inline data |
 
+
+## After the queue: name EWRAM addresses in the images
+
+This work makes the high module shiftable. It doesn't change progress, so
+schedule it after the tiers above. For the image layout, see "Functions
+that run from EWRAM" in `CLAUDE.md`.
+
+Module C still refers to image code and data by fixed EWRAM numbers.
+Each number breaks if the image moves. A name that the linker resolves
+moves with the image. On 2026-09-24, the 13 raw function-pointer
+literals became function names (`(u32)sub_0833BC78`).
+
+The same EWRAM address means a different variable on each GBA. The main
+program's `gUnk_02022E20` and the module's `0x02022E20` aren't the same
+thing. When you rename module data, never change a name that
+main-program code uses. `gUnk_02025220` and `gUnk_0202522C` have users
+on both sides, so give the module its own name for each.
+
+### Function pointers held in symbols.ld: 20 names, 0.5 hours
+
+These `symbols.ld` entries are odd EWRAM values that module code uses as
+function pointers. Each target already has a name. Replace the `gUnk_`
+name with `(u32)FUNCTION` in the listed file, then delete the
+`symbols.ld` line when nothing else uses it.
+
+| `symbols.ld` name | Function | Used in |
+|---|---|---|
+| `gCallback_0200A1BD` | `sub_08342C3C` | `sub_08342D10` |
+| `gUnk_0200118D` | `sub_08339C0C` | `sub_0833A830` |
+| `gUnk_02001A09` | `sub_0833A488` | `sub_0833AAB8` |
+| `gUnk_02001C7D` | `sub_0833A6FC` | `sub_0833AAB8` |
+| `gUnk_02001CE5` | `sub_0833A764` | `sub_0833AAB8` |
+| `gUnk_02001CF9` | `sub_0833A778` | `sub_0833AAB8` |
+| `gUnk_02002281` | `sub_0833AD00` | `sub_0833AAB8` |
+| `gUnk_02002635` | `sub_0833B0B4` | `sub_0833AAB8` |
+| `gUnk_020026B5` | `sub_0833B134` | `sub_0833AAB8` |
+| `gUnk_02002769` | `sub_0833B1E8` | `sub_0833AAB8` |
+| `gUnk_02002811` | `sub_0833B290` | `sub_0833AAB8` |
+| `gUnk_020028C9` | `sub_0833B348` | `sub_0833AAB8` |
+| `gUnk_02002F81` | `sub_0833BA00` | `sub_0833AAB8` |
+| `gUnk_020030D9` | `sub_0833BB58` | `sub_0833AAB8` |
+| `gUnk_02003B31` | `sub_0833C5B0` | `sub_0833BDB4` |
+| `gUnk_02009D5D` | `sub_083427DC` | `sub_08342868` |
+| `gUnk_02009E0D` | `sub_0834288C` | `sub_08342908` |
+| `gUnk_02009F39` | `sub_083429B8` | `sub_08342A94` |
+| `gUnk_0200A0D5` | `sub_08342B54` | `sub_08342BA4` |
+| `gUnk_0200A4CD` | `sub_08342F4C` | `sub_08342ED0` |
+
+### Data inside the image: 118 references, 3 hours
+
+These references point at initialised data that's stored in the image,
+so each one has a ROM address. They take two forms:
+
+- 17 raw literals in module C, at 14 addresses (table below).
+- 101 `symbols.ld` names with module users, such as `gUnk_0200CA74`,
+  plus `gUnk_0200C8DC` and `gUnk_0200C668` in `ldscript.ld`, which the
+  Makefile's `M4A_HIGH_EXTERNS` uses.
+
+Name each one for its ROM address, the way functions are named:
+`0x0200C3E8` is stored at ROM `0x08344E68`, so it becomes
+`gUnk_08344E68`. Define the name in the asm fragment that holds the
+bytes, not in `symbols.ld`, so its value moves with the section:
+
+- If the address starts a blob, put the label directly before that
+  blob's `.incbin` line. Only `0x08344E68` does.
+- Otherwise, add a label before the containing blob's `.incbin` line and
+  define `.set NAME, BLOB_LABEL + OFFSET`. This leaves `assets/*.json` and
+  `nascar-heat.code.sha1` unchanged.
+
+The following table lists the raw literals:
+
+| EWRAM literal | ROM address | Used in |
+|---|---|---|
+| `0x0200209C` | `0x0833AB1C` | `sub_0834341C` |
+| `0x0200C3E8` | `0x08344E68` | `sub_08340964`, `sub_08341DA0`, `sub_08342074` |
+| `0x0200C8CC` | `0x0834534C` | `sub_0833B348` |
+| `0x0200C910` | `0x08345390` | `sub_0833BB58` |
+| `0x0200D0C4` | `0x08345B44` | `sub_08340E28` |
+| `0x0200D0CC` | `0x08345B4C` | `sub_08340E28` |
+| `0x0200D0D8` | `0x08345B58` | `sub_0834116C` |
+| `0x02022E20` | `0x0835B8A0` | `sub_0833D0B8`, `sub_0833D210` |
+| `0x02025220` | `0x0835DCA0` | `sub_0833E0AC` |
+| `0x02025248` | `0x0835DCC8` | `sub_0833DB24` |
+| `0x0202539C` | `0x0835DE1C` | `sub_0833DB24` |
+| `0x020277B4` | `0x08360234` | `sub_08341DA0` |
+| `0x020277C4` | `0x08360244` | `sub_08341DA0` |
+| `0x0202AF44` | `0x083639C4` | `sub_0834468C` |
+
+### EWRAM variables outside the image: 60 literals, 1 hour
+
+The other 60 raw `0x0200xxxx` literals in module C point past the image's
+end (mostly `0x02037xxx`-`0x0203Exxx`) or below its start. These are
+variables with no bytes in the ROM. Replace each with an `extern
+gUnk_<EWRAM address>` and one `symbols.ld` line, as for any RAM variable.
+Leave true constants as literals, such as `0x02000000` (the start of
+EWRAM) in `sub_0833BA00.c`.
+
+These names stay fixed numbers. To make them move with the image, link
+the module's `.bss` as a `NOLOAD` section after `.high_module`. That's a
+separate job.
