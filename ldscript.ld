@@ -84,7 +84,7 @@ SECTIONS
         build/lib/m4a/m4a_1.o(.text);
         build/src/sub_080010CC.o(.text*);
         build/src/sub_08001130.o(.text*);
-        build/asm/rom_08001134.o(.text*);
+        build/src/sub_08001134.o(.text*);
         build/src/sub_08001150.o(.text*);
         build/src/sub_08001170.o(.text*);
         build/src/sub_080011FC.o(.text*);
