@@ -58,9 +58,20 @@ gUnk_0836484C:
 	.4byte sub_0836418C
 	.4byte 0x4A424741
 	.4byte 0
+	.global gUnk_083648A8
+gUnk_083648A8:
 	.incbin "build/assets/graphics/lz_083648A8.bin"
 	.align 2, 0
+	.global gUnk_083648F4
+gUnk_083648F4:
 	.incbin "build/assets/graphics/lz_083648F4.bin"
 	.align 2, 0
+	.global gUnk_08364940
+gUnk_08364940:
 	.incbin "build/assets/graphics/lz_08364940.bin"
 	.incbin "build/assets/unknown/data_08364984.bin"
+	.global gUnk_08364ABC
+gUnk_08364ABC:
+	.4byte gUnk_083648A8
+	.4byte gUnk_083648F4
+	.4byte gUnk_08364940

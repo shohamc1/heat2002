@@ -34,6 +34,81 @@
 @ End embedded Luvdis macros
 	.thumb
 	.incbin "build/assets/unknown/data_08344E68.bin"
+	.global gUnk_0200C668
+gUnk_0200C668:
+	.4byte sub_08339FE8
+	.4byte sub_0833A058
+	.4byte sub_0833A078
+	.4byte sub_0833A094
+	.4byte sub_0833A0A8
+	.4byte sub_08339FE8
+	.4byte sub_08339FE8
+	.4byte sub_08339FE8
+	.4byte sub_08339FE8
+	.4byte sub_0833A0D8
+	.4byte sub_0833A0E4
+	.4byte sub_0833A0F8
+	.4byte sub_0833A10C
+	.4byte sub_0833A13C
+	.4byte sub_0833A150
+	.4byte sub_0833A164
+	.4byte sub_0833A178
+	.4byte sub_0833A764
+	.4byte sub_0833A18C
+	.4byte sub_0833A778
+	.4byte sub_0833A198
+	.4byte sub_08339FE8
+	.4byte sub_08339FE8
+	.4byte sub_0833A1B0
+	.4byte sub_08339FE8
+	.4byte sub_08339FE8
+	.4byte sub_08339FE8
+	.4byte sub_0833A1C4
+	.4byte sub_08339FE8
+	.4byte sub_0833A6FC
+	.4byte sub_0833AD00
+	.4byte sub_0833A488
+	.4byte sub_0833B0B4
+	.4byte sub_0833B134
+	.4byte sub_08339FC8
+	.4byte sub_08339FB0
+	.incbin "build/assets/unknown/data_08345178.bin"
+	.global gUnk_0200C8DC
+gUnk_0200C8DC:
+	.incbin "build/assets/unknown/data_0834535C.bin"
+	.global gUnk_08345390
+gUnk_08345390:
+	.4byte sub_0833BB78
+	.4byte sub_0833BB8C
+	.4byte sub_0833BBD4
+	.4byte sub_0833BB78
+	.4byte sub_0833BBE8
+	.4byte sub_0833BBFC
+	.4byte sub_0833BC10
+	.4byte sub_0833BC24
+	.4byte sub_0833BC38
+	.4byte sub_0833BC44
+	.4byte sub_0833BC50
+	.4byte sub_0833BC64
+	.4byte 0x3C0B
+	.4byte gUnk_083454D4
+	.4byte 0xD0000
+	.4byte 0x3C01
+	.4byte 0x2
+	.4byte 0xF0000
+	.4byte 0x3C0C
+	.4byte 0
+	.4byte 0xF0000
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.incbin "build/assets/unknown/data_083453FC.bin"
+	.global gUnk_083454D4
+gUnk_083454D4:
+	.incbin "build/assets/unknown/data_083454D4.bin"
 	.incbin "build/assets/unknown/data_08349780.bin"
 	.incbin "build/assets/unknown/data_0835041C.bin"
 	.incbin "build/assets/unknown/data_08350528.bin"

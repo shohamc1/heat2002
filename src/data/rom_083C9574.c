@@ -1,6 +1,49 @@
 #include "global.h"
 #include "data.h"
 
+extern const u8 gUnk_08368FAE[];
+extern const u8 gUnk_0836ADC2[];
+extern const u8 gUnk_0836CB40[];
+extern const u8 gUnk_0836E4DA[];
+extern const u8 gUnk_0836FD0A[];
+extern const u8 gUnk_0837157A[];
+extern const u8 gUnk_08375188[];
+extern const u8 gUnk_08377408[];
+extern const u8 gUnk_0837FF6C[];
+extern const u8 gUnk_0838449E[];
+extern const u8 gUnk_08386238[];
+extern const u8 gUnk_08387EDE[];
+extern const u8 gUnk_08389BD2[];
+extern const u8 gUnk_0838BA2E[];
+extern const u8 gUnk_0838E028[];
+extern const u8 gUnk_083905EC[];
+extern const u8 gUnk_08392CEA[];
+extern const u8 gUnk_0839523A[];
+extern const u8 gUnk_08397436[];
+extern const u8 gUnk_08399686[];
+extern const u8 gUnk_0839B788[];
+extern const u8 gUnk_0839DA64[];
+extern const u8 gUnk_0839F3A6[];
+extern const u8 gUnk_083A0DA4[];
+extern const u8 gUnk_083A2964[];
+extern const u8 gUnk_083A4458[];
+extern const u8 gUnk_083A5F3E[];
+extern const u8 gUnk_083A7B28[];
+extern const u8 gUnk_083A9710[];
+extern const u8 gUnk_083AB36C[];
+extern const u8 gUnk_083AD67A[];
+extern const u8 gUnk_083AF9AC[];
+extern const u8 gUnk_083B84C4[];
+extern const u8 gUnk_083BA78E[];
+extern const u8 gUnk_083BBF98[];
+extern const u8 gUnk_083BD77A[];
+extern const u8 gUnk_083BEED8[];
+extern const u8 gUnk_083C07C2[];
+extern const u8 gUnk_083C267E[];
+extern const u8 gUnk_083C4524[];
+extern const u8 gUnk_083C639C[];
+extern const u8 gUnk_083C8362[];
+
 extern const u8 gUnk_083682BC[];
 extern const u8 gUnk_0836844C[];
 extern const u8 gUnk_08368C1C[];
@@ -323,7 +366,56 @@ const u32 gUnk_083C99F4[] = {
     (u32)gUnk_083C6024, (u32)gUnk_083C7F74, (u32)gUnk_083C2304,
     (u32)gUnk_083C2304, (u32)gUnk_083C2304, (u32)gUnk_083C2304
 };
-const u32 gUnk_083C9C34[] = INCBIN_U32("build/assets/unknown/data_083C9C34.bin");
+const u32 gUnk_083C9C34[] = {
+    (u32)gUnk_08368FAE, (u32)gUnk_08368FAE, (u32)gUnk_08368FAE,
+    (u32)gUnk_08368FAE, (u32)gUnk_0836ADC2, (u32)gUnk_0836ADC2,
+    (u32)gUnk_0836ADC2, (u32)gUnk_0836CB40, (u32)gUnk_08368FAE,
+    (u32)gUnk_08368FAE, (u32)gUnk_08368FAE, (u32)gUnk_08368FAE,
+    (u32)gUnk_0836E4DA, (u32)gUnk_0836FD0A, (u32)gUnk_0836FD0A,
+    (u32)gUnk_0836FD0A, (u32)gUnk_0837157A, (u32)gUnk_0837157A,
+    (u32)gUnk_0837157A, (u32)gUnk_0836E4DA, (u32)gUnk_0836E4DA,
+    (u32)gUnk_0836E4DA, (u32)gUnk_0836E4DA, (u32)gUnk_0836E4DA,
+    (u32)gUnk_08375188, (u32)gUnk_08377408, (u32)gUnk_08377408,
+    (u32)gUnk_08377408, (u32)gUnk_0837FF6C, (u32)gUnk_0837FF6C,
+    (u32)gUnk_0837FF6C, (u32)gUnk_0838449E, (u32)gUnk_08375188,
+    (u32)gUnk_08375188, (u32)gUnk_08375188, (u32)gUnk_08375188,
+    (u32)gUnk_08386238, (u32)gUnk_08387EDE, (u32)gUnk_08387EDE,
+    (u32)gUnk_08387EDE, (u32)gUnk_08389BD2, (u32)gUnk_08389BD2,
+    (u32)gUnk_08389BD2, (u32)gUnk_0838BA2E, (u32)gUnk_08386238,
+    (u32)gUnk_08386238, (u32)gUnk_08386238, (u32)gUnk_08386238,
+    (u32)gUnk_0838E028, (u32)gUnk_083905EC, (u32)gUnk_083905EC,
+    (u32)gUnk_083905EC, (u32)gUnk_08392CEA, (u32)gUnk_08392CEA,
+    (u32)gUnk_08392CEA, (u32)gUnk_0839523A, (u32)gUnk_0838E028,
+    (u32)gUnk_0838E028, (u32)gUnk_0838E028, (u32)gUnk_0838E028,
+    (u32)gUnk_08397436, (u32)gUnk_08399686, (u32)gUnk_08399686,
+    (u32)gUnk_08399686, (u32)gUnk_0839B788, (u32)gUnk_0839B788,
+    (u32)gUnk_0839B788, (u32)gUnk_0839DA64, (u32)gUnk_08397436,
+    (u32)gUnk_08397436, (u32)gUnk_08397436, (u32)gUnk_08397436,
+    (u32)gUnk_0839F3A6, (u32)gUnk_083A0DA4, (u32)gUnk_083A0DA4,
+    (u32)gUnk_083A0DA4, (u32)gUnk_083A2964, (u32)gUnk_083A2964,
+    (u32)gUnk_083A2964, (u32)gUnk_083A4458, (u32)gUnk_0839F3A6,
+    (u32)gUnk_0839F3A6, (u32)gUnk_0839F3A6, (u32)gUnk_0839F3A6,
+    (u32)gUnk_0839F3A6, (u32)gUnk_083A0DA4, (u32)gUnk_0839F3A6,
+    (u32)gUnk_0839F3A6, (u32)gUnk_0839F3A6, (u32)gUnk_083A2964,
+    (u32)gUnk_0839F3A6, (u32)gUnk_083A4458, (u32)gUnk_0839F3A6,
+    (u32)gUnk_0839F3A6, (u32)gUnk_0839F3A6, (u32)gUnk_0839F3A6,
+    (u32)gUnk_083A5F3E, (u32)gUnk_083A7B28, (u32)gUnk_083A7B28,
+    (u32)gUnk_083A7B28, (u32)gUnk_083A9710, (u32)gUnk_083A9710,
+    (u32)gUnk_083A9710, (u32)gUnk_083AB36C, (u32)gUnk_083A5F3E,
+    (u32)gUnk_083A5F3E, (u32)gUnk_083A5F3E, (u32)gUnk_083A5F3E,
+    (u32)gUnk_083AD67A, (u32)gUnk_083AF9AC, (u32)gUnk_083AF9AC,
+    (u32)gUnk_083AF9AC, (u32)gUnk_083B84C4, (u32)gUnk_083B84C4,
+    (u32)gUnk_083B84C4, (u32)gUnk_083BA78E, (u32)gUnk_083AD67A,
+    (u32)gUnk_083AD67A, (u32)gUnk_083AD67A, (u32)gUnk_083AD67A,
+    (u32)gUnk_083BBF98, (u32)gUnk_083BD77A, (u32)gUnk_083BD77A,
+    (u32)gUnk_083BD77A, (u32)gUnk_083BEED8, (u32)gUnk_083BEED8,
+    (u32)gUnk_083BEED8, (u32)gUnk_083C07C2, (u32)gUnk_083BBF98,
+    (u32)gUnk_083BBF98, (u32)gUnk_083BBF98, (u32)gUnk_083BBF98,
+    (u32)gUnk_083C267E, (u32)gUnk_083C4524, (u32)gUnk_083C4524,
+    (u32)gUnk_083C4524, (u32)gUnk_083C639C, (u32)gUnk_083C639C,
+    (u32)gUnk_083C639C, (u32)gUnk_083C8362, (u32)gUnk_083C267E,
+    (u32)gUnk_083C267E, (u32)gUnk_083C267E, (u32)gUnk_083C267E
+};
 // Its users declare it as u32 *x[].
 const u32 gUnk_083C9E74[] = {
     (u32)gUnk_0836DD42, (u32)gUnk_0836DD42, (u32)gUnk_0836DD42,

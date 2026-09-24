@@ -49,8 +49,6 @@ ClearChain = sub_08001520;
 FadeOutBody = sub_080019F4;
 TrkVolPitSet = sub_08001A74;
 SoundMainRAM_Buffer = 0x03007000;
-gUnk_0200C8DC = 0x0200C8DC;
-gUnk_0200C668 = 0x0200C668;
 
 SECTIONS
 {
