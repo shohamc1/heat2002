@@ -1,4 +1,5 @@
 #include "global.h"
+#include "data.h"
 
 struct Thing {
     u8 pad00[0x10];
@@ -27,7 +28,6 @@ extern u32 *gUnk_08367640[];
 extern u32 *gUnk_083676B8[];
 extern u32 *gUnk_083681E8[];
 extern u32 *gUnk_083681F8[];
-extern u8 gUnk_08337C20[];
 extern u8 gUnk_0831D0EC[];
 
 u32 AddDepthSortedSprite(u32 a, u32 b, u32 c);

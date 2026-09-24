@@ -1,7 +1,7 @@
 #include "global.h"
+#include "data.h"
 
 extern u8 gUnk_08338720[];
-extern u8 gUnk_08338788[];
 extern u16 gUnk_0202522C;
 
 u32 *sub_0800754C(u32 a);

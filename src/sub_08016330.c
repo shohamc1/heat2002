@@ -1,7 +1,7 @@
 #include "global.h"
+#include "data.h"
 
 extern u8 gOptions[];
-extern u8 gUnk_0829F2AC[];
 extern u8 gUnk_0829F94C[];
 extern u16 gKeysPressed;
 

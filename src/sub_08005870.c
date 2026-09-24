@@ -1,4 +1,5 @@
 #include "global.h"
+#include "data.h"
 
 struct Entry
 {
@@ -16,7 +17,6 @@ struct Unk
 };
 
 extern struct Entry gUnk_08334DE2[];
-extern u16 gUnk_08335A8C[];
 
 void DrawBigDigit(u16 *dest, u8 idx)
 {

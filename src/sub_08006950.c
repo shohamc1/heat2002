@@ -1,8 +1,7 @@
 #include "global.h"
+#include "data.h"
 
 extern u16 *gUnk_08364B08;
-extern u16 gUnk_08332DC8[];
-extern u16 gUnk_08333208[];
 
 void DrawTextCenteredHighlight(u8 *p, u32 a1, u8 a2)
 {

@@ -1,4 +1,5 @@
 #include "global.h"
+#include "data.h"
 
 struct EntityB1A4
 {
@@ -9,7 +10,6 @@ extern u8 gUnk_02022E14;
 extern u8 gOptions[];
 extern u8 gIsDemo;
 extern u32 gUnk_083FF5B0[];
-extern u8 gUnk_08330AD4[];
 extern u8 gUnk_0200215C;
 extern u8 gUnk_020020C4;
 void m4aSongNumStart(u16 idx);

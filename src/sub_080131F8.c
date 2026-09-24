@@ -1,10 +1,10 @@
 #include "global.h"
+#include "data.h"
 
 extern u32 gUnk_083FDE18[];
 extern u8 gUnk_0202EF78[];
 extern u8 gUnk_0202EEB4;
 extern u8 gUnk_0202EDB0;
-extern u8 gUnk_0829F2AC[];
 
 void sub_08006734(u32 r0);
 u32 GetString(u32 a);

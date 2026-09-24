@@ -1,4 +1,5 @@
 #include "global.h"
+#include "data.h"
 
 extern u32 gUnk_083FDE18;
 extern u32 GetString(u16 idx);
@@ -11,10 +12,6 @@ extern u32 gCarOrder[];
 extern u32 gUnk_0202F020[];
 extern u8 gCars[];
 extern u8 gUnk_0202539C;
-extern u8 gUnk_0829F44C[];
-extern u8 gUnk_0829F440[];
-extern u8 gUnk_0829F444[];
-extern u8 gUnk_0829F448[];
 
 void sub_08013E3C(u8 a)
 {

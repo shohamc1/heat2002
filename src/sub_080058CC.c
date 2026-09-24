@@ -1,7 +1,7 @@
 #include "global.h"
+#include "data.h"
 
 extern u16 gUnk_08334E0A[];
-extern u16 gUnk_08335A8C[];
 
 void DrawSmallDigit(u16 *dest, u8 idx)
 {

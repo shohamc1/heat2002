@@ -1,8 +1,8 @@
 #include "global.h"
 #include "gba/defines.h"
+#include "data.h"
 
 extern u16 gUnk_08332D88[];
-extern u16 gUnk_08333208[];
 extern u8 gUnk_0833338C[];
 extern u8 gUnk_08332BC8[];
 

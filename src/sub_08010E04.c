@@ -1,7 +1,7 @@
 #include "global.h"
 #include "gba/compat.h"
+#include "data.h"
 
-extern u8 gUnk_0829F2AC[];
 
 struct Tbl8 {
     u32 p;

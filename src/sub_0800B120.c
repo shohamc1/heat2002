@@ -1,4 +1,5 @@
 #include "global.h"
+#include "data.h"
 
 struct EntityB120 {
     /* 0x00 */ u8 pad0[0x18];
@@ -6,7 +7,6 @@ struct EntityB120 {
 };
 
 extern u32 gUnk_083FF5B0[];        /* 0x083FF5B0 */
-extern u8 gUnk_08330AD4[];         /* 0x08330AD4 */
 extern volatile u8 gIsLinkRace;  /* 0x020020DC */
 extern u8 gUnk_020020C4;           /* 0x020020C4 */
 

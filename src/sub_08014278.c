@@ -1,9 +1,9 @@
 #include "global.h"
 #include "gba/io_reg.h"
+#include "data.h"
 
 extern u16 gKeysPressed;
 extern u8 gOptions[];
-extern u8 gUnk_082EE104[];
 extern void SortCarsByPoints(void);
 extern void ZeroTextLayer(void);
 extern void sub_0800F498(void);

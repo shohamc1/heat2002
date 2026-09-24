@@ -1,4 +1,5 @@
 #include "global.h"
+#include "data.h"
 
 extern u32 gUnk_083FDE18;
 extern u32 GetString(u16 idx);
@@ -10,7 +11,6 @@ extern void SplitMilliseconds(u32 a, u16 *b, u16 *c, u16 *d);
 extern u32 gCarOrder[];
 extern u8 gCars[];
 extern u8 gUnk_0202539C;
-extern u8 gUnk_0829F44C[];
 
 void sub_080150F4(void)
 {

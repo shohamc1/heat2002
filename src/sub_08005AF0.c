@@ -1,13 +1,12 @@
 #include "global.h"
+#include "data.h"
 
 extern u8 gUnk_0202EEB0;
 extern u8 gUnk_02025228;
 extern u16 gUnk_02025398;
 extern u8 gUnk_083387A8[];
-extern u8 gUnk_08338788[];
 extern u32 gUnk_08364B08[];
 extern s32 gUnk_0200209C;
-extern u16 gUnk_08335A8C[];
 extern u8 gUnk_08334DCC[];
 extern u8 gOptions[];
 extern u8 gIsDemo;

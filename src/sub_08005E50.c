@@ -1,4 +1,5 @@
 #include "global.h"
+#include "data.h"
 
 struct Car {
     u8 pad00[0x8C];
@@ -11,7 +12,6 @@ struct Car {
 extern u8 gUnk_0202EEB0;
 extern u32 gUnk_08364B08[];
 extern u8 gUnk_020251F4;
-extern u16 gUnk_08335A8C[];
 extern u8 gUnk_08334DCC[];
 
 void DrawTireWear(struct Car *p)

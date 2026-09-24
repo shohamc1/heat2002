@@ -1,6 +1,6 @@
 #include "global.h"
+#include "data.h"
 
-extern u8 gUnk_0829F2AC[];
 extern u8 *gUnk_083FDDD0[];
 extern u8 gUnk_0202EF20[];
 extern u8 *gUnk_083FDCF0[];

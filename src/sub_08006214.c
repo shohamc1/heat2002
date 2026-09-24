@@ -1,8 +1,8 @@
 #include "global.h"
+#include "data.h"
 
 extern u16 *gUnk_08364B08;         /* ROM word holding a u16* */
 extern u8 gUnk_0202EEB0;           /* 0x0202EEB0 */
-extern u16 gUnk_08335A8C[];
 extern u16 gUnk_08334DCC[];
 
 void sub_08006214(void)

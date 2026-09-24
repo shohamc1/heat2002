@@ -1,7 +1,7 @@
 #include "global.h"
+#include "data.h"
 
 extern u16 gKeysPressed;
-extern u8 gUnk_082EE104[];
 
 extern void ZeroTextLayer(void);
 extern void sub_0800F498(void);

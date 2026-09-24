@@ -10,10 +10,10 @@
  */
 
 #include "global.h"
+#include "data.h"
 
 extern u32 gUnk_08364B08[];
 extern u16 gUnk_08334DCC[];
-extern u16 gUnk_08335A8C[];
 
 void sub_0800920C(u8 arg)
 {
