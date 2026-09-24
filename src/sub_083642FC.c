@@ -6,7 +6,7 @@
 extern u8 RomHeaderMagic;
 extern u32 RomHeaderGameCode;
 extern u32 gUnk_020009B8;
-extern u32 gUnk_020001C8[];
+void sub_083640B0(void);
 extern u8 gUnk_03000000[];
 extern u32 gUnk_03007FFC;
 extern u8 *gUnk_02000BD4[];
@@ -36,7 +36,7 @@ void sub_083642FC(void)
     frame = 0;
     idx = 0;
     sub_08364804(2);
-    DmaCopy32(3, gUnk_020001C8, gUnk_03000000, 0x800);
+    DmaCopy32(3, sub_083640B0, gUnk_03000000, 0x800);
     gUnk_03007FFC = (u32)gUnk_03000000;
     REG_IE = INTR_FLAG_VBLANK;
     if (RomHeaderMagic == 0x96 && RomHeaderGameCode == gUnk_020009B8)

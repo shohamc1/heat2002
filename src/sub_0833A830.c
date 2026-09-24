@@ -15,7 +15,7 @@ struct Unk0801DA90
 
 extern struct Unk0801DA90 gUnk_0200CA74[];
 
-extern u8 gUnk_0200118D[];
+void sub_08339C0C(void);
 extern u8 gNumMusicPlayersHigh[];
 extern void sub_0833AC08(void *a);
 extern void sub_0833AAB8(void *a);
@@ -32,7 +32,7 @@ void sub_0833A830(void)
     u16 cnt;
     u32 off;
 
-    CpuCopy32((u32)gUnk_0200118D & ~1, IWRAM_START + 0x7000, 0x400);
+    CpuCopy32((u32)sub_08339C0C & ~1, IWRAM_START + 0x7000, 0x400);
     sub_0833AC08((void *)EWRAM_START + 0x37E30);
     sub_0833AAB8((void *)EWRAM_START + 0x38E70);
     sub_0833ADA4(0x0097D800);

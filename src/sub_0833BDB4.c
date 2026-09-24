@@ -5,7 +5,7 @@ extern u16 gUnk_02039134;
 extern u8 gUnk_02039194;
 extern u8 gUnk_020390EC;
 extern u8 gUnk_02039190;
-extern u8 gUnk_02003B31[];
+void sub_0833C5B0(void);
 extern u8 gUnk_0200CEC0[];
 extern u8 gUnk_0200CED8[];
 extern u8 gUnk_02038F70[];
@@ -53,7 +53,7 @@ void sub_0833BDB4(void)
     *ds = eight;
     sub_08339B4C();
     gUnk_020390C4 = z1;
-    sub_08339AB8((u32)gUnk_02003B31);
+    sub_08339AB8((u32)sub_0833C5B0);
     *ie = 0x2001;
     *ds = eight;
     sub_0833D250(0x7FFF);

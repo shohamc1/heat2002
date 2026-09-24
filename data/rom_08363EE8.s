@@ -33,3 +33,6 @@
 	.endm
 @ End embedded Luvdis macros
 	.incbin "build/assets/unknown/data_08363EE8.bin"
+	.global gUnk_020000AC
+gUnk_020000AC:
+	.incbin "build/assets/unknown/data_08363F94.bin"

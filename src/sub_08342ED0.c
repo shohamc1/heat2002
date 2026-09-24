@@ -1,7 +1,7 @@
 #include "global.h"
 
 extern u8 gUnk_0203D520[];
-extern u8 gUnk_0200A4CD[];
+void sub_08342F4C(void);
 
 void *sub_0833FF44(void);
 void sub_0833FF94(u32 a);
@@ -38,7 +38,7 @@ void sub_08342ED0(u8 a1, u8 a2)
         q = e + 0xB4;
         q += t;
         p[12] = v2 - *(u32 *)q;
-        p[3] = (u32)gUnk_0200A4CD;
+        p[3] = (u32)sub_08342F4C;
         sub_0833FF94((u32)p);
     }
 }

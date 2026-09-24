@@ -9,7 +9,7 @@ struct Unk08342BA4
 };
 
 extern u8 gUnk_0203DE30[];
-extern u8 gUnk_0200A0D5[];
+void sub_08342B54(void);
 
 u32 sub_08344BB8(u32 a, u32 b);
 u32 sub_08344C50(s32 a, s32 b);
@@ -37,7 +37,7 @@ void sub_08342BA4(u32 a0, u32 a1, u32 a2)
     if (ret != 0)
     {
         ret->field18 = 0x5A;
-        ret->field0C = (u32)gUnk_0200A0D5;
+        ret->field0C = (u32)sub_08342B54;
         sub_0833FF94(ret);
     }
 }

@@ -8,18 +8,18 @@
 extern struct SoundInfo *gUnk_03007FF0;
 extern MPlayFunc gUnk_02038DE0[];
 extern u8 gMaxLines;
-extern u8 gUnk_02002F81;
-extern u8 gUnk_02001CE5;
-extern u8 gUnk_02001CF9;
-extern u8 gUnk_020030D9;
-extern u8 gUnk_02001C7D;
-extern u8 gUnk_02002281;
-extern u8 gUnk_02001A09;
-extern u8 gUnk_02002635;
-extern u8 gUnk_020026B5;
-extern u8 gUnk_020028C9;
-extern u8 gUnk_02002811;
-extern u8 gUnk_02002769;
+void sub_0833BA00(void);
+void sub_0833A764(void);
+void sub_0833A778(void);
+void sub_0833BB58(void);
+void sub_0833A6FC(void);
+void sub_0833AD00(void);
+void sub_0833A488(void);
+void sub_0833B0B4(void);
+void sub_0833B134(void);
+void sub_0833B348(void);
+void sub_0833B290(void);
+void sub_0833B1E8(void);
 
 void sub_0833AAB8(struct CgbChannel *cgbChans)
 {
@@ -41,19 +41,19 @@ void sub_0833AAB8(struct CgbChannel *cgbChans)
     if (ident == ID_NUMBER)
     {
         soundInfo->ident = ident + 1;
-        gUnk_02038DE0[8] = (MPlayFunc)&gUnk_02002F81;
-        gUnk_02038DE0[0x11] = (MPlayFunc)&gUnk_02001CE5;
-        gUnk_02038DE0[0x13] = (MPlayFunc)&gUnk_02001CF9;
-        gUnk_02038DE0[0x1C] = (MPlayFunc)&gUnk_020030D9;
-        gUnk_02038DE0[0x1D] = (MPlayFunc)&gUnk_02001C7D;
-        gUnk_02038DE0[0x1E] = (MPlayFunc)&gUnk_02002281;
-        gUnk_02038DE0[0x1F] = (MPlayFunc)&gUnk_02001A09;
-        gUnk_02038DE0[0x20] = (MPlayFunc)&gUnk_02002635;
-        gUnk_02038DE0[0x21] = (MPlayFunc)&gUnk_020026B5;
+        gUnk_02038DE0[8] = (MPlayFunc)sub_0833BA00;
+        gUnk_02038DE0[0x11] = (MPlayFunc)sub_0833A764;
+        gUnk_02038DE0[0x13] = (MPlayFunc)sub_0833A778;
+        gUnk_02038DE0[0x1C] = (MPlayFunc)sub_0833BB58;
+        gUnk_02038DE0[0x1D] = (MPlayFunc)sub_0833A6FC;
+        gUnk_02038DE0[0x1E] = (MPlayFunc)sub_0833AD00;
+        gUnk_02038DE0[0x1F] = (MPlayFunc)sub_0833A488;
+        gUnk_02038DE0[0x20] = (MPlayFunc)sub_0833B0B4;
+        gUnk_02038DE0[0x21] = (MPlayFunc)sub_0833B134;
         soundInfo->cgbChans = cgbChans;
-        soundInfo->CgbSound = (CgbSoundFunc)&gUnk_020028C9;
-        soundInfo->CgbOscOff = (CgbOscOffFunc)&gUnk_02002811;
-        soundInfo->MidiKeyToCgbFreq = (MidiKeyToCgbFreqFunc)&gUnk_02002769;
+        soundInfo->CgbSound = (CgbSoundFunc)sub_0833B348;
+        soundInfo->CgbOscOff = (CgbOscOffFunc)sub_0833B290;
+        soundInfo->MidiKeyToCgbFreq = (MidiKeyToCgbFreqFunc)sub_0833B1E8;
         soundInfo->maxLines = (u8)(u32)&gMaxLines;
         CpuFill32(0, (u32)cgbChans, 0x100);
         cgbChans[0].type = 1;

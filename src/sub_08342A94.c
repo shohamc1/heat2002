@@ -2,7 +2,7 @@
 
 extern u8 gUnk_0203916C;
 extern u8 gUnk_020390D4;
-extern void gUnk_02009F39(void);
+void sub_083429B8(void);
 extern u32 gUnk_0203DE24;
 
 void *sub_0833FF44(void);
@@ -29,7 +29,7 @@ void sub_08342A94(void)
     if (r4 != 0)
     {
         *(u32 *)(r4 + 0x18) = 0;
-        *(u32 *)(r4 + 0x0C) = (u32)gUnk_02009F39;
+        *(u32 *)(r4 + 0x0C) = (u32)sub_083429B8;
         sub_0833FF94(r4);
         gUnk_0203DE24 = r4;
     }

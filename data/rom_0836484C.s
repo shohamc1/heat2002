@@ -69,6 +69,8 @@ gUnk_083648F4:
 	.global gUnk_08364940
 gUnk_08364940:
 	.incbin "build/assets/graphics/lz_08364940.bin"
+	.global gUnk_02000A9C
+gUnk_02000A9C:
 	.incbin "build/assets/unknown/data_08364984.bin"
 	.global gUnk_08364ABC
 gUnk_08364ABC:
