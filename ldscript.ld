@@ -353,7 +353,7 @@ SECTIONS
         build/src/sub_0800AD80.o(.text*);
         build/src/sub_0800AE94.o(.text*);
         build/src/sub_0800AF20.o(.text*);
-        build/asm/rom_0800AF44.o(.text*);
+        build/src/sub_0800AF44.o(.text*);
         build/src/sub_0800AFF0.o(.text*);
         build/asm/rom_0800B030.o(.text*);
         build/src/sub_0800B09C.o(.text*);
