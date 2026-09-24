@@ -60,6 +60,7 @@ RAM_LINK_OVERRIDES = {
     "sub_08364550": 0x02000668,  # multiboot island module
     "sub_08340EFC": 0x0200847C,  # high-region RAM module (delta 0x6338A80)
     "sub_08341288": 0x02008808,  # same module
+    "sub_0833BA00": 0x02002F80,  # m4a high copy, same module image
 }
 
 # Extra objects for RAM-module links: symbols.ld absolutes carry no Thumb
@@ -68,6 +69,7 @@ RAM_LINK_OVERRIDES = {
 RAM_LINK_EXTRA_OBJECTS = {
     "sub_08340EFC": "build/ram/aliases_0834.o",
     "sub_08341288": "build/ram/aliases_0834.o",
+    "sub_0833BA00": "build/ram/aliases_0834.o",
 }
 
 
