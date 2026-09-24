@@ -53,7 +53,7 @@ extern u32 gUnk_08364AE0[];        /* 0x08364AE0 */
 extern u8 gUnk_08364AF4[];         /* 0x08364AF4 */
 extern u8 gUnk_0806C678[];         /* 0x0806C678 */
 
-extern void _08002718(void);
+extern void sub_08002718(void);
 extern void WaitForVBlank(void);
 extern void m4aMPlayFadeOut(void *a, u32 b);
 extern void m4aSongNumStart(u16 idx);
@@ -144,7 +144,7 @@ u8 RunRace(u32 a, u8 b)
     sub_08006A14(gTrackId);
     sub_08004944(gTrackId);
     sub_080063B0();
-    _08002718();
+    sub_08002718();
     gUnk_02002148 = 0x100;
     sub_080040E0(0x32);
     LoadTrackWalls(gTrackId);
