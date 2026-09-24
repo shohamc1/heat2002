@@ -10,7 +10,7 @@ struct UnkCarB764 {
 };
 
 extern struct UnkCarB764 gCars[];   /* 0x0202A550 */
-extern u8 gCallback_0800B7E1[];             /* Thumb entry: 0x0800B7E0 | 1 */
+void sub_0800B7E0(void);
 
 u32 AllocTask(void);
 void AddTask(u32 a);
@@ -35,7 +35,7 @@ void sub_0800B764(u8 a, u8 b)
         *(u32 *)(r + 0x08) = v2;
         *(u32 *)(r + 0x28) = v1 - car->unkA4[b];
         *(u32 *)(r + 0x30) = v2 - car->unkB4[b];
-        *(u32 *)(r + 0x0C) = (u32)gCallback_0800B7E1;
+        *(u32 *)(r + 0x0C) = (u32)sub_0800B7E0;
         AddTask(r);
     }
 }

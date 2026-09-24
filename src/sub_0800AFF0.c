@@ -2,7 +2,7 @@
 
 extern u8 gUnk_020021E0;
 extern u8 gUnk_02002098;
-extern u8 gCallback_0800AF45[];   /* Thumb entry: function address | 1 */
+void RaceEndTask(void);
 
 u32 AllocTask(void);
 void AddTask(u32 a);
@@ -17,7 +17,7 @@ void EndRace(void)
         {
             r[7] = gUnk_02002098;
             r[6] = 0x64;
-            r[3] = (u32)gCallback_0800AF45;
+            r[3] = (u32)RaceEndTask;
             AddTask((u32)r);
         }
         *p = 1;

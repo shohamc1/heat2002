@@ -4,7 +4,7 @@
 /* The cancelling offset preserves the initial base-to-p copy.
    Assigning off = 4 inside the loop keeps base + 4 out of the preheader. */
 
-extern u8 gUnk_0800054D[];
+void SoundMainRAM(void);
 extern u8 gNumMusicPlayersLow[];
 extern u8 gUnk_02000DE0[];
 extern u8 gUnk_02001E20[];
@@ -34,7 +34,7 @@ void sub_08001170(void)
     u16 cnt;
     u32 off;
 
-    CpuCopy32((u32)gUnk_0800054D & ~1, IWRAM_START + 0x7000, 0x400);
+    CpuCopy32((u32)SoundMainRAM & ~1, IWRAM_START + 0x7000, 0x400);
     sub_08001548(gUnk_02000DE0);
     sub_080013F8(gUnk_02001E20);
     sub_080016E4(0x0097EA00);

@@ -2,7 +2,7 @@
 #include "gba/compat.h"
 
 extern u8 gIsDemo;
-extern u8 gCallback_08006095[];   /* Thumb entry: function address | 1 */
+void UpdateRaceHud(void);
 extern u8 gUnk_0806C784[];
 
 u32 AllocTask(void);
@@ -21,7 +21,7 @@ void InitRaceHud(void)
         return;
     r = (u32 *)AllocTask();
     if (r != 0) {
-        r[3] = (u32)gCallback_08006095;
+        r[3] = (u32)UpdateRaceHud;
         AddTask((u32)r);
     }
     sub_08006214();

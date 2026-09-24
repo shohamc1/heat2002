@@ -2,7 +2,7 @@
 
 extern u8 gUnk_020020B4;
 extern u16 gUnk_02002124;
-extern u8 gUnk_0800306D[];
+void MainVBlankCallback(void);
 
 void RegisterRamReset(u32 r0);
 void InitIntrHandlers(void);
@@ -37,7 +37,7 @@ void GameMain(void)
     *ds = eight;
     ReadKeys();
     gUnk_020020B4 = z1;
-    SetVBlankCallback((u32)gUnk_0800306D);
+    SetVBlankCallback((u32)MainVBlankCallback);
     *ie = 0x2001;
     *ds = eight;
     FillFadePalette(0x7FFF);

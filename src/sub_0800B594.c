@@ -1,7 +1,7 @@
 #include "global.h"
 
 extern u8 gUnk_083682B0[];
-extern u8 gCallback_0800B5D5[];   /* Thumb entry: function address | 1 */
+void sub_0800B5D4(void);
 
 u32 AllocTask(void);
 void AddTask(u32 a);
@@ -17,7 +17,7 @@ void sub_0800B594(void)
             r[7] = i << 5;
             r[0] = gUnk_083682B0[i];
             r[1] = 0x28;
-            r[3] = (u32)gCallback_0800B5D5;
+            r[3] = (u32)sub_0800B5D4;
             AddTask((u32)r);
         }
         i++;

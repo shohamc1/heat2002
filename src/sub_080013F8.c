@@ -7,14 +7,14 @@
 extern struct SoundInfo *gUnk_03007FF0;
 extern MPlayFunc gUnk_02001D90[];
 extern u8 gMaxLines;
-extern u8 gUnk_08002341;
-extern u8 gUnk_080010A5;
-extern u8 gUnk_080010B9;
-extern u8 gUnk_08002499;
-extern u8 gUnk_0800103D;
-extern u8 gUnk_08001C89;
-extern u8 gUnk_08001BD1;
-extern u8 gUnk_08001B29;
+void sub_08002340(void);
+void ply_lfos(void);
+void ply_mod(void);
+void sub_08002498(void);
+void ply_endtie(void);
+void sub_08001C88(void);
+void sub_08001BD0(void);
+void sub_08001B28(void);
 
 extern void sub_08001640(u32 a);
 extern void sub_080019F4(void);
@@ -40,19 +40,19 @@ void sub_080013F8(struct CgbChannel *cgbChans)
     if (ident == ID_NUMBER)
     {
         soundInfo->ident = ident + 1;
-        gUnk_02001D90[8] = (MPlayFunc)&gUnk_08002341;
-        gUnk_02001D90[0x11] = (MPlayFunc)&gUnk_080010A5;
-        gUnk_02001D90[0x13] = (MPlayFunc)&gUnk_080010B9;
-        gUnk_02001D90[0x1C] = (MPlayFunc)&gUnk_08002499;
-        gUnk_02001D90[0x1D] = (MPlayFunc)&gUnk_0800103D;
+        gUnk_02001D90[8] = (MPlayFunc)sub_08002340;
+        gUnk_02001D90[0x11] = (MPlayFunc)ply_lfos;
+        gUnk_02001D90[0x13] = (MPlayFunc)ply_mod;
+        gUnk_02001D90[0x1C] = (MPlayFunc)sub_08002498;
+        gUnk_02001D90[0x1D] = (MPlayFunc)ply_endtie;
         gUnk_02001D90[0x1E] = (MPlayFunc)sub_08001640;
         gUnk_02001D90[0x1F] = (MPlayFunc)TrackStop;
         gUnk_02001D90[0x20] = (MPlayFunc)sub_080019F4;
         gUnk_02001D90[0x21] = (MPlayFunc)sub_08001A74;
         soundInfo->cgbChans = cgbChans;
-        soundInfo->CgbSound = (CgbSoundFunc)&gUnk_08001C89;
-        soundInfo->CgbOscOff = (CgbOscOffFunc)&gUnk_08001BD1;
-        soundInfo->MidiKeyToCgbFreq = (MidiKeyToCgbFreqFunc)&gUnk_08001B29;
+        soundInfo->CgbSound = (CgbSoundFunc)sub_08001C88;
+        soundInfo->CgbOscOff = (CgbOscOffFunc)sub_08001BD0;
+        soundInfo->MidiKeyToCgbFreq = (MidiKeyToCgbFreqFunc)sub_08001B28;
         soundInfo->maxLines = (u8)(u32)&gMaxLines;
         CpuFill32(0, (u32)cgbChans, 0x100);
         cgbChans[0].type = 1;

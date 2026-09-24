@@ -1,7 +1,7 @@
 #include "global.h"
 
 extern u8 gUnk_0202CC10[];         /* 0x0202CC10 */
-extern void gUnk_0800B385(void);   /* Thumb entry: 0x0800B384 | 1 */
+void sub_0800B384(void);
 
 u32 AllocTask(void);
 void AddTask(u32 a);
@@ -24,7 +24,7 @@ void sub_0800B3D4(s32 a, s32 b, s32 c)
     r = AllocTask();
     if (r != 0) {
         *(u32 *)(r + 0x18) = 0x5A;
-        *(u32 *)(r + 0x0C) = (u32)gUnk_0800B385;
+        *(u32 *)(r + 0x0C) = (u32)sub_0800B384;
         AddTask(r);
     }
 }

@@ -4,7 +4,7 @@
 /* MPlayOpen */
 
 extern u32 gUnk_03007FF0[];
-extern u8 gCallback_08000B69[];   /* Thumb entry: function address | 1 */
+void MPlayMain(void);
 
 void sub_08001534(u32 r0);
 
@@ -40,7 +40,7 @@ void sub_08001888(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *tr
         soundInfo->MPlayMainHead = NULL;
     }
     soundInfo->musicPlayerHead = r7;
-    soundInfo->MPlayMainHead = (MPlayMainFunc)gCallback_08000B69;
+    soundInfo->MPlayMainHead = (MPlayMainFunc)MPlayMain;
     soundInfo->ident = ID_NUMBER;
     r7->ident = ID_NUMBER;
 }
