@@ -38,6 +38,20 @@ typedef volatile u32 vu32;
 #define T1_READ_16(ptr) ((ptr)[0] | ((ptr)[1] << 8))
 #define T1_READ_32(ptr) ((ptr)[0] | ((ptr)[1] << 8) | ((ptr)[2] << 16) | ((ptr)[3] << 24))
 
+// INCBIN_U8("build/assets/...") and its siblings expand to the file's contents
+// as an array initialiser, as in pokeemerald. The build's cpp runs with
+// -undef, so these stay undefined there and tools/bin/preproc expands each
+// call after cpp. This stub only keeps an IDE's parser quiet.
+#if defined(__APPLE__) || defined(__CYGWIN__) || defined(__clang__)
+#define INCBIN(...) {0}
+#define INCBIN_U8   INCBIN
+#define INCBIN_U16  INCBIN
+#define INCBIN_U32  INCBIN
+#define INCBIN_S8   INCBIN
+#define INCBIN_S16  INCBIN
+#define INCBIN_S32  INCBIN
+#endif // IDE support
+
 #define NAKED __attribute__((naked))
 
 // A function still in asm, kept in its C file so the file can be partly

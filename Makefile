@@ -5,6 +5,8 @@ AS      := arm-none-eabi-as
 LD      := arm-none-eabi-ld
 OBJCOPY := arm-none-eabi-objcopy
 CC1     := tools/agbcc/old_agbcc
+# Expands INCBIN_U8/U16/U32 in C after cpp (include/global.h).
+PREPROC := tools/bin/preproc
 # binutils ships no arm-none-eabi-cpp; agbcc does the compiling, so any C
 # preprocessor works here. -undef/-nostdinc keep the host's macros and headers
 # out of a build that must reproduce a 2002 ROM.
@@ -102,7 +104,9 @@ OBJS     := $(C_SRCS:%.c=$(BUILD)/%.o) $(DATA_SRCS:%.s=$(BUILD)/%.o) \
 .PHONY: all check check-code test clean disasm tools convert
 all: $(TARGET).gba
 
-# Each C file is preprocessed, run through agbcc, then assembled. The .s
+# Each C file is preprocessed, run through preproc (which expands INCBIN_*
+# calls into array initialisers), compiled by agbcc, then assembled. preproc
+# writes to a file rather than a pipe, so a failure stops the build. The .s
 # intermediate is kept -- it's what you diff against the target asm when a
 # function doesn't match.
 #
@@ -131,10 +135,11 @@ HIGH_LIBGCC_REDEFINES := --redefine-sym __divsi3=sub_08344BB8 \
 	--redefine-sym __muldi3=sub_08344D20 --redefine-sym __negdi2=sub_08344D90
 # ponytail: every C object depends on every .inc; per-file deps (scaninc)
 # if that rebuild gets slow.
-$(BUILD)/src/%.o: src/%.c $(wildcard include/*.h) $(ASM_INCS) Makefile
+$(BUILD)/src/%.o: src/%.c $(wildcard include/*.h) $(ASM_INCS) Makefile $(PREPROC)
 	@mkdir -p $(@D)
 	$(CPP) $(CPPFLAGS) $< -o $(BUILD)/src/$*.i
-	$(CC1) $(CFLAGS) $(BUILD)/src/$*.i -o $(BUILD)/src/$*.s
+	$(PREPROC) $(TARGET) $(BUILD)/src/$*.i > $(BUILD)/src/$*.pp.i
+	$(CC1) $(CFLAGS) $(BUILD)/src/$*.pp.i -o $(BUILD)/src/$*.s
 	printf '\t.align 2, 0\n' >> $(BUILD)/src/$*.s
 	$(AS) $(ASFLAGS) -I include -o $@ $(BUILD)/src/$*.s
 	$(if $(filter $(HIGH_LIBGCC_OBJS),$@),$(OBJCOPY) $(HIGH_LIBGCC_REDEFINES) $@)
@@ -277,6 +282,12 @@ tools/bin/aif2pcm: $(wildcard $(TMC_SRC)/aif2pcm/*)
 tools/bin/gbagfx: $(wildcard $(TMC_SRC)/gbagfx/*)
 	@mkdir -p $(@D)
 	cc -O2 -w $(shell pkg-config --cflags libpng) -o $@ $(TMC_SRC)/gbagfx/*.c $(shell pkg-config --libs libpng)
+
+# preproc expands INCBIN_* in C, as in pokeemerald. Every C file goes
+# through it.
+$(PREPROC): $(wildcard $(TMC_SRC)/preproc/*)
+	@mkdir -p $(@D)
+	c++ -std=c++17 -O2 -w -o $@ $(TMC_SRC)/preproc/*.cpp
 
 # gbafix writes the cartridge header fields that lib/rom_header.s leaves
 # empty. Every build needs it, not only `make convert`.
