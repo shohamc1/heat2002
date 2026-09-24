@@ -174,19 +174,3 @@ _0833C6C6:
 _0833C6E8: .4byte 0x020390D0
 _0833C6EC: .4byte 0x04000208
 _0833C6F0: .4byte 0x03007FF8
-	thumb_func_start sub_0833C6F4
-sub_0833C6F4:
-	lsls r0, r0, #0x10
-	movs r1, #0xFE
-	lsls r1, r1, #0x0F
-	ands r1, r0
-	lsrs r1, r1, #0x10
-	cmp r1, #0x7F
-	beq _0833C706
-	movs r0, #0x01
-	b _0833C708
-_0833C706:
-	movs r0, #0x00
-_0833C708:
-	bx lr
-	.byte 0x00, 0x00
