@@ -743,43 +743,89 @@
 	.incbin "build/assets/graphics/rl_0832FA04.bin"
 	.align 2, 0
 	.incbin "build/assets/unknown/data_0832FA48.bin"
+	.global gUnk_0832FA68
+gUnk_0832FA68:
 	.incbin "build/assets/graphics/rl_0832FA68.bin"
 	.align 2, 0
+	.global gUnk_0832FB20
+gUnk_0832FB20:
 	.incbin "build/assets/graphics/rl_0832FB20.bin"
 	.align 2, 0
+	.global gUnk_0832FBD8
+gUnk_0832FBD8:
 	.incbin "build/assets/graphics/rl_0832FBD8.bin"
+	.global gUnk_0832FC88
+gUnk_0832FC88:
 	.incbin "build/assets/graphics/rl_0832FC88.bin"
 	.align 2, 0
+	.global gUnk_0832FD24
+gUnk_0832FD24:
 	.incbin "build/assets/graphics/rl_0832FD24.bin"
 	.align 2, 0
+	.global gUnk_0832FDBC
+gUnk_0832FDBC:
 	.incbin "build/assets/graphics/rl_0832FDBC.bin"
 	.align 2, 0
+	.global gUnk_0832FE58
+gUnk_0832FE58:
 	.incbin "build/assets/graphics/rl_0832FE58.bin"
 	.align 2, 0
+	.global gUnk_0832FF34
+gUnk_0832FF34:
 	.incbin "build/assets/graphics/rl_0832FF34.bin"
 	.align 2, 0
+	.global gUnk_0832FFFC
+gUnk_0832FFFC:
 	.incbin "build/assets/graphics/rl_0832FFFC.bin"
 	.align 2, 0
+	.global gUnk_083300C8
+gUnk_083300C8:
 	.incbin "build/assets/graphics/rl_083300C8.bin"
+	.global gUnk_0833018C
+gUnk_0833018C:
 	.incbin "build/assets/graphics/rl_0833018C.bin"
 	.align 2, 0
+	.global gUnk_08330240
+gUnk_08330240:
 	.incbin "build/assets/graphics/rl_08330240.bin"
 	.align 2, 0
+	.global gUnk_083302FC
+gUnk_083302FC:
 	.incbin "build/assets/graphics/rl_083302FC.bin"
+	.global gUnk_083303BC
+gUnk_083303BC:
 	.incbin "build/assets/graphics/rl_083303BC.bin"
+	.global gUnk_08330468
+gUnk_08330468:
 	.incbin "build/assets/graphics/rl_08330468.bin"
 	.align 2, 0
+	.global gUnk_08330504
+gUnk_08330504:
 	.incbin "build/assets/graphics/rl_08330504.bin"
 	.align 2, 0
+	.global gUnk_0833059C
+gUnk_0833059C:
 	.incbin "build/assets/graphics/rl_0833059C.bin"
 	.align 2, 0
+	.global gUnk_08330628
+gUnk_08330628:
 	.incbin "build/assets/graphics/rl_08330628.bin"
 	.align 2, 0
+	.global gUnk_083306FC
+gUnk_083306FC:
 	.incbin "build/assets/graphics/rl_083306FC.bin"
+	.global gUnk_083307BC
+gUnk_083307BC:
 	.incbin "build/assets/graphics/rl_083307BC.bin"
 	.align 2, 0
+	.global gUnk_08330880
+gUnk_08330880:
 	.incbin "build/assets/graphics/rl_08330880.bin"
 	.align 2, 0
+	.global gUnk_0833095C
+gUnk_0833095C:
 	.incbin "build/assets/graphics/rl_0833095C.bin"
 	.align 2, 0
+	.global gUnk_08330A1C
+gUnk_08330A1C:
 	.incbin "build/assets/graphics/rl_08330A1C.bin"

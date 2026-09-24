@@ -103,6 +103,8 @@
 	.incbin "build/assets/unknown/data_082CBA48.bin"
 	.incbin "build/assets/graphics/rl_082CBC48.bin"
 	.align 2, 0
+	.global gUnk_082CC5D8
+gUnk_082CC5D8:
 	.incbin "build/assets/unknown/data_082CC5D8.bin"
 	.incbin "build/assets/graphics/rl_082CC7D8.bin"
 	.align 2, 0

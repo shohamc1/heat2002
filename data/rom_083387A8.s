@@ -36,19 +36,35 @@
 	.incbin "build/assets/graphics/rl_083387A8.bin"
 	.align 2, 0
 	.incbin "build/assets/unknown/data_083387F0.bin"
+	.global gUnk_08338810
+gUnk_08338810:
 	.incbin "build/assets/graphics/rl_08338810.bin"
 	.align 2, 0
+	.global gUnk_08338980
+gUnk_08338980:
 	.incbin "build/assets/graphics/rl_08338980.bin"
 	.align 2, 0
+	.global gUnk_08338AFC
+gUnk_08338AFC:
 	.incbin "build/assets/graphics/rl_08338AFC.bin"
 	.align 2, 0
+	.global gUnk_08338C6C
+gUnk_08338C6C:
 	.incbin "build/assets/graphics/rl_08338C6C.bin"
 	.align 2, 0
+	.global gUnk_08338DF0
+gUnk_08338DF0:
 	.incbin "build/assets/graphics/rl_08338DF0.bin"
 	.align 2, 0
+	.global gUnk_08338F5C
+gUnk_08338F5C:
 	.incbin "build/assets/graphics/rl_08338F5C.bin"
 	.align 2, 0
+	.global gUnk_083390C8
+gUnk_083390C8:
 	.incbin "build/assets/graphics/rl_083390C8.bin"
 	.align 2, 0
+	.global gUnk_0833923C
+gUnk_0833923C:
 	.incbin "build/assets/graphics/rl_0833923C.bin"
 	.align 2, 0

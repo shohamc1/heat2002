@@ -33,8 +33,14 @@
 	.endm
 @ End embedded Luvdis macros
 	.thumb
+	.global gUnk_0807CA7C
+gUnk_0807CA7C:
 	.incbin "build/assets/graphics/lz_0807CA7C.bin"
 	.align 2, 0
+	.global gUnk_0807CAC8
+gUnk_0807CAC8:
 	.incbin "build/assets/graphics/lz_0807CAC8.bin"
 	.align 2, 0
+	.global gUnk_0807CB14
+gUnk_0807CB14:
 	.incbin "build/assets/graphics/lz_0807CB14.bin"

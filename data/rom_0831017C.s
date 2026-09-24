@@ -64,6 +64,8 @@
 	.incbin "build/assets/unknown/data_0831A0E4.bin"
 	.incbin "build/assets/unknown/data_0831A210.bin"
 	.incbin "build/assets/unknown/data_0831A450.bin"
+	.global gUnk_0831C850
+gUnk_0831C850:
 	.incbin "build/assets/graphics/rl_0831C850.bin"
 	.align 2, 0
 	.incbin "build/assets/unknown/data_0831C878.bin"

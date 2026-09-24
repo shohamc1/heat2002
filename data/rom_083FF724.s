@@ -32,7 +32,15 @@
 	.size \name, .-\name
 	.endm
 @ End embedded Luvdis macros
+	.global gUnk_083FF724
+gUnk_083FF724:
 	.incbin "build/assets/unknown/data_083FF724.bin"
+	.global gUnk_083FF740
+gUnk_083FF740:
 	.incbin "build/assets/unknown/data_083FF740.bin"
+	.global gUnk_083FF75C
+gUnk_083FF75C:
 	.incbin "build/assets/unknown/data_083FF75C.bin"
+	.global gUnk_083FF778
+gUnk_083FF778:
 	.incbin "build/assets/unknown/data_083FF778.bin"

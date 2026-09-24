@@ -1,5 +1,29 @@
 #include "global.h"
 #include "data.h"
 
+extern const u8 sample_0801DBC0[];
+extern const u8 sample_0801E4C8[];
+extern const u8 sample_0801F84C[];
+extern const u8 sample_08020018[];
+extern const u8 sample_08021F6C[];
+void sub_080024B8(void);
+void sub_080024CC(void);
+void sub_08002514(void);
+void sub_08002528(void);
+void sub_0800253C(void);
+void sub_08002550(void);
+void sub_08002564(void);
+void sub_08002578(void);
+void sub_08002584(void);
+void sub_08002590(void);
+void sub_080025A4(void);
+
 // Its users declare it as MPlayFunc x[].
-const u32 gUnk_0801D230[] = INCBIN_U32("build/assets/unknown/data_0801D230.bin");
+const u32 gUnk_0801D230[] = {
+    (u32)sub_080024B8, (u32)sub_080024CC, (u32)sub_08002514, (u32)sub_080024B8,
+    (u32)sub_08002528, (u32)sub_0800253C, (u32)sub_08002550, (u32)sub_08002564,
+    (u32)sub_08002578, (u32)sub_08002584, (u32)sub_08002590, (u32)sub_080025A4,
+    0x3C00, (u32)sample_0801DBC0, 0xFF00FF, 0x3C00, (u32)sample_0801E4C8,
+    0xFF00FF, 0x3C00, (u32)sample_0801F84C, 0xFF00FF, 0x3C00,
+    (u32)sample_08020018, 0xFF00FF, 0x3C00, (u32)sample_08021F6C, 0xFF00FF
+};

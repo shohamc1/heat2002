@@ -56,6 +56,8 @@
 	.align 2, 0
 	.incbin "build/assets/graphics/rl_082F9360.bin"
 	.align 2, 0
+	.global gUnk_082F98C0
+gUnk_082F98C0:
 	.incbin "build/assets/unknown/data_082F98C0.bin"
 	.incbin "build/assets/graphics/rl_082F9AC0.bin"
 	.align 2, 0
@@ -65,6 +67,8 @@
 	.align 2, 0
 	.incbin "build/assets/graphics/rl_082FB3FC.bin"
 	.align 2, 0
+	.global gUnk_082FB6AC
+gUnk_082FB6AC:
 	.incbin "build/assets/unknown/data_082FB6AC.bin"
 	.incbin "build/assets/graphics/rl_082FB8AC.bin"
 	.incbin "build/assets/graphics/rl_082FC150.bin"
@@ -72,6 +76,8 @@
 	.incbin "build/assets/graphics/rl_082FCA94.bin"
 	.incbin "build/assets/graphics/rl_082FCAD8.bin"
 	.align 2, 0
+	.global gUnk_082FD0F8
+gUnk_082FD0F8:
 	.incbin "build/assets/unknown/data_082FD0F8.bin"
 	.incbin "build/assets/graphics/rl_082FD2F8.bin"
 	.incbin "build/assets/graphics/rl_082FDFE0.bin"
@@ -79,6 +85,8 @@
 	.align 2, 0
 	.incbin "build/assets/graphics/rl_082FEDC4.bin"
 	.align 2, 0
+	.global gUnk_082FF41C
+gUnk_082FF41C:
 	.incbin "build/assets/unknown/data_082FF41C.bin"
 	.incbin "build/assets/graphics/rl_082FF61C.bin"
 	.align 2, 0
@@ -87,6 +95,8 @@
 	.align 2, 0
 	.incbin "build/assets/graphics/rl_0830076C.bin"
 	.align 2, 0
+	.global gUnk_08300BCC
+gUnk_08300BCC:
 	.incbin "build/assets/unknown/data_08300BCC.bin"
 	.incbin "build/assets/graphics/rl_08300DCC.bin"
 	.align 2, 0
@@ -95,6 +105,8 @@
 	.incbin "build/assets/graphics/rl_083024A8.bin"
 	.incbin "build/assets/graphics/rl_08302764.bin"
 	.align 2, 0
+	.global gUnk_08302E00
+gUnk_08302E00:
 	.incbin "build/assets/unknown/data_08302E00.bin"
 	.incbin "build/assets/graphics/rl_08303000.bin"
 	.align 2, 0
@@ -103,6 +115,8 @@
 	.incbin "build/assets/graphics/rl_083040FC.bin"
 	.align 2, 0
 	.incbin "build/assets/graphics/rl_08304558.bin"
+	.global gUnk_083049FC
+gUnk_083049FC:
 	.incbin "build/assets/unknown/data_083049FC.bin"
 	.incbin "build/assets/graphics/rl_08304BFC.bin"
 	.align 2, 0
@@ -112,6 +126,8 @@
 	.align 2, 0
 	.incbin "build/assets/graphics/rl_08305D8C.bin"
 	.align 2, 0
+	.global gUnk_08306238
+gUnk_08306238:
 	.incbin "build/assets/unknown/data_08306238.bin"
 	.incbin "build/assets/graphics/rl_08306438.bin"
 	.align 2, 0
@@ -121,6 +137,8 @@
 	.align 2, 0
 	.incbin "build/assets/graphics/rl_08308110.bin"
 	.align 2, 0
+	.global gUnk_0830877C
+gUnk_0830877C:
 	.incbin "build/assets/unknown/data_0830877C.bin"
 	.incbin "build/assets/graphics/rl_0830897C.bin"
 	.incbin "build/assets/graphics/rl_083091D8.bin"
@@ -128,6 +146,8 @@
 	.align 2, 0
 	.incbin "build/assets/graphics/rl_0830A550.bin"
 	.align 2, 0
+	.global gUnk_0830AB68
+gUnk_0830AB68:
 	.incbin "build/assets/unknown/data_0830AB68.bin"
 	.incbin "build/assets/graphics/rl_0830AD68.bin"
 	.incbin "build/assets/graphics/rl_0830B484.bin"
@@ -135,6 +155,8 @@
 	.incbin "build/assets/graphics/rl_0830BDF0.bin"
 	.incbin "build/assets/graphics/rl_0830C23C.bin"
 	.align 2, 0
+	.global gUnk_0830CA10
+gUnk_0830CA10:
 	.incbin "build/assets/unknown/data_0830CA10.bin"
 	.incbin "build/assets/graphics/rl_0830CC10.bin"
 	.align 2, 0
@@ -144,11 +166,15 @@
 	.align 2, 0
 	.incbin "build/assets/graphics/rl_0830E358.bin"
 	.align 2, 0
+	.global gUnk_0830E418
+gUnk_0830E418:
 	.incbin "build/assets/unknown/data_0830E418.bin"
 	.incbin "build/assets/graphics/rl_0830E618.bin"
 	.incbin "build/assets/unknown/data_0830E670.bin"
 	.incbin "build/assets/graphics/rl_0830E690.bin"
 	.align 2, 0
 	.incbin "build/assets/unknown/data_0830E6EC.bin"
+	.global gUnk_0830E70C
+gUnk_0830E70C:
 	.incbin "build/assets/graphics/rl_0830E70C.bin"
 	.align 2, 0
