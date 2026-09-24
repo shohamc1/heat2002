@@ -1,6 +1,6 @@
 # Decompilation queue: the last 208 functions
 
-This file ranks the 149 game-code functions left at 852 / 1001 matched
+This file ranks the 131 game-code functions left at 870 / 1001 matched
 (2026-09-24). Work top to bottom. Each tier makes the next one cheaper, and
 inside a tier, each family's first member makes the rest ports.
 
@@ -168,9 +168,43 @@ What the source shapes turned out to be, for the next m4a batch:
 | 71 | `sub_08001B28` | 160 | `MidiKeyToCgbFreq` |
 | 72 | `sub_0833B1E8` | 160 | port of `sub_08001B28` |
 
-## Tier 2: Near copies of matched functions
+## Tier 2: Near copies of matched functions — finished 2026-09-24
 
-18 functions, 1180 bytes, about 3 hours.
+All 18 matched, one per commit; `make check` MATCH throughout.
+852 → 870 / 1001 (1400 bytes by `match.py`'s count; the table below
+undercounted BLs and pools). Five parallel drafting agents produced the
+C; integration was serial, one commit per function.
+
+What the source shapes turned out to be:
+
+- The four constant-store twins are two `strh`s sharing one `movs` value
+  (`*(vu16 *)0x04000202 = 1; gUnk_02000DD0 = 1;` etc.); plain
+  non-volatile `extern u16` was correct everywhere.
+- `sub_0833DBE0` is `sub_0833DBC8` minus `return 0;` — `void f(void)
+  { u32 buf[128]; }` reproduces the 0x200 frame without the dead `movs`.
+- Family E (`sub_08009C00`/`sub_08341690`) is `sub_08009BB4` with the
+  viewport bounds tightened: `(u32)(u + 0x10) > 0x110` and `> 0xC0`
+  (reference: `+0x18 > 0x120`, `> 0xD0`). The high copy swaps
+  `gUnk_02002100` for `gUnk_02039110` and nothing else.
+- Menu families D+H: the draw callee takes NO argument (unlike the
+  reference's `sub_0801380C(v)`), called in the prologue and at loop top;
+  the loop tests only `gKeysPressed & 1`; `sub_08011D38`'s hi bound is 0.
+  `sub_08015244` alone calls `sub_0800F3C0()` first, uses menu id 0, and
+  omits the `gUnk_0202EF00[3]`/`sub_08001208(9)` tail. The one wall was
+  an r6/r7 address-vs-temp swap, fixed by reading `gKeysPressed` volatile
+  only at the call argument and non-volatile in the `& 1` test —
+  solved-walls entry 9, Variant.
+- Menu family F needed no volatile at all: a single non-CSE'd read of a
+  plain `extern u16` already emits constant-first (`movs r0,#1; ldrh`);
+  `sub_0800F22C`'s memory-first order comes from CSE folding its two
+  back-to-back tests into one load. `sub_080149A4`'s second test sits
+  after the `v =` assignment, before `sub_08000458()`. `sub_08012F1C`'s
+  two-arg draw callee re-reads scalar `extern u8 gUnk_0202ED70` as its
+  second argument every iteration; right-to-left evaluation gives the
+  asm's load order for free.
+- Sprite family G is `sub_080100CC` with a one-argument allocator
+  (`sub_0800754C(a2)`/`sub_08007630(a2)`), attr constant `0x80000000`/
+  `0x40000000`, and no `| 0x800` in the oam build-up (`x = idx << 12`).
 
 | # | Function | Bytes | Notes |
 |---:|---|---:|---|

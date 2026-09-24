@@ -394,6 +394,24 @@ ed[0] = ((u16)((id + 1) << 12) | 0x100)
 
 **Seen in:** `sub_08011B08` (`2e66b02`), `sub_08344A20` (`1fc914a`).
 
+**Variant:** If the swap is between a global's *address* pseudo and a
+short-lived temp (menu loop: address in r6, loop-exit temp in r7; target
+wants r7/r6), the two priorities can differ by about 1%
+(`floor_log2(refs)*refs/live_length`: 10/56 vs 3/17). Make one read of
+the global volatile — a read *not* combined with a constant, such as the
+call argument — to lengthen the address pseudo's live range and flip the
+order, while the other read stays non-volatile and keeps the
+constant-first hoist:
+
+```c
+if (gKeysPressed & 1)          /* non-volatile: movs before ldrh */
+    sel = v;
+v = sub_08011D38(*(volatile u16 *)&gKeysPressed, v, 0, 0);
+```
+
+**Seen in:** `sub_0801303C` (`767ffb8`), `sub_08013A7C`, `sub_08014400`,
+`sub_08015244` (2026-09-24).
+
 ### 10. The wrong value wins a high register
 
 The target keeps a value in a high register and spills another to the
