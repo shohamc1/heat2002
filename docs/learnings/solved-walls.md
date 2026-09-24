@@ -39,6 +39,8 @@ with the target and ours asm, the cause and the fix.
 | Ours pushes one more callee-saved register, holding a global's address | A fresh mention of a global where the source reused a pointer | [13](#13-an-extra-pushed-register-holding-a-global-address) |
 | Target loads the `ands` constant into the output register and the spilled value into the other (`movs r0, #15; ldr r1, [sp, #N]; ands r0, r1`); ours swaps them | The variable's declared type is wider than the source's | [14](#14-an-ands-constant-in-the-wrong-register) |
 | Target is a bare `bx rN` with no `push`/`pop`, often followed by a dead `bx lr` | Inline asm in a non-naked function | [15](#15-a-bare-bx-rn-with-no-pop) |
+| Target copies a call result (`adds r1, r0, #0`) and stores the original r0; ours stores the copy's register | CSE folded the copy into the call result's pseudo | [22](#22-a-store-reads-the-copy-instead-of-the-call-result) |
+| A high-module copy of a matched function diverges in registers and reloads around a dead read, with no branch in the target | The branch that used the read was still in the source | [23](#23-registers-drift-around-a-dead-read-that-ends-no-branch) |
 | Your notes say the difference is invariant under many variants | The variants shared a wrong structure | [Start from a plain rewrite](#start-from-a-plain-rewrite) |
 
 ## Start from a plain rewrite
@@ -721,6 +723,69 @@ clumsily (`adds r0, r1, #0; adds r0, #1`) — route it through a plain
 local, one per distinct temp register the ROM uses.
 
 **Seen in:** `sub_0800E640` (`cc44719`), `sub_08364730` (`b7bc932`).
+
+### 22. A store reads the copy instead of the call result
+
+The target copies a call's result and stores the original, keeping the
+copy for a later test; ours stores the copy's register:
+
+```
+ bl   MenuMoveVertical
+ adds r1, r0, #0
+-strb r0, [r4, #0]
++strb r1, [r4, #0]
+ movs r0, #0xC0
+```
+
+**Cause.** `make_regs_eqv` (cse.c) makes a copy the canonical register
+of its class when the copy lives past the CSE block and longer than the
+original, and `canon_reg` (cse.c:2369) then rewrites the store to read
+it. `canon_reg` never replaces a hard register, so an original that is
+a hard register survives.
+
+**Fix.** Pin the call result to r0 in a block scope and assign the
+long-lived local from it:
+
+```c
+{
+    register u32 r asm("r0") =
+        MenuMoveVertical(gKeysPressed, gUnk_0202EF78[v], 0, 9);
+    gUnk_0202EF78[v] = t = r;
+}
+```
+
+**Seen in:** `sub_080132F8`.
+
+### 23. Registers drift around a dead read that ends no branch
+
+A high-module copy of a matched function reads a field into a register
+and never uses it (`ldrh r3, [r3, #16]`), with no branch after it. Ours
+matches the instructions, but the pointer register, a reload register
+and ties around the read all differ, and earlier drafts piled up pins
+without closing the gap.
+
+**Cause.** The read was the condition of an `if`/`else` whose arms only
+assigned a variable that is overwritten later. Flow deletes the arms, and
+the branch disappears only after reload. Until then the branch splits the
+blocks, which changes which pseudos local-alloc handles, and the join
+label clears reload inheritance (reload1.c, `reload_as_needed`). Without
+the branch, ours inherited r1 for the pointer where the target reloads
+it into r3.
+
+**Fix.** Keep the low-region twin's `if`/`else` even when its result is
+dead:
+
+```c
+if (e->unk10 == 1)
+    e = gUnk_0203B860;
+else
+    e = e + 1;
+```
+
+With the branch back, the plain C matched with no pins, no `volatile`
+and no index tricks.
+
+**Seen in:** `sub_08341F64` (twin of `sub_0800A4D4`).
 
 ## Open walls
 
