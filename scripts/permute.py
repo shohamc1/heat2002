@@ -113,7 +113,7 @@ def build_target(name, out, texts=None):
 def setup(name, c_file):
     """Write nonmatchings/NAME/ and return its path."""
     if addr_of(name) is None:
-        sys.exit(f"{name}: cannot derive an address from the name")
+        sys.exit(f"{name}: not in {ELF.name} and no address in the name -- run `make`")
     if not ELF.exists():
         sys.exit(f"{ELF.name} not found -- run make first")
     d = ROOT / "nonmatchings" / name
@@ -163,7 +163,7 @@ def _selftest():
     from progress import LUVDIS_FALSE_POSITIVES, parse_asm
 
     texts = [f.read_text().splitlines() for f in fragments()]
-    game = sorted(n for n in parse_asm() if n not in LUVDIS_FALSE_POSITIVES)
+    game = sorted(n for n in parse_asm() if addr_of(n) not in LUVDIS_FALSE_POSITIVES)
     name = next(n for n in game + ["sub_0824C6F0"] if function_asm(n, texts))
     with tempfile.TemporaryDirectory() as tmp:
         out = Path(tmp) / "target.o"

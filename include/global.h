@@ -38,4 +38,16 @@ typedef volatile u32 vu32;
 #define T1_READ_16(ptr) ((ptr)[0] | ((ptr)[1] << 8))
 #define T1_READ_32(ptr) ((ptr)[0] | ((ptr)[1] << 8) | ((ptr)[2] << 16) | ((ptr)[3] << 24))
 
+#define NAKED __attribute__((naked))
+
+// A function still in asm, kept in its C file so the file can be partly
+// decompiled, as in tmc. `path` is an asm/non_matching/ .inc file holding
+// the luvdis block's body without its func_start/func_end lines or its
+// name label. progress.py counts the function as unmatched.
+#define ASM_FUNC(path, decl) \
+    NAKED decl \
+    { \
+        asm(".syntax unified\n.include \"" path "\"\n.syntax divided"); \
+    }
+
 #endif

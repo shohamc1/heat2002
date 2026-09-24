@@ -3,8 +3,10 @@
 
     python3 scripts/match.py sub_08006734
 
-The target is read from `baserom.gba` at the function's own address, which is
-encoded in its name (`sub_08006734` -> `0x08006734`). That matters: an earlier
+The target is read from `baserom.gba` at the function's own address, taken
+from `nascar-heat.elf`'s symbol table, so a function keeps its address when
+it's renamed. A `sub_08006734`-style name that the ELF doesn't hold falls
+back to the address in the name. That matters: an earlier
 version extracted the target from `asm/rom.s`, so the moment a function was
 decompiled -- and deleted from the asm -- the tool could no longer verify it.
 The ROM is the ground truth and it never moves, so a matched function stays
@@ -46,11 +48,35 @@ SYMBOLS = ROOT / "symbols.ld"
 ROM_BASE = 0x8000000
 
 def addr_of(name):
-    """`sub_08006734` -> 0x08006734."""
+    """The ROM address of function `name`.
+
+    Read from nascar-heat.elf, so any name works once the function is in
+    the build. `sub_08006734` -> 0x08006734 is the fallback for a name the
+    ELF doesn't hold: a fresh clone before `make`, or a luvdis block that
+    left the build with the data it sat in.
+    """
+    addr = _elf_addresses().get(name)
+    if addr is not None:
+        return addr
     m = re.fullmatch(r"(?:sub|func)_([0-9A-Fa-f]{8})", name)
     if not m:
         return None
     return int(m.group(1), 16)
+
+
+def source_of(name):
+    """The src/**/*.c file that defines function `name`, or None."""
+    path = ROOT / "src" / f"{name}.c"
+    if path.exists():
+        return path
+    pat = re.compile(
+        rf"^\S[^(\n;]*\b{re.escape(name)}\s*\([^;{{]*\)\s*\{{|\bASM_FUNC\([^,]*,[^(]*\b{re.escape(name)}\s*\(",
+        re.MULTILINE,
+    )
+    for c in sorted((ROOT / "src").rglob("*.c")):
+        if pat.search(c.read_text(errors="replace")):
+            return c
+    return None
 
 
 @functools.lru_cache(maxsize=1)
@@ -68,6 +94,9 @@ def _symbol_index():
         # and would trivially "match" the ROM they were disassembled from.
         if "/src/" not in obj.as_posix():
             continue
+        # A renamed or moved source leaves its old object behind.
+        if not (ROOT / obj.relative_to(ROOT / "build")).with_suffix(".c").exists():
+            continue
         out = subprocess.run(
             [NM, "--print-size", str(obj)],
             capture_output=True,
@@ -83,14 +112,35 @@ def _symbol_index():
 
 @functools.lru_cache(maxsize=1)
 def _sections():
-    """(lma, vma, size) of every section in nascar-heat.elf."""
+    """{name: (lma, vma, size)} of every section in nascar-heat.elf."""
     if not ELF.exists():
-        return []
+        return {}
     out = subprocess.run([OBJDUMP, "-h", str(ELF)], capture_output=True, text=True, check=False).stdout
-    return [
-        (int(lma, 16), int(vma, 16), int(size, 16))
-        for size, vma, lma in re.findall(r"^\s*\d+ \S+\s+([0-9a-f]+)\s+([0-9a-f]+)\s+([0-9a-f]+)", out, re.M)
-    ]
+    return {
+        name: (int(lma, 16), int(vma, 16), int(size, 16))
+        for name, size, vma, lma in re.findall(
+            r"^\s*\d+ (\S+)\s+([0-9a-f]+)\s+([0-9a-f]+)\s+([0-9a-f]+)", out, re.M
+        )
+    }
+
+
+@functools.lru_cache(maxsize=1)
+def _elf_addresses():
+    """{function name: ROM address} from nascar-heat.elf's symbol table.
+
+    A symbol in an EWRAM image holds its run address; its section's load
+    address maps it back to where it sits in the ROM.
+    """
+    if not ELF.exists():
+        return {}
+    sections = _sections()
+    out = subprocess.run([OBJDUMP, "-t", str(ELF)], capture_output=True, text=True, check=False).stdout
+    addrs = {}
+    for value, section, name in re.findall(r"^([0-9a-f]+) .* F (\S+)\s+[0-9a-f]+ (\S+)$", out, re.M):
+        if section in sections:
+            lma, vma, _ = sections[section]
+            addrs[name] = (int(value, 16) & ~1) - vma + lma
+    return addrs
 
 
 def link_address(addr):
@@ -102,7 +152,7 @@ def link_address(addr):
     whose load address (LMA) differs from its run address (VMA) gives the
     mapping.
     """
-    for lma, vma, size in _sections():
+    for lma, vma, size in _sections().values():
         if lma <= addr < lma + size:
             return addr - lma + vma
     return addr
@@ -168,7 +218,7 @@ def compare(name):
     """Return (ours, target, size, addr); sys.exit with a reason on failure."""
     addr = addr_of(name)
     if addr is None:
-        sys.exit(f"{name}: cannot derive an address from the name")
+        sys.exit(f"{name}: not in {ELF.name} and no address in the name -- run `make`")
 
     hits = find_symbol(name)
     if not hits:
@@ -214,8 +264,10 @@ def main():
     # -B forces the recompile: make compares mtimes at 1-second granularity,
     # so an edit landing in the same second as the previous build is skipped
     # and the verdict below would describe the *previous* source.
-    if (ROOT / "src" / f"{name}.c").exists():
-        r = subprocess.run(["make", "-B", f"build/src/{name}.o"], cwd=ROOT, capture_output=True, text=True)
+    src = source_of(name)
+    if src:
+        obj = Path("build") / src.relative_to(ROOT).with_suffix(".o")
+        r = subprocess.run(["make", "-B", str(obj)], cwd=ROOT, capture_output=True, text=True)
         if r.returncode != 0:
             sys.exit(r.stdout + r.stderr)
         _symbol_index.cache_clear()
@@ -258,6 +310,10 @@ def _selftest():
     # Module code links at its EWRAM run address, read from the ELF's
     # sections; main-program code links where it sits in the ROM.
     if ELF.exists():
+        # The ELF, not the name, gives the address: a helper without a sub_
+        # name, and an EWRAM symbol mapped back to its ROM address.
+        assert addr_of("min_0800D5BC") == 0x0800D5BC, addr_of("min_0800D5BC")
+        assert addr_of("sub_08339AEC") == 0x08339AEC, addr_of("sub_08339AEC")
         assert link_address(0x08340EFC) == 0x0200847C, hex(link_address(0x08340EFC))
         assert link_address(0x08364550) == 0x02000668, hex(link_address(0x08364550))
         assert link_address(0x08006734) == 0x08006734

@@ -14,8 +14,10 @@ ASFLAGS := -mcpu=arm7tdmi -mthumb-interwork
 CFLAGS  := -O2 -mthumb-interwork -fhex-asm -Wimplicit -Wparentheses
 CPPFLAGS := -I include -I tools/agbcc/include -iquote include -nostdinc -undef
 
-C_SRCS   := $(wildcard src/*.c)
+C_SRCS   := $(shell find src -name '*.c')
 ASM_SRCS := $(wildcard asm/*.s)
+# Bodies of ASM_FUNC functions (include/global.h), included from C.
+ASM_INCS := $(shell find asm -name '*.inc')
 # Runtime library: newlib objects built from the vendored source with the
 # flags of tools/agbcc/libc/Makefile (no interwork, -fno-builtin), in ROM
 # order. ldscript.ld places each one whole, plus its .rodata, .data and .bss.
@@ -102,15 +104,20 @@ all: $(TARGET).gba
 # `/` and `%` libcalls land on sub_08344BB8 and friends, not the low copies
 # that symbols.ld aliases. Every caller at or above sub_0833AD00 uses the
 # high copies and no lower caller does (checked against the ROM's bl
-# targets), so objects from src/sub_083[3-9]*.c get their libcall symbols
-# renamed after assembly. Writing the call as `/` instead of a bare
-# sub_08344BB8 call matters: a libcall carries a hard-r0 return that an
-# ordinary call does not, and that changes register allocation.
-HIGH_LIBGCC_OBJS := $(patsubst src/%.c,$(BUILD)/src/%.o,$(wildcard src/sub_083[3-9]*.c))
+# targets), so objects that ldscript.ld places in the EWRAM images get their
+# libcall symbols renamed after assembly, whatever their file is called. A
+# src/sub_083[3-9]*.c file counts too, so it matches before it's placed.
+# Writing the call as `/` instead of a bare sub_08344BB8 call matters: a
+# libcall carries a hard-r0 return that an ordinary call does not, and that
+# changes register allocation.
+HIGH_LIBGCC_OBJS := $(sort $(patsubst src/%.c,$(BUILD)/src/%.o,$(wildcard src/sub_083[3-9]*.c)) \
+	$(shell sed -n '/^    \.high_module /,/^    \.text_tail /s|^ *\(build/src/[^.]*\.o\).*|\1|p' ldscript.ld))
 HIGH_LIBGCC_REDEFINES := --redefine-sym __divsi3=sub_08344BB8 \
 	--redefine-sym __modsi3=sub_08344C50 --redefine-sym __umodsi3=sub_08344DA8 \
 	--redefine-sym __muldi3=sub_08344D20 --redefine-sym __negdi2=sub_08344D90
-$(BUILD)/src/%.o: src/%.c $(wildcard include/*.h) Makefile
+# ponytail: every C object depends on every .inc; per-file deps (scaninc)
+# if that rebuild gets slow.
+$(BUILD)/src/%.o: src/%.c $(wildcard include/*.h) $(ASM_INCS) Makefile
 	@mkdir -p $(@D)
 	$(CPP) $(CPPFLAGS) $< -o $(BUILD)/src/$*.i
 	$(CC1) $(CFLAGS) $(BUILD)/src/$*.i -o $(BUILD)/src/$*.s

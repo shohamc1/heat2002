@@ -21,9 +21,11 @@ SHA1 is wrong, no matter how clean the C looks. Never edit `baserom.gba`,
   interrupt dispatcher, in the main program, the high module and the
   multiboot island), written as `arm_func_start` blocks of exact `.4byte`
   words, since luvdis decodes only Thumb (`ARM_BLOCKS` in `progress.py`).
-- `src/` — **257 functions decompiled**. One function per file, named for
-  it. Run `scripts/progress.py` for the live figure; do not hand-copy it
-  here, it goes stale within a day.
+- `src/` — decompiled C, in folders at any depth. A file can hold several
+  functions that sit next to each other in the ROM, including `ASM_FUNC`
+  functions still in asm (see "Files, folders, and names"). Run
+  `scripts/progress.py` for the live figure; do not hand-copy it here, it
+  goes stale within a day.
 - `assets/*.json` — data assets in zeldaret/tmc's format. `make` runs
   `scripts/assets.py extract` to copy each one out of `baserom.gba` into
   `build/assets/`, and the asm `.incbin`s it, so the data stays out of git.
@@ -74,7 +76,12 @@ Of those 1159 blocks, **158 are not decompilation targets** — see
 `parked.md` — so the game-code denominator is **1001**. The 144 blocks now
 built from library source are listed in `progress.py` (`LIBRARY_BLOCKS`) so
 the 1159 still adds up. `progress.py` reports against 1001 and prints the
-whole-ROM figure underneath.
+whole-ROM figure underneath. `scripts/blocks.txt` lists all 1159 block
+addresses. `progress.py` counts one function per block, so the count
+doesn't change when you rename functions, merge them into one file, or move
+files. An extra C function that isn't a block start, such as the
+out-of-line copy of the inline helper `min_0800D5BC`, adds its bytes to the
+block before it.
 
 ## The loop
 
@@ -158,9 +165,11 @@ maps closely onto the source:
   stray `lsl`/`asr` sign-extension pairs.
 - Stack shuffling that won't go away usually means a local is missing or one
   too many exists.
-- In `src/sub_083[3-9]*.c`, write `/` and `%` as operators, never as calls
-  to `sub_08344BB8` and friends. That module linked its own libgcc copy, and
-  the Makefile renames the libcall symbols for those objects. A named call
+- In high-module C, write `/` and `%` as operators, never as calls to
+  `sub_08344BB8` and friends. That module linked its own libgcc copy, and
+  the Makefile renames the libcall symbols for every object that
+  `ldscript.ld` places in `.high_module` or `.island`, plus any
+  `src/sub_083[3-9]*.c` not placed yet. A named call
   loses the libcall's hard-r0 return and changes register allocation.
 - Before drafting from scratch, check whether an instruction-identical twin
   is already matched: the 0x0834 module duplicates parts of the low region
@@ -283,9 +292,10 @@ mechanical steps:
 5. List the new object explicitly in the `ldscript.ld` section that holds
    its address (`.text` for most functions; see "Functions that run from
    EWRAM"), in address order: `build/asm/<fragment-before>.o(.text*);` then
-   `build/src/<name>.o(.text*);` then `build/asm/<fragment-after>.o(.text*);`.
-   name the C file after the function (`src/sub_08006734.c`, not
-   `src/stub.c`) so this line is mechanical to write. A trailing `*(.text*);`
+   `build/src/<path>.o(.text*);` then `build/asm/<fragment-after>.o(.text*);`,
+   where `<path>` is the C file's path under `src/` without `.c`. To add a
+   function to an existing file instead, put it in the file in ROM order;
+   the file's line stays where it is. A trailing `*(.text*);`
    stays in the script as a safety net, not the placement mechanism: it
    exists so a forgotten explicit line still links -- landing past the real
    ROM's end and breaking the SHA1 loudly -- instead of silently vanishing
@@ -311,21 +321,56 @@ explicit align pads with its fill byte (zero) instead of NOPs, and that zero
 is exactly the linker fill the ROM has. Verified on a 2-mod-4 fragment cut at
 `sub_08000274` and on a C function with a mid-body pool and odd tail.
 
-Keep one function per `src/*.c` file anyway: `ldscript.ld` places whole
-objects at addresses, so a file with two functions can only be placed if they
-are adjacent in the ROM, and `progress.py` sizes decompiled functions per
-object.
-
 `scripts/match.py` and `scripts/progress.py` both scan every `asm/*.s`
 fragment now, never a hardcoded `asm/rom.s` (match.py's *target* lookup was
 still hardcoded through `sub_08006734`'s first review pass -- fixed since).
 `progress.py` also learned that a fully-decompiled function disappears from
 `asm/*.s` entirely (sized instead from its compiled object in
-`build/src/*.o`), and that "is this function decompiled" must check for a
-`name(` at column 0 in a `src/*.c` file, not merely the name appearing
-anywhere in one -- otherwise a decompiled function calling a still-asm one
-counts that callee as done too. Already fixed; new fragments and new
-functions need no further tooling changes for either of these.
+`build/src/**/*.o`). New fragments and new functions need no further
+tooling changes.
+
+## Files, folders, and names
+
+The layout follows zeldaret/tmc and pret/pokeemerald: a C file is a
+translation unit, not a function. The scripts key every function by its ROM
+address, which `match.py` reads from `nascar-heat.elf`, so neither the
+function's name nor its file's name or folder matters to them.
+
+- A file can hold any number of functions, but `ldscript.ld` places the
+  whole object, so they must be contiguous in the ROM and in ROM order.
+- Folders can nest to any depth under `src/`. The object lands at the same
+  path under `build/src/`.
+- `match.py NAME` finds the file that defines `NAME` and builds only that
+  object.
+
+### Keep an unmatched function in a C file
+
+To keep a function that isn't matched yet in its translation unit, use
+`ASM_FUNC` from `include/global.h`, as tmc does:
+
+    ASM_FUNC("asm/non_matching/race/sub_0800BAFC.inc",
+             void sub_0800BAFC(s32 a, s32 b))
+
+The `.inc` file holds the luvdis block's body: every line after its name
+label, without the `thumb_func_start` and `thumb_func_end` lines. The
+compiler emits the name label and alignment itself. `progress.py` counts an
+`ASM_FUNC` as unmatched. To decompile it, replace the macro with C and
+delete the `.inc` file. An `ASM_FUNC` must start on a 4-byte boundary, so a
+`non_word_aligned_thumb_func_start` block can't become one.
+
+### Rename a function
+
+To rename a matched function:
+
+1. Rename the function in its C file, and the file itself if you like.
+2. If the file's path changed, update its `build/src/...` line in
+   `ldscript.ld`.
+3. Update any callers and `symbols.ld` references.
+4. Run `make check` and `python3 scripts/match.py NEW_NAME`.
+
+Rename after the function matches and is placed. Before placement, the ELF
+holds only the asm's `sub_XXXXXXXX` name, and a high-module file gets its
+libcall renaming only from a `sub_083[3-9]*` file name.
 
 ## Functions that run from EWRAM
 
@@ -341,9 +386,9 @@ cable in 32 KB chunks. The following table lists both images:
 
 `ldscript.ld` links each section at its run address and stores it at its
 ROM address. Every symbol inside takes its EWRAM value: `sub_08339AEC`
-links to `0x0200106C`, so `(u32)sub_08339AEC` gives `0x0200106D`. Names
-keep the ROM address, because `match.py` and `progress.py` read the ROM
-address from the name.
+links to `0x0200106C`, so `(u32)sub_08339AEC` gives `0x0200106D`.
+`match.py` and `progress.py` map that value back to the ROM address
+through the section's load address.
 
 The main link uses `--no-check-sections`, because the island's run
 addresses overlap the main program's EWRAM `.bss`. The overlap is real:

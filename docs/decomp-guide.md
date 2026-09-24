@@ -76,8 +76,10 @@ lr on the stack. Rare; see the shared-pool note in step 6.
 
 ## 3. Write the C
 
-File: `src/sub_0800048C.c`. **One function per file. Always.** The build
-places whole objects at addresses; two functions in one file cannot be placed.
+File: `src/sub_0800048C.c`, or an existing file that holds its ROM
+neighbours. The build places whole objects at addresses, so a file's
+functions must be contiguous in the ROM and in ROM order. See "Files,
+folders, and names" in CLAUDE.md.
 
 To get a first draft, run m2c on the fragment from step 1:
 

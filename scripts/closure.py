@@ -12,6 +12,7 @@ Usage:
     python3 scripts/closure.py --selftest
 """
 
+import bisect
 import collections
 import re
 import sys
@@ -19,21 +20,33 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
-from progress import LIBRARY_BLOCKS  # noqa: E402
+import match  # noqa: E402
+from progress import ASM_FUNC_DECL, BLOCKS, LIBRARY_BLOCKS  # noqa: E402
 DEFAULT_ROOT = "sub_08015364"
 
 # Same rule progress.py uses: the vendored runtime was built without
 # -mthumb-interwork, so it ends in `pop {rN, pc}` or `mov pc, lr`.
 RUNTIME = re.compile(r"\bpop \{[^}]*pc\}|\bmov pc, lr\b")
 FUNC_START = re.compile(r"\s+(?:non_word_aligned_)?(?:thumb|arm)_func_start\s+(\S+)")
-C_DEF = re.compile(r"^\S[^(\n;]*\b(sub_[0-9A-Fa-f]{8})\s*\([^;{]*\)\s*\{", re.MULTILINE)
-CALL = re.compile(r"\bbl\s+(sub_[0-9A-Fa-f]{8})")
+# ASM_FUNC(...) would otherwise match and swallow the definition after it.
+C_DEF = re.compile(r"^\S[^(\n;]*\b(?!ASM_FUNC\b)(\w+)\s*\([^;{]*\)\s*\{", re.MULTILINE)
+CALL = re.compile(r"\bbl\s+(\w+)")
+
+
+def canon(name):
+    """`sub_<block address>` for any function name, or None if it isn't one.
+    The graph uses these names, so renamed functions still connect, and an
+    inline helper's copy folds into the block it sits in."""
+    addr = match.addr_of(name)
+    if addr is None or addr < BLOCKS[0]:
+        return None
+    return f"sub_{BLOCKS[bisect.bisect_right(BLOCKS, addr) - 1]:08X}"
 
 
 def graph():
     """(calls, decompiled, vendored, block_size) over the whole ROM."""
     calls = collections.defaultdict(set)
-    vendored, starts = set(), set()
+    vendored = set()
 
     for f in sorted((ROOT / "asm").glob("*.s")):
         cur, body = None, []
@@ -42,34 +55,35 @@ def graph():
             if m:
                 if cur and RUNTIME.search("\n".join(body)):
                     vendored.add(cur)
-                cur, body = m.group(1), []
-                starts.add(cur)
+                cur, body = canon(m.group(1)), []
                 continue
             if cur:
                 body.append(ln)
-                calls[cur] |= set(CALL.findall(ln))
+                calls[cur] |= {canon(t) for t in CALL.findall(ln)} - {None}
         if cur and RUNTIME.search("\n".join(body)):
             vendored.add(cur)
     # Blocks now built from library source have left asm/ and src/.
-    vendored |= LIBRARY_BLOCKS
+    vendored |= {f"sub_{a:08X}" for a in LIBRARY_BLOCKS}
 
     decompiled = set()
-    for f in sorted((ROOT / "src").glob("*.c")):
+    for f in sorted((ROOT / "src").rglob("*.c")):
         src = f.read_text(errors="replace")
-        m = C_DEF.search(src)
-        if not m:
-            continue
-        name = m.group(1)
-        decompiled.add(name)
-        starts.add(name)
-        calls[name] |= {
-            t for t in re.findall(r"\b(sub_[0-9A-Fa-f]{8})\s*\(", src[m.start() :]) if t != name
-        }
+        defs = [(m.start(), canon(m.group(1))) for m in C_DEF.finditer(src)]
+        for i, (pos, name) in enumerate(defs):
+            if name is None:
+                continue
+            end = defs[i + 1][0] if i + 1 < len(defs) else len(src)
+            decompiled.add(name)
+            calls[name] |= {canon(t) for t in re.findall(r"\b(\w+)\s*\(", src[pos:end])} - {None, name}
+        # An ASM_FUNC is still asm: its calls are the .inc's `bl`s.
+        for m in re.finditer(r'\bASM_FUNC\(\s*"([^"]*)"', src):
+            name = canon(ASM_FUNC_DECL.match(src, m.start()).group(1))
+            inc = (ROOT / m.group(1)).read_text()
+            calls[name] |= {canon(t) for t in CALL.findall(inc)} - {None}
 
     # A block runs until the next one starts; that is an upper bound on its
     # code, since trailing data luvdis lumped in is counted too.
-    addrs = sorted(int(n[4:], 16) for n in starts if re.fullmatch(r"sub_[0-9A-Fa-f]{8}", n))
-    size = {f"sub_{a:08X}": addrs[i + 1] - a for i, a in enumerate(addrs[:-1])}
+    size = {f"sub_{a:08X}": BLOCKS[i + 1] - a for i, a in enumerate(BLOCKS[:-1])}
     return calls, decompiled, vendored, size
 
 
@@ -120,9 +134,8 @@ def _selftest():
     # Walking stops at the runtime: __modsi3 is reached but nothing under it.
     assert "sub_080172C8" in vendored, "modsi3 should be classed as runtime"
     assert not (calls["sub_080172C8"] & set(d)) or True
-    # Every decompiled name must have a src file named for it.
-    for n in list(decompiled)[:20]:
-        assert (ROOT / "src" / f"{n}.c").exists(), n
+    # Every decompiled function is a block, whatever its C name.
+    assert all(int(n[4:], 16) in BLOCKS for n in decompiled)
     print("selftest ok")
 
 

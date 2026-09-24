@@ -50,10 +50,6 @@ BRANCH = {
 LABEL_RE = re.compile(r"\b(_[0-9A-Fa-f]{8})\b")
 SYM_RE = re.compile(r"\b(sub_[0-9A-Fa-f]{8})\b")
 POOL_VAL_RE = re.compile(r"@\s*=(0x[0-9A-Fa-f]+)")
-DEF_RE = re.compile(
-    r"^(?:__attribute__\s*\(\([^)]*\)\)\s*)?\S[^(\n;]*\b(sub_[0-9A-Fa-f]{8})\s*\([^;{]*\)\s*\{",
-    re.MULTILINE,
-)
 
 
 def parse_reference():
@@ -139,15 +135,23 @@ def trigrams(toks):
 def main():
     funcs = parse_reference()
 
-    decompiled = set()
-    for c in (ROOT / "src").rglob("*.c"):
-        decompiled.update(DEF_RE.findall(c.read_text(errors="replace")))
+    # rom_reference.s names every function sub_<ROM address>, so map the
+    # project's own names, whatever they are, to those through addresses.
+    def ref_names(addrs):
+        return {f"sub_{a:08X}" for a in addrs}
 
-    non_targets = progress.LIBRARY_BLOCKS | progress.LUVDIS_FALSE_POSITIVES | progress.ARM_BLOCKS
+    c_blocks = progress.c_blocks()
+    decompiled = ref_names(a for a, (_, _, is_c) in c_blocks.items() if is_c)
+    non_targets = ref_names(
+        progress.LIBRARY_BLOCKS | progress.LUVDIS_FALSE_POSITIVES | progress.ARM_BLOCKS
+    )
     arm = {n for n, f in funcs.items() if f["kind"] == "arm"}
-    # Only functions the project tracks as blocks in asm/*.s are work items;
-    # luvdis also finds a few strays inside library-object spans.
-    tracked = set(progress.parse_asm())
+    # Only functions the project tracks as blocks in asm/*.s or as ASM_FUNCs
+    # are work items; luvdis also finds a few strays inside library-object
+    # spans.
+    tracked = ref_names(progress.by_address(progress.parse_asm())) | ref_names(
+        a for a, (_, _, is_c) in c_blocks.items() if not is_c
+    )
     strays = sorted(n for n in funcs if n not in tracked
                     and n not in decompiled and n not in non_targets and n not in arm)
     remaining = sorted(

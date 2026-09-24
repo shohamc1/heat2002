@@ -8,17 +8,22 @@ function still lives in one asm file.
 
 Progress is measured in BYTES OF CODE, not function count: a function is
 "matched" once it is implemented in C under src/ and `scripts/match.py` agrees
-with the target asm. Everything still in asm/rom.s counts as unmatched.
+with the target asm. Everything still in asm/*.s, and every ASM_FUNC in a C
+file, counts as unmatched. One function per luvdis block (scripts/blocks.txt),
+keyed by ROM address, so names, files and folders don't matter.
 
     python3 scripts/progress.py            # human summary
     python3 scripts/progress.py --json     # write report.json
 """
 
+import bisect
 import json
 import re
 import subprocess
 import sys
 from pathlib import Path
+
+import match
 
 ROOT = Path(__file__).resolve().parent.parent
 ASM_DIR = ROOT / "asm"
@@ -41,8 +46,8 @@ NON_INTERWORK_EPILOGUE = re.compile(r"\bpop \{[^}]*pc\}|\bmov pc, lr\b")
 
 # luvdis misread these seven data runs as functions; see parked.md.
 LUVDIS_FALSE_POSITIVES = frozenset((
-    "sub_08026DB6", "sub_0824C6F0", "sub_0827B7CA", "sub_080462B2", "sub_08121316",
-    "sub_08120E3A", "sub_08248272",
+    0x08026DB6, 0x0824C6F0, 0x0827B7CA, 0x080462B2, 0x08121316,
+    0x08120E3A, 0x08248272,
 ))
 
 # Hand-written ARM that luvdis (a Thumb decoder) left as .byte rows: the SDK
@@ -51,72 +56,72 @@ LUVDIS_FALSE_POSITIVES = frozenset((
 # link-port wait routine). They're arm_func_start blocks of exact .4byte words;
 # like m4a_1.s, they aren't decompilation targets.
 ARM_BLOCKS = frozenset((
-    "sub_080000C0", "sub_08000104", "sub_08339780", "sub_083397C4",
-    "sub_08363FC8", "sub_08363FF4", "sub_083640B0",
+    0x080000C0, 0x08000104, 0x08339780, 0x083397C4,
+    0x08363FC8, 0x08363FF4, 0x083640B0,
 ))
 
 # luvdis blocks whose bytes now come from newlib objects built from source
 # (build/lib/newlib, placed by ldscript.ld). They left asm/ and src/ without
 # being game code; listing them keeps the 1159-block accounting closed.
 NEWLIB_BLOCKS = frozenset((
-    "sub_08017594", "sub_080175D4", "sub_080175F4", "sub_08017668", "sub_0801767C",
-    "sub_080185DC", "sub_080186D0", "sub_08018740", "sub_080187EC", "sub_08018948",
-    "sub_08019640", "sub_080196D4", "sub_0801970C", "sub_080197B0", "sub_080197D0",
-    "sub_08019830", "sub_080199F0", "sub_08019AB0", "sub_08019CDC", "sub_08019D1C",
-    "sub_08019D58", "sub_08019D78", "sub_08019D88", "sub_08019E64", "sub_08019FC0",
-    "sub_0801A380", "sub_0801A3AC", "sub_0801A42C", "sub_0801A48C", "sub_0801A514",
-    "sub_0801A568", "sub_0801A56C", "sub_0801A570", "sub_0801A5C8", "sub_0801A5E0",
-    "sub_0801A6FC", "sub_0801A754", "sub_0801A7D8", "sub_0801A7EC", "sub_0801A958",
-    "sub_0801A9F0", "sub_0801AA90", "sub_0801AAD0", "sub_0801AC0C", "sub_0801ACC8",
-    "sub_0801AE84", "sub_0801AF74", "sub_0801AFD0", "sub_0801B014", "sub_0801B034",
-    "sub_0801B0F0", "sub_0801B104", "sub_0801B118", "sub_0801B130", "sub_0801B154",
-    "sub_0801B19C", "sub_0801B220", "sub_0801B22C", "sub_0801B250", "sub_0801B29C",
-    "sub_0801B350", "sub_0801B384", "sub_0801B3D4", "sub_0801B410", "sub_0801B478",
-    "sub_0801B4A8", "sub_0801B500", "sub_0801B52C", "sub_0801B538", "sub_0801B564",
-    "sub_0801B584", "sub_0801B58C", "sub_0801B5BC",
+    0x08017594, 0x080175D4, 0x080175F4, 0x08017668, 0x0801767C,
+    0x080185DC, 0x080186D0, 0x08018740, 0x080187EC, 0x08018948,
+    0x08019640, 0x080196D4, 0x0801970C, 0x080197B0, 0x080197D0,
+    0x08019830, 0x080199F0, 0x08019AB0, 0x08019CDC, 0x08019D1C,
+    0x08019D58, 0x08019D78, 0x08019D88, 0x08019E64, 0x08019FC0,
+    0x0801A380, 0x0801A3AC, 0x0801A42C, 0x0801A48C, 0x0801A514,
+    0x0801A568, 0x0801A56C, 0x0801A570, 0x0801A5C8, 0x0801A5E0,
+    0x0801A6FC, 0x0801A754, 0x0801A7D8, 0x0801A7EC, 0x0801A958,
+    0x0801A9F0, 0x0801AA90, 0x0801AAD0, 0x0801AC0C, 0x0801ACC8,
+    0x0801AE84, 0x0801AF74, 0x0801AFD0, 0x0801B014, 0x0801B034,
+    0x0801B0F0, 0x0801B104, 0x0801B118, 0x0801B130, 0x0801B154,
+    0x0801B19C, 0x0801B220, 0x0801B22C, 0x0801B250, 0x0801B29C,
+    0x0801B350, 0x0801B384, 0x0801B3D4, 0x0801B410, 0x0801B478,
+    0x0801B4A8, 0x0801B500, 0x0801B52C, 0x0801B538, 0x0801B564,
+    0x0801B584, 0x0801B58C, 0x0801B5BC,
 ))
 
 # luvdis blocks now built from Nintendo's libagbsyscall (lib/libagbsyscall.s,
 # pokeemerald's): the main program's copy, the high 0x0834 module's, and the
 # multiboot island's.
 AGBSYSCALL_BLOCKS = frozenset((
-    "sub_08016E0C", "sub_08016E10", "sub_08016E14", "sub_08016E1C", "sub_08016E20",
-    "sub_08016E28", "sub_08016E2C", "sub_08016E30", "sub_08344B60", "sub_08344B64",
-    "sub_08344B68", "sub_08344B70", "sub_08344B74", "sub_083647FC",
+    0x08016E0C, 0x08016E10, 0x08016E14, 0x08016E1C, 0x08016E20,
+    0x08016E28, 0x08016E2C, 0x08016E30, 0x08344B60, 0x08344B64,
+    0x08344B68, 0x08344B70, 0x08344B74, 0x083647FC,
 ))
 
 # luvdis blocks now built from the MP2K driver's hand-written assembly
 # (lib/m4a_1.s, from pokeemerald's), in the main program and the high module.
 M4A_BLOCKS = frozenset((
-    "sub_08000958", "sub_08000972", "sub_08000DC8",
-    "sub_0833A018", "sub_0833A032", "sub_0833A488",
+    0x08000958, 0x08000972, 0x08000DC8,
+    0x0833A018, 0x0833A032, 0x0833A488,
 ))
 
 # luvdis blocks now built from Nintendo's EEPROM_V120 save library
 # (lib/eeprom.c). Its timer interrupt handler was never a luvdis block.
 EEPROM_BLOCKS = frozenset((
-    "sub_08016E38", "sub_08016EA0", "sub_08016ED8", "sub_08016F3C", "sub_08016F80",
-    "sub_08017000", "sub_080170B8", "sub_0801719C",
+    0x08016E38, 0x08016EA0, 0x08016ED8, 0x08016F3C, 0x08016F80,
+    0x08017000, 0x080170B8, 0x0801719C,
 ))
 
 # luvdis blocks now built from Nintendo's MultiBoot library (lib/multiboot.c,
 # pokeemerald's).
 MULTIBOOT_BLOCKS = frozenset((
-    "sub_0800EA64", "sub_0800EAA0", "sub_0800EE8C", "sub_0800EED8", "sub_0800EEFC",
-    "sub_0800EFC0", "sub_0800EFD0", "sub_0800F0BC", "sub_0800F0D4",
+    0x0800EA64, 0x0800EAA0, 0x0800EE8C, 0x0800EED8, 0x0800EEFC,
+    0x0800EFC0, 0x0800EFD0, 0x0800F0BC, 0x0800F0D4,
 ))
 
 # luvdis blocks now built from tools/agbcc/libgcc: the main program's copy
 # (lib1thumb.asm helpers, __muldi3, __negdi2, dp-bit, fp-bit, __lshrdi3) and
 # the high 0x0834 module's.
 LIBGCC_BLOCKS = frozenset((
-    "sub_08017230", "sub_080172C4", "sub_080172C8", "sub_08017398", "sub_08017408",
-    "sub_08017498", "sub_0801B5EC", "sub_0801B734", "sub_0801B80C", "sub_0801BA78",
-    "sub_0801BAA8", "sub_0801BAE0", "sub_0801BD88", "sub_0801BF10", "sub_0801C03C",
-    "sub_0801C088", "sub_0801C0D4", "sub_0801C16C", "sub_0801C1B8", "sub_0801C204",
-    "sub_0801C280", "sub_0801C2F4", "sub_0801C388", "sub_0801C440", "sub_0801C4BC",
-    "sub_0801C8E8", "sub_0801CC90", "sub_0801CCD4", "sub_08344BB8", "sub_08344C4C",
-    "sub_08344C50", "sub_08344D20", "sub_08344D90", "sub_08344DA8",
+    0x08017230, 0x080172C4, 0x080172C8, 0x08017398, 0x08017408,
+    0x08017498, 0x0801B5EC, 0x0801B734, 0x0801B80C, 0x0801BA78,
+    0x0801BAA8, 0x0801BAE0, 0x0801BD88, 0x0801BF10, 0x0801C03C,
+    0x0801C088, 0x0801C0D4, 0x0801C16C, 0x0801C1B8, 0x0801C204,
+    0x0801C280, 0x0801C2F4, 0x0801C388, 0x0801C440, 0x0801C4BC,
+    0x0801C8E8, 0x0801CC90, 0x0801CCD4, 0x08344BB8, 0x08344C4C,
+    0x08344C50, 0x08344D20, 0x08344D90, 0x08344DA8,
 ))
 
 # Every luvdis block whose bytes now come from a source-built library object.
@@ -125,6 +130,27 @@ LIBRARY_BLOCKS = (
     | LIBGCC_BLOCKS
 )
 
+# Every luvdis block's address, sorted; see the header of blocks.txt.
+BLOCKS = tuple(sorted(
+    int(line, 16)
+    for line in (ROOT / "scripts" / "blocks.txt").read_text().splitlines()
+    if line and not line.startswith("#")
+))
+
+# The function name in `ASM_FUNC("path", void name(...))`.
+ASM_FUNC_DECL = re.compile(r'\bASM_FUNC\(\s*"[^"]*"\s*,[^(]*?\b(\w+)\s*\(')
+
+
+def by_address(names):
+    """{ROM address: name}. Every set in this file is keyed by address, so a
+    function can be renamed without touching it."""
+    out = {}
+    for name in names:
+        addr = match.addr_of(name)
+        if addr is None:
+            sys.exit(f"{name}: not in {match.ELF.name} and no address in the name -- run `make`")
+        out[addr] = name
+    return out
 
 
 def runtime_library():
@@ -201,46 +227,57 @@ def func_sizes():
     return sizes
 
 
-def decompiled():
-    """Functions defined in src/*.c whose compiled bytes match the ROM.
-
-    A definition is `name(` at column 0 followed by `{` -- a prototype
-    (`void name(...);`) is not one. Each candidate is then verified against
-    the ROM by match.py, so a C body that compiles but is wrong is not
-    counted as done.
-    """
-    sys.path.insert(0, str(ROOT / "scripts"))
-    import match
-
-    pat = re.compile(r"^(?:__attribute__\s*\(\([^)]*\)\)\s*)?\S[^(\n;]*\b(sub_[0-9A-Fa-f]{8})\s*\([^;{]*\)\s*\{", re.MULTILINE)
-    done = set()
+def asm_funcs():
+    """Names declared with ASM_FUNC in src/: still asm, so unmatched."""
+    names = set()
     for c in (ROOT / "src").rglob("*.c"):
-        for m in pat.finditer(c.read_text(errors="replace")):
-            name = m.group(1)
-            if not match.find_symbol(name):
-                continue  # not built; reported via `missing` below
-            if match.matches(name):
-                done.add(name)
-            else:
-                print(f"  WARNING: {name} is in src/ but does not match the ROM", file=sys.stderr)
+        names.update(ASM_FUNC_DECL.findall(c.read_text(errors="replace")))
+    return names
+
+
+def c_blocks():
+    """{block address: [name, bytes, is_c]} for the blocks built from src/.
+
+    Every function in build/src/**/*.o counts, whatever it's called and
+    however many share a file. A function that isn't a block start (the
+    out-of-line copy of an inline helper such as min_0800D5BC) adds its
+    bytes to the block before it. `is_c` is False for an ASM_FUNC.
+    """
+    funcs = {}
+    for name, hits in match._symbol_index().items():
+        addr = match.addr_of(name)
+        if addr is None:
+            print(f"  WARNING: {name} has no ROM address; place it and run `make`", file=sys.stderr)
+            continue
+        funcs[addr] = (name, hits[0][2])
+
+    asm = asm_funcs()
+    blocks = {}
+    for addr in sorted(funcs):
+        name, size = funcs[addr]
+        start = BLOCKS[bisect.bisect_right(BLOCKS, addr) - 1]
+        if start == addr:
+            blocks[addr] = [name, size, name not in asm]
+        elif start in blocks:
+            blocks[start][1] += size
+    return blocks
+
+
+def decompiled(blocks):
+    """Addresses of the C blocks whose compiled bytes match the ROM.
+
+    Each candidate is verified against the ROM by match.py, so a C body
+    that compiles but is wrong is not counted as done.
+    """
+    done = set()
+    for addr, (name, _, is_c) in blocks.items():
+        if not is_c:
+            continue
+        if match.matches(name):
+            done.add(addr)
+        else:
+            print(f"  WARNING: {name} is in src/ but does not match the ROM", file=sys.stderr)
     return done
-
-
-def c_func_sizes():
-    """Real byte sizes for decompiled functions, via nm on build/src/*.o."""
-    sizes = {}
-    for obj in sorted((ROOT / "build" / "src").glob("*.o")):
-        out = subprocess.run(
-            ["arm-none-eabi-nm", "--print-size", str(obj)],
-            capture_output=True,
-            text=True,
-            check=False,
-        ).stdout
-        for line in out.splitlines():
-            parts = line.split()
-            if len(parts) == 4 and parts[2] in ("t", "T"):
-                sizes[parts[3]] = int(parts[1], 16)
-    return sizes
 
 
 def library_objects():
@@ -260,27 +297,31 @@ def library_objects():
 def main():
     insns = parse_asm()
     sizes = func_sizes()
-    done = decompiled()
-    csizes = c_func_sizes()
+    in_c = c_blocks()
+    done = decompiled(in_c)
 
     # Sizes come from build/**/*.o via nm. With no build (or a stale one), a
     # decompiled function contributes 0 bytes and the totals silently shrink
     # -- which reads as "no progress" rather than "unknown". Say so instead.
-    defined = set(re.findall(r"^\S[^(\n;]*\b(sub_[0-9A-Fa-f]{8})\s*\([^;{]*\)\s*\{",
-                             "\n".join(c.read_text(errors="replace") for c in (ROOT / "src").rglob("*.c")),
-                             re.MULTILINE))
-    missing = sorted(n for n in defined if n not in csizes)
+    src = ROOT / "src"
+    missing = sorted(
+        str(c.relative_to(src))
+        for c in src.rglob("*.c")
+        if not (ROOT / "build" / "src" / c.relative_to(src).with_suffix(".o")).exists()
+    )
 
     # A matched function is deleted from asm/*.s entirely (see CLAUDE.md's
     # loop, step 5), so `insns` alone would lose it from the report. Track it
-    # separately, sized from its compiled object instead of asm bytes.
-    names = sorted(set(insns) | done)
-    non_targets = runtime_library() | LUVDIS_FALSE_POSITIVES | ARM_BLOCKS
+    # separately, sized from its compiled object instead of asm bytes. Before
+    # its asm block is deleted, both copies share one address and one unit.
+    in_asm = by_address(insns)
+    non_targets = set(by_address(runtime_library())) | LUVDIS_FALSE_POSITIVES | ARM_BLOCKS
 
     units, total, matched = [], 0, 0
-    for name in names:
-        is_done = name in done
-        if name in insns:
+    for addr in sorted(set(in_asm) | set(in_c)):
+        is_done = addr in done
+        if addr in in_asm:
+            name = in_asm[addr]
             n = insns[name]
             # 2 bytes per Thumb instruction; trust nm only when it's plausible.
             est = n * 2
@@ -288,7 +329,7 @@ def main():
             if size > max(est * 4, 512):
                 size = est
         else:
-            size = csizes.get(name, 0)
+            name, size, _ = in_c[addr]
         total += size
         matched += size if is_done else 0
         units.append(
@@ -302,7 +343,7 @@ def main():
                     "matched_functions": 1 if is_done else 0,
                     "complete_code": size if is_done else 0,
                 },
-                "metadata": {"complete": is_done, "target": name not in non_targets},
+                "metadata": {"complete": is_done, "target": addr not in non_targets},
             }
         )
 
@@ -391,14 +432,19 @@ def _selftest():
     # 1159 total: luvdis's original 743 blocks, the 409 pointer-only or
     # uncalled Thumb functions it missed (seed_functions.py's POINTER_ONLY),
     # and the 7 ARM_BLOCKS, whether still in asm/*.s or already matched in
-    # src/*.c.
-    done = decompiled()
-    assert not LIBRARY_BLOCKS & (set(insns) | done), "a library block is back in asm/ or src/"
+    # src/*.c. blocks.txt holds them all, and asm/ plus src/ must account
+    # for every one outside the libraries.
+    assert len(BLOCKS) == len(set(BLOCKS)) == 1159, f"blocks.txt holds {len(set(BLOCKS))} blocks"
+    in_asm = set(by_address(insns))
+    assert in_asm <= set(BLOCKS), f"asm blocks missing from blocks.txt: {sorted(map(hex, in_asm - set(BLOCKS)))}"
+    blocks = in_asm | set(c_blocks())
+    assert not LIBRARY_BLOCKS & blocks, "a library block is back in asm/ or src/"
     # False positives count whether or not they're still in asm: the ones
     # inside extracted data (assets/*.json) left with it.
-    total = len(set(insns) | done | LIBRARY_BLOCKS | LUVDIS_FALSE_POSITIVES)
-    assert total == 1159, f"expected 1159 functions across asm + matched C + libraries, got {total}"
-    assert "sub_08006734" not in insns, "sub_08006734 should be decompiled, not in asm"
+    lost = set(BLOCKS) - blocks - LIBRARY_BLOCKS - LUVDIS_FALSE_POSITIVES
+    assert not lost, f"blocks in neither asm/ nor src/: {sorted(map(hex, lost))}"
+    total = len(set(BLOCKS))
+    assert 0x08006734 not in in_asm, "sub_08006734 should be decompiled, not in asm"
     # All 92 runtime-library functions once flagged in asm now build from
     # source. The 7 luvdis false positives, the 7 ARM blocks and the 144
     # library blocks (73 newlib, 14 libagbsyscall, 6 m4a_1, 8 EEPROM, 9
@@ -406,8 +452,9 @@ def _selftest():
     # targets: the game-code denominator is 1001.
     rt = runtime_library()
     assert not rt, f"runtime-library code is back in asm: {sorted(rt)}"
-    non_targets = rt | LUVDIS_FALSE_POSITIVES | ARM_BLOCKS | LIBRARY_BLOCKS
-    assert ARM_BLOCKS <= set(insns), "an ARM block is missing from asm/"
+    rt_addrs = set(by_address(rt)) | LIBRARY_BLOCKS
+    non_targets = rt_addrs | LUVDIS_FALSE_POSITIVES | ARM_BLOCKS
+    assert ARM_BLOCKS <= in_asm, "an ARM block is missing from asm/"
     assert total - len(non_targets) == 1001, (
         f"game-code denominator should be 1001, got {total - len(non_targets)}"
     )
@@ -417,11 +464,6 @@ def _selftest():
     mapped = {
         int(row[0], 16)
         for row in _json.loads((ROOT / "docs/learnings/runtime-newlib-map.json").read_text())
-    }
-    rt_addrs = {
-        int(n.split("_")[1], 16)
-        for n in rt | LIBRARY_BLOCKS
-        if re.fullmatch(r"sub_[0-9A-Fa-f]{8}", n)
     }
     assert mapped <= rt_addrs, f"newlib map has {len(mapped - rt_addrs)} unflagged addresses"
     print(f"selftest ok ({len(insns)} functions remaining in asm)")

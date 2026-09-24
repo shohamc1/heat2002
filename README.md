@@ -116,7 +116,7 @@ the 7 hand-written ARM routines are written out as `arm_func_start` blocks, for
 ```
 asm/*.s          ROM disassembly, one fragment per gap between decompiled
                  functions; reassembles exactly
-src/             Decompiled C — one function per file, named for it
+src/             Decompiled C, in folders; a file holds contiguous functions
 include/         Headers
 include/gba/     GBA hardware headers vendored from fireemblem8u (pret)
 scripts/
