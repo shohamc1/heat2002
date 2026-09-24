@@ -1175,7 +1175,7 @@ SECTIONS
         build/asm/rom_083642FC.o(.text*);
         build/src/sub_083644B4.o(.text*);
         build/src/sub_08364550.o(.text*);
-        build/asm/rom_08364730.o(.text*);
+        build/src/sub_08364730.o(.text*);
         /* the multiboot island's libagbsyscall copy */
         build/lib/agbsyscall/sub_083647F8.o(.text);
         build/lib/agbsyscall/sub_083647FC.o(.text);
