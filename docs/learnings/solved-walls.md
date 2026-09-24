@@ -348,6 +348,15 @@ sub_0800A628(car);   /* once, not in each arm */
 
 **Seen in:** `sub_0800AB78` (`9e6d1fa`).
 
+**Variant:** the same rule fixes a surviving branch INTO a store: the
+target branches from one arm straight into the other arm's `strh`. Write
+the store in BOTH arms with different value expressions (the load arm
+stores the register, the else arm stores 0) so jump2 merges the two
+identical stores into the join block; a local `v` crossing the branch
+gets its own register and a promotion copy instead.
+
+**Seen in:** `sub_0800F85C` (`473a73b`).
+
 ## Register-allocation symptoms
 
 When the instructions match and only register numbers differ, compute the
@@ -579,6 +588,104 @@ it.
 4. Test spellings in a batch: generate each variant from a script and score
    them all. Many spellings fold to the same tree and change nothing, so
    check that a variant changes the RTL before you count it as tested.
+
+
+### 16. A pointer reassigned per store group lands in a high register
+
+Everything matches except a rotation of the callee-saved registers: the
+target keeps several buffer-address pointers in r4, ours puts one in r7
+and shifts the others down.
+
+**Cause.** `local-alloc.c:359` only allocates pseudos with
+`REG_N_DEATHS(i) == 1`. A pointer variable assigned once per store group
+(`p = buf; p[0] = ...; p = buf; p[1] = ...`) has one death per def but
+multiple defs, so it is punted to global allocation and lands in a high
+register, rotating everything below it.
+
+**Fix.** N separate single-assignment pointer variables, one per store:
+`p0 = buf; p0[0] = <call-heavy RHS>;`. The `X = buf;` statement is also
+what places `mov rX, sp` before the calls — a plain `buf[i] = f() + c`
+emits the sp copy after them.
+
+**Seen in:** `sub_0800B46C` (`6305f70`).
+
+### 17. A comparison folded into a branchless bit trick
+
+Ours materialises the boolean with `bics/negs/orrs/lsrs` (or an `eors`
+variant); the target is a branch between constant loads.
+
+**Cause.** When a comparison's constant equals the mask
+(`(x & 0x7F) != 0x7F`), combine folds the whole test into a branchless
+bit trick, in every boolean-producing context tried.
+
+**Fix.** Put the comparison where it can only be a branch condition, and
+return the constants from the arms:
+
+```c
+if ((arg0 & 0x7F) == 0x7F)
+    return 0;
+return 1;
+```
+
+Jump threading then produces the target's `beq/movs #1/b/movs #0`
+single-epilogue shape.
+
+**Seen in:** `sub_080031B0` (`3f36ab7`).
+
+### 18. A quotient that loses its register copy
+
+`a * b / 256` written as one expression coalesces into the return
+register and loses the target's `adds r1, r0, #0` copy.
+
+**Cause.** In the single-expression form the product pseudo dies at the
+division; nothing keeps a second value alive across it.
+
+**Fix.** The compound-assignment idiom keeps the product pseudo live
+past the quotient copy:
+
+```c
+s32 prod = arg0 * arg1;
+prod /= 256;
+return prod;
+```
+
+**Seen in:** `sub_08000328` (`7f26ed4`).
+
+### 19. An extra copy between a u8 load and its test
+
+The target loads a byte into a scratch and copies it into the variable's
+register before testing (`ldrb r0; adds r4, r0, #0; cmp r4`); ours tests
+straight out of the load.
+
+**Cause.** In `store_expr`'s `SUBREG_PROMOTED_VAR_P` path (expr.c), a
+non-volatile RHS memory is fed straight to `convert_move`, which emits
+one zero-extending load into the variable's pseudo. A volatile memory
+goes through `copy_to_reg` first, giving the load-then-move pair.
+
+**Fix.** Declare that global volatile — and assign it to the local
+before the test (`v = gUnk_020020C0; if (v == 0)`), so the compare reads
+the local.
+
+**Seen in:** `sub_0800306C` (`f8a1ae1`).
+
+### 20. A sub-word parameter's entry copy emitted after later parameters
+
+The target copies argument registers in an order no plain signature
+produces (`dst`'s move before `pal`'s, with `pal` second).
+
+**Cause.** `assign_parms` (function.c:4231) defers a parm whose nominal
+mode differs from its passed mode — any sub-word integer — to
+`conversion_insns`, emitted after all immediate parm copies.
+
+**Fix.** Pass the parameter word-typed and cast in the body:
+
+```c
+void f(s32 *src, u32 pal, s32 *dst)
+{
+    u16 *pk = (u16 *)pal;
+```
+
+**Seen in:** `sub_08003E84` (`17214bd`).
 
 ## Open walls
 

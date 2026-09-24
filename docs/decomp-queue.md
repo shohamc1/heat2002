@@ -227,9 +227,34 @@ What the source shapes turned out to be:
 | 89 | `sub_0801021C` | 88 | from `sub_080100CC`; port of `sub_080101BC` |
 | 90 | `sub_08015244` | 92 | from `sub_08013878` |
 
-## Tier 3: Sprite-callback family
+## Tier 3: Sprite-callback family — finished 2026-09-24
 
-29 functions, 3280 bytes, about 27 hours.
+All 29 matched, one per commit; `make check` MATCH throughout.
+870 → 899 / 1001. Six parallel drafting agents (helpers, two port-pair
+batches, big pairs, high singles, low singles); integration serial.
+
+What the source shapes turned out to be:
+
+- The helpers: `sub_0800792C` is `gUnk_02025ED0[arg->f3C] = 0;` (u8 flag
+  array indexed by the entity's +0x3C field); `sub_08007950` is the list
+  unlink (`next` read before `prev` — two locals in that order), with the
+  head pointer `gUnk_02025FD0` written when prev is NULL. High ports swap
+  in `gUnk_0203C340`/`gUnk_0203C380`.
+- The callback family: `u32 a` param, `*(u32 *)(a + 0x18)` lifetime
+  counter (`s32` where the ROM compares `ble`), the
+  `sub_0833FFA8(a)`/`sub_0833FF84(a)` unlink+flag pair on death, and the
+  `t = (sub_08007714(...) << 12) | CONST; arg1 = spr[4] | t;` OAM idiom
+  as two statements. `sub_0800AE94` reads `gKeysHeld` NON-volatile (the
+  old_agbcc constant-hoist order).
+- New matching lessons (details in solved-walls): `sub_0800B46C`'s
+  N-separate-pointer store groups (a pointer reassigned per group gets
+  punted to global allocation and lands high, rotating every register);
+  `sub_0800B1A4`'s runtime-built `0x80680040` attr (pieces hidden from
+  cse across a block boundary, then reload rematerializes them at the
+  use); `sub_0800B658`'s permuter-found rel/dy variable chaining; and
+  `sub_08342E28`'s ARRAY_REF member-array indexing to stop address-fold
+  CSE. The permuter masks `bl` targets — its score 0 can hide swapped
+  calls; only match.py decides.
 
 | # | Function | Bytes | Notes |
 |---:|---|---:|---|
