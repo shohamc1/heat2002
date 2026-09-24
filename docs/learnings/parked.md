@@ -1934,30 +1934,26 @@ last instructions of an otherwise-matching shape, not for rescuing one
 that differs — measure the natural spelling first. The match from the
 natural base was being extracted as this was written.
 
-## Parked 2026-09-24: sub_0800DE5C — a bare `bx r0` thunk, hand-written
+## Solved 2026-09-24: sub_0800DE5C, an inline-asm `bx r0` thunk
 
-`sub_0800DE5C` (2 bytes, `bx r0`) is the whole content of
-`asm/rom_0800DE5C.s` between `sub_0800D684` (ends `pop {r1}; bx r1` at
-0x0800DE5A) and `sub_0800DE60`. Its trailer `.byte 0x70, 0x47` is a second
-2-byte thunk `bx lr` at 0x0800DE5E. Six island bytes total: `00 00` pad,
-`bx r0`, `bx lr` — two unpadded thunks back-to-back, so they cannot be
-separate agbcc objects either (each would self-pad to 4); they are one
-hand-written 4-byte unit.
+`sub_0800DE5C` is four bytes: `bx r0` at 0x0800DE5C, then `bx lr` at
+0x0800DE5E. An earlier pass parked it as a hand-written thunk. It isn't:
+the pair is one C function. The body is an inline-asm `bx r0`, and the
+`bx lr` is agbcc's own leaf epilogue, dead after the jump:
 
-Not reachable by anything: no `bl` decodes to it, and a scan of
-`baserom.gba` for both `5C DE 00 08` and `5D DE 00 08` finds no pointer.
-It entered `POINTER_ONLY` as a run start, not a pointer target.
+```c
+void sub_0800DE5C(void (*func)(void))
+{
+    asm("bx r0");
+}
+```
 
-Not expressible in C: GCC 2.95 has no Thumb sibcall, so every indirect
-call routes through `_call_via_rN`. Verified by compiling
-`void f(void (*g)(void)) { g(); }`, `return g();` (value-returning),
-noreturn pointer typedefs, and register-pinned variants — all produce
-`push {lr}; bl _call_via_r0; pop {r0}; bx r0` (or delete the call
-entirely when the pointer is otherwise unread). A naked function with an
-empty body emits zero bytes, and naked + inline asm is hand-writing, not
-decompilation (see "Non-interwork epilogues").
+This explains why the two thunks sit back to back without padding. No
+C-level construct emits a bare `bx r0`: `thumb_exit` (thumb.c:601) prints
+`bx` only after a `pop`, or with `lr`, and `indirect_jump` is `mov pc`. The
+original source had to use inline asm. The function isn't naked, so the
+compiler still writes the epilogue.
 
-Classification: it is the same class of bytes as the `call_via_rX`
-trampoline tables — hand-written interworking thunks — just a stray,
-dead, unpadded copy. Leave it in `asm/`; not a decompilation target
-unless the non-target count is extended to cover it.
+Nothing calls it: no `bl` decodes to it, and `baserom.gba` holds no
+pointer to it.
+

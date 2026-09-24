@@ -38,6 +38,7 @@ with the target and ours asm, the cause and the fix.
 | A fix to one expression rotates every callee-saved register | A temporary lengthened a live range | [12](#12-one-change-rotates-every-register) |
 | Ours pushes one more callee-saved register, holding a global's address | A fresh mention of a global where the source reused a pointer | [13](#13-an-extra-pushed-register-holding-a-global-address) |
 | Target loads the `ands` constant into the output register and the spilled value into the other (`movs r0, #15; ldr r1, [sp, #N]; ands r0, r1`); ours swaps them | The variable's declared type is wider than the source's | [14](#14-an-ands-constant-in-the-wrong-register) |
+| Target is a bare `bx rN` with no `push`/`pop`, often followed by a dead `bx lr` | Inline asm in a non-naked function | [15](#15-a-bare-bx-rn-with-no-pop) |
 | Your notes say the difference is invariant under many variants | The variants shared a wrong structure | [Start from a plain rewrite](#start-from-a-plain-rewrite) |
 
 ## Start from a plain rewrite
@@ -249,6 +250,32 @@ while ((c = *str++) != 0) {
 ```
 
 **Seen in:** `sub_08006738` (`481d8ec`).
+
+### 15. A bare `bx rN` with no `pop`
+
+The target jumps through an argument register with `bx r0` and no
+`push`/`pop`, and a `bx lr` follows that nothing reaches.
+
+```
+    bx r0
+    bx lr
+```
+
+**Cause.** agbcc emits `bx` only in `thumb_exit` (thumb.c:601): after a
+`pop`, or with `lr` in a leaf. No C statement reaches a bare `bx r0`. GCC
+2.95 has no Thumb sibcall, and `indirect_jump` is `mov pc, rN`.
+
+**Fix.** Write the jump as inline asm in a normal, non-naked function. The
+compiler adds its leaf epilogue, the dead `bx lr`:
+
+```c
+void sub_0800DE5C(void (*func)(void))
+{
+    asm("bx r0");
+}
+```
+
+**Seen in:** `sub_0800DE5C`.
 
 ## Branch-merging symptoms
 

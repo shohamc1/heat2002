@@ -38,12 +38,9 @@ by three, and a jump table multiplies it by 1.5.
 
 ## Tier 0: Trivial stubs — finished 2026-09-24
 
-13 of the 14 matched, one per commit; `make check` MATCH throughout.
-780 → 793 / 1001. The one miss:
-
-- `sub_0800DE5C` (2 bytes, `bx r0`) — parked, not C-expressible. It is a
-  hand-written interworking thunk (a dead, unpadded `_call_via_r0` copy
-  plus a `bx lr` trailer); see its entry in `docs/learnings/parked.md`.
+All 14 matched, one per commit; `make check` MATCH throughout.
+780 → 794 / 1001. `sub_0800DE5C` was parked first and matched later the
+same day; see its entry in `docs/learnings/parked.md`.
 
 What the source shapes turned out to be, for the next stub batch:
 
