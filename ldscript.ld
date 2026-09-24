@@ -923,7 +923,7 @@ SECTIONS
         build/src/sub_0833DA2C.o(.text*);
         build/src/sub_0833DA30.o(.text*);
         build/src/sub_0833DA34.o(.text*);
-        build/asm/rom_0833DAD8.o(.text*);
+        build/src/sub_0833DAD8.o(.text*);
         build/src/sub_0833DB24.o(.text*);
         build/src/sub_0833DBC8.o(.text*);
         build/src/sub_0833DBE0.o(.text*);
