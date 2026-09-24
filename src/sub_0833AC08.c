@@ -10,6 +10,8 @@ extern MPlayFunc gUnk_02038DE0[];
 
 void sub_0833A018(u32 a);
 void sub_0833AD00(u32 a);
+void sub_0833A4FC(void);
+void sub_0833BC78(void);
 
 void sub_0833AC08(struct SoundInfo *soundInfo)
 {
@@ -32,11 +34,11 @@ void sub_0833AC08(struct SoundInfo *soundInfo)
     CpuFill32(0, (u32)soundInfo, sizeof(struct SoundInfo));
     soundInfo->maxChans = 8;
     soundInfo->masterVolume = 0xF;
-    soundInfo->plynote = (PlyNoteFunc)0x02001A7D;
-    soundInfo->CgbSound = (CgbSoundFunc)0x020031F9;
-    soundInfo->CgbOscOff = (CgbOscOffFunc)0x020031F9;
-    soundInfo->MidiKeyToCgbFreq = (MidiKeyToCgbFreqFunc)0x020031F9;
-    soundInfo->ExtVolPit = (ExtVolPitFunc)0x020031F9;
+    soundInfo->plynote = (PlyNoteFunc)sub_0833A4FC;
+    soundInfo->CgbSound = (CgbSoundFunc)sub_0833BC78;
+    soundInfo->CgbOscOff = (CgbOscOffFunc)sub_0833BC78;
+    soundInfo->MidiKeyToCgbFreq = (MidiKeyToCgbFreqFunc)sub_0833BC78;
+    soundInfo->ExtVolPit = (ExtVolPitFunc)sub_0833BC78;
     {
         MPlayFunc *t = gUnk_02038DE0;
 

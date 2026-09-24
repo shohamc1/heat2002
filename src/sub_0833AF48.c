@@ -6,6 +6,7 @@
 extern u32 gUnk_03007FF0[];
 
 void sub_0833ABF4(u32 r0);
+void sub_0833A228(void);
 
 void sub_0833AF48(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *tracks, u32 r2)
 {
@@ -39,7 +40,7 @@ void sub_0833AF48(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *tr
         soundInfo->MPlayMainHead = NULL;
     }
     soundInfo->musicPlayerHead = r7;
-    soundInfo->MPlayMainHead = (MPlayMainFunc)0x020017A9;
+    soundInfo->MPlayMainHead = (MPlayMainFunc)sub_0833A228;
     soundInfo->ident = ID_NUMBER;
     r7->ident = ID_NUMBER;
 }

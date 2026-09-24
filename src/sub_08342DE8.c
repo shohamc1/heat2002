@@ -2,6 +2,7 @@
 
 void *sub_0833FF44(void);
 void sub_0833FF94(u32);
+void sub_08342E28(void);
 
 void sub_08342DE8(u8 a, u8 b)
 {
@@ -17,7 +18,7 @@ void sub_08342DE8(u8 a, u8 b)
         *(u32 *)(p + 0x04) = 0;
         *(u32 *)(p + 0x08) = 0x80000;
         *(u32 *)(p + 0x1C) = b;
-        *(u32 *)(p + 0x0C) = (u32)0x0200A3A9;
+        *(u32 *)(p + 0x0C) = (u32)sub_08342E28;
         sub_0833FF94(p);
     }
 }

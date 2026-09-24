@@ -8,6 +8,7 @@ void sub_0833FF94(u32 r0);
 void sub_0833ED10(void);
 void sub_0833EF0C(u32 r0, u32 r1, u32 r2);
 void sub_0833E0AC(void);
+void sub_0833EB90(void);
 
 void sub_0833EDB8(void)
 {
@@ -18,7 +19,7 @@ void sub_0833EDB8(void)
     p = sub_0833FF44();
     if (p != 0)
     {
-        *(u32 *)((u32)p + 0x0C) = 0x02006111;
+        *(u32 *)((u32)p + 0x0C) = (u32)sub_0833EB90;
         sub_0833FF94((u32)p);
     }
     sub_0833ED10();

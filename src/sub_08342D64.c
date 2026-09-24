@@ -4,6 +4,7 @@ extern u8 gUnk_020277F4[];
 
 void *sub_0833FF44(void);
 void sub_0833FF94(u32 r0);
+void sub_08342DA4(void);
 
 void sub_08342D64(void)
 {
@@ -18,7 +19,7 @@ void sub_08342D64(void)
             p[7] = i * 32;
             p[0] = gUnk_020277F4[i];
             p[1] = 0x28;
-            p[3] = (u32)0x0200A325;
+            p[3] = (u32)sub_08342DA4;
             sub_0833FF94((u32)p);
         }
         i++;
