@@ -1,4 +1,5 @@
 #include "global.h"
+#include "data.h"
 
 /*
  * Car-vs-car box collision test. For every other car within range, the
@@ -76,7 +77,6 @@ extern s32 gUnk_0202CD24;
 extern s32 gUnk_0202CCB0[8];
 extern s32 gUnk_0202CD30[8];
 extern struct Coll gUnk_0202CC90;
-extern s16 gUnk_0801CD08[];
 extern struct Pt2 gUnk_083FDA2C[];
 extern u8 gUnk_0202EEB0;
 extern u8 gUnk_0202A530;

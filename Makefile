@@ -116,7 +116,9 @@ all: $(TARGET).gba
 # gap between functions is zero bytes. An explicit trailing `.align 2, 0`
 # makes gas fill that gap with zeros instead, matching the ROM. Same trick on
 # the asm fragments below: a fragment cut at a 2-mod-4 boundary would
-# otherwise get the same NOP.
+# otherwise get the same NOP. The align goes in .text, never .rodata: a
+# src/data/ file's arrays sit back to back with the data around them, so its
+# .rodata keeps the alignment of its widest array and gets no end padding.
 #
 # The high 0x0833/0x0834 module was linked with its own libgcc copy, so its
 # `/` and `%` libcalls land on sub_08344BB8 and friends, not the low copies
@@ -140,7 +142,7 @@ $(BUILD)/src/%.o: src/%.c $(wildcard include/*.h) $(ASM_INCS) Makefile $(PREPROC
 	$(CPP) $(CPPFLAGS) $< -o $(BUILD)/src/$*.i
 	$(PREPROC) $(TARGET) $(BUILD)/src/$*.i > $(BUILD)/src/$*.pp.i
 	$(CC1) $(CFLAGS) $(BUILD)/src/$*.pp.i -o $(BUILD)/src/$*.s
-	printf '\t.align 2, 0\n' >> $(BUILD)/src/$*.s
+	printf '\t.text\n\t.align 2, 0\n' >> $(BUILD)/src/$*.s
 	$(AS) $(ASFLAGS) -I include -o $@ $(BUILD)/src/$*.s
 	$(if $(filter $(HIGH_LIBGCC_OBJS),$@),$(OBJCOPY) $(HIGH_LIBGCC_REDEFINES) $@)
 
@@ -263,6 +265,9 @@ $(ASSET_STAMP): scripts/assets.py $(ASSETS_JSON)
 	touch $@
 endif
 
+# src/data/ defines ROM data in C with INCBIN_*, which reads the same files.
+$(filter $(BUILD)/src/data/%,$(OBJS)): $(ASSET_STAMP)
+
 # Asset conversion tools, built from zeldaret/tmc's sources (tools/tmc).
 # A build with baserom.gba needs agb2mid, mid2agb and aif2pcm for the sound
 # (below). Only `make convert` needs gbagfx, which needs libpng.
@@ -299,7 +304,7 @@ tools/bin/gbafix: $(TMC_SRC)/gbafix/gbafix.c
 # (gitignored), as zeldaret/tmc's asset_processor does. `assets.py unpack`
 # writes each .mid or .aif from baserom.gba only when it's missing, so your
 # edits survive every build; delete one to get the ROM's back. A song goes
-# through mid2agb into assembly that data/rom_0801CD08.s includes in place,
+# through mid2agb into assembly that data/rom_0801D29C.s includes in place,
 # so its pointers resolve where it links; a sample goes through aif2pcm.
 # Without baserom.gba (CI) there's nothing to unpack: `assets.py blank`
 # writes both as zero fill, and none of these tools are needed.
@@ -307,7 +312,7 @@ ifneq ($(wildcard baserom.gba),)
 SOUND_EDITABLE := $(shell python3 scripts/assets.py list)
 SOUND_SONGS    := $(filter %.mid,$(SOUND_EDITABLE))
 SOUND_SAMPLES  := $(filter %.aif,$(SOUND_EDITABLE))
-$(BUILD)/data/rom_0801CD08.o: $(SOUND_SONGS:%.mid=$(BUILD)/%.s) \
+$(BUILD)/data/rom_0801D29C.o: $(SOUND_SONGS:%.mid=$(BUILD)/%.s) \
 	$(SOUND_SAMPLES:%.aif=$(BUILD)/%.bin)
 
 # The stamp rebuilds them after a build without baserom.gba zero-filled them.

@@ -1,4 +1,5 @@
 #include "global.h"
+#include "data.h"
 
 struct Car {
     s32 posX;                          /* 0x00 */
@@ -53,7 +54,6 @@ extern s32 gUnk_0202A528;
 extern s32 gUnk_0202CBD4;
 extern s32 gUnk_0202CB0C;
 extern s32 gUnk_0202CBF0;
-extern s16 gUnk_0801CD08[];
 
 extern void sub_080083C0(u32 a, u8 b);
 extern void sub_080087F4(u32 a, struct Car *b);

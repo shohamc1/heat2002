@@ -1,4 +1,5 @@
 #include "global.h"
+#include "data.h"
 
 /*
  * Car-vs-track box collision. Builds the four corner boxes and their union,
@@ -83,7 +84,6 @@ struct Res {
     s32 unk10;
 };
 
-extern s16 gUnk_0801CD08[];
 extern s32 gUnk_0202CC4C;
 extern s32 gUnk_0202CC50[];
 extern s32 gUnk_0202CC64;

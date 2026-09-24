@@ -1,6 +1,6 @@
 #include "global.h"
+#include "data.h"
 
-extern s16 gUnk_0801CD08[]; /* 0x0801CD08 */
 
 void sub_0800A628(s32 *a)
 {

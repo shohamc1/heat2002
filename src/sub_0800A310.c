@@ -1,4 +1,5 @@
 #include "global.h"
+#include "data.h"
 
 struct Unk0800A310 {
     u32 posX;
@@ -26,7 +27,6 @@ struct Unk0800A310 {
     s32 unkD4[4];
 };
 
-extern s16 gUnk_0801CD08[]; /* 0x0801CD08 */
 extern s32 gUnk_08368270[]; /* 0x08368270 */
 extern volatile s32 gUnk_08368280[]; /* 0x08368280 */
 

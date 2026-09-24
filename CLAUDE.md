@@ -43,7 +43,7 @@ SHA1 is wrong, no matter how clean the C looks. Never edit `baserom.gba`,
   together.
   Sound builds from editable files, as in zeldaret/tmc: each song from
   `assets/sound/songs/*.mid` (mid2agb, then assembled in place by
-  `data/rom_0801CD08.s`) and each sample from `assets/sound/samples/*.aif`
+  `data/rom_0801D29C.s`) and each sample from `assets/sound/samples/*.aif`
   (aif2pcm). `make` builds those tools from `tools/tmc` and runs
   `scripts/assets.py unpack` to write each editable file from `baserom.gba`
   only when it's missing, so edits survive `make` and `make clean`. Delete a

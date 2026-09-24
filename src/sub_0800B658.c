@@ -1,4 +1,5 @@
 #include "global.h"
+#include "data.h"
 
 struct EntityB658
 {
@@ -20,7 +21,6 @@ struct CarB658
   u8 padE4[400 - 0xE4];
 };
 extern struct CarB658 gCars[];
-extern s16 gUnk_0801CD08[];
 extern u32 gUnk_083FF64C[];
 extern u8 gUnk_08331188[];
 u32 WorldToScreen(s32 x, s32 y, s32 *out);

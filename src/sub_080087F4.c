@@ -1,4 +1,5 @@
 #include "global.h"
+#include "data.h"
 
 struct Unk080087F4 {
     u8 pad0[0x8C];
@@ -14,7 +15,6 @@ struct Unk080087F4 {
     u8 unk180;
 };
 
-extern s16 gUnk_0801CD08[]; /* 0x0801CD08 */
 extern s32 gUnk_0202CBF0; /* 0x0202CBF0 */
 extern s32 gUnk_0202A54C; /* 0x0202A54C */
 extern s32 gUnk_0202A528; /* 0x0202A528 */

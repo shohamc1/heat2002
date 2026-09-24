@@ -78,7 +78,7 @@ tmc's asset_processor does. The following list covers how, and why:
   would overwrite the built copy with the ROM's bytes whenever the JSON
   changed.
 - Songs link in place: `assets.py song` runs mid2agb and
-  `data/rom_0801CD08.s` `.include`s the result, so a song's track and
+  `data/rom_0801D29C.s` `.include`s the result, so a song's track and
   `GOTO` pointers resolve where it lands, as pokeemerald's song objects do.
   The voicegroup pointer resolves to a label on the voicegroup's
   `.incbin`. mid2agb's output needs four fixes for that: `label::` becomes

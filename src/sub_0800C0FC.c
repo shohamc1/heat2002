@@ -1,6 +1,6 @@
 #include "global.h"
+#include "data.h"
 
-extern s16 gUnk_0801CD08[];
 
 void WorldToCarLocal(s32 *a, s32 b, s32 c, s32 *d)
 {

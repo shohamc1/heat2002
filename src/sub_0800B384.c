@@ -1,7 +1,7 @@
 #include "global.h"
+#include "data.h"
 
 extern u8 gUnk_0202CC10[];         /* 0x0202CC10 */
-extern u8 gUnk_0806C96C[];         /* 0x0806C96C */
 
 u32 GetString(u16 idx);
 extern void sub_0800649C(u32 a, u32 b, u32 c);

@@ -1,9 +1,9 @@
 #include "global.h"
+#include "data.h"
 
 extern u8 gUnk_0202539C;
 
 extern u8 gUnk_0806C6FC[];
-extern u8 gUnk_0806C6E8[];
 
 extern void DrawTextCentered(u32 a, u32 b, u32 c);
 extern u32 GetString(u32 a);

@@ -770,7 +770,26 @@ SECTIONS
         build/lib/libgcc/dp-bit.o(.text);
         build/lib/libgcc/fp-bit.o(.text);
         build/lib/libgcc/_lshrdi3.o(.text);
-        build/data/rom_0801CD08.o(.text*);
+        build/src/data/rom_0801CD08.o(.rodata);
+        build/data/rom_0801CF88.o(.text*);
+        build/src/data/rom_0801D018.o(.rodata);
+        build/data/rom_0801D1FC.o(.text*);
+        build/src/data/rom_0801D230.o(.rodata);
+        build/data/rom_0801D29C.o(.text*);
+        build/src/data/rom_0806C678.o(.rodata);
+        build/data/rom_0806C794.o(.text*);
+        build/src/data/rom_0806C854.o(.rodata);
+        build/data/rom_0806C904.o(.text*);
+        build/src/data/rom_0806C918.o(.rodata);
+        build/data/rom_0806C940.o(.text*);
+        build/src/data/rom_0806C948.o(.rodata);
+        build/data/rom_0806C960.o(.text*);
+        build/src/data/rom_0806C96C.o(.rodata);
+        build/data/rom_0806FFF4.o(.text*);
+        build/src/data/rom_0807C9CC.o(.rodata);
+        build/data/rom_0807CA7C.o(.text*);
+        build/src/data/rom_0807CB58.o(.rodata);
+        build/data/rom_0807CE30.o(.text*);
         build/lib/eeprom.o(.rodata);
         /* newlib .rodata, in link order */
         build/lib/newlib/stdio/vfprintf.o(.rodata);

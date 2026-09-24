@@ -1,4 +1,5 @@
 #include "global.h"
+#include "data.h"
 
 struct EntityB0A0 {
     /* 0x00 */ u8 pad0[0x18];
@@ -8,7 +9,6 @@ struct EntityB0A0 {
 extern u32 gUnk_083FF5B0[];        /* 0x083FF5B0 */
 extern u8 gUnk_08330AD4[];         /* 0x08330AD4 */
 extern volatile u8 gIsLinkRace;  /* 0x020020DC */
-extern u8 gUnk_0806C96C[];         /* 0x0806C96C */
 
 u32 *sub_0800754C(u32 a);
 u8 RequestObjPalette(u32 a);
