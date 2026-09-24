@@ -174,19 +174,3 @@ _08003182:
 _080031A4: .4byte 0x020020C0
 _080031A8: .4byte 0x04000208
 _080031AC: .4byte 0x03007FF8
-	thumb_func_start sub_080031B0
-sub_080031B0:
-	lsls r0, r0, #0x10
-	movs r1, #0xFE
-	lsls r1, r1, #0x0F
-	ands r1, r0
-	lsrs r1, r1, #0x10
-	cmp r1, #0x7F
-	beq _080031C2
-	movs r0, #0x01
-	b _080031C4
-_080031C2:
-	movs r0, #0x00
-_080031C4:
-	bx lr
-	.byte 0x00, 0x00
