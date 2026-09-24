@@ -405,7 +405,7 @@ SECTIONS
         build/src/sub_0800BB50.o(.text*);
         build/src/sub_0800BB54.o(.text*);
         build/src/sub_0800BB58.o(.text*);
-        build/asm/rom_0800BBDC.o(.text*);
+        build/src/sub_0800BBDC.o(.text*);
         build/src/sub_0800BBF8.o(.text*);
         build/src/sub_0800BBFC.o(.text*);
         build/src/sub_0800BC4C.o(.text*);
