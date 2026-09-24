@@ -32,51 +32,6 @@
 	.size \name, .-\name
 	.endm
 @ End embedded Luvdis macros
-	thumb_func_start sub_0800A478
-sub_0800A478:
-	push {r4, lr}
-	adds r4, r0, #0x0
-	adds r0, #0x88
-	movs r2, #0x00
-	str r2, [r0, #0x00]
-	adds r1, r4, #0x0
-	adds r1, #0x7C
-	movs r0, #0x02
-	strb r0, [r1, #0x00]
-	adds r1, #0x04
-	movs r0, #0x01
-	str r0, [r1, #0x00]
-	movs r1, #0xB0
-	lsls r1, r1, #0x01
-	adds r0, r4, r1
-	strh r2, [r0, #0x00]
-	adds r0, r4, #0x0
-	adds r0, #0xA2
-	strh r2, [r0, #0x00]
-	adds r0, r4, #0x0
-	bl sub_0800A474
-	ldr r0, _0800A4C8 @ =0x0202A550
-	cmp r4, r0
-	bne _0800A4C2
-	ldr r0, _0800A4CC @ =0x0200215C
-	ldrb r0, [r0, #0x00]
-	cmp r0, #0x00
-	bne _0800A4C2
-	ldr r1, _0800A4D0 @ =0x0202521C
-	ldr r0, [r1, #0x00]
-	adds r0, #0x05
-	str r0, [r1, #0x00]
-	cmp r0, #0x63
-	ble _0800A4C2
-	movs r0, #0x63
-	str r0, [r1, #0x00]
-_0800A4C2:
-	pop {r4}
-	pop {r0}
-	bx r0
-_0800A4C8: .4byte 0x0202A550
-_0800A4CC: .4byte 0x0200215C
-_0800A4D0: .4byte 0x0202521C
 	thumb_func_start sub_0800A4D4
 sub_0800A4D4:
 	push {r4, r5, lr}
