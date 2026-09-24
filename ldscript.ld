@@ -1022,7 +1022,7 @@ SECTIONS
         build/src/sub_08340B90.o(.text*);
         build/src/sub_08340C20.o(.text*);
         build/src/sub_08340CB0.o(.text*);
-        build/asm/rom_08340CDC.o(.text*);
+        build/src/sub_08340CDC.o(.text*);
         build/src/sub_08340D04.o(.text*);
         build/src/sub_08340DB8.o(.text*);
         build/src/sub_08340E28.o(.text*);
