@@ -259,7 +259,8 @@ $(ASSET_STAMP): scripts/assets.py $(ASSETS_JSON)
 endif
 
 # Asset conversion tools, built from zeldaret/tmc's sources (tools/tmc).
-# Only `make convert` needs them; `make check` doesn't. gbagfx needs libpng.
+# A build with baserom.gba needs agb2mid, mid2agb and aif2pcm for the sound
+# (below). Only `make convert` needs gbagfx, which needs libpng.
 TMC_SRC := tools/tmc/tools/src
 ASSET_TOOLS := tools/bin/agb2mid tools/bin/mid2agb tools/bin/aif2pcm tools/bin/gbagfx
 tools: $(ASSET_TOOLS)
@@ -283,8 +284,41 @@ tools/bin/gbafix: $(TMC_SRC)/gbafix/gbafix.c
 	@mkdir -p $(@D)
 	cc -O2 -w -o $@ $<
 
-# Turn the extracted assets into editable files (songs to .mid, samples to
-# .aif) next to their .bin, and check that each one converts back exactly.
+# Sound: every song and sample builds from its editable file under assets/
+# (gitignored), as zeldaret/tmc's asset_processor does. `assets.py unpack`
+# writes each .mid or .aif from baserom.gba only when it's missing, so your
+# edits survive every build; delete one to get the ROM's back. A song goes
+# through mid2agb into assembly that data/rom_0801CD08.s includes in place,
+# so its pointers resolve where it links; a sample goes through aif2pcm.
+# Without baserom.gba (CI) there's nothing to unpack: `assets.py blank`
+# writes both as zero fill, and none of these tools are needed.
+ifneq ($(wildcard baserom.gba),)
+SOUND_EDITABLE := $(shell python3 scripts/assets.py list)
+SOUND_SONGS    := $(filter %.mid,$(SOUND_EDITABLE))
+SOUND_SAMPLES  := $(filter %.aif,$(SOUND_EDITABLE))
+$(BUILD)/data/rom_0801CD08.o: $(SOUND_SONGS:%.mid=$(BUILD)/%.s) \
+	$(SOUND_SAMPLES:%.aif=$(BUILD)/%.bin)
+
+# The stamp rebuilds them after a build without baserom.gba zero-filled them.
+$(BUILD)/assets/sound/songs/%.s: assets/sound/songs/%.mid tools/bin/mid2agb \
+		$(ASSET_STAMP)
+	@mkdir -p $(@D)
+	python3 scripts/assets.py song $< $@
+$(BUILD)/assets/sound/samples/%.bin: assets/sound/samples/%.aif tools/bin/aif2pcm \
+		$(ASSET_STAMP)
+	@mkdir -p $(@D)
+	tools/bin/aif2pcm $< $@
+
+# Named explicitly, so make never deletes them as intermediate files, and
+# order-only, so one that exists is never out of date.
+$(SOUND_SONGS): | baserom.gba tools/bin/agb2mid
+	python3 scripts/assets.py unpack $@
+$(SOUND_SAMPLES): | baserom.gba tools/bin/aif2pcm
+	python3 scripts/assets.py unpack $@
+endif
+
+# Turn the extracted graphics into editable .png files next to their .bin,
+# and check that each one converts back exactly.
 convert: baserom.gba $(ASSET_TOOLS) $(ASSET_STAMP)
 	python3 scripts/assets.py convert
 

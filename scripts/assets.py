@@ -9,12 +9,26 @@ data stays out of git and a build needs your own baserom.gba.
 `extract` copies each asset's raw bytes to build/assets/PATH. They keep the
 .bin name: they're the GBA's own formats (m4a song bytecode, PCM samples
 with their header, RL/LZ77 graphics streams), not MIDI, AIFF or PNG yet.
+It skips "midi" songs and "aif" samples: the build makes those from their
+editable files.
 
-`convert` writes an editable file next to each .bin -- .mid for "midi"
-songs (agb2mid), .aif for "aif" samples (aif2pcm), .png for "rl"/"lz"
-graphics (gbagfx) -- then converts it back and checks that the result
-matches the .bin byte for byte. It needs the tools from `make tools`;
-`make convert` builds them and runs this.
+`unpack FILE` writes one song's or one sample's editable file: assets/PATH
+with .mid (agb2mid) or .aif (aif2pcm) in place of .bin. The editable files
+are the sound's source. `make` unpacks a file only when it's missing, and
+`unpack` never overwrites one, so your edits survive every build. They stay
+out of git (.gitignore), since the ROM's data is copyrighted.
+
+`song MID OUT` turns a song's .mid into the assembly that data/*.s
+includes in place: mid2agb with the song's options from assets/*.json, so
+the song's pointers resolve where it links. `make` turns a sample's .aif
+back into its .bin with aif2pcm alone.
+
+`list` prints the editable file of every song and sample.
+
+`convert` writes an editable .png next to each "rl"/"lz" graphics .bin
+(gbagfx), then converts it back and checks that the result matches the
+.bin byte for byte. It needs the tools from `make tools`; `make convert`
+builds them and runs this.
 
 The PNGs are greyscale (no palette identified yet): gbagfx maps a color
 index to 255-index both ways, so the round trip is exact without knowing
@@ -30,12 +44,16 @@ stream's last run writes past its size (see convert_graphics).
 round-trip to check.
 
 `blank` writes each asset as zero fill of its listed size, for a build with
-no baserom.gba (CI). The code still links at its real addresses, and `mask`
-zeroes the same ranges in any ROM, so `make check-code` can compare the
-build against the retail ROM's code without the ROM being present.
+no baserom.gba (CI); a song's assembly becomes a `.space` of that size. The
+code still links at its real addresses, and `mask` zeroes the same ranges
+in any ROM, so `make check-code` can compare the build against the retail
+ROM's code without the ROM being present.
 
 Usage:
     python3 scripts/assets.py extract
+    python3 scripts/assets.py unpack FILE
+    python3 scripts/assets.py song MID OUT
+    python3 scripts/assets.py list
     python3 scripts/assets.py blank
     python3 scripts/assets.py convert
     python3 scripts/assets.py mask ROM_IN ROM_OUT
@@ -51,7 +69,10 @@ ROOT = Path(__file__).resolve().parent.parent
 ROM_BASE = 0x08000000
 BASEROM = ROOT / "baserom.gba"
 OUT = ROOT / "build" / "assets"
+EDIT = ROOT / "assets"
 TOOLS = ROOT / "tools" / "bin"
+# Asset types the build makes from an editable file, and that file's suffix.
+EDITABLE = {"midi": ".mid", "aif": ".aif"}
 
 
 def assets():
@@ -60,7 +81,35 @@ def assets():
 
 
 def run(*cmd):
-    subprocess.run([str(c) for c in cmd], check=True, capture_output=True)
+    done = subprocess.run([str(c) for c in cmd], capture_output=True, text=True)
+    if done.returncode:
+        sys.exit(f"{' '.join(map(str, cmd))}\n{done.stdout}{done.stderr}")
+
+
+def editable(asset):
+    return EDIT / Path(asset["path"]).with_suffix(EDITABLE[asset["type"]])
+
+
+def built(asset):
+    """The file under build/assets/ that data/*.s includes for the asset."""
+    path = OUT / asset["path"]
+    return path.with_suffix(".s") if asset.get("type") == "midi" else path
+
+
+def find(path):
+    """The song or sample whose editable file is `path`."""
+    path = Path(path).resolve()
+    for asset in assets():
+        if asset.get("type") in EDITABLE and editable(asset) == path:
+            return asset
+    sys.exit(f"{path}: no song or sample in assets/*.json has this file")
+
+
+def song_flags(opts):
+    flags = ["-E", "-P", opts["priority"]]
+    if "reverb" in opts:
+        flags += ["-R", opts["reverb"]]
+    return flags
 
 
 def extract():
@@ -68,18 +117,79 @@ def extract():
         sys.exit("baserom.gba is missing: copy your own ROM to the repo root")
     rom = BASEROM.read_bytes()
     for asset in assets():
+        if asset.get("type") in EDITABLE:
+            continue
         start = int(asset["start"], 16) - ROM_BASE
         path = OUT / asset["path"]
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(rom[start:start + asset["size"]])
 
 
+def unpack(path):
+    """Write one song's .mid or one sample's .aif from baserom.gba, unless
+    the file already exists: then it's the user's, edits and all."""
+    asset = find(path)
+    out = editable(asset)
+    if out.exists():
+        return
+    if not BASEROM.exists():
+        sys.exit("baserom.gba is missing: copy your own ROM to the repo root")
+    out.parent.mkdir(parents=True, exist_ok=True)
+    start = int(asset["start"], 16) - ROM_BASE
+    # Convert in a temporary folder, so a failed run leaves no partial file
+    # that a later build would take for the user's.
+    with tempfile.TemporaryDirectory(dir=out.parent) as t:
+        tmp = Path(t) / out.name
+        if asset["type"] == "midi":
+            opts = asset["options"]
+            header = hex(start + opts["headerOffset"])
+            run(TOOLS / "agb2mid", BASEROM, header, BASEROM, tmp, *song_flags(opts))
+        else:
+            raw = Path(t) / "sample.bin"
+            raw.write_bytes(BASEROM.read_bytes()[start:start + asset["size"]])
+            run(TOOLS / "aif2pcm", raw, tmp)
+        tmp.rename(out)
+
+
+def song(mid, out):
+    """mid2agb a song's .mid into assembly that data/*.s can include."""
+    asset = find(mid)
+    opts = asset["options"]
+    out = Path(out)
+    group = next(Path(a["path"]).stem for a in assets()
+                 if a.get("type") == "voicegroup" and a["start"] == opts["voicegroup"])
+    with tempfile.TemporaryDirectory() as t:
+        s = Path(t) / "song.s"
+        run(TOOLS / "mid2agb", mid, s, *song_flags(opts), "-V", opts["V"],
+            "-L", out.stem)
+        src = s.read_text()
+    # mid2agb writes pret preproc's `label::` (a global label) and its own
+    # .rodata section; plain gas wants `label:`, and the song must stay in
+    # the including fragment's section, at its place in the ROM. That
+    # section is Thumb code to gas, which pads a bare `.align` with NOPs;
+    # the ROM pads with zeros.
+    src = (src.replace("::", ":").replace("\t.section .rodata\n", "")
+           .replace("\t.align\t2\n", "\t.align\t2, 0\n")
+           .replace('"sound/MPlayDef.s"', '"tools/tmc/sound/MPlayDef.s"')
+           .replace("voicegroup000", group))
+    out.write_text(src)
+
+
+def list_editable():
+    for asset in assets():
+        if asset.get("type") in EDITABLE:
+            print(editable(asset).relative_to(ROOT))
+
+
 def blank():
     """Zero-fill every asset at its listed size, for a build with no ROM."""
     for asset in assets():
-        path = OUT / asset["path"]
+        path = built(asset)
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_bytes(bytes(asset["size"]))
+        if path.suffix == ".s":
+            path.write_text(f"\t.space {asset['size']}\n")
+        else:
+            path.write_bytes(bytes(asset["size"]))
 
 
 def mask(rom_in, rom_out):
@@ -89,22 +199,6 @@ def mask(rom_in, rom_out):
         start = int(asset["start"], 16) - ROM_BASE
         rom[start:start + asset["size"]] = bytes(asset["size"])
     Path(rom_out).write_bytes(rom)
-
-
-def rebuild_song(mid, asset, flags, tmp):
-    """mid2agb the MIDI, then assemble and link it at the song's address."""
-    opts = asset["options"]
-    s = tmp / "song.s"
-    run(TOOLS / "mid2agb", mid, s, *flags, "-V", opts["V"])
-    # mid2agb writes pret preproc's `label::` (a global label) and a .rodata
-    # section; plain gas wants `label:`, and -Ttext places only .text.
-    src = s.read_text().replace("::", ":").replace(".section .rodata", ".text")
-    s.write_text(f".equ voicegroup000, {opts['voicegroup']}\n{src}")
-    obj, elf, out = tmp / "song.o", tmp / "song.elf", tmp / "song.bin"
-    run("arm-none-eabi-as", "-I", ROOT / "tools" / "tmc", "-o", obj, s)
-    run("arm-none-eabi-ld", f"-Ttext={asset['start']}", "-o", elf, obj)
-    run("arm-none-eabi-objcopy", "-O", "binary", elf, out)
-    return out
 
 
 def tile_order(data, width, depth, inverse=False):
@@ -171,41 +265,20 @@ def convert_graphics(asset, raw, tmp):
 
 
 def convert():
-    done = {"midi": 0, "aif": 0, "graphics": 0}
-    raw_kept, bad = [], []
+    done, raw_kept, bad = 0, [], []
     with tempfile.TemporaryDirectory() as t:
         tmp = Path(t)
         for asset in assets():
             kind, raw = asset.get("type"), OUT / asset["path"]
-            if kind == "aif":
-                aif = raw.with_suffix(".aif")
-                run(TOOLS / "aif2pcm", raw, aif)
-                back = tmp / "sample.bin"
-                run(TOOLS / "aif2pcm", aif, back)
-            elif kind == "midi":
-                opts = asset["options"]
-                header = int(asset["start"], 16) - ROM_BASE + opts["headerOffset"]
-                flags = ["-E", "-P", opts["priority"]]
-                if "reverb" in opts:
-                    flags += ["-R", opts["reverb"]]
-                mid = raw.with_suffix(".mid")
-                run(TOOLS / "agb2mid", BASEROM, hex(header), BASEROM, mid, *flags)
-                back = rebuild_song(mid, asset, flags, tmp)
-            elif kind in ("rl", "lz") and asset.get("options", {}).get("raw"):
+            if kind not in ("rl", "lz"):
+                continue
+            if asset.get("options", {}).get("raw"):
                 raw_kept.append(asset["path"])
                 continue
-            elif kind in ("rl", "lz"):
-                done["graphics"] += 1
-                if not convert_graphics(asset, raw, tmp):
-                    bad.append(asset["path"])
-                continue
-            else:
-                continue
-            done[kind] += 1
-            if back.read_bytes() != raw.read_bytes():
+            done += 1
+            if not convert_graphics(asset, raw, tmp):
                 bad.append(asset["path"])
-    print(f"converted {done['midi']} songs to .mid, {done['aif']} samples to .aif, "
-          f"{done['graphics']} graphics blobs to .png")
+    print(f"converted {done} graphics blobs to .png")
     if raw_kept:
         print(f"kept raw (no round-trip): {', '.join(raw_kept)}")
     if bad:
@@ -214,8 +287,9 @@ def convert():
 
 
 if __name__ == "__main__":
-    modes = {"extract": extract, "blank": blank, "convert": convert, "mask": mask}
-    args = {"mask": 2}
+    modes = {"extract": extract, "unpack": unpack, "song": song, "list": list_editable,
+             "blank": blank, "convert": convert, "mask": mask}
+    args = {"unpack": 1, "song": 2, "mask": 2}
     if len(sys.argv) < 2 or sys.argv[1] not in modes \
             or len(sys.argv) - 2 != args.get(sys.argv[1], 0):
         sys.exit(__doc__)
