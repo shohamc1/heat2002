@@ -32,68 +32,6 @@
 	.size \name, .-\name
 	.endm
 @ End embedded Luvdis macros
-	thumb_func_start sub_08002258
-sub_08002258:
-	push {r4, r5, r6, r7, lr}
-	mov r7, r10
-	mov r6, r9
-	mov r5, r8
-	push {r5, r6, r7}
-	adds r6, r0, #0x0
-	lsls r1, r1, #0x10
-	lsrs r1, r1, #0x10
-	mov r10, r1
-	lsls r2, r2, #0x18
-	lsrs r2, r2, #0x18
-	mov r8, r2
-	ldr r1, [r6, #0x34]
-	ldr r0, _080022C8 @ =0x68736D53
-	cmp r1, r0
-	bne _080022B8
-	adds r0, r1, #0x1
-	str r0, [r6, #0x34]
-	ldrb r5, [r6, #0x08]
-	ldr r4, [r6, #0x2C]
-	movs r7, #0x01
-	cmp r5, #0x00
-	ble _080022B4
-	mov r9, r8
-_08002288:
-	mov r0, r10
-	ands r0, r7
-	cmp r0, #0x00
-	beq _080022AA
-	movs r0, #0x80
-	ldrb r1, [r4, #0x00]
-	ands r0, r1
-	cmp r0, #0x00
-	beq _080022AA
-	mov r0, r8
-	strb r0, [r4, #0x17]
-	mov r1, r9
-	cmp r1, #0x00
-	bne _080022AA
-	adds r0, r4, #0x0
-	bl sub_08002238
-_080022AA:
-	subs r5, #0x01
-	adds r4, #0x50
-	lsls r7, r7, #0x01
-	cmp r5, #0x00
-	bgt _08002288
-_080022B4:
-	ldr r0, _080022C8 @ =0x68736D53
-	str r0, [r6, #0x34]
-_080022B8:
-	pop {r3, r4, r5}
-	mov r8, r3
-	mov r9, r4
-	mov r10, r5
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.byte 0x00, 0x00
-_080022C8: .4byte 0x68736D53
 	thumb_func_start sub_080022CC
 sub_080022CC:
 	push {r4, r5, r6, r7, lr}
