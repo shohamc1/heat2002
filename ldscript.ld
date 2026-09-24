@@ -786,7 +786,7 @@ SECTIONS
         build/src/sub_08339AF0.o(.text*);
         build/src/sub_08339B04.o(.text*);
         build/src/sub_08339B18.o(.text*);
-        build/asm/rom_08339B38.o(.text*);
+        build/src/sub_08339B38.o(.text*);
         build/src/sub_08339B4C.o(.text*);
         build/lib/m4a/m4a_1_high.o(.text);
         build/src/sub_0833A78C.o(.text*);
