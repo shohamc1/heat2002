@@ -13,14 +13,21 @@ SHA1 is wrong, no matter how clean the C looks. Never edit `baserom.gba`,
 
 - `asm/*.s` — ROM disassembly, **1159 functions** originally, split into one
   fragment per gap between decompiled functions; reassembles to an exact match.
-  luvdis found 743 of them. The other 409 Thumb functions are reached only
+  No code is left in it: every fragment holds only `.incbin` lines for data
+  assets. luvdis found 743 of the functions. The other 409 Thumb functions are reached only
   through a pointer or never called (callbacks, leaf functions, empty `bx lr`
   stubs), so the `bl`-and-`push` seed rule missed them and luvdis left them as
   `.byte` rows. `scripts/seed_functions.py` now seeds them explicitly
   (`POINTER_ONLY`). The last 7 are hand-written ARM (the SDK start routine and
   interrupt dispatcher, in the main program, the high module and the
-  multiboot island), written as `arm_func_start` blocks of exact `.4byte`
-  words, since luvdis decodes only Thumb (`ARM_BLOCKS` in `progress.py`).
+  multiboot island), which luvdis can't decode, since it reads only Thumb.
+  They build from `lib/crt0.s` and `lib/crt0_island.s` (`ARM_BLOCKS` in
+  `progress.py`).
+- The cartridge header and the ROM's zero tail aren't in any source file.
+  `lib/rom_header.s` leaves the header's fields empty, and the Makefile's
+  `.gba` rule pads the ROM to 4 MB with `objcopy --pad-to`, then runs
+  `gbafix` (built from `tools/tmc`) to write the logo, title, codes and
+  checksum, as pokeemerald does.
 - `src/` — decompiled C, in folders at any depth. A file can hold several
   functions that sit next to each other in the ROM, including `ASM_FUNC`
   functions still in asm (see "Files, folders, and names"). Run
@@ -57,7 +64,10 @@ SHA1 is wrong, no matter how clean the C looks. Never edit `baserom.gba`,
   object per syscall; all three copies in the ROM build from it) and
   `m4a_1.s` (the sound driver's hand-written asm, edited to this ROM's older
   revision; both engine copies build from it). Copies outside the main
-  program keep their luvdis names. Also `multiboot.c` (pokeemerald's), and
+  program keep their luvdis names. Also `crt0.s` (the SDK start routine and
+  interrupt dispatcher, from pokeemerald's, for the main program and the
+  high module), `crt0_island.s` (the island's variant, with a link-cable
+  handshake), `rom_header.s`, `multiboot.c` (pokeemerald's), and
   `eeprom.c`, Nintendo's `EEPROM_V120` save library from
   Dream-Atelier/kl-eod-decomp, built at `-O1` as the SDK built it. A library object keeps its own flags; the
   rule against adding flags is about game code in `src/`.
@@ -111,7 +121,7 @@ which the `tools/agbcc` submodule points at. A fork carrying one `calls.c`
 patch was used until 2026-09-23 (see "Reverted 2026-09-23" in
 `docs/learnings/parked.md`). The binary is gitignored, so a fresh clone needs
 `git submodule update --init` then `tools/agbcc/build.sh`. Its
-codegen fingerprints are visible throughout `asm/rom.s`:
+codegen fingerprints are visible throughout `build/rom_reference.s` (`make disasm`):
 
 - `pop {r0}; bx r0` function epilogues (not `pop {pc}`)
 - `add rX, rY, #0` used as a register move
@@ -410,8 +420,8 @@ Follow the same loop as for any other function. Only these points differ:
   for ROM data. Don't write a new raw `0x0200xxxx` literal in C. Older
   module C still holds some; leave them for the shiftability pass.
 - Keep each asm fragment inside one image. The fragments
-  `rom_08339780.s`, `rom_08363EE8.s`, and `rom_08364AC8.s` start exactly
-  at a section boundary, so never merge one into the fragment before it.
+  `rom_08363EE8.s` and `rom_08364AC8.s` start exactly at a section
+  boundary, so never merge one into the fragment before it.
 
 ### Troubleshoot an EWRAM function
 
@@ -436,7 +446,7 @@ Follow the same loop as for any other function. Only these points differ:
   regression-tested, the whole corpus still matching, and the reasoning
   written down. A change that merely makes one function match is not
   acceptable.
-- Do not "fix" warnings in `asm/rom.s`. It reproduces the ROM as-is.
+- Do not "fix" warnings in `asm/*.s`. It reproduces the ROM as-is.
 - Do not add compiler flags to make something match. The flags in the
   Makefile are the ones the original build used, and `-O2`, interwork and
   every other flag have each been swept and eliminated as explanations —

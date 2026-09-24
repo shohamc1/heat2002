@@ -72,7 +72,19 @@ LIBGCC_HIGH := _call_via_rX:08344B7C _divsi3:08344BB8 _dvmd_tls:08344C4C \
 	_modsi3:08344C50 _muldi3:08344D20 _negdi2:08344D90 _umodsi3:08344DA8
 LIBGCC_HIGH_OBJS := $(foreach c,$(LIBGCC_HIGH),$(BUILD)/lib/libgcc/high/$(firstword $(subst :, ,$(c))).o)
 libgcc_high_base = $(lastword $(subst :, ,$(filter $(1):%,$(LIBGCC_HIGH))))
-LIBGCC_OBJS := $(LIBGCC1_OBJS) $(LIBGCC2_OBJS) $(LIBGCC_FP_OBJS) $(LIBGCC_HIGH_OBJS)
+# The multiboot island links a third copy of _call_via_rX, named the same way.
+LIBGCC_ISLAND_OBJS := $(BUILD)/lib/libgcc/island/_call_via_rX.o
+LIBGCC_OBJS := $(LIBGCC1_OBJS) $(LIBGCC2_OBJS) $(LIBGCC_FP_OBJS) $(LIBGCC_HIGH_OBJS) \
+	$(LIBGCC_ISLAND_OBJS)
+
+# Nintendo SDK start routine and interrupt dispatcher (lib/crt0.s), linked
+# by the main program and by the high 0x0834 module. The high copy takes its
+# luvdis names and points at the module's AgbMain and interrupt table. The
+# multiboot island has its own variant (lib/crt0_island.s).
+CRT0_OBJS := $(BUILD)/lib/rom_header.o $(BUILD)/lib/crt0.o $(BUILD)/lib/crt0_high.o \
+	$(BUILD)/lib/crt0_island.o
+CRT0_HIGH_SYMS := Init=sub_08339780 IntrMain=sub_083397C4 \
+	AgbMain=sub_083398CC gUnk_02000590=gUnk_020375E0
 
 # Nintendo SDK libraries written in C: MultiBoot (lib/multiboot.c,
 # pokeemerald's) and the EEPROM_V120 save library (lib/eeprom.c). Each keeps
@@ -85,7 +97,7 @@ $(BUILD)/src/sub_0800E640.o: CFLAGS := $(subst -O2,-O1,$(CFLAGS))
 $(BUILD)/src/sub_08364730.o: CFLAGS := $(subst -O2,-O1,$(CFLAGS))
 
 OBJS     := $(C_SRCS:%.c=$(BUILD)/%.o) $(ASM_SRCS:%.s=$(BUILD)/%.o) \
-	$(NEWLIB_OBJS) $(AGBSYSCALL_OBJS) $(AGBSYSCALL_COPY_OBJS) $(M4A_OBJS) $(LIB_C_OBJS) $(LIBGCC_OBJS)
+	$(NEWLIB_OBJS) $(AGBSYSCALL_OBJS) $(AGBSYSCALL_COPY_OBJS) $(M4A_OBJS) $(LIB_C_OBJS) $(LIBGCC_OBJS) $(CRT0_OBJS)
 
 .PHONY: all check check-code test clean disasm tools convert
 all: $(TARGET).gba
@@ -192,12 +204,24 @@ $(LIBGCC_HIGH_OBJS): $(BUILD)/lib/libgcc/high/%.o: $(BUILD)/lib/libgcc/%.o Makef
 	done > $@.syms
 	$(OBJCOPY) --redefine-syms=$@.syms $< $@
 
+$(LIBGCC_ISLAND_OBJS): $(BUILD)/lib/libgcc/island/%.o: $(BUILD)/lib/libgcc/%.o Makefile
+	@mkdir -p $(@D)
+	arm-none-eabi-nm $< | while read a b c; do [ "$$b" != T ] || \
+		printf '%s _%08X\n' $$c $$((0x$$a + 0x08364810)); done > $@.syms
+	$(OBJCOPY) --redefine-syms=$@.syms $< $@
+
 $(LIB_C_OBJS): $(BUILD)/lib/%.o: lib/%.c $(wildcard include/*.h include/gba/*.h) Makefile
 	@mkdir -p $(@D)
 	$(CPP) $(CPPFLAGS) $< -o $(@:.o=.i)
 	$(CC1) $(CFLAGS) $(@:.o=.i) -o $(@:.o=.s)
 	printf '.text\n\t.align\t2, 0\n' >> $(@:.o=.s)
 	$(AS) $(ASFLAGS) -o $@ $(@:.o=.s)
+
+$(BUILD)/lib/rom_header.o $(BUILD)/lib/crt0.o $(BUILD)/lib/crt0_island.o: $(BUILD)/lib/%.o: lib/%.s lib/function.inc Makefile
+	@mkdir -p $(@D)
+	$(AS) -mcpu=arm7tdmi -I lib -o $@ $<
+$(BUILD)/lib/crt0_high.o: $(BUILD)/lib/crt0.o Makefile
+	$(OBJCOPY) $(foreach s,$(CRT0_HIGH_SYMS),--redefine-sym $(s)) $< $@
 
 $(BUILD)/lib/m4a/m4a_1.o: lib/m4a_1.s lib/function.inc lib/m4a_constants.inc Makefile
 	@mkdir -p $(@D)
@@ -253,6 +277,12 @@ tools/bin/gbagfx: $(wildcard $(TMC_SRC)/gbagfx/*)
 	@mkdir -p $(@D)
 	cc -O2 -w $(shell pkg-config --cflags libpng) -o $@ $(TMC_SRC)/gbagfx/*.c $(shell pkg-config --libs libpng)
 
+# gbafix writes the cartridge header fields that lib/rom_header.s leaves
+# empty. Every build needs it, not only `make convert`.
+tools/bin/gbafix: $(TMC_SRC)/gbafix/gbafix.c
+	@mkdir -p $(@D)
+	cc -O2 -w -o $@ $<
+
 # Turn the extracted assets into editable files (songs to .mid, samples to
 # .aif) next to their .bin, and check that each one converts back exactly.
 convert: baserom.gba $(ASSET_TOOLS) $(ASSET_STAMP)
@@ -270,8 +300,16 @@ $(BUILD)/asm/%.o: asm/%.s Makefile $(ASSET_STAMP)
 $(TARGET).elf: ldscript.ld symbols.ld $(OBJS)
 	$(LD) --no-check-sections -T ldscript.ld -T symbols.ld -o $@ $(OBJS)
 
-$(TARGET).gba: $(TARGET).elf
-	$(OBJCOPY) -O binary $< $@
+# The cartridge is 4 MB, zero-filled past the last section.
+TITLE      := NASCAR HEAT
+GAME_CODE  := ANHE
+MAKER_CODE := 70
+REVISION   := 0
+ROM_END    := 0x08400000
+
+$(TARGET).gba: $(TARGET).elf tools/bin/gbafix
+	$(OBJCOPY) -O binary --pad-to $(ROM_END) $< $@
+	tools/bin/gbafix $@ -t"$(TITLE)" -c$(GAME_CODE) -m$(MAKER_CODE) -r$(REVISION) --silent
 
 # The only thing that matters: does it reproduce the ROM?
 check: $(TARGET).gba check-code

@@ -18,13 +18,15 @@ match, the change is wrong — no exceptions.
 Progress is measured in **bytes of code**, not function count — a 1,500-instruction
 function is not worth the same as a 1-instruction stub. The denominator is the
 1001 game-code functions: 1159 blocks minus 158 that are runtime library, SDK,
-hand-written ARM or luvdis false positives (see `docs/learnings/parked.md`). 74 library objects
-are built from source: 34 newlib from `tools/agbcc/libc`, 18 libgcc from
-`tools/agbcc/libgcc` (two copies), and from `lib/` 18 libagbsyscall members,
-two copies of the sound driver's `m4a_1.s` and the MultiBoot library, all
+hand-written ARM or luvdis false positives (see `docs/learnings/parked.md`). 79 library objects
+are built from source: 34 newlib from `tools/agbcc/libc`, 19 libgcc from
+`tools/agbcc/libgcc` (three copies of `_call_via_rX`), and from `lib/` 18
+libagbsyscall members, two copies of the sound driver's `m4a_1.s`, the
+MultiBoot library, three copies of the SDK start routine and interrupt
+dispatcher (`crt0.s`, `crt0_island.s`) and the cartridge header stub, all
 adapted from pret/pokeemerald, and Nintendo's EEPROM save library, from
-Dream-Atelier/kl-eod-decomp. Counting them, 99.9682% of the whole ROM's code
-comes from source. Regenerate with `python3 scripts/progress.py`;
+Dream-Atelier/kl-eod-decomp. Counting them, all of the whole ROM's code comes
+from source. Regenerate with `python3 scripts/progress.py`;
 `--json` emits an [objdiff](https://github.com/encounter/objdiff) `report.json`
 v2 compatible with [decomp.dev](https://decomp.dev).
 
@@ -108,8 +110,8 @@ own call-graph reachability stalls at `0x801A56C`). Requiring both cut ~1,300
 candidates to 593 solid seeds, which Luvdis expanded to 743. That rule misses
 every function nothing `bl`s to, so 409 more are seeded explicitly
 (`POINTER_ONLY` in `scripts/seed_functions.py`). Luvdis decodes only Thumb, so
-the 7 hand-written ARM routines are written out as `arm_func_start` blocks, for
-1,159.
+the 7 hand-written ARM routines are counted separately, for 1,159. They build
+from `lib/crt0.s` and `lib/crt0_island.s`.
 
 ## Layout
 

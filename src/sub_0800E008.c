@@ -4,8 +4,8 @@
 #include "gba/macro.h"
 #include "gba/syscall.h"
 
-extern u8 gUnk_080000B2;
-extern u32 gUnk_080000AC;
+extern u8 RomHeaderMagic;
+extern u32 RomHeaderGameCode;
 extern u32 gUnk_0807C9E8;
 extern u32 gUnk_02000590[];
 extern const u8 *gUnk_083FDA50[];
@@ -34,7 +34,7 @@ u32 SendMultibootPayload(void)
     frame = 0;
     idx = 0;
     REG_IE = INTR_FLAG_VBLANK;
-    if (gUnk_080000B2 == 0x96 && gUnk_080000AC == gUnk_0807C9E8)
+    if (RomHeaderMagic == 0x96 && RomHeaderGameCode == gUnk_0807C9E8)
         REG_IE |= INTR_FLAG_GAMEPAK;
     REG_DISPSTAT = DISPSTAT_VBLANK_INTR;
     REG_IME = 1;

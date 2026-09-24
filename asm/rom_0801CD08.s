@@ -481,21 +481,8 @@
 	.incbin "build/assets/unknown/data_08120894.bin"
 	.incbin "build/assets/unknown/data_08120C10.bin"
 	.incbin "build/assets/unknown/data_08120CB8.bin"
-	non_word_aligned_thumb_func_start sub_08120E3A
-sub_08120E3A:
-	push {r0, r1, r2, r3, r4, r7, lr}
 	.incbin "build/assets/unknown/data_08120E3C.bin"
 	.incbin "build/assets/unknown/data_08121000.bin"
-	non_word_aligned_thumb_func_start sub_08121316
-sub_08121316:
-	push {r0, r1, r2, r4, r5, r6, r7, lr}
-	movs r1, #0x7E
-	movs r1, #0x5C
-	add sp, #0x000
-	push {r1, r4, r5, r6, r7, lr}
-	movs r1, #0x81
-	movs r1, #0x5E
-	movs r1, #0x5F
 	.incbin "build/assets/unknown/data_08121326.bin"
 	.incbin "build/assets/unknown/data_08122910.bin"
 	.incbin "build/assets/unknown/data_08125DD0.bin"
@@ -739,14 +726,7 @@ sub_08121316:
 	.incbin "build/assets/unknown/data_08242CA8.bin"
 	.incbin "build/assets/unknown/data_08242EA8.bin"
 	.incbin "build/assets/unknown/data_08244C24.bin"
-	non_word_aligned_thumb_func_start sub_08248272
-sub_08248272:
-	push {r0, r1, r2, r3, r4, r6, r7, lr}
 	.incbin "build/assets/unknown/data_08248274.bin"
-	thumb_func_start sub_0824C6F0
-sub_0824C6F0:
-	push {r0, r1, r3, r4, r5, r6, r7, lr}
-	push {r1, r3, r4, r5, r6, r7, lr}
 	.incbin "build/assets/unknown/data_0824C6F4.bin"
 	.incbin "build/assets/unknown/data_08250000.bin"
 	.incbin "build/assets/unknown/data_0825001C.bin"
@@ -784,12 +764,6 @@ sub_0824C6F0:
 	.incbin "build/assets/unknown/data_082707D4.bin"
 	.incbin "build/assets/unknown/data_0827082C.bin"
 	.incbin "build/assets/unknown/data_0827AAA8.bin"
-	non_word_aligned_thumb_func_start sub_0827B7CA
-sub_0827B7CA:
-	push {r0, r2, lr}
-	strb r5, [r2, r1]
-	lsrs r3, r1, #0x0D
-	adds r4, #0x45
 	.incbin "build/assets/unknown/data_0827B7D2.bin"
 	.incbin "build/assets/unknown/data_08280428.bin"
 	.incbin "build/assets/unknown/data_08280430.bin"

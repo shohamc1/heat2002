@@ -3,8 +3,8 @@
 #include "gba/io_reg.h"
 #include "gba/macro.h"
 
-extern u8 gUnk_080000B2;
-extern u32 gUnk_080000AC;
+extern u8 RomHeaderMagic;
+extern u32 RomHeaderGameCode;
 extern u32 gUnk_020009B8;
 extern u32 gUnk_020001C8[];
 extern u8 gUnk_03000000[];
@@ -39,7 +39,7 @@ void sub_083642FC(void)
     DmaCopy32(3, gUnk_020001C8, gUnk_03000000, 0x800);
     gUnk_03007FFC = (u32)gUnk_03000000;
     REG_IE = INTR_FLAG_VBLANK;
-    if (gUnk_080000B2 == 0x96 && gUnk_080000AC == gUnk_020009B8)
+    if (RomHeaderMagic == 0x96 && RomHeaderGameCode == gUnk_020009B8)
         REG_IE |= INTR_FLAG_GAMEPAK;
     REG_DISPSTAT = DISPSTAT_VBLANK_INTR;
     DmaFill32(3, 0, (void *)VRAM, 0x18000);

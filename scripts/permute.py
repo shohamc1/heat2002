@@ -156,15 +156,14 @@ def _selftest():
         return
 
     # The target must be the ROM's own bytes, or the permuter chases the
-    # wrong thing. Check the first game function still in asm. The runtime
-    # library that used to serve here builds from source now; the
-    # word-aligned luvdis false positive never leaves asm, so it is the
-    # fallback once every game function is decompiled.
-    from progress import LUVDIS_FALSE_POSITIVES, parse_asm
+    # wrong thing. Check the first function still in asm, if any is left.
+    from progress import parse_asm
 
     texts = [f.read_text().splitlines() for f in fragments()]
-    game = sorted(n for n in parse_asm() if addr_of(n) not in LUVDIS_FALSE_POSITIVES)
-    name = next(n for n in game + ["sub_0824C6F0"] if function_asm(n, texts))
+    name = next((n for n in sorted(parse_asm()) if function_asm(n, texts)), None)
+    if name is None:
+        print("selftest ok (target check skipped: no function left in asm)")
+        return
     with tempfile.TemporaryDirectory() as tmp:
         out = Path(tmp) / "target.o"
         build_target(name, out, texts)

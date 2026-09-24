@@ -74,7 +74,8 @@ SECTIONS
     rom_entry = .;
     .text : ALIGN(4)
     {
-        build/asm/rom.o(.text*);
+        build/lib/rom_header.o(.text);
+        build/lib/crt0.o(.text);
         build/src/sub_0800020C.o(.text*);
         build/src/sub_08000214.o(.text*);
         build/src/sub_08000224.o(.text*);
@@ -778,14 +779,17 @@ SECTIONS
         build/lib/newlib/locale/locale.o(.rodata);
         build/lib/newlib/stdlib/mprec.o(.rodata);
         build/lib/newlib/arm/syscalls.o(.rodata);
-        build/asm/rom_08339680.o(.text*);
+        /* 256 unused zero bytes before the high module. Nothing reads,
+           writes or sends them: the chunk table at 0x0807C9CC starts at
+           0x08339780. See "The gap before the high module" in parked.md. */
+        . = ALIGN(4) + 0x100;
     }
     /* The high module: the image that the multiboot island receives in
        32 KB chunks and runs from EWRAM. Linked at its run address, stored
        in the ROM right after the main program's .text. */
     .high_module 0x02000D00 : AT(LOADADDR(.text) + SIZEOF(.text))
     {
-        build/asm/rom_08339780.o(.text*);
+        build/lib/crt0_high.o(.text);
         build/src/sub_083398CC.o(.text*);
         build/src/sub_083398D4.o(.text*);
         build/src/sub_083398E4.o(.text*);
@@ -1167,6 +1171,7 @@ SECTIONS
     .island 0x02000000 : AT(LOADADDR(.high_module) + SIZEOF(.high_module))
     {
         build/asm/rom_08363EE8.o(.text*);
+        build/lib/crt0_island.o(.text);
         build/src/sub_0836418C.o(.text*);
         build/src/sub_08364190.o(.text*);
         build/src/sub_0836419C.o(.text*);
@@ -1181,7 +1186,8 @@ SECTIONS
         build/lib/agbsyscall/sub_08364800.o(.text);
         build/lib/agbsyscall/sub_08364804.o(.text);
         build/lib/agbsyscall/sub_08364808.o(.text);
-        build/asm/rom_08364810.o(.text*);
+        build/lib/libgcc/island/_call_via_rX.o(.text);
+        build/asm/rom_0836484C.o(.text*);
     }
     /* Back to ROM-linked data. The explicit AT stops ld from carrying the
        island's VMA-to-LMA offset over to this section, and READONLY stops
@@ -1194,7 +1200,6 @@ SECTIONS
         build/lib/newlib/reent/impure.o(.data);
         build/lib/newlib/locale/locale.o(.data);
         build/lib/newlib/stdlib/mallocr.o(.data);
-        build/asm/rom_083FFF04.o(.text*);
         /* Catch-all, not the primary placement mechanism: every object above
            is listed explicitly and must stay in address order. This exists
            so a *forgotten* listing (a new src/*.c or asm/*.s add without a

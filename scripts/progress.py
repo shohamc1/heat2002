@@ -53,7 +53,7 @@ LUVDIS_FALSE_POSITIVES = frozenset((
 # Hand-written ARM that luvdis (a Thumb decoder) left as .byte rows: the SDK
 # crt0 start routine and interrupt dispatcher, once for the main program, once
 # for the high 0x0834 module and once for the multiboot island (which adds a
-# link-port wait routine). They're arm_func_start blocks of exact .4byte words;
+# link-port wait routine). They build from lib/crt0.s and lib/crt0_island.s;
 # like m4a_1.s, they aren't decompilation targets.
 ARM_BLOCKS = frozenset((
     0x080000C0, 0x08000104, 0x08339780, 0x083397C4,
@@ -127,7 +127,7 @@ LIBGCC_BLOCKS = frozenset((
 # Every luvdis block whose bytes now come from a source-built library object.
 LIBRARY_BLOCKS = (
     NEWLIB_BLOCKS | AGBSYSCALL_BLOCKS | M4A_BLOCKS | EEPROM_BLOCKS | MULTIBOOT_BLOCKS
-    | LIBGCC_BLOCKS
+    | LIBGCC_BLOCKS | ARM_BLOCKS
 )
 
 # Every luvdis block's address, sorted; see the header of blocks.txt.
@@ -454,7 +454,6 @@ def _selftest():
     assert not rt, f"runtime-library code is back in asm: {sorted(rt)}"
     rt_addrs = set(by_address(rt)) | LIBRARY_BLOCKS
     non_targets = rt_addrs | LUVDIS_FALSE_POSITIVES | ARM_BLOCKS
-    assert ARM_BLOCKS <= in_asm, "an ARM block is missing from asm/"
     assert total - len(non_targets) == 1001, (
         f"game-code denominator should be 1001, got {total - len(non_targets)}"
     )

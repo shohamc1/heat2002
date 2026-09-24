@@ -30,7 +30,8 @@ Do not write C for them. They're data, so each one leaves `asm/` when the
 data around it becomes an extracted asset (`assets/*.json`, see
 `scripts/assets.py`). `sub_08026DB6` and `sub_080462B2` sat inside PCM
 samples and left with the sound data on 2026-09-23 (`assets/sound.json`).
-The other five stay in `asm/` until their data is identified. The 1150
+The other five were folded into the untyped blobs that end where each one
+starts on 2026-09-25 (`assets/unknown.json`), so none is left in `asm/`. The 1150
 denominator is therefore ~1143 real functions. The count stays at 1150 so it
 agrees with the original disassembly: `progress.py --selftest` counts all
 seven whether or not they're still in `asm/`.
@@ -78,7 +79,7 @@ Graphics, compressed, `0x0807CA7C`-`0x08339xxx` + three island copies
   through random data that starts with `0x30` and lands the exact bogus
   size.
 - The blobs sit in 112 back-to-back runs, mostly `0x08280000`-`0x08340000`,
-  all inside `rom_0801CD08.s` (island copies in `rom_08364810.s`). Every
+  all inside `rom_0801CD08.s` (island copies in `rom_0836484C.s`). Every
   stream ends with zero fill to a 4-byte boundary, which the `.incbin`
   lines emit as `.align 2, 0`. The two 38,400-byte blobs at `0x082B370C`
   and `0x0830EE78` are the Crawfish and Infogrames 240x160 8bpp boot
@@ -212,7 +213,8 @@ Unidentified data, `assets/unknown.json`, established 2026-09-24:
   applies to a typed asset. An untyped raw blob sits back to back with
   whatever follows it, so its tail -- zero or not -- belongs to the next
   blob, and absorbing it would make the overlap check fire.
-- Left in `asm/` as code, not extracted:
+- Left in `asm/` as code, not extracted. All of it left `asm/` on
+  2026-09-25 (see "Code that left asm/ last" below):
   - `rom_0801CD08.s`: the five luvdis false positives already noted
     above (`sub_08120E3A`, `sub_08121316`, `sub_08248272`, `sub_0824C6F0`,
     `sub_0827B7CA`), 2-16 bytes each.
@@ -242,8 +244,58 @@ Unidentified data, `assets/unknown.json`, established 2026-09-24:
     the multiboot island.
   - The main program's and the high module's copies of the same start
     routine and interrupt dispatcher (`sub_080000C0`/`sub_08000104` in
-    `rom.s`, `sub_08339780`/`sub_083397C4` in `rom_08339680.s`) were
-    `.byte` rows too, never counted as functions. They're ARM blocks now.
+    `rom.s`, `sub_08339780`/`sub_083397C4` in `rom_08339780.s`) were
+    `.byte` rows too, never counted as functions, then ARM blocks.
+
+## Code that left asm/ last (2026-09-25)
+
+After these changes, every `asm/*.s` fragment holds only `.incbin` lines for
+data assets. The following list gives where each last piece went:
+
+- **Hand-written ARM.** The 7 `ARM_BLOCKS` build from source. The main
+  program's and the high module's start routine and interrupt dispatcher
+  are one file, `lib/crt0.s`, derived from pokeemerald's `src/crt0.s`. The
+  two copies differ only in their `AgbMain` and interrupt-table literals, so
+  the Makefile renames the high copy's symbols with `objcopy`, the same way
+  it renames the high libgcc and `m4a_1.s` copies. Among the differences
+  from pokeemerald's revision: the system stack is `IWRAM_END - 0x200`,
+  serial and timer 3 are checked first together, IME is set to 1 on entry,
+  and the enabled-interrupt mask during a handler is fixed. The island's variant, `lib/crt0_island.s`, adds
+  the link-port wait routine and a handshake before the same start code,
+  and its dispatcher checks interrupts in bit order with no nesting.
+- **Island `_call_via_rX`.** A third renamed copy of libgcc's
+  `_call_via_rX.o`, `build/lib/libgcc/island/`, named `_08364810` and on.
+  The fragment after it is now `rom_0836484C.s`.
+- **Luvdis false positives.** Folded into the blob before each one in
+  `assets/unknown.json`.
+- **Cartridge header.** `lib/rom_header.s` holds empty fields, as
+  pokeemerald's and tmc's do, and `gbafix` fills them after the link. C
+  reads two of them, as `RomHeaderGameCode` and `RomHeaderMagic`.
+- **ROM tail.** The 252 zero bytes after newlib's `.data` came from
+  padding the cartridge to 4 MB. `objcopy --pad-to 0x08400000` writes them.
+  It can't be `gbafix -p`: that pads with `0xFF`, and this ROM's tail is
+  zero.
+
+### The gap before the high module
+
+The 256 bytes at `0x08339680`-`0x08339780` are zero and unused. The
+following facts support that:
+
+- The main program's last data, `syscalls.o`'s `.rodata`, ends at
+  `0x0833967D`. The gap starts at the next 4-byte boundary and runs
+  exactly `0x100` bytes to the high module.
+- No aligned word anywhere in the ROM points into the gap. No word in the
+  main program, the high module or the island points into the matching
+  EWRAM range, `0x02000C00`-`0x02000CFF`.
+- The chunk table that the main program sends over the link cable
+  (`gUnk_0807C9CC`, read by `SendMultibootPayload`) starts at
+  `0x08339780`, so the gap never reaches the second GBA.
+
+The data doesn't show whether the original build reserved the space at the
+end of the main program or at the head of a separately built high module.
+`ldscript.ld` writes it as `. = ALIGN(4) + 0x100;` at the end of `.text`.
+The `ALIGN(4)` matters: the removed asm fragment's own alignment supplied
+the 3 bytes between `0x0833967D` and `0x08339680`.
 
 ## Non-interwork epilogues
 
