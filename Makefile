@@ -101,7 +101,7 @@ $(BUILD)/src/sub_08364730.o: CFLAGS := $(subst -O2,-O1,$(CFLAGS))
 OBJS     := $(C_SRCS:%.c=$(BUILD)/%.o) $(DATA_SRCS:%.s=$(BUILD)/%.o) \
 	$(NEWLIB_OBJS) $(AGBSYSCALL_OBJS) $(AGBSYSCALL_COPY_OBJS) $(M4A_OBJS) $(LIB_C_OBJS) $(LIBGCC_OBJS) $(CRT0_OBJS)
 
-.PHONY: all check check-code test clean disasm tools convert
+.PHONY: all check check-code test clean disasm tools convert pointers
 all: $(TARGET).gba
 
 # Each C file is preprocessed, run through preproc (which expands INCBIN_*
@@ -350,6 +350,14 @@ $(BUILD)/data/%.o: data/%.s Makefile $(ASSET_STAMP)
 $(TARGET).elf: ldscript.ld symbols.ld $(OBJS)
 	$(LD) --no-check-sections -T ldscript.ld -T symbols.ld -o $@ $(OBJS)
 
+# The same link with --emit-relocs, so scripts/pointers.py can tell a word
+# the linker computed from one written as a raw number.
+$(BUILD)/$(TARGET).relocs.elf: ldscript.ld symbols.ld $(OBJS)
+	@$(LD) --no-check-sections --emit-relocs -T ldscript.ld -T symbols.ld -o $@ $(OBJS)
+
+pointers: $(TARGET).gba $(BUILD)/$(TARGET).relocs.elf
+	python3 scripts/pointers.py
+
 # The cartridge is 4 MB, zero-filled past the last section.
 TITLE      := NASCAR HEAT
 GAME_CODE  := ANHE
@@ -380,6 +388,7 @@ test:
 	python3 scripts/seed_functions.py --selftest
 	python3 scripts/strings.py --selftest
 	python3 scripts/permute.py --selftest
+	python3 scripts/pointers.py --selftest
 	python3 scripts/test_alignment.py
 	python3 scripts/test_extract_guard.py
 
