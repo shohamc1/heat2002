@@ -41,8 +41,16 @@ SHA1 is wrong, no matter how clean the C looks. Never edit `baserom.gba`,
   assets, compared against `nascar-heat.code.sha1`. `make` regenerates that
   file from `baserom.gba` when `assets/*.json` changes; commit the two
   together.
-  Sound and compressed graphics are typed and convert to `.mid`, `.aif` and
-  `.png`; the rest of the data is untyped raw blobs (`assets/unknown.json`).
+  Sound builds from editable files, as in zeldaret/tmc: each song from
+  `assets/sound/songs/*.mid` (mid2agb, then assembled in place by
+  `data/rom_0801CD08.s`) and each sample from `assets/sound/samples/*.aif`
+  (aif2pcm). `make` builds those tools from `tools/tmc` and runs
+  `scripts/assets.py unpack` to write each editable file from `baserom.gba`
+  only when it's missing, so edits survive `make` and `make clean`. Delete a
+  file to get the ROM's version back. `assets/*/` is gitignored: never
+  commit the editable files. Without a ROM, none of this runs.
+  Compressed graphics are typed and convert to `.png` with `make convert`;
+  the rest of the data is untyped raw blobs (`assets/unknown.json`).
   See "Extracted data assets" in `docs/learnings/parked.md`.
 - `docs/recon.md` — function inventory, call graph, entry-point trace, candidate ranking.
 - `docs/learnings/solved-walls.md`: **read when a function stalls.** It maps
@@ -465,4 +473,4 @@ Follow the same loop as for any other function. Only these points differ:
     python3 scripts/progress.py         # progress summary
     python3 scripts/progress.py --json  # report.json for decomp.dev
     make tools      # build agb2mid, mid2agb, aif2pcm, gbagfx from tools/tmc
-    make convert    # extracted songs -> .mid, samples -> .aif, round-trip checked
+    make convert    # extracted graphics -> .png, round-trip checked (needs libpng)

@@ -40,7 +40,8 @@ seven whether or not they're still in `asm/`.
 
 `scripts/assets.py extract` copies every asset listed in `assets/*.json` out
 of `baserom.gba` into `build/assets/`, and the asm pulls each one in with
-`.incbin`. `make` runs it; `make check` still prints MATCH.
+`.incbin`. The exceptions are the songs and samples, which build from
+editable files (below). `make` runs it; `make check` still prints MATCH.
 
 Sound, `0x0801D29C`-`0x0806C664` (324 KB), established 2026-09-23:
 
@@ -56,13 +57,42 @@ Sound, `0x0801D29C`-`0x0806C664` (324 KB), established 2026-09-23:
 - 25 distinct songs tile `0x0806AA64`-`0x0806C664`, tracks first, header
   last.
 
-`make convert` builds agb2mid, mid2agb, aif2pcm and gbagfx from
-`tools/tmc` and writes a `.mid` or `.aif` next to each song and sample
-`.bin`. All 25 songs and all 36 samples convert back byte for byte. One
-option is not in tmc's asset lists: agb2mid drops each track's opening
-`VOL`, and mid2agb writes it back as `127*mvl/mxv`, so each song needs
-`-V` set to its opening volume (the `V` option in `sound.json`). Every
-track in a song opens at the same volume.
+All 25 songs and all 36 samples convert to `.mid` and `.aif` and back
+byte for byte. One option is not in tmc's asset lists: agb2mid drops each
+track's opening `VOL`, and mid2agb writes it back as `127*mvl/mxv`, so each
+song needs `-V` set to its opening volume (the `V` option in `sound.json`).
+Every track in a song opens at the same volume.
+
+Since 2026-09-25 the build makes the sound from those editable files, as
+tmc's asset_processor does. The following list covers how, and why:
+
+- The editable files live in `assets/sound/`, next to the JSON that lists
+  them, so they survive `make clean`. tmc keeps its editable tree inside
+  `build/`, where a clean would delete your edits. `assets/*/` is
+  gitignored, since the data is copyrighted.
+- `scripts/assets.py unpack` writes one file, and does nothing if it
+  exists. The Makefile names each file as an explicit target with only
+  order-only prerequisites, so make runs `unpack` only for a missing file,
+  and never deletes one as an intermediate of the pattern chain.
+- `extract` skips `midi` and `aif` assets. If it wrote their `.bin` too, it
+  would overwrite the built copy with the ROM's bytes whenever the JSON
+  changed.
+- Songs link in place: `assets.py song` runs mid2agb and
+  `data/rom_0801CD08.s` `.include`s the result, so a song's track and
+  `GOTO` pointers resolve where it lands, as pokeemerald's song objects do.
+  The voicegroup pointer resolves to a label on the voicegroup's
+  `.incbin`. mid2agb's output needs four fixes for that: `label::` becomes
+  `label:` (no preproc here), its `.section .rodata` goes, the
+  `MPlayDef.s` path points into `tools/tmc`, and `.align 2` becomes
+  `.align 2, 0`. The fragment is Thumb code to gas, which pads a bare
+  `.align` with `46c0` NOPs; that cost 10 bytes in five songs.
+- Samples go through `aif2pcm` straight to the `.bin` the fragment
+  `.incbin`s.
+- Without a ROM, `assets.py blank` writes each song's assembly as a
+  `.space` of its size, so CI needs none of the tools.
+
+A song or sample still can't change size: the song table, the voicegroups
+and the code hold absolute addresses.
 
 Graphics, compressed, `0x0807CA7C`-`0x08339xxx` + three island copies
 (341 KB), established 2026-09-23 (steps 1-2 of

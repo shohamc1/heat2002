@@ -53,7 +53,8 @@ shasum -c nascar-heat.sha1.baserom
 
 ## Setup
 
-Requires `arm-none-eabi-binutils`, Python 3, and a C compiler to bootstrap agbcc.
+Requires `arm-none-eabi-binutils`, Python 3, a C compiler to bootstrap agbcc,
+and a C++17 compiler for the sound tools.
 
 ```sh
 git clone --recursive https://github.com/shohamc1/heat2002-gba
@@ -95,6 +96,26 @@ make check      # build + verify SHA-1 — the only test that counts
 make disasm     # full-ROM reference disasm -> build/rom_reference.s (never touches data/)
 ```
 
+The first `make` builds `agb2mid`, `mid2agb` and `aif2pcm` from `tools/tmc`
+and writes the game's sound as editable files: each song as
+`assets/sound/songs/song_NN.mid` and each sample as
+`assets/sound/samples/sample_ADDRESS.aif`. The build makes the ROM's sound
+from those files, not from the ROM. The folder is gitignored, because the
+data is copyrighted, and `make clean` leaves it alone.
+
+To edit a song:
+
+1. Edit `assets/sound/songs/song_NN.mid` in any MIDI editor.
+2. Run `make`. It rebuilds that song and relinks the ROM.
+
+A sample works the same way. `make check` then prints `MISMATCH`, since the
+ROM has changed. To get the original back, delete the file and run `make`
+again.
+
+Only an edit that keeps the song's or sample's size builds a working ROM. A
+size change moves every byte after it, but the song table, the voicegroups
+and the code still hold the original addresses.
+
 ## How it works
 
 The ROM was compiled with **GCC 2.95**, which is unmistakable in the
@@ -118,6 +139,9 @@ from `lib/crt0.s` and `lib/crt0_island.s`.
 ```
 data/*.s          ROM disassembly, one fragment per gap between decompiled
                  functions; reassembles exactly
+assets/*.json    Data asset lists (zeldaret/tmc format)
+assets/sound/    Editable songs (.mid) and samples (.aif); gitignored,
+                 written by make from baserom.gba
 src/             Decompiled C, in folders; a file holds contiguous functions
 include/         Headers
 include/gba/     GBA hardware headers vendored from fireemblem8u (pret)
