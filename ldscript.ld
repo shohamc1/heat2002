@@ -889,6 +889,7 @@ SECTIONS
         build/src/sub_0833D12C.o(.text*);
         build/src/sub_0833D160.o(.text*);
         build/asm/rom_0833D188.o(.text*);
+        build/src/sub_0833D1F4.o(.text*);
         build/src/sub_0833D210.o(.text*);
         build/src/sub_0833D250.o(.text*);
         build/src/sub_0833D288.o(.text*);
