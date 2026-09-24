@@ -3,7 +3,7 @@
 #include "gba/io_reg.h"
 #include "gba/macro.h"
 
-void sub_08000274(void)
+void ClearVram(void)
 {
     DmaFill16(3, 0, VRAM, VRAM_SIZE);
 }

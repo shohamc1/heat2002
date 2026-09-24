@@ -14,11 +14,11 @@ struct SegBC4C {
 };
 
 extern struct SegBC4C *gUnk_083671C0[];   /* 0x083671C0 */
-extern u8 gUnk_020020CC;                  /* 0x020020CC */
+extern u8 gTrackId;                  /* 0x020020CC */
 
 s32 sub_0800BC4C(struct VtxBC4C *verts, u8 *idx)
 {
-    struct SegBC4C *s = gUnk_083671C0[gUnk_020020CC];
+    struct SegBC4C *s = gUnk_083671C0[gTrackId];
     s32 t[6];
     s32 x1, y1, x2, y2;
     s32 flag;

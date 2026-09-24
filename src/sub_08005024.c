@@ -5,10 +5,10 @@ extern u8 gUnk_02025248;
 extern u8 gUnk_0202539C;
 extern volatile u8 gUnk_020020C0;
 
-extern void sub_0800048C(void);
+extern void ReadKeys(void);
 extern u32 sub_08004DB4(void);
 extern void sub_08004D1C(u8 a);
-extern s32 sub_08003330(void);
+extern s32 ExchangeLinkInput(void);
 
 u8 sub_08005024(void)
 {
@@ -22,11 +22,11 @@ u8 sub_08005024(void)
     s32 v;
 
     gUnk_02025248 = 0;
-    sub_0800048C();
+    ReadKeys();
     sub_08004DB4();
     p248 = &gUnk_02025248;
     p39c = &gUnk_0202539C;
-    while ((v = sub_08003330()) == 0) {
+    while ((v = ExchangeLinkInput()) == 0) {
         sub_08004DB4();
         if (gUnk_02025258 & 0xC0)
             *p248 ^= 1;
@@ -56,6 +56,6 @@ spin:
         if (gUnk_020020C0 == 0)
             goto spin;
         *p39c = (u8)(*p39c + 1);
-        sub_0800048C();
+        ReadKeys();
     }
 }

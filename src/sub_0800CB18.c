@@ -2,7 +2,7 @@
 
 extern u8 gUnk_0806C97C[];
 
-u8 sub_0800CB18(s32 x, s32 y)
+u8 Atan2(s32 x, s32 y)
 {
     u8 *t;
     s32 a;

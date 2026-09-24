@@ -3,7 +3,7 @@
 extern u16 gUnk_02025160[];
 extern u8 gUnk_02024C40[];
 
-u32 sub_080045EC(void)
+u32 SortSpritesByDepth(void)
 {
     u8 swapped;
     u32 i;

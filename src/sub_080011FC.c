@@ -2,7 +2,7 @@
 
 void SoundMain(void);
 
-void sub_080011FC(void)
+void m4aSoundMain(void)
 {
     SoundMain();
 }

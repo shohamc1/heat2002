@@ -8,7 +8,7 @@ extern u8 gUnk_02025150;
 extern u8 gUnk_02025154;
 extern u8 gUnk_02024824;
 
-void sub_0800443C(void)
+void ResetSpriteQueues(void)
 {
     gUnk_02024828 = EWRAM_START + 0x24830;
     gUnk_02024C30 = EWRAM_START + 0x24F50;

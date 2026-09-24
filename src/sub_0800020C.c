@@ -1,9 +1,9 @@
 #include "global.h"
 
-void sub_08002638(void);
+void GameMain(void);
 
-void sub_0800020C(void)
+void AgbMain(void)
 {
     while (1)
-        sub_08002638();
+        GameMain();
 }

@@ -1,6 +1,6 @@
 #include "global.h"
 
-u16 sub_08011C44(u16 a, u16 b, u16 c)
+u16 RgbFromPercent(u16 a, u16 b, u16 c)
 {
     u32 t1, t2, t3, x, y, z;
 

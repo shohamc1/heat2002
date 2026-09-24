@@ -6,8 +6,8 @@ extern u32 gUnk_0202CC00[];
 
 s32 sub_08017230(s32 a, s32 b);
 s32 sub_080172C8(s32 a, s32 b);
-void sub_08007950(u32 a);
-void sub_0800792C(u32 a);
+void RemoveTask(u32 a);
+void FreeTask(u32 a);
 
 struct Unk0800B46C
 {
@@ -56,7 +56,7 @@ void sub_0800B46C(struct Unk0800B46C *e)
     e->f18 = e->f18 - 2;
     if (e->f18 == 0)
     {
-        sub_08007950((u32)e);
-        sub_0800792C((u32)e);
+        RemoveTask((u32)e);
+        FreeTask((u32)e);
     }
 }

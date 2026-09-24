@@ -1,13 +1,13 @@
 #include "global.h"
 
-extern u32 gUnk_02002100[];
+extern u32 gCamera[];
 
-void sub_08004260(u32 x, u32 y)
+void SetCameraPos(u32 x, u32 y)
 {
-    gUnk_02002100[0] = x;
-    gUnk_02002100[1] = y;
-    gUnk_02002100[2] = x;
-    gUnk_02002100[3] = y;
-    gUnk_02002100[4] = 0;
-    gUnk_02002100[5] = 0;
+    gCamera[0] = x;
+    gCamera[1] = y;
+    gCamera[2] = x;
+    gCamera[3] = y;
+    gCamera[4] = 0;
+    gCamera[5] = 0;
 }

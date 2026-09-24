@@ -17,7 +17,7 @@ extern u32 gUnk_02025E00[];
 
 void sub_08007304(u32 a, u16 *b, u32 *c);
 
-void sub_08007344(void)
+void InitGfxCaches(void)
 {
     u32 i;
     u32 color;

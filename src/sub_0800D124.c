@@ -28,9 +28,9 @@ struct Hit {
 };
 
 struct Ent {
-    s32 f00;
+    s32 posX;
     s32 f04;
-    s32 f08;
+    s32 posZ;
     u8 pad0C[0x28 - 0x0C];
     s32 f28;
     u8 pad2C[0x30 - 0x2C];
@@ -39,11 +39,11 @@ struct Ent {
 
 extern u8 gUnk_0200215C;
 
-u16 *sub_0800CC98(s32 a, s32 b);
-u8 sub_0800CF7C(struct Seg *a, struct Box *b, struct Box *c, struct Hit *d,
+u16 *GetWallListAt(s32 a, s32 b);
+u8 TestSegmentVsWalls(struct Seg *a, struct Box *b, struct Box *c, struct Hit *d,
                 u16 *e);
 
-s32 sub_0800D124(struct Ent *ent)
+s32 BounceOffWalls(struct Ent *ent)
 {
     struct Seg seg;
     struct Box bounds;
@@ -55,10 +55,10 @@ s32 sub_0800D124(struct Ent *ent)
 
     if (gUnk_0200215C == 7)
         goto miss;
-    seg.f00 = ent->f00 >> 16;
-    seg.f04 = ent->f08 >> 16;
-    seg.f08 = (ent->f00 + ent->f28) >> 16;
-    seg.f0C = (ent->f08 + ent->f30) >> 16;
+    seg.f00 = ent->posX >> 16;
+    seg.f04 = ent->posZ >> 16;
+    seg.f08 = (ent->posX + ent->f28) >> 16;
+    seg.f0C = (ent->posZ + ent->f30) >> 16;
     seg.f10 = ent->f28 >> 8;
     seg.f14 = ent->f30 >> 8;
     mx = seg.f08;
@@ -81,8 +81,8 @@ s32 sub_0800D124(struct Ent *ent)
     if (mz2 > mz3)
         mz3 = mz2;
     bounds.f0C = mz3;
-    walls = sub_0800CC98(seg.f00, seg.f04);
-    if (sub_0800CF7C(&seg, &bounds, &bounds, &out, walls) == 0) {
+    walls = GetWallListAt(seg.f00, seg.f04);
+    if (TestSegmentVsWalls(&seg, &bounds, &bounds, &out, walls) == 0) {
 miss:
         return 0;
     }

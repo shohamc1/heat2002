@@ -4,9 +4,9 @@
 extern u32 gUnk_082B370C[];
 extern u32 gUnk_082B350C[];
 
-void sub_08004238(u32 a, u32 b);
-void sub_080102BC(u32 a);
-void sub_0800420C(u32 a, u32 b);
+void FadeToBrightenedPalette(u32 a, u32 b);
+void WaitFramesOrKey(u32 a);
+void FadeToColor(u32 a, u32 b);
 
 void sub_080102F0(void)
 {
@@ -18,7 +18,7 @@ void sub_080102F0(void)
     *r = 0x444;
     p = (u32)gUnk_082B370C;
     RLUnCompVram(p, VRAM);
-    sub_08004238((u32)gUnk_082B350C, 0xF);
-    sub_080102BC(0x78);
-    sub_0800420C(0, 0xF);
+    FadeToBrightenedPalette((u32)gUnk_082B350C, 0xF);
+    WaitFramesOrKey(0x78);
+    FadeToColor(0, 0xF);
 }

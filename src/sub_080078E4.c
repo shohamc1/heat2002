@@ -10,7 +10,7 @@ struct Slot78E4
     u32 c;
 };
 
-void *sub_080078E4(void)
+void *AllocTask(void)
 {
     u32 i = 0;
     u32 flagsAddr = (u32)gUnk_02025ED0;

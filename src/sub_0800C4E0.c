@@ -1,6 +1,6 @@
 #include "global.h"
 
-extern u8 gUnk_020020CC;
+extern u8 gTrackId;
 extern s32 gUnk_083672F0[];
 
 struct UnkStruct0800C4E0 {
@@ -9,7 +9,7 @@ struct UnkStruct0800C4E0 {
     u8 pad4[6];
     s16 fA;
     u8 padC[0x175];
-    u8 f181;
+    u8 pitStall;
 };
 
 s32 sub_0800C4E0(struct UnkStruct0800C4E0 *a)
@@ -23,7 +23,7 @@ s32 sub_0800C4E0(struct UnkStruct0800C4E0 *a)
     s32 y;
 
     t = gUnk_083672F0;
-    idx = gUnk_020020CC * 8 + a->f181;
+    idx = gTrackId * 8 + a->pitStall;
     d = t[idx * 2];
     pp = (s32 *)((idx * 2 + 1) * 4 + (u32)t);
     e = *pp;

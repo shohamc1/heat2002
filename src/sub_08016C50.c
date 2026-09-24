@@ -1,6 +1,6 @@
 #include "global.h"
 
-void sub_08016C50(s32 a, u16 *b, u16 *c, u16 *d)
+void SplitMilliseconds(s32 a, u16 *b, u16 *c, u16 *d)
 {
     u16 minutes = a / 60000;
     s32 rem = a - minutes * 60000;

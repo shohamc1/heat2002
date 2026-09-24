@@ -34,8 +34,8 @@ extern u8 gUnk_0202523C;
 extern u8 gUnk_020253C8;
 extern u8 gUnk_083393C0[];
 u32 *sub_0800754C(u32 a);
-u8 sub_08007714(u32 a);
-u32 sub_080044A4(u32 a, u32 b);
+u8 RequestObjPalette(u32 a);
+u32 AddOamEntry(u32 a, u32 b);
 
 void sub_080047E8(u8 a, u16 b)
 {
@@ -65,7 +65,7 @@ void sub_080047E8(u8 a, u16 b)
         }
         gUnk_020251F0 = b;
         attr = ((cmd[1] & 0xFF) | ((cmd[0] & 0x1FF) << 16)) | 0x80000000;
-        arg1 = res[4] | (sub_08007714((u32) gUnk_083393C0) << 12);
+        arg1 = res[4] | (RequestObjPalette((u32) gUnk_083393C0) << 12);
         attr |= 0x04000100;
         gUnk_0202523C = z;
         gUnk_020253C8 = z;
@@ -77,7 +77,7 @@ void sub_080047E8(u8 a, u16 b)
         {
             gUnk_020253C8 = 1;
         }
-        sub_080044A4(attr, arg1);
+        AddOamEntry(attr, arg1);
     }
     else
     {
@@ -91,7 +91,7 @@ void sub_080047E8(u8 a, u16 b)
             return;
         }
         attr = ((cmd[1] & 0xFF) | ((cmd[0] & 0x1FF) << 16)) | 0x80000000;
-        arg1 = res[4] | (sub_08007714((u32) gUnk_083393C0) << 12);
+        arg1 = res[4] | (RequestObjPalette((u32) gUnk_083393C0) << 12);
         if (x != 0)
         {
             attr |= 0x10000000;
@@ -100,6 +100,6 @@ void sub_080047E8(u8 a, u16 b)
         {
             attr |= 0x20000000;
         }
-        sub_080044A4(attr, arg1);
+        AddOamEntry(attr, arg1);
     }
 }

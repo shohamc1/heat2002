@@ -1,11 +1,11 @@
 #include "global.h"
 #include "gba/compat.h"
-extern void sub_08000458(void);
+extern void WaitForVBlank(void);
 extern void sub_080106CC(u32 a, u32 b);
 extern void sub_0800F328(u32 a, void *b);
-extern void sub_08004238(void *a, u32 b);
-extern void sub_080102A4(u32 a);
-extern void sub_0800420C(u32 a, u32 b);
+extern void FadeToBrightenedPalette(void *a, u32 b);
+extern void WaitFrames(u32 a);
+extern void FadeToColor(u32 a, u32 b);
 void sub_0800F560(void)
 {
     u8 buf[0x200];
@@ -13,11 +13,11 @@ void sub_0800F560(void)
     REG_BG2CNT = BGCNT_PRIORITY(2) | BGCNT_256COLOR | BGCNT_SCREENBASE(31);
     CpuCopy16(0x0831A450, VRAM, 0xA280);
     CpuCopy16(0x0833338C, BG_SCREEN_ADDR(24), 0x2000);
-    sub_08000458();
+    WaitForVBlank();
     REG_DISPCNT = 0xA8 << 3;
     sub_080106CC(0x0831A0E4, 0x0831A210);
     sub_0800F328(0x08319EE4, buf);
-    sub_08004238(buf, 0x0F);
-    sub_080102A4(0xB4);
-    sub_0800420C(0, 0x0F);
+    FadeToBrightenedPalette(buf, 0x0F);
+    WaitFrames(0xB4);
+    FadeToColor(0, 0x0F);
 }

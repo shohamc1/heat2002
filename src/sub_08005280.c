@@ -4,12 +4,12 @@ extern u8 gUnk_020253C4;
 extern u16 gUnk_02025258;
 extern volatile u8 gUnk_020020C0;
 extern u16 gUnk_02002124;
-extern u8 gUnk_0202EF90;
+extern u8 gLinkPlayerId;
 extern s32 gUnk_0200209C;
 
 void sub_08004DB4(void);
-void sub_08010094(void);
-u32 sub_08003330(void);
+void StopAllSongs(void);
+u32 ExchangeLinkInput(void);
 void sub_080017D0(void);
 void VBlankIntrWait(u32 a);
 void sub_0800524C(void);
@@ -25,17 +25,17 @@ u8 sub_08005280(void)
     gUnk_020253C4 = 0xFF;
     sub_08004DB4();
     if (gUnk_02025258 & 8) {
-        sub_08010094();
+        StopAllSongs();
         {
             volatile u8 *p = &gUnk_020020C0;
 
             while (1) {
                 gUnk_02002124 = 0;
-                if (sub_08003330() != 0) {
+                if (ExchangeLinkInput() != 0) {
                     sub_080017D0();
                     done = 0;
                     do {
-                        v = gUnk_0202EF90;
+                        v = gLinkPlayerId;
                         if (v == 0)
                             return 0x27;
                         VBlankIntrWait(v);

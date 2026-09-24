@@ -5,8 +5,8 @@ extern u8 gUnk_020020C4;           /* 0x020020C4 */
 extern u32 gUnk_0202CC04;          /* 0x0202CC04 */
 extern void gUnk_0800B0A1(void);   /* Thumb entry: 0x0800B0A0 | 1 */
 
-u32 sub_080078E4(void);
-void sub_0800793C(u32 a);
+u32 AllocTask(void);
+void AddTask(u32 a);
 
 void sub_0800B2C4(void)
 {
@@ -23,11 +23,11 @@ void sub_0800B2C4(void)
     if (gUnk_0200215C == 0x11)
         gUnk_0200215C = 5;
     gUnk_020020C4 = 1;
-    r = sub_080078E4();
+    r = AllocTask();
     if (r != 0) {
         *(u32 *)(r + 0x18) = 0;
         *(u32 *)(r + 0x0C) = (u32)gUnk_0800B0A1;
-        sub_0800793C(r);
+        AddTask(r);
         gUnk_0202CC04 = r;
     }
 }

@@ -1,12 +1,12 @@
 /*
- * sub_0800C534 -- SOLVED: MATCH, 1104 bytes @ 0x0800C534 (campaign 2026-09-15,
- * scratch /tmp/perm/w1/sub_0800C534, variant v015). Three levers closed the
+ * UpdateAiDriver -- SOLVED: MATCH, 1104 bytes @ 0x0800C534 (campaign 2026-09-15,
+ * scratch /tmp/perm/w1/UpdateAiDriver, variant v015). Three levers closed the
  * final 11 register-name diff bytes (all other structure already matched):
  *
  *  C3 (0x0800C826/C836, 4 bytes): the (s16) narrowing must be written as TWO
  *     statements per site, same variable in and out:
  *       diffxy = diffxy << 16;  diffxy = diffxy >> 16;
- *       d2 = angle - ent->unk34;  d2 = d2 << 16;  d2 = d2 >> 16;
+ *       d2 = angle - ent->heading;  d2 = d2 << 16;  d2 = d2 >> 16;
  *     A one-expression pair or a (s16) cast creates a fresh intermediate
  *     pseudo that local-alloc homes in r0 (lsls r0,rX / asrs rX,r0 scratch).
  *     The two-statement form keeps one pseudo so both shifts run in place.
@@ -17,7 +17,7 @@
  *     set excludes r0 in global find_reg pass 0, landing stv in r1.
  *
  *  C2 (0x0800C744, 2 bytes): the angle def must be written negation-first:
- *       angle = -(sub_0800CB18(...) << 8) + 0x8400;
+ *       angle = -(Atan2(...) << 8) + 0x8400;
  *     gcc canonicalizes to the identical `subs rd, r1, r0` RTL, but the
  *     different expand-time tree shifts pseudo creation order so the def-site
  *     output reload of the spilled angle pseudo inherits r0 (the dying shift
@@ -29,22 +29,22 @@
 #include "global.h"
 
 struct Unk0800C534 {
-    s32 unk00;
+    s32 posX;
     s32 unk04;
-    s32 unk08;
-    u32 unk0C;
+    s32 posZ;
+    u32 velX;
     u32 unk10;
-    u32 unk14;
+    u32 velZ;
     u32 unk18;
     u32 unk1C;
     u32 unk20;
     u32 unk24;
     u32 unk28;
-    s32 unk2C;
+    s32 speed;
     u8 pad30[4];
-    u16 unk34;
+    u16 heading;
     u8 pad36[0xA0 - 0x36];
-    u16 unkA0;
+    u16 aiInput;
     u8 padA2[0xF0 - 0xA2];
     s32 unkF0;
     u32 unkF4;
@@ -54,9 +54,9 @@ struct Unk0800C534 {
     u8 pad130[0x154 - 0x130];
     s32 unk154;
     u8 pad158[0x175 - 0x158];
-    u8 unk175;
+    u8 pitState;
     u8 pad176[0x181 - 0x176];
-    u8 unk181;
+    u8 pitStall;
 };
 
 extern u8 gUnk_0202CC28;
@@ -65,11 +65,11 @@ extern u32 gUnk_0202CC24;
 extern u32 gUnk_0202CC34;
 extern u32 gUnk_0202CC38;
 extern u32 gUnk_0202CC3C;
-extern u8 gUnk_020020CC;
+extern u8 gTrackId;
 extern u8 gUnk_0202EEB0;
 extern u8 gUnk_0202CAD0;
 extern u8 gUnk_0202A53C;
-extern struct Unk0800C534 gUnk_0202A550[];
+extern struct Unk0800C534 gCars[];
 extern u32 gUnk_083672F0[];
 extern u8 gUnk_0200215C;
 
@@ -81,9 +81,9 @@ void sub_0800BD98(s32 a, void *b, u32 c, u32 d);
 void sub_0800BE00(void *a, s32 b);
 void sub_0800C28C(struct Unk0800C534 *a);
 s32 sub_0800C4E0(u32 a);
-s32 sub_0800CB18(s32 a, s32 b);
+s32 Atan2(s32 a, s32 b);
 
-void sub_0800C534(struct Unk0800C534 *ent, u8 param)
+void UpdateAiDriver(struct Unk0800C534 *ent, u8 param)
 {
     register u8 stv;
     u32 pad[10];
@@ -112,18 +112,18 @@ void sub_0800C534(struct Unk0800C534 *ent, u8 param)
     if (gUnk_0202CC28 == 0 || gUnk_0200215C == 9 || gUnk_0200215C == 0xD
         || gUnk_0200215C == 0xE || gUnk_0200215C == 0xF || gUnk_0200215C == 0x11)
     {
-        ent->unkA0 = 1;
+        ent->aiInput = 1;
         gUnk_0202CC28 = 0;
-        pA0 = &ent->unkA0;
+        pA0 = &ent->aiInput;
     }
     else
     {
-        if (ent->unk175 == 0 && (-ent->unk2C) >> 12 > 0x28)
-            ent->unkA0 = ent->unkA0 & 0xFFFE;
+        if (ent->pitState == 0 && (-ent->speed) >> 12 > 0x28)
+            ent->aiInput = ent->aiInput & 0xFFFE;
         else
-            ent->unkA0 = 1;
-        pA0 = &ent->unkA0;
-        if (ent->unk175 == 0)
+            ent->aiInput = 1;
+        pA0 = &ent->aiInput;
+        if (ent->pitState == 0)
         {
             if (gUnk_0202CC2C != 0)
                 *pA0 = 2;
@@ -145,7 +145,7 @@ void sub_0800C534(struct Unk0800C534 *ent, u8 param)
     if (diff >= ent->unk154)
         diff = diff - ent->unk154;
     sub_0800BD98(diff, buf, ent->unkF4, ent->unkF8);
-    ps = &ent->unk175;
+    ps = &ent->pitState;
     stv = 0;
     stv = *ps;
     bufp = buf;
@@ -154,85 +154,85 @@ void sub_0800C534(struct Unk0800C534 *ent, u8 param)
         if (stv == 1)
         {
             if (sub_0800C4E0((u32)ent) <= 0x63
-                || (gUnk_020020CC == 3 && sub_0800C4E0((u32)ent) <= 0xC7))
+                || (gTrackId == 3 && sub_0800C4E0((u32)ent) <= 0xC7))
                 *ps = 2;
         }
-        if (ent->unk175 == 2)
+        if (ent->pitState == 2)
         {
             if (sub_0800C4E0((u32)ent) <= 0x13 || gUnk_0202EEB0 == 0
-                || (ent == gUnk_0202A550 && gUnk_0202CAD0 == 0 && gUnk_0202A53C == 0))
-                ent->unk175 = 3;
-            buf[0] = gUnk_083672F0[(gUnk_020020CC * 8 + ent->unk181) * 2];
-            bufp[1] = gUnk_083672F0[(gUnk_020020CC * 8 + ent->unk181) * 2 + 1];
+                || (ent == gCars && gUnk_0202CAD0 == 0 && gUnk_0202A53C == 0))
+                ent->pitState = 3;
+            buf[0] = gUnk_083672F0[(gTrackId * 8 + ent->pitStall) * 2];
+            bufp[1] = gUnk_083672F0[(gTrackId * 8 + ent->pitStall) * 2 + 1];
         }
-        if (ent->unk175 == 3)
+        if (ent->pitState == 3)
         {
             if (gUnk_0202EEB0 == 0)
-                ent->unk175 = 4;
-            t1 = gUnk_083672F0[(gUnk_020020CC * 8 + 6) * 2];
-            t2 = gUnk_083672F0[(gUnk_020020CC * 8 + 6) * 2 + 1];
-            t3 = gUnk_083672F0[(gUnk_020020CC * 8 + 7) * 2];
-            angle = -(sub_0800CB18(t1 - t3,
-                t2 - gUnk_083672F0[(gUnk_020020CC * 8 + 7) * 2 + 1]) << 8) + 0x8400;
+                ent->pitState = 4;
+            t1 = gUnk_083672F0[(gTrackId * 8 + 6) * 2];
+            t2 = gUnk_083672F0[(gTrackId * 8 + 6) * 2 + 1];
+            t3 = gUnk_083672F0[(gTrackId * 8 + 7) * 2];
+            angle = -(Atan2(t1 - t3,
+                t2 - gUnk_083672F0[(gTrackId * 8 + 7) * 2 + 1]) << 8) + 0x8400;
         }
     }
     limit = 4;
     if (gUnk_0200215C == 9 || gUnk_0200215C == 0xD || gUnk_0200215C == 0xE
         || gUnk_0200215C == 0xF || gUnk_0200215C == 0x11)
         limit = -99;
-    if (result > limit || ent->unk175 != 0)
+    if (result > limit || ent->pitState != 0)
     {
-        diffxy = (buf[0] << 16) - ent->unk00;
-        dya = (bufp[1] << 16) - ent->unk08;
-        angl = 0x8400 - (sub_0800CB18(diffxy >> 5, dya >> 5) << 8);
-        if (ent->unk175 != 0)
+        diffxy = (buf[0] << 16) - ent->posX;
+        dya = (bufp[1] << 16) - ent->posZ;
+        angl = 0x8400 - (Atan2(diffxy >> 5, dya >> 5) << 8);
+        if (ent->pitState != 0)
         {
-            d34 = angl - ent->unk34;
+            d34 = angl - ent->heading;
             if (d34 < 0)
                 d34 = -d34;
             if (d34 > 0x4000)
             {
-                ent->unk34 = angl;
+                ent->heading = angl;
                 ent->unk12C = angl;
             }
         }
-        if (ent->unk175 == 3)
+        if (ent->pitState == 3)
             diffxy = angle - ent->unk12C;
         else
             diffxy = angl - ent->unk12C;
         diffxy = diffxy << 16;
         diffxy = diffxy >> 16;
-        if (ent->unk175 == 3)
+        if (ent->pitState == 3)
         {
-            d2 = angle - ent->unk34;
+            d2 = angle - ent->heading;
             d2 = d2 << 16;
             d2 = d2 >> 16;
             if ((d2 < 0 ? -d2 : d2) <= 0x3FF
-                || gUnk_020020CC == 3 || gUnk_020020CC == 1 || gUnk_020020CC == 9
-                || ((d2 < 0 ? -d2 : d2) <= 0xFFF && (gUnk_020020CC == 4 || gUnk_020020CC == 2)))
-                ent->unk175 = 4;
+                || gTrackId == 3 || gTrackId == 1 || gTrackId == 9
+                || ((d2 < 0 ? -d2 : d2) <= 0xFFF && (gTrackId == 4 || gTrackId == 2)))
+                ent->pitState = 4;
         }
-        if (ent->unk175 == 0 && gUnk_0202CC28 == 0)
+        if (ent->pitState == 0 && gUnk_0202CC28 == 0)
             diffxy = diffxy / 8;
         if (gUnk_0202CC28 != 0)
             diffxy = diffxy * 4;
-        if (ent->unk2C > 0)
+        if (ent->speed > 0)
             ent->unk12C = -angl;
         else
             ent->unk12C = ent->unk12C + diffxy;
-        if ((diffxy < 0 ? -diffxy : diffxy) > 0x1F4 && (-ent->unk2C) >> 12 > 0x28)
+        if ((diffxy < 0 ? -diffxy : diffxy) > 0x1F4 && (-ent->speed) >> 12 > 0x28)
             *pA0 = *pA0 & 0xFFFE;
-        if ((diffxy < 0 ? -diffxy : diffxy) > 0x28A && (-ent->unk2C) >> 12 > 0x28)
+        if ((diffxy < 0 ? -diffxy : diffxy) > 0x28A && (-ent->speed) >> 12 > 0x28)
             *pA0 = 2;
     }
-    if (ent->unk175 == 1 && (-ent->unk2C) >> 12 > 0x50)
+    if (ent->pitState == 1 && (-ent->speed) >> 12 > 0x50)
         *pA0 = 2;
     {
-        u8 st2 = ent->unk175;
-        if (st2 == 2 && (-ent->unk2C) >> 12 > 0x28)
+        u8 st2 = ent->pitState;
+        if (st2 == 2 && (-ent->speed) >> 12 > 0x28)
             *pA0 = st2;
     }
-    if (ent->unk175 == 3 && (-ent->unk2C) >> 12 > 0xA)
+    if (ent->pitState == 3 && (-ent->speed) >> 12 > 0xA)
         *pA0 = 2;
     if (zero != 0)
     {

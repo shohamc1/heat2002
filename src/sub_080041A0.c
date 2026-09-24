@@ -1,7 +1,7 @@
 #include "global.h"
 #include "gba/defines.h"
 
-void sub_080041A0(void)
+void PackFadePalette(void)
 {
     s32 *r6 = (s32 *)(EWRAM_START + 0x22E20);
     u16 *r5 = (u16 *)(EWRAM_START + 0x24620);

@@ -15,12 +15,12 @@ struct EntityB7E0 {
 extern u32 gUnk_083FF60C[];        /* 0x083FF60C */
 extern u8 gUnk_08330D18[];         /* 0x08330D18 */
 
-u32 sub_08009BB4(s32 x, s32 y, s32 *out);
+u32 WorldToScreen(s32 x, s32 y, s32 *out);
 u32 *sub_080076C8(u32 a);
-u8 sub_08007714(u32 a);
-u32 sub_080044A4(u32 a, u32 b);
-void sub_08007950(struct EntityB7E0 *e);
-void sub_0800792C(struct EntityB7E0 *e);
+u8 RequestObjPalette(u32 a);
+u32 AddOamEntry(u32 a, u32 b);
+void RemoveTask(struct EntityB7E0 *e);
+void FreeTask(struct EntityB7E0 *e);
 
 void sub_0800B7E0(struct EntityB7E0 *e)
 {
@@ -32,7 +32,7 @@ void sub_0800B7E0(struct EntityB7E0 *e)
     s32 old;
     s32 t1;
 
-    if ((sub_08009BB4(e->unk00, e->unk08, pos) << 0x18) != 0)
+    if ((WorldToScreen(e->unk00, e->unk08, pos) << 0x18) != 0)
     {
         old = pos[0];
         pos[0] = old - 4;
@@ -44,9 +44,9 @@ void sub_0800B7E0(struct EntityB7E0 *e)
             if (spr != 0)
             {
                 attr = (pos[1] & 0xFF) | ((pos[0] & 0x1FF) << 0x10);
-                t = (sub_08007714((u32)gUnk_08330D18) << 12) | 0x800;
+                t = (RequestObjPalette((u32)gUnk_08330D18) << 12) | 0x800;
                 arg1 = spr[4] | t;
-                sub_080044A4(attr, arg1);
+                AddOamEntry(attr, arg1);
             }
         }
     }
@@ -56,7 +56,7 @@ void sub_0800B7E0(struct EntityB7E0 *e)
     e->unk08 = e->unk08 + (e->unk30 >> 1);
     if (e->unk18 == 0x10)
     {
-        sub_08007950(e);
-        sub_0800792C(e);
+        RemoveTask(e);
+        FreeTask(e);
     }
 }

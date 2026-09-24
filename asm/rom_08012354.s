@@ -46,7 +46,7 @@ sub_08012354:
 	bl sub_08011F78
 	mov r0, sp
 	movs r1, #0x0F
-	bl sub_08004238
+	bl FadeToBrightenedPalette
 	movs r3, #0x80
 	lsls r3, r3, #0x02
 	add sp, r3

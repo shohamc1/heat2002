@@ -42,7 +42,7 @@ sub_0801037C:
 	movs r2, #0x80
 	lsls r2, r2, #0x05
 	bl sub_08016E10
-	bl sub_08000458
+	bl WaitForVBlank
 	ldr r1, _08010414 @ =0x0400000C
 	ldr r2, _08010418 @ =0x00001081
 	adds r0, r2, #0x0
@@ -85,12 +85,12 @@ _080103C8:
 	bl sub_08016E10
 	mov r0, sp
 	movs r1, #0x0F
-	bl sub_08004238
+	bl FadeToBrightenedPalette
 	movs r0, #0xB4
-	bl sub_080102A4
+	bl WaitFrames
 	movs r0, #0x00
 	movs r1, #0x0F
-	bl sub_0800420C
+	bl FadeToColor
 	movs r3, #0x80
 	lsls r3, r3, #0x02
 	add sp, r3

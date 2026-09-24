@@ -1,9 +1,9 @@
 #include "global.h"
 
-extern u32 gUnk_02002100[];
-extern u8 gUnk_020020CC;
+extern u32 gCamera[];
+extern u8 gTrackId;
 
-void sub_08004278(void)
+void UpdateCameraScroll(void)
 {
     u32 a;
     u32 b;
@@ -12,9 +12,9 @@ void sub_08004278(void)
     s32 x;
     s32 y;
 
-    a = gUnk_02002100[0];
-    b = gUnk_02002100[1];
-    switch (gUnk_020020CC)
+    a = gCamera[0];
+    b = gCamera[1];
+    switch (gTrackId)
     {
     case 0:
         t = a + 0x2580000;
@@ -71,6 +71,6 @@ void sub_08004278(void)
     y += 0xFF610000;
     x >>= 17;
     y >>= 17;
-    gUnk_02002100[6] = x + 0x78;
-    gUnk_02002100[7] = y + 0x50;
+    gCamera[6] = x + 0x78;
+    gCamera[7] = y + 0x50;
 }

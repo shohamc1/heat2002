@@ -13,7 +13,7 @@ extern s32 gUnk_02025EC0;
 void RLUnCompVram(u32 a, u32 b);
 void CpuSet(u32 src, u32 dest, u32 control);
 
-void sub_08007760(void)
+void UploadPendingGfx(void)
 {
     u8 buf[0x200];
     u8 *p;

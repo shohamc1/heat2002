@@ -2,7 +2,7 @@
 
 extern u32 gUnk_02022E20[]; /* 0x02022E20 */
 
-void sub_08003DB4(u16 *r4)
+void LoadFadePalette(u16 *r4)
 {
     u32 r6 = 0;
     u32 r5 = 0x1F;

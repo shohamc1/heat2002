@@ -1,7 +1,7 @@
 #include "global.h"
 #include "gba/io_reg.h"
 
-u16 sub_080031C8(u16 keys)
+u16 PackLinkKeys(u16 keys)
 {
     u16 t = keys & 8;
     u16 r = t != 0;

@@ -82,7 +82,7 @@ sub_0800CC4C:
 	adds r0, r2, r3
 	ldr r2, _0800CC8C @ =0xFFA00000
 	adds r1, r1, r2
-	bl sub_0800CBB8
+	bl GetTrackTileType
 	adds r1, r0, #0x0
 	lsls r1, r1, #0x18
 	movs r3, #0xFF

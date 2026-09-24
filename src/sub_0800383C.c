@@ -1,6 +1,6 @@
 #include "global.h"
 
-void sub_0800383C(u16 *src, u16 *dst, u16 count)
+void RleDecode16(u16 *src, u16 *dst, u16 count)
 {
     u16 t = 0xFFFF;
     u16 *s = src;

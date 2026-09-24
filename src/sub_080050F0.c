@@ -7,8 +7,8 @@ extern u8 gUnk_0202539C;
 extern volatile u8 gUnk_020020C0;
 
 extern void sub_08004DB4(void);
-extern u32 sub_08003330(void);
-extern void sub_08010094(void);
+extern u32 ExchangeLinkInput(void);
+extern void StopAllSongs(void);
 extern void sub_08004C44(u8 arg);
 extern void sub_08005024(void);
 
@@ -26,10 +26,10 @@ u8 sub_080050F0(void)
     gUnk_02025248 = 0;
     sub_08004DB4();
     if ((gUnk_02025258 & 8) != 0) {
-        sub_08010094();
+        StopAllSongs();
         sel = &gUnk_02025248;
         v = &gUnk_0202539C;
-        while ((r = sub_08003330()) == 0) {
+        while ((r = ExchangeLinkInput()) == 0) {
             sub_08004DB4();
             if ((gUnk_02025258 & 0xC0) != 0)
                 *sel ^= 1;

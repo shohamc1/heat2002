@@ -54,7 +54,7 @@ sub_080132F8:
 	bl sub_080131F8
 	mov r0, sp
 	movs r1, #0x0F
-	bl sub_08004238
+	bl FadeToBrightenedPalette
 	ldr r0, _080133C8 @ =0x0202EEB4
 	strb r6, [r0, #0x00]
 	movs r0, #0x40
@@ -63,7 +63,7 @@ sub_080132F8:
 	ldr r1, _080133CC @ =0x0202EEC0
 	mov r8, r1
 _08013336:
-	bl sub_0800048C
+	bl ReadKeys
 	lsls r4, r6, #0x18
 	lsrs r0, r4, #0x18
 	bl sub_080131F8
@@ -144,14 +144,14 @@ _080133E4:
 	adds r0, r1, #0x4
 	add r0, r8
 	strb r7, [r0, #0x00]
-	bl sub_0801692C
+	bl SaveProgress
 _080133EE:
 	ldr r0, _08013408 @ =0x0202EF00
 	ldrb r0, [r0, #0x03]
 	cmp r0, #0x00
 	beq _080133FC
 	movs r0, #0x18
-	bl sub_08001208
+	bl m4aSongNumStart
 _080133FC:
 	ldr r0, _0801340C @ =0x0202EEB4
 	movs r1, #0x40
@@ -168,7 +168,7 @@ _08013414:
 	cmp r0, #0x00
 	beq _08013422
 	movs r0, #0x19
-	bl sub_08001208
+	bl m4aSongNumStart
 _08013422:
 	ldr r1, _080134D8 @ =0x0202EEB4
 	movs r0, #0x40
@@ -190,7 +190,7 @@ _0801343E:
 	asrs r1, r4, #0x18
 	movs r2, #0x00
 	movs r3, #0x04
-	bl sub_08011E00
+	bl MenuMoveHorizontal
 	adds r4, r0, #0x0
 	lsls r4, r4, #0x18
 	ldrh r0, [r5, #0x00]
@@ -201,7 +201,7 @@ _0801343E:
 	ldrb r1, [r4, #0x00]
 	movs r2, #0x00
 	movs r3, #0x09
-	bl sub_08011D38
+	bl MenuMoveVertical
 	adds r1, r0, #0x0
 	strb r0, [r4, #0x00]
 	movs r0, #0xC0
@@ -231,10 +231,10 @@ _08013488:
 	ldrb r1, [r4, #0x00]
 	movs r2, #0x41
 	movs r3, #0x5A
-	bl sub_08011D38
+	bl MenuMoveVertical
 	strb r0, [r4, #0x00]
 _080134A0:
-	bl sub_08000458
+	bl WaitForVBlank
 	mov r1, r9
 	cmp r1, #0x40
 	bne _080134AC
@@ -245,11 +245,11 @@ _080134AC:
 	cmp r0, #0x00
 	beq _080134BA
 	movs r0, #0x09
-	bl sub_08001208
+	bl m4aSongNumStart
 _080134BA:
 	movs r0, #0x00
 	movs r1, #0x0F
-	bl sub_0800420C
+	bl FadeToColor
 	movs r3, #0x80
 	lsls r3, r3, #0x02
 	add sp, r3

@@ -78,14 +78,14 @@ _080081A0:
 _080081B0:
 	adds r0, r4, #0x0
 	adds r1, r5, #0x0
-	bl sub_0800CBB8
+	bl GetTrackTileType
 	lsls r0, r0, #0x18
 	lsrs r7, r0, #0x18
 	mov r10, r7
 	lsls r0, r4, #0x13
 	lsls r1, r5, #0x13
 	adds r2, r6, #0x0
-	bl sub_08009BB4
+	bl WorldToScreen
 	lsls r0, r0, #0x18
 	cmp r0, #0x00
 	beq _0800824E
@@ -171,7 +171,7 @@ _0800825E:
 	ldr r0, _080082B8 @ =0x0806C8B4
 	movs r1, #0x64
 	movs r2, #0x64
-	bl sub_0800BB58
+	bl DrawSpriteText
 _0800826E:
 	ldr r0, [sp, #0x034]
 	cmp r0, #0x00
@@ -179,7 +179,7 @@ _0800826E:
 	ldr r0, _080082BC @ =0x0806C8BC
 	movs r1, #0x64
 	movs r2, #0x64
-	bl sub_0800BB58
+	bl DrawSpriteText
 _0800827E:
 	ldr r1, [sp, #0x038]
 	cmp r1, #0x00
@@ -190,7 +190,7 @@ _0800827E:
 	ldr r0, _080082C0 @ =0x0806C8C4
 	movs r1, #0x64
 	movs r2, #0x64
-	bl sub_0800BB58
+	bl DrawSpriteText
 _08008294:
 	ldr r1, [sp, #0x03C]
 	cmp r1, #0x00
@@ -198,7 +198,7 @@ _08008294:
 	ldr r0, _080082C4 @ =0x0806C8CC
 	movs r1, #0x64
 	movs r2, #0x6E
-	bl sub_0800BB58
+	bl DrawSpriteText
 	b _080082D2
 	.byte 0x00, 0x00
 _080082A8: .4byte 0x0202A550
@@ -213,7 +213,7 @@ _080082C8:
 	ldr r0, _08008300 @ =0x0806C8D4
 	movs r1, #0x64
 	movs r2, #0x6E
-	bl sub_0800BB58
+	bl DrawSpriteText
 _080082D2:
 	ldr r1, _08008304 @ =0x0806C8DC
 	ldr r0, _08008308 @ =0x0202A550
@@ -226,7 +226,7 @@ _080082D2:
 	add r0, sp, #0x004
 	movs r1, #0x64
 	movs r2, #0x78
-	bl sub_0800BB58
+	bl DrawSpriteText
 	add sp, #0x04C
 	pop {r3, r4, r5}
 	mov r8, r3

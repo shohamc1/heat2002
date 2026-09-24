@@ -66,7 +66,7 @@ extern s32 gUnk_02000488;
 
 u32 sub_08017230(u32 a, u32 b);
 
-s32 sub_0800CD38(struct Corner *corn, struct Box *box, struct Box *cbox,
+s32 TestCornersVsWalls(struct Corner *corn, struct Box *box, struct Box *cbox,
                   struct Hit *out, u16 *wallList, s32 *best)
 {
     s32 tmp[4];

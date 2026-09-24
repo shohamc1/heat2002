@@ -4,7 +4,7 @@ extern u32 gUnk_083FDE18[];
 extern u16 *gUnk_08364B08;
 
 void sub_08006734(u32 a);
-u32 sub_08016558(u16 idx);
+u32 GetString(u16 idx);
 void sub_080065A8(void);
 
 void sub_0800DFCC(void)
@@ -19,6 +19,6 @@ void sub_0800DFCC(void)
         i++;
     } while (i != 0x380);
     sub_08006734(p[0]);
-    sub_08016558(0x52);
+    GetString(0x52);
     sub_080065A8();
 }

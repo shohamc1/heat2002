@@ -3,7 +3,7 @@
 
 extern u8 gUnk_0202EFB0;
 
-s16 sub_08011E84(u16 keys, s16 v, s16 lo, s16 hi)
+s16 MenuMoveHorizontalSilent(u16 keys, s16 v, s16 lo, s16 hi)
 {
     if (keys & DPAD_LEFT)
     {

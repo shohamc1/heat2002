@@ -18,7 +18,7 @@ struct Unk
 extern struct Entry gUnk_08334DE2[];
 extern u16 gUnk_08335A8C[];
 
-void sub_08005870(u16 *dest, u8 idx)
+void DrawBigDigit(u16 *dest, u8 idx)
 {
     struct Unk *e = (struct Unk *)&gUnk_08334DE2[idx];
 

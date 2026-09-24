@@ -1,14 +1,14 @@
 #include "global.h"
 
 extern u32 gUnk_083FDE18;
-extern u32 sub_08016558(u16 idx);
+extern u32 GetString(u16 idx);
 extern void sub_080065A8(void);
-extern void sub_080063BC(u8 *p, u32 a1, u32 a2, u8 a3);
-extern u32 sub_0800F110(u8 r0);
+extern void DrawText(u8 *p, u32 a1, u32 a2, u8 a3);
+extern u32 GetDriverName(u8 r0);
 extern void sub_08006734(u32 a);
-extern void sub_08016C50(u32 a, u16 *b, u16 *c, u16 *d);
-extern u32 gUnk_0202EFC0[];
-extern u8 gUnk_0202A550[];
+extern void SplitMilliseconds(u32 a, u16 *b, u16 *c, u16 *d);
+extern u32 gCarOrder[];
+extern u8 gCars[];
 extern u8 gUnk_0202539C;
 extern u8 gUnk_0829F44C[];
 
@@ -22,20 +22,20 @@ void sub_080150F4(void)
     u8 i;
 
     sub_08006734(gUnk_083FDE18);
-    sub_08016558(0x10);
+    GetString(0x10);
     sub_080065A8();
-    walk = gUnk_0202EFC0;
+    walk = gCarOrder;
     i = 0;
     pm = &m;
     ps = &s;
     pf = &f;
     do {
         ptr = (u8 *)*walk;
-        sub_08016C50(*(u32 *)(ptr + 0x16C), pm, ps, pf);
-        if (ptr == gUnk_0202A550 && (gUnk_0202539C & 0x10) != 0) {
-            sub_080063BC(gUnk_0829F44C, 1, i + 4, 1);
+        SplitMilliseconds(*(u32 *)(ptr + 0x16C), pm, ps, pf);
+        if (ptr == gCars && (gUnk_0202539C & 0x10) != 0) {
+            DrawText(gUnk_0829F44C, 1, i + 4, 1);
         } else {
-            sub_080063BC((u8 *)sub_0800F110(ptr[0x162]), 1, i + 4, 1);
+            DrawText((u8 *)GetDriverName(ptr[0x162]), 1, i + 4, 1);
             buf[0] = (m / 10) % 10 + 0x30;
             buf[1] = m % 10 + 0x30;
             buf[2] = 0x3A;
@@ -45,7 +45,7 @@ void sub_080150F4(void)
             buf[6] = (*pf / 100) % 10 + 0x30;
             buf[7] = (*pf / 10) % 10 + 0x30;
             buf[8] = 0;
-            sub_080063BC(buf, 0x14, i + 4, 1);
+            DrawText(buf, 0x14, i + 4, 1);
         }
         walk++;
         i++;

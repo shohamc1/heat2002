@@ -8,28 +8,28 @@ extern u8 gUnk_0202EDD8;
 extern u16 gUnk_0202F04A[];
 extern u8 gUnk_0202EF10;
 extern u8 gUnk_0202EF20[];
-extern void sub_08010074(void);
-extern void sub_0801659C(u32 a, u32 b);
+extern void StopAllSongsAndVSyncOff(void);
+extern void WriteSaveBlocks(u32 a, u32 b);
 extern void sub_080100B0(void);
 
 struct Car {
     u8 filler0[0x162];
-    u8 unk162;
-    u16 unk164;
+    u8 driverId;
+    u16 points;
     u8 filler166[0x16C - 0x166];
     u32 unk16C;
     u8 filler170[400 - 0x170];
 };
-extern struct Car gUnk_0202A550[];
+extern struct Car gCars[];
 
-void sub_08016658(void)
+void SaveSeason(void)
 {
     u16 *p;
     s32 i;
     struct Car *q;
     u32 t;
 
-    sub_08010074();
+    StopAllSongsAndVSyncOff();
     p = gUnk_0202F04A;
     *p = 1;
     p += 27;
@@ -37,11 +37,11 @@ void sub_08016658(void)
     *p++ = (gUnk_0202F024 << 8) | gUnk_0202EEC8;
     *p++ = gUnk_0202F034;
     *p++ = gUnk_0202EDD8;
-    q = gUnk_0202A550;
+    q = gCars;
     i = 0;
     do {
-        *p++ = q->unk162;
-        *p++ = q->unk164;
+        *p++ = q->driverId;
+        *p++ = q->points;
         t = q->unk16C;
         *p++ = t >> 16;
         *p++ = t;
@@ -54,7 +54,7 @@ void sub_08016658(void)
         i++;
     } while (i != 0x11);
     *p = gUnk_0202EF10;
-    sub_0801659C(0x40, 0xF0);
-    sub_0801659C(8, 8);
+    WriteSaveBlocks(0x40, 0xF0);
+    WriteSaveBlocks(8, 8);
     sub_080100B0();
 }

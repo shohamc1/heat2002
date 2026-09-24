@@ -6,13 +6,13 @@ extern u8 gUnk_0202539C;
 
 extern void sub_08007EF8(void);
 extern void sub_08004A18(void);
-extern void sub_08010094(void);
-extern void sub_0800048C(void);
+extern void StopAllSongs(void);
+extern void ReadKeys(void);
 extern void sub_08004C44(u8 a);
 extern void sub_08004EA4(void);
-extern void sub_08000458(void);
+extern void WaitForVBlank(void);
 
-u8 sub_08004F48(void)
+u8 PauseMenu(void)
 {
     u8 unused[0x200];
     u16 *kp;
@@ -27,8 +27,8 @@ u8 sub_08004F48(void)
     if (gKeysPressed & 8) {
         sub_08007EF8();
         sub_08004A18();
-        sub_08010094();
-        sub_0800048C();
+        StopAllSongs();
+        ReadKeys();
         kp = &gKeysPressed;
         p248 = &gUnk_02025248;
         p39c = &gUnk_0202539C;
@@ -61,9 +61,9 @@ u8 sub_08004F48(void)
                 return (u8)(*p248 + 1);
             }
             sub_08004C44(*p248);
-            sub_08000458();
+            WaitForVBlank();
             *p39c = (u8)(*p39c + 1);
-            sub_0800048C();
+            ReadKeys();
         }
     }
     return 0;

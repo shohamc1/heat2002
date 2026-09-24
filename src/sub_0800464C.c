@@ -6,9 +6,9 @@ extern u32 gUnk_02024828;
 extern u16 gUnk_02025160[];
 extern u8 gUnk_02024C40[];
 
-u32 sub_080045EC(void);
+u32 SortSpritesByDepth(void);
 
-void sub_0800464C(void)
+void FlushSortedSprites(void)
 {
     register u32 p asm("r0");
     u32 i;
@@ -23,7 +23,7 @@ void sub_0800464C(void)
         p += 0xC;
         gUnk_02024820 = p;
     }
-    sub_080045EC();
+    SortSpritesByDepth();
     tbl = gUnk_02025160;
     for (i = 0; i != gUnk_02024824; tbl++, i++) {
         base = (u32)gUnk_02024C40;

@@ -3,7 +3,7 @@
 #include "gba/io_reg.h"
 #include "gba/macro.h"
 
-void sub_08000300(void)
+void ClearPalette(void)
 {
     DmaFill16(3, 0, PLTT, PLTT_SIZE);
 }

@@ -2,14 +2,14 @@
 
 struct Unk080087F4 {
     u8 pad0[0x8C];
-    s32 unk8C;
-    s32 unk90;
-    s32 unk94;
-    s32 unk98;
+    s32 tireWear0;
+    s32 tireWear1;
+    s32 tireWear2;
+    s32 tireWear3;
     u8 pad9C[0x140 - 0x9C];
-    s32 unk140;
-    s32 unk144;
-    s32 unk148;
+    s32 forceX;
+    s32 forceZ;
+    s32 torque;
     u8 pad14C[0x180 - 0x14C];
     u8 unk180;
 };
@@ -21,16 +21,16 @@ extern s32 gUnk_0202A528; /* 0x0202A528 */
 extern u8 gUnk_0202EEB0; /* 0x0202EEB0 */
 extern s32 gUnk_0202A518; /* 0x0202A518 */
 extern u8 gUnk_0202CB18; /* 0x0202CB18 */
-extern u8 gUnk_020020DC; /* 0x020020DC */
-extern u8 gUnk_0202EF90; /* 0x0202EF90 */
-extern u8 gUnk_0202EF00[]; /* 0x0202EF00 */
-extern u8 gUnk_020020E0; /* 0x020020E0 */
+extern u8 gIsLinkRace; /* 0x020020DC */
+extern u8 gLinkPlayerId; /* 0x0202EF90 */
+extern u8 gOptions[]; /* 0x0202EF00 */
+extern u8 gIsDemo; /* 0x020020E0 */
 extern u8 gUnk_020021E0; /* 0x020021E0 */
 extern s32 gUnk_0202CBD4; /* 0x0202CBD4 */
 extern volatile s32 gUnk_0202CB0C; /* 0x0202CB0C */
 
 void sub_0800B764(u8 a, u8 b);
-void sub_08001208(u16 idx);
+void m4aSongNumStart(u16 idx);
 
 void sub_080087F4(u8 which, struct Unk080087F4 *obj)
 {
@@ -51,48 +51,48 @@ void sub_080087F4(u8 which, struct Unk080087F4 *obj)
     dist = prod >> 8;
     if (which != 0) {
         if (gUnk_0202EEB0 != 0) {
-            obj->unk8C += ((prod >> 17) < 0 ? -(prod >> 17) : (prod >> 17));
-            obj->unk90 += ((prod >> 17) < 0 ? -(prod >> 17) : (prod >> 17));
+            obj->tireWear0 += ((prod >> 17) < 0 ? -(prod >> 17) : (prod >> 17));
+            obj->tireWear1 += ((prod >> 17) < 0 ? -(prod >> 17) : (prod >> 17));
         }
         if (dist < -gUnk_0202A518) {
             dist = -gUnk_0202A518 / 2;
             sub_0800B764(gUnk_0202CB18, 2);
-            if (gUnk_020020DC == 0) {
+            if (gIsLinkRace == 0) {
                 if (gUnk_0202CB18 == 0)
                     goto e2check;
                 goto tail;
             }
-            if (gUnk_0202CB18 != gUnk_0202EF90)
+            if (gUnk_0202CB18 != gLinkPlayerId)
                 goto tail;
         } else if (dist > gUnk_0202A518) {
             dist = gUnk_0202A518 / 2;
             sub_0800B764(gUnk_0202CB18, 3);
-            if (gUnk_020020DC == 0) {
+            if (gIsLinkRace == 0) {
                 if (gUnk_0202CB18 == 0)
                     goto e2check;
                 goto tail;
             }
-            if (gUnk_0202CB18 != gUnk_0202EF90)
+            if (gUnk_0202CB18 != gLinkPlayerId)
                 goto tail;
         } else {
             goto tail;
         }
 e2check:
-        if (gUnk_0202EF00[3] != 0 && gUnk_020020E0 == 0 && gUnk_020021E0 == 0)
-            sub_08001208(0xB);
+        if (gOptions[3] != 0 && gIsDemo == 0 && gUnk_020021E0 == 0)
+            m4aSongNumStart(0xB);
     } else {
         if (gUnk_0202EEB0 != 0) {
-            obj->unk94 += ((prod >> 17) < 0 ? -(prod >> 17) : (prod >> 17));
-            obj->unk98 += ((prod >> 17) < 0 ? -(prod >> 17) : (prod >> 17));
+            obj->tireWear2 += ((prod >> 17) < 0 ? -(prod >> 17) : (prod >> 17));
+            obj->tireWear3 += ((prod >> 17) < 0 ? -(prod >> 17) : (prod >> 17));
         }
     }
 tail:
     m = dist * gUnk_0202CBD4;
     m >>= 8;
     m = -m;
-    pa = &obj->unk140;
+    pa = &obj->forceX;
     *pa += (m * cos) >> 8;
-    pa = &obj->unk144;
+    pa = &obj->forceZ;
     *pa += (sin * m) >> 8;
     ti = gUnk_0202CBF0;
     ti += 0x40;
@@ -107,8 +107,8 @@ tail:
     m = t >> 15;
     if (obj->unk180 != 0) {
         obj->unk180--;
-        obj->unk148 += t >> 16;
+        obj->torque += t >> 16;
     } else {
-        obj->unk148 += m;
+        obj->torque += m;
     }
 }

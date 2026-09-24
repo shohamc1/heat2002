@@ -1,5 +1,5 @@
 /*
- * sub_08006A34 -- SOLVED: MATCH, 2240 bytes @ 0x08006A34 (campaign 2026-09-15).
+ * UpdateLapProgress -- SOLVED: MATCH, 2240 bytes @ 0x08006A34 (campaign 2026-09-15).
  * Three levers closed the last three sites of the wave-6 draft:
  *
  *  0x08006B84 (X/Y r5<->r6): pin dx/dy with register asm, assigned INSIDE
@@ -23,25 +23,25 @@
 #include "global.h"
 
 struct Car {
-    s32 unk00;                          /* 0x00 */
+    s32 posX;                          /* 0x00 */
     u8 pad04[4];
-    s32 unk08;                          /* 0x08 */
-    s32 unk0C;                          /* 0x0C */
+    s32 posZ;                          /* 0x08 */
+    s32 velX;                          /* 0x0C */
     u8 pad10[4];
-    s32 unk14;                          /* 0x14 */
+    s32 velZ;                          /* 0x14 */
     u8 pad18[0x2C - 0x18];
-    s32 unk2C;                          /* 0x2C */
+    s32 speed;                          /* 0x2C */
     u8 pad30[4];
-    u16 unk34;                          /* 0x34 */
+    u16 heading;                          /* 0x34 */
     u16 unk36;                          /* 0x36 */
     u16 unk38;                          /* 0x38 */
     u8 pad3A[0x4C - 0x3A];
-    u8 unk4C;                           /* 0x4C */
-    u8 unk4D;                           /* 0x4D */
-    u8 unk4E;                           /* 0x4E */
-    s32 unk50;                          /* 0x50 */
+    u8 lap;                           /* 0x4C */
+    u8 waypoint;                           /* 0x4D */
+    u8 subStep;                           /* 0x4E */
+    s32 progress;                          /* 0x50 */
     u8 pad54[0x150 - 0x54];
-    u8 unk150;                         /* 0x150 */
+    u8 racePosition;                         /* 0x150 */
     u8 pad151[0x15C - 0x151];
     u32 unk15C;                         /* 0x15C */
     u8 pad160[0x166 - 0x160];
@@ -69,29 +69,29 @@ struct Track {
     u8 pad15[3];
 };
 
-extern volatile u8 gUnk_020020DC;
+extern volatile u8 gIsLinkRace;
 extern u8 gUnk_020020BC;
-extern u8 gUnk_0202EF00[];
-extern u8 gUnk_0202EF90;
-extern u8 gUnk_020020AC[];
-extern u8 gUnk_02002090[];
+extern u8 gOptions[];
+extern u8 gLinkPlayerId;
+extern u8 gNumLinkPlayers[];
+extern u8 gNumCars[];
 extern u8 gUnk_0202CAF0;
 extern u8 gUnk_0200215C;
 extern u32 gUnk_0202ED84;
 extern u8 gUnk_0202EEE4;
 extern u8 gUnk_0202ED70;
-extern struct Car gUnk_0202A550[];
+extern struct Car gCars[];
 extern u8 gUnk_0202524C;
 extern u16 gUnk_02025218;
 extern u16 gUnk_020251FC;
 extern u16 gUnk_020253CC;
-extern u8 gUnk_020020E0;
+extern u8 gIsDemo;
 extern u8 gUnk_020021E0;
 extern u32 gUnk_0202CB40[];
 extern u32 gUnk_020253B8;
 extern u8 gUnk_0202F030;
 extern struct Track *gUnk_020253D0;
-extern u8 gUnk_02002184;
+extern u8 gNumLaps;
 extern u8 gUnk_0202CBD0;
 extern u32 gUnk_0202CC20;
 extern u16 gUnk_02025260;
@@ -100,18 +100,18 @@ extern u16 gUnk_02025224;
 extern u8 gUnk_020253D4;
 extern u8 gUnk_020253E0[];
 
-extern void sub_0800AFF0(void);
-extern void sub_0800A438(struct Car *p);
-extern void sub_08005664(u16 a, u16 b, u16 c);
+extern void EndRace(void);
+extern void RecordFinishTime(struct Car *p);
+extern void CheckTrackRecord(u16 a, u16 b, u16 c);
 extern void sub_0800B3D4(u16 a, u16 b, u16 c);
 extern void sub_0800B540(void);
 extern void sub_0800B2C4(void);
-extern void sub_08005560(void);
+extern void ResetLapTimer(void);
 extern void sub_08005598(u8 x);
-extern void sub_08001208(u16 idx);
+extern void m4aSongNumStart(u16 idx);
 extern void sub_08016D28(void);
 
-u8 sub_08006A34(struct Car *p, u8 a1)
+u8 UpdateLapProgress(struct Car *p, u8 a1)
 {
     u8 unused1[40];
     s32 corners[4];
@@ -124,23 +124,23 @@ u8 sub_08006A34(struct Car *p, u8 a1)
     s32 det;
     u32 time;
 
-    v58 = 3 - gUnk_0202EF00[0];
+    v58 = 3 - gOptions[0];
     gUnk_020020BC = 0;
-    v6C = gUnk_020020DC != 0 ? gUnk_0202EF90 : 0;
-    if (gUnk_020020DC != 0)
-        v68 = gUnk_020020AC[0];
+    v6C = gIsLinkRace != 0 ? gLinkPlayerId : 0;
+    if (gIsLinkRace != 0)
+        v68 = gNumLinkPlayers[0];
     else
-        v68 = gUnk_02002090[0];
+        v68 = gNumCars[0];
 
-    e = &gUnk_020253D0[p->unk4D];
+    e = &gUnk_020253D0[p->waypoint];
     b = e + 1;
     if (e->unk10 == 1)
         b = gUnk_020253D0;
 
-    corners[0] = p->unk00 >> 16;
-    corners[1] = p->unk08 >> 16;
-    corners[2] = (p->unk00 + p->unk0C) >> 16;
-    corners[3] = (p->unk08 + p->unk14) >> 16;
+    corners[0] = p->posX >> 16;
+    corners[1] = p->posZ >> 16;
+    corners[2] = (p->posX + p->velX) >> 16;
+    corners[3] = (p->posZ + p->velZ) >> 16;
 
     x0 = e->f0;
     x1 = e->f4;
@@ -151,12 +151,12 @@ u8 sub_08006A34(struct Car *p, u8 a1)
     y2 = b->f8;
     y3 = b->fC;
 
-    l0 = (x0 * (16 - p->unk4E) + y0 * p->unk4E) >> 4;
-    l8 = (x2 * (16 - p->unk4E) + y2 * p->unk4E) >> 4;
-    l4 = (x1 * (16 - p->unk4E) + y1 * p->unk4E) >> 4;
-    lC = (x3 * (16 - p->unk4E) + y3 * p->unk4E) >> 4;
+    l0 = (x0 * (16 - p->subStep) + y0 * p->subStep) >> 4;
+    l8 = (x2 * (16 - p->subStep) + y2 * p->subStep) >> 4;
+    l4 = (x1 * (16 - p->subStep) + y1 * p->subStep) >> 4;
+    lC = (x3 * (16 - p->subStep) + y3 * p->subStep) >> 4;
 
-    p->unk50 = ((s8)p->unk4C << 16) + p->unk4D * 16 + p->unk4E;
+    p->progress = ((s8)p->lap << 16) + p->waypoint * 16 + p->subStep;
 
     det = (corners[2] - corners[0]) * (lC - l4)
         - (corners[3] - corners[1]) * (l8 - l0);
@@ -175,22 +175,22 @@ u8 sub_08006A34(struct Car *p, u8 a1)
         p->unk174 = 1;
         gUnk_0202CAF0 = gUnk_0202CAF0 + 1;
     }
-    p->unk4E = p->unk4E + 1;
+    p->subStep = p->subStep + 1;
     gUnk_020020BC = 1;
-    p->unk50 = ((s8)p->unk4C << 16) + p->unk4D * 16 + p->unk4E;
-    if (p->unk4E != 0x10)
+    p->progress = ((s8)p->lap << 16) + p->waypoint * 16 + p->subStep;
+    if (p->subStep != 0x10)
         return 1;
-    p->unk4E = 0;
-    if (p == gUnk_0202A550 && gUnk_0200215C == 0x10 && gUnk_0202ED70 == 9) {
-        gUnk_0202CB40[p->unk4D] = -p->unk2C / 7000;
+    p->subStep = 0;
+    if (p == gCars && gUnk_0200215C == 0x10 && gUnk_0202ED70 == 9) {
+        gUnk_0202CB40[p->waypoint] = -p->speed / 7000;
     }
-    p->unk36 = p->unk34;
-    p->unk38 = p->unk4D;
+    p->unk36 = p->heading;
+    p->unk38 = p->waypoint;
     {
     s32 t = e->unk10;
     if (t == 1) {
         p->unk17C = gUnk_020253B8;
-        if (p == gUnk_0202A550) {
+        if (p == gCars) {
             s32 v = 1;
             u16 w;
             gUnk_0202524C = (w = -v);
@@ -203,131 +203,131 @@ u8 sub_08006A34(struct Car *p, u8 a1)
             p->unk167 = 0x1E;
             p->unk168 = p->unk168 + 1;
         }
-        p->unk4C = p->unk4C + 1;
+        p->lap = p->lap + 1;
         {
         s32 z = 0;
         s32 m = z - 1;
-        p->unk4D = m;
+        p->waypoint = m;
         }
-        p->unk4E = 0;
-        p->unk50 = ((s8)p->unk4C << 16) + p->unk4D * 16;
+        p->subStep = 0;
+        p->progress = ((s8)p->lap << 16) + p->waypoint * 16;
         if (a1 == v6C) {
             if (gUnk_0202F030 != 0 && p->unk18E != 0)
-                sub_08005664(gUnk_02025218, gUnk_020251FC, gUnk_020253CC);
+                CheckTrackRecord(gUnk_02025218, gUnk_020251FC, gUnk_020253CC);
         }
         if (gUnk_0200215C == 0x10) {
             if (gUnk_0202ED70 == 1) {
                 if (gUnk_02025218 * 60000 + gUnk_020251FC * 1000 + gUnk_020253CC <= 0x7D00)
                     gUnk_0202EEE4 = gUnk_0202ED70;
-                sub_0800AFF0();
+                EndRace();
             }
             if (gUnk_0202ED70 == 2) {
-                if (a1 == 0 && *(s8 *)&p->unk4C == gUnk_02002184) {
-                    sub_0800AFF0();
-                    if (gUnk_0202A550[0].unk150 <= 2)
+                if (a1 == 0 && *(s8 *)&p->lap == gNumLaps) {
+                    EndRace();
+                    if (gCars[0].racePosition <= 2)
                         gUnk_0202EEE4 = 1;
                 }
             }
             if (gUnk_0202ED70 == 3) {
-                if (a1 == 0 && *(s8 *)&p->unk4C == gUnk_02002184) {
-                    if (gUnk_0202A550[0].unk150 == 0 && gUnk_0202CBD0 != 0)
+                if (a1 == 0 && *(s8 *)&p->lap == gNumLaps) {
+                    if (gCars[0].racePosition == 0 && gUnk_0202CBD0 != 0)
                         gUnk_0202EEE4 = 1;
-                    sub_0800AFF0();
+                    EndRace();
                 }
             }
             if (gUnk_0202ED70 == 5) {
-                if (p == gUnk_0202A550) {
+                if (p == gCars) {
                     if (p->unk166 != 0) {
                         gUnk_0202EEE4 = 1;
-                        sub_0800AFF0();
+                        EndRace();
                     }
-                    if (*(s8 *)&p->unk4C == gUnk_02002184)
-                        sub_0800AFF0();
+                    if (*(s8 *)&p->lap == gNumLaps)
+                        EndRace();
                 }
             }
             if (gUnk_0202ED70 == 6) {
-                if (a1 == 0 && *(s8 *)&p->unk4C == gUnk_02002184) {
-                    sub_0800AFF0();
-                    if (gUnk_0202A550[0].unk150 == 0)
+                if (a1 == 0 && *(s8 *)&p->lap == gNumLaps) {
+                    EndRace();
+                    if (gCars[0].racePosition == 0)
                         gUnk_0202EEE4 = 1;
                 }
             }
             if (gUnk_0202ED70 == 7) {
                 if (gUnk_02025218 * 60000 + gUnk_020251FC * 1000 + gUnk_020253CC <= 0x68CE) {
                     gUnk_0202EEE4 = 1;
-                    sub_0800AFF0();
+                    EndRace();
                 }
             }
             if (gUnk_0202ED70 == 8) {
                 if (gUnk_02025218 * 60000 + gUnk_020251FC * 1000 + gUnk_020253CC <= 0x6E87) {
                     gUnk_0202EEE4 = 1;
-                    sub_0800AFF0();
+                    EndRace();
                 }
             }
             if (gUnk_0202ED70 == 0xA) {
-                if (p == gUnk_0202A550 && *(s8 *)&p->unk4C == gUnk_02002184) {
-                    if (p->unk150 == 0)
+                if (p == gCars && *(s8 *)&p->lap == gNumLaps) {
+                    if (p->racePosition == 0)
                         gUnk_0202EEE4 = 1;
-                    sub_0800AFF0();
+                    EndRace();
                 }
             }
             if (gUnk_0202ED70 == 0xB) {
-                if (p == gUnk_0202A550 && *(s8 *)&p->unk4C == gUnk_02002184) {
-                    if (p->unk150 == 0)
+                if (p == gCars && *(s8 *)&p->lap == gNumLaps) {
+                    if (p->racePosition == 0)
                         gUnk_0202EEE4 = 1;
-                    sub_0800AFF0();
+                    EndRace();
                 }
             }
             if (gUnk_0202ED70 == 0xC) {
-                if (p == gUnk_0202A550) {
+                if (p == gCars) {
                     if (p->unk166 != 0) {
                         gUnk_0202EEE4 = 1;
-                        sub_0800AFF0();
+                        EndRace();
                     }
-                    if (*(s8 *)&p->unk4C == gUnk_02002184)
-                        sub_0800AFF0();
+                    if (*(s8 *)&p->lap == gNumLaps)
+                        EndRace();
                 }
             }
             if (gUnk_0202ED70 == 0xD) {
-                if (p == gUnk_0202A550 && *(s8 *)&p->unk4C == gUnk_02002184) {
-                    if (p->unk150 == 0)
+                if (p == gCars && *(s8 *)&p->lap == gNumLaps) {
+                    if (p->racePosition == 0)
                         gUnk_0202EEE4 = 1;
-                    sub_0800AFF0();
+                    EndRace();
                 }
             }
             if (gUnk_0202ED70 == 0xE) {
-                if (p == gUnk_0202A550) {
-                    if (p->unk150 == 0 && *(s8 *)&p->unk4C == gUnk_02002184) {
+                if (p == gCars) {
+                    if (p->racePosition == 0 && *(s8 *)&p->lap == gNumLaps) {
                         gUnk_0202EEE4 = 1;
-                        sub_0800AFF0();
+                        EndRace();
                     }
-                    if (p == gUnk_0202A550 && *(s8 *)&p->unk4C == gUnk_02002184)
-                        sub_0800AFF0();
+                    if (p == gCars && *(s8 *)&p->lap == gNumLaps)
+                        EndRace();
                 }
             }
             if (gUnk_0202ED70 == 0xF) {
-                if (p == gUnk_0202A550) {
-                    if (p->unk150 == 0 && *(s8 *)&p->unk4C == gUnk_02002184) {
+                if (p == gCars) {
+                    if (p->racePosition == 0 && *(s8 *)&p->lap == gNumLaps) {
                         gUnk_0202EEE4 = 1;
-                        sub_0800AFF0();
+                        EndRace();
                     }
-                    if (p == gUnk_0202A550 && *(s8 *)&p->unk4C == gUnk_02002184)
-                        sub_0800AFF0();
+                    if (p == gCars && *(s8 *)&p->lap == gNumLaps)
+                        EndRace();
                 }
             }
         }
         p->unk166 = 1;
-        if (p == gUnk_0202A550 && gUnk_0200215C == 5 && p->unk18E != 0) {
+        if (p == gCars && gUnk_0200215C == 5 && p->unk18E != 0) {
             if ((time = gUnk_02025218 * 60000 + gUnk_020251FC * 1000 + gUnk_020253CC) < p->unk16C)
                 p->unk16C = gUnk_02025218 * 60000 + gUnk_020251FC * 1000 + gUnk_020253CC;
         }
-        if (*(s8 *)&p->unk4C == gUnk_02002184) {
+        if (*(s8 *)&p->lap == gNumLaps) {
             if (gUnk_0200215C == 0 || gUnk_0200215C == 6 || gUnk_0200215C == 1)
                 p->unk16C = gUnk_02025260 * 60000 + gUnk_02025220 * 1000 + gUnk_02025224;
             if (a1 == v6C && p->unk18E != 0)
                 sub_0800B3D4(gUnk_02025218, gUnk_020251FC, gUnk_020253CC);
             if (gUnk_0200215C != 2) {
-                sub_0800A438(p);
+                RecordFinishTime(p);
                 gUnk_020253E0[gUnk_020253D4] = a1;
                 gUnk_020253D4 = gUnk_020253D4 + 1;
                 if ((u8)(gUnk_0200215C - 3) <= 1)
@@ -336,7 +336,7 @@ u8 sub_08006A34(struct Car *p, u8 a1)
                     s32 v2 = *(volatile u8 *)&gUnk_0200215C;
                     if (v2 == 0 || v2 == 6 || v2 == 1) {
                         sub_08016D28();
-                        sub_0800AFF0();
+                        EndRace();
                     }
                 }
                 if (gUnk_020253D4 == v68) {
@@ -344,7 +344,7 @@ u8 sub_08006A34(struct Car *p, u8 a1)
                         if (gUnk_0200215C != 0xF) {
                             if (gUnk_0200215C != 2) {
                                 if (gUnk_0200215C != 0xE)
-                                    sub_0800AFF0();
+                                    EndRace();
                             }
                         }
                     }
@@ -355,7 +355,7 @@ u8 sub_08006A34(struct Car *p, u8 a1)
                 sub_0800B3D4(gUnk_02025218, gUnk_020251FC, gUnk_020253CC);
         }
         if (a1 == v6C)
-            sub_08005560();
+            ResetLapTimer();
     }
     }
 
@@ -364,8 +364,8 @@ u8 sub_08006A34(struct Car *p, u8 a1)
             gUnk_0202CC20 = p->unk15C;
             if (e->unk10 != 1)
                 sub_0800B540();
-            if (gUnk_0202EF00[3] != 0 && gUnk_020020E0 == 0 && gUnk_020021E0 == 0)
-                sub_08001208(0x33);
+            if (gOptions[3] != 0 && gIsDemo == 0 && gUnk_020021E0 == 0)
+                m4aSongNumStart(0x33);
             if (a1 == v6C && gUnk_0200215C != 0xA) {
                 s32 inner = v58 / 2 + 6;
                 sub_08005598((u8)(e->unk14 + inner));
@@ -374,12 +374,12 @@ u8 sub_08006A34(struct Car *p, u8 a1)
         {
         s32 t2 = e->unk10;
         if (t2 == 1 && p->unk18E == 0) {
-            if (p == gUnk_0202A550)
+            if (p == gCars)
                 sub_0800B2C4();
             p->unk18E = t2;
         }
         }
     }
-    p->unk4D = p->unk4D + 1;
+    p->waypoint = p->waypoint + 1;
     return 1;
 }

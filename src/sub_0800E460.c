@@ -16,7 +16,7 @@ struct CommRegs
 
 extern struct CommRegs gUnk_0202CDD0;
 
-u32 sub_0800E460(u32 *a1)
+u32 SioTransferUpdate(u32 *a1)
 {
     switch (gUnk_0202CDD0.state)
     {

@@ -3,7 +3,7 @@
 extern u16 gUnk_08334E0A[];
 extern u16 gUnk_08335A8C[];
 
-void sub_080058CC(u16 *dest, u8 idx)
+void DrawSmallDigit(u16 *dest, u8 idx)
 {
     u16 v;
 

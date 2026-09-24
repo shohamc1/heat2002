@@ -2,7 +2,7 @@
 #include "tilemap.h"
 #include "gba/defines.h"
 
-extern u32 gUnk_02002100[];
+extern u32 gCamera[];
 extern u32 gUnk_0200BC48;
 extern u32 gUnk_0200BC4C;
 extern u32 gUnk_02022DF8;
@@ -19,13 +19,13 @@ extern u16 gUnk_0200BC34;
 
 extern void sub_08003BFC(u32 x, u32 y, u8 *map, u32 *dest, u8 *charBase, u16 pal);
 
-void sub_08003B44(void)
+void UpdateTrackScroll(void)
 {
     s32 x;
     s32 y;
 
-    x = gUnk_02002100[6] - 0x78;
-    y = gUnk_02002100[7] - 0x50;
+    x = gCamera[6] - 0x78;
+    y = gCamera[7] - 0x50;
     gUnk_0200BC48 = x & 0x0F;
     gUnk_0200BC4C = y & 0x1F;
     gUnk_02022DF8 = x & 0x0F;

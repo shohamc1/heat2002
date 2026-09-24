@@ -3,8 +3,8 @@ extern u8 gUnk_0200215C;
 extern u32 gUnk_08364B08[];
 extern u8 gUnk_0806C76C[];
 void sub_0800649C(u32,u32,u32);
-void sub_08005870(u32,u8);
-void sub_08005C18(s32 arg)
+void DrawBigDigit(u32,u8);
+void DrawRacePosition(s32 arg)
 {
     u16 *q;
     u16 *p;
@@ -41,12 +41,12 @@ void sub_08005C18(s32 arg)
         *w++ = 0xE047;
         *w = 0xE047;
         w -= 0x23;
-        sub_08005870((u32)w, (u8)arg);
+        DrawBigDigit((u32)w, (u8)arg);
     } else if (arg <= 0x13) {
-        sub_08005870(gUnk_08364B08[0] + 0x34, 1);
-        sub_08005870(gUnk_08364B08[0] + 0x38, (u8)(arg - 0x0A));
+        DrawBigDigit(gUnk_08364B08[0] + 0x34, 1);
+        DrawBigDigit(gUnk_08364B08[0] + 0x38, (u8)(arg - 0x0A));
     } else {
-        sub_08005870(gUnk_08364B08[0] + 0x34, 2);
-        sub_08005870(gUnk_08364B08[0] + 0x38, (u8)(arg - 0x14));
+        DrawBigDigit(gUnk_08364B08[0] + 0x34, 2);
+        DrawBigDigit(gUnk_08364B08[0] + 0x38, (u8)(arg - 0x14));
     }
 }

@@ -6,7 +6,7 @@ extern u16 gUnk_020251F0;
 extern u8 gUnk_020253C8;
 extern u8 gUnk_0202523C;
 
-extern void sub_0800464C(void);
+extern void FlushSortedSprites(void);
 
 typedef struct {
     u32 a;
@@ -40,7 +40,7 @@ void sub_080046D0(void)
     u32 m0, m1, m2, m3;
     u32 t0, t1, t2, t3;
 
-    sub_0800464C();
+    FlushSortedSprites();
     tbl = gUnk_0801CD08;
     idx = gUnk_0202522C;
     j = idx + 0x40;

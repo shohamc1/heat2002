@@ -1,6 +1,6 @@
 #include "global.h"
 
-void sub_08001150(u32 r0, u16 v)
+void MPlayFadeOut(u32 r0, u16 v)
 {
     u32 r2 = r0;
     u32 t = *(u32 *)(r2 + 0x34);

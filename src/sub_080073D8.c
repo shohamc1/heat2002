@@ -8,7 +8,7 @@ extern u32 gUnk_02025C70[]; /* 0x02025C70 */
 extern u32 gUnk_02025860[]; /* 0x02025860 */
 extern u32 gUnk_02025E00[]; /* 0x02025E00 */
 
-void sub_080073D8(void)
+void AgeGfxCaches(void)
 {
     u32 *p;
     u32 *a2;

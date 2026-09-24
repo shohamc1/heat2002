@@ -3,7 +3,7 @@
 #include "gba/io_reg.h"
 
 extern u16 gUnk_03007FF8;
-void sub_0800F818(u16 data)
+void SioSendWord(u16 data)
 {
     REG_SIODATA8 = data;
     REG_IME = 0;

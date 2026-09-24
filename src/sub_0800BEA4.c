@@ -1,18 +1,18 @@
 #include "global.h"
 
 struct Car {
-    s32 unk00;
+    s32 posX;
     s32 unk04;
-    s32 unk08;
+    s32 posZ;
     u8 pad0C[0x18 - 0x0C];
     s32 unk18;
     s32 unk1C;
     s32 unk20;
     s32 unk24;
     s32 unk28;
-    s32 unk2C;
+    s32 speed;
     u8 pad30[0x34 - 0x30];
-    s16 unk34;
+    s16 heading;
     u8 pad36[0xF4 - 0x36];
     s32 unkF4;
     s32 unkF8;
@@ -20,7 +20,7 @@ struct Car {
     s32 unk154;
 };
 
-extern u8 gUnk_02002090;
+extern u8 gNumCars;
 extern u8 gUnk_0200215C;
 extern u8 gUnk_0202ED70;
 extern s32 gUnk_0202CC24;
@@ -34,8 +34,8 @@ void sub_0800BD98(s32 a, s32 *b, s32 c, s32 d);
 void sub_0800BE00(struct Car *a, s32 b);
 void sub_0800C28C(struct Car *a);
 s32 sub_0800C358(struct Car *a, s32 b);
-void sub_0800C534(struct Car *a, u8 b);
-s32 sub_0800CB18(s32 a, s32 b);
+void UpdateAiDriver(struct Car *a, u8 b);
+s32 Atan2(s32 a, s32 b);
 s32 sub_080172C8(s32 a, s32 b);
 
 void sub_0800BEA4(struct Car **arr, s32 a1, s32 a2, s32 a3, u8 a4)
@@ -60,10 +60,10 @@ void sub_0800BEA4(struct Car **arr, s32 a1, s32 a2, s32 a3, u8 a4)
         }
     }
     car = *arr;
-    car->unk2C = 0;
+    car->speed = 0;
     sub_0800C28C(car);
-    car->unk18 = car->unk00;
-    car->unk1C = car->unk08;
+    car->unk18 = car->posX;
+    car->unk1C = car->posZ;
     if (sub_0800C358(car, 0) == -1)
         return;
     x = sub_0800BBFC(gUnk_0202CC24, gUnk_0202CC38, car->unkF4, gUnk_0202CC3C,
@@ -73,7 +73,7 @@ void sub_0800BEA4(struct Car **arr, s32 a1, s32 a2, s32 a3, u8 a4)
         x += car->unk154;
     pp = arr;
     i = 0;
-    if (i != gUnk_02002090) {
+    if (i != gNumCars) {
         do {
             car = *pp;
             if (a4 != 0)
@@ -84,15 +84,15 @@ void sub_0800BEA4(struct Car **arr, s32 a1, s32 a2, s32 a3, u8 a4)
                 sub_0800BE00(car, 0x500);
             sub_0800BD44(x, car->unkF4, car->unkF8, car);
             sub_0800BD98(x, out, car->unkF4, car->unkF8);
-            car->unk00 = out[0] << 16;
-            car->unk08 = out[1] << 16;
+            car->posX = out[0] << 16;
+            car->posZ = out[1] << 16;
             sub_0800BD98(sub_080172C8(x + 0x32, car->unk154), out, car->unkF4,
                          car->unkF8);
-            da = (out[0] << 16) - car->unk00;
-            db = (out[1] << 16) - car->unk08;
+            da = (out[0] << 16) - car->posX;
+            db = (out[1] << 16) - car->posZ;
             /* Stored straight to the s16 field, the minus is done in
                HImode, which gives the ROM's constant copy (adds r1, r2, #0). */
-            car->unk34 = -0x7C00 - (sub_0800CB18(da >> 5, db >> 5) << 8);
+            car->heading = -0x7C00 - (Atan2(da >> 5, db >> 5) << 8);
             if (gUnk_0200215C == 0xF && i == 0 && gUnk_0202ED70 == 3)
                 x -= 500;
             /* Two copies, merged by cross-jumping after allocation. The two
@@ -109,13 +109,13 @@ void sub_0800BEA4(struct Car **arr, s32 a1, s32 a2, s32 a3, u8 a4)
             }
             i++;
             pp++;
-        } while (i != gUnk_02002090);
+        } while (i != gNumCars);
     }
     for (k = 0; k != 0x32; k++) {
         pp = arr;
-        for (i = 0; i != gUnk_02002090; i++) {
+        for (i = 0; i != gNumCars; i++) {
             car = *pp++;
-            sub_0800C534(car, (u8)i);
+            UpdateAiDriver(car, (u8)i);
         }
     }
 }

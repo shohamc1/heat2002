@@ -2,7 +2,7 @@
 
 extern s16 gUnk_0801CD08[];
 
-void sub_0800A2D4(s32 *a)
+void ComputeForwardSpeed(s32 *a)
 {
     u32 ang;
     u16 i;

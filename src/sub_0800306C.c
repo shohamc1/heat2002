@@ -5,7 +5,7 @@
 
 extern volatile u16 gUnk_02002124;
 extern u16 gUnk_0200216C;
-extern u8 gUnk_020020DC;
+extern u8 gIsLinkRace;
 extern u8 gUnk_020020EC;
 extern u8 gUnk_020021B8;
 extern volatile u8 gUnk_020020C0;
@@ -20,19 +20,19 @@ extern u32 gUnk_0200BC4C;
 extern vu16 gUnk_03007FF8;
 
 void m4aSoundVSync(void);
-void sub_08003D90(void);
-void sub_08007760(void);
-void sub_080041E0(void);
-void sub_080011FC(void);
+void FlushTrackBgBuffers(void);
+void UploadPendingGfx(void);
+void FlushPaletteBuffer(void);
+void m4aSoundMain(void);
 
-void sub_0800306C(void)
+void MainVBlankCallback(void)
 {
     u8 v;
 
     m4aSoundVSync();
     gUnk_02002124++;
     gUnk_0200216C++;
-    if (gUnk_020020DC != 0) {
+    if (gIsLinkRace != 0) {
         if (gUnk_02002124 > 1)
             gUnk_020020EC = 1;
         else
@@ -40,7 +40,7 @@ void sub_0800306C(void)
     } else {
         gUnk_020020EC ^= 1;
     }
-    if (gUnk_020020DC == 0)
+    if (gIsLinkRace == 0)
         gUnk_020020EC = 1;
     gUnk_020021B8++;
     if (gUnk_020021B8 > 2) {
@@ -57,16 +57,16 @@ void sub_0800306C(void)
                 REG_BG1VOFS = gUnk_0200BC4C;
                 REG_BG0HOFS = v;
                 REG_BG0VOFS = v;
-                sub_08003D90();
-                sub_08007760();
+                FlushTrackBgBuffers();
+                UploadPendingGfx();
             } else {
-                sub_08007760();
+                UploadPendingGfx();
             }
             gUnk_020020C0 = 1;
         }
     }
-    sub_080041E0();
-    sub_080011FC();
+    FlushPaletteBuffer();
+    m4aSoundMain();
     REG_IME = 0;
     gUnk_03007FF8 |= 1;
     REG_IME = 1;

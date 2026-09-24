@@ -1,7 +1,7 @@
 #include "global.h"
 #include "gba/io_reg.h"
 
-void sub_0800F7E0(void)
+void InitMultiplayerSio(void)
 {
     volatile u16 *ie;
 

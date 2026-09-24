@@ -1,6 +1,6 @@
 #include "global.h"
 extern u32 gUnk_02022E20[];
-void sub_08003F4C(u16 color)
+void FillFadePalette(u16 color)
 {
     s32 i;
     u32 r = color & 0x1F;

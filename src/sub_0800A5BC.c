@@ -2,28 +2,28 @@
 
 struct Unk0A5BC {
     u8 pad0[0x0C];
-    u32 f0C;
+    u32 velX;
     u32 f10;
-    u32 f14;
+    u32 velZ;
     u8 pad18[0x24];
-    u16 f3C;
-    u8 f3E;
-    u16 f40;
+    u16 yawRate;
+    u8 gear;
+    u16 rpm;
     u8 pad42[0x106];
-    u32 f148;
+    u32 torque;
 };
 
-void sub_0800A5BC(struct Unk0A5BC *p)
+void StopCar(struct Unk0A5BC *p)
 {
     u32 a;
     u8 b;
 
     a = 0;
-    p->f0C = a;
-    p->f14 = a;
+    p->velX = a;
+    p->velZ = a;
     b = 0;
-    p->f3C = a;
-    p->f148 = a;
-    p->f40 = a;
-    p->f3E = b;
+    p->yawRate = a;
+    p->torque = a;
+    p->rpm = a;
+    p->gear = b;
 }

@@ -2,7 +2,7 @@
 
 struct Car {
     u8 pad00[0x50];
-    u32 unk50;
+    u32 progress;
 };
 
 extern u8 gUnk_0200215C;
@@ -12,14 +12,14 @@ extern u8 gUnk_0202EEE4;
 extern s32 gUnk_0202CBD8;
 extern u8 gUnk_0202CB10;
 extern u32 gUnk_0202CB14;
-extern struct Car gUnk_0202A550[];
+extern struct Car gCars[];
 
 extern void sub_08008CDC(void);
 extern u8 sub_08008B40(u32 a);
 extern u8 sub_08008B6C(u32 a);
 extern void sub_08008B94(void);
 extern void sub_08008D20(void);
-extern void sub_0800AFF0(void);
+extern void EndRace(void);
 extern s32 sub_08008D3C(void);
 extern void sub_08008C48(s32 a);
 extern void sub_08008CB8(void);
@@ -45,7 +45,7 @@ void sub_08008D8C(void)
                 if (sub_08008B40(0x15E)) {
                     if (sub_08008B6C(0x2328))
                         gUnk_0202EEE4 = x;
-                    sub_0800AFF0();
+                    EndRace();
                     gUnk_0202CAE8 = 0;
                 }
                 sub_08008B94();
@@ -79,7 +79,7 @@ void sub_08008D8C(void)
                 if (sub_08008B40(0x96)) {
                     if (sub_08008B6C(0xFA0))
                         gUnk_0202EEE4 = x;
-                    sub_0800AFF0();
+                    EndRace();
                     gUnk_0202CAE8 = 0;
                 }
                 sub_08008B94();
@@ -94,7 +94,7 @@ void sub_08008D8C(void)
                 gUnk_0202CBD8 = v;
             if (gUnk_0202CBD8 > 0x76) {
                 gUnk_0202EEE4 = 1;
-                sub_0800AFF0();
+                EndRace();
             }
             if (gUnk_0202CBD8 > 0x79) {
                 if (gUnk_0202CB10 & 8)
@@ -103,12 +103,12 @@ void sub_08008D8C(void)
                     sub_08008CB8();
                 gUnk_0202CB10++;
                 if (gUnk_0202CB10 > 0x40)
-                    sub_0800AFF0();
+                    EndRace();
             } else if (gUnk_0202CBD8 != 0) {
                 sub_08008C48(v);
             }
             break;
         }
-        gUnk_0202CB14 = gUnk_0202A550[0].unk50 & 0xFFFF;
+        gUnk_0202CB14 = gCars[0].progress & 0xFFFF;
     }
 }

@@ -1,5 +1,5 @@
 /*
- * sub_08003330: SIO handshake with retry, the low twin of sub_0833C874
+ * ExchangeLinkInput: SIO handshake with retry, the low twin of sub_0833C874
  * (same source, renamed globals). Levers that made it match:
  * - the masks are literals and the packet expression sits inside the loop,
  *   so loop.c hoists 0x7F, 0xF and the packet into r9, r8 and r5.
@@ -10,23 +10,23 @@
  */
 #include "global.h"
 
-extern u8 gUnk_020020AC;
+extern u8 gNumLinkPlayers;
 extern u16 gUnk_0202EF40[][4];
 extern u16 gUnk_02002178[];
 extern u16 gUnk_0200216C;
 extern u16 gUnk_02002170;
 extern u16 gUnk_0202ED78;
 extern u16 gUnk_03007FF8;
-extern u8 gUnk_0202EF90;
+extern u8 gLinkPlayerId;
 extern u16 gUnk_020020A0[];
 
-u16 sub_080031C8(u16 keys);
+u16 PackLinkKeys(u16 keys);
 u8 sub_080032E4(u16 seq, u8 next);
 u8 sub_08003314(u16 id);
-u16 sub_08003238(u16 id);
-void sub_0800F818(u16 data);
+u16 UnpackLinkKeys(u16 id);
+void SioSendWord(u16 data);
 
-s32 sub_08003330(void)
+s32 ExchangeLinkInput(void)
 {
     u16 recv[4];
     volatile s32 i;
@@ -39,8 +39,8 @@ s32 sub_08003330(void)
     u8 n2;
 
     keys = ~*(u16 *)0x04000130;
-    keys = sub_080031C8(keys);
-    for (i = 0; i < gUnk_020020AC; i++) {
+    keys = PackLinkKeys(keys);
+    for (i = 0; i < gNumLinkPlayers; i++) {
         gUnk_0202EF40[i][0] = 0;
         gUnk_02002178[i] = 0;
     }
@@ -49,7 +49,7 @@ s32 sub_08003330(void)
     retry = 0;
     do {
 top:
-        if (retry > gUnk_020020AC) {
+        if (retry > gNumLinkPlayers) {
             gUnk_0200216C = 0;
             gUnk_02002170 = 0;
             return 1;
@@ -66,7 +66,7 @@ send:
             gUnk_0202ED78 = (gUnk_02002170 << 11) | ((keys & 0x7F) | ((keys & 0xF) << 7)) | 0x8000;
         else
             gUnk_0202ED78 = (gUnk_02002170 << 11) | ((keys & 0x7F) | ((keys & 0xF) << 7)) | 0x4000;
-        sub_0800F818(gUnk_0202ED78);
+        SioSendWord(gUnk_0202ED78);
         for (;;) {
             if (gUnk_03007FF8 & 0x80) {
                 *(volatile u16 *)&gUnk_03007FF8 &= 0xFF7F;
@@ -75,15 +75,15 @@ send:
             if (*(volatile u16 *)&gUnk_0200216C > 100)
                 goto timeout;
         }
-        if (gUnk_0202EF90 == 0) {
+        if (gLinkPlayerId == 0) {
             for (i = 0; i <= 0x257; i++)
                 ;
         }
-        for (i = 0; i < gUnk_020020AC; i++)
+        for (i = 0; i < gNumLinkPlayers; i++)
             recv[i] = gUnk_0202EF40[i][0];
         if (phase == 0) {
             n = 0;
-            for (i = phase; i < gUnk_020020AC; i++) {
+            for (i = phase; i < gNumLinkPlayers; i++) {
                 if ((recv[i] & 0xF) == ((recv[i] >> 7) & 0xF)
                     && recv[i] != 0xFFFF
                     && recv[i] != 0
@@ -92,14 +92,14 @@ send:
                     && sub_08003314(recv[i] & 0x7F))
                     n++;
             }
-            if (n == gUnk_020020AC) {
+            if (n == gNumLinkPlayers) {
                 phase = 1;
-                for (i = 0; i < gUnk_020020AC; i++)
+                for (i = 0; i < gNumLinkPlayers; i++)
                     gUnk_02002178[i] = recv[i];
             }
         } else {
             n2 = 0;
-            for (i = 0; i < gUnk_020020AC; i++) {
+            for (i = 0; i < gNumLinkPlayers; i++) {
                 if ((recv[i] & 0xF) == ((recv[i] >> 7) & 0xF)
                     && recv[i] != 0xFFFF
                     && recv[i] != 0
@@ -112,9 +112,9 @@ send:
                     }
                 }
             }
-            if (n2 == gUnk_020020AC) {
-                for (i = 0; i < gUnk_020020AC; i++)
-                    gUnk_020020A0[i] = sub_08003238(recv[i] & 0x7F);
+            if (n2 == gNumLinkPlayers) {
+                for (i = 0; i < gNumLinkPlayers; i++)
+                    gUnk_020020A0[i] = UnpackLinkKeys(recv[i] & 0x7F);
                 done = 1;
             }
         }

@@ -2,7 +2,7 @@
 """Find copies and near-copies of already-decompiled functions among the rest.
 
 The 0x0834 module duplicates parts of the low region with renamed globals
-(sub_08343EA8 is sub_0800D684), so a large share of the remaining functions
+(sub_08343EA8 is CollideCars), so a large share of the remaining functions
 should be near-free once their twin is matched. This script finds them by
 comparing normalized instruction streams from build/rom_reference.s
 (`make disasm`; the ROM itself, so decompiled and non-decompiled functions
@@ -244,7 +244,7 @@ def main():
                " branch targets become offsets from function start, pool loads and"
                " `bl` targets are masked (pool values recorded separately),"
                " registers and small immediates kept. Validated on the known pair"
-               " `sub_08343EA8`/`sub_0800D684`, which normalizes identical.")
+               " `sub_08343EA8`/`CollideCars`, which normalizes identical.")
     out.append("")
     out.append("Caveats: 'exact' means identical modulo call targets and pool"
                " constants — port the twin's C, then rename the called functions"

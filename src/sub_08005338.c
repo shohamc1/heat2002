@@ -1,8 +1,8 @@
 #include "global.h"
 
-extern void sub_080058CC(u16 *dest, u8 idx);
+extern void DrawSmallDigit(u16 *dest, u8 idx);
 
-void sub_08005338(u16 *dest, s32 a, s32 b, s32 c)
+void DrawTime(u16 *dest, s32 a, s32 b, s32 c)
 {
     u32 i;
     s32 digits[8];
@@ -21,6 +21,6 @@ void sub_08005338(u16 *dest, s32 a, s32 b, s32 c)
     digits[7] = c % 100 / 10;
     digits[6] = c / 100;
     for (i = 0; i != 8; dest++, i++) {
-        sub_080058CC(dest + 2, digits[i]);
+        DrawSmallDigit(dest + 2, digits[i]);
     }
 }

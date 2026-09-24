@@ -11,7 +11,7 @@ extern const u32 gUnk_0801D0CC[];
 
 extern s32 umul3232H32(s32 a, s32 b);
 
-s32 sub_080010CC(struct Unk10CC *arg0, u8 arg1, u32 arg2)
+s32 MidiKeyToFreq(struct Unk10CC *arg0, u8 arg1, u32 arg2)
 {
     u8 idx;
     u32 packed;

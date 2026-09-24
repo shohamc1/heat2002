@@ -15,13 +15,13 @@ struct UnkEFA0 {
 extern struct UnkEFA0 gUnk_0202EFA0[];
 extern u8 gUnk_0202EEF4;
 extern u16 gUnk_0202EF40[4][4];
-extern u8 gUnk_0202EF90;
+extern u8 gLinkPlayerId;
 extern u8 gUnk_0829F32C[];
 extern void VBlankIntrWait(void);
-extern void sub_0800048C(void);
-extern void sub_0800F818(u16 a);
-extern u32 sub_08016558(u16 idx);
-extern void sub_08006950(u8 *p, u32 a1, u8 a2);
+extern void ReadKeys(void);
+extern void SioSendWord(u16 a);
+extern u32 GetString(u16 idx);
+extern void DrawTextCenteredHighlight(u8 *p, u32 a1, u8 a2);
 
 s32 sub_08012074(void)
 {
@@ -37,18 +37,18 @@ s32 sub_08012074(void)
         VBlankIntrWait();
     } else {
         do {
-            sub_0800048C();
+            ReadKeys();
             if (gKeysPressed & 2)
                 return -1;
         } while ((INTR_CHECK & 0x80) == 0);
     }
-    sub_0800048C();
+    ReadKeys();
     ed = &gUnk_0202ED78;
     t = ((((*(u32 *)REG_ADDR_SIOCNT << 26) >> 30) + 1) << 12) | 0x100;
     t |= gKeysHeld;
     z = 0;
     *ed = t;
-    sub_0800F818(*ed);
+    SioSendWord(*ed);
     gUnk_0202EFA0[0].unk2 |= 0xFF;
     gUnk_0202EFA0[1].unk2 |= 0xFF;
     gUnk_0202EFA0[2].unk2 |= 0xFF;
@@ -84,12 +84,12 @@ s32 sub_08012074(void)
             count++;
         i++;
     } while (i < 4);
-    gUnk_0202EF90 = (*(u32 *)REG_ADDR_SIOCNT << 26) >> 30;
+    gLinkPlayerId = (*(u32 *)REG_ADDR_SIOCNT << 26) >> 30;
     if ((*(u8 *)REG_ADDR_SIOCNT & 0x30) == 0) {
         if (gUnk_0202EEF4 > 1 && gUnk_0202EEF4 == count)
-            sub_08006950((u8 *)sub_08016558(0xF), 0xF, 1);
+            DrawTextCenteredHighlight((u8 *)GetString(0xF), 0xF, 1);
         else
-            sub_08006950(gUnk_0829F32C, 0xF, 1);
+            DrawTextCenteredHighlight(gUnk_0829F32C, 0xF, 1);
     }
     if (gUnk_0202EF40[0][0] == 0x1108 && gUnk_0202EEF4 > 1 && gUnk_0202EEF4 == count)
         return 1;

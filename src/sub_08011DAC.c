@@ -1,7 +1,7 @@
 #include "global.h"
 #include "gba/io_reg.h"
 
-s16 sub_08011DAC(u16 keys, s16 v, s16 lo, s16 hi)
+s16 MenuMoveVerticalSilent(u16 keys, s16 v, s16 lo, s16 hi)
 {
     if (keys & DPAD_UP)
     {

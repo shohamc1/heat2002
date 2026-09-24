@@ -1,10 +1,10 @@
 #include "global.h"
 
-extern u8 gUnk_020020AC;
-extern u32 gUnk_0202EFC0[];
-extern u8 gUnk_0202A550[][0x190];
+extern u8 gNumLinkPlayers;
+extern u32 gCarOrder[];
+extern u8 gCars[][0x190];
 
-void sub_080112E0(void)
+void SortLinkCarsByTime(void)
 {
     u8 i;
     u32 swapped;
@@ -13,9 +13,9 @@ void sub_080112E0(void)
     register u32 *base asm("r9");
 
     i = 0;
-    countTemp = &gUnk_020020AC;
+    countTemp = &gNumLinkPlayers;
     count = countTemp;
-    base = gUnk_0202EFC0;
+    base = gCarOrder;
     {
         register u8 n asm("r1") = *countTemp;
         if (i != n) {
@@ -23,7 +23,7 @@ void sub_080112E0(void)
             register u8 current asm("r0");
             do {
                 register u32 *slot asm("r0") = (u32 *)(((u32)i << 2) + (u32)dst);
-                *slot = (u32)&gUnk_0202A550[i][0];
+                *slot = (u32)&gCars[i][0];
                 i++;
                 current = *countTemp;
             } while (i != current);

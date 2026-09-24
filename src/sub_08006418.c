@@ -4,7 +4,7 @@ extern u16 *gUnk_08364B08;
 extern u16 gUnk_0833553C[];
 extern u16 gUnk_08335A8C[];
 
-void sub_08006418(u8 *str, u32 y)
+void DrawTextCentered(u8 *str, u32 y)
 {
     u8 *p;
     u8 len;

@@ -1,8 +1,8 @@
 #include "global.h"
 
-u8 sub_080025FC(void);
+u8 Random8(void);
 
 u32 sub_08016CF8(void)
 {
-    return sub_080025FC() * 2;
+    return Random8() * 2;
 }

@@ -44,11 +44,11 @@ sub_08012784:
 	bl sub_08012758
 	mov r0, sp
 	movs r1, #0x0F
-	bl sub_08004238
+	bl FadeToBrightenedPalette
 	movs r6, #0x40
 	movs r5, #0x00
 _080127A4:
-	bl sub_0800048C
+	bl ReadKeys
 	asrs r0, r5, #0x18
 	bl sub_08012758
 	ldr r1, _080127E0 @ =0x020005CC
@@ -59,13 +59,13 @@ _080127A4:
 	beq _080127BC
 	lsrs r6, r5, #0x18
 _080127BC:
-	bl sub_08000458
+	bl WaitForVBlank
 	lsls r4, r6, #0x18
 	cmp r4, #0x00
 	bne _080127A4
 	movs r0, #0x00
 	movs r1, #0x0F
-	bl sub_0800420C
+	bl FadeToColor
 	lsrs r0, r4, #0x18
 	movs r3, #0x80
 	lsls r3, r3, #0x02

@@ -4,7 +4,7 @@
 extern u16 gUnk_0202EF40[];
 extern u16 gUnk_03007FF8;
 
-void sub_0800F85C(void)
+void SerialIntr(void)
 {
     if ((REG_SIOCNT & 0x40) == 0) {
         gUnk_0202EF40[0] = REG_SIOMULTI0;

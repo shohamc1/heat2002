@@ -47,7 +47,6 @@ sub_08016E28 = RLUnCompVram;
 Clear64byte = sub_08001534;
 ClearChain = sub_08001520;
 FadeOutBody = sub_080019F4;
-MidiKeyToFreq = sub_080010CC;
 TrkVolPitSet = sub_08001A74;
 SoundMainRAM_Buffer = 0x03007000;
 gClockTable = 0x0801D1FC;

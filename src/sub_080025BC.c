@@ -1,6 +1,6 @@
 #include "global.h"
 
-u32 sub_080025BC(u32 a)
+u32 ParkMillerNext(u32 a)
 {
     u32 lo = (a & 0xFFFF) * 0x41A7;
     u32 hi = (a >> 16) * 0x41A7;

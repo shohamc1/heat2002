@@ -2,17 +2,17 @@
 
 extern volatile u16 gKeysPressed; /* 0x020005CC */
 
-void sub_08000458(void);
-void sub_0800048C(void);
+void WaitForVBlank(void);
+void ReadKeys(void);
 
-void sub_080102BC(s32 count)
+void WaitFramesOrKey(s32 count)
 {
     s32 i;
 
     for (i = 0; i < count; i++)
     {
-        sub_08000458();
-        sub_0800048C();
+        WaitForVBlank();
+        ReadKeys();
         if (gKeysPressed & 0x3FF)
             return;
     }

@@ -84,7 +84,7 @@ _0800A516:
 	beq _0800A54C
 	asrs r0, r3, #0x04
 	asrs r1, r1, #0x04
-	bl sub_0800CB18
+	bl Atan2
 	lsls r0, r0, #0x08
 	ldr r2, _0800A548 @ =0xFFFF8400
 	adds r1, r2, #0x0

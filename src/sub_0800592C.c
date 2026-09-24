@@ -2,7 +2,7 @@
 
 extern s32 sub_08017230(s32 a, s32 b);
 extern s32 sub_080172C8(s32 a, s32 b);
-void sub_080044A4(u32 a, u32 b);
+void AddOamEntry(u32 a, u32 b);
 
 void sub_0800592C(u32 x, u32 pal, u32 tiles, u32 a, u32 b)
 {
@@ -22,7 +22,7 @@ void sub_0800592C(u32 x, u32 pal, u32 tiles, u32 a, u32 b)
     pal &= 0xFF;
     p = arr;
     do {
-        sub_080044A4(((x & 0x1FF) << 0x10) | pal, (*p++ + 0x3D4) | 0x3000);
+        AddOamEntry(((x & 0x1FF) << 0x10) | pal, (*p++ + 0x3D4) | 0x3000);
         x += 4;
         i++;
     } while (i != 8);

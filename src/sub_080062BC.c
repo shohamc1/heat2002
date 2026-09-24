@@ -1,28 +1,28 @@
 #include "global.h"
 #include "gba/compat.h"
 
-extern u8 gUnk_020020E0;
+extern u8 gIsDemo;
 extern u8 gCallback_08006095[];   /* Thumb entry: function address | 1 */
 extern u8 gUnk_0806C784[];
 
-u32 sub_080078E4(void);
-void sub_0800793C(u32 a);
+u32 AllocTask(void);
+void AddTask(u32 a);
 void sub_08006214(void);
 void sub_0800649C(u32 r0, u32 r1, u32 r2);
 void sub_080055B0(void);
 
-void sub_080062BC(void)
+void InitRaceHud(void)
 {
     u32 *r;
     u32 src;
     u32 dst;
 
-    if (gUnk_020020E0 != 0)
+    if (gIsDemo != 0)
         return;
-    r = (u32 *)sub_080078E4();
+    r = (u32 *)AllocTask();
     if (r != 0) {
         r[3] = (u32)gCallback_08006095;
-        sub_0800793C((u32)r);
+        AddTask((u32)r);
     }
     sub_08006214();
     sub_0800649C((u32)gUnk_0806C784, 0, 0x13);

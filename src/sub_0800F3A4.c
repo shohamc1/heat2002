@@ -2,7 +2,7 @@
 
 extern u32 gUnk_08364B08[]; /* 0x08364B08 */
 
-void sub_0800F3A4(void)
+void ZeroTextLayer(void)
 {
     u32 *dest = (u32 *)*(u32 *)&gUnk_08364B08[0];
     u32 r1 = 0;

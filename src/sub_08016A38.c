@@ -1,9 +1,9 @@
 #include "global.h"
 extern u16 gUnk_083FECB0[];
 extern u8 gUnk_0202F050[];
-extern void sub_0801659C(u32 off, u32 len);
+extern void WriteSaveBlocks(u32 off, u32 len);
 
-void sub_08016A38(void)
+void FormatSave(void)
 {
     u16 *p;
     u8 *q;
@@ -45,7 +45,7 @@ void sub_08016A38(void)
     *p++ = gUnk_083FECB0[0];
     *p++ = gUnk_083FECB0[1];
     *p++ = gUnk_083FECB0[2];
-    sub_0801659C(0x130, 0x48);
+    WriteSaveBlocks(0x130, 0x48);
     p = (u16 *)gUnk_0202F050;
     q = (u8 *)p;
     *q++ = 1;
@@ -78,15 +78,15 @@ void sub_08016A38(void)
     *q++ = 0;
     *q++ = 0;
     *q++ = 0;
-    sub_0801659C(0x10, 0x30);
+    WriteSaveBlocks(0x10, 0x30);
     p -= 4;
     *p++ = 1;
     *p++ = 0;
     *p++ = 1;
     *p++ = 0;
-    sub_0801659C(8, 8);
+    WriteSaveBlocks(8, 8);
     p = (u16 *)(q - 0x2E);
     *p++ = 0xA482;
     *p++ = 0x7674;
-    sub_0801659C(0, 8);
+    WriteSaveBlocks(0, 8);
 }

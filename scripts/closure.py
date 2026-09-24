@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """Progress against everything a function reaches, not just its direct callees.
 
-`sub_08015364` is the main game loop; finishing it means finishing the whole
+`MainMenuLoop` is the main game loop; finishing it means finishing the whole
 subtree under it. This walks the `bl` graph over `asm/*.s` and `src/*.c`,
 stops at library code (built from source, not decompiled -- see
 docs/learnings/parked.md), and reports what is left.
 
 Usage:
-    python3 scripts/closure.py [ROOT]      # default ROOT: sub_08015364
+    python3 scripts/closure.py [ROOT]      # default ROOT: MainMenuLoop
     python3 scripts/closure.py --list      # one line per outstanding function
     python3 scripts/closure.py --selftest
 """
@@ -22,7 +22,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
 import match  # noqa: E402
 from progress import ASM_FUNC_DECL, BLOCKS, LIBRARY_BLOCKS  # noqa: E402
-DEFAULT_ROOT = "sub_08015364"
+DEFAULT_ROOT = "MainMenuLoop"
 
 # Same rule progress.py uses: the vendored runtime was built without
 # -mthumb-interwork, so it ends in `pop {rN, pc}` or `mov pc, lr`.

@@ -2,9 +2,9 @@
 
 extern u32 gUnk_02024830[];
 
-void sub_0800443C(void);
+void ResetSpriteQueues(void);
 
-void sub_08004484(void)
+void ClearOamBuffer(void)
 {
     u32 r1;
     u32 r2;
@@ -19,5 +19,5 @@ void sub_08004484(void)
         r0 += 2;
         r1++;
     }
-    sub_0800443C();
+    ResetSpriteQueues();
 }

@@ -8,18 +8,18 @@ extern u16 gUnk_020251FC[];
 extern u16 gUnk_020253CC[];
 extern u8 gCallback_0800B46D[];   /* Thumb entry: function address | 1 */
 
-u32 sub_080078E4(void);
-void sub_0800793C(u32 a);
+u32 AllocTask(void);
+void AddTask(u32 a);
 
 void sub_0800B540(void)
 {
     u32 *r;
 
-    r = (u32 *)sub_080078E4();
+    r = (u32 *)AllocTask();
     if (r != 0) {
         r[6] = 0x40;
         r[3] = (u32)gCallback_0800B46D;
-        sub_0800793C((u32)r);
+        AddTask((u32)r);
         gUnk_0202CC08[0] = gUnk_02025218[0];
         gUnk_0202CC1C[0] = gUnk_020251FC[0];
         gUnk_0202CC00[0] = gUnk_020253CC[0];

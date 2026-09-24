@@ -2,7 +2,7 @@
 
 extern void sub_08001134(void);
 
-void sub_08001368(void)
+void m4aMPlayContinue(void)
 {
     sub_08001134();
 }

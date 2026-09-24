@@ -12,9 +12,9 @@ struct Unk_0202EFA0 {
 extern struct Unk_0202EFA0 gUnk_0202EFA0[];
 extern u16 gUnk_0202ED78[];
 extern u16 gUnk_0202EF40[4][4];
-extern void sub_08000370(void);
-extern void sub_0800F7E0(void);
-void sub_08011A50(void)
+extern void SetLinkSerialIntr(void);
+extern void InitMultiplayerSio(void);
+void ResetLinkState(void)
 {
     u8 i;
     u8 j;
@@ -29,8 +29,8 @@ void sub_08011A50(void)
     } while (i != 4);
     gUnk_0202EDBC = 0;
     gUnk_0200216C = 0;
-    sub_08000370();
-    sub_0800F7E0();
+    SetLinkSerialIntr();
+    InitMultiplayerSio();
     REG_IE |= INTR_FLAG_SERIAL;
     if ((*(u8 *)REG_ADDR_SIOCNT & 0x30) == 0)
         REG_IE |= INTR_FLAG_TIMER3;

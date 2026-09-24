@@ -2,7 +2,7 @@
 
 extern u32 gUnk_02025FD0;
 
-void sub_08007950(u32 p)
+void RemoveTask(u32 p)
 {
     u32 next;
     u32 prev;

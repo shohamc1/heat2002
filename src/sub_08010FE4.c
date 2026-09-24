@@ -20,30 +20,30 @@ struct Big
 extern struct Big gUnk_083FDA78[];
 extern u8 gUnk_0202EED8;
 
-extern void sub_08016558(u16 idx);
+extern void GetString(u16 idx);
 void sub_080065A8(void);
-void sub_080063BC(u8 *p, u32 a1, u32 a2, u8 a3);
-void sub_08006950(u32 a, u32 b, u32 c);
+void DrawText(u8 *p, u32 a1, u32 a2, u8 a3);
+void DrawTextCenteredHighlight(u32 a, u32 b, u32 c);
 void sub_08010194(u32 a, u32 b, u32 c);
 void sub_0801027C(u32 tile, u32 pal, u32 c);
 
-u8 sub_08010FE4(u8 a, u8 b)
+u8 DrawTrackSelect(u8 a, u8 b)
 {
     u8 unused[0x34];
     u8 *p;
 
     if (b != 0) {
-        sub_08016558(0xA1);
+        GetString(0xA1);
         sub_080065A8();
     }
     p = (u8 *)0x0829F2AC;
-    sub_080063BC(p, 0, 4, 0);
-    sub_080063BC(p, 0, 5, 0);
+    DrawText(p, 0, 4, 0);
+    DrawText(p, 0, 5, 0);
     if (a != 3) {
-        sub_08006950(gUnk_083FDA78[a].fieldC, 4, 1);
+        DrawTextCenteredHighlight(gUnk_083FDA78[a].fieldC, 4, 1);
     } else {
-        sub_08006950(0x0829F2CC, 4, 1);
-        sub_08006950(0x0829F2D8, 5, 1);
+        DrawTextCenteredHighlight(0x0829F2CC, 4, 1);
+        DrawTextCenteredHighlight(0x0829F2D8, 5, 1);
     }
     CpuCopy16(gUnk_083FDA78[a].field14, OBJ_PLTT, OBJ_PLTT_SIZE);
     CpuCopy16(0x0830E670, OBJ_PLTT + 0x1E0, 0x20);

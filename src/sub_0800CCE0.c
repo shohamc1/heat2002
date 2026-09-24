@@ -17,7 +17,7 @@ struct tbl_0800CCE0
 
 extern struct tbl_0800CCE0 gUnk_083FD91C[];
 
-void sub_0800CCE0(u32 idx)
+void LoadTrackWalls(u32 idx)
 {
     gUnk_0202CC40 = gUnk_083FD91C[idx].f4;
     gUnk_0202CC44 = gUnk_083FD91C[idx].f0;

@@ -3,7 +3,7 @@
 extern u32 gUnk_02025FD0;
 extern u8 gUnk_02025ED0[];
 
-void sub_080078B8(void)
+void InitTasks(void)
 {
     u32 i = 0;
     do {

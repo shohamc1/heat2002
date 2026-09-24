@@ -7,14 +7,14 @@ struct EntityB120 {
 
 extern u32 gUnk_083FF5B0[];        /* 0x083FF5B0 */
 extern u8 gUnk_08330AD4[];         /* 0x08330AD4 */
-extern volatile u8 gUnk_020020DC;  /* 0x020020DC */
+extern volatile u8 gIsLinkRace;  /* 0x020020DC */
 extern u8 gUnk_020020C4;           /* 0x020020C4 */
 
 u32 *sub_0800754C(u32 a);
-u8 sub_08007714(u32 a);
-u32 sub_080044A4(u32 a, u32 b);
-void sub_08007950(struct EntityB120 *e);
-void sub_0800792C(struct EntityB120 *e);
+u8 RequestObjPalette(u32 a);
+u32 AddOamEntry(u32 a, u32 b);
+void RemoveTask(struct EntityB120 *e);
+void FreeTask(struct EntityB120 *e);
 
 void sub_0800B120(struct EntityB120 *e)
 {
@@ -34,16 +34,16 @@ void sub_0800B120(struct EntityB120 *e)
         {
             register u32 attr asm("r6") = 0x80680040;
 
-            t = (sub_08007714((u32)gUnk_08330AD4) << 12) | 0x400;
+            t = (RequestObjPalette((u32)gUnk_08330AD4) << 12) | 0x400;
             arg1 = spr[4] | t;
-            if (gUnk_020020DC == 0)
-                sub_080044A4(attr, arg1);
+            if (gIsLinkRace == 0)
+                AddOamEntry(attr, arg1);
         }
     }
     if (e->unk18 == 0x4E)
     {
-        sub_08007950(e);
-        sub_0800792C(e);
+        RemoveTask(e);
+        FreeTask(e);
         gUnk_020020C4 = 1;
     }
 }

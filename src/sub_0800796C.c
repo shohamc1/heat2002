@@ -10,7 +10,7 @@ struct Node0800796C {
 extern u32 gUnk_0202A3E0;
 extern struct Node0800796C *gUnk_02025FD0;
 
-void sub_0800796C(void)
+void RunTasks(void)
 {
     struct Node0800796C *node;
 

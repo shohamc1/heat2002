@@ -6,7 +6,7 @@ extern u32 *gUnk_083FDF74[];
 extern u32 *gUnk_083FDFEC[];
 
 extern s32 sub_08010B38(u8 id);
-extern u32 sub_08016558(u32 idx);
+extern u32 GetString(u32 idx);
 extern void sub_080065A8(void);
 extern void sub_08010AA4(u8 idx);
 extern void RLUnCompVram(u32 a, u32 b);
@@ -21,7 +21,7 @@ u32 sub_08010BA8(u8 param)
     ret = sub_08010B38(param);
     buf[0] = ret;
     buf[1] = (ret & 0xFF00) >> 8;
-    sub_08016558(0x70);
+    GetString(0x70);
     sub_080065A8();
     sub_08010AA4(param);
     CpuCopy16(gUnk_083FDEF4[0], OBJ_PLTT, OBJ_PLTT_SIZE);

@@ -13,7 +13,7 @@ struct Track {
 extern struct Track gUnk_08367A14[];
 extern u32 gUnk_0202A3F0[];
 
-void sub_08007BB8(u8 a1)
+void BuildStartingGrid(u8 a1)
 {
     u32 x = gUnk_08367A14[a1].unk00;
     u32 y = gUnk_08367A14[a1].unk04;

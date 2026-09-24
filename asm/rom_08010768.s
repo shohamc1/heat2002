@@ -48,7 +48,7 @@ _0801077C:
 	strb r1, [r0, #0x00]
 	ldr r4, _080107A0 @ =0x0202EDF0
 	adds r0, r4, #0x0
-	bl sub_08003DB4
+	bl LoadFadePalette
 	movs r1, #0xA0
 	lsls r1, r1, #0x13
 	adds r0, r4, #0x0

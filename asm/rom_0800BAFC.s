@@ -43,7 +43,7 @@ sub_0800BAFC:
 	beq _0800BB2E
 	cmp r0, #0x0A
 	beq _0800BB2E
-	bl sub_080078E4
+	bl AllocTask
 	adds r1, r0, #0x0
 	cmp r1, #0x00
 	beq _0800BB2E
@@ -56,7 +56,7 @@ sub_0800BAFC:
 	ldr r0, _0800BB38 @ =0x0800BA39
 	str r0, [r1, #0x0C]
 	adds r0, r1, #0x0
-	bl sub_0800793C
+	bl AddTask
 _0800BB2E:
 	pop {r4, r5}
 	pop {r0}

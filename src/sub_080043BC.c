@@ -1,18 +1,18 @@
 #include "global.h"
 
-extern u32 gUnk_02002100[];
-extern u8 gUnk_020020E0;
+extern u32 gCamera[];
+extern u8 gIsDemo;
 
-void sub_080043BC(void)
+void SmoothCamera(void)
 {
-    s32 x = gUnk_02002100[2] - gUnk_02002100[0];
-    s32 y = gUnk_02002100[3] - gUnk_02002100[1];
+    s32 x = gCamera[2] - gCamera[0];
+    s32 y = gCamera[3] - gCamera[1];
 
-    if (gUnk_020020E0 != 0) {
-        gUnk_02002100[0] += x;
-        gUnk_02002100[1] += y;
+    if (gIsDemo != 0) {
+        gCamera[0] += x;
+        gCamera[1] += y;
     } else {
-        gUnk_02002100[0] += x >> 4;
-        gUnk_02002100[1] += y >> 4;
+        gCamera[0] += x >> 4;
+        gCamera[1] += y >> 4;
     }
 }

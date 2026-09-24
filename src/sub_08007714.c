@@ -2,7 +2,7 @@
 
 extern u32 gUnk_02025E00[];
 
-u8 sub_08007714(u32 a)
+u8 RequestObjPalette(u32 a)
 {
     u32 *p;
     u32 *q;

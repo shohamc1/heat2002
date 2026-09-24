@@ -48,27 +48,27 @@ sub_08014BA4:
 	strh r0, [r1, #0x00]
 	bl sub_08014B14
 	bl sub_080045D8
-	bl sub_08007344
-	bl sub_080073D8
-	bl sub_08004484
+	bl InitGfxCaches
+	bl AgeGfxCaches
+	bl ClearOamBuffer
 	movs r0, #0x00
 	bl sub_08014BA0
 	bl sub_080047DC
 	ldr r4, _08014C40 @ =0x020020C0
 	strb r5, [r4, #0x00]
-	bl sub_08000458
+	bl WaitForVBlank
 	mov r0, sp
 	movs r1, #0x0F
-	bl sub_08004238
+	bl FadeToBrightenedPalette
 	movs r7, #0x40
 	movs r6, #0x00
 _08014BF0:
-	bl sub_080073D8
-	bl sub_08004484
+	bl AgeGfxCaches
+	bl ClearOamBuffer
 	adds r0, r6, #0x0
 	bl sub_08014BA0
 	bl sub_080047DC
-	bl sub_0800048C
+	bl ReadKeys
 	ldr r1, _08014C44 @ =0x020005CC
 	movs r0, #0x01
 	ldrh r1, [r1, #0x00]
@@ -79,13 +79,13 @@ _08014BF0:
 _08014C14:
 	movs r0, #0x00
 	strb r0, [r4, #0x00]
-	bl sub_08000458
+	bl WaitForVBlank
 	lsls r5, r7, #0x18
 	cmp r5, #0x00
 	bne _08014BF0
 	movs r0, #0x00
 	movs r1, #0x0F
-	bl sub_0800420C
+	bl FadeToColor
 	lsrs r0, r5, #0x18
 	movs r3, #0x80
 	lsls r3, r3, #0x02

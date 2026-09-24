@@ -2,7 +2,7 @@
 
 extern s16 gUnk_0801CD08[];
 
-void sub_0800C0FC(s32 *a, s32 b, s32 c, s32 *d)
+void WorldToCarLocal(s32 *a, s32 b, s32 c, s32 *d)
 {
     u16 i;
     s32 dx;

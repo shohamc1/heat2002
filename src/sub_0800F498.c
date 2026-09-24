@@ -4,7 +4,7 @@
 extern u32 gUnk_082EE8E0[];
 extern u32 gUnk_0833338C[];
 extern u32 gUnk_082EE304[];
-void sub_08000458(void);
+void WaitForVBlank(void);
 void sub_08010680(u32 a);
 
 void sub_0800F498(void)
@@ -23,7 +23,7 @@ void sub_0800F498(void)
     dest = BG_SCREEN_ADDR(24);
     ctrl = 0x80 << 5;
     CpuCopy16(src, dest, ctrl * 2);
-    sub_08000458();
+    WaitForVBlank();
     REG_DISPCNT = 0xA8 << 3;
     sub_08010680(gUnk_082EE304);
 }

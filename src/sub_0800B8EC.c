@@ -3,13 +3,13 @@
 extern u32 gUnk_083FF6A4[];
 extern u8 gUnk_08331F88[];
 
-u32 sub_08009BB4(s32 x, s32 y, s32 *out);
+u32 WorldToScreen(s32 x, s32 y, s32 *out);
 u32 *sub_0800754C(u32 a);
-u32 sub_0800CBB8(s32 x, s32 y);
-s32 sub_08007714(u32 a);
-u32 sub_080044A4(u32 a, u32 b);
-void sub_08007950(u32 a);
-void sub_0800792C(u32 a);
+u32 GetTrackTileType(s32 x, s32 y);
+s32 RequestObjPalette(u32 a);
+u32 AddOamEntry(u32 a, u32 b);
+void RemoveTask(u32 a);
+void FreeTask(u32 a);
 
 struct Unk0800B8EC
 {
@@ -42,7 +42,7 @@ void sub_0800B8EC(struct Unk0800B8EC *e)
     s32 y;
     s32 t18;
 
-    if (((u32)sub_08009BB4(e->f00, e->f08, out) << 24) != 0)
+    if (((u32)WorldToScreen(e->f00, e->f08, out) << 24) != 0)
     {
         x0 = out[0];
         out[0] = x0 - 8;
@@ -53,18 +53,18 @@ void sub_0800B8EC(struct Unk0800B8EC *e)
             oam = sub_0800754C(gUnk_083FF6A4[e->f18 & 0x1F]);
             if (oam != 0)
             {
-                v = sub_0800CBB8(e->f00 >> 19, e->f08 >> 19);
+                v = GetTrackTileType(e->f00 >> 19, e->f08 >> 19);
                 if (v & 1)
                 {
                     attr = (out[1] & 0xFF) | ((out[0] & 0x1FF) << 16) | 0x40000000;
-                    t = ((u8)sub_08007714((u32)gUnk_08331F88) << 12) | 0x800;
-                    sub_080044A4(attr, oam->f10 | t);
+                    t = ((u8)RequestObjPalette((u32)gUnk_08331F88) << 12) | 0x800;
+                    AddOamEntry(attr, oam->f10 | t);
                 }
                 else
                 {
                     attr = (out[1] & 0xFF) | ((out[0] & 0x1FF) << 16) | 0x40000000;
-                    t = ((u8)sub_08007714((u32)gUnk_08331F88) << 12) | 0x400;
-                    sub_080044A4(attr, oam->f10 | t);
+                    t = ((u8)RequestObjPalette((u32)gUnk_08331F88) << 12) | 0x400;
+                    AddOamEntry(attr, oam->f10 | t);
                 }
             }
         }
@@ -76,7 +76,7 @@ void sub_0800B8EC(struct Unk0800B8EC *e)
     e->f08 = e->f08 + e->f30;
     if (t18 == 0x20)
     {
-        sub_08007950((u32)e);
-        sub_0800792C((u32)e);
+        RemoveTask((u32)e);
+        FreeTask((u32)e);
     }
 }

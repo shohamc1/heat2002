@@ -4,7 +4,7 @@ extern u32 gUnk_02002200[];
 extern u32 gUnk_0200BC50[];
 extern u32 gUnk_02022DEC[];
 
-u8 sub_0800CBB8(s32 x, s32 y)
+u8 GetTrackTileType(s32 x, s32 y)
 {
     s32 a;
     register s32 b asm("r5");

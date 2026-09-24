@@ -13,9 +13,9 @@ extern struct EntEFA0 gUnk_0202EFA0[];
 extern u8 gUnk_0829F348[];
 
 extern void sub_08006734(u32 a);
-extern u32 sub_08016558(u32 idx);
+extern u32 GetString(u32 idx);
 extern void sub_080065A8(void);
-extern void sub_080063BC(u8 *p, u32 a1, u32 a2, u8 a3);
+extern void DrawText(u8 *p, u32 a1, u32 a2, u8 a3);
 
 void sub_08012228(void)
 {
@@ -25,18 +25,18 @@ void sub_08012228(void)
     s8 v;
 
     sub_08006734(gUnk_083FDE18[0]);
-    sub_08016558(0xC4);
+    GetString(0xC4);
     sub_080065A8();
     for (i = 0; i != 4; i++) {
         flag = gUnk_0202EFA0[i].f2 != -1;
-        sub_080063BC(sub_08016558(i + 0x53), 1, 2 * i + 7, flag);
+        DrawText(GetString(i + 0x53), 1, 2 * i + 7, flag);
         v = gUnk_0202EFA0[i].f2;
         if (v == 0) {
-            sub_080063BC(sub_08016558(0x58), 0x14, 2 * i + 7, flag);
+            DrawText(GetString(0x58), 0x14, 2 * i + 7, flag);
         } else if (v == 1) {
-            sub_080063BC(sub_08016558(0x57), 0x14, 2 * i + 7, flag);
+            DrawText(GetString(0x57), 0x14, 2 * i + 7, flag);
         } else {
-            sub_080063BC(gUnk_0829F348, 0x14, 2 * i + 7, flag);
+            DrawText(gUnk_0829F348, 0x14, 2 * i + 7, flag);
         }
     }
 }

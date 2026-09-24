@@ -6,8 +6,8 @@ extern s32 gUnk_0200209C;
 
 s32 sub_080172C8(s32 a, s32 b);
 u32 *sub_08007630(u32 p);
-s32 sub_08007714(u32 a);
-u32 sub_080044A4(u32 a, u32 b);
+s32 RequestObjPalette(u32 a);
+u32 AddOamEntry(u32 a, u32 b);
 
 void sub_08009FA0(u32 a1, u32 a2, u32 a3)
 {
@@ -21,7 +21,7 @@ void sub_08009FA0(u32 a1, u32 a2, u32 a3)
     q = sub_08007630(*p);
     if (q != 0) {
         t = *(u32 *)((u32)q + 0x10);
-        t |= (u8)sub_08007714((u32)gUnk_08337C20) << 12;
-        sub_080044A4(attr, t);
+        t |= (u8)RequestObjPalette((u32)gUnk_08337C20) << 12;
+        AddOamEntry(attr, t);
     }
 }

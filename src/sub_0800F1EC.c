@@ -5,7 +5,7 @@ extern u32 gUnk_0829EF50[];
 extern u32 gUnk_0829EF64[];
 
 void sub_080065A8(u32 a);
-void sub_08006950(u32 a, u32 b, u32 c);
+void DrawTextCenteredHighlight(u32 a, u32 b, u32 c);
 
 void sub_0800F1EC(u8 a)
 {
@@ -13,7 +13,7 @@ void sub_0800F1EC(u8 a)
 
     sub_080065A8((u32)gUnk_0829EF40);
     p = (u32)gUnk_0829EF50;
-    sub_08006950(p, 8, a == 0);
+    DrawTextCenteredHighlight(p, 8, a == 0);
     p = (u32)gUnk_0829EF64;
-    sub_08006950(p, 0xA, a == 1);
+    DrawTextCenteredHighlight(p, 0xA, a == 1);
 }

@@ -5,7 +5,7 @@ extern s32 gUnk_02023A20[];
 extern u16 gUnk_02022E18;
 extern u8 gUnk_02022E14;
 
-void sub_08004018(s32 arg0, u16 *src)
+void BeginFadeToBrightenedPalette(s32 arg0, u16 *src)
 {
     s32 *base;
     s32 *out;

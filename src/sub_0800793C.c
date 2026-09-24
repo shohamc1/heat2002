@@ -2,7 +2,7 @@
 
 extern u32 gUnk_02025FD0; /* 0x02025FD0 */
 
-void sub_0800793C(u32 r0)
+void AddTask(u32 r0)
 {
     u32 r2 = gUnk_02025FD0;
     *(u32 *)(r0 + 0x14) = r2;

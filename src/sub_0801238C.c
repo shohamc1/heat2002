@@ -1,17 +1,17 @@
 #include "global.h"
-extern u8 gUnk_0202EF00[];
+extern u8 gOptions[];
 extern u8 gUnk_0202EF80[];
 extern u8 gUnk_0202EF08[];
 extern u8 gUnk_0202EF60[];
-void sub_0801238C(void)
+void InitNewSaveData(void)
 {
     u8 i;
-    gUnk_0202EF00[0] = 0;
-    gUnk_0202EF00[1] = 1;
-    gUnk_0202EF00[2] = 1;
-    gUnk_0202EF00[3] = 1;
-    gUnk_0202EF00[5] = 1;
-    gUnk_0202EF00[4] = 0;
+    gOptions[0] = 0;
+    gOptions[1] = 1;
+    gOptions[2] = 1;
+    gOptions[3] = 1;
+    gOptions[5] = 1;
+    gOptions[4] = 0;
     i = 0;
     do {
         gUnk_0202EF80[i] = 1;

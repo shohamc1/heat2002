@@ -11,9 +11,9 @@ struct UnkStruct0800BD44_Entry {
 
 struct UnkStruct0800BD44_Ctl {
     u8 pad[0x4C];
-    u8 f4C;
-    u8 f4D;
-    u8 f4E;
+    u8 lap;
+    u8 waypoint;
+    u8 subStep;
 };
 
 s32 sub_0800BC4C(u16 *p, struct UnkStruct0800BD44_Entry *e);
@@ -35,11 +35,11 @@ loop:
         goto done;
     e = e + 1;
     if (e->f1 == 0xFF) {
-        d->f4C = d->f4C + 1;
+        d->lap = d->lap + 1;
         e = c;
     }
     goto loop;
 done:
-    d->f4D = res;
-    d->f4E = 0xF;
+    d->waypoint = res;
+    d->subStep = 0xF;
 }

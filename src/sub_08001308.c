@@ -18,7 +18,7 @@ extern struct Unk8B gUnk_0801DACC[];
 
 void sub_08001134(u32 r0);
 
-void sub_08001308(u16 a)
+void m4aSongNumContinue(u16 a)
 {
     struct Unk12A *pa = gUnk_0801DA90;
     struct Unk8B *baseB = gUnk_0801DACC;

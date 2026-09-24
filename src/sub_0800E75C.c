@@ -10,8 +10,8 @@ extern u16 gUnk_0202E950;
 extern u16 gUnk_0202E928;
 extern s16 gUnk_0202E960[];
 
-s16 sub_08000358(s16 r0);
-s32 sub_08000328(s16 a, s16 b);
+s16 FixedInverse8(s16 r0);
+s32 FixedMul8(s16 a, s16 b);
 
 void sub_0800E75C(void)
 {
@@ -22,13 +22,13 @@ void sub_0800E75C(void)
     u32 v;
     u32 t;
 
-    gUnk_0202ED68 = sub_08000328(gUnk_0801CD08[gUnk_02024F40 + 0x40], sub_08000358(gUnk_0202E948));
+    gUnk_0202ED68 = FixedMul8(gUnk_0801CD08[gUnk_02024F40 + 0x40], FixedInverse8(gUnk_0202E948));
     d2 = &gUnk_0202E91C;
-    *d2 = sub_08000328(gUnk_0801CD08[gUnk_02024F40], sub_08000358(gUnk_0202E948));
+    *d2 = FixedMul8(gUnk_0801CD08[gUnk_02024F40], FixedInverse8(gUnk_0202E948));
     d3 = &gUnk_0202E950;
-    *d3 = sub_08000328((s16)-*(u16 *)&gUnk_0801CD08[gUnk_02024F40], sub_08000358(gUnk_0202E930));
+    *d3 = FixedMul8((s16)-*(u16 *)&gUnk_0801CD08[gUnk_02024F40], FixedInverse8(gUnk_0202E930));
     d4 = &gUnk_0202E928;
-    *d4 = sub_08000328(gUnk_0801CD08[gUnk_02024F40 + 0x40], sub_08000358(gUnk_0202E930));
+    *d4 = FixedMul8(gUnk_0801CD08[gUnk_02024F40 + 0x40], FixedInverse8(gUnk_0202E930));
 
     g = gUnk_0202E960;
     g[3] = gUnk_0202ED68;

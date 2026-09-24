@@ -16,7 +16,7 @@ extern struct Track gUnk_08364B0C[];
 /* Each case carries its own copy of the body so expand_case counts 12
    distinct labels and emits a jump table; cross-jumping then merges the
    twelve identical bodies, leaving every table entry at one address. */
-void sub_08003890(u8 idx)
+void LoadTrackTiles(u8 idx)
 {
     switch (idx) {
     case 0:

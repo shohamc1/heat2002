@@ -13,22 +13,22 @@ struct EntityB658
 struct CarB658
 {
   u8 pad00[0x34];
-  u16 unk34;
+  u16 heading;
   u8 pad36[0xC4 - 0x36];
   u32 unkC4[4];
   u32 unkD4[4];
   u8 padE4[400 - 0xE4];
 };
-extern struct CarB658 gUnk_0202A550[];
+extern struct CarB658 gCars[];
 extern s16 gUnk_0801CD08[];
 extern u32 gUnk_083FF64C[];
 extern u8 gUnk_08331188[];
-u32 sub_08009BB4(s32 x, s32 y, s32 *out);
+u32 WorldToScreen(s32 x, s32 y, s32 *out);
 u32 *sub_080076C8(u32 a);
-u8 sub_08007714(u32 a);
-u32 sub_080044A4(u32 a, u32 b);
-void sub_08007950(struct EntityB658 *e);
-void sub_0800792C(struct EntityB658 *e);
+u8 RequestObjPalette(u32 a);
+u32 AddOamEntry(u32 a, u32 b);
+void RemoveTask(struct EntityB658 *e);
+void FreeTask(struct EntityB658 *e);
 void sub_0800B658(struct EntityB658 *e)
 {
   struct CarB658 *car;
@@ -46,10 +46,10 @@ void sub_0800B658(struct EntityB658 *e)
   u32 t;
   u32 arg1;
   s32 old;
-  car = &gUnk_0202A550[e->unk34];
+  car = &gCars[e->unk34];
   v0 = car->unkC4[e->unk1C + 2];
   v1 = car->unkD4[e->unk1C + 2];
-  angle = car->unk34 >> 8;
+  angle = car->heading >> 8;
   sin = gUnk_0801CD08[angle];
   cos = gUnk_0801CD08[angle + 0x40];
   rel = (dy = e->unk08 + 0xFFF60000);
@@ -57,7 +57,7 @@ void sub_0800B658(struct EntityB658 *e)
   dy = (dy * cos) >> 8;
   v0 = v0 + dx;
   v1 = v1 + dy;
-  if ((sub_08009BB4(v0, v1, pos) << 0x18) != 0)
+  if ((WorldToScreen(v0, v1, pos) << 0x18) != 0)
   {
     old = pos[0];
     pos[0] = old - 4;
@@ -68,9 +68,9 @@ void sub_0800B658(struct EntityB658 *e)
       if (spr != 0)
       {
         attr = (pos[1] & 0xFF) | ((pos[0] & 0x1FF) << 0x10);
-        t = (sub_08007714((u32) gUnk_08331188) << 12) | 0x800;
+        t = (RequestObjPalette((u32) gUnk_08331188) << 12) | 0x800;
         arg1 = spr[4] | t;
-        sub_080044A4(attr, arg1);
+        AddOamEntry(attr, arg1);
       }
     }
   }
@@ -78,7 +78,7 @@ void sub_0800B658(struct EntityB658 *e)
   e->unk08 = e->unk08 + 0x10000;
   if (e->unk18 == 0x10)
   {
-    sub_08007950(e);
-    sub_0800792C(e);
+    RemoveTask(e);
+    FreeTask(e);
   }
 }

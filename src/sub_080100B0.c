@@ -1,13 +1,13 @@
 #include "global.h"
 
-extern u8 gUnk_0202EF00[];
+extern u8 gOptions[];
 
-void sub_08001208(u32 a);
+void m4aSongNumStart(u32 a);
 void sub_0800184C(void);
 
 void sub_080100B0(void)
 {
-    if (gUnk_0202EF00[2] != 0)
-        sub_08001208(2);
+    if (gOptions[2] != 0)
+        m4aSongNumStart(2);
     sub_0800184C();
 }

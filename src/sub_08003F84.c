@@ -5,7 +5,7 @@ extern s32 gUnk_02023A20[];
 extern u16 gUnk_02022E18;
 extern u8 gUnk_02022E14;
 
-void sub_08003F84(s32 a, u32 b)
+void BeginFadeToColor(s32 a, u32 b)
 {
     u32 v = b << 16;
     register u32 m asm("r0") = 0x1F;

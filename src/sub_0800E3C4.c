@@ -3,7 +3,7 @@
 
 extern u32 gUnk_0202CDD0[];
 
-void sub_0800E3C4(u32 a1, u32 a2)
+void SioTransferInit(u32 a1, u32 a2)
 {
     u32 sum = 0;
     register u32 one __asm__("r8");

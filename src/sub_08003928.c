@@ -52,40 +52,40 @@ struct Track {
 
 extern struct Track gUnk_08364B0C[];
 
-void sub_08003890(u8 idx);
-void sub_08004018(s32 arg0, u16 *src);
-void sub_0800383C(u16 *src, u16 *dst, u16 count);
+void LoadTrackTiles(u8 idx);
+void BeginFadeToBrightenedPalette(s32 arg0, u16 *src);
+void RleDecode16(u16 *src, u16 *dst, u16 count);
 void sub_08003BFC(u32 x, u32 y, u16 *map, u32 *dest, u16 *charBase, u16 a6);
-void sub_08003D90(void);
-void sub_08004260(u32 x, u32 y);
-void sub_08008F1C(u32 idx);
-void sub_08005560(void);
-void sub_0800557C(void);
+void FlushTrackBgBuffers(void);
+void SetCameraPos(u32 x, u32 y);
+void InitRaceCars(u32 idx);
+void ResetLapTimer(void);
+void ResetRaceTimer(void);
 
-void sub_08003928(u32 idx)
+void LoadTrack(u32 idx)
 {
     u16 a[0xE0];
     u16 b[0x20];
     u16 *t;
 
-    sub_08003890(idx);
+    LoadTrackTiles(idx);
     t = gUnk_08335C60;
     CpuCopy16(t, BG_SCREEN_ADDR(24), 0x2000);
     CpuCopy16(gUnk_08364B0C[idx].unk18, (u32)a, 0x200);
     CpuCopy16(t = gUnk_08334BCC, (u32)b, 0x20);
-    sub_08004018(0x1E, a);
+    BeginFadeToBrightenedPalette(0x1E, a);
     gUnk_0200BC30 = gUnk_08364B0C[idx].unk2C;
     gUnk_02022DD8 = gUnk_08364B0C[idx].unk34;
     gUnk_02002208 = gUnk_02002220;
     gUnk_0200BC54 = gUnk_0200BC70;
-    sub_0800383C(gUnk_08364B0C[idx].unk20, gUnk_02002220, gUnk_08364B0C[idx].unk5C);
-    sub_0800383C(gUnk_08364B0C[idx].unk24, gUnk_0200BC70, gUnk_08364B0C[idx].unk5E);
+    RleDecode16(gUnk_08364B0C[idx].unk20, gUnk_02002220, gUnk_08364B0C[idx].unk5C);
+    RleDecode16(gUnk_08364B0C[idx].unk24, gUnk_0200BC70, gUnk_08364B0C[idx].unk5E);
     gUnk_0200221C = gUnk_08364B0C[idx].unk0C;
     gUnk_02002210 = gUnk_08364B0C[idx].unk10;
     gUnk_02022DF0 = gUnk_08364B0C[idx].unk3C;
     gUnk_0201567C = gUnk_08364B0C[idx].unk40;
     gUnk_0200BC50 = gUnk_02015690;
-    sub_0800383C(gUnk_08364B0C[idx].unk44, gUnk_02015690, gUnk_08364B0C[idx].unk60);
+    RleDecode16(gUnk_08364B0C[idx].unk44, gUnk_02015690, gUnk_08364B0C[idx].unk60);
     gUnk_02022DEC = gUnk_08364B0C[idx].unk48;
     if (idx == 0)
         gUnk_02002200[0] = 0x7D;
@@ -111,10 +111,10 @@ void sub_08003928(u32 idx)
         gUnk_02002200[0] = 0x7D;
     sub_08003BFC(0, 0, gUnk_02002208, (u32 *)TILEMAP_BUFFER(0), gUnk_0200221C, gUnk_02022DE4);
     sub_08003BFC(0, 0, gUnk_0200BC54, (u32 *)TILEMAP_BUFFER(1), gUnk_02002210, gUnk_0200BC34);
-    sub_08003D90();
-    sub_08004260(0, 0);
-    sub_08008F1C(idx);
-    sub_08005560();
-    sub_0800557C();
+    FlushTrackBgBuffers();
+    SetCameraPos(0, 0);
+    InitRaceCars(idx);
+    ResetLapTimer();
+    ResetRaceTimer();
     gUnk_020253D4 = 0;
 }

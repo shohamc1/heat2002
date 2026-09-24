@@ -1,6 +1,6 @@
 #include "global.h"
 
-u32 sub_08003238(u16 a)
+u32 UnpackLinkKeys(u16 a)
 {
     u16 r = 0;
     if (a & 1)

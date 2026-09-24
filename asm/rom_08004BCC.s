@@ -44,7 +44,7 @@ sub_08004BCC:
 	movs r4, #0x00
 	bl sub_080047DC
 _08004BE0:
-	bl sub_0800048C
+	bl ReadKeys
 	ldr r1, _08004C30 @ =0x020005CC
 	movs r0, #0x04
 	ldrh r2, [r1, #0x00]
@@ -57,13 +57,13 @@ _08004BE0:
 	adds r1, r4, #0x0
 	movs r2, #0x00
 	movs r3, #0x09
-	bl sub_08011D38
+	bl MenuMoveVertical
 	lsls r0, r0, #0x18
 	lsrs r4, r0, #0x18
 	adds r0, r4, #0x0
 	bl sub_08004B1C
-	bl sub_080073D8
-	bl sub_08004484
+	bl AgeGfxCaches
+	bl ClearOamBuffer
 	adds r0, r4, #0x0
 	bl sub_08004A7C
 	bl sub_080047DC
@@ -73,7 +73,7 @@ _08004BE0:
 	ldrb r0, [r1, #0x00]
 	adds r0, #0x01
 	strb r0, [r1, #0x00]
-	bl sub_08000458
+	bl WaitForVBlank
 	b _08004BE0
 	.byte 0x00, 0x00
 _08004C30: .4byte 0x020005CC

@@ -1,6 +1,6 @@
 #include "global.h"
 
-extern u32 sub_080044A4(u32 a, u32 b);
+extern u32 AddOamEntry(u32 a, u32 b);
 
 void sub_08010134(u32 a, u32 b, u32 c, u32 d)
 {
@@ -10,5 +10,5 @@ void sub_08010134(u32 a, u32 b, u32 c, u32 d)
 
     y |= 0x800;
     y |= c;
-    sub_080044A4(x, y);
+    AddOamEntry(x, y);
 }

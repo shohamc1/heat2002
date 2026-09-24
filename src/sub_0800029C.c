@@ -1,7 +1,7 @@
 #include "global.h"
 #include "gba/defines.h"
 
-void sub_0800029C(void)
+void ResetOam(void)
 {
     vu16 *dst = (vu16 *)OAM;
     register u16 t asm("r1") = 0x200;

@@ -38,7 +38,7 @@ sub_08012E48:
 	ldr r4, _08012ED8 @ =0xFFFFFE00
 	add sp, r4
 	movs r5, #0x00
-	bl sub_08000458
+	bl WaitForVBlank
 	movs r0, #0x03
 	mov r1, sp
 	bl sub_08011C9C
@@ -48,11 +48,11 @@ sub_08012E48:
 	bl sub_08012DEC
 	mov r0, sp
 	movs r1, #0x0F
-	bl sub_08004238
+	bl FadeToBrightenedPalette
 	movs r7, #0x40
 	ldr r6, _08012EE0 @ =0x020005CC
 _08012E72:
-	bl sub_0800048C
+	bl ReadKeys
 	lsls r5, r5, #0x18
 	lsrs r4, r5, #0x18
 	ldr r0, _08012EDC @ =0x0202ED70
@@ -70,10 +70,10 @@ _08012E90:
 	asrs r1, r5, #0x18
 	movs r2, #0x00
 	movs r3, #0x01
-	bl sub_08011D38
+	bl MenuMoveVertical
 	lsls r0, r0, #0x18
 	lsrs r5, r0, #0x18
-	bl sub_08000458
+	bl WaitForVBlank
 	lsls r0, r7, #0x18
 	asrs r4, r0, #0x18
 	cmp r4, #0x40
@@ -83,11 +83,11 @@ _08012E90:
 	cmp r0, #0x00
 	beq _08012EBA
 	movs r0, #0x09
-	bl sub_08001208
+	bl m4aSongNumStart
 _08012EBA:
 	movs r0, #0x00
 	movs r1, #0x0F
-	bl sub_0800420C
+	bl FadeToColor
 	movs r1, #0x01
 	adds r0, r4, #0x0
 	eors r0, r1

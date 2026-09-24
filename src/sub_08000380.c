@@ -7,11 +7,11 @@ extern u32 gUnk_02000580;
 extern u32 gUnk_03007FFC;
 extern u32 gUnk_02000590[];
 
-void sub_08000430(void);
+void ClearVBlankFlag(void);
 
-void sub_08000380(void)
+void InitIntrHandlers(void)
 {
-    sub_08000430();
+    ClearVBlankFlag();
     gUnk_02000580 = 0x0800042D;
     DmaCopy16(3, 0x08000104, 0x020005D0, 0x800);
     INTR_VECTOR = (void *)0x020005D0;

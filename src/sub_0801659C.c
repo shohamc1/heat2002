@@ -5,7 +5,7 @@ extern u16 gUnk_0202F040[];
 void sub_080170B8(u16 a, u16 *b);
 void sub_0801719C(u16 a, u16 *b);
 
-void sub_0801659C(u16 a, u16 b)
+void WriteSaveBlocks(u16 a, u16 b)
 {
     u16 *r6;
     u16 r4;

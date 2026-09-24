@@ -2,7 +2,7 @@
 
 extern u8 gUnk_0202CBC8[];
 
-u8 sub_080079AC(void)
+u8 FindFreePitStall(void)
 {
     u8 i;
 

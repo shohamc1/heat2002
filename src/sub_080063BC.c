@@ -3,7 +3,7 @@ extern u16 *gUnk_08364B08;
 extern u16 gUnk_08332DC8[];
 extern u16 gUnk_08333208[];
 
-void sub_080063BC(u8 *p, u32 a1, u32 a2, u8 a3)
+void DrawText(u8 *p, u32 a1, u32 a2, u8 a3)
 {
     u16 *out = gUnk_08364B08;
     u16 color;

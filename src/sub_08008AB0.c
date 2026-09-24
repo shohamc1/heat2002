@@ -3,15 +3,15 @@
 struct Unk0202A550
 {
     u8 filler0[0x162];
-    u8 unk162;
+    u8 driverId;
     u8 filler163[400 - 0x163];
 };
 
-extern struct Unk0202A550 gUnk_0202A550[];
+extern struct Unk0202A550 gCars[];
 
-extern u8 sub_080025FC(void);
+extern u8 Random8(void);
 
-void sub_08008AB0(void)
+void FillUnassignedDrivers(void)
 {
     u8 v;
     u32 i;
@@ -20,18 +20,18 @@ void sub_08008AB0(void)
 
     for (i = 1; i != 0x18; i++)
     {
-        if (gUnk_0202A550[i].unk162 != 99)
+        if (gCars[i].driverId != 99)
             continue;
         for (;;)
         {
-            v = 0x1F & sub_080025FC();
+            v = 0x1F & Random8();
             if (v > 0x1D)
                 continue;
             dup = 0;
             j = 0;
             do
             {
-                if (v == gUnk_0202A550[j].unk162)
+                if (v == gCars[j].driverId)
                     dup = 1;
                 j++;
             } while (j != 0x18);
@@ -39,6 +39,6 @@ void sub_08008AB0(void)
                 continue;
             break;
         }
-        gUnk_0202A550[i].unk162 = v;
+        gCars[i].driverId = v;
     }
 }

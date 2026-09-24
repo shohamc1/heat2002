@@ -25,7 +25,7 @@ struct CommRegs
 
 extern struct CommRegs gUnk_0202CDD0;
 
-void sub_0800E640(void)
+void SioTransferIntr(void)
 {
     vu32 *sio = (vu32 *)0x04000120;
     u32 v = *sio;

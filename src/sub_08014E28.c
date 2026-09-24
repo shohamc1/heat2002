@@ -2,15 +2,15 @@
 #include "gba/io_reg.h"
 
 extern u16 gKeysPressed;
-extern u8 gUnk_0202EF00[];
-extern void sub_0800F3C0(void);
+extern u8 gOptions[];
+extern void SortCarsByTime(void);
 extern void sub_08011C9C(u32 a, void *b);
 extern void sub_08014C60(u8 a);
-extern void sub_08004238(void *a, u32 b);
-extern void sub_0800048C(void);
-extern void sub_08000458(void);
-extern void sub_08001208(u16 a);
-extern void sub_0800420C(u32 a, u32 b);
+extern void FadeToBrightenedPalette(void *a, u32 b);
+extern void ReadKeys(void);
+extern void WaitForVBlank(void);
+extern void m4aSongNumStart(u16 a);
+extern void FadeToColor(u32 a, u32 b);
 u8 sub_08014E28(void)
 {
     u8 buf[0x200];
@@ -19,28 +19,28 @@ u8 sub_08014E28(void)
     s8 sel;
     z = 0;
     v = 0;
-    sub_0800F3C0();
+    SortCarsByTime();
     sub_08011C9C(1, buf);
     sub_08014C60(0);
-    sub_08004238(buf, 0x0F);
+    FadeToBrightenedPalette(buf, 0x0F);
     sel = 0x40;
     do {
-        sub_0800048C();
+        ReadKeys();
         sub_08014C60(v);
         if (gKeysPressed & A_BUTTON)
             sel = z;
         if ((gKeysPressed & DPAD_UP) && v != 0) {
             v = 0;
-            if (gUnk_0202EF00[3])
-                sub_08001208(8);
+            if (gOptions[3])
+                m4aSongNumStart(8);
         }
         if ((gKeysPressed & DPAD_DOWN) && v == 0) {
             v = 1;
-            if (gUnk_0202EF00[3])
-                sub_08001208(8);
+            if (gOptions[3])
+                m4aSongNumStart(8);
         }
-        sub_08000458();
+        WaitForVBlank();
     } while (sel != 0);
-    sub_0800420C(0, 0x0F);
+    FadeToColor(0, 0x0F);
     return sel;
 }

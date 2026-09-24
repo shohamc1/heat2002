@@ -2,14 +2,14 @@
 
 struct Unk0202A550 {
     u8 filler0[0x164];
-    u16 unk164;
+    u16 points;
     u8 filler166[400 - 0x166];
 };
 
-extern struct Unk0202A550 *gUnk_0202EFC0[];
-extern struct Unk0202A550 gUnk_0202A550[];
+extern struct Unk0202A550 *gCarOrder[];
+extern struct Unk0202A550 gCars[];
 
-void sub_08013AFC(void)
+void SortCarsByPoints(void)
 {
     u8 i;
     u8 swapped;
@@ -20,12 +20,12 @@ void sub_08013AFC(void)
 
     i = 0;
     do {
-        gUnk_0202EFC0[i] = &gUnk_0202A550[i];
+        gCarOrder[i] = &gCars[i];
         i++;
     } while (i != 0x18);
 outer:
     swapped = 0;
-    p = gUnk_0202EFC0;
+    p = gCarOrder;
     i = 0;
     off = 0x164;
     do {
