@@ -215,7 +215,9 @@ maps closely onto the source:
 - A table of pointers names its targets: `(u32)gUnk_X` or `(u32)sub_X` in
   C, `.4byte NAME` in `data/*.s`. See "Pointers" in
   `docs/learnings/parked.md`, and run `make pointers` to count the raw
-  pointers left in the ROM.
+  pointers left in the ROM. `make shift-test` boots the ROM and a copy
+  moved by `0x104` bytes in mGBA and checks they behave the same; CI runs
+  it without the ROM.
 
 ## Helper tools
 
@@ -531,3 +533,4 @@ Follow the same loop as for any other function. Only these points differ:
     make tools      # build agb2mid, mid2agb, aif2pcm, gbagfx from tools/tmc
     make convert    # extracted graphics -> .png, round-trip checked (needs libpng)
     make pointers   # count the ROM's raw pointers (scripts/pointers.py)
+    make shift-test # boot the ROM and a shifted copy in mGBA and compare

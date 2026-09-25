@@ -101,7 +101,7 @@ $(BUILD)/src/sub_08364730.o: CFLAGS := $(subst -O2,-O1,$(CFLAGS))
 OBJS     := $(C_SRCS:%.c=$(BUILD)/%.o) $(DATA_SRCS:%.s=$(BUILD)/%.o) \
 	$(NEWLIB_OBJS) $(AGBSYSCALL_OBJS) $(AGBSYSCALL_COPY_OBJS) $(M4A_OBJS) $(LIB_C_OBJS) $(LIBGCC_OBJS) $(CRT0_OBJS)
 
-.PHONY: all check check-code test clean disasm tools convert pointers
+.PHONY: all check check-code test clean disasm tools convert pointers shift-test
 all: $(TARGET).gba
 
 # Each C file is preprocessed, run through preproc (which expands INCBIN_*
@@ -365,9 +365,30 @@ MAKER_CODE := 70
 REVISION   := 0
 ROM_END    := 0x08400000
 
+define make_gba
+$(OBJCOPY) -O binary --pad-to $(ROM_END) $< $@
+tools/bin/gbafix $@ -t"$(TITLE)" -c$(GAME_CODE) -m$(MAKER_CODE) -r$(REVISION) --silent
+endef
+
 $(TARGET).gba: $(TARGET).elf tools/bin/gbafix
-	$(OBJCOPY) -O binary --pad-to $(ROM_END) $< $@
-	tools/bin/gbafix $@ -t"$(TITLE)" -c$(GAME_CODE) -m$(MAKER_CODE) -r$(REVISION) --silent
+	$(make_gba)
+
+# The shift test: the same objects linked with SHIFT bytes of padding after
+# crt0, so almost every function and data table moves. scripts/shift_test.py
+# boots both ROMs in mGBA and checks they load the same assets and draw the
+# same screens. It needs mGBA (set MGBA if it isn't found).
+SHIFT := 0x104
+$(BUILD)/shift/ldscript.ld: ldscript.ld Makefile
+	@mkdir -p $(@D)
+	awk '{ print } /^ *build\/lib\/crt0\.o\(\.text\);$$/ { print "        . += $(SHIFT);" }' $< > $@
+	grep -q '+= $(SHIFT);' $@
+$(BUILD)/shift/$(TARGET).elf: $(BUILD)/shift/ldscript.ld symbols.ld $(OBJS)
+	$(LD) --no-check-sections -T $< -T symbols.ld -o $@ $(OBJS)
+$(BUILD)/shift/$(TARGET).gba: $(BUILD)/shift/$(TARGET).elf tools/bin/gbafix
+	$(make_gba)
+shift-test: $(TARGET).gba $(BUILD)/shift/$(TARGET).gba
+	python3 scripts/shift_test.py $(TARGET).elf $(TARGET).gba \
+		$(BUILD)/shift/$(TARGET).elf $(BUILD)/shift/$(TARGET).gba
 
 # The only thing that matters: does it reproduce the ROM?
 check: $(TARGET).gba check-code
@@ -389,6 +410,7 @@ test:
 	python3 scripts/strings.py --selftest
 	python3 scripts/permute.py --selftest
 	python3 scripts/pointers.py --selftest
+	python3 scripts/shift_test.py --selftest
 	python3 scripts/test_alignment.py
 	python3 scripts/test_extract_guard.py
 

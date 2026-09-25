@@ -510,6 +510,41 @@ numbers:
 No replacement changed a byte of code: a literal pool word that holds a
 symbol's address assembles to the same word as the number.
 
+### Test the shift
+
+`make shift-test` links a second ROM from the same objects with `0x104`
+bytes of padding after `crt0`, so almost every function and data table
+moves, and boots both in mGBA through its GDB stub. `scripts/shift_test.py`
+does the following:
+
+1. Steps the first 600 frames with a breakpoint on `VBlankIntr`, and every
+   100 frames compares a hash of the screen (display registers, palette,
+   VRAM and OAM) and all of work RAM. A RAM word may differ only by a ROM
+   pointer that moved with the shift.
+2. Stops at every `RLUnCompVram` and `LZ77UnCompVram` call, up to 300, and
+   compares the symbol each source argument points into. Every 50th stop
+   is another screen and RAM checkpoint.
+
+It saves each checkpoint's screen as a PNG in `build/shift-test/`. On
+2026-09-25 it passed with the ROM: 300 loads and 12 checkpoints, through
+the boot logos, the title screen and the attract-mode race. As a negative
+control, writing one `.4byte gUnk_0832B7A4` in `data/rom_083FEF08.s` as
+`.4byte 0x0832B7A4` made the shifted build's 100th load read
+`gUnk_0832B5A4+0xfc`, and every screen after it differed.
+
+Two things looked like failures and weren't:
+
+- `InitIntrHandlers` copies 0x800 bytes of ROM from `IntrMain` to
+  `0x020005D0`. Past `IntrMain` that copy is the moved code, so the test
+  skips it.
+- The game reads its EEPROM save at boot (`LoadTrackRecords`), and mGBA
+  keeps a `.sav` beside each ROM. The test copies each ROM into its own
+  empty temporary folder, so both start with no save.
+
+CI runs it too, with `mgba-sdl` under `xvfb-run`. Without `baserom.gba` the
+data is zero fill and the game stops loading after the two boot logos, so
+there it compares 600 frames and two loads. The load checks need the ROM.
+
 ### What's left
 
 Nearly all of the remaining raw words are chance values. Tilemaps and

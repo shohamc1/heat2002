@@ -95,6 +95,7 @@ matches and false mismatches).
 make            # build nascar-heat.gba
 make check      # build + verify SHA-1 — the only test that counts
 make disasm     # full-ROM reference disasm -> build/rom_reference.s (never touches data/)
+make shift-test # boot the ROM and a copy moved by 0x104 bytes in mGBA; compare
 ```
 
 The first `make` builds `agb2mid`, `mid2agb` and `aif2pcm` from `tools/tmc`
