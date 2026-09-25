@@ -203,6 +203,15 @@ gUnk_0200D0B8:
 	.global gUnk_0200D0C0
 gUnk_0200D0C0:
 	.incbin "build/assets/unknown/data_08345B40.bin"
+	.global gUnk_0200D0C4
+gUnk_0200D0C4:
+	.incbin "build/assets/unknown/data_08345B44.bin"
+	.global gUnk_0200D0CC
+gUnk_0200D0CC:
+	.incbin "build/assets/unknown/data_08345B4C.bin"
+	.global gUnk_0200D0D8
+gUnk_0200D0D8:
+	.incbin "build/assets/unknown/data_08345B58.bin"
 	.global gUnk_0200D0F4
 gUnk_0200D0F4:
 	.incbin "build/assets/unknown/data_08345B74.bin"
