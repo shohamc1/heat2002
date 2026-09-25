@@ -1,6 +1,8 @@
 #include "global.h"
 #include "gba/io_reg.h"
 
+void MainVBlankCallback(void);
+
 extern u16 gKeysPressed;
 extern u8 gIsLinkRace;
 extern u8 gTrackId;
@@ -33,7 +35,7 @@ u8 StartSinglePakLink(void)
     REG_IME = 1;
     REG_DISPSTAT = DISPSTAT_VBLANK_INTR;
     ReadKeys();
-    SetVBlankCallback(0x0800306D);
+    SetVBlankCallback((u32)MainVBlankCallback);
     REG_IE = INTR_FLAG_GAMEPAK | INTR_FLAG_VBLANK;
     REG_DISPSTAT = DISPSTAT_VBLANK_INTR;
     sub_08001170();

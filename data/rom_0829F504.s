@@ -33,15 +33,35 @@
 	.endm
 @ End embedded Luvdis macros
 	.thumb
+	.global gUnk_0829F504
+gUnk_0829F504:
 	.incbin "build/assets/unknown/data_0829F504.bin"
+	.global gUnk_0829F518
+gUnk_0829F518:
 	.incbin "build/assets/unknown/data_0829F518.bin"
+	.global gUnk_0829F534
+gUnk_0829F534:
 	.incbin "build/assets/unknown/data_0829F534.bin"
+	.global gUnk_0829F548
+gUnk_0829F548:
 	.incbin "build/assets/unknown/data_0829F548.bin"
+	.global gUnk_0829F558
+gUnk_0829F558:
 	.incbin "build/assets/unknown/data_0829F558.bin"
+	.global gUnk_0829F570
+gUnk_0829F570:
 	.incbin "build/assets/unknown/data_0829F570.bin"
+	.global gUnk_0829F580
+gUnk_0829F580:
 	.incbin "build/assets/unknown/data_0829F580.bin"
+	.global gUnk_0829F590
+gUnk_0829F590:
 	.incbin "build/assets/unknown/data_0829F590.bin"
+	.global gUnk_0829F59C
+gUnk_0829F59C:
 	.incbin "build/assets/unknown/data_0829F59C.bin"
+	.global gUnk_0829F5B4
+gUnk_0829F5B4:
 	.incbin "build/assets/unknown/data_0829F5B4.bin"
 	.global gUnk_0829F5CC
 gUnk_0829F5CC:

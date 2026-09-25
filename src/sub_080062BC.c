@@ -1,6 +1,8 @@
 #include "global.h"
 #include "gba/compat.h"
 
+extern const u8 gUnk_08331FC8[];
+
 extern u8 gIsDemo;
 void UpdateRaceHud(void);
 extern u8 gUnk_0806C784[];
@@ -26,7 +28,7 @@ void InitRaceHud(void)
     }
     sub_08006214();
     sub_0800649C((u32)gUnk_0806C784, 0, 0x13);
-    src = 0x08331FC8;
+    src = (u32)gUnk_08331FC8;
     dst = (u32)OBJ_VRAM1 + 0x2280;
     CpuCopy16(src, dst, 0x180);
     src += 0xC0 << 1;

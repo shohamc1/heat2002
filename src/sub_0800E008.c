@@ -4,6 +4,9 @@
 #include "gba/macro.h"
 #include "gba/syscall.h"
 
+void sub_0800DFC0(void);
+void SioTransferIntr(void);
+
 extern u8 RomHeaderMagic;
 extern u32 RomHeaderGameCode;
 extern u32 gUnk_0807C9E8;
@@ -38,8 +41,8 @@ u32 SendMultibootPayload(void)
         REG_IE |= INTR_FLAG_GAMEPAK;
     REG_DISPSTAT = DISPSTAT_VBLANK_INTR;
     REG_IME = 1;
-    gUnk_02000590[1] = 0x0800DFC1;
-    gUnk_02000590[0] = 0x0800E641;
+    gUnk_02000590[1] = (u32)sub_0800DFC0;
+    gUnk_02000590[0] = (u32)SioTransferIntr;
     REG_DISPCNT &= ~DISPCNT_OBJ_ON;
     for (i = 0; i < 3; i++)
         LZ77UnCompVram(gUnk_083FDA50[i], (void *)(OBJ_VRAM0 + i * 0x200));

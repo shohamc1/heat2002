@@ -1,5 +1,6 @@
 #include "global.h"
 #include "gba/io_reg.h"
+#include "data.h"
 
 extern u16 gKeysPressed;
 extern u8 gOptions[];
@@ -24,7 +25,7 @@ u8 sub_08013D5C(void)
     x = v = 0;
     ZeroTextLayer();
     sub_0800F498();
-    sub_0800F328(0x082EE104, buf);
+    sub_0800F328((u32)gUnk_082EE104, buf);
     SortCarsByTime();
     sub_08013B64(0);
     FadeToBrightenedPalette(buf, 0x0F);

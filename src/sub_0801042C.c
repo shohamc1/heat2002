@@ -1,5 +1,11 @@
 #include "global.h"
 #include "gba/compat.h"
+#include "data.h"
+
+extern const u8 gUnk_082A0130[];
+extern const u32 gUnk_0833338C[];
+extern const u8 gUnk_0829FB54[];
+extern const u8 gUnk_0829F954[];
 
 extern u16 gKeysHeld;
 extern u8 gUnk_02001F20[];
@@ -32,17 +38,17 @@ u8 TitleScreen(void)
     REG_BG2CNT = BGCNT_PRIORITY(1) | BGCNT_256COLOR | BGCNT_SCREENBASE(31);
     REG_BG0CNT = BGCNT_PRIORITY(1) | BGCNT_CHARBASE(3) | BGCNT_SCREENBASE(28);
     REG_DISPCNT = 0xA8 << 3;
-    CpuCopy16(0x082A0130, VRAM, 0xA280);
-    CpuCopy16(0x0833338C, BG_SCREEN_ADDR(24), 0x2000);
-    sub_08010680(0x0829FB54);
+    CpuCopy16((u32)gUnk_082A0130, VRAM, 0xA280);
+    CpuCopy16((u32)gUnk_0833338C, BG_SCREEN_ADDR(24), 0x2000);
+    sub_08010680((u32)gUnk_0829FB54);
     i = 0;
     do {
         gUnk_08364B08[i] = 0;
         i++;
     } while (i != 0x380);
-    CpuCopy16(0x0829F954, (u32)buf, 0x200);
-    CpuCopy16(0x08332BC8, (u32)&buf[0xF0], 0x20);
-    CpuCopy16(0x08332BC8, (u32)&buf[0xE0], 0x20);
+    CpuCopy16((u32)gUnk_0829F954, (u32)buf, 0x200);
+    CpuCopy16((u32)gUnk_08332BC8, (u32)&buf[0xF0], 0x20);
+    CpuCopy16((u32)gUnk_08332BC8, (u32)&buf[0xE0], 0x20);
     buf[0xEA] = RgbFromPercent(0x34, 0x34, 0x34);
     buf[0xEB] = RgbFromPercent(0x24, 0x24, 0x24);
     buf[0xEC] = RgbFromPercent(0x0E, 0x0E, 0x0E);

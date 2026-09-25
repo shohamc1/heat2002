@@ -1,4 +1,5 @@
 #include "global.h"
+#include "data.h"
 
 extern u16 gKeysPressed;
 extern u16 gUnk_020020B8;
@@ -27,7 +28,7 @@ u8 sub_080122B4(void)
     ResetLinkState();
     ZeroTextLayer();
     sub_0800F4FC();
-    sub_0800F328(0x082E4328, buf);
+    sub_0800F328((u32)gUnk_082E4328, buf);
     sub_08012228(0);
     FadeToBrightenedPalette(buf, 0x0F);
     gUnk_020020B8 = v;

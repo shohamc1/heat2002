@@ -1,6 +1,7 @@
 #include "global.h"
 #include "gba/io_reg.h"
 #include "gba/defines.h"
+#include "data.h"
 extern u16 gKeysPressed;
 extern volatile u8 gUnk_020020C0;
 extern u8 gOptions[];
@@ -37,7 +38,7 @@ u8 sub_08010CD0(void)
     WaitForVBlank();
     ZeroTextLayer();
     sub_0800F4FC();
-    sub_0800F328(0x082E4328, buf);
+    sub_0800F328((u32)gUnk_082E4328, buf);
     sub_08010BA8(0x0C);
     FadeToBrightenedPalette(buf, 0x0F);
     REG_DISPCNT = 0xA8 << 3;

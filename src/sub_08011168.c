@@ -1,6 +1,7 @@
 #include "global.h"
 #include "gba/defines.h"
 #include "gba/io_reg.h"
+#include "data.h"
 
 extern u16 gKeysPressed;
 extern volatile u8 gUnk_020020C0;
@@ -42,7 +43,7 @@ u8 TrackSelectMenu(u8 a, u8 b)
     WaitForVBlank();
     ZeroTextLayer();
     sub_0800F4FC();
-    sub_0800F328(0x082E4328, buf);
+    sub_0800F328((u32)gUnk_082E4328, buf);
     DrawTrackSelect(v, a);
     FadeToBrightenedPalette(buf, 0x0F);
     REG_DISPCNT = 0xA8 << 3;

@@ -2,6 +2,9 @@
 #include "gba/compat.h"
 #include "gba/m4a_internal.h"
 
+void ply_note(void);
+void sub_080025B8(void);
+
 /* SoundInit */
 
 extern struct SoundInfo *gUnk_03007FF0;
@@ -30,11 +33,11 @@ void sub_08001548(struct SoundInfo *soundInfo)
     CpuFill32(0, (u32)soundInfo, sizeof(struct SoundInfo));
     soundInfo->maxChans = 8;
     soundInfo->masterVolume = 0xF;
-    soundInfo->plynote = (PlyNoteFunc)0x08000E3D;
-    soundInfo->CgbSound = (CgbSoundFunc)0x080025B9;
-    soundInfo->CgbOscOff = (CgbOscOffFunc)0x080025B9;
-    soundInfo->MidiKeyToCgbFreq = (MidiKeyToCgbFreqFunc)0x080025B9;
-    soundInfo->ExtVolPit = (ExtVolPitFunc)0x080025B9;
+    soundInfo->plynote = (PlyNoteFunc)ply_note;
+    soundInfo->CgbSound = (CgbSoundFunc)sub_080025B8;
+    soundInfo->CgbOscOff = (CgbOscOffFunc)sub_080025B8;
+    soundInfo->MidiKeyToCgbFreq = (MidiKeyToCgbFreqFunc)sub_080025B8;
+    soundInfo->ExtVolPit = (ExtVolPitFunc)sub_080025B8;
     {
         MPlayFunc *t = gUnk_02001D90;
 

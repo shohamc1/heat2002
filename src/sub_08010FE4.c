@@ -1,5 +1,12 @@
 #include "global.h"
 #include "gba/compat.h"
+#include "data.h"
+
+extern const u8 gUnk_0829F2CC[];
+extern const u8 gUnk_0829F2D8[];
+extern const u8 gUnk_0830E670[];
+extern const u8 gUnk_0830E618[];
+extern const u8 gUnk_0830E690[];
 
 struct Inner
 {
@@ -36,17 +43,17 @@ u8 DrawTrackSelect(u8 a, u8 b)
         GetString(0xA1);
         sub_080065A8();
     }
-    p = (u8 *)0x0829F2AC;
+    p = (u8 *)gUnk_0829F2AC;
     DrawText(p, 0, 4, 0);
     DrawText(p, 0, 5, 0);
     if (a != 3) {
         DrawTextCenteredHighlight(gUnk_083FDA78[a].fieldC, 4, 1);
     } else {
-        DrawTextCenteredHighlight(0x0829F2CC, 4, 1);
-        DrawTextCenteredHighlight(0x0829F2D8, 5, 1);
+        DrawTextCenteredHighlight((u32)gUnk_0829F2CC, 4, 1);
+        DrawTextCenteredHighlight((u32)gUnk_0829F2D8, 5, 1);
     }
     CpuCopy16(gUnk_083FDA78[a].field14, OBJ_PLTT, OBJ_PLTT_SIZE);
-    CpuCopy16(0x0830E670, OBJ_PLTT + 0x1E0, 0x20);
+    CpuCopy16((u32)gUnk_0830E670, OBJ_PLTT + 0x1E0, 0x20);
     RLUnCompVram(gUnk_083FDA78[a].inner->f0, OBJ_VRAM0);
     RLUnCompVram(gUnk_083FDA78[a].inner->f4, OBJ_VRAM0 + 0x1000);
     RLUnCompVram(gUnk_083FDA78[a].inner->f8, OBJ_VRAM0 + 0x2000);
@@ -56,8 +63,8 @@ u8 DrawTrackSelect(u8 a, u8 b)
     sub_08010194(0x38, 0x60, 0x80 << 1);
     sub_08010194(0x78, 0x60, 0xC0 << 1);
     if (b != 0 && (gUnk_0202EED8 & 4) != 0) {
-        RLUnCompVram(0x0830E618, OBJ_VRAM1);
-        RLUnCompVram(0x0830E690, OBJ_VRAM1 + 0x1000);
+        RLUnCompVram((u32)gUnk_0830E618, OBJ_VRAM1);
+        RLUnCompVram((u32)gUnk_0830E690, OBJ_VRAM1 + 0x1000);
         if (a != 0)
             sub_0801027C(0x10, 0x48, 0x80 << 2);
         if (a != 0xB)

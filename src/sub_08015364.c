@@ -1,6 +1,10 @@
 #include "global.h"
 #include "gba/io_reg.h"
 
+extern const u8 gUnk_0829F590[];
+extern const u8 gUnk_0829F59C[];
+extern const u8 gUnk_0829F5B4[];
+
 struct UnkCar {
     u8 filler000[0x7D];
     u8 unk7D;
@@ -708,7 +712,7 @@ state5_setup:
         for (i = 0; i != 0x18; i++)
             gCars[i].points = 0;
         if (sub_0800F190() == 0) {
-            MessageBox(0x0829F590, 0x0829F59C, 0x0829F5B4);
+            MessageBox((u32)gUnk_0829F590, (u32)gUnk_0829F59C, (u32)gUnk_0829F5B4);
             goto state5_done;
         }
 
