@@ -2,7 +2,7 @@
 
 extern u16 gUnk_0201F590[];
 extern u16 gUnk_0201F9D0[];
-extern u8 *gUnk_0202522C;
+extern u8 *gModule_0202522C;
 extern u8 *gUnk_02025230;
 extern u8 *gUnk_02025234;
 
@@ -29,7 +29,7 @@ void sub_0833F1A8(u8 *str)
         vp++;
         i++;
     }
-    str = gUnk_0202522C;
+    str = gModule_0202522C;
     while ((c = *str++) != 0) {
         ch = c - 0x20;
         base = (ch >> 5) * 64 + 0x60;

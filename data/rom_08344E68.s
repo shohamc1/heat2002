@@ -316,6 +316,12 @@ gUnk_020251B8:
 	.global gUnk_020251BC
 gUnk_020251BC:
 	.incbin "build/assets/unknown/data_0835DC3C.bin"
+	.global gModule_02025220
+gModule_02025220:
+	.incbin "build/assets/unknown/data_0835DCA0.bin"
+	.global gModule_0202522C
+gModule_0202522C:
+	.incbin "build/assets/unknown/data_0835DCAC.bin"
 	.global gUnk_02025230
 gUnk_02025230:
 	.incbin "build/assets/unknown/data_0835DCB0.bin"
