@@ -443,16 +443,16 @@ This work makes the high module shiftable. It doesn't change progress, so
 schedule it after the tiers above. For the image layout, see "Functions
 that run from EWRAM" in `CLAUDE.md`.
 
-Module C still refers to image code and data by fixed EWRAM numbers.
+Module C used to refer to image code and data by fixed EWRAM numbers.
 Each number breaks if the image moves. A name that the linker resolves
 moves with the image. On 2026-09-24, the 13 raw function-pointer
-literals became function names (`(u32)sub_0833BC78`).
+literals became function names (`(u32)sub_0833BC78`). Since 2026-09-25,
+module C names everything inside the image.
 
 The same EWRAM address means a different variable on each GBA. The main
 program's `gUnk_02022E20` and the module's `0x02022E20` aren't the same
 thing. When you rename module data, never change a name that
-main-program code uses. `gUnk_02025220` and `gUnk_0202522C` have users
-on both sides, so give the module its own name for each.
+main-program code uses.
 
 ### Done: symbols.ld names for image code and data
 
@@ -465,37 +465,40 @@ The pointer pass on 2026-09-25 (see "Pointers" in
   data fragments. Each label keeps its `gUnk_<EWRAM address>` name, and a
   blob splits where a label falls inside it. `gUnk_0200C668` and
   `gUnk_0200C8DC` moved from `ldscript.ld` to labels the same way.
-- `gUnk_02025220` and `gUnk_0202522C` stay in `symbols.ld`, because
-  main-program code uses them too.
+- `gUnk_02025220` and `gUnk_0202522C` stay in `symbols.ld` for the main
+  program's variables. See the next section for the module's names.
 
-### Data inside the image: 17 raw literals, 1 hour
+### Done: data inside the image
 
-17 raw literals in module C, at 14 addresses, still point at initialised
-data stored in the image. Replace each with an `extern` for a label in
-the fragment that holds the bytes, as the pointer pass did.
+This queue listed 17 raw literals at 14 addresses. The pointer pass had
+already labelled six of those addresses. Four rows weren't image data:
+`sub_0834341C`, `sub_0833D0B8`, `sub_0833D210` and `sub_0833DB24` read
+variables past the image's end, such as `gUnk_020392D0`, and the table
+had taken the main-program twin's address from a comment.
 
-The following table lists the raw literals:
+The code pass on 2026-09-25 named the rest, and one function the table
+missed:
 
-| EWRAM literal | ROM address | Used in |
-|---|---|---|
-| `0x0200209C` | `0x0833AB1C` | `sub_0834341C` |
-| `0x0200C3E8` | `0x08344E68` | `sub_08340964`, `sub_08341DA0`, `sub_08342074` |
-| `0x0200C8CC` | `0x0834534C` | `sub_0833B348` |
-| `0x0200C910` | `0x08345390` | `sub_0833BB58` |
-| `0x0200D0C4` | `0x08345B44` | `sub_08340E28` |
-| `0x0200D0CC` | `0x08345B4C` | `sub_08340E28` |
-| `0x0200D0D8` | `0x08345B58` | `sub_0834116C` |
-| `0x02022E20` | `0x0835B8A0` | `sub_0833D0B8`, `sub_0833D210` |
-| `0x02025220` | `0x0835DCA0` | `sub_0833E0AC` |
-| `0x02025248` | `0x0835DCC8` | `sub_0833DB24` |
-| `0x0202539C` | `0x0835DE1C` | `sub_0833DB24` |
-| `0x020277B4` | `0x08360234` | `sub_08341DA0` |
-| `0x020277C4` | `0x08360244` | `sub_08341DA0` |
-| `0x0202AF44` | `0x083639C4` | `sub_0834468C` |
+- `sub_08340E28` and `sub_0834116C` pass three strings as numbers.
+  `data_08345B40` splits at `0x08345B44`, `0x08345B4C` and `0x08345B58`,
+  and the strings are `gUnk_0200D0C4`, `gUnk_0200D0CC` and
+  `gUnk_0200D0D8`. Two unused `symbols.ld` numbers for them went.
+- `sub_08339A40`, the module's `InitIntrHandlers`, wrote its three
+  handlers as `EWRAM_START` plus an offset, 16 times. They're
+  `sub_083397C4`, `sub_08339AD0` and `sub_08339AEC` now.
+- In the module, `0x02025220` and `0x0202522C` are initialised data in
+  the image. `data_0835DC3C` splits at `0x0835DCA0` and `0x0835DCAC`,
+  and `sub_0833E0AC` and `sub_0833F1A8` read the labels
+  `gModule_02025220` and `gModule_0202522C`. The prefix keeps them apart
+  from the main program's `gUnk_` names for the same addresses.
+
+Of the raw words that `make pointers` counts in the module, none in its
+code is an address any more. The nine left there are pairs of Thumb
+instructions that read as an address in the image by chance.
 
 ### EWRAM variables outside the image: 60 literals, 1 hour
 
-The other 60 raw `0x0200xxxx` literals in module C point past the image's
+60 raw `0x0200xxxx` literals in module C point past the image's
 end (mostly `0x02037xxx`-`0x0203Exxx`) or below its start. These are
 variables with no bytes in the ROM. Replace each with an `extern
 gUnk_<EWRAM address>` and one `symbols.ld` line, as for any RAM variable.

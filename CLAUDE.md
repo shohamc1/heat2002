@@ -210,8 +210,8 @@ maps closely onto the source:
   the blob in `assets/unknown.json` if the address falls inside one. For an
   offset inside a C-defined blob, add an alias to `symbols.ld`, such as
   `gUnk_083FDA67 = gUnk_083FDA60 + 0x7;`. `symbols.ld` holds no ROM
-  address: never add one. Older C still holds raw literals; leave them for
-  the shiftability pass.
+  address: never add one. No C writes a ROM address as a number, so keep
+  it that way.
 - A table of pointers names its targets: `(u32)gUnk_X` or `(u32)sub_X` in
   C, `.4byte NAME` in `data/*.s`. See "Pointers" in
   `docs/learnings/parked.md`, and run `make pointers` to count the raw
@@ -477,8 +477,13 @@ Follow the same loop as for any other function. Only these points differ:
   yet, add a label in the image's data fragment, as for ROM data; the
   label takes the run address. `gHighModule`, `gHighModuleRom` and
   `gUnk_08363EE8` (`ldscript.ld`) give an image's run and ROM addresses.
-  Don't write a new raw `0x0200xxxx` literal in C. Older module C still
-  holds some; leave them for the shiftability pass.
+  Don't write a raw `0x0200xxxx` literal in C for anything inside an
+  image. Module C still writes some variables outside the image, which
+  have no bytes in the ROM, as numbers; see "EWRAM variables outside the
+  image" in `docs/decomp-queue.md`.
+- The same EWRAM address can mean a different variable on each GBA. When
+  main-program code already uses a `gUnk_<address>` name, give the
+  module's data its own label, such as `gModule_02025220`.
 - Keep each asm fragment inside one image. The fragments
   `rom_08363EE8.s` and `rom_08364AC8.s` start exactly at a section
   boundary, so never merge one into the fragment before it.

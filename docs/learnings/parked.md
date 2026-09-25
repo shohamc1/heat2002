@@ -393,9 +393,11 @@ data stayed `.incbin`. "Pointers" below replaced every one of them:
 - `gUnk_08363EE8`, the multiboot island's first 224 bytes. The main program
   reads it by its ROM address to send the island, but a C definition inside
   `.island` would link at the run address `0x02000000`.
-- Blob starts that no C reads: `gUnk_0806C904`, `gUnk_0829EED8`,
+- Blob starts that no C read by name: `gUnk_0806C904`, `gUnk_0829EED8`,
   `gUnk_0829EEE4`, `gUnk_0829EEF8`, `gUnk_0829F470`, `gUnk_0829F954`,
-  `gUnk_0829FB54`, and `gUnk_082A0130`. Their lines are unused.
+  `gUnk_0829FB54`, and `gUnk_082A0130`. Their lines were unused, because
+  C wrote these addresses as numbers. The code pass (see "Pointers")
+  defined them in C.
 - Addresses that don't start a blob: offsets inside a blob (for example
   `gUnk_083FDA67` and `gUnk_08367BFA`), Thumb entry points
   (`gCallback_*`), and code labels. The sound tables `gUnk_0801DA90` and
@@ -481,9 +483,32 @@ The following table compares the count before and after the pass:
 | Build | Raw words | On a known start | From a linker-script number |
 |---|---|---|---|
 | Before (`8cd3bef`) | 17,693 | 5,646 | 298 |
-| After | 14,570 | 2,961 | 2 |
+| After the data pass | 14,570 | 2,961 | 2 |
+| After the code pass | 14,484 | 2,880 | 0 |
 
-The linker computes 4,506 words after the pass, up from 1,376.
+The linker computes 4,592 words after the code pass, up from 1,376
+before the data pass. Outside the assets, no raw word is left in the main
+program's code.
+
+### The code pass
+
+The code pass on 2026-09-25 named the addresses that C still wrote as
+numbers:
+
+- 97 raw ROM literals in game-code C. The interrupt handlers in
+  `InitIntrHandlers` (`sub_08000380`), the m4a callbacks in
+  `sub_08001548` and the other function pointers became function names,
+  such as `(u32)DummyIntr`. Every data literal started an
+  `assets/unknown.json` blob. `gUnk_082E4328`, `gUnk_08332BC8`,
+  `gUnk_0833338C` and four others were defined already. The other 49
+  moved from `data/*.s` to 16 new `src/data/` files, one per run of
+  adjacent blobs, and their fragments split around them.
+- 19 raw EWRAM literals for the high module's own code and data, and the
+  module's two uses of the shared `gUnk_02025220` and `gUnk_0202522C`.
+  See "After the queue" in `docs/decomp-queue.md`.
+
+No replacement changed a byte of code: a literal pool word that holds a
+symbol's address assembles to the same word as the number.
 
 ### What's left
 
@@ -500,18 +525,18 @@ on a C-defined symbol found none left in the data.
 
 The following items are real or doubtful and still raw:
 
-- 95 words in C code, written as numbers in older C: the interrupt
-  handlers in `InitIntrHandlers` (`sub_08000380`), `0x08332BC8` and
-  `0x0833338C` in the `sub_0800F434` family, `0x082E4328` in
-  `DrawTrackSelect` and others. They're the code half of the shiftable
-  build.
-- 17 raw EWRAM literals in high-module C (see "After the queue" in
-  `docs/decomp-queue.md`).
-- `gUnk_02025220` and `gUnk_0202522C`: `symbols.ld` numbers that both the
-  main program and the high module use.
+- The word at `0x0835DCAC`, `gModule_0202522C`, holds `0x0200CF98`, an
+  address inside the high module's data. Earlier words in the same
+  table, such as `0x0201242C` at `0x0835DC3C`, look like pointers into
+  the image too.
 - Two words that hit a function entry, probably by chance: `0x080107A5` at
   `0x083BBBA4` in track data, and `0x0833A8F5` at `0x08066E38` inside a
   sample.
+
+C holds no raw ROM address and no raw address inside an EWRAM image. The
+raw EWRAM numbers left in module C are variables outside the image (see
+"EWRAM variables outside the image" in `docs/decomp-queue.md`), which
+`make pointers` doesn't count.
 
 ## Non-interwork epilogues
 
