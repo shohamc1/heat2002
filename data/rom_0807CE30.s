@@ -996,12 +996,3 @@ gUnk_0829EE40:
 	.global gUnk_0829EE8C
 gUnk_0829EE8C:
 	.incbin "build/assets/unknown/data_0829EE8C.bin"
-	.global gUnk_0829EED8
-gUnk_0829EED8:
-	.incbin "build/assets/unknown/data_0829EED8.bin"
-	.global gUnk_0829EEE4
-gUnk_0829EEE4:
-	.incbin "build/assets/unknown/data_0829EEE4.bin"
-	.global gUnk_0829EEF8
-gUnk_0829EEF8:
-	.incbin "build/assets/unknown/data_0829EEF8.bin"

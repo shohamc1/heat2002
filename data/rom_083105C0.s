@@ -33,9 +33,5 @@
 	.endm
 @ End embedded Luvdis macros
 	.thumb
-	.global gUnk_082E4528
-gUnk_082E4528:
-	.incbin "build/assets/unknown/data_082E4528.bin"
-	.global gUnk_082E4B04
-gUnk_082E4B04:
-	.incbin "build/assets/unknown/data_082E4B04.bin"
+	.incbin "build/assets/unknown/data_083105C0.bin"
+	.incbin "build/assets/unknown/data_083107F4.bin"

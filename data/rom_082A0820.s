@@ -33,4 +33,6 @@
 	.endm
 @ End embedded Luvdis macros
 	.thumb
-	.incbin "build/assets/unknown/data_0831017C.bin"
+	.incbin "build/assets/unknown/data_082A0820.bin"
+	.incbin "build/assets/unknown/data_082A5C08.bin"
+	.incbin "build/assets/unknown/data_082A5C5C.bin"

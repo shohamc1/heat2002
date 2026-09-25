@@ -268,15 +268,3 @@ gUnk_0830E418:
 	.global gUnk_0830E618
 gUnk_0830E618:
 	.incbin "build/assets/graphics/rl_0830E618.bin"
-	.global gUnk_0830E670
-gUnk_0830E670:
-	.incbin "build/assets/unknown/data_0830E670.bin"
-	.global gUnk_0830E690
-gUnk_0830E690:
-	.incbin "build/assets/graphics/rl_0830E690.bin"
-	.align 2, 0
-	.incbin "build/assets/unknown/data_0830E6EC.bin"
-	.global gUnk_0830E70C
-gUnk_0830E70C:
-	.incbin "build/assets/graphics/rl_0830E70C.bin"
-	.align 2, 0

@@ -33,21 +33,6 @@
 	.endm
 @ End embedded Luvdis macros
 	.thumb
-	.global gUnk_082A0130
-gUnk_082A0130:
-	.incbin "build/assets/unknown/data_082A0130.bin"
-	.incbin "build/assets/unknown/data_082A0820.bin"
-	.incbin "build/assets/unknown/data_082A5C08.bin"
-	.incbin "build/assets/unknown/data_082A5C5C.bin"
-	.global gUnk_082A9730
-gUnk_082A9730:
-	.incbin "build/assets/unknown/data_082A9730.bin"
-	.global gUnk_082A9930
-gUnk_082A9930:
-	.incbin "build/assets/unknown/data_082A9930.bin"
-	.global gUnk_082A9F0C
-gUnk_082A9F0C:
-	.incbin "build/assets/unknown/data_082A9F0C.bin"
 	.incbin "build/assets/unknown/data_082B0028.bin"
 	.incbin "build/assets/unknown/data_082B0034.bin"
 	.incbin "build/assets/unknown/data_082B01DC.bin"
