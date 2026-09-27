@@ -4,7 +4,9 @@
 #include "gba/compat.h"
 #include "variables.h"
 
-extern u8 gUnk_020021B8;
+/* Defined here (not symbols.ld): the first RAM variable moved into C,
+   per the phase-6 mechanism proof in docs/extern-headers-plan.md. */
+EWRAM_DATA u8 gUnk_020021B8 = 0;
 
 void m4aSoundVSync(void);
 void FlushTrackBgBuffers(void);
