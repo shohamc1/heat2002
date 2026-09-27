@@ -1,6 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern s32 gUnk_0202CD24;
 
 struct unk_D64C
 {

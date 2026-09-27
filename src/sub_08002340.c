@@ -1,12 +1,12 @@
 #include "global.h"
 #include "gba/m4a_internal.h"
+#include "m4a.h"
 
 /* ply_memacc. The whole function is one switch on the first operand byte;
  * luvdis left the jump table and every case body as .byte rows inside the
  * block, so its true extent runs to 0x08002496. This ROM's revision keeps
  * memAccArea at MusicPlayerInfo+0x18 (the header's gap[8] before it). */
 
-extern MPlayFunc gUnk_02001D90[];
 
 #define MEMACC_COND_JUMP(cond) \
     if (cond)                  \

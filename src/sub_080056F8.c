@@ -1,15 +1,6 @@
 #include "global.h"
-extern u8 gUnk_020020C4;
-extern u8 gUnk_020021E0;
-extern u8 gUnk_0200215C[];
-extern u16 gUnk_020253CC[];
-extern u16 gUnk_02025224;
-extern u8 gNumLinkPlayers[];
+#include "variables.h"
 extern u32 gUnk_0202A6BC[];
-extern u16 gUnk_020251FC[];
-extern u16 gUnk_02025218[];
-extern u16 gUnk_02025220;
-extern u16 gUnk_02025260;
 void UpdateRaceTimers(void)
 {
   u16 *p2;

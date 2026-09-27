@@ -2,8 +2,7 @@
 #include "gba/io_reg.h"
 #include "gba/defines.h"
 #include "functions.h"
-extern u16 gKeysPressed;
-extern u8 gUnk_020020C0;
+#include "variables.h"
 
 u8 sub_08014BA4(void)
 {

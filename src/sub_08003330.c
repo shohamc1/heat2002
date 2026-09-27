@@ -10,16 +10,10 @@
  */
 #include "global.h"
 #include "functions.h"
+#include "variables.h"
 
-extern u8 gNumLinkPlayers[];
 extern u16 gUnk_0202EF40[][4];
 extern u16 gUnk_02002178[];
-extern u16 gUnk_0200216C;
-extern u16 gUnk_02002170;
-extern u16 gUnk_0202ED78[];
-extern u16 gUnk_03007FF8;
-extern u8 gLinkPlayerId[];
-extern u16 gUnk_020020A0[];
 
 u16 PackLinkKeys(u16 keys);
 u8 sub_080032E4(u16 seq, u8 next);

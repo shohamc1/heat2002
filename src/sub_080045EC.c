@@ -1,7 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern u16 gUnk_02025160[];
-extern u8 gUnk_02024C40[];
 
 u32 SortSpritesByDepth(void)
 {

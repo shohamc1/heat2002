@@ -1,8 +1,8 @@
 #include "global.h"
 #include "data.h"
 #include "functions.h"
+#include "variables.h"
 
-extern u8 gUnk_0202CC10[];         /* 0x0202CC10 */
 
 
 void sub_0800B384(u32 a)

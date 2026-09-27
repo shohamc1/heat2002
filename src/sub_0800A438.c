@@ -1,4 +1,5 @@
 #include "global.h"
+#include "variables.h"
 
 struct Unk0800A438 {
     u8 pad0[0x7D];
@@ -9,9 +10,6 @@ struct Unk0800A438 {
     u16 finishMs;
 };
 
-extern u16 gUnk_02025260; /* 0x02025260 */
-extern u16 gUnk_02025220; /* 0x02025220 */
-extern u16 gUnk_02025224; /* 0x02025224 */
 
 void RecordFinishTime(struct Unk0800A438 *obj)
 {

@@ -1,7 +1,7 @@
 #include "global.h"
 #include "gba/io_reg.h"
+#include "variables.h"
 
-extern u8 gUnk_0202EFB0;
 
 s16 MenuMoveHorizontalSilent(u16 keys, s16 v, s16 lo, s16 hi)
 {

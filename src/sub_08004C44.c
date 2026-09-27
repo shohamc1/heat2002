@@ -1,10 +1,8 @@
 #include "global.h"
 #include "data.h"
 #include "functions.h"
+#include "variables.h"
 
-extern u8 gIsLinkRace;
-extern u8 gUnk_020253C4;
-extern u8 gUnk_0202539C;
 
 extern u8 gUnk_0806C6B0[];
 extern u8 gUnk_0806C6BC[];

@@ -1,8 +1,7 @@
 #include "global.h"
+#include "variables.h"
 
-extern u32 gUnk_02002200[];
 extern u32 gUnk_0200BC50[];
-extern u32 gUnk_02022DEC[];
 
 u8 GetTrackTileType(s32 x, s32 y)
 {

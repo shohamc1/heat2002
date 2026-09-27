@@ -1,8 +1,8 @@
 #include "global.h"
 #include "gba/io_reg.h"
+#include "variables.h"
 
 extern u16 gUnk_0202EF40[];
-extern u16 gUnk_03007FF8;
 
 void SerialIntr(void)
 {

@@ -1,7 +1,7 @@
 #include "global.h"
 #include "functions.h"
+#include "data.h"
 
-extern u32 gUnk_083FDE18[];
 
 struct EntEFA0 {
     u8 f0;

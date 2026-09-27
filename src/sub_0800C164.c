@@ -1,8 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern u8 gNumCars[];
-extern u8 gIsLinkRace;
-extern u8 gNumLinkPlayers[];
 extern u8 gCars[][0x190];
 
 void WorldToCarLocal(s32 *a, s32 b, s32 c, s32 *d);

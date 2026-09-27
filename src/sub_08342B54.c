@@ -1,8 +1,7 @@
 #include "global.h"
 #include "functions.h"
+#include "variables.h"
 
-extern u8 gUnk_0203DE30[];         /* 0x0203DE30 */
-extern u8 gUnk_0200D118[];         /* 0x0200D118 */
 
 
 void sub_08342B54(u32 a)

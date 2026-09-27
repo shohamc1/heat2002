@@ -1,5 +1,6 @@
 #include "global.h"
 #include "functions.h"
+#include "variables.h"
 
 struct UnkCar {
     /* 0x000 */ u8 filler000[0x7D];
@@ -11,13 +12,8 @@ struct UnkCar {
     /* 0x170 */ u8 filler170[400 - 0x170];
 };
 
-extern u8 gNumCars[];              /* 0x02002090 */
-extern u8 gNumLaps;              /* 0x02002184 */
 extern struct UnkCar gCars[]; /* 0x0202A550 */
-extern u32 gUnk_0202CB40[];           /* 0x0202CB40 */
-extern u8 gUnk_0202CBD0;              /* 0x0202CBD0 */
 extern u32 gUnk_0202CBD8;             /* 0x0202CBD8 */
-extern u8 gUnk_0202EEE4;              /* 0x0202EEE4 */
 extern struct UnkCar *gCarOrder;  /* 0x0202EFC0 */
 
 

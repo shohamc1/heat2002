@@ -1,8 +1,8 @@
 #include "global.h"
 #include "functions.h"
+#include "data.h"
 
 extern u8 gUnk_0202EEFC;
-extern u32 gUnk_083FDE18[];
 extern u16 gUnk_083FDE5E[];
 
 

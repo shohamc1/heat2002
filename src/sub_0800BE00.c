@@ -1,11 +1,11 @@
 #include "global.h"
+#include "data.h"
+#include "variables.h"
 
-extern u8 gTrackId;
 extern u32 gUnk_083C9574[];
 extern u32 gUnk_083C97B4[];
 extern u32 gUnk_083C99F4[];
 extern u32 gUnk_083C9C34[];
-extern u32 *gUnk_083C9E74[];
 
 void sub_0800BE00(void *base, s32 arg)
 {

@@ -1,16 +1,13 @@
 #include "global.h"
 #include "functions.h"
+#include "variables.h"
 
-extern u8 gUnk_0203B850[];
-extern u16 gUnk_0203B6FC;
 extern u32 gUnk_02038F70[];
 extern u32 gUnk_02038FB0[];
 extern u32 gUnk_02038FF0[];
 extern u32 gUnk_02039040[];
-extern u16 gUnk_02039134;
 extern u32 gUnk_0200CF1C[];
 extern u32 gUnk_0200CF34[];
-extern u8 gUnk_0203E1B0;
 extern u32 gUnk_020390AC;
 extern u8 gUnk_020390D0;
 

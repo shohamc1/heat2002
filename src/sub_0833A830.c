@@ -2,6 +2,7 @@
 #define GBA_CPUSET sub_08344B64
 #include "gba/compat.h"
 #include "functions.h"
+#include "m4a.h"
 
 /* The cancelling offset preserves the initial base-to-p copy.
    Assigning off = 4 inside the loop keeps base + 4 out of the preheader. */
@@ -17,7 +18,6 @@ struct Unk0801DA90
 extern struct Unk0801DA90 gUnk_0200CA74[];
 
 void sub_08339C0C(void);
-extern u8 gNumMusicPlayersHigh[];
 
 void sub_0833A830(void)
 {

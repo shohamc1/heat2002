@@ -1,6 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern u8 gUnk_0202EF20[];
 
 void sub_0800F14C(u8 param)
 {

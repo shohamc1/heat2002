@@ -1,5 +1,6 @@
 #include "global.h"
 #include "functions.h"
+#include "variables.h"
 
 struct Car {
     u8 pad00[0x7C];
@@ -20,13 +21,8 @@ struct Car {
     u8 pad176[0x190 - 0x176];
 };
 
-extern u8 gIsLinkRace;
-extern u8 gUnk_020021E0;
-extern u16 gUnk_020020A0[];
-extern u8 gUnk_0200215C[];
 extern u16 gKeysHeld;
 extern u32 gUnk_0200209C;
-extern u8 gLinkPlayerId[];
 extern struct Car gCars[];
 
 void UpdatePitStop(struct Car *a, u8 b);

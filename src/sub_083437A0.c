@@ -1,5 +1,6 @@
 #include "global.h"
 #include "functions.h"
+#include "variables.h"
 
 struct WallRec {
     u16 f00;
@@ -49,17 +50,6 @@ struct Pt {
 
 extern struct WallRec *gUnk_0203DE60;
 extern struct Pt *gUnk_0203DE64;
-extern s32 gUnk_020375A0;
-extern s32 gUnk_020375A4;
-extern s32 gUnk_020375A8;
-extern s32 gUnk_020375AC;
-extern s32 gUnk_020375B0;
-extern s32 gUnk_020375B4;
-extern s32 gUnk_020375B8;
-extern s32 gUnk_020375BC;
-extern s32 gUnk_020375C0;
-extern s32 gUnk_020375C4;
-extern s32 gUnk_020375C8;
 
 
 s32 sub_083437A0(struct Seg *seg, struct Box *box2, struct Box *box,

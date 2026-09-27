@@ -1,8 +1,8 @@
 #include "global.h"
 #include "gba/io_reg.h"
 #include "m4a.h"
+#include "variables.h"
 
-extern u8 gOptions[];
 
 s16 MenuMoveVertical(u16 keys, s16 v, s16 lo, s16 hi)
 {

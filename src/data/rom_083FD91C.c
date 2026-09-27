@@ -1,14 +1,6 @@
 #include "global.h"
 #include "data.h"
 
-extern const u8 gUnk_0829F24C[];
-extern const u8 gUnk_0829F258[];
-extern const u8 gUnk_0829F264[];
-extern const u8 gUnk_0829F270[];
-extern const u8 gUnk_0829F27C[];
-extern const u8 gUnk_0829F288[];
-extern const u8 gUnk_0829F294[];
-extern const u8 gUnk_0829F2A0[];
 
 extern const u8 gUnk_0807C97C[];
 extern const u8 gUnk_0807C988[];
@@ -56,16 +48,10 @@ extern const u8 gUnk_0829EC5C[];
 extern const u8 gUnk_0829EC68[];
 extern const u8 gUnk_0829EC78[];
 extern const u8 gUnk_0829EC7C[];
-extern const u8 gUnk_0829EC88[];
-extern const u8 gUnk_0829EC9C[];
 extern const u8 gUnk_0829ECA8[];
-extern const u8 gUnk_0829ECB8[];
 extern const u8 gUnk_0829ECC4[];
-extern const u8 gUnk_0829ECD4[];
-extern const u8 gUnk_0829ECE4[];
 extern const u8 gUnk_0829ECF0[];
 extern const u8 gUnk_0829ED00[];
-extern const u8 gUnk_0829ED0C[];
 extern const u8 gUnk_0829ED18[];
 extern const u8 gUnk_0829ED24[];
 extern const u8 gUnk_0829ED34[];
@@ -73,7 +59,6 @@ extern const u8 gUnk_0829ED44[];
 extern const u8 gUnk_0829ED54[];
 extern const u8 gUnk_0829ED60[];
 extern const u8 gUnk_0829ED6C[];
-extern const u8 gUnk_0829ED78[];
 extern const u8 gUnk_0829ED88[];
 extern const u8 gUnk_0829ED94[];
 extern const u8 gUnk_0829EDA0[];

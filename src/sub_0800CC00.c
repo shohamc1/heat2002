@@ -1,6 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern u8 gTrackId; /* 0x020020CC */
 
 u32 sub_0800CB70(u8 *a1, s32 a2, s32 a3);
 u32 GetTrackTileType(s32 x, s32 y);

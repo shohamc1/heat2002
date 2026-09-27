@@ -1,6 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern u8 gUnk_0202CBC8[];
 
 u8 FindFreePitStall(void)
 {

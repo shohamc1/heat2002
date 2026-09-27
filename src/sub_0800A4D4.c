@@ -52,6 +52,7 @@
  */
 
 #include "global.h"
+#include "variables.h"
 
 struct Car {
     s32 unk00;                          /* 0x00 */
@@ -88,7 +89,6 @@ struct Track {
     u8 pad12[0x18 - 0x12];
 };
 
-extern u8 gTrackId;
 extern struct Track * gUnk_020253D0;
 
 s32 Atan2(s32 a, s32 b);

@@ -2,17 +2,13 @@
 #include "data.h"
 #include "functions.h"
 #include "m4a.h"
+#include "variables.h"
 
 struct EntityB1A4
 {
   u8 pad0[0x18];
   s32 unk18;
 };
-extern u8 gUnk_02022E14;
-extern u8 gOptions[];
-extern u8 gIsDemo;
-extern u8 gUnk_0200215C[];
-extern u8 gUnk_020020C4;
 void sub_0800B1A4(struct EntityB1A4 *e)
 {
   u32 *spr;

@@ -4,14 +4,13 @@
 #include "gba/macro.h"
 #include "gba/syscall.h"
 #include "functions.h"
+#include "data.h"
+#include "variables.h"
 
 void sub_0800DFC0(void);
 void SioTransferIntr(void);
 
-extern u8 RomHeaderMagic;
-extern u32 RomHeaderGameCode;
 extern u32 gUnk_0807C9E8;
-extern u32 gUnk_02000590[];
 extern const u8 *gUnk_083FDA50[];
 extern u32 gUnk_0807C9CC[];
 extern u8 gUnk_0807C9F0[];

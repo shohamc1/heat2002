@@ -2,22 +2,10 @@
 #include "gba/defines.h"
 #include "gba/io_reg.h"
 #include "gba/compat.h"
+#include "variables.h"
 
-extern u16 gUnk_02002124;
-extern u16 gUnk_0200216C;
-extern u8 gIsLinkRace;
-extern u8 gUnk_020020EC;
 extern u8 gUnk_020021B8;
-extern u8 gUnk_020020C0;
 extern u8 gUnk_02024830[];
-extern u8 gUnk_020021C4;
-extern u32 gUnk_02022DE0;
-extern u32 gUnk_02022DE8;
-extern u32 gUnk_02022DF8;
-extern u32 gUnk_0200BC2C;
-extern u32 gUnk_0200BC48;
-extern u32 gUnk_0200BC4C;
-extern u16 gUnk_03007FF8;
 
 void m4aSoundVSync(void);
 void FlushTrackBgBuffers(void);

@@ -1,9 +1,7 @@
 #include "global.h"
+#include "variables.h"
 
-extern u16 gUnk_0201F590[];
-extern u16 gUnk_0201F9D0[];
 extern u8 *gModule_0202522C;
-extern u8 *gUnk_02025230;
 extern u8 *gUnk_02025234;
 
 void sub_0833F1A8(u8 *str)

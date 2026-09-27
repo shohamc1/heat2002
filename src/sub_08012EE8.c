@@ -1,7 +1,7 @@
 #include "global.h"
 #include "functions.h"
+#include "data.h"
 
-extern u32 gUnk_083FDE18[];
 
 
 void sub_08012EE8(u32 unused, u8 v)

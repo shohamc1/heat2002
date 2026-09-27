@@ -1,10 +1,10 @@
 #include "global.h"
 #include "functions.h"
+#include "data.h"
+#include "variables.h"
 
-extern u32 gUnk_083FDE18[];
 extern u8 gUnk_0829F354[];
 extern u8 gUnk_0829F368[];
-extern u8 gOptions[];
 
 
 void DrawOptionsMenu(u32 a)

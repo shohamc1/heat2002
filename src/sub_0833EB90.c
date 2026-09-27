@@ -1,4 +1,5 @@
 #include "global.h"
+#include "variables.h"
 
 struct UnkCar3EB90 {
     /* 0x000 */ u8 filler00[0x2C];
@@ -14,20 +15,8 @@ struct UnkCar3EB90 {
     /* 0x18F */ u8 filler18F[400 - 0x18F];
 };
 
-extern u8 gUnk_020390EC;
-extern u8 gUnk_0203E1B0;
 extern struct UnkCar3EB90 gUnk_0203D520[];
 extern u32 gUnk_020251B8[];
-extern u16 gUnk_0203B6C8[];
-extern u16 gUnk_0203B6A8[];
-extern u16 gUnk_0203B858[];
-extern u8 gUnk_0203916C[];
-extern u8 gUnk_0203E1E0[];
-extern u16 gUnk_0203B810[];
-extern u8 gUnk_020390DC;
-extern u16 gUnk_0203B6B0[];
-extern u16 gUnk_0203B830[];
-extern u8 gUnk_02039194;
 
 void sub_0833E1F4(void);
 void sub_0833DDB8(u16 *dest, s32 a, s32 b, s32 c);

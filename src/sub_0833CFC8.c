@@ -1,6 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern u32 gUnk_02039244;
 
 void sub_0833CFC8(u32 a0, u32 a1, u8 *a2, u32 *a3, u32 *table)
 {

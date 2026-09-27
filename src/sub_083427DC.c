@@ -1,11 +1,10 @@
 #include "global.h"
 #include "gba/io_reg.h"
 #include "functions.h"
+#include "variables.h"
 
 extern u8 gUnk_0200D0F4[];
 extern u8 gUnk_0200D100[];
-extern u16 gUnk_02037618;
-extern u8 gUnk_020391F0;
 
 
 void sub_083427DC(u32 a)

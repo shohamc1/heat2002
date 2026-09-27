@@ -1,11 +1,7 @@
 #include "global.h"
 #include "functions.h"
+#include "variables.h"
 
-extern u8 gUnk_020253C4;
-extern u8 gUnk_02025248;
-extern u16 gUnk_02025258;
-extern u8 gUnk_0202539C;
-extern u8 gUnk_020020C0;
 
 
 u8 sub_080050F0(void)

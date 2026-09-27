@@ -2,11 +2,9 @@
 #include "gba/defines.h"
 #include "gba/io_reg.h"
 #include "functions.h"
+#include "variables.h"
 
 extern u8 gKeysHeld;
-extern u16 gKeysPressed;
-extern u16 gUnk_03007FF8;
-extern u16 gUnk_0202ED78[];
 struct UnkEFA0 {
     u8 unk0;
     u8 unk1;
@@ -14,9 +12,7 @@ struct UnkEFA0 {
     u8 unk3;
 };
 extern struct UnkEFA0 gUnk_0202EFA0[];
-extern u8 gUnk_0202EEF4;
 extern u16 gUnk_0202EF40[4][4];
-extern u8 gLinkPlayerId[];
 extern u8 gUnk_0829F32C[];
 
 s32 sub_08012074(void)

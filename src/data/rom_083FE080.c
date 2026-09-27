@@ -1,13 +1,6 @@
 #include "global.h"
 #include "data.h"
 
-extern const u8 gUnk_0829EC88[];
-extern const u8 gUnk_0829EC9C[];
-extern const u8 gUnk_0829ECB8[];
-extern const u8 gUnk_0829ECD4[];
-extern const u8 gUnk_0829ECE4[];
-extern const u8 gUnk_0829ED0C[];
-extern const u8 gUnk_0829ED78[];
 extern const u8 gUnk_0829F5CC[];
 extern const u8 gUnk_0829F5DC[];
 extern const u8 gUnk_0829F5EC[];

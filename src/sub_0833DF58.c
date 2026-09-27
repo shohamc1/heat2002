@@ -1,5 +1,6 @@
 #include "global.h"
 #include "functions.h"
+#include "variables.h"
 
 struct Drv
 {
@@ -13,10 +14,6 @@ struct Drv
 };
 
 extern struct Drv gUnk_0203D520[];
-extern u8 gUnk_0203B864;
-extern u8 gUnk_0203B868[];
-extern u8 gUnk_020390EC;
-extern u8 gUnk_0203E1B0;
 extern u32 gUnk_020251B8[];
 
 void sub_0833DDB8(u32 a, u16 b, u16 c, u16 d);

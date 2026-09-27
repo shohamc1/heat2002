@@ -23,6 +23,7 @@
 #include "global.h"
 #include "functions.h"
 #include "m4a.h"
+#include "variables.h"
 
 struct Car {
     s32 posX;                          /* 0x00 */
@@ -71,36 +72,10 @@ struct Track {
     u8 pad15[3];
 };
 
-extern u8 gIsLinkRace;
-extern u8 gUnk_020020BC;
-extern u8 gOptions[];
-extern u8 gLinkPlayerId[];
-extern u8 gNumLinkPlayers[];
-extern u8 gNumCars[];
-extern u8 gUnk_0202CAF0;
-extern u8 gUnk_0200215C[];
-extern u32 gUnk_0202ED84;
-extern u8 gUnk_0202EEE4;
-extern u8 gUnk_0202ED70;
 extern struct Car gCars[];
 extern u8 gUnk_0202524C;
-extern u16 gUnk_02025218[];
-extern u16 gUnk_020251FC[];
-extern u16 gUnk_020253CC[];
-extern u8 gIsDemo;
-extern u8 gUnk_020021E0;
-extern u32 gUnk_0202CB40[];
-extern u32 gUnk_020253B8;
-extern u8 gUnk_0202F030;
 extern struct Track *gUnk_020253D0;
-extern u8 gNumLaps;
-extern u8 gUnk_0202CBD0;
 extern u32 gUnk_0202CC20;
-extern u16 gUnk_02025260;
-extern u16 gUnk_02025220;
-extern u16 gUnk_02025224;
-extern u8 gUnk_020253D4;
-extern u8 gUnk_020253E0[];
 
 
 u8 UpdateLapProgress(struct Car *p, u8 a1)

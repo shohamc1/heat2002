@@ -3,6 +3,7 @@
 #include "tilemap.h"
 #include "gba/compat.h"
 #include "functions.h"
+#include "variables.h"
 
 struct Track {
     /* +0x00 */ u32 unk00;
@@ -34,7 +35,6 @@ struct Track {
 extern u16 gUnk_02022428[];
 extern struct Track gUnk_020251BC[];
 extern u16 gUnk_02021394[];
-extern u32 gUnk_02039244;
 extern u32 gUnk_02039288;
 extern u16 *gUnk_02039228;
 extern u16 *gUnk_02039268;
@@ -44,10 +44,6 @@ extern u16 *gUnk_0203922C;
 extern u32 gUnk_020392A0;
 extern u32 gUnk_02039280;
 extern u32 gUnk_0203929C;
-extern u32 gUnk_02039220[];
-extern u16 gUnk_02039294;
-extern u16 gUnk_02039248;
-extern u8 gUnk_0203B864;
 
 void sub_0833CCD4(u8 idx);
 void sub_0833D31C(s32 arg0, u16 *src);

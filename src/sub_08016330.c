@@ -2,10 +2,9 @@
 #include "data.h"
 #include "functions.h"
 #include "m4a.h"
+#include "variables.h"
 
-extern u8 gOptions[];
 extern u8 gUnk_0829F94C[];
-extern u16 gKeysPressed;
 
 struct Tbl {
     s32 f00;

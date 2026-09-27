@@ -2,14 +2,10 @@
 #include "gba/defines.h"
 #include "gba/io_reg.h"
 #include "functions.h"
+#include "variables.h"
 
-extern u16 gUnk_0203DFB8[];
-extern u8 gUnk_0203E004;
-extern u8 gUnk_0203E1C0[];
 extern u8 gUnk_0203E110;
 extern u16 gUnk_0203E160[];
-extern u8 gUnk_0203E1B0;
-extern u8 gUnk_020390BC[];
 
 void sub_08344968(void);
 void sub_08344B74(void);

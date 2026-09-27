@@ -1,7 +1,7 @@
 #include "global.h"
 #include "functions.h"
+#include "m4a.h"
 
-extern u8 gNumMusicPlayersLow[];
 
 struct Unk0801DA90
 {

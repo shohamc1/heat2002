@@ -1,11 +1,7 @@
 #include "global.h"
+#include "variables.h"
 
-extern u8 gIsLinkRace;
 extern u32 gUnk_083677A8[];
-extern u8 gUnk_0202CAD4;
-extern u8 gUnk_0202A514;
-extern u8 gUnk_0202CBC4;
-extern u8 gUnk_0202CBDC;
 extern u32 gUnk_0202A510;
 
 void sub_080083C0(u32 a, u8 b)

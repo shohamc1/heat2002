@@ -1,7 +1,7 @@
 #include "global.h"
 #include "functions.h"
+#include "variables.h"
 extern u16 gUnk_083FECB0[];
-extern u8 gUnk_0202F050[];
 
 void FormatSave(void)
 {

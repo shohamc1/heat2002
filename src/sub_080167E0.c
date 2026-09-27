@@ -1,9 +1,6 @@
 #include "global.h"
 #include "functions.h"
-extern u16 gUnk_0202F170[];
-extern u16 gUnk_020253A0[];
-extern u16 gUnk_02025200[];
-extern u16 gUnk_02025380[];
+#include "variables.h"
 void LoadTrackRecords(void)
 {
     u16 *src;

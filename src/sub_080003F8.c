@@ -1,8 +1,8 @@
 #include "global.h"
+#include "variables.h"
 
 void DummyIntr(void);
 
-extern u32 gUnk_02000580[];
 
 void SetVBlankCallback(u32 r0)
 {

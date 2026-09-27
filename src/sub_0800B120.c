@@ -1,14 +1,13 @@
 #include "global.h"
 #include "data.h"
 #include "functions.h"
+#include "variables.h"
 
 struct EntityB120 {
     /* 0x00 */ u8 pad0[0x18];
     /* 0x18 */ s32 unk18;
 };
 
-extern u8 gIsLinkRace;  /* 0x020020DC */
-extern u8 gUnk_020020C4;           /* 0x020020C4 */
 
 
 void sub_0800B120(struct EntityB120 *e)

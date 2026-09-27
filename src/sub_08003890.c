@@ -1,8 +1,7 @@
 #include "global.h"
 #include "gba/compat.h"
+#include "variables.h"
 
-extern u16 gUnk_02022DE4;
-extern u16 gUnk_0200BC34;
 extern u16 gUnk_02022DF4;
 
 struct Track {

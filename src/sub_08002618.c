@@ -1,6 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern u32 gUnk_020020D4; /* 0x020020D4 */
 
 void sub_08002618(u32 seed)
 {

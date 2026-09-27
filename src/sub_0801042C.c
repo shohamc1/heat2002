@@ -3,6 +3,7 @@
 #include "data.h"
 #include "functions.h"
 #include "m4a.h"
+#include "variables.h"
 
 extern const u8 gUnk_082A0130[];
 extern const u32 gUnk_0833338C[];
@@ -10,9 +11,6 @@ extern const u8 gUnk_0829FB54[];
 extern const u8 gUnk_0829F954[];
 
 extern u16 gKeysHeld;
-extern u8 gUnk_02001F20[];
-extern u8 gUnk_020020B4;
-extern u8 gOptions[];
 extern u16 *gUnk_08364B08;
 
 u8 TitleScreen(void)

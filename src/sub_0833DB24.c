@@ -1,7 +1,7 @@
 #include "global.h"
 #include "functions.h"
+#include "variables.h"
 
-extern u16 gUnk_0203761C;           /* 0x020005CC */
 extern u8 gUnk_0203B6F4;           /* 0x02025248 */
 extern u8 gUnk_0203B82C;           /* 0x0202539C */
 

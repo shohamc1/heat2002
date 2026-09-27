@@ -1,4 +1,5 @@
 #include "global.h"
+#include "variables.h"
 
 struct UnkStruct080043F8 {
     u32 posX;
@@ -9,7 +10,6 @@ struct UnkStruct080043F8 {
     u32 velZ;
 };
 
-extern u8 gIsDemo;    /* 0x020020E0 */
 extern u32 gCamera[]; /* 0x02002100 */
 
 void SetCameraTarget(struct UnkStruct080043F8 *arg0)

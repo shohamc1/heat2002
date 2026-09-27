@@ -1,8 +1,8 @@
 #include "global.h"
 #include "gba/compat.h"
 #include "functions.h"
+#include "variables.h"
 
-extern u16 gKeysPressed;
 extern u8 gUnk_0807CA60[];
 extern u8 gUnk_0833338C[];
 extern u8 gUnk_08363EE8[];

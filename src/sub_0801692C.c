@@ -1,12 +1,7 @@
 #include "global.h"
 #include "functions.h"
-extern u8 gUnk_0202F050[];
-extern u8 gUnk_0202EF80[];
-extern u8 gUnk_0202EF08[];
+#include "variables.h"
 extern u8 gUnk_0202EF60[];
-extern u8 gUnk_0202EEC0[];
-extern u8 gUnk_0202EDC8[];
-extern u8 gUnk_0202ED80[];
 void SaveProgress(void)
 {
     u8 *p;

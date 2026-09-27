@@ -1,8 +1,7 @@
 #include "global.h"
 #include "functions.h"
+#include "variables.h"
 
-extern u16 gUnk_0203B6DC;
-extern u16 gUnk_0203B828;
 extern u16 gUnk_0203B6A0;
 extern u8 gUnk_0203B854;
 extern u8 gUnk_0203B6EC;
@@ -17,7 +16,6 @@ typedef struct {
 } Ent;
 
 extern Ent gUnk_0203ACE0[];
-extern s16 gUnk_0200C3E8[];
 
 void sub_0833D8CC(void)
 {

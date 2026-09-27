@@ -1,5 +1,6 @@
 #include "global.h"
 #include "m4a.h"
+#include "variables.h"
 
 /*
  * Per-frame car update: zero the impulse accumulators, run the sub-steps,
@@ -65,16 +66,6 @@ struct Car {
     u8 pad18E[0x190 - 0x18E];
 };
 
-extern u8 gUnk_0200215C[];
-extern u8 gTrackId;
-extern u8 gIsLinkRace;
-extern u8 gUnk_020020A8;
-extern u8 gIsDemo;
-extern u8 gUnk_020021E0;
-extern u8 gOptions[];
-extern u8 gUnk_0202EEB0;
-extern u8 gLinkPlayerId[];
-extern u8 gUnk_020020BC;
 extern struct Car gCars[];
 extern u16 gUnk_08368290[];
 

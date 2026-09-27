@@ -1,13 +1,6 @@
 #include "global.h"
+#include "data.h"
 
-extern const u8 gUnk_0829F2A0[];
-extern const u8 gUnk_0829F294[];
-extern const u8 gUnk_0829F288[];
-extern const u8 gUnk_0829F27C[];
-extern const u8 gUnk_0829F270[];
-extern const u8 gUnk_0829F264[];
-extern const u8 gUnk_0829F258[];
-extern const u8 gUnk_0829F24C[];
 
 void sub_080109C0(u8 *str, u32 attr, u32 pal);
 

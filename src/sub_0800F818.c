@@ -1,8 +1,8 @@
 #include "global.h"
 #include "gba/defines.h"
 #include "gba/io_reg.h"
+#include "variables.h"
 
-extern u16 gUnk_03007FF8;
 void SioSendWord(u16 data)
 {
     REG_SIODATA8 = data;

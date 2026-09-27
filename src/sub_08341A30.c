@@ -1,5 +1,6 @@
 #include "global.h"
 #include "functions.h"
+#include "variables.h"
 
 struct Unk08341A30Ent
 {
@@ -10,7 +11,6 @@ struct Unk08341A30Ent
     u32 field_10;
 };
 
-extern u32 *gUnk_0202772C[];
 extern s32 gUnk_020390AC;
 extern u32 gUnk_020243E8[];
 

@@ -1,13 +1,10 @@
 #include "global.h"
 #include "gba/io_reg.h"
 #include "functions.h"
+#include "variables.h"
 
 void MainVBlankCallback(void);
 
-extern u16 gKeysPressed;
-extern u8 gIsLinkRace;
-extern u8 gTrackId;
-extern u8 gNumLaps;
 extern u8 gUnk_0202CD90[];
 extern u8 gUnk_0806C688[];
 u8 StartSinglePakLink(void)

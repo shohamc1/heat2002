@@ -1,10 +1,9 @@
 #include "global.h"
 #include "gba/io_reg.h"
 #include "functions.h"
+#include "variables.h"
 
 extern u8 gUnk_0203E000;
-extern u8 gUnk_020392C4;
-extern u8 gUnk_020391F0;
 
 
 void sub_08342948(u32 a)

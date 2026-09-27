@@ -1,9 +1,7 @@
 #include "global.h"
 #include "functions.h"
 #include "m4a.h"
-extern u16 gKeysPressed;
-extern u8 gOptions[];
-extern u8 gUnk_0202ED70;
+#include "variables.h"
 u8 sub_08012F1C(void)
 {
     u8 buf[0x200];

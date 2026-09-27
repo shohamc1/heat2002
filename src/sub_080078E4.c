@@ -1,6 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern u8 gUnk_02025ED0[];
 extern u32 gUnk_02025FE0[];
 
 struct Slot78E4

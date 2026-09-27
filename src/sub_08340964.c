@@ -1,4 +1,5 @@
 #include "global.h"
+#include "variables.h"
 
 struct Unk08340964 {
     u8 pad0[0x8C];
@@ -14,20 +15,6 @@ struct Unk08340964 {
     u8 unk180;
 };
 
-extern s16 gUnk_0200C3E8[]; /* 0x0200C3E8 */
-extern s32 gUnk_0203DE10; /* 0x0203DE10 */
-extern s32 gUnk_0203D51C; /* 0x0203D51C */
-extern s32 gUnk_0203D4F4; /* 0x0203D4F4 */
-extern u8 gUnk_0203E0E0; /* 0x0203E0E0 */
-extern s32 gUnk_0203D4E4; /* 0x0203D4E4 */
-extern u8 gUnk_0203DD38; /* 0x0203DD38 */
-extern u8 gUnk_020390EC; /* 0x020390EC */
-extern u8 gUnk_0203E1B0; /* 0x0203E1B0 */
-extern u8 gUnk_0203E120[]; /* 0x0203E120 */
-extern u8 gUnk_020390F0[]; /* 0x020390F0 */
-extern u8 gUnk_020391F0; /* 0x020391F0 */
-extern s32 gUnk_0203DDF4; /* 0x0203DDF4 */
-extern s32 gUnk_0203DD2C; /* 0x0203DD2C */
 
 void sub_08342ED0(u8 a, u8 b);
 void sub_0833A8C8(u16 idx);

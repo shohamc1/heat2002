@@ -1,6 +1,7 @@
 #include "global.h"
 #include "functions.h"
 #include "m4a.h"
+#include "variables.h"
 
 struct Unk0202A550
 {
@@ -11,16 +12,9 @@ struct Unk0202A550
     u8 filler170[400 - 0x170];
 };
 
-extern u8 gNumLaps;
-extern u32 gUnk_0202ED84;
 extern u32 gUnk_083FDD48[];
-extern u8 gUnk_0202EDD8;
-extern u8 gTrackId;
 extern u8 gUnk_083FDD34[];
-extern u8 gUnk_0202EEE4;
 extern struct Unk0202A550 gCars[];
-extern u8 gUnk_0202CDA8[];
-extern u8 gOptions[];
 
 
 u8 sub_080128E0(void)

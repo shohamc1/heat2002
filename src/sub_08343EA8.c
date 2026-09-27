@@ -1,4 +1,5 @@
 #include "global.h"
+#include "variables.h"
 
 /*
  * Car-vs-car box collision test: the high-region (0x0834 module) copy of
@@ -61,21 +62,12 @@ struct Pt2 {
     s32 f1;
 };
 
-extern u8 gUnk_020390A0[];
-extern u8 gUnk_020390EC;
-extern u8 gUnk_020390BC[];
 extern struct Ent gUnk_0203D520[];
-extern s32 gUnk_0203DF44;
 extern s32 gUnk_0203DED0[8];
 extern s32 gUnk_0203DF50[8];
 extern struct Coll gUnk_0203DEB0;
-extern s16 gUnk_0200C3E8[];
 extern struct Pt2 gUnk_0202AF08[];
-extern u8 gUnk_0203E0E0;
 extern u8 gUnk_0203D4FC;
-extern u8 gUnk_020391F0;
-extern u8 gUnk_020390F0[];
-extern u8 gUnk_0203E120[];
 
 void sub_08343DF8(struct Ent *a, s32 *d);
 void sub_08343E70(struct Ent *a, s32 b, struct Ent *c, s32 d, struct Coll *e,

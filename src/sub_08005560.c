@@ -1,8 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern u16 gUnk_020253CC[];
-extern u16 gUnk_020251FC[];
-extern u16 gUnk_02025218[];
 
 void ResetLapTimer(void)
 {

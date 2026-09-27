@@ -1,8 +1,7 @@
 #include "global.h"
 #include "functions.h"
 #include "m4a.h"
-extern u16 gKeysPressed;
-extern u8 gOptions[];
+#include "variables.h"
 extern u8 gUnk_083FDA60[];
 extern u8 gUnk_083FDA67[];
 u8 OptionsMenu(void)

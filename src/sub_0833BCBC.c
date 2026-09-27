@@ -1,6 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern u32 gUnk_020390E4; /* 0x020390E4 */
 
 u32 sub_0833BC7C(u32 seed);
 

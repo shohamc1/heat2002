@@ -1,4 +1,5 @@
 #include "global.h"
+#include "variables.h"
 
 struct Car08005FA8 {
     u8 pad00[0x2C];
@@ -9,16 +10,6 @@ struct Car08005FA8 {
 };
 
 extern u32 gUnk_08364B08[];
-extern u16 gUnk_02025218[];
-extern u16 gUnk_020251FC[];
-extern u16 gUnk_020253CC[];
-extern u8 gUnk_0202F030;
-extern u16 gUnk_02025380[];
-extern u8 gTrackId;
-extern u16 gUnk_02025200[];
-extern u16 gUnk_020253A0[];
-extern u8 gIsLinkRace;
-extern u8 gLinkPlayerId[];
 extern struct Car08005FA8 gCars[];
 
 void UpdateRaceTimers(void);

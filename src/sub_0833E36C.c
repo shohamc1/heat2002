@@ -1,4 +1,5 @@
 #include "global.h"
+#include "variables.h"
 
 struct Entry
 {
@@ -16,7 +17,6 @@ struct Unk
 };
 
 extern struct Entry gUnk_020215AA[];
-extern u16 gUnk_02022254[];
 
 void sub_0833E36C(u16 *dest, u8 idx)
 {

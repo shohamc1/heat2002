@@ -1,7 +1,7 @@
 #include "global.h"
+#include "variables.h"
 
 extern u32 gCamera[];
-extern u8 gTrackId;
 
 void UpdateCameraScroll(void)
 {

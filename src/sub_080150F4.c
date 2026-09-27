@@ -1,11 +1,10 @@
 #include "global.h"
 #include "data.h"
 #include "functions.h"
+#include "variables.h"
 
-extern u32 gUnk_083FDE18[];
 extern u32 gCarOrder[];
 extern u8 gCars[];
-extern u8 gUnk_0202539C;
 
 void sub_080150F4(void)
 {

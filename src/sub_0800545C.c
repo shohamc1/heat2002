@@ -1,5 +1,6 @@
 #include "global.h"
 #include "functions.h"
+#include "variables.h"
 
 struct Drv
 {
@@ -13,10 +14,6 @@ struct Drv
 };
 
 extern struct Drv gCars[];
-extern u8 gUnk_020253D4;
-extern u8 gUnk_020253E0[];
-extern u8 gIsLinkRace;
-extern u8 gLinkPlayerId[];
 extern u32 gUnk_08364B08[];
 
 void DrawTime(u32 a, u16 b, u16 c, u16 d);

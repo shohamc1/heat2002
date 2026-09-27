@@ -2,10 +2,8 @@
 #include "gba/defines.h"
 #include "gba/io_reg.h"
 #include "gba/macro.h"
+#include "variables.h"
 
-extern u32 gUnk_020375D0;
-extern u32 gUnk_03007FFC;
-extern u32 gUnk_020375E0[];
 
 void sub_083397C4(void);
 void sub_08339AD0(void);

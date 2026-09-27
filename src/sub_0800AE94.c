@@ -1,11 +1,11 @@
 #include "global.h"
 #include "gba/io_reg.h"
 #include "functions.h"
+#include "variables.h"
 
 extern u8 gUnk_0806C948[];
 extern u8 gUnk_0806C954[];
 extern u16 gKeysHeld;
-extern u8 gUnk_020021E0;
 
 
 void sub_0800AE94(u32 a)

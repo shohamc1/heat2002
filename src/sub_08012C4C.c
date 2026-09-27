@@ -2,8 +2,8 @@
 #include "gba/compat.h"
 #include "functions.h"
 #include "gba/syscall.h"
+#include "data.h"
 
-extern u32 gUnk_083FDE18[];
 extern u32 gUnk_083FEF00;
 extern u8 gUnk_0829F374[];
 extern u8 gUnk_0829F388[];

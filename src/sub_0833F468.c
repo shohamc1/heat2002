@@ -9,6 +9,7 @@
 
 #include "global.h"
 #include "functions.h"
+#include "variables.h"
 
 struct Car {
     s32 unk00;                          /* 0x00 */
@@ -51,29 +52,10 @@ struct Track {
     u8 pad15[3];
 };
 
-extern u8 gUnk_020390EC;
-extern u8 gUnk_020390CC;
-extern u8 gUnk_0203E120[];
-extern u8 gUnk_0203E1B0;
-extern u8 gUnk_020390BC[];
-extern u8 gUnk_020390A0[];
-extern u8 gUnk_0203DD10;
-extern u8 gUnk_0203916C[];
 extern u32 gUnk_0203DFC4;
-extern u8 gUnk_0203E104;
 extern struct Car gUnk_0203D520[];
-extern u16 gUnk_0203B6C8[];
-extern u16 gUnk_0203B6A8[];
-extern u16 gUnk_0203B858[];
-extern u8 gUnk_0203E1E0[];
 extern struct Track *gUnk_0203B860;
-extern u8 gUnk_02039194;
 extern u32 gUnk_0203DE40;
-extern u16 gUnk_0203B704[];
-extern u16 gUnk_0203B6D0[];
-extern u16 gUnk_0203B6D4[];
-extern u8 gUnk_0203B864;
-extern u8 gUnk_0203B868[];
 
 
 u8 sub_0833F468(struct Car *p, u8 a1)

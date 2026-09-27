@@ -1,9 +1,8 @@
 #include "global.h"
 #include "functions.h"
+#include "variables.h"
 
 extern u16 gUnk_0202EF40[];
-extern u16 gUnk_020020A0[];
-extern u8 gLinkPlayerId[];
 
 
 u8 sub_08011528(void)

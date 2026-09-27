@@ -1,4 +1,5 @@
 #include "global.h"
+#include "variables.h"
 
 struct UnkStruct080044DC {
     u32 unk0;
@@ -7,7 +8,6 @@ struct UnkStruct080044DC {
 };
 
 extern struct UnkStruct080044DC *gUnk_02024820; /* 0x02024820 */
-extern u8 gUnk_02024824;                        /* 0x02024824 */
 
 u32 AddDepthSortedSprite(u32 arg0, u32 arg1, u32 arg2)
 {

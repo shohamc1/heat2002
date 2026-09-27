@@ -1,12 +1,12 @@
 #include "global.h"
 #include "gba/compat.h"
 #include "functions.h"
+#include "m4a.h"
 
 /* The cancelling offset preserves the initial base-to-p copy.
    Assigning off = 4 inside the loop keeps base + 4 out of the preheader. */
 
 void SoundMainRAM(void);
-extern u8 gNumMusicPlayersLow[];
 extern u8 gUnk_02000DE0[];
 extern u8 gUnk_02001E20[];
 extern u8 gUnk_02002020[];

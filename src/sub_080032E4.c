@@ -1,6 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern u16 gUnk_02002170; /* 0x02002170 */
 
 u32 sub_080032E4(u16 a, u8 b)
 {

@@ -1,10 +1,10 @@
 #include "global.h"
 #include "gba/compat.h"
 #include "functions.h"
+#include "variables.h"
 
 extern const u8 gUnk_08331FC8[];
 
-extern u8 gIsDemo;
 void UpdateRaceHud(void);
 extern u8 gUnk_0806C784[];
 

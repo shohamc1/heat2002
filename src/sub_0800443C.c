@@ -1,12 +1,8 @@
 #include "global.h"
 #include "gba/defines.h"
+#include "variables.h"
 
-extern u32 gUnk_02024828;
-extern u32 gUnk_02024C30;
 extern u32 gUnk_02024820;
-extern u8 gUnk_02025150;
-extern u8 gUnk_02025154;
-extern u8 gUnk_02024824;
 
 void ResetSpriteQueues(void)
 {

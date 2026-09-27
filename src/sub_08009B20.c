@@ -1,8 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern u8 gNumCars[];
-extern u8 gIsLinkRace;
-extern u8 gNumLinkPlayers[];
 
 struct Standing {
     u8 pad0[0x50];

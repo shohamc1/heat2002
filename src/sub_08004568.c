@@ -1,8 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern u32 gUnk_02024C30; /* 0x02024C30: current queue write pointer */
-extern u8 gUnk_02025150;  /* 0x02025150: queue entry counter */
-extern u8 gUnk_02025154;  /* 0x02025154: queued item counter */
 
 struct VertexCmd {
     u32 field0;

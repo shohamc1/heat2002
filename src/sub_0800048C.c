@@ -1,8 +1,8 @@
 #include "global.h"
 #include "gba/io_reg.h"
+#include "variables.h"
 
 extern u16 gKeysHeld;     /* 0x020005C8, defined in symbols.ld */
-extern u16 gKeysPressed;  /* 0x020005CC */
 
 void ReadKeys(void)
 {

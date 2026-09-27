@@ -1,10 +1,8 @@
 #include "global.h"
 #include "functions.h"
+#include "variables.h"
 
 extern u8 gUnk_020251BC[]; /* array of 100-byte records */
-extern u16 gUnk_02039294;
-extern u16 gUnk_02039248;
-extern u16 gUnk_020392A4;
 
 
 void sub_0833CCD4(u8 idx)

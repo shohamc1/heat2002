@@ -1,10 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern u8 gUnk_020253C4;
-extern u8 gNumLinkPlayers[];
-extern u16 gUnk_02025258;
-extern u16 gUnk_020253BC;
-extern u16 gUnk_020020A0[];
 
 u16 sub_08004DB4(void)
 {

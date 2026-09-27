@@ -1,6 +1,6 @@
 #include "global.h"
 #include "functions.h"
-extern u16 gKeysPressed;
+#include "variables.h"
 u8 MessageBox(u32 a, u32 b, u32 c)
 {
     u8 buf[0x200];

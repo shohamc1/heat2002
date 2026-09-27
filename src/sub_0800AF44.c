@@ -1,17 +1,13 @@
 #include "global.h"
 #include "gba/io_reg.h"
 #include "functions.h"
+#include "variables.h"
 
 struct EntityAF44 {
     /* 0x00 */ u8 pad0[0x18];
     /* 0x18 */ u32 unk18;
 };
 
-extern u8 gUnk_02022E14;           /* 0x02022E14 */
-extern u8 gIsLinkRace;  /* 0x020020DC */
-extern u8 gUnk_0200215C[];           /* 0x0200215C */
-extern u8 gUnk_02002098;           /* 0x02002098 */
-extern u8 gUnk_020021E0;           /* 0x020021E0 */
 
 
 void RaceEndTask(struct EntityAF44 *e)

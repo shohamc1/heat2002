@@ -1,4 +1,5 @@
 #include "global.h"
+#include "variables.h"
 
 /*
  * Per-frame car update: the high-region (0x0834 module) copy of
@@ -69,16 +70,6 @@ struct Car {
     u8 pad18E[0x190 - 0x18E];
 };
 
-extern u8 gUnk_0203916C[];
-extern u8 gUnk_020390DC;
-extern u8 gUnk_020390EC;
-extern u8 gUnk_020390B8;
-extern u8 gUnk_020390F0[];
-extern u8 gUnk_020391F0;
-extern u8 gUnk_0203E120[];
-extern u8 gUnk_0203E0E0;
-extern u8 gUnk_0203E1B0;
-extern u8 gUnk_020390CC;
 extern struct Car gUnk_0203D520[];
 extern u16 gUnk_020277D4[];
 

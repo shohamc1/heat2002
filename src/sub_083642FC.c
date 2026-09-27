@@ -2,13 +2,12 @@
 #include "gba/defines.h"
 #include "gba/io_reg.h"
 #include "gba/macro.h"
+#include "data.h"
+#include "variables.h"
 
-extern u8 RomHeaderMagic;
-extern u32 RomHeaderGameCode;
 extern u32 gUnk_020009B8;
 void sub_083640B0(void);
 extern u8 gUnk_03000000[];
-extern u32 gUnk_03007FFC;
 extern u8 *gUnk_02000BD4[];
 extern u32 gUnk_02000A9C[];
 extern u16 gUnk_05000200[];

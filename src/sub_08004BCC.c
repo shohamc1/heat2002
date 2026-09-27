@@ -1,9 +1,7 @@
 #include "global.h"
 #include "functions.h"
+#include "variables.h"
 
-extern u16 gKeysPressed;
-extern u8 gUnk_020020C0;
-extern u8 gUnk_02025370;
 
 
 void sub_08004BCC(void)

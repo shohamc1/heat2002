@@ -1,6 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern u32 gUnk_0202CB40[];
 
 void sub_08008D70(void)
 {

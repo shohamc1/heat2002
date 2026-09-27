@@ -1,6 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern u8 gUnk_0200215C[];           /* 0x0200215C */
 
 u32 AllocTask(void);
 void AddTask(u32 a);

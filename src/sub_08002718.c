@@ -1,7 +1,7 @@
 #include "global.h"
 #include "gba/io_reg.h"
+#include "variables.h"
 
-extern u8 gTrackId; /* 0x020020CC */
 
 void sub_08002718(void)
 {

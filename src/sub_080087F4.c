@@ -1,6 +1,7 @@
 #include "global.h"
 #include "data.h"
 #include "m4a.h"
+#include "variables.h"
 
 struct Unk080087F4 {
     u8 pad0[0x8C];
@@ -16,19 +17,6 @@ struct Unk080087F4 {
     u8 unk180;
 };
 
-extern s32 gUnk_0202CBF0; /* 0x0202CBF0 */
-extern s32 gUnk_0202A54C; /* 0x0202A54C */
-extern s32 gUnk_0202A528; /* 0x0202A528 */
-extern u8 gUnk_0202EEB0; /* 0x0202EEB0 */
-extern s32 gUnk_0202A518; /* 0x0202A518 */
-extern u8 gUnk_0202CB18; /* 0x0202CB18 */
-extern u8 gIsLinkRace; /* 0x020020DC */
-extern u8 gLinkPlayerId[]; /* 0x0202EF90 */
-extern u8 gOptions[]; /* 0x0202EF00 */
-extern u8 gIsDemo; /* 0x020020E0 */
-extern u8 gUnk_020021E0; /* 0x020021E0 */
-extern s32 gUnk_0202CBD4; /* 0x0202CBD4 */
-extern s32 gUnk_0202CB0C; /* 0x0202CB0C */
 
 void sub_0800B764(u8 a, u8 b);
 

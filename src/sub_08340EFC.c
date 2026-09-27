@@ -1,15 +1,13 @@
 #include "global.h"
 #include "functions.h"
+#include "variables.h"
 
 struct Car {
     u8 pad00[0x50];
     u32 unk50;
 };
 
-extern u8 gUnk_0203916C[];
-extern u8 gUnk_0203DFB0;
 extern u8 gUnk_0203DD08;
-extern u8 gUnk_0203E104;
 extern s32 gUnk_0203DDF8;
 extern u8 gUnk_0203DD30;
 extern u32 gUnk_0203DD34;

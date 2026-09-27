@@ -1,6 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern u8 gTrackId;
 extern s32 gUnk_083672F0[];
 
 struct UnkStruct0800C4E0 {

@@ -1,9 +1,8 @@
 #include "global.h"
+#include "variables.h"
 
 extern s32 gUnk_02022E20[];
 extern s32 gUnk_02023A20[];
-extern u16 gUnk_02022E18;
-extern u8 gUnk_02022E14;
 
 void BeginFadeToBrightenedPalette(s32 arg0, u16 *src)
 {

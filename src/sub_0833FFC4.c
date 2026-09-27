@@ -1,7 +1,7 @@
 #include "global.h"
+#include "variables.h"
 
 extern u32 gUnk_0203D490;
-extern u32 gUnk_0203C380;
 
 void _08344B80(u32 arg0, u32 arg1);
 

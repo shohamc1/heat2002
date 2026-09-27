@@ -1,8 +1,7 @@
 #include "global.h"
 #include "functions.h"
+#include "variables.h"
 
-extern u8 gUnk_020020B4;
-extern u16 gUnk_02002124;
 void MainVBlankCallback(void);
 
 void RegisterRamReset(u32 r0);

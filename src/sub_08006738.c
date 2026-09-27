@@ -2,7 +2,6 @@
 #include "data.h"
 
 extern u8 *gUnk_0836533C;
-extern u8 *gUnk_08365340;
 extern u8 *gUnk_08365344;
 
 void sub_08006738(u8 *str)

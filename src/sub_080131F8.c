@@ -1,11 +1,8 @@
 #include "global.h"
 #include "data.h"
 #include "functions.h"
+#include "variables.h"
 
-extern u32 gUnk_083FDE18[];
-extern u8 gUnk_0202EF78[];
-extern u8 gUnk_0202EEB4;
-extern u8 gUnk_0202EDB0;
 
 void sub_080064F8(u32 r0, u32 r1, u32 r2, u32 r3);
 

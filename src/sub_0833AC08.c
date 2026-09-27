@@ -2,11 +2,11 @@
 #define GBA_CPUSET sub_08344B64
 #include "gba/compat.h"
 #include "gba/m4a_internal.h"
+#include "m4a.h"
 
 /* SoundInit (high copy) */
 
 extern struct SoundInfo *gUnk_03007FF0;
-extern MPlayFunc gUnk_02038DE0[];
 
 void sub_0833A018(u32 a);
 void sub_0833AD00(u32 a);

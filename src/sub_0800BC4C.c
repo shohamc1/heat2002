@@ -1,4 +1,5 @@
 #include "global.h"
+#include "variables.h"
 
 struct VtxBC4C {
     u16 x, y;
@@ -14,7 +15,6 @@ struct SegBC4C {
 };
 
 extern struct SegBC4C *gUnk_083671C0[];   /* 0x083671C0 */
-extern u8 gTrackId;                  /* 0x020020CC */
 
 s32 sub_0800BC4C(struct VtxBC4C *verts, u8 *idx)
 {

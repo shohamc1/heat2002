@@ -1,6 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern u32 gUnk_020020D4; /* 0x020020D4 */
 
 u32 ParkMillerNext(u32 a);
 

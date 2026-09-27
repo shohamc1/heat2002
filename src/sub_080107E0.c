@@ -4,12 +4,10 @@
 #include "data.h"
 #include "functions.h"
 #include "m4a.h"
+#include "variables.h"
 
-extern u16 gUnk_020020A0[];
-extern u8 gUnk_020020C0;
 extern u16 gUnk_0202EF40[];
 extern s8 gUnk_0202EF8C;
-extern u8 gLinkPlayerId[];
 extern u8 gUnk_083FDE78[];
 
 u8 LinkTrackSelect(void)

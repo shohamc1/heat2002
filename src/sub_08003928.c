@@ -2,6 +2,7 @@
 #include "tilemap.h"
 #include "gba/compat.h"
 #include "functions.h"
+#include "variables.h"
 
 extern u16 *gUnk_02002208;
 extern u16 *gUnk_0200BC54;
@@ -11,16 +12,10 @@ extern u16 gUnk_02015690[];
 extern u16 *gUnk_0200BC50;
 extern u16 *gUnk_0200221C;
 extern u16 *gUnk_02002210;
-extern u32 gUnk_0200BC30;
 extern u32 gUnk_02022DD8;
 extern u32 gUnk_02022DF0;
 extern u32 gUnk_0201567C;
-extern u32 gUnk_02022DEC[];
-extern u32 gUnk_02002200[];
-extern u16 gUnk_02022DE4;
-extern u16 gUnk_0200BC34;
 extern u32 gUnk_03000800[];
-extern u8 gUnk_020253D4;
 extern u16 gUnk_08335C60[];
 extern u16 gUnk_08334BCC[];
 

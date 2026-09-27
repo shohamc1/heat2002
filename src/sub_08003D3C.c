@@ -1,8 +1,8 @@
 #include "global.h"
 #include "tilemap.h"
 #include "gba/compat.h"
+#include "variables.h"
 
-extern u8 gUnk_02002218;
 
 void sub_08003D3C(u8 *a, u8 *b)
 {

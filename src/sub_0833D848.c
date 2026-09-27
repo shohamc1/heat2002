@@ -1,4 +1,5 @@
 #include "global.h"
+#include "variables.h"
 
 struct Unk0833D848
 {
@@ -9,9 +10,7 @@ struct Unk0833D848
 };
 
 extern u32 *gUnk_0203ACD0;
-extern u8 gUnk_0203ACD4;
 extern u32 *gUnk_0203ACD8;
-extern u16 gUnk_0203B610[];
 extern struct Unk0833D848 gUnk_0203B0F0[];
 
 u32 sub_0833D7E8(void);

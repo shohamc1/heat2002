@@ -10,10 +10,10 @@
  */
 
 #include "global.h"
+#include "variables.h"
 
 extern u32 gUnk_020251B8[];
 extern u16 gUnk_02021594[];
-extern u16 gUnk_02022254[];
 
 void sub_08341180(u8 arg)
 {

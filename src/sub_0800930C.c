@@ -1,13 +1,9 @@
 #include "global.h"
 #include "functions.h"
+#include "variables.h"
 
-extern u8 gUnk_0200215C[];
 extern u8 gCars[][0x190];
-extern u8 gUnk_0202CBD0;
 extern u8 gUnk_083681BC[];
-extern u8 gTrackId;
-extern u8 gUnk_0202EEB0;
-extern u8 gUnk_0202CBC8[];
 
 void sub_08008090(void);
 

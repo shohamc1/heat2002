@@ -1,6 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern s16 gUnk_0200C3E8[];
 
 void sub_083431CC(s32 *o, s32 x, s32 y, s32 *out)
 {

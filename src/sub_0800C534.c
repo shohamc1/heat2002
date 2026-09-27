@@ -28,6 +28,7 @@
  */
 #include "global.h"
 #include "functions.h"
+#include "variables.h"
 
 struct Unk0800C534 {
     s32 posX;
@@ -60,19 +61,12 @@ struct Unk0800C534 {
     u8 pitStall;
 };
 
-extern u8 gUnk_0202CC28;
-extern u8 gUnk_0202CC2C;
 extern u32 gUnk_0202CC24;
 extern u32 gUnk_0202CC34;
 extern u32 gUnk_0202CC38;
 extern u32 gUnk_0202CC3C;
-extern u8 gTrackId;
-extern u8 gUnk_0202EEB0;
-extern u8 gUnk_0202CAD0;
-extern u8 gUnk_0202A53C;
 extern struct Unk0800C534 gCars[];
 extern u32 gUnk_083672F0[];
-extern u8 gUnk_0200215C[];
 
 void sub_08008394(u32 a);
 void sub_0800C430(u32 a);

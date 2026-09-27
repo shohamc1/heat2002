@@ -1,7 +1,7 @@
 #include "global.h"
+#include "variables.h"
 
 extern u32 gUnk_02025FD0;
-extern u8 gUnk_02025ED0[];
 
 void InitTasks(void)
 {

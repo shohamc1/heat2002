@@ -1,6 +1,6 @@
 #include "global.h"
 #include "functions.h"
-extern u16 gKeysPressed;
+#include "variables.h"
 u8 sub_08012BBC(s8 arg)
 {
     u8 buf[0x200];

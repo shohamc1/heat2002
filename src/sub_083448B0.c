@@ -1,7 +1,7 @@
 #include "global.h"
 #include "gba/io_reg.h"
+#include "variables.h"
 
-extern u16 gUnk_03007FF8;
 
 void sub_083448B0(u16 a)
 {

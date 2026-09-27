@@ -1,6 +1,7 @@
 #include "global.h"
 #include "functions.h"
 #include "m4a.h"
+#include "variables.h"
 
 struct Car {
     s32 posX;
@@ -18,17 +19,6 @@ struct Car {
     u8 pad184[0x190 - 0x184];
 };
 
-extern u8 gUnk_0200215C[];
-extern u8 gTrackId;
-extern u8 gIsLinkRace;
-extern u8 gLinkPlayerId[];
-extern u8 gUnk_0202ED70;
-extern u8 gOptions[];
-extern u8 gIsDemo;
-extern u8 gUnk_020021E0;
-extern u8 gUnk_02001FA0[];
-extern u8 gUnk_02002030[];
-extern u8 gUnk_02001FE0[];
 extern struct Car gCars[];
 
 void EnterPit(u8 *a, u8 b);

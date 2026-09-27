@@ -1,7 +1,7 @@
 #include "global.h"
 #include "functions.h"
+#include "variables.h"
 
-extern u32 gUnk_0203DD60[];
 
 
 u32 sub_08340EAC(void)

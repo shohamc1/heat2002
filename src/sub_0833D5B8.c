@@ -1,7 +1,7 @@
 #include "global.h"
+#include "variables.h"
 
 extern u32 gUnk_02039110[];
-extern u8 gUnk_020390F0[];
 
 void sub_0833D5B8(void)
 {

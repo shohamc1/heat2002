@@ -1,6 +1,7 @@
 #include "global.h"
 #include "functions.h"
 #include "m4a.h"
+#include "variables.h"
 
 struct Car {
     u8 pad00[0x88];
@@ -23,9 +24,6 @@ struct Car {
     u8 unk18F;
 };
 
-extern u8 gUnk_0202CAD0;
-extern u8 gUnk_0202EEB0;
-extern u8 gUnk_0202A53C;
 extern struct Car gCars[];
 extern u8 gUnk_0806C918[];
 extern u8 gUnk_0806C924[];
@@ -34,11 +32,6 @@ extern u32 gUnk_08368124[];
 extern u32 gUnk_08368134[];
 extern s32 gUnk_0202A520;
 extern s32 gUnk_0202CAE0;
-extern u8 gUnk_0202CBC0[];
-extern u8 gUnk_0202CBC8[];
-extern u8 gOptions[];
-extern u8 gIsDemo;
-extern u8 gUnk_020021E0;
 
 
 void UpdatePitStop(struct Car *a1, u8 a2)

@@ -1,8 +1,7 @@
 #include "global.h"
 #include "functions.h"
+#include "variables.h"
 
-extern u8 gOptions[];
-extern u8 gUnk_0202F1B8[];
 
 
 void LoadOptions(void)

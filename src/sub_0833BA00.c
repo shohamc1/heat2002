@@ -1,5 +1,6 @@
 #include "global.h"
 #include "gba/m4a_internal.h"
+#include "m4a.h"
 
 /* ply_memacc, high-module copy. cond_true calls through the high module's
  * _call_via_r2 stub (0x08344B84): _08344B84(a, b, target) leaves a in r0,
@@ -8,7 +9,6 @@
  * ROM-address link the 18 table words plus the pool word that feeds
  * ldr r1 cannot match; everything else is byte-identical. */
 
-extern MPlayFunc gUnk_02038DE0[];
 
 void _08344B84(u32 arg0, u32 arg1, u32 arg2);
 

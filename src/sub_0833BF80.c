@@ -13,6 +13,7 @@
  */
 #include "global.h"
 #include "functions.h"
+#include "variables.h"
 
 struct Ent {
     u8 pad00[0x3E];
@@ -21,31 +22,16 @@ struct Ent {
     u8 pad42[0x190 - 0x42];
 };
 
-extern u8 gUnk_02039100;
 extern u8 gUnk_020391CC;
 extern u8 gUnk_02039154;
-extern u8 gUnk_0203916C[];
-extern u8 gUnk_020390F0[];
-extern u8 gUnk_020390A0[];
-extern u8 gUnk_020390DC;
-extern u8 gUnk_020390BC[];
 extern u32 gUnk_020391E0[4];
 extern u32 gUnk_02039158;
-extern u8 gUnk_020391D4;
 extern s8 gUnk_020390D0;
-extern u8 gUnk_020390FC;
-extern u8 gUnk_0203E120[];
-extern u8 gUnk_020390D4;
 extern u8 gUnk_020250EC;
-extern u8 gUnk_020390B8;
-extern u8 gUnk_020390EC;
 extern struct Ent gUnk_0203D520[];
 extern u32 gUnk_02039110[4];
 extern s32 gUnk_020390AC;
-extern u8 gUnk_020391F0;
-extern u8 gUnk_020390C4;
 extern u8 gUnk_0203921C;
-extern u16 gUnk_02039134;
 extern u8 gUnk_02039218[4];
 extern u8 gUnk_02039160[];
 extern u8 gUnk_02039170[];
@@ -53,10 +39,7 @@ extern s32 gUnk_02025190[];
 extern u8 gUnk_020251A4[];
 extern u8 gUnk_02038FB0[];
 extern u8 gUnk_0203D6B0[];
-extern u16 gUnk_0203761C;
-extern u8 gUnk_020392C4;
 extern u8 gUnk_02038F70[];
-extern u8 gUnk_0203E1B0;
 
 void sub_0833CD2C(u8);
 void sub_0833D9E8(u8);

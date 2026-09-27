@@ -1,8 +1,8 @@
 #include "global.h"
+#include "variables.h"
 
 void SerialIntr(void);
 
-extern u32 gUnk_02000590[];
 
 void SetLinkSerialIntr(void)
 {

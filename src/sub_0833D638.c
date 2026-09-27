@@ -1,12 +1,9 @@
 #include "global.h"
 #include "gba/defines.h"
+#include "variables.h"
 
 extern u32 gUnk_0203ACD8;
-extern u32 gUnk_0203B0E0;
 extern u32 gUnk_0203ACD0;
-extern u8 gUnk_0203B600;
-extern u8 gUnk_0203B604;
-extern u8 gUnk_0203ACD4;
 
 void sub_0833D638(void)
 {

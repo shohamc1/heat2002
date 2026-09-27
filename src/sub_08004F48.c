@@ -1,9 +1,7 @@
 #include "global.h"
 #include "functions.h"
+#include "variables.h"
 
-extern u16 gKeysPressed;   /* 0x020005CC */
-extern u8 gUnk_02025248;
-extern u8 gUnk_0202539C;
 
 
 u8 PauseMenu(void)

@@ -5,10 +5,8 @@
  * Needs re-derivation from the asm before extracting.
  */
 #include "global.h"
+#include "variables.h"
 
-extern u8 gNumCars[];
-extern u8 gUnk_0202CC28;
-extern u8 gUnk_0202CC2C;
 
 struct Car {
     s32 posX;

@@ -1,4 +1,5 @@
 #include "global.h"
+#include "variables.h"
 
 struct UnkCar6094 {
     /* 0x000 */ u8 filler00[0x2C];
@@ -14,20 +15,8 @@ struct UnkCar6094 {
     /* 0x18F */ u8 filler18F[400 - 0x18F];
 };
 
-extern u8 gIsLinkRace;
-extern u8 gLinkPlayerId[];
 extern struct UnkCar6094 gCars[];
 extern u32 gUnk_08364B08[];
-extern u16 gUnk_02025218[];
-extern u16 gUnk_020251FC[];
-extern u16 gUnk_020253CC[];
-extern u8 gUnk_0200215C[];
-extern u8 gUnk_0202F030;
-extern u16 gUnk_02025380[];
-extern u8 gTrackId;
-extern u16 gUnk_02025200[];
-extern u16 gUnk_020253A0[];
-extern u8 gNumLaps;
 
 void UpdateRaceTimers(void);
 void DrawTime(u16 *dest, s32 a, s32 b, s32 c);

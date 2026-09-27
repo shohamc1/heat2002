@@ -1,6 +1,7 @@
 #include "global.h"
 #include "data.h"
 #include "m4a.h"
+#include "variables.h"
 
 /*
  * Car-vs-car box collision test. For every other car within range, the
@@ -70,20 +71,12 @@ struct Pt2 {
     s32 f1;
 };
 
-extern u8 gNumCars[];
-extern u8 gIsLinkRace;
-extern u8 gNumLinkPlayers[];
 extern struct Ent gCars[];
-extern s32 gUnk_0202CD24;
 extern s32 gUnk_0202CCB0[8];
 extern s32 gUnk_0202CD30[8];
 extern struct Coll gUnk_0202CC90;
 extern struct Pt2 gUnk_083FDA2C[];
-extern u8 gUnk_0202EEB0;
 extern u8 gUnk_0202A530;
-extern u8 gUnk_020021E0;
-extern u8 gIsDemo;
-extern u8 gOptions[];
 
 void sub_0800D5D4(struct Ent *a, s32 *d);
 void sub_0800D64C(struct Ent *a, s32 b, struct Ent *c, s32 d, struct Coll *e,

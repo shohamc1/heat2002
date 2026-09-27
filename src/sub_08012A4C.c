@@ -1,7 +1,7 @@
 #include "global.h"
 #include "functions.h"
+#include "data.h"
 
-extern u32 gUnk_083FDE18[];
 
 
 void DrawMessageBox(u32 a, u32 b, u32 c)

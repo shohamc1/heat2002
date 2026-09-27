@@ -2,16 +2,13 @@
 #include "data.h"
 #include "functions.h"
 #include "m4a.h"
+#include "variables.h"
 
-extern u8 gUnk_0202EEB0;
 extern u8 gUnk_02025228;
-extern u16 gUnk_02025398;
 extern u8 gUnk_083387A8[];
 extern u32 gUnk_08364B08[];
 extern s32 gUnk_0200209C;
 extern u8 gUnk_08334DCC[];
-extern u8 gOptions[];
-extern u8 gIsDemo;
 
 
 void sub_08005AF0(s32 arg)

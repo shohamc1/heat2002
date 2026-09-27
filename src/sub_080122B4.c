@@ -2,10 +2,9 @@
 #include "data.h"
 #include "functions.h"
 #include "m4a.h"
+#include "variables.h"
 
-extern u16 gKeysPressed;
 extern u16 gUnk_020020B8;
-extern u8 gOptions[];
 
 
 u8 sub_080122B4(void)

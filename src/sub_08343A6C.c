@@ -1,4 +1,5 @@
 #include "global.h"
+#include "variables.h"
 
 /*
  * Car-vs-track box collision: the high-region (0x0834 module) copy of
@@ -87,7 +88,6 @@ struct Res {
     s32 unk10;
 };
 
-extern s16 gUnk_0200C3E8[];
 extern s32 gUnk_0203DE6C;
 extern s32 gUnk_0203DE70[];
 extern s32 gUnk_0203DE84;

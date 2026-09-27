@@ -3,6 +3,7 @@
 #include "data.h"
 #include "functions.h"
 #include "gba/syscall.h"
+#include "variables.h"
 
 extern const u8 gUnk_0829F2CC[];
 extern const u8 gUnk_0829F2D8[];
@@ -27,7 +28,6 @@ struct Big
 };
 
 extern struct Big gUnk_083FDA78[];
-extern u8 gUnk_0202EED8;
 
 void sub_0801027C(u32 tile, u32 pal, u32 c);
 

@@ -2,6 +2,7 @@
 #include "gba/io_reg.h"
 #include "functions.h"
 #include "m4a.h"
+#include "variables.h"
 
 struct UnkCar {
     /* 0x00 */ u32 posX;
@@ -14,42 +15,18 @@ struct UnkCar {
     /* 0x42 */ u8 filler42[400 - 0x42];
 };
 
-extern u8 gNumCars[];           /* 0x02002090 */
 extern s32 gUnk_0200209C;          /* 0x0200209C */
-extern u8 gUnk_020020A8;           /* 0x020020A8 */
-extern u8 gNumLinkPlayers[];           /* 0x020020AC */
-extern u8 gUnk_020020B4;           /* 0x020020B4 */
-extern u8 gUnk_020020C0;  /* 0x020020C0 */
-extern u8 gUnk_020020C4;           /* 0x020020C4 */
-extern u8 gTrackId;           /* 0x020020CC */
-extern u8 gIsLinkRace;           /* 0x020020DC */
-extern u8 gIsDemo;           /* 0x020020E0 */
-extern u8 gUnk_020020EC;           /* 0x020020EC */
-extern u8 gUnk_020020F0;           /* 0x020020F0 */
 extern u32 gCamera[];        /* 0x02002100 */
-extern u16 gUnk_02002124;          /* 0x02002124 */
 extern u8 gUnk_02002144;           /* 0x02002144 */
 extern u32 gUnk_02002148;          /* 0x02002148 */
 extern u8 gUnk_02002150[];         /* 0x02002150 */
-extern u8 gUnk_0200215C[];           /* 0x0200215C */
 extern u8 gUnk_02002160[];         /* 0x02002160 */
-extern u8 gUnk_020021BC;           /* 0x020021BC */
-extern u8 gUnk_020021C4;           /* 0x020021C4 */
 extern u32 gUnk_020021D0[];        /* 0x020021D0 */
-extern u8 gUnk_020021E0;           /* 0x020021E0 */
 extern u8 gUnk_020021EC[];         /* 0x020021EC */
 extern u8 gUnk_020021F0;           /* 0x020021F0 */
-extern u8 gUnk_02001F20[];         /* 0x02001F20 */
 extern u8 gUnk_02001F60[];         /* 0x02001F60 */
-extern u8 gUnk_02001FA0[];         /* 0x02001FA0 */
-extern u8 gUnk_02001FE0[];         /* 0x02001FE0 */
-extern u8 gUnk_02002030[];         /* 0x02002030 */
-extern u16 gKeysPressed;           /* 0x020005CC */
 extern struct UnkCar gCars[]; /* 0x0202A550 */
 extern u8 gUnk_0202A6E0[];         /* 0x0202A6E0 */
-extern u8 gUnk_02022E14;           /* 0x02022E14 */
-extern u8 gOptions[];         /* 0x0202EF00 */
-extern u8 gLinkPlayerId[];           /* 0x0202EF90 */
 extern u8 gUnk_08364ADC;           /* 0x08364ADC */
 extern u32 gUnk_08364AE0[];        /* 0x08364AE0 */
 extern u8 gUnk_08364AF4[];         /* 0x08364AF4 */

@@ -1,8 +1,7 @@
 #include "global.h"
 #include "functions.h"
-extern u16 gKeysPressed;
-extern u8 gIsLinkRace;
-extern u32 gUnk_083FDE18[];
+#include "data.h"
+#include "variables.h"
 void sub_080164A8(void)
 {
     u8 buf[0x200];

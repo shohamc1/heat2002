@@ -24,6 +24,6 @@ const u8 gUnk_08365330[] = INCBIN_U8("build/assets/unknown/data_08365330.bin");
 // Its users declare it as u8 *x.
 const u32 gUnk_0836533C = (u32)gUnk_0806C794;
 // Its users declare it as u8 *x.
-const u32 gUnk_08365340 = (u32)gUnk_0806C79C;
+u8 * const gUnk_08365340 = (u8 *)gUnk_0806C79C;
 // Its users declare it as u8 *x.
 const u32 gUnk_08365344 = (u32)gUnk_0806C7A0;

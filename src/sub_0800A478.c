@@ -1,4 +1,5 @@
 #include "global.h"
+#include "variables.h"
 
 struct EntA478 {
     u8 pad00[0x7C];
@@ -14,7 +15,6 @@ struct EntA478 {
 };
 
 extern struct EntA478 gCars[];
-extern u8 gUnk_0200215C[];
 extern s32 gUnk_0202521C;
 
 void sub_0800A474(struct EntA478 *p);

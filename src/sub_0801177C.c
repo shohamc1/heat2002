@@ -1,11 +1,8 @@
 #include "global.h"
 #include "gba/compat.h"
 #include "functions.h"
+#include "variables.h"
 
-extern u16 gUnk_020020A0[];
-extern u8 gNumLinkPlayers[];
-extern u8 gUnk_020020C0;
-extern u8 gLinkPlayerId[];
 extern u8 gUnk_082B8710[], gUnk_082E4328[], gUnk_0829F30C[];
 struct Car
 {

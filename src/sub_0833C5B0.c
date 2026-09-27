@@ -3,22 +3,11 @@
 #include "gba/defines.h"
 #include "gba/io_reg.h"
 #include "gba/compat.h"
+#include "variables.h"
 
-extern u16 gUnk_02039134;
-extern u16 gUnk_0203917C;
-extern u8 gUnk_020390EC;
-extern u8 gUnk_020390FC;
 extern u8 gUnk_020391C8;
 extern u8 gUnk_020390D0;
 extern u8 gUnk_0203ACE0[];
-extern u8 gUnk_020391D4;
-extern u32 gUnk_02039290;
-extern u32 gUnk_02039298;
-extern u32 gUnk_020392A8;
-extern u32 gUnk_02039240;
-extern u32 gUnk_0203925C;
-extern u32 gUnk_02039260;
-extern u16 gUnk_03007FF8;
 
 void sub_0833A1DC(void);
 void sub_0833D094(void);

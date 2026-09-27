@@ -4,8 +4,6 @@
 #include "functions.h"
 #include "gba/syscall.h"
 
-extern u32 *gUnk_083FDF74[];
-extern u32 *gUnk_083FDFEC[];
 
 
 u32 sub_08010BA8(u8 param)
@@ -23,15 +21,15 @@ u32 sub_08010BA8(u8 param)
     sub_08010AA4(param);
     CpuCopy16(gUnk_083FDEF4[0], OBJ_PLTT, OBJ_PLTT_SIZE);
     if (buf[1] == 0xFF) {
-        RLUnCompVram(*gUnk_083FDF74[buf[0]], OBJ_VRAM0);
-        RLUnCompVram(*gUnk_083FDFEC[buf[0]], OBJ_VRAM0 + 0x1000);
+        RLUnCompVram(*(u32 *)gUnk_083FDF74[buf[0]], OBJ_VRAM0);
+        RLUnCompVram(*(u32 *)gUnk_083FDFEC[buf[0]], OBJ_VRAM0 + 0x1000);
         sub_08010194(0x38, 0x30, 0);
         sub_08010194(0x78, 0x30, 0x80);
     } else {
-        RLUnCompVram(*gUnk_083FDF74[buf[0]], OBJ_VRAM0);
-        RLUnCompVram(*gUnk_083FDFEC[buf[0]], OBJ_VRAM0 + 0x1000);
-        RLUnCompVram(*gUnk_083FDF74[buf[1]], OBJ_VRAM0 + 0x2000);
-        RLUnCompVram(*gUnk_083FDFEC[buf[1]], OBJ_VRAM0 + 0x3000);
+        RLUnCompVram(*(u32 *)gUnk_083FDF74[buf[0]], OBJ_VRAM0);
+        RLUnCompVram(*(u32 *)gUnk_083FDFEC[buf[0]], OBJ_VRAM0 + 0x1000);
+        RLUnCompVram(*(u32 *)gUnk_083FDF74[buf[1]], OBJ_VRAM0 + 0x2000);
+        RLUnCompVram(*(u32 *)gUnk_083FDFEC[buf[1]], OBJ_VRAM0 + 0x3000);
         sub_08010194(0x60, 0x30, 0x80 << 1);
         sub_08010194(0xA0, 0x30, 0xC0 << 1);
         sub_08010194(0x10, 0x30, 0);

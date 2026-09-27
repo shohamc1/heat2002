@@ -3,9 +3,8 @@
 #include "data.h"
 #include "functions.h"
 #include "m4a.h"
+#include "variables.h"
 
-extern u16 gKeysPressed;
-extern u8 gOptions[];
 
 u8 sub_08013D5C(void)
 {

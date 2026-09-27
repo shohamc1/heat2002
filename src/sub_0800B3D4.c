@@ -1,6 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern u8 gUnk_0202CC10[];         /* 0x0202CC10 */
 void sub_0800B384(void);
 
 u32 AllocTask(void);

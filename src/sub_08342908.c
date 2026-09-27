@@ -1,6 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern u8 gUnk_020391F0;
 extern u8 gUnk_020390A8;
 void sub_0834288C(void);
 

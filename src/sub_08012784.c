@@ -1,7 +1,7 @@
 #include "global.h"
 #include "functions.h"
+#include "variables.h"
 
-extern u16 gKeysPressed;
 
 
 u8 sub_08012784(void)

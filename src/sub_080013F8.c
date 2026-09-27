@@ -2,12 +2,11 @@
 #include "gba/compat.h"
 #include "gba/m4a_internal.h"
 #include "functions.h"
+#include "m4a.h"
 
 /* MPlayExtender */
 
 extern struct SoundInfo *gUnk_03007FF0;
-extern MPlayFunc gUnk_02001D90[];
-extern u8 gMaxLines;
 void sub_08002340(void);
 void ply_lfos(void);
 void ply_mod(void);

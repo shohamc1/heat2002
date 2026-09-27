@@ -1,5 +1,7 @@
 #include "global.h"
 #include "functions.h"
+#include "data.h"
+#include "variables.h"
 
 struct Car {
     u32 posX;
@@ -15,17 +17,9 @@ struct Car {
     u8 pad36[0x190 - 0x36];
 };
 
-extern u8 gUnk_0200215C[];
-extern u8 gUnk_0202CAF0;
-extern u8 gUnk_0202EED0;
 extern struct Car *gCarOrder[];
-extern u32 gUnk_0202A3F0[];
 extern struct Car gCars[];
-extern u8 gTrackId;
-extern u8 gUnk_0202ED70;
-extern u8 gUnk_0202CAE8;
 extern u32 gUnk_0202CB14;
-extern u32 *gUnk_083C9E74[];
 extern u8 gUnk_083681B0[];
 extern u32 *gUnk_083C9574[];
 extern u32 *gUnk_083C97B4[];

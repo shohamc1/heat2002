@@ -1,4 +1,5 @@
 #include "global.h"
+#include "variables.h"
 
 struct Car0833EAA4 {
     u8 pad00[0x2C];
@@ -9,16 +10,6 @@ struct Car0833EAA4 {
 };
 
 extern u32 gUnk_020251B8[];
-extern u16 gUnk_0203B6C8[];
-extern u16 gUnk_0203B6A8[];
-extern u16 gUnk_0203B858[];
-extern u8 gUnk_0203E1E0[];
-extern u16 gUnk_0203B810[];
-extern u8 gUnk_020390DC;
-extern u16 gUnk_0203B6B0[];
-extern u16 gUnk_0203B830[];
-extern u8 gUnk_020390EC;
-extern u8 gUnk_0203E1B0;
 extern struct Car0833EAA4 gUnk_0203D520[];
 
 void sub_0833E1F4(void);

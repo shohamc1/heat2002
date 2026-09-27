@@ -1050,6 +1050,18 @@ changes local-alloc's pseudo priorities (entry 12). Spelling the access
 as a pointer deref — `*(u8 *)&gNumLinkPlayers = v;` — reproduces the
 scalar's expansion and matched all four.
 
+**Variant:** a shared extern's `const` can change the users' bytes by
+itself. `gUnk_08365340`'s users agreed on `extern u8 *gX`, but the ROM
+definition in `src/data/rom_0836524C.c` says `const u32`, so the header
+first followed the definition; re-typing the users' derefs to match
+rotated registers, and `extern u8 * const gX` in the header mismatched
+`sub_08006738` and `sub_080065A8` on its own. Plain `extern u8 *gX` —
+exactly the type the users agreed on, with the definition re-typed to
+`u8 * const gX = (u8 *)...` so its initializer bytes and `.rodata`
+placement stay — matched everything. When a header replaces local
+externs, give it the agreed type verbatim; force `const` only on plain
+data arrays, never on the pointer object itself.
+
 ### 32. A memory load the target puts before a constant
 
 You removed `volatile` from an `extern` (or moved the declaration to a

@@ -1,6 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern s16 gUnk_0200C3E8[];
 
 struct Unk08343DF8 {
     s32 unk00;

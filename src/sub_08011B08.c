@@ -3,14 +3,10 @@
 #include "gba/io_reg.h"
 #include "gba/syscall.h"
 #include "functions.h"
+#include "variables.h"
 
-extern u16 gUnk_0202ED78[];
-extern u8 gUnk_0202EDD0;
 extern u8 gUnk_0202EFA0[];
-extern u8 gUnk_0202EEF4;
 extern u16 gUnk_0202EF40[];
-extern u8 gLinkPlayerId[];
-extern u8 gNumLinkPlayers[];
 
 
 void DetectLinkPlayers(void)

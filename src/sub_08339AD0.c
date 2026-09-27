@@ -1,6 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern u32 gUnk_020375D0;   /* 0x020375D0 */
 
 /* The high module's _call_via_r0 stub (0x08344B7C): _08344B7C(target) jumps
    to target with it in r0, the shape the module's own copy of the libgcc

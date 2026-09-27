@@ -1,4 +1,5 @@
 #include "global.h"
+#include "variables.h"
 
 struct Ent {
     s32 f00;
@@ -87,20 +88,11 @@ struct Ent {
     u8 f18E;
 };
 
-extern u8 gUnk_0203916C[];
-extern u8 gUnk_020390EC;
 extern u8 gUnk_0203DCF0;
-extern u8 gUnk_0203D4E8;
-extern u8 gUnk_0203DFB0;
 extern struct Ent gUnk_0203D520[];
-extern u8 gUnk_0203DDE8[];
-extern u32 *gUnk_02026E1C[];
 extern u32 gUnk_02027500[];
 extern u32 gUnk_02027578[];
 extern u32 gUnk_020275F0[];
-extern u8 gUnk_0202713E[];
-extern u8 gUnk_0202714A[];
-extern u8 gUnk_02027154[];
 
 void sub_083432EC(u32 *p, u32 v);
 

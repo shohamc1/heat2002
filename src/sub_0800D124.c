@@ -1,4 +1,5 @@
 #include "global.h"
+#include "variables.h"
 
 struct Seg {
     s32 f00;
@@ -37,7 +38,6 @@ struct Ent {
     s32 f30;
 };
 
-extern u8 gUnk_0200215C[];
 
 u16 *GetWallListAt(s32 a, s32 b);
 u8 TestSegmentVsWalls(struct Seg *a, struct Box *b, struct Box *c, struct Hit *d,

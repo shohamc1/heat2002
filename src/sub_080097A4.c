@@ -1,5 +1,6 @@
 #include "global.h"
 #include "data.h"
+#include "variables.h"
 
 struct Ent {
     s32 posX;
@@ -88,20 +89,10 @@ struct Ent {
     u8 f18E;
 };
 
-extern u8 gUnk_0200215C[];
-extern u8 gIsLinkRace;
-extern u8 gUnk_0202CAD0;
-extern u8 gUnk_0202A51C;
-extern u32 gUnk_020253B8;
-extern u8 gUnk_0202ED70;
 extern struct Ent gCars[];
-extern u8 gUnk_0202CBC8[];
-extern u32 *gUnk_08367730[];
 extern u32 gUnk_08367FBC[];
 extern u32 gUnk_08368034[];
 extern u32 gUnk_083680AC[];
-extern u8 gUnk_08367BFA[];
-extern u8 gUnk_08367C06[];
 
 void sub_0800C0E8(u32 a, u8 b);
 void sub_0800C984(u32 *p, u32 v);

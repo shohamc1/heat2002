@@ -1,7 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern u8 gUnk_020021E0;
-extern u8 gUnk_02002098;
 void RaceEndTask(void);
 
 u32 AllocTask(void);

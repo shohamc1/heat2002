@@ -1,11 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern u32 gUnk_0202CC00[];
-extern u32 gUnk_0202CC08[];
-extern u32 gUnk_0202CC1C[];
-extern u16 gUnk_02025218[];
-extern u16 gUnk_020251FC[];
-extern u16 gUnk_020253CC[];
 void sub_0800B46C(void);
 
 u32 AllocTask(void);

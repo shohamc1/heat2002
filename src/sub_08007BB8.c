@@ -1,4 +1,5 @@
 #include "global.h"
+#include "variables.h"
 
 struct Track {
     /* +0x00 */ u32 unk00;
@@ -11,7 +12,6 @@ struct Track {
 };
 
 extern struct Track gUnk_08367A14[];
-extern u32 gUnk_0202A3F0[];
 
 void BuildStartingGrid(u8 a1)
 {

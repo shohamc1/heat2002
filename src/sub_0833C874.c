@@ -8,16 +8,10 @@
  *   them, but not the flag test.
  */
 #include "global.h"
+#include "variables.h"
 
-extern u8 gUnk_020390BC[];
 extern u16 gUnk_0203E160[][4];
 extern u16 gUnk_02039188[];
-extern u16 gUnk_0203917C;
-extern u16 gUnk_02039180;
-extern u16 gUnk_0203DFB8[];
-extern u16 gUnk_03007FF8;
-extern u8 gUnk_0203E1B0;
-extern u16 gUnk_020390B0[];
 
 u16 sub_0833C70C(u16 keys);
 u8 sub_0833C828(u16 seq, u8 next);

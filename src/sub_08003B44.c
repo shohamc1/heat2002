@@ -2,21 +2,13 @@
 #include "tilemap.h"
 #include "gba/defines.h"
 #include "functions.h"
+#include "variables.h"
 
 extern u32 gCamera[];
-extern u32 gUnk_0200BC48;
-extern u32 gUnk_0200BC4C;
-extern u32 gUnk_02022DF8;
-extern u32 gUnk_0200BC2C;
-extern u32 gUnk_02022DE0;
-extern u32 gUnk_02022DE8;
-extern u8 gUnk_02002218;
 extern u8 *gUnk_02002208;
 extern u8 *gUnk_0200221C;
-extern u16 gUnk_02022DE4;
 extern u8 *gUnk_0200BC54;
 extern u8 *gUnk_02002210;
-extern u16 gUnk_0200BC34;
 
 
 void UpdateTrackScroll(void)

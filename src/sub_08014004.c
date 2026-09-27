@@ -2,9 +2,8 @@
 #include "gba/io_reg.h"
 #include "functions.h"
 #include "m4a.h"
+#include "variables.h"
 
-extern u16 gKeysPressed;
-extern u8 gOptions[];
 u8 sub_08014004(void)
 {
     u8 buf[0x200];

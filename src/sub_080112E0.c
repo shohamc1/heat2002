@@ -1,6 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern u8 gNumLinkPlayers[];
 extern u32 gCarOrder[];
 extern u8 gCars[][0x190];
 

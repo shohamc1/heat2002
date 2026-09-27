@@ -1,7 +1,7 @@
 #include "global.h"
 #include "tilemap.h"
+#include "variables.h"
 
-extern u8 gUnk_02039234[];
 
 void sub_08344B60(u32 a, u32 b, u32 c);
 

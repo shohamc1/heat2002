@@ -1,5 +1,6 @@
 #include "global.h"
 #include "functions.h"
+#include "variables.h"
 
 struct Car {
     s32 unk00;                          /* 0x00 */
@@ -34,27 +35,13 @@ struct Car {
     u8 pad172[0x190 - 0x172];
 };
 
-extern u8 gUnk_0203DD38;
 extern struct Car gUnk_0203D520[];
-extern u8 gUnk_020390EC;
-extern u8 gUnk_0203D4E0;
-extern u8 gUnk_0203DDFC;
-extern u32 gUnk_0203D4DC;
-extern u8 gUnk_0203DCF4;
-extern u8 gUnk_0203DDE4;
 extern s32 gUnk_0203DD4C;
 extern s32 gUnk_0203DD0C;
-extern s32 gUnk_0203D4E4;
 extern s32 gUnk_0203DE04;
 extern s32 gUnk_0203DCF8;
 extern s32 gUnk_0203DE08;
 extern s32 gUnk_0203DE0C;
-extern s32 gUnk_0203D51C;
-extern s32 gUnk_0203D4F4;
-extern s32 gUnk_0203DDF4;
-extern s32 gUnk_0203DD2C;
-extern s32 gUnk_0203DE10;
-extern s16 gUnk_0200C3E8[];
 
 
 void sub_083405F0(struct Car *car, u8 b)

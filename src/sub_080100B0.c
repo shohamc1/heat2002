@@ -1,8 +1,8 @@
 #include "global.h"
 #include "functions.h"
 #include "m4a.h"
+#include "variables.h"
 
-extern u8 gOptions[];
 
 
 void sub_080100B0(void)

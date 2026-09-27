@@ -2,14 +2,12 @@
 #include "gba/defines.h"
 #include "gba/io_reg.h"
 #include "gba/macro.h"
+#include "variables.h"
 
 void DummyIntr(void);
 void IntrMain(void);
 void VBlankIntr(void);
 
-extern u32 gUnk_02000580[];
-extern u32 gUnk_03007FFC;
-extern u32 gUnk_02000590[];
 
 void ClearVBlankFlag(void);
 

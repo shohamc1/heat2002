@@ -1,7 +1,7 @@
 #include "global.h"
 #include "functions.h"
+#include "variables.h"
 
-extern u8 gUnk_02025370;
 
 
 void sub_08004A50(u8 *a, u32 b, u32 c, u8 d)

@@ -1,6 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern u8 gUnk_0202EF20[]; /* 0x0202EF20 */
 
 u32 sub_0800F190(void)
 {

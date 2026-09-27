@@ -1,6 +1,6 @@
 #include "global.h"
 #include "functions.h"
-extern u16 gUnk_0202F040[];
+#include "variables.h"
 u32 IsSaveValid(void)
 {
     InitEeprom();

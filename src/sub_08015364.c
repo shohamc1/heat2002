@@ -2,6 +2,7 @@
 #include "gba/io_reg.h"
 #include "functions.h"
 #include "m4a.h"
+#include "variables.h"
 
 extern const u8 gUnk_0829F590[];
 extern const u8 gUnk_0829F59C[];
@@ -19,51 +20,19 @@ struct UnkCar {
     u8 filler170[0x190 - 0x170];
 };
 
-extern u8 gNumLaps;
-extern u8 gNumLinkPlayers[];
-extern u8 gUnk_020020C0;
-extern u8 gTrackId;
-extern u32 gUnk_020020D4;
-extern u8 gIsLinkRace;
-extern u8 gUnk_020020F0;
-extern u8 gUnk_02002098;
-extern u8 gUnk_020021C4;
-extern u8 gUnk_020021BC;
 extern u16 gKeysHeld;
-extern u16 gKeysPressed;
 extern u8 gUnk_0202A510[];
-extern u8 gUnk_0202A514;
 extern struct UnkCar gCars[];
 extern u8 gUnk_0202A6B2;
-extern u8 gUnk_0202CAD4;
-extern u8 gUnk_0202CBC4;
-extern u8 gUnk_0202CBDC;
-extern u8 gUnk_0202CDA8[];
 extern u8 gUnk_0202CD9C[];
 extern u8 gUnk_0202CDC0[];
-extern u16 gUnk_0202ED78[];
-extern u8 gUnk_0202ED70;
-extern u8 gUnk_0202EDD0;
 extern s32 gUnk_0202EDD4;
-extern u8 gUnk_0202EDD8;
-extern u8 gUnk_0202EEC8;
-extern u8 gUnk_0202EEB0;
 extern u8 gUnk_0202EED4;
-extern u8 gUnk_0202EEE4;
-extern u8 gUnk_0202EEF4;
 extern u8 gUnk_0202EEF8;
-extern u8 gOptions[];
-extern u8 gUnk_0202EF08[];
-extern u8 gUnk_0202EF10;
-extern u8 gUnk_0202EF20[];
 extern u8 gUnk_0202EF8C;
-extern u8 gUnk_0202EFB0;
 extern s8 gUnk_0202EF60[];
 extern u8 *gCarOrder;
 extern u8 gUnk_0202F020;
-extern u8 gUnk_0202F024;
-extern u8 gUnk_0202F030;
-extern u8 gUnk_0202F034;
 extern u8 gUnk_083FDA6E[];
 extern u8 gUnk_083FDE1C[];
 extern u8 gUnk_083FDE2D[];
