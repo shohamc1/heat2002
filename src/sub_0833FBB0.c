@@ -1,4 +1,5 @@
 #include "global.h"
+#include "variables.h"
 
 struct SoundSlot0833F {
     /* +0x00 */ u32 unk00;
@@ -8,14 +9,13 @@ struct SoundSlot0833F {
     /* +0x0C */ u8 unk0C[8];
 };
 
-extern struct SoundSlot0833F gUnk_0203B870[]; /* 0x0203B870 */
 
 struct SoundSlot0833F *sub_0833FBB0(void *a)
 {
     struct SoundSlot0833F *p;
     u32 i;
 
-    p = gUnk_0203B870;
+    p = (struct SoundSlot0833F *)gUnk_0203B870;
     for (i = 0; i != 0x18; i++, p++)
     {
         if (p->unk08 == a)
@@ -25,7 +25,7 @@ struct SoundSlot0833F *sub_0833FBB0(void *a)
         }
     }
 
-    p = gUnk_0203B870;
+    p = (struct SoundSlot0833F *)gUnk_0203B870;
     for (i = 0; i != 0x18; i++, p++)
     {
         if (p->unk00 == 0)

@@ -1,7 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern u16 *gUnk_0202CC68;
-extern u16 *gUnk_0202CC6C;
 
 u16 *GetWallListAt(s32 x, s32 y)
 {

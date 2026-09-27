@@ -6,8 +6,6 @@
 #include "m4a.h"
 #include "variables.h"
 
-extern u16 gUnk_0202EF40[];
-extern s8 gUnk_0202EF8C;
 extern u8 gUnk_083FDE78[];
 
 u8 LinkTrackSelect(void)
@@ -39,7 +37,7 @@ u8 LinkTrackSelect(void)
     WaitForVBlank();
     REG_DISPCNT = 0xAA << 5;
     sel = 0x40;
-    gUnk_0202EF8C = 0;
+    (*(s8 *)&gUnk_0202EF8C) = 0;
     prev = 0;
     do {
         ClearOamBuffer();
@@ -51,33 +49,33 @@ u8 LinkTrackSelect(void)
         }
         k = (k ^ gUnk_020020A0[0]) & gUnk_020020A0[0];
         if (k & DPAD_RIGHT) {
-            gUnk_0202EF8C++;
-            if (gUnk_0202EF8C == 7)
-                gUnk_0202EF8C = 8;
-            if (gUnk_0202EF8C > 0x0B)
-                gUnk_0202EF8C = 0x0B;
+            (*(s8 *)&gUnk_0202EF8C)++;
+            if ((*(s8 *)&gUnk_0202EF8C) == 7)
+                (*(s8 *)&gUnk_0202EF8C) = 8;
+            if ((*(s8 *)&gUnk_0202EF8C) > 0x0B)
+                (*(s8 *)&gUnk_0202EF8C) = 0x0B;
         }
         if (k & DPAD_LEFT) {
-            gUnk_0202EF8C--;
-            if (gUnk_0202EF8C == 7)
-                gUnk_0202EF8C = 6;
-            if (gUnk_0202EF8C == -1)
-                gUnk_0202EF8C = 0;
+            (*(s8 *)&gUnk_0202EF8C)--;
+            if ((*(s8 *)&gUnk_0202EF8C) == 7)
+                (*(s8 *)&gUnk_0202EF8C) = 6;
+            if ((*(s8 *)&gUnk_0202EF8C) == -1)
+                (*(s8 *)&gUnk_0202EF8C) = 0;
         }
-        if (gUnk_0202EF8C != prev) {
+        if ((*(s8 *)&gUnk_0202EF8C) != prev) {
             m4aSongNumStart(8);
-            prev = gUnk_0202EF8C;
+            prev = (*(s8 *)&gUnk_0202EF8C);
         }
         WaitForVBlank();
         if (gLinkPlayerId[0] == 0)
 /* old prototype u8 DrawTrackSelect(s8, u8): the s8 parameter keeps the
              sign-extending ldrsb of gUnk_0202EF8C */
-            ((u8 (*)(s8, u8))DrawTrackSelect)((s8)gUnk_0202EF8C, 1);
+            ((u8 (*)(s8, u8))DrawTrackSelect)((s8)(*(s8 *)&gUnk_0202EF8C), 1);
         else
-            ((u8 (*)(s8, u8))DrawTrackSelect)((s8)gUnk_0202EF8C, 1);
+            ((u8 (*)(s8, u8))DrawTrackSelect)((s8)(*(s8 *)&gUnk_0202EF8C), 1);
         if (k & A_BUTTON) {
             m4aSongNumStart(9);
-            gUnk_0202EF8C = gUnk_083FDE78[gUnk_0202EF8C];
+            (*(s8 *)&gUnk_0202EF8C) = gUnk_083FDE78[(*(s8 *)&gUnk_0202EF8C)];
             sel = 1;
         }
         if (k & B_BUTTON)

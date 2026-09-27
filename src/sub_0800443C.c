@@ -2,7 +2,6 @@
 #include "gba/defines.h"
 #include "variables.h"
 
-extern u32 gUnk_02024820;
 
 void ResetSpriteQueues(void)
 {

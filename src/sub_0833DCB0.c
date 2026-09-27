@@ -2,14 +2,8 @@
 #include "functions.h"
 #include "variables.h"
 
-extern u32 gUnk_02038F70[];
-extern u32 gUnk_02038FB0[];
 extern u32 gUnk_02038FF0[];
 extern u32 gUnk_02039040[];
-extern u32 gUnk_0200CF1C[];
-extern u32 gUnk_0200CF34[];
-extern u32 gUnk_020390AC;
-extern u8 gUnk_020390D0;
 
 void sub_0833DA34(void);
 u32 sub_0833C874(void);
@@ -36,8 +30,8 @@ u8 sub_0833DCB0(void)
             gUnk_02039134 = 0;
             if (sub_0833C874() != 0) {
                 sub_0833EE88(sub_0833BD94(0), 0xA, 1);
-                sub_0833EE88(gUnk_0200CF1C, 0xC, 1);
-                sub_0833EE88(gUnk_0200CF34, 0xD, 1);
+                sub_0833EE88((u32 *)gUnk_0200CF1C, 0xC, 1);
+                sub_0833EE88((u32 *)gUnk_0200CF34, 0xD, 1);
                 sub_0833AE90();
                 done = 0;
                 do {
@@ -53,7 +47,7 @@ u8 sub_0833DCB0(void)
                 return 1;
             }
             sub_0833DC14();
-            gUnk_020390AC = gUnk_020390AC + 1;
+            (*(u32 *)&gUnk_020390AC) = (*(u32 *)&gUnk_020390AC) + 1;
             gUnk_020390D0 = v;
           spin:
             if (gUnk_020390D0 == 0)

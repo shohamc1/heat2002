@@ -1,6 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern u32 gUnk_02025E00[];
 
 u8 RequestObjPalette(u32 a)
 {

@@ -52,8 +52,6 @@ struct Pt {
     s32 y;
 };
 
-extern struct WallRec *gUnk_0202CC40;
-extern struct Pt *gUnk_0202CC44;
 
 
 s32 TestCornersVsWalls(struct Corner *corn, struct Box *box, struct Box *cbox,

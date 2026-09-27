@@ -1,7 +1,7 @@
 #include "global.h"
 #include "functions.h"
+#include "variables.h"
 
-extern u16 *gUnk_020251B8;
 extern u8 gUnk_0200D0C0[];
 
 
@@ -10,7 +10,7 @@ void sub_08340DB8(u32 a1)
     u16 *base;
     u16 *p;
 
-    base = gUnk_020251B8;
+    base = (u16 *)*(u32 *)&gUnk_020251B8;
     p = base + 0x1CA;
     /* sub_0833E36C: this file's old prototype took
        (u16 *, u32); the matched definition narrows idx

@@ -5,7 +5,6 @@
 #include "variables.h"
 
 extern u8 gUnk_0203E110;
-extern u16 gUnk_0203E160[];
 
 void sub_08344968(void);
 void sub_08344B74(void);

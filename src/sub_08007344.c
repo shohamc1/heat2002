@@ -1,5 +1,6 @@
 #include "global.h"
 #include "gba/defines.h"
+#include "variables.h"
 
 extern u32 gUnk_083671F0[];
 extern u32 gUnk_083671F8[];
@@ -7,13 +8,6 @@ extern u32 gUnk_08367228[];
 extern u32 gUnk_08367268[];
 extern u32 gUnk_08367290[];
 extern u32 gUnk_083672B0[];
-extern u32 gUnk_02025DB0[];
-extern u32 gUnk_02025400[];
-extern u32 gUnk_020255E0[];
-extern u32 gUnk_02025AE0[];
-extern u32 gUnk_02025C70[];
-extern u32 gUnk_02025860[];
-extern u32 gUnk_02025E00[];
 
 void sub_08007304(u32 a, u16 *b, u32 *c);
 

@@ -22,10 +22,6 @@ struct Car {
     s32 unk154;
 };
 
-extern s32 gUnk_0202CC24;
-extern s32 gUnk_0202CC34;
-extern s32 gUnk_0202CC38;
-extern s32 gUnk_0202CC3C;
 
 s32 sub_0800BBFC(s32 a, s32 b, s32 c, s32 d, s32 e);
 void sub_0800BD44(s32 a, s32 b, s32 c, struct Car *d);
@@ -61,8 +57,8 @@ void sub_0800BEA4(struct Car **arr, s32 a1, s32 a2, s32 a3, u8 a4)
     car->unk1C = car->posZ;
     if (sub_0800C358(car, 0) == -1)
         return;
-    x = sub_0800BBFC(gUnk_0202CC24, gUnk_0202CC38, car->unkF4, gUnk_0202CC3C,
-                     gUnk_0202CC34);
+    x = sub_0800BBFC((*(s32 *)&gUnk_0202CC24), (*(s32 *)&gUnk_0202CC38), car->unkF4,
+                     (*(s32 *)&gUnk_0202CC3C), (*(s32 *)&gUnk_0202CC34));
     x -= 5000;
     if (x < 0)
         x += car->unk154;

@@ -9,9 +9,7 @@ struct Car {
     s32 unk98;
 };
 
-extern u32 gUnk_020251B8[];
 extern u8 gUnk_0203B6A4;
-extern u8 gUnk_02021594[];
 
 void sub_0833E94C(struct Car *p)
 {

@@ -1,8 +1,8 @@
 #include "global.h"
 #include "functions.h"
+#include "variables.h"
 
 extern u32 gUnk_083FEF04[];
-extern s32 gUnk_02002148;
 
 u8 WorldToScreen(s32 x, s32 y, s32 *out);
 
@@ -20,7 +20,7 @@ void sub_0800C21C(s32 x, s32 y, u8 c)
     p = sub_0800767C((u32)gUnk_083FEF04);
     if (p == 0)
         return;
-    if (gUnk_02002148 > 0xFF) {
+    if ((*(s32 *)&gUnk_02002148) > 0xFF) {
         a = (out[1] & 0xFF) | ((out[0] & 0x1FF) << 16) | 0x100;
         b = p[4] | (c << 12);
     }

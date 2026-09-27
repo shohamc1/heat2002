@@ -1,4 +1,5 @@
 #include "global.h"
+#include "variables.h"
 
 struct Car {
     s32 unk00;                          /* 0x00 */
@@ -26,7 +27,13 @@ struct Car {
     s32 unk148;                         /* 0x148 */
 };
 
-struct Track {
+/* The 0x18-byte track segment record gUnk_0203B860 points at; local
+   twin of sub_0800A4D4.c's struct TrackSeg. It shares its old tag name
+   with include/structs.h's 0x64-byte struct Track but not its layout or
+   stride, so it keeps a local tag. The gUnk_0203B860 extern
+   (variables.h) is typed struct Track *; the casts below are pointer
+   casts only and emit nothing. */
+struct TrackSeg {
     s32 f0;
     s32 f4;
     s32 f8;
@@ -35,19 +42,18 @@ struct Track {
     u8 pad12[0x18 - 0x12];
 };
 
-extern struct Track *gUnk_0203B860;
 
 void sub_08341F64(struct Car *p)
 {
-    struct Track *e;
+    struct TrackSeg *e;
 
-    e = &gUnk_0203B860[p->unk38];
+    e = &((struct TrackSeg *)gUnk_0203B860)[p->unk38];
     p->unk00 = (e->f0 + e->f8) << 15;
     p->unk08 = (e->f4 + e->fC) << 15;
     /* Dead since this revision dropped sub_0800A4D4's delta block, but the
        branch still splits the blocks that local-alloc and reload see. */
     if (e->unk10 == 1)
-        e = gUnk_0203B860;
+        e = (struct TrackSeg *)gUnk_0203B860;
     else
         e = e + 1;
     p->unk34 = p->unk36;
@@ -60,7 +66,7 @@ void sub_08341F64(struct Car *p)
     p->unk128 = p->unk34;
     p->unk130 = 0;
     p->unk4E = 1;
-    e = &gUnk_0203B860[p->unk38];
+    e = &((struct TrackSeg *)gUnk_0203B860)[p->unk38];
     if (e->unk10 == 1)
         p->unk4D = 0;
     else

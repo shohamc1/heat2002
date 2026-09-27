@@ -1,7 +1,7 @@
 #include "global.h"
 #include "car.h"
+#include "variables.h"
 
-extern struct Car *gCarOrder[];
 
 void SortCarsByPoints(void)
 {
@@ -14,12 +14,12 @@ void SortCarsByPoints(void)
 
     i = 0;
     do {
-        gCarOrder[i] = &gCars[i];
+        ((struct Car **)gCarOrder)[i] = &gCars[i];
         i++;
     } while (i != 0x18);
 outer:
     swapped = 0;
-    p = gCarOrder;
+    p = (struct Car **)gCarOrder;
     i = 0;
     off = 0x164;
     do {

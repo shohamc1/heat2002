@@ -10,7 +10,6 @@
 #include "global.h"
 #include "variables.h"
 
-extern u16 gUnk_0203E160[][4];
 extern u16 gUnk_02039188[];
 
 u16 sub_0833C70C(u16 keys);
@@ -34,8 +33,8 @@ s32 sub_0833C874(void)
     keys = ~*(u16 *)0x04000130;
     keys = sub_0833C70C(keys);
     for (i = 0; i < gUnk_020390BC[0]; i++) {
-        gUnk_0203E160[i][0] = 0;
-        gUnk_02039188[i] = 0;
+        *(u16 *)((u8 *)gUnk_0203E160 + i * 8) = 0;
+        *(u16 *)((u8 *)gUnk_02039188 + i * 2) = 0;
     }
     phase = 0;
     done = 0;
@@ -73,7 +72,7 @@ send:
                 ;
         }
         for (i = 0; i < gUnk_020390BC[0]; i++)
-            recv[i] = gUnk_0203E160[i][0];
+            recv[i] = *(u16 *)((u8 *)gUnk_0203E160 + i * 8);
         if (phase == 0) {
             n = 0;
             for (i = phase; i < gUnk_020390BC[0]; i++) {

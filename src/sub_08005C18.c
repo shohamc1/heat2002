@@ -1,7 +1,7 @@
 #include "global.h"
 #include "functions.h"
 #include "variables.h"
-extern u32 gUnk_08364B08[];
+#include "data.h"
 extern u8 gUnk_0806C76C[];
 void DrawRacePosition(s32 arg)
 {

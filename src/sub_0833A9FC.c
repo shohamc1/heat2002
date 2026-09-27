@@ -1,16 +1,10 @@
 #include "global.h"
 #include "functions.h"
 #include "m4a.h"
+#include "variables.h"
 
 
-struct Unk0801DA90
-{
-    u32 unk0;
-    u32 unk4;
-    u32 unk8;
-};
 
-extern struct Unk0801DA90 gUnk_0200CA74[];
 
 
 void sub_0833A9FC(void)

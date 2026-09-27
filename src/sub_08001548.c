@@ -3,13 +3,13 @@
 #include "gba/m4a_internal.h"
 #include "functions.h"
 #include "m4a.h"
+#include "variables.h"
 
 void ply_note(void);
 void sub_080025B8(void);
 
 /* SoundInit */
 
-extern struct SoundInfo *gUnk_03007FF0;
 
 
 void sub_08001548(struct SoundInfo *soundInfo)

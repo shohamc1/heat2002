@@ -5,45 +5,15 @@
 #include "functions.h"
 #include "variables.h"
 
-struct Track {
-    /* +0x00 */ u32 unk00;
-    /* +0x04 */ u32 unk04;
-    /* +0x08 */ u32 unk08;
-    /* +0x0C */ u16 *unk0C;
-    /* +0x10 */ u16 *unk10;
-    /* +0x14 */ u32 unk14;
-    /* +0x18 */ u32 unk18;
-    /* +0x1C */ u32 unk1C;
-    /* +0x20 */ u16 *unk20;
-    /* +0x24 */ u16 *unk24;
-    /* +0x28 */ u32 unk28;
-    /* +0x2C */ u32 unk2C;
-    /* +0x30 */ u32 unk30;
-    /* +0x34 */ u32 unk34;
-    /* +0x38 */ u32 unk38;
-    /* +0x3C */ u32 unk3C;
-    /* +0x40 */ u32 unk40;
-    /* +0x44 */ u16 *unk44;
-    /* +0x48 */ u32 unk48;
-    /* +0x4C */ u8 filler4C[0x5C - 0x4C];
-    /* +0x5C */ u16 unk5C;
-    /* +0x5E */ u16 unk5E;
-    /* +0x60 */ u16 unk60;
-    /* +0x62 */ u8 filler62[0x64 - 0x62];
-};
+/* struct Track comes from include/structs.h via variables.h; it is the
+   record type of gUnk_020251BC, also from variables.h. */
 
 extern u16 gUnk_02022428[];
-extern struct Track gUnk_020251BC[];
 extern u16 gUnk_02021394[];
 extern u32 gUnk_02039288;
-extern u16 *gUnk_02039228;
-extern u16 *gUnk_02039268;
 extern u32 gUnk_02039224;
-extern u16 *gUnk_02039238;
-extern u16 *gUnk_0203922C;
 extern u32 gUnk_020392A0;
 extern u32 gUnk_02039280;
-extern u32 gUnk_0203929C;
 
 void sub_0833CCD4(u8 idx);
 void sub_0833D31C(s32 arg0, u16 *src);
@@ -74,7 +44,7 @@ void sub_0833CD2C(u32 idx)
     gUnk_0203922C = gUnk_020251BC[idx].unk10;
     gUnk_020392A0 = gUnk_020251BC[idx].unk3C;
     gUnk_02039280 = gUnk_020251BC[idx].unk40;
-    gUnk_0203929C = gUnk_020251BC[idx].unk48;
+    gUnk_0203929C = (u8 *)gUnk_020251BC[idx].unk48;
     if (idx == 0)
         gUnk_02039220[0] = 0x7D;
     if (idx == 1)

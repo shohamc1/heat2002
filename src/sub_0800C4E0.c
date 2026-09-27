@@ -1,7 +1,7 @@
 #include "global.h"
 #include "variables.h"
+#include "data.h"
 
-extern s32 gUnk_083672F0[];
 
 struct UnkStruct0800C4E0 {
     u8 pad0[2];
@@ -22,7 +22,7 @@ s32 sub_0800C4E0(struct UnkStruct0800C4E0 *a)
     s32 x;
     s32 y;
 
-    t = gUnk_083672F0;
+    t = (s32 *)gUnk_083672F0;
     idx = gTrackId * 8 + a->pitStall;
     d = t[idx * 2];
     pp = (s32 *)((idx * 2 + 1) * 4 + (u32)t);

@@ -1,10 +1,10 @@
 #include "global.h"
+#include "variables.h"
 
-extern s16 gUnk_03000800[];
 
 void sub_083641D8(u16 x, u16 y)
 {
-    s16 *g = gUnk_03000800;
+    s16 *g = (s16 *)gUnk_03000800;
     s16 *gg;
     u16 *p;
     u16 *q;

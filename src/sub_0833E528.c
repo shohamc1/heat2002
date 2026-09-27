@@ -12,7 +12,6 @@ struct Unk0833E528Ent
 };
 
 extern u32 gUnk_02024EE8[];
-extern u32 gUnk_02024F50[];
 
 struct Unk0833E528Ent *sub_0833FBB0(void *a, u16 *b);
 u32 sub_0833FD78(u32 a);
@@ -33,7 +32,7 @@ void sub_0833E528(u32 a0)
         bits = local[1] & 0xFF;
         bits |= (local[0] & 0x1FF) << 16;
         bits |= 0x80000000;
-        v = ret->field_10 | ((sub_0833FD78(gUnk_02024F50) << 24) >> 12);
+        v = ret->field_10 | ((sub_0833FD78((u32 *)gUnk_02024F50) << 24) >> 12);
         bits |= 0x100;
         sub_0833D6A0(bits, v);
     }

@@ -1,6 +1,7 @@
 #include "global.h"
 #include "functions.h"
 #include "data.h"
+#include "variables.h"
 
 
 struct EntEFA0 {
@@ -10,7 +11,12 @@ struct EntEFA0 {
     u8 f3;
 };
 
-extern struct EntEFA0 gUnk_0202EFA0[];
+/* gUnk_0202EFA0 is u8[] in variables.h; the wrapper keeps the array
+   subscript expansion for the order-sensitive uses below. */
+struct EFA0s4 {
+    struct EntEFA0 r[4];
+};
+
 extern u8 gUnk_0829F348[];
 
 
@@ -27,9 +33,9 @@ void sub_08012228(void)
     GetString(0xC4);
     ((void (*)(void))sub_080065A8)();
     for (i = 0; i != 4; i++) {
-        flag = gUnk_0202EFA0[i].f2 != -1;
+        flag = ((struct EFA0s4 *)gUnk_0202EFA0)->r[i].f2 != -1;
         DrawText((u8 *)(GetString(i + 0x53)), 1, 2 * i + 7, flag);
-        v = gUnk_0202EFA0[i].f2;
+        v = ((struct EFA0s4 *)gUnk_0202EFA0)->r[i].f2;
         if (v == 0) {
             DrawText((u8 *)(GetString(0x58)), 0x14, 2 * i + 7, flag);
         } else if (v == 1) {

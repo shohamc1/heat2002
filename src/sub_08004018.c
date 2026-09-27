@@ -1,8 +1,6 @@
 #include "global.h"
 #include "variables.h"
 
-extern s32 gUnk_02022E20[];
-extern s32 gUnk_02023A20[];
 
 void BeginFadeToBrightenedPalette(s32 arg0, u16 *src)
 {
@@ -14,7 +12,7 @@ void BeginFadeToBrightenedPalette(s32 arg0, u16 *src)
     s32 scaled;
 
     i = 0;
-    base = gUnk_02022E20;
+    base = (s32 *)gUnk_02022E20;
     out = gUnk_02023A20;
     do {
         x = *src++;

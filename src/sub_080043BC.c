@@ -1,7 +1,6 @@
 #include "global.h"
 #include "variables.h"
 
-extern u32 gCamera[];
 
 void SmoothCamera(void)
 {

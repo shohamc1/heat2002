@@ -1,6 +1,5 @@
 #include "global.h"
 #include "variables.h"
-extern u8 gUnk_0202EF60[];
 void InitNewSaveData(void)
 {
     u8 i;

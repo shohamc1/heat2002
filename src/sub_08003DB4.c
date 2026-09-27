@@ -1,6 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern u32 gUnk_02022E20[]; /* 0x02022E20 */
 
 void LoadFadePalette(u16 *r4)
 {

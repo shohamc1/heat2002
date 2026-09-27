@@ -4,7 +4,6 @@
 #include "variables.h"
 #include "car.h"
 
-extern struct Car *gCarOrder[];
 extern u8 gUnk_0829F2F0[];
 
 
@@ -22,7 +21,7 @@ void sub_0801137C(void)
     ((void (*)(u32))sub_08006734)(gUnk_083FDE18[0]);
     GetString(0x5B);
     ((void (*)(void))sub_080065A8)();
-    p = gCarOrder;
+    p = (struct Car **)gCarOrder;
     for (i = 0; i != gNumLinkPlayers[0]; i++) {
         car = *p;
         SplitMilliseconds(car->unk16C, &q1, &q2, &q3);

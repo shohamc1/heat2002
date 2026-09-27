@@ -2,8 +2,8 @@
 #include "functions.h"
 #include "variables.h"
 #include "car.h"
+#include "data.h"
 
-extern u32 gUnk_08364B08[];
 
 void DrawTime(u32 a, u16 b, u16 c, u16 d);
 void sub_08009FA0(u8 a, u32 b, u8 c);

@@ -4,13 +4,8 @@
 
 extern u16 gUnk_02022DF4;
 
-struct Track {
-    /* +0x00 */ u32 unk00;
-    /* +0x04 */ u32 unk04;
-    /* +0x08 */ u8 filler08[100 - 8];
-};
-
-extern struct Track gUnk_08364B0C[];
+/* struct Track and gUnk_08364B0C come from include/structs.h via
+   variables.h. */
 
 /* Each case carries its own copy of the body so expand_case counts 12
    distinct labels and emits a jump table; cross-jumping then merges the

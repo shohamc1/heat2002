@@ -3,19 +3,13 @@
 #include "gba/compat.h"
 #include "functions.h"
 #include "m4a.h"
+#include "variables.h"
 
 /* The cancelling offset preserves the initial base-to-p copy.
    Assigning off = 4 inside the loop keeps base + 4 out of the preheader. */
 
-struct Unk0801DA90
-{
-    u32 unk0;
-    u32 unk4;
-    u8 unk8;
-    u8 filler9[3];
-};
+#include "structs.h"
 
-extern struct Unk0801DA90 gUnk_0200CA74[];
 
 void sub_08339C0C(void);
 
@@ -44,7 +38,7 @@ void sub_0833A830(void)
     loop:
         off = 4;
         x = p->unk0;
-        sub_0833AF48((struct MusicPlayerInfo *)x,(struct MusicPlayerTrack *)(*(u32 *)(i + (base + off))), p->unk8);
+        sub_0833AF48((struct MusicPlayerInfo *)x,(struct MusicPlayerTrack *)(*(u32 *)(i + (base + off))), (*(u8 *)&p->unk8));
         *(u32 *)(x + 0x18) = EWRAM_START + 0x39030;
         p++;
         i += 12;

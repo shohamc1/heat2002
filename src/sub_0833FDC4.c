@@ -1,13 +1,7 @@
 #include "global.h"
 #include "functions.h"
+#include "variables.h"
 
-extern u8 gUnk_0203C220[];
-extern u8 gUnk_0203B870[];
-extern u8 gUnk_0203BA50[];
-extern u8 gUnk_0203BF50[];
-extern u8 gUnk_0203C0E0[];
-extern u8 gUnk_0203BCD0[];
-extern u8 gUnk_0203C270[];
 extern s32 gUnk_0203C334;
 extern s32 gUnk_0203C330;
 
@@ -106,7 +100,7 @@ void sub_0833FDC4(void)
         p += 0x14;
     } while (i != 0x20);
 
-    p = gUnk_0203C270;
+    p = (u8 *)gUnk_0203C270;
     i = 0;
     q = &gUnk_0203C334;
     do {

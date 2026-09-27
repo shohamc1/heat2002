@@ -1,6 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern u32 gUnk_02025C70[];   /* 16 records, 0x14 bytes each */
 
 u32 *sub_08007630(u32 p)
 {

@@ -10,7 +10,6 @@ struct UnkStruct080043F8 {
     u32 velZ;
 };
 
-extern u32 gCamera[]; /* 0x02002100 */
 
 void SetCameraTarget(struct UnkStruct080043F8 *arg0)
 {

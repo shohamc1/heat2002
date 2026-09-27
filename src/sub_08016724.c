@@ -3,7 +3,6 @@
 #include "variables.h"
 #include "car.h"
 extern u16 gUnk_0202F080[];
-extern u8 gUnk_0202F020;
 void LoadSeason(void)
 {
     struct Car *q;
@@ -13,7 +12,7 @@ void LoadSeason(void)
     StopAllSongsAndVSyncOff();
     ReadSaveBlocks(0x40, 0xF0);
     p = gUnk_0202F080;
-    gUnk_0202F020 = *p++;
+    (*(u8 *)&gUnk_0202F020) = *p++;
     gUnk_0202F024 = *p >> 8;
     gUnk_0202EEC8 = *p++;
     gUnk_0202F034 = *p++;

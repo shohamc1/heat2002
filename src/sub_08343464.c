@@ -3,7 +3,6 @@
 #include "variables.h"
 
 extern u16 *gUnk_02039264;
-extern u8 *gUnk_0203929C;
 u8 sub_08343464(s32 x, s32 y)
 {
   int new_var2;

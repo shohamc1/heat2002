@@ -1,13 +1,13 @@
 #include "global.h"
+#include "variables.h"
 
-extern u32 gUnk_0203ACE0[];
 void sub_0833D638(void);
 
 void sub_0833D680(void)
 {
     u32 i = 0;
     u32 v = 0xAA;
-    u32 *p = gUnk_0203ACE0;
+    u32 *p = (u32 *)gUnk_0203ACE0;
 
     do {
         *p = v;

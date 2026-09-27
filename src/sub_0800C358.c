@@ -1,9 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern u32 gUnk_0202CC24[];
-extern u32 gUnk_0202CC34[];
-extern u32 gUnk_0202CC38[];
-extern u32 gUnk_0202CC3C[];
 
 struct Unk0800C358 {
     u8 unk00[0x18];

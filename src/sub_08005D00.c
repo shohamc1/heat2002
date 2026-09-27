@@ -1,9 +1,9 @@
 #include "global.h"
 #include "functions.h"
+#include "data.h"
 
 extern u8 gUnk_0806C770[];
 extern u8 gUnk_0806C780[];
-extern u32 gUnk_08364B08[];
 
 
 void DrawLapCounter(s32 a, s32 b)

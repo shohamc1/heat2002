@@ -3,7 +3,6 @@
 #include "variables.h"
 #include "car.h"
 
-extern u8 gUnk_0202F020;
 extern u16 gUnk_0202F04A[];
 
 void SaveSeason(void)
@@ -17,7 +16,7 @@ void SaveSeason(void)
     p = gUnk_0202F04A;
     *p = 1;
     p += 27;
-    *p++ = gUnk_0202F020;
+    *p++ = (*(u8 *)&gUnk_0202F020);
     *p++ = (gUnk_0202F024 << 8) | gUnk_0202EEC8;
     *p++ = gUnk_0202F034;
     *p++ = gUnk_0202EDD8;

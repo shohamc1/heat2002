@@ -1,6 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern u32 gCamera[];
 
 u32 WorldToScreen(s32 x, s32 y, s32 *out)
 {

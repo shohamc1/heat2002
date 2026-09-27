@@ -1,7 +1,7 @@
 #include "global.h"
 #include "functions.h"
+#include "variables.h"
 
-extern u32 gCamera[];
 
 
 void sub_08007A7C(s32 a1, s32 a2, u32 a3, u32 a4, u8 a5)

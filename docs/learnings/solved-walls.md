@@ -1079,6 +1079,32 @@ promotion, or a shift. (3) A load-WIDTH difference (s8 vs u8 field,
 u32 vs `u16 *` slot) always needs the cast. Longest-first ordering stops
 `->unk14` renames clobbering `->unk140`/`->unk14C`.
 
+**Variant:** phase 4's extern unification (2026-09-27, 112 variables)
+found two more rules. (1) **Address-context folding**: every spelling every spelling
+that computes an element address — `((T *)arr)[i]`, `*(T *)&arr[i]`,
+`*(T *)((u8 *)arr + k*i)` — funnels into `pointer_int_sum`'s distributive
+law (c-typeck.c ~2663) plus `expand_expr`'s EXPAND_SUM folding, so a
+constant index lands in the literal-pool word (`=arr+0x4A6`) and the
+base+offset `ldr [rX, #imm]` disappears. The original `arr[i]` survives
+because `get_inner_reference` expands ARRAY_REF offsets in EXPAND_NORMAL
+context, materialising base and offset separately. When a view-cast must
+reproduce that, hoist the byte offset into a `u32 off` local (its
+assignment is a normal-context MODIFY, and the local is opaque to every
+SUM-context fold) and cast the base: `*(u16 *)((u8 *)arr + off)`; for a
+struct view over a flat array, wrap it — `struct S { struct E r[N]; }`
+and `((struct S *)arr)->r[i].f` keeps the subscript expansion where a
+direct cast folds constant indices. (2) **Per-iteration pointer
+reloads**: a loop that read an extern POINTER variable (`gP[i] = 0`)
+reloads `gP`'s word every iteration; under an array canonical the
+equivalent load gets hoisted out of the loop. Write the read as
+`(*(volatile u32 *)&gP[0])` — one volatile word read inside the loop —
+and the reload returns (`sub_0800DFCC`, `sub_0800524C`, `sub_0833DC7C`,
+`TitleScreen`). (3) A struct-*array* extern in a header above the
+files' local struct definitions changes their codegen (the
+extern-headers-plan trap); complete the tag in a shared header first —
+`include/structs.h` holds `struct Track` (0x64) and the m4a table
+structs, exactly as `car.h` holds `struct Car`.
+
 ### 32. A memory load the target puts before a constant
 
 You removed `volatile` from an `extern` (or moved the declaration to a

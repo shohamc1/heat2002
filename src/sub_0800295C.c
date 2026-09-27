@@ -5,17 +5,13 @@
 #include "variables.h"
 #include "car.h"
 
-extern s32 gUnk_0200209C;          /* 0x0200209C */
-extern u32 gCamera[];        /* 0x02002100 */
 extern u8 gUnk_02002144;           /* 0x02002144 */
-extern u32 gUnk_02002148;          /* 0x02002148 */
 extern u8 gUnk_02002150[];         /* 0x02002150 */
 extern u8 gUnk_02002160[];         /* 0x02002160 */
 extern u32 gUnk_020021D0[];        /* 0x020021D0 */
 extern u8 gUnk_020021EC[];         /* 0x020021EC */
 extern u8 gUnk_020021F0;           /* 0x020021F0 */
 extern u8 gUnk_02001F60[];         /* 0x02001F60 */
-extern u8 gUnk_0202A6E0[];         /* 0x0202A6E0 */
 extern u8 gUnk_08364ADC;           /* 0x08364ADC */
 extern u32 gUnk_08364AE0[];        /* 0x08364AE0 */
 extern u8 gUnk_08364AF4[];         /* 0x08364AF4 */

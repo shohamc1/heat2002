@@ -2,7 +2,6 @@
 #include "functions.h"
 #include "variables.h"
 
-extern u16 gUnk_0202EF40[];
 
 
 u8 sub_08011528(void)

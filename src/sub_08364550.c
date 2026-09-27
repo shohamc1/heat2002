@@ -1,5 +1,6 @@
 #include "global.h"
 #include "gba/io_reg.h"
+#include "variables.h"
 
 struct CommRegs
 {
@@ -14,7 +15,6 @@ struct CommRegs
     s32 index;  /* +0x14 */
 };
 
-extern struct CommRegs gUnk_03000C00;
 
 u32 sub_08364550(u32 *a1)
 {

@@ -2,7 +2,6 @@
 #include "gba/io_reg.h"
 #include "variables.h"
 
-extern u16 gKeysHeld;     /* 0x020005C8, defined in symbols.ld */
 
 void ReadKeys(void)
 {

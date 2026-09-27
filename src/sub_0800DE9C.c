@@ -1,6 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern s16 gUnk_0202E960[];
 
 void sub_0800DE9C(u16 x, u16 y)
 {

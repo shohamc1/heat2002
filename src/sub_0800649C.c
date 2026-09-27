@@ -1,7 +1,6 @@
 #include "global.h"
 #include "data.h"
 
-extern u16 *gUnk_08364B08;
 
 void sub_0800649C(u8 *str, u32 x, u32 y)
 {
@@ -11,7 +10,7 @@ void sub_0800649C(u8 *str, u32 x, u32 y)
     u32 v;
     u32 w;
 
-    dest = gUnk_08364B08;
+    dest = *(u16 **)&gUnk_08364B08;
     dest += (y << 5) + x;
     color = 0xE0 << 8;
     w = 0x47;

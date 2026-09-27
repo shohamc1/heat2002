@@ -23,10 +23,8 @@ struct Car {
     u8 pad173[0x190 - 0x173];
 };
 
-extern s32 gUnk_0200209C;
 extern u32 *gUnk_08367640[];
 extern u32 *gUnk_083676B8[];
-extern u32 *gUnk_083681E8[];
 extern u32 *gUnk_083681F8[];
 extern u8 gUnk_0831D0EC[];
 
@@ -99,7 +97,7 @@ void DrawCar(struct Car *car, u8 idx)
         }
     }
     if (gIsLinkRace != 0) {
-        row = gUnk_083681E8[idx];
+        row = (u32 *)gUnk_083681E8[idx];
         row += sub_080172C8(gUnk_0200209C >> 1, 7);
         pos[1] -= 0xC;
         pos[0] += 0x10;

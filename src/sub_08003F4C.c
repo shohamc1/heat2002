@@ -1,5 +1,5 @@
 #include "global.h"
-extern u32 gUnk_02022E20[];
+#include "variables.h"
 void FillFadePalette(u16 color)
 {
     s32 i;

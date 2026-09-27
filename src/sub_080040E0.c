@@ -1,8 +1,7 @@
 #include "global.h"
 #include "functions.h"
+#include "variables.h"
 
-extern u32 gUnk_02022E20[];
-extern u32 gUnk_02023A20[];
 
 
 void sub_080040E0(u32 a)
@@ -15,7 +14,7 @@ void sub_080040E0(u32 a)
     u32 k;
 
     i = 0xF0;
-    d = gUnk_02023A20;
+    d = (u32 *)gUnk_02023A20;
     s = gUnk_02022E20;
     src = s + 0x2D0;
     dst = d + 0x2D0;

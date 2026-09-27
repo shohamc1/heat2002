@@ -14,7 +14,7 @@
  *     all fall out. -O1 gives the branchy shape for both spellings; this
  *     separates -O2's cse path following.
  *
- *  2. gUnk_020253D0 declared `struct Track * volatile` (pointer OBJECT
+ *  2. gUnk_020253D0 declared `struct TrackSeg * volatile` (pointer OBJECT
  *     volatile): every read re-derefs, which the ROM shows three times (top,
  *     if-arm, tail with its own pool word at 0x0800A5A8). A plain decl
  *     forward-stores the base value across the struct stores (cse's
@@ -22,7 +22,7 @@
  *     with minimal testcases) and the if-arm degenerates to `adds rX, rY`
  *     (that is UpdateLapProgress's real ROM shape, not this one's).
  *
- *  3. `pt`, a register struct Track * volatile * pt asm("r0") initialized at
+ *  3. `pt`, a register struct TrackSeg * volatile * pt asm("r0") initialized at
  *     the top ONLY. cse never records a pool-load set whose destination is a
  *     hard register, so the top read leaves NO table entry and the if-arm's
  *     `e = gUnk_020253D0` keeps its own fresh `ldr r0,[pc,#8]; ldr r2,[r0]`
@@ -80,7 +80,13 @@ struct Car {
     s32 unk148;                         /* 0x148 */
 };
 
-struct Track {
+/* The 0x18-byte track segment record gUnk_020253D0 points at; local
+   twin of sub_08006A34.c's struct TrackSeg. It shares its old tag name
+   with include/structs.h's 0x64-byte struct Track but not its layout or
+   stride, so it keeps a local tag. The gUnk_020253D0 extern
+   (variables.h) is typed struct Track *; the casts on it below are
+   pointer casts only and emit nothing. */
+struct TrackSeg {
     s32 f0;
     s32 f4;
     s32 f8;
@@ -89,14 +95,13 @@ struct Track {
     u8 pad12[0x18 - 0x12];
 };
 
-extern struct Track * gUnk_020253D0;
 
 s32 Atan2(s32 a, s32 b);
 
 void sub_0800A4D4(struct Car *p)
 {
-    struct Track *e;
-    register struct Track *volatile *pt asm("r0");
+    struct TrackSeg *e;
+    register struct TrackSeg *volatile *pt asm("r0");
     register u8 m asm("r5");
     register s32 f4t asm("r0");
     s32 fCt;
@@ -115,12 +120,12 @@ void sub_0800A4D4(struct Car *p)
     t3 = *(u32 *)w;
     *(u32 *)w = t3;
     v = *pv;
-    pt = &gUnk_020253D0;
+    pt = (struct TrackSeg *volatile *)&gUnk_020253D0;
     e = &(*pt)[p->unk38];
     p->unk00 = (e->f0 + e->f8) << 15;
     p->unk08 = (e->f4 + e->fC) << 15;
     if (e->unk10 == 1) {
-        e = gUnk_020253D0;
+        e = (struct TrackSeg *)gUnk_020253D0;
     } else {
         e = e + 1;
     }
@@ -148,7 +153,7 @@ void sub_0800A4D4(struct Car *p)
     p->unk130 = 0;
     p->unk4E = 1;
     {
-        register struct Track *volatile *pt2 asm("r1") = &gUnk_020253D0;
+        register struct TrackSeg *volatile *pt2 asm("r1") = (struct TrackSeg *volatile *)&gUnk_020253D0;
         e = &(*pt2)[p->unk38];
     }
     if (e->unk10 == 1) {

@@ -1,14 +1,13 @@
 #include "global.h"
 #include "data.h"
 
-extern u16 *gUnk_08364B08;
 
 void DrawTextCenteredHighlight(u8 *p, u32 a1, u8 a2)
 {
     u8 *s = p;
     u8 len = 0;
     u32 c = *p;
-    u16 **v = &gUnk_08364B08;
+    u16 **v = (u16 **)&gUnk_08364B08;
     u8 pad;
     u16 *out;
     u16 color;

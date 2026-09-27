@@ -21,11 +21,9 @@ struct Car {
     u8 pad173[0x190 - 0x173];
 };
 
-extern s32 gUnk_020390AC;
 extern u32 *gUnk_02026E14[];
 extern u32 *gUnk_02026E18[];
 extern u32 *gUnk_0202773C[];
-extern u8 gUnk_020243E8[];
 extern u8 gUnk_0201B590[];
 
 u32 sub_0833D6D8(u32 a, u32 b, u32 c);

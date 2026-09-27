@@ -1,7 +1,6 @@
 #include "global.h"
 #include "variables.h"
 
-extern u16 *gUnk_020251B8;
 
 void sub_0833EF0C(u8 *str, u32 a2, u32 a3)
 {
@@ -11,7 +10,7 @@ void sub_0833EF0C(u8 *str, u32 a2, u32 a3)
     u32 v;
     u32 w;
 
-    dest = gUnk_020251B8;
+    dest = (u16 *)*(u32 *)&gUnk_020251B8;
     dest += (a3 << 5) + a2;
     color = 0xE0 << 8;
     w = 0x47;

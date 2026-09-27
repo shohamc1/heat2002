@@ -2,8 +2,6 @@
 #include "functions.h"
 #include "variables.h"
 
-extern s32 gUnk_020392D0[];
-extern s32 gUnk_02039ED0[];
 
 
 void sub_0833D31C(s32 arg0, u16 *src)
@@ -16,8 +14,8 @@ void sub_0833D31C(s32 arg0, u16 *src)
     s32 scaled;
 
     i = 0;
-    base = gUnk_020392D0;
-    out = gUnk_02039ED0;
+    base = (s32 *)gUnk_020392D0;
+    out = (s32 *)gUnk_02039ED0;
     do {
         x = *src++;
         v = x;

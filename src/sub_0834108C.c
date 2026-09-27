@@ -3,8 +3,6 @@
 #include "car.h"
 
 extern u8 gUnk_0203E0F8;
-extern u8 gUnk_02039200[];
-extern u8 gUnk_0203D4A0[];
 
 void sub_0833D9E8(void);
 void sub_08340210(u8 a);

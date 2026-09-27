@@ -12,7 +12,13 @@
 #include "variables.h"
 #include "car.h"
 
-struct Track {
+/* The 0x18-byte track segment record gUnk_0203B860 points at (waypoint
+   quads); local twin of sub_08006A34.c's struct TrackSeg. It shares its
+   old tag name with include/structs.h's 0x64-byte struct Track but not
+   its layout or stride, so it keeps a local tag. The gUnk_0203B860
+   extern (variables.h) is typed struct Track *; the casts below are
+   pointer casts only and emit nothing. */
+struct TrackSeg {
     s32 f0;
     s32 f4;
     s32 f8;
@@ -24,7 +30,6 @@ struct Track {
 };
 
 extern u32 gUnk_0203DFC4;
-extern struct Track *gUnk_0203B860;
 extern u32 gUnk_0203DE40;
 
 
@@ -35,7 +40,7 @@ u8 sub_0833F468(struct Car *p, u8 a1)
     u8 unused2[28];
     u8 v58;
     s32 l0, l4, l8, lC;
-    struct Track *e, *b;
+    struct TrackSeg *e, *b;
     u8 v68, v6C;
     s32 x0, x1, x2, x3, y0, y1, y2, y3;
     s32 det;
@@ -49,10 +54,10 @@ u8 sub_0833F468(struct Car *p, u8 a1)
     else
         v68 = gUnk_020390A0[0];
 
-    e = &gUnk_0203B860[p->waypoint];
+    e = &((struct TrackSeg *)gUnk_0203B860)[p->waypoint];
     b = e + 1;
     if (e->unk10 == 1)
-        b = gUnk_0203B860;
+        b = (struct TrackSeg *)gUnk_0203B860;
 
     corners[0] = p->posX >> 16;
     corners[1] = p->posZ >> 16;

@@ -1,5 +1,6 @@
 #include "global.h"
 #include "gba/io_reg.h"
+#include "variables.h"
 
 /* Serial IRQ handler for the comm state at 0x0202CDD0.
  *
@@ -23,7 +24,6 @@ struct CommRegs
     s32 index;  /* +0x14 */
 };
 
-extern struct CommRegs gUnk_0202CDD0;
 
 void SioTransferIntr(void)
 {

@@ -2,7 +2,6 @@
 #include "gba/io_reg.h"
 #include "variables.h"
 
-extern u16 gUnk_0203E160[];
 
 void sub_083448F4(void)
 {

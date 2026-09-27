@@ -4,8 +4,6 @@
 #include "variables.h"
 #include "car.h"
 
-extern u32 gCarOrder[];
-extern u32 gUnk_0202F020[];
 
 void sub_08014C60(u8 a)
 {

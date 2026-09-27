@@ -1,6 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern u32 gUnk_0203C220[];
 
 u32 *sub_0833FB5C(u32 a, u8 b)
 {
@@ -8,7 +8,7 @@ u32 *sub_0833FB5C(u32 a, u8 b)
     u32 *q;
     u32 i;
 
-    p = gUnk_0203C220;
+    p = (u32 *)gUnk_0203C220;
     i = 0;
     q = p;
     for (; i != 4; i++, p += 5) {

@@ -1,7 +1,6 @@
 #include "global.h"
 #include "data.h"
 
-extern u16 *gUnk_08364B08;
 
 void DrawTextCentered(u8 *str, u32 y)
 {
@@ -23,7 +22,7 @@ void DrawTextCentered(u8 *str, u32 y)
         c = *p;
     }
     pad = (u8)((0x1E - len) / 2);
-    dest = gUnk_08364B08;
+    dest = (*(u16 **)&gUnk_08364B08);
     dest += (y << 5) + pad;
     color = 0xE0 << 8;
     w = 0x47;

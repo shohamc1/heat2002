@@ -1,9 +1,9 @@
 #include "global.h"
 #include "gba/m4a_internal.h"
+#include "variables.h"
 
 /* MPlayOpen */
 
-extern u32 gUnk_03007FF0[];
 void MPlayMain(void);
 
 void sub_08001534(u32 r0);

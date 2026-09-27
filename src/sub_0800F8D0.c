@@ -3,8 +3,6 @@
 #include "variables.h"
 #include "car.h"
 
-extern u32 gUnk_0202CBD8;             /* 0x0202CBD8 */
-extern struct Car *gCarOrder;  /* 0x0202EFC0 */
 
 
 /* Matching reconstruction: accept the menu's address argument, unused here. */
@@ -27,7 +25,7 @@ void SetupChallenge(u8 a, u8 *unused)
         sub_08016D28(0);
         SortCarsByTime();
         gNumLaps = 1;
-        gCarOrder = gCars;
+        (*(struct Car **)&gCarOrder) = gCars;
         break;
     case 1:
         (*(u8 *)&gNumCars) = 1;
@@ -38,7 +36,7 @@ void SetupChallenge(u8 a, u8 *unused)
         sub_08016D28(0);
         SortCarsByTime();
         gNumLaps = 5;
-        gCarOrder = gCars;
+        (*(struct Car **)&gCarOrder) = gCars;
         break;
     case 2:
         (*(u8 *)&gNumCars) = 24;
@@ -76,7 +74,7 @@ void SetupChallenge(u8 a, u8 *unused)
         SortCarsByTime();
         gNumLaps = 2;
         (*(u8 *)&gNumCars) = 1;
-        gCarOrder = gCars;
+        (*(struct Car **)&gCarOrder) = gCars;
         break;
     case 5:
         (*(u8 *)&gNumCars) = 24;
@@ -119,7 +117,7 @@ void SetupChallenge(u8 a, u8 *unused)
         sub_08016D28(0);
         SortCarsByTime();
         gNumLaps = 5;
-        gCarOrder = gCars;
+        (*(struct Car **)&gCarOrder) = gCars;
         break;
     case 8:
         (*(u8 *)&gNumCars) = 1;
@@ -132,7 +130,7 @@ void SetupChallenge(u8 a, u8 *unused)
         sub_08016D28(0);
         SortCarsByTime();
         gNumLaps = 3;
-        gCarOrder = gCars;
+        (*(struct Car **)&gCarOrder) = gCars;
         break;
     case 9:
         (*(u8 *)&gNumCars) = 1;
@@ -146,7 +144,7 @@ void SetupChallenge(u8 a, u8 *unused)
         SortCarsByTime();
         gNumLaps = 3;
         gUnk_0202CBD8 = 0;
-        gCarOrder = gCars;
+        (*(struct Car **)&gCarOrder) = gCars;
         for (i = 0; i != 32; i++)
             gUnk_0202CB40[i] = 0;
         break;

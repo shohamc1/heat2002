@@ -4,11 +4,6 @@
 #include "functions.h"
 #include "variables.h"
 
-extern u32 gCamera[];
-extern u8 *gUnk_02002208;
-extern u8 *gUnk_0200221C;
-extern u8 *gUnk_0200BC54;
-extern u8 *gUnk_02002210;
 
 
 void UpdateTrackScroll(void)

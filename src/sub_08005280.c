@@ -2,7 +2,6 @@
 #include "functions.h"
 #include "variables.h"
 
-extern s32 gUnk_0200209C;
 
 void sub_080017D0(void);
 void sub_0800524C(void);

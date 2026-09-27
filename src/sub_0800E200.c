@@ -2,9 +2,9 @@
 #include "gba/compat.h"
 #include "functions.h"
 #include "variables.h"
+#include "data.h"
 
 extern u8 gUnk_0807CA60[];
-extern u8 gUnk_0833338C[];
 extern u8 gUnk_08363EE8[];
 extern u8 gUnk_08364AC8[];
 
@@ -26,7 +26,7 @@ u32 SendMultibootIsland(void)
     icon = 0;
     REG_BG3CNT = BGCNT_SCREENBASE(28) | BGCNT_CHARBASE(3);
     {
-        u8 *src = gUnk_0833338C;
+        u8 *src = (u8 *)gUnk_0833338C;
         CpuCopy16((u32)src, BG_SCREEN_ADDR(24), 0x2000);
     }
     {

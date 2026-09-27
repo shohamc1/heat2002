@@ -52,8 +52,6 @@ struct Pt {
     s32 y;
 };
 
-extern struct WallRec *gUnk_0203DE60;
-extern struct Pt *gUnk_0203DE64;
 
 
 s32 sub_0834355C(struct Corner *corn, struct Box *box, struct Box *cbox,

@@ -1,7 +1,7 @@
 #include "global.h"
 #include "gba/compat.h"
+#include "variables.h"
 
-extern u32 gUnk_0202CDD0[];
 
 void SioTransferInit(u32 a1, u32 a2)
 {
@@ -15,7 +15,7 @@ void SioTransferInit(u32 a1, u32 a2)
     one = 1;
     REG_IME = 1;
     fill = 0;
-    g = gUnk_0202CDD0;
+    g = (u32 *)&gUnk_0202CDD0;
     CpuSet((u32)&fill, (u32)g, CPU_SET_32BIT | CPU_SET_SRC_FIXED | 6);
     *(volatile u32 *)REG_ADDR_SIOCNT = 0x2003;
     g[1] = a2;

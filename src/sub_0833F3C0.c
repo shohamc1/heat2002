@@ -1,7 +1,6 @@
 #include "global.h"
 #include "variables.h"
 
-extern u32 gUnk_020251B8;
 
 void sub_0833F3C0(u8 *str, u32 y, u8 shade)
 {
@@ -21,7 +20,7 @@ void sub_0833F3C0(u8 *str, u32 y, u8 shade)
         len++;
     }
     w = (u8)((0x1E - len) / 2);
-    dest = (u16 *)gUnk_020251B8;
+    dest = (u16 *)(*(u32 *)&gUnk_020251B8);
     dest = (u16 *)((u32)dest + (((y << 5) + w) << 1));
     e = 0xE0 << 8;
     if (shade != 0)

@@ -9,18 +9,12 @@ extern const u8 gUnk_0829F590[];
 extern const u8 gUnk_0829F59C[];
 extern const u8 gUnk_0829F5B4[];
 
-extern u16 gKeysHeld;
-extern u8 gUnk_0202A510[];
 extern u8 gUnk_0202A6B2;
 extern u8 gUnk_0202CD9C[];
 extern u8 gUnk_0202CDC0[];
 extern s32 gUnk_0202EDD4;
 extern u8 gUnk_0202EED4;
 extern u8 gUnk_0202EEF8;
-extern u8 gUnk_0202EF8C;
-extern s8 gUnk_0202EF60[];
-extern u8 *gCarOrder;
-extern u8 gUnk_0202F020;
 extern u8 gUnk_083FDA6E[];
 extern u8 gUnk_083FDE1C[];
 extern u8 gUnk_083FDE2D[];
@@ -153,7 +147,7 @@ u32 MainMenuLoop(void)
     gUnk_0202CBDC = 0xB6;
     gUnk_0202CAD4 = 0xA0;
     gUnk_0202CBC4 = 0xFF;
-    *(u32 *)gUnk_0202A510 = 0x8950;
+    *(u32 *)&gUnk_0202A510 = 0x8950;
     sub_08008338();
     gUnk_020020D4 = 0x009F9AC4;
 
@@ -334,7 +328,7 @@ state3_done:
         gUnk_0202F024 = 0;
         gUnk_0202EEC8 = 0;
         gUnk_0202F034 = 0;
-        gUnk_0202F020 = 0;
+        (*(u8 *)&gUnk_0202F020) = 0;
 
 state0_menu:
         choice = sub_080136F8(
@@ -344,7 +338,7 @@ state0_menu:
             goto state0_done;
 
         gUnk_0202EEF8 = choice;
-        gTrackId = gUnk_083FDE1C[gUnk_0202F020];
+        gTrackId = gUnk_083FDE1C[(*(u8 *)&gUnk_0202F020)];
         switch (gUnk_0202EEF8) {
         case 0:
             gNumLaps = 10;
@@ -352,7 +346,7 @@ state0_menu:
             gCars[0].unk7D = 1;
             sub_08016D28(1);
             SortCarsByTime();
-            gCarOrder = (u8 *)gCars;
+            (*(u32 *)&gCarOrder) = (u32)gCars;
             gUnk_0202EEB0 = 0;
             TrackSelectMenu(0, gTrackId);
             ((void (*)(u32, u8, void *))RunRace)(0, 0x0E, gUnk_0202CD9C);
@@ -365,7 +359,7 @@ state0_menu:
             break;
         case 1:
             gNumLaps = 2;
-            gCarOrder = (u8 *)gCars;
+            (*(u32 *)&gCarOrder) = (u32)gCars;
             gCars[0].unk16C = 0x0002BF20;
             TrackSelectMenu(0, gTrackId);
             ((void (*)(u32, u8, void *))RunRace)(0, 0x11, gUnk_0202CDA8);
@@ -400,14 +394,14 @@ state0_menu:
                 sub_08014004();
                 AwardAllRacePoints();
                 StandingsScreen();
-                gUnk_0202F020++;
+                (*(u8 *)&gUnk_0202F020)++;
             } else {
                 gUnk_0202F034 = 1;
             }
             break;
         }
 
-        if (gUnk_0202F020 != 0x0B)
+        if ((*(u8 *)&gUnk_0202F020) != 0x0B)
             goto state0_menu;
         sub_08012D34(sub_08012C20());
 
@@ -498,7 +492,7 @@ state4_race:
         gCars[0].unk7D = 1;
         sub_08016D28(1);
         SortCarsByTime();
-        gCarOrder = (u8 *)gCars;
+        (*(u32 *)&gCarOrder) = (u32)gCars;
         gUnk_0202F030 = 1;
         ((void (*)(u32, u8, void *))RunRace)(0, 0x0E, gUnk_0202CD9C);
         gUnk_0202F030 = 0;
@@ -532,7 +526,7 @@ state2_select:
         gUnk_0202ED70 = track << 2;
 
 state2_track:
-        if (gUnk_0202EF60[gUnk_0202ED70] == -1) {
+        if ((s8)gUnk_0202EF60[gUnk_0202ED70] == -1) {
             gUnk_0202EF60[gUnk_0202ED70] = 0;
             SaveProgress();
         }
@@ -566,8 +560,8 @@ state2_track:
 
         sub_08012B50(
             gUnk_0202ED70,
-            gUnk_0202EF60[gUnk_0202ED70] >= gUnk_02002098);
-        if (gUnk_02002098 > gUnk_0202EF60[gUnk_0202ED70]) {
+            (s8)gUnk_0202EF60[gUnk_0202ED70] >= gUnk_02002098);
+        if (gUnk_02002098 > (s8)gUnk_0202EF60[gUnk_0202ED70]) {
             gUnk_0202EF60[gUnk_0202ED70] = gUnk_02002098;
             SaveProgress();
         }
@@ -672,7 +666,7 @@ state5_load:
         gUnk_0202F024 = 0;
         gUnk_0202EEC8 = 0;
         gUnk_0202F034 = 0;
-        gUnk_0202F020 = 0;
+        (*(u8 *)&gUnk_0202F020) = 0;
 
 state5_menu:
         choice = sub_08013570(
@@ -682,14 +676,14 @@ state5_menu:
             goto state5_done;
 
         gUnk_0202EEF8 = choice;
-        gTrackId = gUnk_083FDE1C[gUnk_0202F020];
+        gTrackId = gUnk_083FDE1C[(*(u8 *)&gUnk_0202F020)];
         switch (gUnk_0202EEF8) {
         case 0:
             gCars[0].unk16C = 0;
             gCars[0].unk7D = 1;
             sub_08016D28(1);
             SortCarsByTime();
-            gCarOrder = (u8 *)gCars;
+            (*(u32 *)&gCarOrder) = (u32)gCars;
             gUnk_0202EEB0 = 0;
             TrackSelectMenu(0, gTrackId);
             ((void (*)(u32, u8, void *))RunRace)(0, 0x0E, gUnk_0202CD9C);
@@ -703,7 +697,7 @@ state5_menu:
             break;
         case 1:
             gNumLaps = 2;
-            gCarOrder = (u8 *)gCars;
+            (*(u32 *)&gCarOrder) = (u32)gCars;
             gCars[0].unk16C = 0x0002BF20;
             TrackSelectMenu(0, gTrackId);
             ((void (*)(u32, u8, void *))RunRace)(0, 0x11, gUnk_0202CDA8);
@@ -737,7 +731,7 @@ state5_menu:
                 sub_08014004();
                 AwardAllRacePoints();
                 StandingsScreen();
-                gUnk_0202F020++;
+                (*(u8 *)&gUnk_0202F020)++;
             } else {
                 gUnk_0202F034 = 1;
             }
@@ -747,7 +741,7 @@ state5_menu:
             break;
         }
 
-        if (gUnk_0202F020 != 0x0B)
+        if ((*(u8 *)&gUnk_0202F020) != 0x0B)
             goto state5_menu;
         score = sub_08012C20();
         sub_08012D34(score);

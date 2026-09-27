@@ -1,5 +1,6 @@
 #include "global.h"
-#include "data.h"
+/* no data.h: it declares gUnk_08364B08 without const,
+   which the users' bytes need; this file needs nothing else from it. */
 
 extern const u8 gUnk_0806C664[];
 extern const u8 gUnk_0806C668[];

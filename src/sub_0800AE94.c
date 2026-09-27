@@ -5,7 +5,6 @@
 
 extern u8 gUnk_0806C948[];
 extern u8 gUnk_0806C954[];
-extern u16 gKeysHeld;
 
 
 void sub_0800AE94(u32 a)

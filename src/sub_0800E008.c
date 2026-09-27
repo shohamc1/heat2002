@@ -18,7 +18,6 @@ extern u8 gUnk_0807CA08[];
 extern u8 gUnk_0807CA20[];
 extern u8 gUnk_0807CA34[];
 extern u8 gUnk_0807CB58[];
-extern u8 gUnk_0202E960[];
 
 void SioTransferInit(u32 a1, u32 a2);
 void sub_0800DE9C(u16 x, u16 y);
@@ -45,8 +44,8 @@ u32 SendMultibootPayload(void)
     for (i = 0; i < 3; i++)
         LZ77UnCompVram(gUnk_083FDA50[i], (void *)(OBJ_VRAM0 + i * 0x200));
     DmaCopy32(3, gUnk_0807CB58, OBJ_PLTT, 0xA0);
-    DmaFill32(3, 0xA0, gUnk_0202E960, 0x400);
-    CpuFastSet(gUnk_0202E960, (void *)OAM, 0x100);
+    DmaFill32(3, 0xA0, (u8 *)gUnk_0202E960, 0x400);
+    CpuFastSet((u8 *)gUnk_0202E960, (void *)OAM, 0x100);
     REG_DISPCNT |= DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP;
     SioTransferInit(1, gUnk_0807C9CC[idx]);
     for (i = 0; i < 4; i++)
@@ -68,12 +67,12 @@ u32 SendMultibootPayload(void)
             SioTransferInit(1, gUnk_0807C9CC[idx]);
             frame = 0;
         }
-        CpuFastSet(gUnk_0202E960, (void *)OAM, 0x100);
+        CpuFastSet((u8 *)gUnk_0202E960, (void *)OAM, 0x100);
         VBlankIntrWait();
     }
 done:
-    DmaFill32(3, 0xA0, gUnk_0202E960, 0x400);
-    CpuFastSet(gUnk_0202E960, (void *)OAM, 0x100);
+    DmaFill32(3, 0xA0, (u8 *)gUnk_0202E960, 0x400);
+    CpuFastSet((u8 *)gUnk_0202E960, (void *)OAM, 0x100);
     sub_0800DFCC();
     return 0;
 }

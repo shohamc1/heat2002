@@ -9,9 +9,6 @@ struct Unk0833D848
     u16 d;
 };
 
-extern u32 *gUnk_0203ACD0;
-extern u32 *gUnk_0203ACD8;
-extern struct Unk0833D848 gUnk_0203B0F0[];
 
 u32 sub_0833D7E8(void);
 

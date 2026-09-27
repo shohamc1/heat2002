@@ -1,6 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern u32 gCamera[];
 
 void SetCameraPos(u32 x, u32 y)
 {

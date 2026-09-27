@@ -2,7 +2,6 @@
 #include "variables.h"
 #include "car.h"
 
-extern u32 gCarOrder[];
 
 void SortLinkCarsByTime(void)
 {

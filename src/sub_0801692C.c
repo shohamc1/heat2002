@@ -1,7 +1,6 @@
 #include "global.h"
 #include "functions.h"
 #include "variables.h"
-extern u8 gUnk_0202EF60[];
 void SaveProgress(void)
 {
     u8 *p;

@@ -2,7 +2,6 @@
 #include "variables.h"
 
 extern u32 gUnk_0203DFF4;
-extern u16 gUnk_0203E160[][4];
 
 void sub_08339A30(void);
 void sub_08344878(void);
@@ -44,7 +43,7 @@ void sub_08344968(void)
         j = 0;
         do
         {
-            gUnk_0203E160[i][j] = 0;
+            *(u16 *)((u8 *)gUnk_0203E160 + j * 2 + i * 8) = 0;
             j++;
         } while (j <= 3);
         i++;

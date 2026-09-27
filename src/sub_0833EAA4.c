@@ -2,7 +2,6 @@
 #include "variables.h"
 #include "car.h"
 
-extern u32 gUnk_020251B8[];
 
 void sub_0833E1F4(void);
 void sub_0833DDB8(u32 a, u16 b, u16 c, u16 d);

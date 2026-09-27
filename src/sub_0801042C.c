@@ -6,12 +6,9 @@
 #include "variables.h"
 
 extern const u8 gUnk_082A0130[];
-extern const u32 gUnk_0833338C[];
 extern const u8 gUnk_0829FB54[];
 extern const u8 gUnk_0829F954[];
 
-extern u16 gKeysHeld;
-extern u16 *gUnk_08364B08;
 
 u8 TitleScreen(void)
 {
@@ -33,7 +30,7 @@ u8 TitleScreen(void)
     sub_08010680((u16 *)((u32)gUnk_0829FB54));
     i = 0;
     do {
-        gUnk_08364B08[i] = 0;
+        *(u16 *)(*(volatile u32 *)&gUnk_08364B08[0] + 2 * i) = 0;
         i++;
     } while (i != 0x380);
     CpuCopy16((u32)gUnk_0829F954, (u32)buf, 0x200);
@@ -49,7 +46,7 @@ u8 TitleScreen(void)
         ReadKeys();
         i = 0;
         do {
-            gUnk_08364B08[i] = 0;
+            *(u16 *)(*(volatile u32 *)&gUnk_08364B08[0] + 2 * i) = 0;
             i++;
         } while (i != 0x380);
         if ((j & 0x1F) <= 0x0E)

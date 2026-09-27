@@ -12,8 +12,6 @@
 #include "global.h"
 #include "data.h"
 
-extern u32 gUnk_08364B08[];
-extern u16 gUnk_08334DCC[];
 
 void sub_0800920C(u8 arg)
 {
@@ -22,27 +20,33 @@ void sub_0800920C(u8 arg)
     u8 row;
     u8 ctr;
     u8 lim;
+    u32 off;
 
     dest = (u16 *)(gUnk_08364B08[0] + 0x290);
-    *dest = (0xE0 << 8) | gUnk_08335A8C[gUnk_08334DCC[0x398]];
+    off = 0x730;
+    *dest = (0xE0 << 8) | gUnk_08335A8C[*(u16 *)((u8 *)gUnk_08334DCC + off)];
     dest = (u16 *)(gUnk_08364B08[0] + 0x292);
     row = 0;
     ctr = 0;
     do {
         lim = row + 7;
         if (arg > lim) {
-            *dest = (0xE0 << 8) | gUnk_08335A8C[gUnk_08334DCC[0x3A1]];
+            off = 0x742;
+            *dest = (0xE0 << 8) | gUnk_08335A8C[*(u16 *)((u8 *)gUnk_08334DCC + off)];
             dest++;
         }
         if (arg < row) {
-            *dest = (0xE0 << 8) | gUnk_08335A8C[gUnk_08334DCC[0x399]];
+            off = 0x732;
+            *dest = (0xE0 << 8) | gUnk_08335A8C[*(u16 *)((u8 *)gUnk_08334DCC + off)];
             dest++;
         } else if (arg <= lim) {
-            *dest = (0xE0 << 8) | gUnk_08335A8C[gUnk_08334DCC[0x39A + (u8)(arg - row)]];
+            off = 0x734 + 2 * (u8)(arg - row);
+            *dest = (0xE0 << 8) | gUnk_08335A8C[*(u16 *)((u8 *)gUnk_08334DCC + off)];
             dest++;
         }
         row += 8;
         ctr++;
     } while (ctr != 0x0C);
-    *dest = (0xE0 << 8) | gUnk_08335A8C[gUnk_08334DCC[0x3A2]];
+    off = 0x744;
+    *dest = (0xE0 << 8) | gUnk_08335A8C[*(u16 *)((u8 *)gUnk_08334DCC + off)];
 }

@@ -3,10 +3,10 @@
 #include "gba/io_reg.h"
 #include "gba/m4a_internal.h"
 #include "functions.h"
+#include "variables.h"
 
 /* SampleFreqSet */
 
-extern u32 gUnk_03007FF0;
 extern u16 gUnk_0801D0FC[];
 void sub_08001640(u32 freq)
 {

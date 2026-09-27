@@ -6,7 +6,6 @@
 #include "m4a.h"
 #include "variables.h"
 
-extern u8 gUnk_0202EF8C;
 
 u8 TrackSelectMenu(u8 a, u8 b)
 {

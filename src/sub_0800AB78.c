@@ -3,8 +3,6 @@
 #include "variables.h"
 #include "car.h"
 
-extern u16 gKeysHeld;
-extern u32 gUnk_0200209C;
 
 void UpdatePitStop(struct Car *a, u8 b);
 void UpdateRacePosition(u8 a);
@@ -67,7 +65,7 @@ common:
         UpdateCarPhysics(car, *p, idx);
     }
 
-    if (car->damage > 0x11940 && car->unk7C != 1 && (gUnk_0200209C & 0x3F) == 0)
+    if (car->damage > 0x11940 && car->unk7C != 1 && ((*(u32 *)&gUnk_0200209C) & 0x3F) == 0)
         sub_0800B8A8(car);
 
     if (gIsLinkRace != 0) {

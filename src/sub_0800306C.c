@@ -5,7 +5,6 @@
 #include "variables.h"
 
 extern u8 gUnk_020021B8;
-extern u8 gUnk_02024830[];
 
 void m4aSoundVSync(void);
 void FlushTrackBgBuffers(void);

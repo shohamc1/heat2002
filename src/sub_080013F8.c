@@ -3,10 +3,10 @@
 #include "gba/m4a_internal.h"
 #include "functions.h"
 #include "m4a.h"
+#include "variables.h"
 
 /* MPlayExtender */
 
-extern struct SoundInfo *gUnk_03007FF0;
 void sub_08002340(void);
 void ply_lfos(void);
 void ply_mod(void);

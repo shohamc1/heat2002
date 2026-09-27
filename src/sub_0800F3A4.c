@@ -1,6 +1,6 @@
 #include "global.h"
+#include "data.h"
 
-extern u32 gUnk_08364B08[]; /* 0x08364B08 */
 
 void ZeroTextLayer(void)
 {

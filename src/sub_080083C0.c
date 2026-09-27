@@ -2,7 +2,6 @@
 #include "variables.h"
 
 extern u32 gUnk_083677A8[];
-extern u32 gUnk_0202A510;
 
 void sub_080083C0(u32 a, u8 b)
 {

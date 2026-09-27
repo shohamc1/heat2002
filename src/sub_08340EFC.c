@@ -6,7 +6,6 @@
 extern u8 gUnk_0203DD08;
 extern s32 gUnk_0203DDF8;
 extern u8 gUnk_0203DD30;
-extern u32 gUnk_0203DD34;
 
 
 void sub_08340EFC(void)

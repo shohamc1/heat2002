@@ -9,7 +9,6 @@ struct Unk
     u16 d;
 };
 
-extern struct Unk gUnk_0203B0F0[];
 
 u32 sub_0833D7E8(void)
 {
@@ -24,7 +23,7 @@ restart:
     do {
         x = gUnk_0203B610[i];
         y = gUnk_0203B610[i + 1];
-        if (gUnk_0203B0F0[x].c < gUnk_0203B0F0[y].c) {
+        if (((struct Unk *)gUnk_0203B0F0)[x].c < ((struct Unk *)gUnk_0203B0F0)[y].c) {
             gUnk_0203B610[i] = y;
             gUnk_0203B610[i + 1] = x;
             swapped = 1;

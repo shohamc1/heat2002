@@ -1,6 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern u32 gUnk_02024830[];
 
 void ResetSpriteQueues(void);
 
@@ -12,7 +12,7 @@ void ClearOamBuffer(void)
 
     r1 = 0;
     r2 = 0xAA;
-    r0 = gUnk_02024830;
+    r0 = (u32 *)gUnk_02024830;
     while (r1 != 0x80)
     {
         *r0 = r2;

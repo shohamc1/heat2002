@@ -1,6 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern u32 gCamera[];
 
 u32 sub_08009C00(s32 x, s32 y, s32 *out)
 {

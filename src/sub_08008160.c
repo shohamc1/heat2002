@@ -1,8 +1,8 @@
 #include "global.h"
 #include "functions.h"
 #include "car.h"
+#include "variables.h"
 
-extern u32 gCamera[];
 extern u32 gUnk_083FF68C[];
 extern u8 gUnk_08331360[];
 extern u8 gUnk_0806C8B4[];

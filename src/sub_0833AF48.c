@@ -1,9 +1,9 @@
 #include "global.h"
 #include "gba/m4a_internal.h"
+#include "variables.h"
 
 /* MPlayOpen (high copy) */
 
-extern u32 gUnk_03007FF0[];
 
 void sub_0833ABF4(u32 r0);
 void sub_0833A228(void);

@@ -6,8 +6,6 @@ extern u8 gUnk_02039190;
 void sub_0833C5B0(void);
 extern u8 gUnk_0200CEC0[];
 extern u8 gUnk_0200CED8[];
-extern u8 gUnk_02038F70[];
-extern u8 gUnk_02038FB0[];
 
 void sub_08339A40(void);
 void sub_08339AB8(u32 r0);

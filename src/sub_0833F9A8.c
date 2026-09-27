@@ -1,4 +1,5 @@
 #include "global.h"
+#include "variables.h"
 
 struct Unk0833C270
 {
@@ -9,18 +10,11 @@ struct Unk0833C270
 };
 
 extern u8 gUnk_020269C4[];
-extern u8 gUnk_0203C220[];
 extern u8 gUnk_020269CC[];
-extern u8 gUnk_0203B870[];
 extern u8 gUnk_020269FC[];
-extern u8 gUnk_0203BA50[];
 extern u8 gUnk_02026A3C[];
-extern u8 gUnk_0203BF50[];
 extern u8 gUnk_02026A64[];
-extern u8 gUnk_0203C0E0[];
 extern u8 gUnk_02026A84[];
-extern u8 gUnk_0203BCD0[];
-extern struct Unk0833C270 gUnk_0203C270[];
 
 void sub_0833F968(u32 count, u16 *src, void *dest);
 void sub_0833F958(void *r0);
@@ -54,7 +48,7 @@ void sub_0833F9A8(void)
 
     i = 0;
     pal = 0x05000200;
-    p = gUnk_0203C270;
+    p = (struct Unk0833C270 *)gUnk_0203C270;
     do {
         sub_0833F958(p);
         p->field_08 = pal;

@@ -1,14 +1,8 @@
 #include "global.h"
 #include "functions.h"
 #include "gba/syscall.h"
+#include "variables.h"
 
-extern u8 gUnk_02025DB0[];
-extern u8 gUnk_02025400[];
-extern u8 gUnk_020255E0[];
-extern u8 gUnk_02025AE0[];
-extern u8 gUnk_02025C70[];
-extern u8 gUnk_02025860[];
-extern u8 gUnk_02025E00[];
 extern s32 gUnk_02025EC4;
 extern s32 gUnk_02025EC0;
 
@@ -24,7 +18,7 @@ void UploadPendingGfx(void)
 
     gUnk_02025EC4 = 0;
 
-    p = gUnk_02025DB0;
+    p = (u8 *)gUnk_02025DB0;
     i = 0;
     do {
         if (p[4] != 0) {
@@ -37,7 +31,7 @@ void UploadPendingGfx(void)
         p += 0x14;
     } while (i != 4);
 
-    p = gUnk_02025400;
+    p = (u8 *)gUnk_02025400;
     i = 0;
     do {
         if (p[4] != 0) {
@@ -50,7 +44,7 @@ void UploadPendingGfx(void)
         p += 0x14;
     } while (i != 0x18);
 
-    p = gUnk_020255E0;
+    p = (u8 *)gUnk_020255E0;
     i = 0;
     do {
         if (p[4] != 0) {
@@ -64,7 +58,7 @@ void UploadPendingGfx(void)
         p += 0x14;
     } while (i != 0x20);
 
-    p = gUnk_02025AE0;
+    p = (u8 *)gUnk_02025AE0;
     i = 0;
     do {
         if (p[4] != 0) {
@@ -77,7 +71,7 @@ void UploadPendingGfx(void)
         p += 0x14;
     } while (i != 0x14);
 
-    p = gUnk_02025C70;
+    p = (u8 *)gUnk_02025C70;
     i = 0;
     do {
         if (p[4] != 0) {
@@ -90,7 +84,7 @@ void UploadPendingGfx(void)
         p += 0x14;
     } while (i != 0x10);
 
-    p = gUnk_02025860;
+    p = (u8 *)gUnk_02025860;
     i = 0;
     do {
         if (p[4] != 0) {
@@ -106,7 +100,7 @@ void UploadPendingGfx(void)
         p += 0x14;
     } while (i != 0x20);
 
-    p = gUnk_02025E00;
+    p = (u8 *)gUnk_02025E00;
     i = 0;
     q = &gUnk_02025EC4;
     do {

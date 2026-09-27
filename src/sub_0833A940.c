@@ -1,24 +1,12 @@
 #include "global.h"
 #include "gba/m4a_internal.h"
 #include "functions.h"
+#include "variables.h"
 
 /* m4aSongNumStartOrContinue, high copy (EWRAM tables, high-engine callees). */
 
-struct Unk0801DACC
-{
-    u32 unk0;
-    u16 unk4;
-};
 
-struct Unk0801DA90
-{
-    u32 unk0;
-    u32 unk4;
-    u32 unk8;
-};
 
-extern struct Unk0801DACC gUnk_0200CAA4[];
-extern struct Unk0801DA90 gUnk_0200CA74[];
 
 
 void sub_0833A940(u16 n)

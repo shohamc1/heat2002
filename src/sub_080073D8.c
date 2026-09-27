@@ -1,12 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern u32 gUnk_02025DB0[]; /* 0x02025DB0 */
-extern u32 gUnk_02025400[]; /* 0x02025400 */
-extern u32 gUnk_020255E0[]; /* 0x020255E0 */
-extern u32 gUnk_02025AE0[]; /* 0x02025AE0 */
-extern u32 gUnk_02025C70[]; /* 0x02025C70 */
-extern u32 gUnk_02025860[]; /* 0x02025860 */
-extern u32 gUnk_02025E00[]; /* 0x02025E00 */
 
 void AgeGfxCaches(void)
 {

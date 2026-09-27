@@ -1,7 +1,11 @@
 #include "global.h"
 #include "variables.h"
 
-struct Track {
+/* The 0x1C-byte starting-grid record gUnk_08367A14 holds (origin, step,
+   extent). It shared the struct Track tag name with the 0x64-byte track
+   record that now lives in include/structs.h, but its layout and stride
+   differ, so it keeps a local tag; nothing else uses the array. */
+struct TrackGrid {
     /* +0x00 */ u32 unk00;
     /* +0x04 */ u32 unk04;
     /* +0x08 */ u32 unk08;
@@ -11,7 +15,7 @@ struct Track {
     /* +0x18 */ u32 unk18;
 };
 
-extern struct Track gUnk_08367A14[];
+extern struct TrackGrid gUnk_08367A14[];
 
 void BuildStartingGrid(u8 a1)
 {

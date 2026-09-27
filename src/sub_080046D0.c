@@ -13,7 +13,6 @@ typedef struct {
     } u;
 } Ent;
 
-extern Ent gUnk_02024830[];
 
 void sub_080046D0(void)
 {
@@ -47,7 +46,7 @@ void sub_080046D0(void)
     sn = n << 16;
     v1 = *pa;
     s1 = v1 << 16;
-    p = gUnk_02024830;
+    p = (Ent *)gUnk_02024830;
     p[0].u.w = s1 | p[0].u.h.lo;
     p[1].u.w = sv | p[1].u.h.lo;
     p[2].u.w = sn | p[2].u.h.lo;

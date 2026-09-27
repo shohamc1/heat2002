@@ -1,8 +1,6 @@
 #include "global.h"
 #include "variables.h"
 
-extern s32 gUnk_02022E20[];
-extern s32 gUnk_02023A20[];
 
 void BeginFadeToColor(s32 a, u32 b)
 {
@@ -21,9 +19,9 @@ void BeginFadeToColor(s32 a, u32 b)
     i = 0;
     k = 0;
     do {
-        gUnk_02023A20[k] = (r - gUnk_02022E20[k]) / a;
-        gUnk_02023A20[k + 1] = (g - gUnk_02022E20[k + 1]) / a;
-        gUnk_02023A20[k + 2] = ((s32)bp - gUnk_02022E20[k + 2]) / a;
+        gUnk_02023A20[k] = (r - (s32)gUnk_02022E20[k]) / a;
+        gUnk_02023A20[k + 1] = (g - (s32)gUnk_02022E20[k + 1]) / a;
+        gUnk_02023A20[k + 2] = ((s32)bp - (s32)gUnk_02022E20[k + 2]) / a;
         k += 3;
     } while (++i != 256);
     gUnk_02022E18 = a;

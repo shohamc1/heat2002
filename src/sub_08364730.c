@@ -1,5 +1,6 @@
 #include "global.h"
 #include "gba/io_reg.h"
+#include "variables.h"
 
 /* Serial IRQ handler for the comm state at 0x03000C00.
  *
@@ -27,7 +28,6 @@ struct CommRegs
     s32 index;  /* +0x14 */
 };
 
-extern struct CommRegs gUnk_03000C00;
 
 void sub_08364730(void)
 {

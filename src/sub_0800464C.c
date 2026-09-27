@@ -1,7 +1,6 @@
 #include "global.h"
 #include "variables.h"
 
-extern u32 gUnk_02024820;
 
 u32 SortSpritesByDepth(void);
 

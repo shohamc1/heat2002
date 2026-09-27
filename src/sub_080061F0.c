@@ -1,10 +1,10 @@
 #include "global.h"
+#include "data.h"
 
-extern u16 *gUnk_08364B08;
 
 void ClearTextLayer(void)
 {
-    u16 *p = gUnk_08364B08;
+    u16 *p = (*(u16 **)&gUnk_08364B08);
     u32 i = 0;
 
     do {

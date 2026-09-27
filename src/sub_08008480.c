@@ -4,7 +4,6 @@
 #include "variables.h"
 #include "car.h"
 
-extern u32 gUnk_0202A510;
 extern s32 gUnk_0202CB2C;
 extern s32 gUnk_0202CAEC;
 extern s32 gUnk_0202CBE4;

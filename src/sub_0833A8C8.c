@@ -1,9 +1,6 @@
 #include "global.h"
 #include "functions.h"
-struct Unk0801DACC { u32 unk0; u16 unk4; };
-struct Unk0801DA90 { u32 unk0; u32 unk4; u32 unk8; };
-extern struct Unk0801DACC gUnk_0200CAA4[];
-extern struct Unk0801DA90 gUnk_0200CA74[];
+#include "variables.h"
 void sub_0833A8C8(u16 idx)
 {
     u32 v = gUnk_0200CA74[gUnk_0200CAA4[idx].unk4].unk0;

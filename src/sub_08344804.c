@@ -1,7 +1,7 @@
 #include "global.h"
 #include "car.h"
+#include "variables.h"
 
-extern struct Car *gUnk_02039200[];
 
 void sub_08344804(void)
 {
@@ -14,14 +14,14 @@ void sub_08344804(void)
     i = 0;
     do
     {
-        gUnk_02039200[i] = &gModule_Cars[i];
+        ((struct Unk0202A550 **)gUnk_02039200)[i] = &gModule_Cars[i];
         i++;
     } while (i != 0x5);
     /* A goto keeps the field-offset setup inside each sort pass. */
 outer:
     {
         swapped = 0;
-        p = gUnk_02039200;
+        p = (struct Unk0202A550 **)gUnk_02039200;
         i = 0;
         do
         {

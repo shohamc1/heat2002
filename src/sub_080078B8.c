@@ -1,7 +1,6 @@
 #include "global.h"
 #include "variables.h"
 
-extern u32 gUnk_02025FD0;
 
 void InitTasks(void)
 {

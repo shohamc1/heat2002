@@ -2,10 +2,7 @@
 #include "functions.h"
 #include "variables.h"
 
-extern u16 *gUnk_020251B8;
 extern u8 gUnk_0200D0B8[];
-extern u32 gUnk_0203DCFC;
-extern u32 gUnk_0203D500;
 
 
 void sub_08340D04(void)
@@ -15,7 +12,7 @@ void sub_08340D04(void)
     u32 *r;
     u16 *base;
 
-    base = gUnk_020251B8;
+    base = *(u16 **)&gUnk_020251B8;
     p = base + 0x128;
     sub_0833EF0C(gUnk_0200D0B8, 8, 8);
     /* sub_0833E36C: this file's old prototype took

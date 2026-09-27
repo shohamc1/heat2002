@@ -1,11 +1,10 @@
 #include "global.h"
 #include "gba/compat.h"
 #include "functions.h"
+#include "data.h"
 
-extern u8 gUnk_0833338C[];
 extern u32 gUnk_0600C000[];
 extern u32 gUnk_082B76F0[];
-extern u32 gUnk_08364B08[];
 extern u32 gUnk_082B731C[];
 
 void sub_08010714(void);

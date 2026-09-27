@@ -1,4 +1,5 @@
 #include "global.h"
+#include "variables.h"
 
 struct Node0800796C {
     u32 f0[3];
@@ -8,14 +9,13 @@ struct Node0800796C {
 };
 
 extern u32 gUnk_0202A3E0;
-extern struct Node0800796C *gUnk_02025FD0;
 
 void RunTasks(void)
 {
     struct Node0800796C *node;
 
     gUnk_0202A3E0 = 0;
-    node = gUnk_02025FD0;
+    node = (*(struct Node0800796C **)&gUnk_02025FD0);
     if (node != NULL) {
         do {
             gUnk_0202A3E0 += 1;

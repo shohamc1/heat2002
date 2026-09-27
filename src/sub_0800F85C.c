@@ -2,7 +2,6 @@
 #include "gba/io_reg.h"
 #include "variables.h"
 
-extern u16 gUnk_0202EF40[];
 
 void SerialIntr(void)
 {

@@ -1,6 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern u32 gCarOrder[]; /* 0x0202EFC0 */
 
 u32 sub_08007B10(u32 ptr)
 {

@@ -1,10 +1,9 @@
 #include "global.h"
 #include "data.h"
-extern u16 *gUnk_08364B08;
 
 void DrawText(u8 *p, u32 a1, u32 a2, u8 a3)
 {
-    u16 *out = gUnk_08364B08;
+    u16 *out = (u16 *)*(u32 *)&gUnk_08364B08;
     u16 color;
     u32 c;
 

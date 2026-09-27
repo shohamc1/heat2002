@@ -1,7 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern u32 gUnk_0202CC24[];
-extern u32 gUnk_0202CC38[];
 
 u32 sub_0800C2CC(s32 a, s32 b, u16 *p, u8 *e)
 {

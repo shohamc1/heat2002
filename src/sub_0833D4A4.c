@@ -1,6 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern s32 gUnk_020392D0[];
 extern u16 gUnk_0203AAD0[];
 
 void sub_0833D4A4(void)
@@ -12,7 +12,7 @@ void sub_0833D4A4(void)
     s32 g;
     s32 b;
 
-    src = gUnk_020392D0;
+    src = (s32 *)gUnk_020392D0;
     dst = gUnk_0203AAD0;
     for (i = 0; i != 0x100; i++)
     {

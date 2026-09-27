@@ -6,9 +6,6 @@
 
 extern u8 gUnk_02025228;
 extern u8 gUnk_083387A8[];
-extern u32 gUnk_08364B08[];
-extern s32 gUnk_0200209C;
-extern u8 gUnk_08334DCC[];
 
 
 void sub_08005AF0(s32 arg)
@@ -37,13 +34,13 @@ void sub_08005AF0(s32 arg)
     dest = (u16 *)(gUnk_08364B08[0] + 0x4EE);
     if (arg <= 0x31FF && (gUnk_0200209C & 0x10) != 0) {
         off = 0x5B2;
-        *dest = 0xE000 | gUnk_08335A8C[*(u16 *)&gUnk_08334DCC[off]];
+        *dest = 0xE000 | gUnk_08335A8C[*(u16 *)((u8 *)gUnk_08334DCC + off)];
         if (gOptions[3] != 0) {
             if (gIsDemo == 0)
                 m4aSongNumStart(0x1B);
         }
     } else {
         off = 0x5B4;
-        *dest = 0xE000 | gUnk_08335A8C[*(u16 *)&gUnk_08334DCC[off]];
+        *dest = 0xE000 | gUnk_08335A8C[*(u16 *)((u8 *)gUnk_08334DCC + off)];
     }
 }

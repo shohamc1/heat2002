@@ -35,12 +35,8 @@
 #include "functions.h"
 #include "variables.h"
 #include "car.h"
+#include "data.h"
 
-extern u32 gUnk_0202CC24;
-extern u32 gUnk_0202CC34;
-extern u32 gUnk_0202CC38;
-extern u32 gUnk_0202CC3C;
-extern u32 gUnk_083672F0[];
 
 void sub_08008394(u32 a);
 void sub_0800C430(u32 a);
@@ -107,7 +103,7 @@ void UpdateAiDriver(struct Car *ent, u8 param)
     result = sub_0800C358((u32)ent, param);
     if (result == -1)
         return;
-    diff = sub_0800BBFC(gUnk_0202CC24, gUnk_0202CC38, (*(u32 *)&ent->unkF4), gUnk_0202CC3C, gUnk_0202CC34);
+    diff = sub_0800BBFC((*(u32 *)&gUnk_0202CC24), (*(u32 *)&gUnk_0202CC38), (*(u32 *)&ent->unkF4), (*(u32 *)&gUnk_0202CC3C), (*(u32 *)&gUnk_0202CC34));
     diff = diff + 0x40;
     if (diff >= ent->unk154)
         diff = diff - ent->unk154;

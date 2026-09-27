@@ -3,10 +3,6 @@
 
 extern u8 gUnk_0203B6D8;
 extern u8 gUnk_02024F70[];
-extern u8 gUnk_02024F50[];
-extern u32 gUnk_020251B8[];
-extern u32 gUnk_020390AC;
-extern u8 gUnk_02021594[];
 
 u32 sub_0833FC94(u32 r0);
 u32 sub_0833FD78(u32 r0);
@@ -37,7 +33,7 @@ void sub_0833E5EC(s32 arg)
     }
     gUnk_0203B828 = ((arg >> 16) + 0xBE) & 0xFF;
     dest = (u16 *)(gUnk_020251B8[0] + 0x4EE);
-    if (arg <= 0x31FF && (gUnk_020390AC & 0x10) != 0) {
+    if (arg <= 0x31FF && ((*(u32 *)&gUnk_020390AC) & 0x10) != 0) {
         off = 0x5B2;
         *dest = 0xE000 | gUnk_02022254[*(u16 *)&gUnk_02021594[off]];
         if (gUnk_0203E120[3] != 0) {

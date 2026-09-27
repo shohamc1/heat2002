@@ -2,7 +2,6 @@
 #include "functions.h"
 #include "variables.h"
 
-extern u8 gUnk_020251BC[]; /* array of 100-byte records */
 
 
 void sub_0833CCD4(u8 idx)
@@ -11,7 +10,7 @@ void sub_0833CCD4(u8 idx)
     u8 *base;
     u8 *p;
 
-    base = gUnk_020251BC;
+    base = (u8 *)gUnk_020251BC;
     off = idx * 100;
     p = base + 4;
     sub_08344B64(*(u32 *)(p + off), 0x06000000, 0x4000);

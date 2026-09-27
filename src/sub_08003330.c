@@ -12,7 +12,6 @@
 #include "functions.h"
 #include "variables.h"
 
-extern u16 gUnk_0202EF40[][4];
 extern u16 gUnk_02002178[];
 
 u16 PackLinkKeys(u16 keys);
@@ -35,8 +34,8 @@ s32 ExchangeLinkInput(void)
     keys = ~*(u16 *)0x04000130;
     keys = PackLinkKeys(keys);
     for (i = 0; i < gNumLinkPlayers[0]; i++) {
-        gUnk_0202EF40[i][0] = 0;
-        gUnk_02002178[i] = 0;
+        *(u16 *)((u8 *)gUnk_0202EF40 + i * 8) = 0;
+        *(u16 *)((u8 *)gUnk_02002178 + i * 2) = 0;
     }
     phase = 0;
     done = 0;
@@ -74,7 +73,7 @@ send:
                 ;
         }
         for (i = 0; i < gNumLinkPlayers[0]; i++)
-            recv[i] = gUnk_0202EF40[i][0];
+            recv[i] = *(u16 *)((u8 *)gUnk_0202EF40 + i * 8);
         if (phase == 0) {
             n = 0;
             for (i = phase; i < gNumLinkPlayers[0]; i++) {

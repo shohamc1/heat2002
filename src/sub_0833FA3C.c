@@ -1,12 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-extern u32 gUnk_0203C220[];
-extern u32 gUnk_0203B870[];
-extern u32 gUnk_0203BA50[];
-extern u32 gUnk_0203BF50[];
-extern u32 gUnk_0203C0E0[];
-extern u32 gUnk_0203BCD0[];
-extern u32 gUnk_0203C270[];
 
 void sub_0833FA3C(void)
 {
@@ -19,13 +13,13 @@ void sub_0833FA3C(void)
     u32 *q;
     u32 i;
 
-    p = gUnk_0203C220;
+    p = (u32 *)gUnk_0203C220;
     i = 0;
-    a2 = gUnk_0203B870;
-    a3 = gUnk_0203BA50;
-    a4 = gUnk_0203BF50;
-    a5 = gUnk_0203C0E0;
-    a6 = gUnk_0203BCD0;
+    a2 = (u32 *)gUnk_0203B870;
+    a3 = (u32 *)gUnk_0203BA50;
+    a4 = (u32 *)gUnk_0203BF50;
+    a5 = (u32 *)gUnk_0203C0E0;
+    a6 = (u32 *)gUnk_0203BCD0;
     q = gUnk_0203C270;
     for (; i != 4; i++, p += 5) {
         if (p[0] == 0)

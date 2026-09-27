@@ -2,8 +2,6 @@
 #include "data.h"
 #include "variables.h"
 
-extern u32 gUnk_083C9574[];
-extern u32 gUnk_083C97B4[];
 extern u32 gUnk_083C99F4[];
 extern u32 gUnk_083C9C34[];
 

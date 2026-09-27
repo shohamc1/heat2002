@@ -2,7 +2,6 @@
 #include "variables.h"
 #include "car.h"
 
-extern s32 gUnk_0202521C;
 
 void sub_0800A474(struct Car *p);
 

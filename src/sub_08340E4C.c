@@ -1,8 +1,6 @@
 #include "global.h"
 #include "variables.h"
 
-extern u32 gUnk_0203D500; /* 0x0203D500 */
-extern s32 gUnk_0203DCFC; /* 0x0203DCFC */
 
 void sub_08340E4C(void)
 {
@@ -12,9 +10,9 @@ void sub_08340E4C(void)
     if ((s32)v <= 999)
         return;
     gUnk_0203D500 -= 1000;
-    v = ++gUnk_0203DCFC;
+    v = ++(*(s32 *)&gUnk_0203DCFC);
     if ((s32)v > 59) {
-        gUnk_0203DCFC = v - 60;
+        (*(s32 *)&gUnk_0203DCFC) = v - 60;
         gUnk_0203DD04++;
     }
 }

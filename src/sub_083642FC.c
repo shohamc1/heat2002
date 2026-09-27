@@ -7,11 +7,9 @@
 
 extern u32 gUnk_020009B8;
 void sub_083640B0(void);
-extern u8 gUnk_03000000[];
 extern u8 *gUnk_02000BD4[];
 extern u32 gUnk_02000A9C[];
 extern u16 gUnk_05000200[];
-extern s16 gUnk_03000800[];
 extern u32 gUnk_02000964[];
 extern u8 gUnk_02000D00[];
 
@@ -50,7 +48,7 @@ void sub_083642FC(void)
     REG_IE = INTR_FLAG_VBLANK;
     REG_DISPSTAT = DISPSTAT_VBLANK_INTR;
     REG_IME = 1;
-    DmaFill32(3, 0xA0, gUnk_03000800, 0x400);
+    DmaFill32(3, 0xA0, (s16 *)gUnk_03000800, 0x400);
     sub_083644B4(0, gUnk_02000964[idx]);
     for (;;) {
         t = ((idx << 15) + frame * 4) >> 10;
@@ -63,7 +61,7 @@ void sub_083642FC(void)
             sub_083644B4(0, gUnk_02000964[idx]);
             frame = 0;
         }
-        sub_083647F8(gUnk_03000800, (void *)OAM, 0x100);
+        sub_083647F8((s16 *)gUnk_03000800, (void *)OAM, 0x100);
         sub_08364808();
     }
     sub_08364804(0xE2);

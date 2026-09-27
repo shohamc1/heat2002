@@ -1,8 +1,8 @@
 #include "global.h"
 #include "variables.h"
 #include "car.h"
+#include "data.h"
 
-extern u32 gUnk_08364B08[];
 
 void UpdateRaceTimers(void);
 void DrawTime(u16 *dest, s32 a, s32 b, s32 c);

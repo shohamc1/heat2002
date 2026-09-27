@@ -3,9 +3,7 @@
 #include "variables.h"
 #include "car.h"
 
-extern s32 gUnk_0202CBD8;
 extern u8 gUnk_0202CB10;
-extern u32 gUnk_0202CB14;
 
 
 void sub_08008D8C(void)
@@ -75,21 +73,21 @@ void sub_08008D8C(void)
             v = sub_08008D3C();
             if (v < 0)
                 v = 0;
-            if (v > gUnk_0202CBD8)
-                gUnk_0202CBD8 = v;
-            if (gUnk_0202CBD8 > 0x76) {
+            if (v > (*(s32 *)&gUnk_0202CBD8))
+                (*(s32 *)&gUnk_0202CBD8) = v;
+            if ((*(s32 *)&gUnk_0202CBD8) > 0x76) {
                 gUnk_0202EEE4 = 1;
                 EndRace();
             }
-            if (gUnk_0202CBD8 > 0x79) {
+            if ((*(s32 *)&gUnk_0202CBD8) > 0x79) {
                 if (gUnk_0202CB10 & 8)
-                    sub_08008C48(gUnk_0202CBD8);
+                    sub_08008C48((*(s32 *)&gUnk_0202CBD8));
                 else
                     sub_08008CB8();
                 gUnk_0202CB10++;
                 if (gUnk_0202CB10 > 0x40)
                     EndRace();
-            } else if (gUnk_0202CBD8 != 0) {
+            } else if ((*(s32 *)&gUnk_0202CBD8) != 0) {
                 sub_08008C48(v);
             }
             break;

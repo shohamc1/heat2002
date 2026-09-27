@@ -1,5 +1,6 @@
 #include "global.h"
 #include "functions.h"
+#include "variables.h"
 
 struct Unk12A
 {
@@ -14,14 +15,12 @@ struct Unk8B
     u16 pad;
 };
 
-extern struct Unk12A gUnk_0200CA74[];
-extern struct Unk8B gUnk_0200CAA4[];
 
 
 void sub_0833A994(u16 a)
 {
-    struct Unk12A *pa = gUnk_0200CA74;
-    struct Unk8B *baseB = gUnk_0200CAA4;
+    struct Unk12A *pa = (struct Unk12A *)gUnk_0200CA74;
+    struct Unk8B *baseB = (struct Unk8B *)gUnk_0200CAA4;
     struct Unk8B *pb = baseB + a;
 
     if (*(u32 *)pa[pb->idx].ptr == pb->field0)

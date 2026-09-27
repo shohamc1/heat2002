@@ -1,9 +1,9 @@
 #include "global.h"
 #include "gba/compat.h"
 #include "functions.h"
+#include "data.h"
 
 extern const u8 gUnk_083107FC[];
-extern const u32 gUnk_0833338C[];
 extern const u8 gUnk_08310380[];
 extern const u8 gUnk_083104AC[];
 extern const u8 gUnk_08310180[];

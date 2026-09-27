@@ -7,7 +7,6 @@ extern u16 gUnk_0202ED68;
 extern u16 gUnk_0202E91C;
 extern u16 gUnk_0202E950;
 extern u16 gUnk_0202E928;
-extern s16 gUnk_0202E960[];
 
 s16 FixedInverse8(s16 r0);
 s32 FixedMul8(s16 a, s16 b);

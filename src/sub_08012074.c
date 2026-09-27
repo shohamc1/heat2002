@@ -4,15 +4,15 @@
 #include "functions.h"
 #include "variables.h"
 
-extern u8 gKeysHeld;
 struct UnkEFA0 {
     u8 unk0;
     u8 unk1;
     u8 unk2;
     u8 unk3;
 };
-extern struct UnkEFA0 gUnk_0202EFA0[];
-extern u16 gUnk_0202EF40[4][4];
+struct EFA0s4 {
+    struct UnkEFA0 r[4];
+};
 extern u8 gUnk_0829F32C[];
 
 s32 sub_08012074(void)
@@ -37,32 +37,32 @@ s32 sub_08012074(void)
     ReadKeys();
     ed = &gUnk_0202ED78[0];
     t = ((((*(u32 *)REG_ADDR_SIOCNT << 26) >> 30) + 1) << 12) | 0x100;
-    t |= gKeysHeld;
+    t |= (*(u8 *)&gKeysHeld);
     z = 0;
     *ed = t;
     SioSendWord(*ed);
-    gUnk_0202EFA0[0].unk2 |= 0xFF;
-    gUnk_0202EFA0[1].unk2 |= 0xFF;
-    gUnk_0202EFA0[2].unk2 |= 0xFF;
-    gUnk_0202EFA0[3].unk2 |= 0xFF;
+    ((struct EFA0s4 *)gUnk_0202EFA0)->r[0].unk2 |= 0xFF;
+    ((struct EFA0s4 *)gUnk_0202EFA0)->r[1].unk2 |= 0xFF;
+    ((struct EFA0s4 *)gUnk_0202EFA0)->r[2].unk2 |= 0xFF;
+    ((struct EFA0s4 *)gUnk_0202EFA0)->r[3].unk2 |= 0xFF;
     gUnk_0202EEF4 = z;
     i = 0;
     do {
-        buf[i] = gUnk_0202EF40[i][0];
+        buf[i] = *(u16 *)((u8 *)gUnk_0202EF40 + i * 8);
         i++;
     } while (i < 4);
     if (((buf[0] >> 8) & 0xF) == 1) {
         if ((buf[0] >> 12) == 1) {
-            gUnk_0202EFA0[0].unk2 = buf[0] >> 12;
+            ((struct EFA0s4 *)gUnk_0202EFA0)->r[0].unk2 = buf[0] >> 12;
             gUnk_0202EEF4++;
             if ((buf[1] >> 12) == 2) {
-                gUnk_0202EFA0[1].unk2 = buf[0] >> 12;
+                ((struct EFA0s4 *)gUnk_0202EFA0)->r[1].unk2 = buf[0] >> 12;
                 gUnk_0202EEF4++;
                 if ((buf[2] >> 12) == 3) {
-                    gUnk_0202EFA0[2].unk2 = buf[0] >> 12;
+                    ((struct EFA0s4 *)gUnk_0202EFA0)->r[2].unk2 = buf[0] >> 12;
                     gUnk_0202EEF4++;
                     if ((buf[3] >> 12) == 4) {
-                        gUnk_0202EFA0[3].unk2 = buf[0] >> 12;
+                        ((struct EFA0s4 *)gUnk_0202EFA0)->r[3].unk2 = buf[0] >> 12;
                         gUnk_0202EEF4++;
                     }
                 }
@@ -83,7 +83,7 @@ s32 sub_08012074(void)
         else
             DrawTextCenteredHighlight(gUnk_0829F32C, 0xF, 1);
     }
-    if (gUnk_0202EF40[0][0] == 0x1108 && gUnk_0202EEF4 > 1 && gUnk_0202EEF4 == count)
+    if (*(u16 *)gUnk_0202EF40 == 0x1108 && gUnk_0202EEF4 > 1 && gUnk_0202EEF4 == count)
         return 1;
     return 0;
 }

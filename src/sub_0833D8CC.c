@@ -15,7 +15,6 @@ typedef struct {
     } u;
 } Ent;
 
-extern Ent gUnk_0203ACE0[];
 
 void sub_0833D8CC(void)
 {
@@ -49,7 +48,7 @@ void sub_0833D8CC(void)
     sn = n << 16;
     v1 = *pa;
     s1 = v1 << 16;
-    p = gUnk_0203ACE0;
+    p = (Ent *)gUnk_0203ACE0;
     p[0].u.w = s1 | p[0].u.h.lo;
     p[1].u.w = sv | p[1].u.h.lo;
     p[2].u.w = sn | p[2].u.h.lo;
