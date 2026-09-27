@@ -25,5 +25,5 @@ void BeginFadeToColor(s32 a, u32 b)
         k += 3;
     } while (++i != 256);
     gUnk_02022E18 = a;
-    gUnk_02022E14 = 1;
+    gFadeActive = 1;
 }

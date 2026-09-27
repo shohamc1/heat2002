@@ -95,7 +95,7 @@ extern const u8 gUnk_08331EC4[];
 extern const u8 gUnk_08331F0C[];
 extern const u8 gUnk_08331F4C[];
 
-const u32 gUnk_083FF5B0[] = {
+const u32 gSplashSpriteFrames[] = {
     (u32)gUnk_0832FA68, (u32)gUnk_0832FB20, (u32)gUnk_0832FBD8,
     (u32)gUnk_0832FC88, (u32)gUnk_0832FD24, (u32)gUnk_0832FDBC,
     (u32)gUnk_0832FE58, (u32)gUnk_0832FF34, (u32)gUnk_0832FFFC,

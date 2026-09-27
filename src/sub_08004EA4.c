@@ -9,33 +9,33 @@ u8 sub_08004EA4(void)
     u8 unused[0x200];
     u16 v;
     u32 w;
-    gUnk_02025248 = 0;
+    gPauseMenuCursor = 0;
     ReadKeys();
     while (1) {
 
     if (gKeysPressed & 0xC0)
-        gUnk_02025248 ^= 1;
+        gPauseMenuCursor ^= 1;
     v = gKeysPressed & 8;
     if (v != 0) {
-        gUnk_0202539C = 0;
+        gMenuBlinkCounter = 0;
         sub_08004D1C(3);
         return 0;
     }
     w = gKeysPressed & 1;
     if (w != 0) {
-        gUnk_0202539C = v;
+        gMenuBlinkCounter = v;
         sub_08004D1C(3);
-        return gUnk_02025248 + 1;
+        return gPauseMenuCursor + 1;
     }
     if (gKeysPressed & 2) {
-        gUnk_0202539C = w;
+        gMenuBlinkCounter = w;
         sub_08004D1C(3);
-        gUnk_02025248 = w;
+        gPauseMenuCursor = w;
         return 1;
     }
-    sub_08004D1C(gUnk_02025248);
+    sub_08004D1C(gPauseMenuCursor);
     WaitForVBlank();
-        gUnk_0202539C++;
+        gMenuBlinkCounter++;
         ReadKeys();
     }
 }

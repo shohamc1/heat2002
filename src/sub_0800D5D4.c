@@ -21,16 +21,16 @@ void sub_0800D5D4(struct Unk0800D5D4 *a, s32 *d)
     s32 v;
 
     v = -(a->heading >> 8) & 0xFF;
-    d[0] = gUnk_0801CD08[v];
-    d[1] = gUnk_0801CD08[v + 0x40];
+    d[0] = gSinTable[v];
+    d[1] = gSinTable[v + 0x40];
     x = a->posX;
     d[4] = x >> 8;
     z = a->posZ;
     d[5] = z >> 8;
     v = a->heading + a->yawRate;
     v = -(v >> 8) & 0xFF;
-    d[2] = gUnk_0801CD08[v];
-    d[3] = gUnk_0801CD08[v + 0x40];
+    d[2] = gSinTable[v];
+    d[3] = gSinTable[v + 0x40];
     d[6] = (x + a->velX) >> 8;
     d[7] = (z + a->velZ) >> 8;
 }

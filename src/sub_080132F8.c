@@ -15,15 +15,15 @@ void sub_080132F8(void)
     u32 sel;
 
     v = 0;
-    gUnk_0202EF78[0] = 0;
-    gUnk_0202EF78[1] = 0;
-    gUnk_0202EF78[2] = 0;
-    gUnk_0202EF78[3] = 0;
-    gUnk_0202EF78[4] = 0;
+    gCheatCodeDials[0] = 0;
+    gCheatCodeDials[1] = 0;
+    gCheatCodeDials[2] = 0;
+    gCheatCodeDials[3] = 0;
+    gCheatCodeDials[4] = 0;
     sub_08011C9C(6, (u16 *)buf);
     sub_080131F8(0);
     FadeToBrightenedPalette((u32)buf, 0xF);
-    gUnk_0202EEB4 = 0;
+    gCheatMsgBlinkTimer = 0;
     sel = 0x40;
     do {
         ReadKeys();
@@ -32,17 +32,17 @@ void sub_080132F8(void)
             r = sub_0801319C();
             if (r != -1) {
                 if (r == 4) {
-                    gUnk_0202EEC0[0] = 1;
-                    gUnk_0202EEC0[1] = 1;
-                    gUnk_0202EEC0[2] = 1;
-                    gUnk_0202EEC0[3] = 1;
-                    gUnk_0202EEC0[4] = 1;
-                    gUnk_0202EEC0[5] = 1;
-                    gUnk_0202EEC0[6] = 1;
-                    gUnk_0202EEC0[7] = 1;
+                    gCheatFlags[0] = 1;
+                    gCheatFlags[1] = 1;
+                    gCheatFlags[2] = 1;
+                    gCheatFlags[3] = 1;
+                    gCheatFlags[4] = 1;
+                    gCheatFlags[5] = 1;
+                    gCheatFlags[6] = 1;
+                    gCheatFlags[7] = 1;
                     i = 0;
                     do {
-                        gUnk_0202EF80[i] = 1;
+                        gProgressFlags[i] = 1;
                         i++;
                     } while (i != 10);
                     i = 0;
@@ -58,18 +58,18 @@ void sub_080132F8(void)
                     gOptions[4] = 0x5B;
                     sub_08016330(3);
                 } else {
-                    gUnk_0202EEC0[r + 4] = 1;
+                    gCheatFlags[r + 4] = 1;
                     SaveProgress();
                 }
                 if (gOptions[3] != 0)
                     m4aSongNumStart(0x18);
-                gUnk_0202EEB4 = 0x40;
-                gUnk_0202EDB0 = 1;
+                gCheatMsgBlinkTimer = 0x40;
+                gCheatCodeWasValid = 1;
             } else {
                 if (gOptions[3] != 0)
                     m4aSongNumStart(0x19);
-                gUnk_0202EEB4 = 0x40;
-                gUnk_0202EDB0 = 0;
+                gCheatMsgBlinkTimer = 0x40;
+                gCheatCodeWasValid = 0;
             }
         }
         if (gKeysPressed & 2)
@@ -81,14 +81,14 @@ void sub_080132F8(void)
             register u32 r asm("r0") =
 /* old prototype u32 MenuMoveVertical(...): the s16 return would add a
                          sign-extension pair before the r0 copy */
-                ((u32 (*)(u16, u8, u32, u32))MenuMoveVertical)(gKeysPressed, gUnk_0202EF78[v], 0, 9);
-            gUnk_0202EF78[v] = t = r;
+                ((u32 (*)(u16, u8, u32, u32))MenuMoveVertical)(gKeysPressed, gCheatCodeDials[v], 0, 9);
+            gCheatCodeDials[v] = t = r;
         }
         if (gKeysPressed & 0xC0
             && ((u8)t == 0x41 || (u8)t == 0x45 || (u8)t == 0x49
                 || (u8)t == 0x4F || (u8)t == 0x55))
-            gUnk_0202EF78[v] =
-                MenuMoveVertical(gKeysPressed, gUnk_0202EF78[v], 0x41, 0x5A);
+            gCheatCodeDials[v] =
+                MenuMoveVertical(gKeysPressed, gCheatCodeDials[v], 0x41, 0x5A);
         WaitForVBlank();
     } while (sel == 0x40);
     if (gOptions[3] != 0)

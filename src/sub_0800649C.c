@@ -10,7 +10,7 @@ void sub_0800649C(u8 *str, u32 x, u32 y)
     u32 v;
     u32 w;
 
-    dest = *(u16 **)&gUnk_08364B08;
+    dest = *(u16 **)&gTextLayerMapPtr;
     dest += (y << 5) + x;
     color = 0xE0 << 8;
     w = 0x47;
@@ -18,7 +18,7 @@ void sub_0800649C(u8 *str, u32 x, u32 y)
     while (c != 0) {
         if (c != 0x20) {
             v = color;
-            v |= gUnk_08335A8C[gUnk_0833553C[(u8)(c - 0x21)]];
+            v |= gFontTileEntries[gFontCharToGlyphTable[(u8)(c - 0x21)]];
             *dest++ = v;
         } else {
             w = 0x47;

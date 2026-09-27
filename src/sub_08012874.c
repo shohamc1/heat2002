@@ -13,7 +13,7 @@ void sub_08012874(s8 a)
 
     ZeroTextLayer();
     sub_0800F498();
-    p = gUnk_082EE104;
+    p = gResultsScreenPalette;
     sub_0800F328((u32)p, (u16 *)buf);
     /* sub_080127E4: this file's old prototype took u8; the matched definition takes s8 */
     ((void (*)(u8))sub_080127E4)(a);

@@ -36,15 +36,15 @@ void sub_080013F8(struct CgbChannel *cgbChans)
     if (ident == ID_NUMBER)
     {
         soundInfo->ident = ident + 1;
-        gUnk_02001D90[8] = (MPlayFunc)sub_08002340;
-        gUnk_02001D90[0x11] = (MPlayFunc)ply_lfos;
-        gUnk_02001D90[0x13] = (MPlayFunc)ply_mod;
-        gUnk_02001D90[0x1C] = (MPlayFunc)sub_08002498;
-        gUnk_02001D90[0x1D] = (MPlayFunc)ply_endtie;
-        gUnk_02001D90[0x1E] = (MPlayFunc)sub_08001640;
-        gUnk_02001D90[0x1F] = (MPlayFunc)TrackStop;
-        gUnk_02001D90[0x20] = (MPlayFunc)sub_080019F4;
-        gUnk_02001D90[0x21] = (MPlayFunc)sub_08001A74;
+        gMPlayJumpTable[8] = (MPlayFunc)sub_08002340;
+        gMPlayJumpTable[0x11] = (MPlayFunc)ply_lfos;
+        gMPlayJumpTable[0x13] = (MPlayFunc)ply_mod;
+        gMPlayJumpTable[0x1C] = (MPlayFunc)sub_08002498;
+        gMPlayJumpTable[0x1D] = (MPlayFunc)ply_endtie;
+        gMPlayJumpTable[0x1E] = (MPlayFunc)sub_08001640;
+        gMPlayJumpTable[0x1F] = (MPlayFunc)TrackStop;
+        gMPlayJumpTable[0x20] = (MPlayFunc)sub_080019F4;
+        gMPlayJumpTable[0x21] = (MPlayFunc)sub_08001A74;
         soundInfo->cgbChans = cgbChans;
         soundInfo->CgbSound = (CgbSoundFunc)sub_08001C88;
         soundInfo->CgbOscOff = (CgbOscOffFunc)sub_08001BD0;

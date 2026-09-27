@@ -12,7 +12,7 @@ u8 sub_0800F120(u8 id)
     u8 i;
 
     for (i = 0; i != 0x1E; i++) {
-        if (((struct Unk083FDB98 *)gUnk_083FDB98)[i].b == id)
+        if (((struct Unk083FDB98 *)gDriverRoster)[i].b == id)
             return i;
     }
     return 0;

@@ -18,11 +18,11 @@ u8 sub_08010EA0(void)
     AgeGfxCaches();
     ClearOamBuffer();
     sub_080047DC();
-    gUnk_020020C0 = 0;
+    gVBlankWorkDone = 0;
     WaitForVBlank();
     ZeroTextLayer();
     sub_0800F4FC();
-    sub_0800F328((u32)gUnk_082E4328, (u16 *)buf);
+    sub_0800F328((u32)gMenuPalette, (u16 *)buf);
     sub_08010E04(0);
     FadeToBrightenedPalette((u32)buf, 0x0F);
     REG_DISPCNT = 0xA8 << 3;
@@ -46,9 +46,9 @@ inner:
         if (gKeysPressed & 2)
             sel = 0;
         sub_080047DC();
-        gUnk_020020C0 = 0;
+        gVBlankWorkDone = 0;
 wait:
-        if (gUnk_020020C0 == 0)
+        if (gVBlankWorkDone == 0)
             goto wait;
         WaitForVBlank();
         WaitForVBlank();

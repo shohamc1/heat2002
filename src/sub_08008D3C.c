@@ -12,7 +12,7 @@ s32 sub_08008D3C(void)
     sum = 0;
     for (i = 0; i != 13; i = (u8)(i + 1))
     {
-        v = gUnk_0202CB40[i];
+        v = gWaypointSpeedSamples[i];
         sum += v;
         if (v == 0)
             return 0;

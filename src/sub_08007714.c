@@ -8,7 +8,7 @@ u8 RequestObjPalette(u32 a)
     u32 *q;
     u32 i;
 
-    p = gUnk_02025E00;
+    p = gObjPaletteCache;
     i = 0;
     q = p;
     for (; i != 16; i++, p += 3) {

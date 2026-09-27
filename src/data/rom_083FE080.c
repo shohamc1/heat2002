@@ -51,7 +51,7 @@ extern const u8 gUnk_0829F8F4[];
 extern const u8 gUnk_0829F908[];
 extern const u8 gUnk_0829F920[];
 extern const u8 gUnk_0829F930[];
-extern const u8 gUnk_0829F948[];
+extern const u8 gText_EmptyCreditLine[];
 extern const u8 gUnk_082B57B0[];
 extern const u8 gUnk_082B57C8[];
 extern const u8 gUnk_082B57DC[];
@@ -372,7 +372,7 @@ extern const u8 gUnk_082B71E4[];
 extern const u8 gUnk_082B7204[];
 extern const u8 gUnk_082B7224[];
 extern const u8 gUnk_082B7244[];
-extern const u8 gUnk_082B7264[];
+extern const u8 gText_BlankRowChallengeGoal[];
 extern const u8 gUnk_082B7284[];
 extern const u8 gUnk_082B72A4[];
 extern const u8 gUnk_082B72C4[];
@@ -380,70 +380,70 @@ extern const u8 gUnk_082B72E4[];
 extern const u8 gUnk_082B7304[];
 
 // Its users declare it as u8 *x[].
-const u32 gUnk_083FE080[] = INCBIN_U32("build/assets/unknown/data_083FE080.bin");
+const u32 gCheatCodeTable[] = INCBIN_U32("build/assets/unknown/data_083FE080.bin");
 // Its users declare it as struct Tbl x[].
-const u32 gUnk_083FE114[] = {
-    (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F948, 0x1,
-    (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F948, 0x1,
-    (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F948, 0x1,
-    (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F948, 0x1,
-    (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F948, 0x1,
-    (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F948, 0x1,
-    (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F930, 0x1,
-    (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F920, 0,
-    (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829ED0C, 0x1, (u32)gUnk_0829F948, 0x1,
-    (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F908, 0, (u32)gUnk_0829F948, 0x1,
-    (u32)gUnk_0829F8F4, 0x1, (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F948, 0x1,
-    (u32)gUnk_0829F8E4, 0, (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F8D8, 0x1,
-    (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F8C8, 0,
-    (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F8BC, 0x1, (u32)gUnk_0829F948, 0x1,
-    (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F8B0, 0, (u32)gUnk_0829F948, 0x1,
-    (u32)gUnk_0829F8A0, 0x1, (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F948, 0x1,
-    (u32)gUnk_0829F88C, 0, (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829ED78, 0x1,
-    (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F874, 0,
-    (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829EC9C, 0x1, (u32)gUnk_0829F948, 0x1,
-    (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F860, 0, (u32)gUnk_0829F948, 0x1,
-    (u32)gUnk_0829F850, 0x1, (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F948, 0x1,
-    (u32)gUnk_0829F838, 0, (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829ECB8, 0x1,
-    (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F824, 0,
-    (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829ECE4, 0x1, (u32)gUnk_0829F948, 0x1,
-    (u32)gUnk_0829ECD4, 0x1, (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F814, 0x1,
-    (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F800, 0x1,
-    (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F7F4, 0,
-    (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F7E4, 0x1, (u32)gUnk_0829F948, 0x1,
-    (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F7D0, 0, (u32)gUnk_0829F948, 0x1,
-    (u32)gUnk_0829F7C4, 0x1, (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F7B8, 0x1,
-    (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F798, 0,
-    (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F784, 0x1, (u32)gUnk_0829F948, 0x1,
-    (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F764, 0, (u32)gUnk_0829F948, 0x1,
-    (u32)gUnk_0829F758, 0x1, (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F948, 0x1,
-    (u32)gUnk_0829F748, 0, (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F738, 0x1,
-    (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F720, 0,
-    (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F710, 0x1, (u32)gUnk_0829F948, 0x1,
-    (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F6FC, 0, (u32)gUnk_0829F948, 0x1,
-    (u32)gUnk_0829F6F0, 0x1, (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F948, 0x1,
-    (u32)gUnk_0829F6DC, 0x1, (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F948, 0x1,
-    (u32)gUnk_0829F7D0, 0, (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F6D0, 0x1,
-    (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F7F4, 0,
-    (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F6B8, 0x1, (u32)gUnk_0829F948, 0x1,
-    (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F6A0, 0, (u32)gUnk_0829F948, 0x1,
-    (u32)gUnk_0829F694, 0x1, (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F948, 0x1,
-    (u32)gUnk_0829F684, 0, (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829EC88, 0x1,
-    (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F674, 0x1, (u32)gUnk_0829F948, 0x1,
-    (u32)gUnk_0829F668, 0x1, (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F65C, 0x1,
-    (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F64C, 0x1, (u32)gUnk_0829F948, 0x1,
-    (u32)gUnk_0829F630, 0x1, (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F624, 0x1,
-    (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F60C, 0,
-    (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F5FC, 0x1, (u32)gUnk_0829F948, 0x1,
-    (u32)gUnk_0829F5EC, 0x1, (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F5DC, 0x1,
-    (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F5CC, 0x1, (u32)gUnk_0829F948, 0x1,
-    (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F948, 0x1,
-    (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F948, 0x1,
-    (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F948, 0x1,
-    (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F948, 0x1,
-    (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F948, 0x1,
-    (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F948, 0x1,
-    (u32)gUnk_0829F948, 0x1, (u32)gUnk_0829F948, 0x1
+const u32 gCreditTexts[] = {
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F930, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F920, 0,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829ED0C, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F908, 0, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gUnk_0829F8F4, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gUnk_0829F8E4, 0, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F8D8, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F8C8, 0,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F8BC, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F8B0, 0, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gUnk_0829F8A0, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gUnk_0829F88C, 0, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829ED78, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F874, 0,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829EC9C, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F860, 0, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gUnk_0829F850, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gUnk_0829F838, 0, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829ECB8, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F824, 0,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829ECE4, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gUnk_0829ECD4, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F814, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F800, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F7F4, 0,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F7E4, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F7D0, 0, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gUnk_0829F7C4, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F7B8, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F798, 0,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F784, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F764, 0, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gUnk_0829F758, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gUnk_0829F748, 0, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F738, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F720, 0,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F710, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F6FC, 0, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gUnk_0829F6F0, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gUnk_0829F6DC, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gUnk_0829F7D0, 0, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F6D0, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F7F4, 0,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F6B8, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F6A0, 0, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gUnk_0829F694, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gUnk_0829F684, 0, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829EC88, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F674, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gUnk_0829F668, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F65C, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F64C, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gUnk_0829F630, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F624, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F60C, 0,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F5FC, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gUnk_0829F5EC, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F5DC, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F5CC, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1
 };
 const u32 gUnk_083FE6C4[] = {
     (u32)gUnk_082B6298, (u32)gUnk_082B628C, (u32)gUnk_082B6284,
@@ -516,7 +516,7 @@ const u32 gUnk_083FE6C4[] = {
     (u32)gUnk_082B57B0
 };
 // Its users declare it as u8 *x[].
-const u32 gUnk_083FE9EC[] = {
+const u32 gChallengeNameTexts[] = {
     (u32)gUnk_082B6378, (u32)gUnk_082B636C, (u32)gUnk_082B6360,
     (u32)gUnk_082B6354, (u32)gUnk_082B6348, (u32)gUnk_082B633C,
     (u32)gUnk_082B6330, (u32)gUnk_082B6324, (u32)gUnk_082B6318,
@@ -525,61 +525,61 @@ const u32 gUnk_083FE9EC[] = {
     (u32)gUnk_082B62A8
 };
 // Its users declare it as u8 *x[].
-const u32 gUnk_083FEA2C[] = {
+const u32 gChallengeGoalTexts[] = {
     (u32)gUnk_082B72E4, (u32)gUnk_082B72C4, (u32)gUnk_082B72A4,
-    (u32)gUnk_082B7284, (u32)gUnk_082B7264, (u32)gUnk_082B7264,
-    (u32)gUnk_082B7264, (u32)gUnk_082B7264, (u32)gUnk_082B7264,
-    (u32)gUnk_082B7264, (u32)gUnk_082B7244, (u32)gUnk_082B7224,
-    (u32)gUnk_082B7204, (u32)gUnk_082B71E4, (u32)gUnk_082B7264,
-    (u32)gUnk_082B7264, (u32)gUnk_082B7264, (u32)gUnk_082B7264,
-    (u32)gUnk_082B7264, (u32)gUnk_082B7264, (u32)gUnk_082B71C4,
+    (u32)gUnk_082B7284, (u32)gText_BlankRowChallengeGoal, (u32)gText_BlankRowChallengeGoal,
+    (u32)gText_BlankRowChallengeGoal, (u32)gText_BlankRowChallengeGoal, (u32)gText_BlankRowChallengeGoal,
+    (u32)gText_BlankRowChallengeGoal, (u32)gUnk_082B7244, (u32)gUnk_082B7224,
+    (u32)gUnk_082B7204, (u32)gUnk_082B71E4, (u32)gText_BlankRowChallengeGoal,
+    (u32)gText_BlankRowChallengeGoal, (u32)gText_BlankRowChallengeGoal, (u32)gText_BlankRowChallengeGoal,
+    (u32)gText_BlankRowChallengeGoal, (u32)gText_BlankRowChallengeGoal, (u32)gUnk_082B71C4,
     (u32)gUnk_082B71A4, (u32)gUnk_082B7184, (u32)gUnk_082B7164,
-    (u32)gUnk_082B7144, (u32)gUnk_082B7264, (u32)gUnk_082B7264,
-    (u32)gUnk_082B7264, (u32)gUnk_082B7264, (u32)gUnk_082B7264,
+    (u32)gUnk_082B7144, (u32)gText_BlankRowChallengeGoal, (u32)gText_BlankRowChallengeGoal,
+    (u32)gText_BlankRowChallengeGoal, (u32)gText_BlankRowChallengeGoal, (u32)gText_BlankRowChallengeGoal,
     (u32)gUnk_082B7124, (u32)gUnk_082B7104, (u32)gUnk_082B70E4,
-    (u32)gUnk_082B70C4, (u32)gUnk_082B70A4, (u32)gUnk_082B7264,
-    (u32)gUnk_082B7264, (u32)gUnk_082B7084, (u32)gUnk_082B7064,
+    (u32)gUnk_082B70C4, (u32)gUnk_082B70A4, (u32)gText_BlankRowChallengeGoal,
+    (u32)gText_BlankRowChallengeGoal, (u32)gUnk_082B7084, (u32)gUnk_082B7064,
     (u32)gUnk_082B7044, (u32)gUnk_082B7024, (u32)gUnk_082B7004,
-    (u32)gUnk_082B6FE4, (u32)gUnk_082B6FC4, (u32)gUnk_082B7264,
-    (u32)gUnk_082B7264, (u32)gUnk_082B7264, (u32)gUnk_082B7264,
-    (u32)gUnk_082B7264, (u32)gUnk_082B7264, (u32)gUnk_082B6FA4,
+    (u32)gUnk_082B6FE4, (u32)gUnk_082B6FC4, (u32)gText_BlankRowChallengeGoal,
+    (u32)gText_BlankRowChallengeGoal, (u32)gText_BlankRowChallengeGoal, (u32)gText_BlankRowChallengeGoal,
+    (u32)gText_BlankRowChallengeGoal, (u32)gText_BlankRowChallengeGoal, (u32)gUnk_082B6FA4,
     (u32)gUnk_082B6F84, (u32)gUnk_082B6F64, (u32)gUnk_082B6F44,
     (u32)gUnk_082B6F24, (u32)gUnk_082B6F04, (u32)gUnk_082B6EE4,
-    (u32)gUnk_082B6EC4, (u32)gUnk_082B7264, (u32)gUnk_082B7264,
+    (u32)gUnk_082B6EC4, (u32)gText_BlankRowChallengeGoal, (u32)gText_BlankRowChallengeGoal,
     (u32)gUnk_082B6EA4, (u32)gUnk_082B6E84, (u32)gUnk_082B6E64,
     (u32)gUnk_082B6E44, (u32)gUnk_082B6E24, (u32)gUnk_082B6E04,
     (u32)gUnk_082B6DE4, (u32)gUnk_082B6DC4, (u32)gUnk_082B6DA4,
     (u32)gUnk_082B6D84, (u32)gUnk_082B6D64, (u32)gUnk_082B6D44,
     (u32)gUnk_082B6D24, (u32)gUnk_082B6D04, (u32)gUnk_082B6CE4,
     (u32)gUnk_082B6CC4, (u32)gUnk_082B6CA4, (u32)gUnk_082B6C84,
-    (u32)gUnk_082B6C64, (u32)gUnk_082B7264, (u32)gUnk_082B6C44,
+    (u32)gUnk_082B6C64, (u32)gText_BlankRowChallengeGoal, (u32)gUnk_082B6C44,
     (u32)gUnk_082B6C24, (u32)gUnk_082B6C04, (u32)gUnk_082B6BE4,
-    (u32)gUnk_082B7264, (u32)gUnk_082B6BC4, (u32)gUnk_082B7264,
-    (u32)gUnk_082B6BA4, (u32)gUnk_082B6B84, (u32)gUnk_082B7264,
+    (u32)gText_BlankRowChallengeGoal, (u32)gUnk_082B6BC4, (u32)gText_BlankRowChallengeGoal,
+    (u32)gUnk_082B6BA4, (u32)gUnk_082B6B84, (u32)gText_BlankRowChallengeGoal,
     (u32)gUnk_082B6B64, (u32)gUnk_082B6B44, (u32)gUnk_082B6B24,
     (u32)gUnk_082B6B04, (u32)gUnk_082B6AE4, (u32)gUnk_082B6AC4,
     (u32)gUnk_082B6AA4, (u32)gUnk_082B6A84, (u32)gUnk_082B6A64,
     (u32)gUnk_082B6A44, (u32)gUnk_082B6A24, (u32)gUnk_082B6A04,
     (u32)gUnk_082B69E4, (u32)gUnk_082B69C4, (u32)gUnk_082B69A4,
     (u32)gUnk_082B6984, (u32)gUnk_082B6964, (u32)gUnk_082B6944,
-    (u32)gUnk_082B6924, (u32)gUnk_082B7264, (u32)gUnk_082B6904,
+    (u32)gUnk_082B6924, (u32)gText_BlankRowChallengeGoal, (u32)gUnk_082B6904,
     (u32)gUnk_082B68E4, (u32)gUnk_082B68C4, (u32)gUnk_082B68A4,
     (u32)gUnk_082B6884, (u32)gUnk_082B6864, (u32)gUnk_082B6844,
     (u32)gUnk_082B6824, (u32)gUnk_082B6804, (u32)gUnk_082B67E4,
     (u32)gUnk_082B67C4, (u32)gUnk_082B67A4, (u32)gUnk_082B6784,
-    (u32)gUnk_082B6764, (u32)gUnk_082B7264, (u32)gUnk_082B6744,
+    (u32)gUnk_082B6764, (u32)gText_BlankRowChallengeGoal, (u32)gUnk_082B6744,
     (u32)gUnk_082B6724, (u32)gUnk_082B6704, (u32)gUnk_082B66E4,
-    (u32)gUnk_082B7264, (u32)gUnk_082B66C4, (u32)gUnk_082B66A4,
+    (u32)gText_BlankRowChallengeGoal, (u32)gUnk_082B66C4, (u32)gUnk_082B66A4,
     (u32)gUnk_082B6684, (u32)gUnk_082B6664, (u32)gUnk_082B6644,
     (u32)gUnk_082B6624, (u32)gUnk_082B6604, (u32)gUnk_082B65E4,
-    (u32)gUnk_082B65C4, (u32)gUnk_082B7264, (u32)gUnk_082B65A4,
+    (u32)gUnk_082B65C4, (u32)gText_BlankRowChallengeGoal, (u32)gUnk_082B65A4,
     (u32)gUnk_082B6584, (u32)gUnk_082B6564, (u32)gUnk_082B6544,
     (u32)gUnk_082B6524, (u32)gUnk_082B6504, (u32)gUnk_082B64E4,
-    (u32)gUnk_082B64C4, (u32)gUnk_082B64A4, (u32)gUnk_082B7264,
+    (u32)gUnk_082B64C4, (u32)gUnk_082B64A4, (u32)gText_BlankRowChallengeGoal,
     (u32)gUnk_082B6484, (u32)gUnk_082B6464, (u32)gUnk_082B6444,
     (u32)gUnk_082B6424, (u32)gUnk_082B6404, (u32)gUnk_082B63E4,
     (u32)gUnk_082B63C4, (u32)gUnk_082B63A4, (u32)gUnk_082B6384,
-    (u32)gUnk_082B7264
+    (u32)gText_BlankRowChallengeGoal
 };
 const u32 gUnk_083FECAC[] = {
     (u32)gUnk_082B7304
@@ -587,4 +587,4 @@ const u32 gUnk_083FECAC[] = {
 const u16 gUnk_083FECB0[] = INCBIN_U16("build/assets/unknown/data_083FECB0.bin");
 // Its users declare it as struct Unk083FECB8 x[].
 const u32 gUnk_083FECB8[] = INCBIN_U32("build/assets/unknown/data_083FECB8.bin");
-const u32 gUnk_083FED18[] = INCBIN_U32("build/assets/unknown/data_083FED18.bin");
+const u32 gTrackLapLengths[] = INCBIN_U32("build/assets/unknown/data_083FED18.bin");

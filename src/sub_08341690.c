@@ -4,8 +4,8 @@
 
 u32 sub_08341690(s32 x, s32 y, s32 *out)
 {
-    s32 dx = x - gUnk_02039110[0];
-    s32 dy = y - gUnk_02039110[1];
+    s32 dx = x - gModule_Camera[0];
+    s32 dy = y - gModule_Camera[1];
     s32 u = (dx - dy) * 2;
     s32 t = dx + dy;
     s32 v;

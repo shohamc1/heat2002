@@ -10,6 +10,6 @@ void sub_083429E8(u32 a)
     {
         sub_0833FFA8(a);
         sub_0833FF84(a);
-        gUnk_020390D4 = 1;
+        gModule_RaceStarted = 1;
     }
 }

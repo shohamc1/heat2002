@@ -39,7 +39,7 @@ void sub_08001548(struct SoundInfo *soundInfo)
     soundInfo->MidiKeyToCgbFreq = (MidiKeyToCgbFreqFunc)sub_080025B8;
     soundInfo->ExtVolPit = (ExtVolPitFunc)sub_080025B8;
     {
-        MPlayFunc *t = gUnk_02001D90;
+        MPlayFunc *t = gMPlayJumpTable;
 
         MPlayJumpTableCopy(t);
         soundInfo->MPlayJumpTable = t;

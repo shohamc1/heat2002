@@ -21,7 +21,7 @@ u8 sub_08343464(s32 x, s32 y)
     ;
   }
   while (0);
-  new_var2 = (gUnk_02039264 + (gUnk_02039220[0] * ty))[tx];
+  new_var2 = (gUnk_02039264 + (gModule_TrackMapWidth[0] * ty))[tx];
   new_var = sx + (sy * 4);
   return (gUnk_0203929C + (new_var2 * 0x10))[new_var];
 }

@@ -66,7 +66,7 @@ SECTIONS
         build/lib/libgcc/dp-bit.o(.bss);
         build/lib/libgcc/fp-bit.o(.bss);
     }
-    /* gUnk_020021B8: defined in sub_0800306C.c, placed at its original
+    /* gVBlankWorkPhase: defined in sub_0800306C.c, placed at its original
        address (phase-6 mechanism proof; NOLOAD, so no ROM bytes). */
     .bss_sub_0800306C 0x020021B8 (NOLOAD) :
     {

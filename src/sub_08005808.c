@@ -8,22 +8,22 @@ void sub_08005808(void)
 {
     u32 v;
 
-    if (gUnk_020020C4 == 0)
+    if (gRaceStarted == 0)
         return;
-    v = gUnk_020021E0;
+    v = gRaceEndState;
     if (v != 0)
         return;
-    (*(s32 *)&gUnk_020253C0) -= 0x18;
-    if ((*(s32 *)&gUnk_020253C0) >= 0)
+    (*(s32 *)&gCountdownMs) -= 0x18;
+    if ((*(s32 *)&gCountdownMs) >= 0)
         return;
-    (*(s32 *)&gUnk_020253C0) += 0x3E8;
-    gUnk_0202521C -= 1;
+    (*(s32 *)&gCountdownMs) += 0x3E8;
+    gCountdownSeconds -= 1;
     gUnk_02025238 = 1;
-    if (gUnk_0202521C >= 0)
+    if (gCountdownSeconds >= 0)
         return;
-    gUnk_0202521C = v;
-    (*(s32 *)&gUnk_020253C0) = v;
-    if (gUnk_0200215C[0] != 0)
+    gCountdownSeconds = v;
+    (*(s32 *)&gCountdownMs) = v;
+    if (gGameMode[0] != 0)
         return;
     sub_0800B09C();
 }

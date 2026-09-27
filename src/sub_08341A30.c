@@ -23,7 +23,7 @@ void sub_08341A30(u32 a1, u32 a2, u32 a3)
     u32 bits;
 
     ptr = gUnk_0202772C[a3];
-    ptr += sub_08344C50(gUnk_020390AC >> 1, 7);
+    ptr += sub_08344C50(gModule_FrameCounter >> 1, 7);
     a2 &= 0xFF;
     a2 |= (a1 & 0x1FF) << 16;
     a2 |= 0x40000000;

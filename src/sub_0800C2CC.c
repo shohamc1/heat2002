@@ -29,8 +29,8 @@ u32 sub_0800C2CC(s32 a, s32 b, u16 *p, u8 *e)
     dy = q[1] - y0;
     px = x0 + ((dx * v) >> 16);
     py = y0 + ((dy * v) >> 16);
-    gUnk_0202CC24[0] = px;
-    gUnk_0202CC38[0] = py;
+    gClosestLanePointX[0] = px;
+    gClosestLanePointZ[0] = py;
     px = (a - px) >> 2;
     py = (b - py) >> 2;
     v = px * px + py * py;

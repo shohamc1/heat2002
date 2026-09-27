@@ -15,10 +15,10 @@ u16 sub_08004E58(void)
     keys = 0;
     i = 0;
     count = gNumLinkPlayers[0];
-    newp = &gUnk_02025258;
-    oldp = &gUnk_020253BC;
+    newp = &gLinkMenuKeysPressed;
+    oldp = &gLinkMenuKeysPrev;
     if (keys != count) {
-        base = gUnk_020020A0;
+        base = gPlayerKeys;
         j = count;
         do {
             keys |= base[i];

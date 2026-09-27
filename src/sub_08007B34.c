@@ -1,7 +1,7 @@
 #include "global.h"
 #include "car.h"
 
-extern u8 gUnk_08367620[];
+extern u8 gRacePointsTable[];
 
 void UpdateRacePosition(u8 idx);
 u32 sub_08007B10(u32 ptr);
@@ -14,14 +14,14 @@ void AwardRacePoints(struct Car *a1, u32 a2)
 
     UpdateRacePosition((u8)a2);
     t = sub_08007B10((u32)a1);
-    a1->points = a1->points + gUnk_08367620[(u8)t];
-    if (a1->unk168 != 0)
+    a1->points = a1->points + gRacePointsTable[(u8)t];
+    if (a1->lapsLed != 0)
         a1->points += 5;
     flag = 1;
     for (i = 0; i != 24; i++) {
         if (a1 == &gCars[i])
             continue;
-        if (gCars[i].unk168 <= a1->unk168)
+        if (gCars[i].lapsLed <= a1->lapsLed)
             continue;
         flag = 0;
     }

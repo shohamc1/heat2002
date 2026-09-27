@@ -261,7 +261,7 @@ const u32 gUnk_083FDA50[] = {
 };
 const u8 gUnk_083FDA60[] = INCBIN_U8("build/assets/unknown/data_083FDA60.bin");
 // Its users declare it as struct Big x[].
-const u32 gUnk_083FDA78[] = {
+const u32 gTrackSelectEntries[] = {
     0x1, (u32)gUnk_0829EC7C, (u32)gUnk_0829EC78, (u32)gUnk_0829EC68,
     (u32)gUnk_083FEE88, (u32)gUnk_08302E00, 0x1, (u32)gUnk_0829EC5C,
     (u32)gUnk_0829EC58, (u32)gUnk_0829EC44, (u32)gUnk_083FEE68,
@@ -284,7 +284,7 @@ const u32 gUnk_083FDA78[] = {
     (u32)gUnk_0829EAE0, (u32)gUnk_083FEED8, (u32)gUnk_0830CA10
 };
 // Its users declare it as struct Tbl8 x[], struct Unk083FDB98 x[], struct Unk0B38 x[], u32 x[][2].
-const u32 gUnk_083FDB98[][2] = {
+const u32 gDriverRoster[][2] = {
     (u32)gUnk_0829EE24, 0, (u32)gUnk_0829EE10, 0, (u32)gUnk_0829EE00, 0x1,
     (u32)gUnk_0829EDF0, 0x2, (u32)gUnk_0829EDE4, 0x2, (u32)gUnk_0829EDD8, 0x3,
     (u32)gUnk_0829EDCC, 0x4, (u32)gUnk_0829EDC0, 0x4, (u32)gUnk_0829EDB0, 0x7,
@@ -298,7 +298,7 @@ const u32 gUnk_083FDB98[][2] = {
     0x10
 };
 // Its users declare it as u8 *x[].
-const u32 gUnk_083FDC88[] = {
+const u32 gChampionshipLockedTexts[] = {
     (u32)gUnk_0829EE8C, (u32)gUnk_0829EE8C, (u32)gUnk_0829EE8C,
     (u32)gUnk_0829EE8C, (u32)gUnk_0829EE8C, (u32)gUnk_0829EE8C,
     (u32)gUnk_0829EE8C, (u32)gUnk_0829EE40, (u32)gUnk_0829EE40,
@@ -306,9 +306,9 @@ const u32 gUnk_083FDC88[] = {
     (u32)gUnk_0829EE30, (u32)gUnk_0829EE30, (u32)gUnk_0829EE30,
     (u32)gUnk_0829EE30, (u32)gUnk_0829EE30
 };
-const u8 gUnk_083FDCCC[] = INCBIN_U8("build/assets/unknown/data_083FDCCC.bin");
+const u8 gChampionshipTeamTiers[] = INCBIN_U8("build/assets/unknown/data_083FDCCC.bin");
 // Its users declare it as u8 *x[].
-const u32 gUnk_083FDCF0[] = {
+const u32 gChampionshipQualifyTexts[] = {
     (u32)gUnk_0829EFD8, (u32)gUnk_0829EF78, (u32)gUnk_0829EFD8,
     (u32)gUnk_0829EF78, (u32)gUnk_0829EFD8, (u32)gUnk_0829EF78,
     (u32)gUnk_0829EFD8, (u32)gUnk_0829EF78, (u32)gUnk_0829EFD8,
@@ -318,7 +318,7 @@ const u32 gUnk_083FDCF0[] = {
 };
 const u8 gUnk_083FDD34[] = INCBIN_U8("build/assets/unknown/data_083FDD34.bin");
 const u32 gUnk_083FDD48[] = INCBIN_U32("build/assets/unknown/data_083FDD48.bin");
-const u32 gUnk_083FDD8C[] = {
+const u32 gChampionshipRetainTexts[] = {
     (u32)gUnk_0829F0D8, (u32)gUnk_0829F0D8, (u32)gUnk_0829F0D8,
     (u32)gUnk_0829F0D8, (u32)gUnk_0829F0D8, (u32)gUnk_0829F0D8,
     (u32)gUnk_0829F0D8, (u32)gUnk_0829F088, (u32)gUnk_0829F088,
@@ -327,7 +327,7 @@ const u32 gUnk_083FDD8C[] = {
     (u32)gUnk_0829F038, (u32)gUnk_0829F038
 };
 // Its users declare it as u8 *x[].
-const u32 gUnk_083FDDD0[] = {
+const u32 gChampionshipTeamNames[] = {
     (u32)gUnk_0829F228, (u32)gUnk_0829F224, (u32)gUnk_0829F220,
     (u32)gUnk_0829F208, (u32)gUnk_0829F1F4, (u32)gUnk_0829F1E0,
     (u32)gUnk_0829F1D0, (u32)gUnk_0829F1C8, (u32)gUnk_0829F1B8,
@@ -339,8 +339,8 @@ const u32 gUnk_083FDDD0[] = {
 const u32 gUnk_083FDE18[] = {
     (u32)gUnk_0829F22C
 };
-const u8 gUnk_083FDE1C[] = INCBIN_U8("build/assets/unknown/data_083FDE1C.bin");
-const u32 gUnk_083FDE78[] = {
+const u8 gChampionshipTrackOrder[] = INCBIN_U8("build/assets/unknown/data_083FDE1C.bin");
+const u32 gLinkTrackSelectTrackIds[] = {
     0x3020100, 0x7060504, 0xB0A0908, 0x50403, 0x50403, 0x40403, 0x50702,
     0x30603, 0x50203, 0x50403, 0x50503, 0x30403, 0x50803, 0x70404, 0x50403,
     0x50303, 0x60402, 0x50103, 0x10203, 0x50103, 0x10403, 0x50403, 0x50203,
@@ -348,7 +348,7 @@ const u32 gUnk_083FDE78[] = {
     (u32)gUnk_0829F27C, (u32)gUnk_0829F270, (u32)gUnk_0829F264,
     (u32)gUnk_0829F258, (u32)gUnk_0829F24C
 };
-const u32 gUnk_083FDEF4[] = {
+const u32 gDriverCarPalettes[] = {
     (u32)gUnk_082CC5D8, (u32)gUnk_082CC5D8, (u32)gUnk_082CC5D8,
     (u32)gUnk_082CC5D8, (u32)gUnk_082CC5D8, (u32)gUnk_082CC5D8,
     (u32)gUnk_082CC5D8, (u32)gUnk_082CC5D8, (u32)gUnk_082CC5D8,
@@ -362,7 +362,7 @@ const u32 gUnk_083FDEF4[] = {
     (u32)gUnk_082CC5D8, (u32)gUnk_082CC5D8
 };
 // Its users declare it as u32 *x[].
-const u32 gUnk_083FDF74[] = {
+const u32 gDriverCarGfxLeftTiles[] = {
     (u32)gUnk_083FED9C, (u32)gUnk_083FEDBC, (u32)gUnk_083FEDAC,
     (u32)gUnk_083FEDB8, (u32)gUnk_083FEDA8, (u32)gUnk_083FEDA4,
     (u32)gUnk_083FED98, (u32)gUnk_083FEDA0, (u32)gUnk_083FEDB0,
@@ -375,7 +375,7 @@ const u32 gUnk_083FDF74[] = {
     (u32)gUnk_083FED8C, (u32)gUnk_083FED90, (u32)gUnk_083FED94
 };
 // Its users declare it as u32 *x[].
-const u32 gUnk_083FDFEC[] = {
+const u32 gDriverCarGfxRightTiles[] = {
     (u32)gUnk_083FEE14, (u32)gUnk_083FEE34, (u32)gUnk_083FEE24,
     (u32)gUnk_083FEE30, (u32)gUnk_083FEE20, (u32)gUnk_083FEE1C,
     (u32)gUnk_083FEE10, (u32)gUnk_083FEE18, (u32)gUnk_083FEE28,

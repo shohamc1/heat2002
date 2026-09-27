@@ -67,7 +67,7 @@ s32 sub_08343948(struct Ent *ent)
   s32 dot;
   long long q1;
   long long q2;
-  if (gUnk_0203916C[0] == 7)
+  if (gModule_GameMode[0] == 7)
   {
     goto miss;
   }

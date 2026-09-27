@@ -13,8 +13,8 @@ void ComputeForwardSpeed(s32 *a)
 
     ang = ((u16 *)a)[0x1A];
     i = (-(ang >> 11) & 0x1F) << 3;
-    dx = gUnk_0801CD08[i];
-    dy = gUnk_0801CD08[i + 0x40];
+    dx = gSinTable[i];
+    dy = gSinTable[i + 0x40];
     x = a[3];
     y = a[5];
     a[0xB] = (x * dx + y * dy) >> 8;

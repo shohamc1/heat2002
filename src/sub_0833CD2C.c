@@ -6,7 +6,7 @@
 #include "variables.h"
 
 /* struct Track comes from include/structs.h via variables.h; it is the
-   record type of gUnk_020251BC, also from variables.h. */
+   record type of gModule_TrackData, also from variables.h. */
 
 extern u16 gUnk_02022428[];
 extern u16 gUnk_02021394[];
@@ -32,41 +32,41 @@ void sub_0833CD2C(u32 idx)
     sub_0833CCD4(idx);
     t = gUnk_02022428;
     CpuCopy16(t, BG_SCREEN_ADDR(24), 0x2000);
-    CpuCopy16(gUnk_020251BC[idx].unk18, (u32)a, 0x200);
+    CpuCopy16(gModule_TrackData[idx].unk18, (u32)a, 0x200);
     CpuCopy16(t = gUnk_02021394, (u32)b, 0x20);
     sub_0833D31C(0x1E, a);
-    gUnk_02039244 = gUnk_020251BC[idx].unk2C;
-    gUnk_02039288 = gUnk_020251BC[idx].unk34;
-    gUnk_02039228 = gUnk_020251BC[idx].unk20;
-    gUnk_02039268 = gUnk_020251BC[idx].unk24;
-    gUnk_02039224 = gUnk_020251BC[idx].unk28;
-    gUnk_02039238 = gUnk_020251BC[idx].unk0C;
-    gUnk_0203922C = gUnk_020251BC[idx].unk10;
-    gUnk_020392A0 = gUnk_020251BC[idx].unk3C;
-    gUnk_02039280 = gUnk_020251BC[idx].unk40;
-    gUnk_0203929C = (u8 *)gUnk_020251BC[idx].unk48;
+    gUnk_02039244 = gModule_TrackData[idx].unk2C;
+    gUnk_02039288 = gModule_TrackData[idx].unk34;
+    gUnk_02039228 = gModule_TrackData[idx].unk20;
+    gUnk_02039268 = gModule_TrackData[idx].unk24;
+    gUnk_02039224 = gModule_TrackData[idx].unk28;
+    gUnk_02039238 = gModule_TrackData[idx].unk0C;
+    gUnk_0203922C = gModule_TrackData[idx].unk10;
+    gUnk_020392A0 = gModule_TrackData[idx].unk3C;
+    gUnk_02039280 = gModule_TrackData[idx].unk40;
+    gUnk_0203929C = (u8 *)gModule_TrackData[idx].unk48;
     if (idx == 0)
-        gUnk_02039220[0] = 0x7D;
+        gModule_TrackMapWidth[0] = 0x7D;
     if (idx == 1)
-        gUnk_02039220[0] = 0x70;
+        gModule_TrackMapWidth[0] = 0x70;
     if (idx == 2)
-        gUnk_02039220[0] = 0xA8;
+        gModule_TrackMapWidth[0] = 0xA8;
     if (idx == 3)
-        gUnk_02039220[0] = 0x6B;
+        gModule_TrackMapWidth[0] = 0x6B;
     if (idx == 4)
-        gUnk_02039220[0] = 0xA3;
+        gModule_TrackMapWidth[0] = 0xA3;
     if (idx == 5)
-        gUnk_02039220[0] = 0xA6;
+        gModule_TrackMapWidth[0] = 0xA6;
     if (idx == 6)
-        gUnk_02039220[0] = 0x7D;
+        gModule_TrackMapWidth[0] = 0x7D;
     if (idx == 8)
-        gUnk_02039220[0] = 0x7D;
+        gModule_TrackMapWidth[0] = 0x7D;
     if (idx == 9)
-        gUnk_02039220[0] = 0x7D;
+        gModule_TrackMapWidth[0] = 0x7D;
     if (idx == 10)
-        gUnk_02039220[0] = 0x5E;
+        gModule_TrackMapWidth[0] = 0x5E;
     if (idx == 11)
-        gUnk_02039220[0] = 0x7D;
+        gModule_TrackMapWidth[0] = 0x7D;
     sub_0833CFC8(0, 0, gUnk_02039228, (u32 *)TILEMAP_BUFFER(1), gUnk_02039238, gUnk_02039294);
     sub_0833CFC8(0, 0, gUnk_02039268, (u32 *)TILEMAP_BUFFER(2), gUnk_0203922C, gUnk_02039248);
     sub_0833D094();
@@ -74,5 +74,5 @@ void sub_0833CD2C(u32 idx)
     sub_0834108C(idx);
     sub_0833E05C();
     sub_0833E078();
-    gUnk_0203B864 = 0;
+    gModule_NumFinishedCars = 0;
 }

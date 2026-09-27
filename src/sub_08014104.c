@@ -28,10 +28,10 @@ void sub_08014104(u8 a)
     z = 0;
     do {
         DrawText(gUnk_0829F44C, 1, i + 4, 1);
-        if (walk < gUnk_0202F020) {
+        if (walk < gSeasonRaceIndex) {
             ptr = (u8 *)*walk;
-            if (ptr == (u8 *)gCars && (gUnk_0202539C & 0x10) != 0) {
-                DrawText(gUnk_0829F2AC, 1, i + 4, 1);
+            if (ptr == (u8 *)gCars && (gMenuBlinkCounter & 0x10) != 0) {
+                DrawText(gText_BlankRowMenu, 1, i + 4, 1);
             } else {
                 DrawText((u8 *)GetDriverName(ptr[0x162]), 1, i + 4, 1);
                 t = (u16 *)(ptr + 0x164);
@@ -46,13 +46,13 @@ void sub_08014104(u8 a)
         }
         i++;
     } while (i != 0x0F);
-    gUnk_0202539C++;
-    if (gUnk_0202539C & 8) {
+    gMenuBlinkCounter++;
+    if (gMenuBlinkCounter & 8) {
         if (a == 0)
-            DrawText(gUnk_0829F440, 0x1A, 0x13, 1);
+            DrawText(gText_PageNextArrow, 0x1A, 0x13, 1);
         else
-            DrawText(gUnk_0829F444, 0x1A, 0x13, 1);
+            DrawText(gText_PagePrevArrow, 0x1A, 0x13, 1);
     } else {
-        DrawText(gUnk_0829F448, 0x1A, 0x13, 1);
+        DrawText(gText_PageNoArrowBlank, 0x1A, 0x13, 1);
     }
 }

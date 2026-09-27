@@ -34,7 +34,7 @@ void sub_08343148(u8 *a, u32 b, u32 c)
             if (idx != 0x20)
             {
                 t1 = *(u16 *)((idx << 1) + (u32)gUnk_0201F550);
-                t2 = gUnk_0201F9D0[t1];
+                t2 = gModule_TextGlyphTileIndices[t1];
                 r5 = sub_0833FCE0(&gUnk_0201FB54[t2 << 5]);
                 if (r5 != 0)
                 {

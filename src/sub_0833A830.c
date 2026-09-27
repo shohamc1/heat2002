@@ -30,7 +30,7 @@ void sub_0833A830(void)
     cnt = (u16)(u32)gNumMusicPlayersHigh;
     if (cnt != 0)
     {
-        base = (u32)gUnk_0200CA74;
+        base = (u32)gModule_MPlayTable;
         off = cnt;
         p = (struct Unk0801DA90 *)(base + off - cnt);
         i = 0;

@@ -24,10 +24,10 @@ void DrawSpriteText(u8 *a, u32 b, u32 c)
 loop:
     if (v != 0x20) {
         q = v + gUnk_08332D88;
-        p = sub_0800767C((u32)((u8 *)gUnk_0833338C + gUnk_08333208[*q] * TILE_SIZE_4BPP));
+        p = sub_0800767C((u32)((u8 *)gTextLayerTiles + gTextGlyphTileIndices[*q] * TILE_SIZE_4BPP));
         if (p != 0) {
             x = ((b & 0x1FF) << 0x10) | pal;
-            AddOamEntry(x, p[4] | (RequestObjPalette((u32)((u8 *)gUnk_08332BC8)) << 12));
+            AddOamEntry(x, p[4] | (RequestObjPalette((u32)((u8 *)gFontPalette)) << 12));
         }
     }
     b += 8;

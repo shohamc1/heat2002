@@ -17,7 +17,7 @@ void sub_08005AF0(s32 arg)
     u16 *dest;
     u32 off;
 
-    if (gUnk_0202EEB0 == 0)
+    if (gDamagePitsEnabled == 0)
         return;
     gUnk_02025228++;
     buf[0] = 0xAA;
@@ -31,16 +31,16 @@ void sub_08005AF0(s32 arg)
         AddOamEntry(v | 0x02000100, r1v);
     }
     gUnk_02025398 = ((arg >> 16) + 0xBE) & 0xFF;
-    dest = (u16 *)(gUnk_08364B08[0] + 0x4EE);
-    if (arg <= 0x31FF && (gUnk_0200209C & 0x10) != 0) {
+    dest = (u16 *)(gTextLayerMapPtr[0] + 0x4EE);
+    if (arg <= 0x31FF && (gFrameCounter & 0x10) != 0) {
         off = 0x5B2;
-        *dest = 0xE000 | gUnk_08335A8C[*(u16 *)((u8 *)gUnk_08334DCC + off)];
+        *dest = 0xE000 | gFontTileEntries[*(u16 *)((u8 *)gFontGlyphGrid + off)];
         if (gOptions[3] != 0) {
             if (gIsDemo == 0)
                 m4aSongNumStart(0x1B);
         }
     } else {
         off = 0x5B4;
-        *dest = 0xE000 | gUnk_08335A8C[*(u16 *)((u8 *)gUnk_08334DCC + off)];
+        *dest = 0xE000 | gFontTileEntries[*(u16 *)((u8 *)gFontGlyphGrid + off)];
     }
 }

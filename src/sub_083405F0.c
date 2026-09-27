@@ -29,7 +29,7 @@ void sub_083405F0(struct Car *car, u8 b)
         t = -car->speed >> 12;
         if (t < 0)
             t = 0;
-        if (b != 0 && gUnk_020390EC == 0) {
+        if (b != 0 && gModule_IsLinkRace == 0) {
             gUnk_0203DD4C = gUnk_0203D4E0;
             gUnk_0203DD0C = gUnk_0203DDFC;
             gUnk_0203D4E4 = gUnk_0203D4DC;
@@ -41,20 +41,20 @@ void sub_083405F0(struct Car *car, u8 b)
             caec = &gUnk_0203DD0C;
         }
     }
-    if (car == gModule_Cars || gUnk_020390EC != 0) {
-        if (car->unk170 != 0) {
+    if (car == gModule_Cars || gModule_IsLinkRace != 0) {
+        if (car->onApron != 0) {
             gUnk_0203DD4C >>= 1;
             *caec <<= 1;
             gUnk_0203D4E4 >>= 1;
         }
-        if (car->unk171 != 0)
+        if (car->onGrass != 0)
             *caec >>= 1;
     }
     gUnk_0203DE04 = ((car->heading >> 8) - 0x40) & 0xFF;
     gUnk_0203DCF8 = spd = (*(s16 *)&car->yawRate) << 7;
-    gUnk_0203DE08 = (v1 = spd * -gUnk_0200C3E8[((car->heading >> 8) - 0x40) & 0xFF]) >> 8;
-    gUnk_0203DE0C = (v2 = spd * gUnk_0200C3E8[(((car->heading >> 8) - 0x40) & 0xFF) + 0x40]) >> 8;
-    if (car->unk160 != 0) {
+    gUnk_0203DE08 = (v1 = spd * -gModule_SinTable[((car->heading >> 8) - 0x40) & 0xFF]) >> 8;
+    gUnk_0203DE0C = (v2 = spd * gModule_SinTable[(((car->heading >> 8) - 0x40) & 0xFF) + 0x40]) >> 8;
+    if (car->zoneGripFlag != 0) {
         gUnk_0203D51C = car->velX + (v1 >> 9);
         gUnk_0203D4F4 = car->velZ + (v2 >> 9);
     } else {
@@ -63,9 +63,9 @@ void sub_083405F0(struct Car *car, u8 b)
     }
     gUnk_0203DDF4 = *caec;
     gUnk_0203DD2C = gUnk_0203DE04;
-    gUnk_0203DE10 = ((((car->unk12C >> 8) - 0x40) & 0xFF) >> 2) << 2;
+    gUnk_0203DE10 = ((((car->steerHeading >> 8) - 0x40) & 0xFF) >> 2) << 2;
     sub_08340964(0,(struct Unk08340964 *)car);
-    if (car->unk160 != 0) {
+    if (car->zoneGripFlag != 0) {
         gUnk_0203D51C = car->velX - (gUnk_0203DE08 >> 1);
         gUnk_0203D4F4 = car->velZ - (gUnk_0203DE0C >> 1);
     } else {
@@ -76,13 +76,13 @@ void sub_083405F0(struct Car *car, u8 b)
     gUnk_0203DD2C = (*(cbe4 = &gUnk_0203DE04) + 0x80) & 0xFF;
     gUnk_0203DE10 = *cbe4 & 0xFF;
     sub_08340964(1,(struct Unk08340964 *)car);
-    caec = &car->unk13C;
+    caec = &car->engineForce;
     if (*caec != 0) {
-        car->forceX += (*caec >> 8) * gUnk_0200C3E8[*cbe4 + 0x40];
-        car->forceZ += (*caec >> 8) * gUnk_0200C3E8[*cbe4];
+        car->forceX += (*caec >> 8) * gModule_SinTable[*cbe4 + 0x40];
+        car->forceZ += (*caec >> 8) * gModule_SinTable[*cbe4];
     }
     if (car->drag != 0) {
-        car->forceX -= ((car->drag >> 8) * gUnk_0200C3E8[*cbe4 + 0x40]) >> 4;
-        car->forceZ -= ((car->drag >> 8) * gUnk_0200C3E8[*cbe4]) >> 4;
+        car->forceX -= ((car->drag >> 8) * gModule_SinTable[*cbe4 + 0x40]) >> 4;
+        car->forceZ -= ((car->drag >> 8) * gModule_SinTable[*cbe4]) >> 4;
     }
 }

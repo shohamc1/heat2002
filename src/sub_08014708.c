@@ -3,11 +3,11 @@
 #include "data.h"
 #include "variables.h"
 
-extern u8 *gUnk_083FE9EC[];
-extern u8 gUnk_0829F4EC[];
-extern u8 gUnk_0829F4F4[];
-extern u8 gUnk_0829F4FC[];
-extern u8 *gUnk_083FEA2C[];
+extern u8 *gChallengeNameTexts[];
+extern u8 gText_ChallengeStatusBeat[];
+extern u8 gText_ChallengeStatusNA[];
+extern u8 gText_ChallengeStatusOpen[];
+extern u8 *gChallengeGoalTexts[];
 
 void sub_08014708(u8 a, u8 b)
 {
@@ -25,26 +25,26 @@ void sub_08014708(u8 a, u8 b)
     y = 3;
     i = 0;
     do {
-        DrawText(gUnk_083FE9EC[base + i], 0, y, i == (b & 3));
-        if (gUnk_0202EF60[base + i] == 1) {
-            u8 *s = gUnk_0829F4EC;
+        DrawText(gChallengeNameTexts[base + i], 0, y, i == (b & 3));
+        if (gChallengeStatus[base + i] == 1) {
+            u8 *s = gText_ChallengeStatusBeat;
             DrawText(s, 0x16, y, i == (b & 3));
         }
-        if (gUnk_0202EF60[base + i] == 2) {
-            u8 *s = gUnk_0829F4EC;
+        if (gChallengeStatus[base + i] == 2) {
+            u8 *s = gText_ChallengeStatusBeat;
             DrawText(s, 0x16, y, i == (b & 3));
         }
-        sv = ((s8 *)gUnk_0202EF60)[base + i];
+        sv = ((s8 *)gChallengeStatus)[base + i];
         if (sv == 3) {
-            u8 *s = gUnk_0829F4EC;
+            u8 *s = gText_ChallengeStatusBeat;
             DrawText(s, 0x16, y, i == (sv & b));
         }
-        if (((s8 *)gUnk_0202EF60)[base + i] == -1) {
-            u8 *s = gUnk_0829F4F4;
+        if (((s8 *)gChallengeStatus)[base + i] == -1) {
+            u8 *s = gText_ChallengeStatusNA;
             DrawText(s, 0x16, y, i == (b & 3));
         }
-        if ((s8)gUnk_0202EF60[base + i] == 0) {
-            u8 *s = gUnk_0829F4FC;
+        if ((s8)gChallengeStatus[base + i] == 0) {
+            u8 *s = gText_ChallengeStatusOpen;
             DrawText(s, 0x16, y, i == (b & 3));
         }
         y++;
@@ -54,7 +54,7 @@ void sub_08014708(u8 a, u8 b)
     base = (u8)(b * 5) * 2;
     i = base;
     while (i != base + 10) {
-        DrawText(gUnk_083FEA2C[i], 0, y, 1);
+        DrawText(gChallengeGoalTexts[i], 0, y, 1);
         y++;
         i++;
     }

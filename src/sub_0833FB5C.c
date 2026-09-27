@@ -8,7 +8,7 @@ u32 *sub_0833FB5C(u32 a, u8 b)
     u32 *q;
     u32 i;
 
-    p = (u32 *)gUnk_0203C220;
+    p = (u32 *)gModule_ObjTileCache64;
     i = 0;
     q = p;
     for (; i != 4; i++, p += 5) {

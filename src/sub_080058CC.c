@@ -1,12 +1,12 @@
 #include "global.h"
 #include "data.h"
 
-extern u16 gUnk_08334E0A[];
+extern u16 gSmallDigitGlyphs[];
 
 void DrawSmallDigit(u16 *dest, u8 idx)
 {
     u16 v;
 
-    v = *(idx + gUnk_08334E0A);
-    *dest = (gUnk_08335A8C[v] & 0xFFF) | 0xE000;
+    v = *(idx + gSmallDigitGlyphs);
+    *dest = (gFontTileEntries[v] & 0xFFF) | 0xE000;
 }

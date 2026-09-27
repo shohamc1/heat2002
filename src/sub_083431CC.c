@@ -12,9 +12,9 @@ void sub_083431CC(s32 *o, s32 x, s32 y, s32 *out)
 
     idx = -(o[75] >> 11) & 0x1F;
     idx = idx << 3;
-    s1 = gUnk_0200C3E8[idx];
+    s1 = gModule_SinTable[idx];
     idx = idx + 0x40;
-    c1 = gUnk_0200C3E8[idx];
+    c1 = gModule_SinTable[idx];
     dx = (x - o[0]) >> 16;
     dy = (y - o[2]) >> 16;
     out[0] = (dx * c1 - s1 * dy) >> 8;

@@ -16,7 +16,7 @@ void DrawAllCars(void)
     p = (u8 *)gCars;
     i = 0;
     while (i != n) {
-        if (gUnk_0200215C[0] != 2 || i == 0)
+        if (gGameMode[0] != 2 || i == 0)
             DrawCar(p, i);
         i++;
         p += 0xC8 * 2;

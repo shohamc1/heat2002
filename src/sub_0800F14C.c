@@ -10,26 +10,26 @@ void sub_0800F14C(u8 param)
     v = param;
     w = v;
     if (v == 0) {
-        gUnk_0202EF20[0] = 1;
-        gUnk_0202EF20[1] = 1;
-        gUnk_0202EF20[2] = 1;
-        gUnk_0202EF20[3] = 1;
-        gUnk_0202EF20[4] = 1;
-        gUnk_0202EF20[5] = 1;
-        gUnk_0202EF20[6] = 1;
+        gChampionshipAvailable[0] = 1;
+        gChampionshipAvailable[1] = 1;
+        gChampionshipAvailable[2] = 1;
+        gChampionshipAvailable[3] = 1;
+        gChampionshipAvailable[4] = 1;
+        gChampionshipAvailable[5] = 1;
+        gChampionshipAvailable[6] = 1;
     }
     if (v == 1) {
-        gUnk_0202EF20[7] = v;
-        gUnk_0202EF20[8] = v;
-        gUnk_0202EF20[9] = v;
-        gUnk_0202EF20[10] = v;
-        gUnk_0202EF20[11] = v;
+        gChampionshipAvailable[7] = v;
+        gChampionshipAvailable[8] = v;
+        gChampionshipAvailable[9] = v;
+        gChampionshipAvailable[10] = v;
+        gChampionshipAvailable[11] = v;
     }
     if (w == 2) {
-        gUnk_0202EF20[12] = 1;
-        gUnk_0202EF20[13] = 1;
-        gUnk_0202EF20[14] = 1;
-        gUnk_0202EF20[15] = 1;
-        gUnk_0202EF20[16] = 1;
+        gChampionshipAvailable[12] = 1;
+        gChampionshipAvailable[13] = 1;
+        gChampionshipAvailable[14] = 1;
+        gChampionshipAvailable[15] = 1;
+        gChampionshipAvailable[16] = 1;
     }
 }

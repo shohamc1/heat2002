@@ -20,7 +20,7 @@ u8 sub_08012D34(u8 a)
     ClearOamBuffer();
     sub_08012C4C(a);
     sub_080047DC();
-    gUnk_020020C0 = v;
+    gVBlankWorkDone = v;
     WaitForVBlank();
     FadeToBrightenedPalette((u32)buf, 0x0F);
     WaitForVBlank();
@@ -34,7 +34,7 @@ u8 sub_08012D34(u8 a)
         if (gKeysPressed & 1)
             sel = v;
         sub_080047DC();
-        gUnk_020020C0 = 0;
+        gVBlankWorkDone = 0;
         WaitForVBlank();
     } while (sel != 0);
     FadeToColor(0, 0x0F);

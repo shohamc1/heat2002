@@ -43,7 +43,7 @@ void sub_08344968(void)
         j = 0;
         do
         {
-            *(u16 *)((u8 *)gUnk_0203E160 + j * 2 + i * 8) = 0;
+            *(u16 *)((u8 *)gModule_LinkRecvWords + j * 2 + i * 8) = 0;
             j++;
         } while (j <= 3);
         i++;

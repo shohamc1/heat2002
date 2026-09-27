@@ -17,7 +17,7 @@ void sub_0800C430(struct Car *a)
     s32 i;
     s32 d;
     struct Car *e = gCars;
-    u8 *hitp = &gUnk_0202CC28;
+    u8 *hitp = &gAiCarAheadSide;
     u8 *hit;
 
     *hitp = 0;

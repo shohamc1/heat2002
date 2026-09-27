@@ -6,5 +6,5 @@ void SerialIntr(void);
 
 void SetLinkSerialIntr(void)
 {
-    gUnk_02000590[0] = (u32)SerialIntr;
+    gIntrTable[0] = (u32)SerialIntr;
 }

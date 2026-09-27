@@ -20,14 +20,14 @@ void sub_0833EAA4(void)
     s32 v;
 
     sub_0833E1F4();
-    base = gUnk_020251B8[0];
+    base = gModule_TextLayerMapPtr[0];
     obj = base + 0x448;
-    sub_0833DDB8(obj, gUnk_0203B6C8[0], gUnk_0203B6A8[0], gUnk_0203B858[0]);
+    sub_0833DDB8(obj, gModule_LapMin[0], gModule_LapSec[0], gModule_LapMs[0]);
     obj = base + 0x488;
     if (gUnk_0203E1E0[0] != 0)
-        sub_0833DDB8(obj, gUnk_0203B810[gUnk_020390DC], gUnk_0203B6B0[gUnk_020390DC], gUnk_0203B830[gUnk_020390DC]);
-    if (gUnk_020390EC != 0)
-        car = &gModule_Cars[gUnk_0203E1B0];
+        sub_0833DDB8(obj, gModule_TrackRecordMin[gModule_TrackId], gModule_TrackRecordSec[gModule_TrackId], gModule_TrackRecordMs[gModule_TrackId]);
+    if (gModule_IsLinkRace != 0)
+        car = &gModule_Cars[gModule_LinkPlayerId];
     else
         car = gModule_Cars;
     v = -car->speed >> 13;

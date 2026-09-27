@@ -16,7 +16,7 @@ void sub_0833AA34(void)
     cnt = (u16)(u32)gNumMusicPlayersHigh;
     if (cnt != 0)
     {
-        p = gUnk_0200CA74;
+        p = gModule_MPlayTable;
         n = cnt;
     loop:
         sub_0833A7F4((struct MusicPlayerInfo *)(p->unk0));

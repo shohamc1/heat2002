@@ -38,14 +38,14 @@ u32 SendMultibootPayload(void)
         REG_IE |= INTR_FLAG_GAMEPAK;
     REG_DISPSTAT = DISPSTAT_VBLANK_INTR;
     REG_IME = 1;
-    gUnk_02000590[1] = (u32)sub_0800DFC0;
-    gUnk_02000590[0] = (u32)SioTransferIntr;
+    gIntrTable[1] = (u32)sub_0800DFC0;
+    gIntrTable[0] = (u32)SioTransferIntr;
     REG_DISPCNT &= ~DISPCNT_OBJ_ON;
     for (i = 0; i < 3; i++)
         LZ77UnCompVram(gUnk_083FDA50[i], (void *)(OBJ_VRAM0 + i * 0x200));
     DmaCopy32(3, gUnk_0807CB58, OBJ_PLTT, 0xA0);
-    DmaFill32(3, 0xA0, (u8 *)gUnk_0202E960, 0x400);
-    CpuFastSet((u8 *)gUnk_0202E960, (void *)OAM, 0x100);
+    DmaFill32(3, 0xA0, (u8 *)gOamBuffer, 0x400);
+    CpuFastSet((u8 *)gOamBuffer, (void *)OAM, 0x100);
     REG_DISPCNT |= DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP;
     SioTransferInit(1, gUnk_0807C9CC[idx]);
     for (i = 0; i < 4; i++)
@@ -67,12 +67,12 @@ u32 SendMultibootPayload(void)
             SioTransferInit(1, gUnk_0807C9CC[idx]);
             frame = 0;
         }
-        CpuFastSet((u8 *)gUnk_0202E960, (void *)OAM, 0x100);
+        CpuFastSet((u8 *)gOamBuffer, (void *)OAM, 0x100);
         VBlankIntrWait();
     }
 done:
-    DmaFill32(3, 0xA0, (u8 *)gUnk_0202E960, 0x400);
-    CpuFastSet((u8 *)gUnk_0202E960, (void *)OAM, 0x100);
+    DmaFill32(3, 0xA0, (u8 *)gOamBuffer, 0x400);
+    CpuFastSet((u8 *)gOamBuffer, (void *)OAM, 0x100);
     sub_0800DFCC();
     return 0;
 }

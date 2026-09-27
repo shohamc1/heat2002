@@ -83,10 +83,10 @@ s32 TestCornersVsWalls(struct Corner *corn, struct Box *box, struct Box *cbox,
             continue;
         if (box->f0C < wall->f14)
             continue;
-        pax = gUnk_0202CC44[wall->f00].x;
-        pay = gUnk_0202CC44[wall->f00].y;
-        pbx = gUnk_0202CC44[wall->f02].x;
-        pby = gUnk_0202CC44[wall->f02].y;
+        pax = gWallVertices[wall->f00].x;
+        pay = gWallVertices[wall->f00].y;
+        pbx = gWallVertices[wall->f02].x;
+        pby = gWallVertices[wall->f02].y;
         pc = corn;
         pq = cbox;
         for (i = 0; i != 4; i++, pc++, pq++) {

@@ -4,7 +4,7 @@
 
 void ClearTextLayer(void)
 {
-    u16 *p = (*(u16 **)&gUnk_08364B08);
+    u16 *p = (*(u16 **)&gTextLayerMapPtr);
     u32 i = 0;
 
     do {

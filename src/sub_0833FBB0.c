@@ -15,7 +15,7 @@ struct SoundSlot0833F *sub_0833FBB0(void *a)
     struct SoundSlot0833F *p;
     u32 i;
 
-    p = (struct SoundSlot0833F *)gUnk_0203B870;
+    p = (struct SoundSlot0833F *)gModule_ObjTileCache16;
     for (i = 0; i != 0x18; i++, p++)
     {
         if (p->unk08 == a)
@@ -25,7 +25,7 @@ struct SoundSlot0833F *sub_0833FBB0(void *a)
         }
     }
 
-    p = (struct SoundSlot0833F *)gUnk_0203B870;
+    p = (struct SoundSlot0833F *)gModule_ObjTileCache16;
     for (i = 0; i != 0x18; i++, p++)
     {
         if (p->unk00 == 0)

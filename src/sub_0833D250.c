@@ -11,7 +11,7 @@ void sub_0833D250(u32 a1)
     u32 f2 = (x >> 26) & m;
     u32 i = 0;
     u32 f0 = x & f0c;
-    u32 *p = gUnk_020392D0;
+    u32 *p = gModule_PaletteFadeColors;
     u32 s1 = f1 << 16;
     u32 s2 = f2 << 16;
     do {

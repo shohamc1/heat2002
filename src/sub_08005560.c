@@ -4,7 +4,7 @@
 
 void ResetLapTimer(void)
 {
-    gUnk_020253CC[0] = 0;
-    gUnk_020251FC[0] = 0;
-    gUnk_02025218[0] = 0;
+    gLapMs[0] = 0;
+    gLapSec[0] = 0;
+    gLapMin[0] = 0;
 }

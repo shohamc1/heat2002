@@ -16,17 +16,17 @@ u8 TrackSelectMenu(u8 a, u8 b)
     v = 0;
     if (a == 0)
         v = b;
-    gUnk_0202EED8 = 0;
+    gTrackSelectFrameCount = 0;
     sub_080045D8();
     InitGfxCaches();
     AgeGfxCaches();
     ClearOamBuffer();
     sub_080047DC();
-    gUnk_020020C0 = 0;
+    gVBlankWorkDone = 0;
     WaitForVBlank();
     ZeroTextLayer();
     sub_0800F4FC();
-    sub_0800F328((u32)gUnk_082E4328, (u16 *)buf);
+    sub_0800F328((u32)gMenuPalette, (u16 *)buf);
     DrawTrackSelect(v, a);
     FadeToBrightenedPalette((u32)buf, 0x0F);
     REG_DISPCNT = 0xA8 << 3;
@@ -38,7 +38,7 @@ u8 TrackSelectMenu(u8 a, u8 b)
         DrawTrackSelect(v, a);
         ReadKeys();
         if (((gKeysPressed & A_BUTTON) && a == 1)
-            || (a == 0 && gUnk_0202EED8 == 0x20))
+            || (a == 0 && gTrackSelectFrameCount == 0x20))
             sel = v;
         if (a != 0)
             v = MenuMoveHorizontalClamped(gKeysPressed, v, 0, 0x0B);
@@ -48,13 +48,13 @@ u8 TrackSelectMenu(u8 a, u8 b)
             if (gKeysPressed & DPAD_RIGHT)
                 v = 8;
         }
-        gUnk_0202EF8C = v;
+        gTrackSelectCursor = v;
         if ((gKeysPressed & B_BUTTON) && a != 0)
             sel = 0;
         sub_080047DC();
-        gUnk_020020C0 = 0;
+        gVBlankWorkDone = 0;
     spin:
-        if (gUnk_020020C0 == 0)
+        if (gVBlankWorkDone == 0)
             goto spin;
         WaitForVBlank();
         WaitForVBlank();

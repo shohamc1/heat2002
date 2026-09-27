@@ -4,7 +4,7 @@
 
 void ResetRaceTimer(void)
 {
-    gUnk_02025224 = 0;
-    gUnk_02025220 = 0;
-    gUnk_02025260 = 0;
+    gRaceMs = 0;
+    gRaceSec = 0;
+    gRaceMin = 0;
 }

@@ -41,33 +41,33 @@ void sub_08344A20(void)
         gUnk_0203E1C0[10] |= 0xFF;
         gUnk_0203E1C0[14] |= 0xFF;
         gUnk_0203E110 = 0;
-        v = gUnk_0203E160[0];
+        v = gModule_LinkRecvWords[0];
         if ((v >> 12) == 1) {
             gUnk_0203E1C0[2] = 1;
             gUnk_0203E110 = 1;
             if (*(u8 *)REG_ADDR_SIOCNT & 0x30)
                 *e004 = v - 1;
-            if ((gUnk_0203E160[4] >> 12) == 2) {
+            if ((gModule_LinkRecvWords[4] >> 12) == 2) {
                 gUnk_0203E1C0[6] = 1;
                 gUnk_0203E110 = 2;
-                if ((gUnk_0203E160[8] >> 12) == 3) {
+                if ((gModule_LinkRecvWords[8] >> 12) == 3) {
                     gUnk_0203E1C0[10] = 1;
                     gUnk_0203E110 = 3;
-                    if ((gUnk_0203E160[12] >> 12) == 4) {
+                    if ((gModule_LinkRecvWords[12] >> 12) == 4) {
                         gUnk_0203E1C0[14] = 1;
                         gUnk_0203E110 = 4;
                     }
                 }
             }
         }
-        gUnk_0203E1B0 = (*(vu32 *)REG_ADDR_SIOCNT << 26) >> 30;
-        *(u8 *)&gUnk_020390BC = gUnk_0203E110;
-        if (*(u8 *)&gUnk_020390BC <= 1)
+        gModule_LinkPlayerId = (*(vu32 *)REG_ADDR_SIOCNT << 26) >> 30;
+        *(u8 *)&gModule_NumLinkPlayers = gUnk_0203E110;
+        if (*(u8 *)&gModule_NumLinkPlayers <= 1)
             i--;
-        gUnk_0203E160[0] = 0;
-        gUnk_0203E160[4] = 0;
-        gUnk_0203E160[8] = 0;
-        gUnk_0203E160[12] = 0;
+        gModule_LinkRecvWords[0] = 0;
+        gModule_LinkRecvWords[4] = 0;
+        gModule_LinkRecvWords[8] = 0;
+        gModule_LinkRecvWords[12] = 0;
         i++;
     } while (i != 5);
 }

@@ -35,11 +35,11 @@ void sub_0800B658(struct EntityB658 *e)
   u32 arg1;
   s32 old;
   car = &gCars[e->unk34];
-  v0 = car->unkC4[e->unk1C + 2];
-  v1 = car->unkD4[e->unk1C + 2];
+  v0 = car->nextCornerX[e->unk1C + 2];
+  v1 = car->nextCornerZ[e->unk1C + 2];
   angle = car->heading >> 8;
-  sin = gUnk_0801CD08[angle];
-  cos = gUnk_0801CD08[angle + 0x40];
+  sin = gSinTable[angle];
+  cos = gSinTable[angle + 0x40];
   rel = (dy = e->unk08 + 0xFFF60000);
   dx = (-(rel * sin)) >> 8;
   dy = (dy * cos) >> 8;

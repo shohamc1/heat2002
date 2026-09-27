@@ -8,7 +8,7 @@ s16 MenuMoveHorizontalClamped(u16 keys, s16 v, s16 lo, s16 hi)
 {
     if (keys & DPAD_LEFT)
     {
-        gUnk_0202EFB0 = 1;
+        gMenuValueChanged = 1;
         v = v - 1;
         if (v < lo)
             v = lo;
@@ -17,7 +17,7 @@ s16 MenuMoveHorizontalClamped(u16 keys, s16 v, s16 lo, s16 hi)
     }
     if (keys & DPAD_RIGHT)
     {
-        gUnk_0202EFB0 = 1;
+        gMenuValueChanged = 1;
         v = v + 1;
         if (v > hi)
             v = hi;

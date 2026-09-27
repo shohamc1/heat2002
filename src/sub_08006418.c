@@ -22,7 +22,7 @@ void DrawTextCentered(u8 *str, u32 y)
         c = *p;
     }
     pad = (u8)((0x1E - len) / 2);
-    dest = (*(u16 **)&gUnk_08364B08);
+    dest = (*(u16 **)&gTextLayerMapPtr);
     dest += (y << 5) + pad;
     color = 0xE0 << 8;
     w = 0x47;
@@ -30,7 +30,7 @@ void DrawTextCentered(u8 *str, u32 y)
     while (c != 0) {
         if (c != 0x20) {
             v = color;
-            v |= gUnk_08335A8C[gUnk_0833553C[(u8)(c - 0x21)]];
+            v |= gFontTileEntries[gFontCharToGlyphTable[(u8)(c - 0x21)]];
             *dest++ = v;
         } else {
             w = 0x47;

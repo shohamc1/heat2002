@@ -26,8 +26,8 @@ void sub_0833D288(u32 a0, u32 a1)
     v1 = v1 << 16;
     v2 = v2 << 16;
     i = 0;
-    g = gUnk_020392D0;
-    h = gUnk_02039ED0;
+    g = gModule_PaletteFadeColors;
+    h = gModule_PaletteFadeDeltas;
     do
     {
         h[0] = sub_08344BB8(v0 - g[0], a0);
@@ -37,9 +37,9 @@ void sub_0833D288(u32 a0, u32 a1)
         h += 3;
         i++;
     } while (i != 0x100);
-    gUnk_020392C8 = a0;
+    gModule_PaletteFadeSteps = a0;
     {
         register u32 one __asm__("r0") = 1;
-        gUnk_020392C4 = one;
+        gModule_PaletteFadeActive = one;
     }
 }

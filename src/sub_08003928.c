@@ -13,7 +13,7 @@ extern u32 gUnk_0201567C;
 extern u16 gUnk_08335C60[];
 extern u16 gUnk_08334BCC[];
 
-/* struct Track and gUnk_08364B0C come from include/structs.h via
+/* struct Track and gTrackData come from include/structs.h via
    variables.h. */
 
 void LoadTrackTiles(u8 idx);
@@ -33,44 +33,44 @@ void LoadTrack(u32 idx)
     LoadTrackTiles(idx);
     t = gUnk_08335C60;
     CpuCopy16(t, BG_SCREEN_ADDR(24), 0x2000);
-    CpuCopy16(gUnk_08364B0C[idx].unk18, (u32)a, 0x200);
+    CpuCopy16(gTrackData[idx].unk18, (u32)a, 0x200);
     CpuCopy16(t = gUnk_08334BCC, (u32)b, 0x20);
     BeginFadeToBrightenedPalette(0x1E, a);
-    gUnk_0200BC30 = gUnk_08364B0C[idx].unk2C;
-    gUnk_02022DD8 = gUnk_08364B0C[idx].unk34;
+    gBgMapWidth = gTrackData[idx].unk2C;
+    gUnk_02022DD8 = gTrackData[idx].unk34;
     gUnk_02002208 = (u8 *)gUnk_02002220;
     gUnk_0200BC54 = (u8 *)gUnk_0200BC70;
-    RleDecode16(gUnk_08364B0C[idx].unk20, gUnk_02002220, gUnk_08364B0C[idx].unk5C);
-    RleDecode16(gUnk_08364B0C[idx].unk24, gUnk_0200BC70, gUnk_08364B0C[idx].unk5E);
-    gUnk_0200221C = (u8 *)gUnk_08364B0C[idx].unk0C;
-    gUnk_02002210 = (u8 *)gUnk_08364B0C[idx].unk10;
-    gUnk_02022DF0 = gUnk_08364B0C[idx].unk3C;
-    gUnk_0201567C = gUnk_08364B0C[idx].unk40;
+    RleDecode16(gTrackData[idx].unk20, gUnk_02002220, gTrackData[idx].unk5C);
+    RleDecode16(gTrackData[idx].unk24, gUnk_0200BC70, gTrackData[idx].unk5E);
+    gUnk_0200221C = (u8 *)gTrackData[idx].unk0C;
+    gUnk_02002210 = (u8 *)gTrackData[idx].unk10;
+    gUnk_02022DF0 = gTrackData[idx].unk3C;
+    gUnk_0201567C = gTrackData[idx].unk40;
     *(u32 *)&gUnk_0200BC50 = (u32)gUnk_02015690;
-    RleDecode16(gUnk_08364B0C[idx].unk44, gUnk_02015690, gUnk_08364B0C[idx].unk60);
-    gUnk_02022DEC[0] = gUnk_08364B0C[idx].unk48;
+    RleDecode16(gTrackData[idx].unk44, gUnk_02015690, gTrackData[idx].unk60);
+    gUnk_02022DEC[0] = gTrackData[idx].unk48;
     if (idx == 0)
-        gUnk_02002200[0] = 0x7D;
+        gTrackMapWidth[0] = 0x7D;
     if (idx == 1)
-        gUnk_02002200[0] = 0x70;
+        gTrackMapWidth[0] = 0x70;
     if (idx == 2)
-        gUnk_02002200[0] = 0xA8;
+        gTrackMapWidth[0] = 0xA8;
     if (idx == 3)
-        gUnk_02002200[0] = 0x6B;
+        gTrackMapWidth[0] = 0x6B;
     if (idx == 4)
-        gUnk_02002200[0] = 0xA3;
+        gTrackMapWidth[0] = 0xA3;
     if (idx == 5)
-        gUnk_02002200[0] = 0xA6;
+        gTrackMapWidth[0] = 0xA6;
     if (idx == 6)
-        gUnk_02002200[0] = 0x7D;
+        gTrackMapWidth[0] = 0x7D;
     if (idx == 8)
-        gUnk_02002200[0] = 0x7D;
+        gTrackMapWidth[0] = 0x7D;
     if (idx == 9)
-        gUnk_02002200[0] = 0x7D;
+        gTrackMapWidth[0] = 0x7D;
     if (idx == 10)
-        gUnk_02002200[0] = 0x5E;
+        gTrackMapWidth[0] = 0x5E;
     if (idx == 11)
-        gUnk_02002200[0] = 0x7D;
+        gTrackMapWidth[0] = 0x7D;
     /* sub_08003BFC: this file's old local prototype differs from
        functions.h; call through the old signature (solved-walls 31). */
     ((void (*)(u32, u32, u16 *, u32 *, u16 *, u16))sub_08003BFC)(0, 0, (u16 *)gUnk_02002208, (u32 *)TILEMAP_BUFFER(0), (u16 *)gUnk_0200221C, gUnk_02022DE4);
@@ -80,5 +80,5 @@ void LoadTrack(u32 idx)
     InitRaceCars(idx);
     ResetLapTimer();
     ResetRaceTimer();
-    gUnk_020253D4 = 0;
+    gNumFinishedCars = 0;
 }

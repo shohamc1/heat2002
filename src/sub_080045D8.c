@@ -5,7 +5,7 @@
 void sub_080045D8(void)
 {
     u32 r0 = 0;
-    u16 *r1 = gUnk_02025160;
+    u16 *r1 = gSpriteOrderTable;
 
     while (r0 != 0x40)
     {

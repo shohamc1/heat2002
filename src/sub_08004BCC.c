@@ -22,7 +22,7 @@ loop:
             ClearOamBuffer();
             sub_08004A7C(v);
             sub_080047DC();
-            gUnk_020020C0 = start;
+            gVBlankWorkDone = start;
             gUnk_02025370++;
             WaitForVBlank();
             goto loop;

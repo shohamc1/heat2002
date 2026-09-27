@@ -17,7 +17,7 @@ void sub_0801037C(void)
     vu32 *p;
     u16 v;
 
-    sub_08016E10((u32)gUnk_0833338C, (u32)gUnk_0600C000, 0x1000);
+    sub_08016E10((u32)gTextLayerTiles, (u32)gUnk_0600C000, 0x1000);
     WaitForVBlank();
     r = &REG_BG2CNT;
     *r = 0x1081;
@@ -28,7 +28,7 @@ void sub_0801037C(void)
     sub_08016E10((u32)gUnk_082B76F0, VRAM, 0x4000);
     sub_08010714();
     i = 0;
-    p = gUnk_08364B08;
+    p = gTextLayerMapPtr;
     v = 0;
     do {
         *(u16 *)(p[0] + i * 2) = v;

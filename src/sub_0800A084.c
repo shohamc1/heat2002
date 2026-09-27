@@ -14,27 +14,27 @@ void UpdateEngine(struct Car *car, s32 mode)
 
     v = 0;
     if (mode & 1) {
-        if (gUnk_0202EEB0 != 0 && car->pitState == 0) {
+        if (gDamagePitsEnabled != 0 && car->pitState == 0) {
             car->fuel -= 0xA;
             if (car->fuel < 0)
                 car->fuel = 0;
         }
-        car->unkA2 = 0x100;
-        if (car == gCars && car->fuel == 0 && (gUnk_0202A51C & 8) != 0)
-            car->unkA2 = 0;
-        if (gUnk_020020A8 != 0)
-            v += (car->unkE4[car->gear] * car->unkA2) >> 6;
+        car->throttleLevel = 0x100;
+        if (car == gCars && car->fuel == 0 && (gFuelOutStutterCounter & 8) != 0)
+            car->throttleLevel = 0;
+        if (gPreRaceSimActive != 0)
+            v += (car->gearPowerTable[car->gear] * car->throttleLevel) >> 6;
         else
-            v += (car->unkE4[car->gear] * car->unkA2) >> 8;
+            v += (car->gearPowerTable[car->gear] * car->throttleLevel) >> 8;
         if (car->speed > 0)
-            v += (car->unkE4[car->gear] * car->unkA2) >> 5;
+            v += (car->gearPowerTable[car->gear] * car->throttleLevel) >> 5;
     } else if (car->speed > 0) {
         car->drag = -car->speed >> 2;
-    } else if (car->unkA2 != 0) {
-        car->unkA2 -= 0x20;
-        if (car->unkA2 > 0x8000)
-            car->unkA2 = 0;
-        v = (car->unkE4[car->gear] * car->unkA2) >> 8;
+    } else if (car->throttleLevel != 0) {
+        car->throttleLevel -= 0x20;
+        if (car->throttleLevel > 0x8000)
+            car->throttleLevel = 0;
+        v = (car->gearPowerTable[car->gear] * car->throttleLevel) >> 8;
     } else {
         v = -(car->rpm * 4) >> 16;
     }
@@ -42,7 +42,7 @@ void UpdateEngine(struct Car *car, s32 mode)
         v += -(car->rpm * 6) >> 8;
         car->drag += 0x18000;
         if (car->speed > 0) {
-            if (gUnk_020021E0 != 0 || (gIsLinkRace != 0 && car->unk7D != 0))
+            if (gRaceEndState != 0 || (gIsLinkRace != 0 && car->finished != 0))
                 StopCar((struct Unk0A5BC *)car);
             else if (car->speed > 0x3E800)
                 car->drag = 0x3E800 - car->speed;
@@ -63,9 +63,9 @@ void UpdateEngine(struct Car *car, s32 mode)
         r = sub_0800A034(car);
     else
         r = 0;
-    car->unk13C = -((-car->unkE8[car->gear]) * v) >> 8;
+    car->engineForce = -((-car->gearRatioTable[car->gear]) * v) >> 8;
     if (car->speed <= 0) {
-        car->rpm = ((-car->unkEC[r]) * car->speed) >> 8;
+        car->rpm = ((-car->rpmPerSpeedTable[r]) * car->speed) >> 8;
         car->gear = r;
     } else {
         car->gear = 0;

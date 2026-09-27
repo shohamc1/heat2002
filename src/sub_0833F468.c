@@ -12,10 +12,10 @@
 #include "variables.h"
 #include "car.h"
 
-/* The 0x18-byte track segment record gUnk_0203B860 points at (waypoint
+/* The 0x18-byte track segment record gModule_TrackSegs points at (waypoint
    quads); local twin of sub_08006A34.c's struct TrackSeg. It shares its
    old tag name with include/structs.h's 0x64-byte struct Track but not
-   its layout or stride, so it keeps a local tag. The gUnk_0203B860
+   its layout or stride, so it keeps a local tag. The gModule_TrackSegs
    extern (variables.h) is typed struct Track *; the casts below are
    pointer casts only and emit nothing. */
 struct TrackSeg {
@@ -46,18 +46,18 @@ u8 sub_0833F468(struct Car *p, u8 a1)
     s32 det;
     u32 time;
 
-    v58 = 3 - gUnk_0203E120[0];
+    v58 = 3 - gModule_Options[0];
     gUnk_020390CC = 0;
-    v6C = gUnk_020390EC != 0 ? gUnk_0203E1B0 : 0;
-    if (gUnk_020390EC != 0)
-        v68 = gUnk_020390BC[0];
+    v6C = gModule_IsLinkRace != 0 ? gModule_LinkPlayerId : 0;
+    if (gModule_IsLinkRace != 0)
+        v68 = gModule_NumLinkPlayers[0];
     else
-        v68 = gUnk_020390A0[0];
+        v68 = gModule_NumCars[0];
 
-    e = &((struct TrackSeg *)gUnk_0203B860)[p->waypoint];
+    e = &((struct TrackSeg *)gModule_TrackSegs)[p->waypoint];
     b = e + 1;
     if (e->unk10 == 1)
-        b = (struct TrackSeg *)gUnk_0203B860;
+        b = (struct TrackSeg *)gModule_TrackSegs;
 
     corners[0] = p->posX >> 16;
     corners[1] = p->posZ >> 16;
@@ -93,8 +93,8 @@ u8 sub_0833F468(struct Car *p, u8 a1)
         return 0;
     }
 
-    if (p->unk174 == 0) {
-        p->unk174 = 1;
+    if (p->firstStepCrossed == 0) {
+        p->firstStepCrossed = 1;
         gUnk_0203DD10 = gUnk_0203DD10 + 1;
     }
     p->subStep = p->subStep + 1;
@@ -103,18 +103,18 @@ u8 sub_0833F468(struct Car *p, u8 a1)
     if (p->subStep != 0x10)
         return 1;
     p->subStep = 0;
-    p->unk36 = p->heading;
-    p->unk38 = p->waypoint;
+    p->respawnHeading = p->heading;
+    p->respawnWaypoint = p->waypoint;
     {
     s32 t = e->unk10;
     if (t == 1) {
-        if (gUnk_0203916C[0] == 0x0C) {
-            if ((time = gUnk_0203B6C8[0] * 60000 + gUnk_0203B6A8[0] * 1000 + gUnk_0203B858[0]) < gUnk_0203DFC4)
+        if (gModule_GameMode[0] == 0x0C) {
+            if ((time = gModule_LapMin[0] * 60000 + gModule_LapSec[0] * 1000 + gModule_LapMs[0]) < gUnk_0203DFC4)
                 gUnk_0203E104 = t;
         }
-        if (a1 == v6C && gUnk_0203916C[0] != 0x0C && p->unk166 != 0) {
-            p->unk167 = 0x1E;
-            p->unk168 = p->unk168 + 1;
+        if (a1 == v6C && gModule_GameMode[0] != 0x0C && p->ledLapFlag != 0) {
+            p->lapLedTimer = 0x1E;
+            p->lapsLed = p->lapsLed + 1;
         }
         p->lap = p->lap + 1;
         {
@@ -125,30 +125,30 @@ u8 sub_0833F468(struct Car *p, u8 a1)
         p->subStep = 0;
         p->progress = ((s8)p->lap << 16) + p->waypoint * 16;
         if (a1 == v6C) {
-            if (gUnk_0203E1E0[0] != 0 && p->unk18E != 0)
-                sub_0833E160(gUnk_0203B6C8[0], gUnk_0203B6A8[0], gUnk_0203B858[0]);
+            if (gUnk_0203E1E0[0] != 0 && p->lapStartedFlag != 0)
+                sub_0833E160(gModule_LapMin[0], gModule_LapSec[0], gModule_LapMs[0]);
         }
-        p->unk166 = 1;
-        if (p == gModule_Cars && gUnk_0203916C[0] == 5 && p->unk18E != 0) {
-            if ((time = gUnk_0203B6C8[0] * 60000 + gUnk_0203B6A8[0] * 1000 + gUnk_0203B858[0]) < p->unk16C)
-                p->unk16C = gUnk_0203B6C8[0] * 60000 + gUnk_0203B6A8[0] * 1000 + gUnk_0203B858[0];
+        p->ledLapFlag = 1;
+        if (p == gModule_Cars && gModule_GameMode[0] == 5 && p->lapStartedFlag != 0) {
+            if ((time = gModule_LapMin[0] * 60000 + gModule_LapSec[0] * 1000 + gModule_LapMs[0]) < p->finishTime)
+                p->finishTime = gModule_LapMin[0] * 60000 + gModule_LapSec[0] * 1000 + gModule_LapMs[0];
         }
         if (*(s8 *)&p->lap == gUnk_02039194) {
-            if (gUnk_0203916C[0] == 0 || gUnk_0203916C[0] == 6 || gUnk_0203916C[0] == 1)
-                p->unk16C = gUnk_0203B704[0] * 60000 + gUnk_0203B6D0[0] * 1000 + gUnk_0203B6D4[0];
-            if (a1 == v6C && p->unk18E != 0)
-                sub_08342BA4(gUnk_0203B6C8[0], gUnk_0203B6A8[0], gUnk_0203B858[0]);
-            if (gUnk_0203916C[0] != 2) {
+            if (gModule_GameMode[0] == 0 || gModule_GameMode[0] == 6 || gModule_GameMode[0] == 1)
+                p->finishTime = gModule_RaceMin[0] * 60000 + gModule_RaceSec[0] * 1000 + gModule_RaceMs[0];
+            if (a1 == v6C && p->lapStartedFlag != 0)
+                sub_08342BA4(gModule_LapMin[0], gModule_LapSec[0], gModule_LapMs[0]);
+            if (gModule_GameMode[0] != 2) {
                 sub_08341EC8((u16 *)p);
-                gUnk_0203B868[gUnk_0203B864] = a1;
-                gUnk_0203B864 = gUnk_0203B864 + 1;
-                if ((u8)(gUnk_0203916C[0] - 3) <= 1)
-                    p->unk16C = gUnk_0203B704[0] * 60000 + gUnk_0203B6D0[0] * 1000 + gUnk_0203B6D4[0];
-                if (gUnk_0203B864 == v68) {
-                    if (gUnk_0203916C[0] != 0x10) {
-                        if (gUnk_0203916C[0] != 0xF) {
-                            if (gUnk_0203916C[0] != 2) {
-                                if (gUnk_0203916C[0] != 0xE)
+                gModule_FinishedCarOrder[gModule_NumFinishedCars] = a1;
+                gModule_NumFinishedCars = gModule_NumFinishedCars + 1;
+                if ((u8)(gModule_GameMode[0] - 3) <= 1)
+                    p->finishTime = gModule_RaceMin[0] * 60000 + gModule_RaceSec[0] * 1000 + gModule_RaceMs[0];
+                if (gModule_NumFinishedCars == v68) {
+                    if (gModule_GameMode[0] != 0x10) {
+                        if (gModule_GameMode[0] != 0xF) {
+                            if (gModule_GameMode[0] != 2) {
+                                if (gModule_GameMode[0] != 0xE)
                                     sub_08342908();
                             }
                         }
@@ -156,8 +156,8 @@ u8 sub_0833F468(struct Car *p, u8 a1)
                 }
             }
         } else {
-            if (a1 == v6C && p->unk18E != 0)
-                sub_08342BA4(gUnk_0203B6C8[0], gUnk_0203B6A8[0], gUnk_0203B858[0]);
+            if (a1 == v6C && p->lapStartedFlag != 0)
+                sub_08342BA4(gModule_LapMin[0], gModule_LapSec[0], gModule_LapMs[0]);
         }
         if (a1 == v6C)
             sub_0833E05C();
@@ -166,20 +166,20 @@ u8 sub_0833F468(struct Car *p, u8 a1)
 
     if ((u16)(e->unk10 - 1) <= 1) {
         if (a1 == v6C) {
-            gUnk_0203DE40 = p->unk15C;
+            gUnk_0203DE40 = p->tickCount;
             if (e->unk10 != 1)
                 sub_08342D10();
-            if (a1 == v6C && gUnk_0203916C[0] != 0xA) {
+            if (a1 == v6C && gModule_GameMode[0] != 0xA) {
                 s32 inner = v58 / 2 + 6;
                 sub_0833E094((u8)(e->unk14 + inner));
             }
         }
         {
         s32 t2 = e->unk10;
-        if (t2 == 1 && p->unk18E == 0) {
+        if (t2 == 1 && p->lapStartedFlag == 0) {
             if (p == gModule_Cars)
                 sub_08342A94();
-            p->unk18E = t2;
+            p->lapStartedFlag = t2;
         }
         }
     }

@@ -13,7 +13,7 @@ void sub_08340EFC(void)
     u8 x;
     s32 v;
 
-    if (gUnk_0203916C[0] == 0x10) {
+    if (gModule_GameMode[0] == 0x10) {
         sub_08340E4C();
         switch (gUnk_0203DFB0) {
         case 0:

@@ -11,10 +11,10 @@ void sub_0833E160(u16 a, u16 b, u16 c)
     s32 best;
 
     total = a * 60000 + b * 1000 + c;
-    best = 60000 * gUnk_0203B810[gUnk_020390DC] + gUnk_0203B6B0[gUnk_020390DC] * 1000 + gUnk_0203B830[gUnk_020390DC];
+    best = 60000 * gModule_TrackRecordMin[gModule_TrackId] + gModule_TrackRecordSec[gModule_TrackId] * 1000 + gModule_TrackRecordMs[gModule_TrackId];
     if (total > best)
         return;
-    if ((u8)(gUnk_0203916C[0] - 3) <= 1)
+    if ((u8)(gModule_GameMode[0] - 3) <= 1)
         return;
     sub_0833E110(a, b, c);
     gUnk_02039100 = 1;

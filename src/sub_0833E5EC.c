@@ -18,7 +18,7 @@ void sub_0833E5EC(s32 arg)
     u16 *dest;
     u32 off;
 
-    if (gUnk_0203E0E0 == 0)
+    if (gModule_DamagePitsEnabled == 0)
         return;
     gUnk_0203B6D8++;
     buf[0] = 0xAA;
@@ -32,16 +32,16 @@ void sub_0833E5EC(s32 arg)
         sub_0833D6A0(v | 0x02000100, r1v);
     }
     gUnk_0203B828 = ((arg >> 16) + 0xBE) & 0xFF;
-    dest = (u16 *)(gUnk_020251B8[0] + 0x4EE);
-    if (arg <= 0x31FF && ((*(u32 *)&gUnk_020390AC) & 0x10) != 0) {
+    dest = (u16 *)(gModule_TextLayerMapPtr[0] + 0x4EE);
+    if (arg <= 0x31FF && ((*(u32 *)&gModule_FrameCounter) & 0x10) != 0) {
         off = 0x5B2;
-        *dest = 0xE000 | gUnk_02022254[*(u16 *)&gUnk_02021594[off]];
-        if (gUnk_0203E120[3] != 0) {
-            if (gUnk_020390F0[0] == 0)
+        *dest = 0xE000 | gModule_FontTileEntries[*(u16 *)&gUnk_02021594[off]];
+        if (gModule_Options[3] != 0) {
+            if (gModule_IsDemo[0] == 0)
                 sub_0833A8C8(0x1B);
         }
     } else {
         off = 0x5B4;
-        *dest = 0xE000 | gUnk_02022254[*(u16 *)&gUnk_02021594[off]];
+        *dest = 0xE000 | gModule_FontTileEntries[*(u16 *)&gUnk_02021594[off]];
     }
 }

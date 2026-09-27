@@ -28,22 +28,22 @@ void sub_0833F9A8(void)
     void *dest;
 
     src = gUnk_020269C4;
-    dest = gUnk_0203C220;
+    dest = gModule_ObjTileCache64;
     sub_0833F968(4, src, dest);
     src = gUnk_020269CC;
-    dest = gUnk_0203B870;
+    dest = gModule_ObjTileCache16;
     sub_0833F968(0x18, src, dest);
     src = gUnk_020269FC;
-    dest = gUnk_0203BA50;
+    dest = gModule_ObjTileCache2;
     sub_0833F968(0x20, src, dest);
     src = gUnk_02026A3C;
-    dest = gUnk_0203BF50;
+    dest = gModule_ObjTileCache8;
     sub_0833F968(0x14, src, dest);
     src = gUnk_02026A64;
-    dest = gUnk_0203C0E0;
+    dest = gModule_ObjTileCache4;
     sub_0833F968(0x10, src, dest);
     src = gUnk_02026A84;
-    dest = gUnk_0203BCD0;
+    dest = gModule_ObjTileCache1;
     sub_0833F968(0x20, src, dest);
 
     i = 0;

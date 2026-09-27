@@ -17,7 +17,7 @@ u8 StandingsScreen(void)
     v = 0;
     ZeroTextLayer();
     sub_0800F498();
-    p = gUnk_082EE104;
+    p = gResultsScreenPalette;
     sub_0800F328((u32)p, (u16 *)buf);
     sub_08014104(0);
     FadeToBrightenedPalette((u32)buf, 0x0F);

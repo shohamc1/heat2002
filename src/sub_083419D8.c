@@ -10,13 +10,13 @@ void sub_083419D8(void)
     u32 limit;
     u8 *p;
 
-    limit = gUnk_020390A0[0];
-    if (gUnk_020390EC != 0)
-        limit = gUnk_020390BC[0];
+    limit = gModule_NumCars[0];
+    if (gModule_IsLinkRace != 0)
+        limit = gModule_NumLinkPlayers[0];
     p = (u8 *)gModule_Cars;
     for (i = 0; i != limit; i++, p += 0x190)
     {
-        if (gUnk_0203916C[0] != 2 || i == 0)
+        if (gModule_GameMode[0] != 2 || i == 0)
             sub_083416DC(p, i);
     }
 }

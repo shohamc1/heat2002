@@ -21,7 +21,7 @@ void sub_0833E7FC(s32 a, s32 b)
     if (a > b)
         a = b;
     sub_0833EF0C((u8 *)((u32)gUnk_0200CF84), 0, 1);
-    base = (u8 *)gUnk_020251B8[0];
+    base = (u8 *)gModule_TextLayerMapPtr[0];
     p = base + 8;
     if (a > 99) {
         sub_0833E36C((u16 *)p, sub_08344BB8(a, 100));

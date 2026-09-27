@@ -18,7 +18,7 @@ void sub_0800F498(void)
     dest = VRAM;
     ctrl = 0x5140;
     CpuCopy16(src, dest, ctrl * 2);
-    src = (u32)gUnk_0833338C;
+    src = (u32)gTextLayerTiles;
     dest = BG_SCREEN_ADDR(24);
     ctrl = 0x80 << 5;
     CpuCopy16(src, dest, ctrl * 2);

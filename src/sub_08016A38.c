@@ -8,7 +8,7 @@ void FormatSave(void)
     u16 *p;
     u8 *q;
 
-    p = (u16 *)&gUnk_0202F050[0x120];
+    p = (u16 *)&gProgressSaveBuffer[0x120];
     *p++ = gUnk_083FECB0[0];
     *p++ = gUnk_083FECB0[1];
     *p++ = gUnk_083FECB0[2];
@@ -46,7 +46,7 @@ void FormatSave(void)
     *p++ = gUnk_083FECB0[1];
     *p++ = gUnk_083FECB0[2];
     WriteSaveBlocks(0x130, 0x48);
-    p = (u16 *)gUnk_0202F050;
+    p = (u16 *)gProgressSaveBuffer;
     q = (u8 *)p;
     *q++ = 1;
     *q++ = 1;

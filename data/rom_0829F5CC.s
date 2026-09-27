@@ -183,6 +183,6 @@ gUnk_0829F920:
 	.global gUnk_0829F930
 gUnk_0829F930:
 	.incbin "build/assets/unknown/data_0829F930.bin"
-	.global gUnk_0829F948
-gUnk_0829F948:
+	.global gText_EmptyCreditLine
+gText_EmptyCreditLine:
 	.incbin "build/assets/unknown/data_0829F948.bin"

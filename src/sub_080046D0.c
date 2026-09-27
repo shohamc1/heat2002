@@ -36,7 +36,7 @@ void sub_080046D0(void)
     u32 t0, t1, t2, t3;
 
     FlushSortedSprites();
-    tbl = gUnk_0801CD08;
+    tbl = gSinTable;
     idx = gUnk_0202522C;
     j = idx + 0x40;
     pa = (u16 *)&tbl[j];

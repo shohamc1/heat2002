@@ -1,7 +1,7 @@
 #include "global.h"
 #include "variables.h"
 
-extern u8 *gUnk_083FE080[];
+extern u8 *gCheatCodeTable[];
 
 s8 sub_0801319C(void)
 {
@@ -10,12 +10,12 @@ s8 sub_0801319C(void)
 
     i = 0;
     do {
-        e = gUnk_083FE080[i];
-        if (e[0] == gUnk_0202EF78[0]
-            && e[1] == gUnk_0202EF78[1]
-            && e[2] == gUnk_0202EF78[2]
-            && e[3] == gUnk_0202EF78[3]
-            && e[4] == gUnk_0202EF78[4])
+        e = gCheatCodeTable[i];
+        if (e[0] == gCheatCodeDials[0]
+            && e[1] == gCheatCodeDials[1]
+            && e[2] == gCheatCodeDials[2]
+            && e[3] == gCheatCodeDials[3]
+            && e[4] == gCheatCodeDials[4])
             return i;
         i++;
     } while (i != 5);

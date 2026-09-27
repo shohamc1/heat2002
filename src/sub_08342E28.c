@@ -7,8 +7,8 @@ u32 sub_08341644(s32 x, s32 y, s32 *out);
 
 struct Tbl {
     u8 pad[0xC4];
-    s32 unkC4[4];
-    s32 unkD4[4];
+    s32 nextCornerX[4];
+    s32 nextCornerZ[4];
     u8 pad2[0x190 - 0xE4];
 };
 
@@ -27,11 +27,11 @@ void sub_08342E28(u32 a)
     s32 t;
 
     tbl = (struct Tbl *)((u8 *)gModule_Cars + *(u8 *)(a + 0x34) * 0x190);
-    v0 = tbl->unkC4[*(s32 *)(a + 0x1C) + 2];
-    v1 = tbl->unkD4[*(s32 *)(a + 0x1C) + 2];
+    v0 = tbl->nextCornerX[*(s32 *)(a + 0x1C) + 2];
+    v1 = tbl->nextCornerZ[*(s32 *)(a + 0x1C) + 2];
     idx = *(u16 *)((u8 *)tbl + 0x34) >> 8;
-    s1 = gUnk_0200C3E8[idx];
-    s2 = gUnk_0200C3E8[idx + 0x40];
+    s1 = gModule_SinTable[idx];
+    s2 = gModule_SinTable[idx + 0x40];
     dy = *(s32 *)(a + 0x08) + 0xFFF60000;
     ry = dy;
     dx = -(ry * s1) >> 8;

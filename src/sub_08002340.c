@@ -89,7 +89,7 @@ void sub_08002340(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *tr
     }
 
 cond_true:
-    ((MPlayFunc)(*&gUnk_02001D90[1]))(mplayInfo, track);
+    ((MPlayFunc)(*&gMPlayJumpTable[1]))(mplayInfo, track);
     return;
 
 cond_false:

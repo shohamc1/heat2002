@@ -38,7 +38,7 @@ void sub_0833D8CC(void)
     u32 t0, t1, t2, t3;
 
     sub_0833D848();
-    tbl = gUnk_0200C3E8;
+    tbl = gModule_SinTable;
     idx = gUnk_0203B6DC;
     j = idx + 0x40;
     pa = (u16 *)&tbl[j];

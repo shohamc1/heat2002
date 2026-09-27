@@ -15,18 +15,18 @@ u32 sub_08004504(u32 a, u32 b, s32 c, u16 d)
 {
     struct VertexCmd *p;
 
-    if ((s8)gUnk_02025150 < 0)
+    if ((s8)gOamEntryCount < 0)
         return 0;
-    if (gUnk_02025154 > 0x1E)
+    if (gOamAffineCount > 0x1E)
         return 0;
     p = (struct VertexCmd *)gUnk_02024C30;
-    p->field0 = (gUnk_02025154 << 25) | a;
+    p->field0 = (gOamAffineCount << 25) | a;
     p->field4 = b;
     p->field8 = c;
     p->fieldA = c;
     p->fieldC = d;
     gUnk_02024C30 = (u32)(p + 1);
-    gUnk_02025150 = gUnk_02025150 + 1;
-    gUnk_02025154 = gUnk_02025154 + 1;
+    gOamEntryCount = gOamEntryCount + 1;
+    gOamAffineCount = gOamAffineCount + 1;
     return 1;
 }

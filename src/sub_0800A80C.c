@@ -17,13 +17,13 @@
  *   lands on the test.
  * - The sound call is one call behind `DC == 0 ? car == base : car ==
  *   base + idx`, which gives the `beq/b` then `bne` layout.
- * - The `gUnk_020020BC` loop is written with a goto so loop.c does not
+ * - The `gLapProgressAdvanced` loop is written with a goto so loop.c does not
  *   hoist the store address out of it.
  * - Everything from the sound check to the unk40 division is inside
  *   `if (v != 0)`.
  */
 
-extern u16 gUnk_08368290[];
+extern u16 gTrackAiDragDivisors[];
 
 void sub_08007C44(struct Car *a);
 void UpdateSteering(struct Car *a, u16 keys);
@@ -47,45 +47,45 @@ void UpdateCarPhysics(struct Car *car, u32 b, u8 c)
     car->forceZ = 0;
     car->torque = 0;
     sub_08007C44(car);
-    if (car->unk55 != 0)
-        car->unk55--;
+    if (car->hitCooldown != 0)
+        car->hitCooldown--;
     UpdateSteering(car, b);
     ComputeForwardSpeed(car);
     UpdateEngine(car, b);
     sub_08008480(car, c);
     v = 0;
     ComputeCarCorners(car);
-    if (gUnk_0200215C[0] == 4 || gTrackId <= 0xB) {
+    if (gGameMode[0] == 4 || gTrackId <= 0xB) {
         if (car->pitState != 0)
             v = 0;
         else
             v = CollideCarWithWalls(car);
     }
-    if (v != 0 && (u8)(car->unk7C - 1) <= 2)
+    if (v != 0 && (u8)(car->carState - 1) <= 2)
         v = -1;
     t = car->speed >> 6;
     car->drag = t * t;
     if (t > 0)
         car->drag = -car->drag;
-    if (gIsLinkRace != 0 || gUnk_0200215C[0] == 4 || gUnk_0200215C[0] == 3) {
+    if (gIsLinkRace != 0 || gGameMode[0] == 4 || gGameMode[0] == 3) {
         car->drag = car->drag / 215;
-    } else if (car == gCars || gUnk_0200215C[0] == 9 || gUnk_0200215C[0] == 0xD
-        || gUnk_0200215C[0] == 0xE || gUnk_0200215C[0] == 0xF || gUnk_0200215C[0] == 0x11
-        || gUnk_0200215C[0] == 4) {
-        if (car->unk170 != 0)
+    } else if (car == gCars || gGameMode[0] == 9 || gGameMode[0] == 0xD
+        || gGameMode[0] == 0xE || gGameMode[0] == 0xF || gGameMode[0] == 0x11
+        || gGameMode[0] == 4) {
+        if (car->onApron != 0)
             car->drag = car->drag / 250;
-        else if (car->unk171 != 0)
+        else if (car->onGrass != 0)
             car->drag = car->drag / 100;
         else
             car->drag = car->drag / 480;
     } else {
-        car->drag = car->drag / gUnk_08368290[gTrackId];
+        car->drag = car->drag / gTrackAiDragDivisors[gTrackId];
     }
-    if (gUnk_020020A8 != 0 && (u8)(gUnk_0200215C[0] - 3) > 1)
+    if (gPreRaceSimActive != 0 && (u8)(gGameMode[0] - 3) > 1)
         car->drag = 0;
     if (car == gCars || gIsLinkRace != 0) {
-        if (gUnk_0200215C[0] != 9 && gUnk_0200215C[0] != 0xD && gUnk_0200215C[0] != 0xE
-            && gUnk_0200215C[0] != 0xF && gUnk_0200215C[0] != 0x11
+        if (gGameMode[0] != 9 && gGameMode[0] != 0xD && gGameMode[0] != 0xE
+            && gGameMode[0] != 0xF && gGameMode[0] != 0x11
             && (CheckDrafting(car) != 0 || car->draftTimer != 0)) {
             if (car->draftTimer != 0)
                 car->draftTimer--;
@@ -94,30 +94,30 @@ void UpdateCarPhysics(struct Car *car, u32 b, u8 c)
             sub_0800B618(c, 1);
         }
     }
-    if (gUnk_0200215C[0] != 2)
+    if (gGameMode[0] != 2)
         CollideCars(car);
-    car->unk18C = car->progress;
+    car->prevProgress = car->progress;
 again:
-    gUnk_020020BC = UpdateLapProgress(car, c);
-    if (gUnk_020020BC != 0)
+    gLapProgressAdvanced = UpdateLapProgress(car, c);
+    if (gLapProgressAdvanced != 0)
         goto again;
     car->posX += car->velX;
     car->posZ += car->velZ;
     car->heading = car->heading + car->yawRate;
     if (v != 0) {
-        if (gIsDemo == 0 && gUnk_020021E0 == 0 && gOptions[3] != 0) {
+        if (gIsDemo == 0 && gRaceEndState == 0 && gOptions[3] != 0) {
             if (gIsLinkRace == 0 ? car == gCars
                                     : car == gCars + gLinkPlayerId[0])
                 m4aSongNumStart(0x12);
         }
-        if ((u8)(car->unk7C - 5) > 2 && gUnk_0202EEB0 != 0)
+        if ((u8)(car->carState - 5) > 2 && gDamagePitsEnabled != 0)
             car->damage -= v >> 12;
-        car->unk55 = 6;
+        car->hitCooldown = 6;
         ComputeForwardSpeed(car);
-        car->unk48 = car->speed;
+        car->impactSpeed = car->speed;
         if (car->speed > 0)
-            car->unk48 = 0;
-        car->rpm = (car->unk48 << 8) / -car->unkE8[car->gear];
+            car->impactSpeed = 0;
+        car->rpm = (car->impactSpeed << 8) / -car->gearRatioTable[car->gear];
     }
     car->velX += car->forceX;
     car->velZ += car->forceZ;

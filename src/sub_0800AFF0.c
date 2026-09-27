@@ -8,13 +8,13 @@ void AddTask(u32 a);
 
 void EndRace(void)
 {
-    u8 *p = &gUnk_020021E0;
+    u8 *p = &gRaceEndState;
     if (*p == 0)
     {
         u32 *r = (u32 *)AllocTask();
         if (r != 0)
         {
-            r[7] = gUnk_02002098;
+            r[7] = gChallengeScore;
             r[6] = 0x64;
             r[3] = (u32)RaceEndTask;
             AddTask((u32)r);

@@ -84,84 +84,84 @@ s32 sub_0833BF80(u8 arg0, u8 arg1)
     gUnk_02039100 = 0;
     gUnk_020391CC = 0;
     gUnk_02039154 = 0;
-    gUnk_0203916C[0] = t;
-    pf = &gUnk_020390F0[0];
+    gModule_GameMode[0] = t;
+    pf = &gModule_IsDemo[0];
     *pf = arg0;
     if (t != 0xF)
-        gUnk_020390A0[0] = 5;
-    if (gUnk_0203916C[0] == 2)
-        gUnk_020390A0[0] = 1;
-    if (gUnk_0203916C[0] == 0x11)
-        gUnk_020390A0[0] = 1;
-    if (gUnk_0203916C[0] == 0xD)
-        gUnk_020390A0[0] = 1;
-    if (gUnk_0203916C[0] == 0xE)
-        gUnk_020390A0[0] = 1;
+        gModule_NumCars[0] = 5;
+    if (gModule_GameMode[0] == 2)
+        gModule_NumCars[0] = 1;
+    if (gModule_GameMode[0] == 0x11)
+        gModule_NumCars[0] = 1;
+    if (gModule_GameMode[0] == 0xD)
+        gModule_NumCars[0] = 1;
+    if (gModule_GameMode[0] == 0xE)
+        gModule_NumCars[0] = 1;
     if (*pf != 0)
-        gUnk_020390A0[0] = 2;
-    if (gUnk_020390DC > 6 && gUnk_020390DC != 8 && gUnk_020390DC != 9
-        && gUnk_020390DC != 0xA && gUnk_020390DC != 0xB)
-        gUnk_020390A0[0] = 1;
-    if ((u8)(gUnk_0203916C[0] - 3) <= 1)
-        gUnk_020390A0[0] = gUnk_020390BC[0];
+        gModule_NumCars[0] = 2;
+    if (gModule_TrackId > 6 && gModule_TrackId != 8 && gModule_TrackId != 9
+        && gModule_TrackId != 0xA && gModule_TrackId != 0xB)
+        gModule_NumCars[0] = 1;
+    if ((u8)(gModule_GameMode[0] - 3) <= 1)
+        gModule_NumCars[0] = gModule_NumLinkPlayers[0];
     gUnk_020391E0[0] = 0;
     gUnk_020391E0[1] = 0;
     gUnk_020391E0[2] = 0;
     gUnk_020391E0[3] = 0;
-    sub_0833CD2C(gUnk_020390DC);
-    sub_0833F448(gUnk_020390DC);
-    sub_0833D9E8(gUnk_020390DC);
+    sub_0833CD2C(gModule_TrackId);
+    sub_0833F448(gModule_TrackId);
+    sub_0833D9E8(gModule_TrackId);
     sub_0833EE20();
     sub_0833BF20();
     gUnk_02039158 = 0x100;
     sub_0833D3E4(0x32);
-    sub_08343504(gUnk_020390DC);
+    sub_08343504(gModule_TrackId);
     sub_0833F9A8();
     sub_0833FF1C();
     sub_0833D7D4();
     sub_0833D680();
     sub_0833D9D8();
     gUnk_020391D4 = 1;
-    (*(volatile s8 *)&gUnk_020390D0) = 0;
-    first = (*(volatile s8 *)&gUnk_020390D0);
+    (*(volatile s8 *)&gModule_VBlankWorkDone) = 0;
+    first = (*(volatile s8 *)&gModule_VBlankWorkDone);
     t -= 3;
     if (first == 0) {
         do
             ;
-        while ((*(volatile s8 *)&gUnk_020390D0) == 0);
+        while ((*(volatile s8 *)&gModule_VBlankWorkDone) == 0);
     }
     sub_08339B18();
     gUnk_020390FC = 0;
     sub_0833BF6C();
-    if (gUnk_0203916C[0] == 0xE) {
+    if (gModule_GameMode[0] == 0xE) {
         sub_0833EDF8();
     } else {
         sub_0833EDB8();
     }
-    if (gUnk_020390F0[0] != 0) {
-        if (gUnk_0203E120[2] != 0)
+    if (gModule_IsDemo[0] != 0) {
+        if (gModule_Options[2] != 0)
             sub_0833A8C8(1);
-        gUnk_020390D4 = 1;
+        gModule_RaceStarted = 1;
         gUnk_020250EC = 2;
-        if (gUnk_020390F0[0] != 0) {
+        if (gModule_IsDemo[0] != 0) {
             for (i = 0; i != 100; i++)
                 sub_083426C8();
             sub_08342868();
             goto skip42B04;
         }
     }
-    if ((u8)(gUnk_0203916C[0] - 3) <= 1)
+    if ((u8)(gModule_GameMode[0] - 3) <= 1)
         sub_08342B04();
 skip42B04:
-    if (gUnk_0203916C[0] == 9 || gUnk_0203916C[0] == 0xD || gUnk_0203916C[0] == 0xE
-        || gUnk_0203916C[0] == 0xF || gUnk_0203916C[0] == 0x11) {
+    if (gModule_GameMode[0] == 9 || gModule_GameMode[0] == 0xD || gModule_GameMode[0] == 0xE
+        || gModule_GameMode[0] == 0xF || gModule_GameMode[0] == 0x11) {
         gUnk_020390B8 = 1;
         for (i = 0; i != 20; i++)
             sub_083426C8();
         gUnk_020390B8 = 0;
     }
     gUnk_020390B8 = 0;
-    if (gUnk_020390EC != 0) {
+    if (gModule_IsLinkRace != 0) {
         sub_0833D5F4(&gModule_Cars[(*(volatile u32 *)0x04000128 << 0x1A) >> 0x1E]);
         goto after_d5f4;
 rrret:
@@ -171,10 +171,10 @@ after_d5f4: ;
     } else {
         sub_0833D5F4(gModule_Cars);
     }
-    gUnk_02039110[0] = gUnk_02039110[2];
-    gUnk_02039110[1] = gUnk_02039110[3];
-    gUnk_020390AC = 0;
-    gUnk_020391F0 = 0;
+    gModule_Camera[0] = gModule_Camera[2];
+    gModule_Camera[1] = gModule_Camera[3];
+    gModule_FrameCounter = 0;
+    gModule_RaceEndState = 0;
     gUnk_020390C4 = 1;
     t++;
     t--;
@@ -184,7 +184,7 @@ after_d5f4: ;
     t++;
     t--;
     gUnk_0203921C = 0;
-    gUnk_02039134 = 0;
+    gModule_VBlanksThisFrame = 0;
     flag = 0;
     gUnk_02039218[3] = 0;
     gUnk_02039218[2] = 0;
@@ -196,28 +196,28 @@ after_d5f4: ;
         sub_08343148(gUnk_02039160, 0x4B, 0x3C);
         if (gUnk_0203921C != 0)
             sub_08343148(gUnk_02039170, 0x4B, 0x5A);
-        gUnk_02039134 = 0;
+        gModule_VBlanksThisFrame = 0;
         if ((u8)t > 1)
             ent = gModule_Cars;
         else
-            ent = &gModule_Cars[gUnk_0203E1B0];
+            ent = &gModule_Cars[gModule_LinkPlayerId];
         sub_0833B81C(gUnk_02038FB0, 1,
                     ((s16)(gUnk_02025190[ent->gear]
                          + ((ent->rpm * gUnk_020251A4[ent->gear]) >> 6))) >> 3);
-        if (gUnk_020390F0[0] != 0) {
+        if (gModule_IsDemo[0] != 0) {
             sub_0833D5F4(gUnk_0203D6B0);
-            gUnk_020250EC = t2 = gUnk_020390AC / 256;
+            gUnk_020250EC = t2 = gModule_FrameCounter / 256;
             if (t2 % 8 == 0)
                 gUnk_020250EC = 4;
         } else {
-            if (gUnk_020390EC != 0)
+            if (gModule_IsLinkRace != 0)
                 sub_0833D5F4(&gModule_Cars[(*(volatile u32 *)0x04000128 << 0x1A) >> 0x1E]);
             else
                 sub_0833D5F4(gModule_Cars);
-            if (gUnk_0203916C[0] == 9 || gUnk_0203916C[0] == 0xD || gUnk_0203916C[0] == 0xE
-                || gUnk_0203916C[0] == 0xF || gUnk_0203916C[0] == 0x11) {
-                gUnk_02039110[0] = *(u32 *)&gModule_Cars[0];
-                gUnk_02039110[1] = *(u32 *)((u8 *)&gModule_Cars[0] + 8);
+            if (gModule_GameMode[0] == 9 || gModule_GameMode[0] == 0xD || gModule_GameMode[0] == 0xE
+                || gModule_GameMode[0] == 0xF || gModule_GameMode[0] == 0x11) {
+                gModule_Camera[0] = *(u32 *)&gModule_Cars[0];
+                gModule_Camera[1] = *(u32 *)((u8 *)&gModule_Cars[0] + 8);
             }
         }
         sub_0833D448();
@@ -226,33 +226,33 @@ after_d5f4: ;
         sub_0833FFC4();
         sub_083419D8();
         sub_0833DF58();
-        if (gUnk_020390D4 != 0 || gUnk_0203916C[0] == 9 || gUnk_0203916C[0] == 0xD
-            || gUnk_0203916C[0] == 0xE || gUnk_0203916C[0] == 0xF || gUnk_0203916C[0] == 0x11)
+        if (gModule_RaceStarted != 0 || gModule_GameMode[0] == 9 || gModule_GameMode[0] == 0xD
+            || gModule_GameMode[0] == 0xE || gModule_GameMode[0] == 0xF || gModule_GameMode[0] == 0x11)
             sub_083426C8();
-        sub_0833CF10(gUnk_02039110[0], gUnk_02039110[1]);
+        sub_0833CF10(gModule_Camera[0], gModule_Camera[1]);
         sub_0833D9D8();
         sub_08340EFC();
         gUnk_020391D4 = 1;
-        if (gUnk_020390F0[0] != 0) {
+        if (gModule_IsDemo[0] != 0) {
             if (gUnk_0203761C != 0) {
                 gUnk_020391CC = 1;
-                gUnk_020391F0 = 2;
+                gModule_RaceEndState = 2;
                 sub_08339B18();
                 *(volatile u16 *)0x04000000 &= 0xEFFF;
-                if (gUnk_0203E120[2] != 0)
+                if (gModule_Options[2] != 0)
                     sub_0833AA60(gUnk_02038F70, 2);
                 sub_0833D288(0x19, 0);
             }
         } else {
-            if ((u8)(gUnk_0203916C[0] - 3) > 1 && gUnk_020391F0 == 0) {
-                if (gUnk_020392C4 != 0)
+            if ((u8)(gModule_GameMode[0] - 3) > 1 && gModule_RaceEndState == 0) {
+                if (gModule_PaletteFadeActive != 0)
                     goto r_zero;
                 r = sub_0833DBC8();
                 goto r_ext;
             }
-            if (gUnk_020392C4 != 0 || gUnk_020391F0 != 0)
+            if (gModule_PaletteFadeActive != 0 || gModule_RaceEndState != 0)
                 goto r_zero;
-            if (gUnk_0203916C[0] == 4)
+            if (gModule_GameMode[0] == 4)
                 r = sub_0833DCB0();
             else
                 r = sub_0833DBF4();
@@ -275,14 +275,14 @@ r_case1:
             sub_0833A8C8(0x38);
             goto r_end;
 r_case2:
-            if (gUnk_0203916C[0] == 2 || gUnk_0203916C[0] == 0xE || gUnk_0203916C[0] == 0
-                || gUnk_0203916C[0] == 7 || gUnk_0203916C[0] == 6 || gUnk_0203916C[0] == 9
-                || gUnk_0203916C[0] == 5 || gUnk_0203916C[0] == 0x11 || gUnk_0203916C[0] == 1
-                || gUnk_0203916C[0] == 3 || gUnk_0203916C[0] == 0xC || gUnk_0203916C[0] == 0xD
-                || gUnk_0203916C[0] == 0x10 || gUnk_0203916C[0] == 0xF
-                || gUnk_0203916C[0] == 0x11) {
+            if (gModule_GameMode[0] == 2 || gModule_GameMode[0] == 0xE || gModule_GameMode[0] == 0
+                || gModule_GameMode[0] == 7 || gModule_GameMode[0] == 6 || gModule_GameMode[0] == 9
+                || gModule_GameMode[0] == 5 || gModule_GameMode[0] == 0x11 || gModule_GameMode[0] == 1
+                || gModule_GameMode[0] == 3 || gModule_GameMode[0] == 0xC || gModule_GameMode[0] == 0xD
+                || gModule_GameMode[0] == 0x10 || gModule_GameMode[0] == 0xF
+                || gModule_GameMode[0] == 0x11) {
                 gUnk_020391CC = 1;
-                gUnk_020391F0 = 2;
+                gModule_RaceEndState = 2;
                 sub_08339B18();
                 *(volatile u16 *)0x04000000 &= 0xEFFF;
                 sub_0833D288(0x19, 0);
@@ -292,21 +292,21 @@ r_case27:
             flag = 1;
 r_end: ;
         }
-        if (gUnk_020390EC != 0) {
+        if (gModule_IsLinkRace != 0) {
             rr = sub_0833C874();
             if (rr != 0)
                 goto rrret;
-            (*(volatile s8 *)&gUnk_020390D0) = rr;
+            (*(volatile s8 *)&gModule_VBlankWorkDone) = rr;
 wait_ec:
-            if ((*(volatile s8 *)&gUnk_020390D0) == 0)
+            if ((*(volatile s8 *)&gModule_VBlankWorkDone) == 0)
                 goto wait_ec;
         } else {
-            (*(volatile s8 *)&gUnk_020390D0) = 0;
-            while ((*(volatile s8 *)&gUnk_020390D0) == 0)
+            (*(volatile s8 *)&gModule_VBlankWorkDone) = 0;
+            while ((*(volatile s8 *)&gModule_VBlankWorkDone) == 0)
                 ;
         }
-        gUnk_020390AC = gUnk_020390AC + 1;
-        if (gUnk_020391F0 == 2 && gUnk_020392C4 == 0)
+        gModule_FrameCounter = gModule_FrameCounter + 1;
+        if (gModule_RaceEndState == 2 && gModule_PaletteFadeActive == 0)
             gUnk_02039154 = 1;
     }
     if (flag != 0) {

@@ -12,15 +12,15 @@ void sub_0833E4A4(void)
     s32 w;
 
     d = gUnk_0203B700;
-    v = (*(s32 *)&gUnk_0203B6CC);
+    v = (*(s32 *)&gModule_CountdownSeconds);
     d[1] = sub_08344C50(v, 10);
     d[0] = sub_08344BB8(v, 10);
-    sub_0833E36C((u16 *)(gUnk_020251B8[0] + 0x82), d[0]);
-    sub_0833E36C((u16 *)(gUnk_020251B8[0] + 0x86), d[1]);
-    w = (*(s32 *)&gUnk_0203B84C);
+    sub_0833E36C((u16 *)(gModule_TextLayerMapPtr[0] + 0x82), d[0]);
+    sub_0833E36C((u16 *)(gModule_TextLayerMapPtr[0] + 0x86), d[1]);
+    w = (*(s32 *)&gModule_CountdownMs);
     d[1] = sub_08344C50(sub_08344BB8(w, 10), 10);
     d[0] = sub_08344BB8(w, 100);
-    sub_0833E3C8((u16 *)(gUnk_020251B8[0] + 0xCA), 10);
-    sub_0833E3C8((u16 *)(gUnk_020251B8[0] + 0xCC), d[0]);
-    sub_0833E3C8((u16 *)(gUnk_020251B8[0] + 0xCE), d[1]);
+    sub_0833E3C8((u16 *)(gModule_TextLayerMapPtr[0] + 0xCA), 10);
+    sub_0833E3C8((u16 *)(gModule_TextLayerMapPtr[0] + 0xCC), d[0]);
+    sub_0833E3C8((u16 *)(gModule_TextLayerMapPtr[0] + 0xCE), d[1]);
 }

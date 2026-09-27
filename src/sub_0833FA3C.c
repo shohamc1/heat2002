@@ -13,13 +13,13 @@ void sub_0833FA3C(void)
     u32 *q;
     u32 i;
 
-    p = (u32 *)gUnk_0203C220;
+    p = (u32 *)gModule_ObjTileCache64;
     i = 0;
-    a2 = (u32 *)gUnk_0203B870;
-    a3 = (u32 *)gUnk_0203BA50;
-    a4 = (u32 *)gUnk_0203BF50;
-    a5 = (u32 *)gUnk_0203C0E0;
-    a6 = (u32 *)gUnk_0203BCD0;
+    a2 = (u32 *)gModule_ObjTileCache16;
+    a3 = (u32 *)gModule_ObjTileCache2;
+    a4 = (u32 *)gModule_ObjTileCache8;
+    a5 = (u32 *)gModule_ObjTileCache4;
+    a6 = (u32 *)gModule_ObjTileCache1;
     q = gUnk_0203C270;
     for (; i != 4; i++, p += 5) {
         if (p[0] == 0)

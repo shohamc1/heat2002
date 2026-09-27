@@ -11,8 +11,8 @@ void SetupChallenge(u8 a, u8 *unused)
     u8 i;
 
     for (i = 0; i != 24; i++) {
-        gCars[i].unk7D = 0;
-        gCars[i].unk16C = 0;
+        gCars[i].finished = 0;
+        gCars[i].finishTime = 0;
     }
 
     switch (a) {
@@ -20,8 +20,8 @@ void SetupChallenge(u8 a, u8 *unused)
         (*(u8 *)&gNumCars) = 1;
         gCars[0].driverId = 0;
         AssignRandomDrivers();
-        gCars[0].unk16C = 0;
-        gCars[0].unk7D = 1;
+        gCars[0].finishTime = 0;
+        gCars[0].finished = 1;
         sub_08016D28(0);
         SortCarsByTime();
         gNumLaps = 1;
@@ -31,8 +31,8 @@ void SetupChallenge(u8 a, u8 *unused)
         (*(u8 *)&gNumCars) = 1;
         gCars[0].driverId = 0;
         AssignRandomDrivers();
-        gCars[0].unk16C = 0;
-        gCars[0].unk7D = 1;
+        gCars[0].finishTime = 0;
+        gCars[0].finished = 1;
         sub_08016D28(0);
         SortCarsByTime();
         gNumLaps = 5;
@@ -43,11 +43,11 @@ void SetupChallenge(u8 a, u8 *unused)
         gCars[0].driverId = 0;
         AssignRandomDrivers();
         for (i = 1; i != 24; i++) {
-            gCars[i].unk16C = i;
-            gCars[i].unk7D = 1;
+            gCars[i].finishTime = i;
+            gCars[i].finished = 1;
         }
-        gCars[0].unk16C = 0;
-        gCars[0].unk7D = 1;
+        gCars[0].finishTime = 0;
+        gCars[0].finished = 1;
         SortCarsByTime();
         gNumLaps = 10;
         break;
@@ -55,21 +55,21 @@ void SetupChallenge(u8 a, u8 *unused)
         (*(u8 *)&gNumCars) = 24;
         gCars[0].driverId = 0;
         AssignRandomDrivers();
-        gCars[0].unk16C = 0;
-        gCars[0].unk7D = 1;
+        gCars[0].finishTime = 0;
+        gCars[0].finished = 1;
         for (i = 1; i != 24; i++) {
-            gCars[i].unk16C = i + 500;
-            gCars[i].unk7D = 1;
+            gCars[i].finishTime = i + 500;
+            gCars[i].finished = 1;
         }
         SortCarsByTime();
         gNumLaps = 50;
-        gUnk_0202CBD0 = 0;
+        gPlayerPittedFlag = 0;
         break;
     case 4:
         gCars[0].driverId = 0;
         AssignRandomDrivers();
-        gCars[0].unk16C = 0;
-        gCars[0].unk7D = 1;
+        gCars[0].finishTime = 0;
+        gCars[0].finished = 1;
         sub_08016D28(0);
         SortCarsByTime();
         gNumLaps = 2;
@@ -81,11 +81,11 @@ void SetupChallenge(u8 a, u8 *unused)
         gCars[0].driverId = 11;
         AssignRandomDrivers();
         for (i = 1; i != 24; i++) {
-            gCars[i].unk16C = i * 2;
-            gCars[i].unk7D = 1;
+            gCars[i].finishTime = i * 2;
+            gCars[i].finished = 1;
         }
-        gCars[0].unk16C = 8;
-        gCars[0].unk7D = 1;
+        gCars[0].finishTime = 8;
+        gCars[0].finished = 1;
         SortCarsByTime();
         gNumLaps = 10;
         break;
@@ -94,14 +94,14 @@ void SetupChallenge(u8 a, u8 *unused)
         gCars[0].driverId = 4;
         AssignRandomDrivers();
         for (i = 1; i != 15; i++) {
-            gCars[i].unk16C = i;
-            gCars[i].unk7D = 1;
+            gCars[i].finishTime = i;
+            gCars[i].finished = 1;
         }
-        gCars[0].unk16C = 15;
-        gCars[0].unk7D = 1;
+        gCars[0].finishTime = 15;
+        gCars[0].finished = 1;
         for (i = 15; i != 24; i++) {
-            gCars[i].unk16C = i + 2;
-            gCars[i].unk7D = 1;
+            gCars[i].finishTime = i + 2;
+            gCars[i].finished = 1;
         }
         SortCarsByTime();
         gNumLaps = 50;
@@ -111,9 +111,9 @@ void SetupChallenge(u8 a, u8 *unused)
         gCars[0].driverId = 8;
         AssignRandomDrivers();
         for (i = 0; i != 24; i++)
-            gCars[i].unk7D = 0;
-        gCars[0].unk16C = 0;
-        gCars[0].unk7D = 1;
+            gCars[i].finished = 0;
+        gCars[0].finishTime = 0;
+        gCars[0].finished = 1;
         sub_08016D28(0);
         SortCarsByTime();
         gNumLaps = 5;
@@ -124,9 +124,9 @@ void SetupChallenge(u8 a, u8 *unused)
         gCars[0].driverId = 0;
         AssignRandomDrivers();
         for (i = 0; i != 24; i++)
-            gCars[i].unk7D = 0;
-        gCars[0].unk16C = 0;
-        gCars[0].unk7D = 1;
+            gCars[i].finished = 0;
+        gCars[0].finishTime = 0;
+        gCars[0].finished = 1;
         sub_08016D28(0);
         SortCarsByTime();
         gNumLaps = 3;
@@ -137,27 +137,27 @@ void SetupChallenge(u8 a, u8 *unused)
         gCars[0].driverId = 9;
         AssignRandomDrivers();
         for (i = 0; i != 24; i++)
-            gCars[i].unk7D = 0;
-        gCars[0].unk16C = 0;
-        gCars[0].unk7D = 1;
+            gCars[i].finished = 0;
+        gCars[0].finishTime = 0;
+        gCars[0].finished = 1;
         sub_08016D28(0);
         SortCarsByTime();
         gNumLaps = 3;
-        gUnk_0202CBD8 = 0;
+        gChallengeBestValue = 0;
         (*(struct Car **)&gCarOrder) = gCars;
         for (i = 0; i != 32; i++)
-            gUnk_0202CB40[i] = 0;
+            gWaypointSpeedSamples[i] = 0;
         break;
     case 10:
         (*(u8 *)&gNumCars) = 24;
         gCars[0].driverId = 5;
         AssignRandomDrivers();
         for (i = 1; i != 24; i++) {
-            gCars[i].unk16C = i;
-            gCars[i].unk7D = 1;
+            gCars[i].finishTime = i;
+            gCars[i].finished = 1;
         }
-        gCars[0].unk16C = 100;
-        gCars[0].unk7D = 1;
+        gCars[0].finishTime = 100;
+        gCars[0].finished = 1;
         SortCarsByTime();
         gNumLaps = 25;
         break;
@@ -166,11 +166,11 @@ void SetupChallenge(u8 a, u8 *unused)
         gCars[0].driverId = 0;
         AssignRandomDrivers();
         for (i = 1; i != 24; i++) {
-            gCars[i].unk16C = i * 5;
-            gCars[i].unk7D = 1;
+            gCars[i].finishTime = i * 5;
+            gCars[i].finished = 1;
         }
-        gCars[0].unk16C = 27;
-        gCars[0].unk7D = 1;
+        gCars[0].finishTime = 27;
+        gCars[0].finished = 1;
         SortCarsByTime();
         gNumLaps = 20;
         break;
@@ -179,14 +179,14 @@ void SetupChallenge(u8 a, u8 *unused)
         gCars[0].driverId = 0;
         AssignRandomDrivers();
         for (i = 1; i != 4; i++) {
-            gCars[i].unk16C = i;
-            gCars[i].unk7D = 1;
+            gCars[i].finishTime = i;
+            gCars[i].finished = 1;
         }
-        gCars[0].unk16C = 4;
-        gCars[0].unk7D = 1;
+        gCars[0].finishTime = 4;
+        gCars[0].finished = 1;
         for (i = 4; i != 24; i++) {
-            gCars[i].unk16C = i + 10;
-            gCars[i].unk7D = 1;
+            gCars[i].finishTime = i + 10;
+            gCars[i].finished = 1;
         }
         SortCarsByTime();
         gNumLaps = 100;
@@ -199,15 +199,15 @@ void SetupChallenge(u8 a, u8 *unused)
         gCars[1].driverId = 0;
         gCars[2].driverId = 8;
         FillUnassignedDrivers();
-        gCars[0].unk16C = 100;
-        gCars[0].unk7D = 1;
-        gCars[1].unk16C = 99;
-        gCars[1].unk7D = 1;
-        gCars[2].unk16C = 98;
-        gCars[2].unk7D = 1;
+        gCars[0].finishTime = 100;
+        gCars[0].finished = 1;
+        gCars[1].finishTime = 99;
+        gCars[1].finished = 1;
+        gCars[2].finishTime = 98;
+        gCars[2].finished = 1;
         for (i = 3; i != 24; i++) {
-            gCars[i].unk16C = i + 100;
-            gCars[i].unk7D = 1;
+            gCars[i].finishTime = i + 100;
+            gCars[i].finished = 1;
         }
         SortCarsByTime();
         gNumLaps = 20;
@@ -217,14 +217,14 @@ void SetupChallenge(u8 a, u8 *unused)
         gCars[0].driverId = 1;
         AssignRandomDrivers();
         for (i = 1; i != 3; i++) {
-            gCars[i].unk16C = i;
-            gCars[i].unk7D = 1;
+            gCars[i].finishTime = i;
+            gCars[i].finished = 1;
         }
-        gCars[0].unk16C = 3;
-        gCars[0].unk7D = 1;
+        gCars[0].finishTime = 3;
+        gCars[0].finished = 1;
         for (i = 3; i != 24; i++) {
-            gCars[i].unk16C = i + 1;
-            gCars[i].unk7D = 1;
+            gCars[i].finishTime = i + 1;
+            gCars[i].finished = 1;
         }
         SortCarsByTime();
         gNumLaps = 20;
@@ -234,14 +234,14 @@ void SetupChallenge(u8 a, u8 *unused)
         gCars[0].driverId = 4;
         AssignRandomDrivers();
         for (i = 1; i != 24; i++) {
-            gCars[i].unk16C = i;
-            gCars[i].unk7D = 1;
+            gCars[i].finishTime = i;
+            gCars[i].finished = 1;
         }
-        gCars[0].unk16C = 100;
-        gCars[0].unk7D = 1;
+        gCars[0].finishTime = 100;
+        gCars[0].finished = 1;
         SortCarsByTime();
         gNumLaps = 40;
         break;
     }
-    gUnk_0202EEE4 = 0;
+    gChallengeResult = 0;
 }

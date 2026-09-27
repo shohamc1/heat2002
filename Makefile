@@ -86,7 +86,7 @@ LIBGCC_OBJS := $(LIBGCC1_OBJS) $(LIBGCC2_OBJS) $(LIBGCC_FP_OBJS) $(LIBGCC_HIGH_O
 CRT0_OBJS := $(BUILD)/lib/rom_header.o $(BUILD)/lib/crt0.o $(BUILD)/lib/crt0_high.o \
 	$(BUILD)/lib/crt0_island.o
 CRT0_HIGH_SYMS := Init=sub_08339780 IntrMain=sub_083397C4 \
-	AgbMain=sub_083398CC gUnk_02000590=gUnk_020375E0
+	AgbMain=sub_083398CC gIntrTable=gModule_IntrTable
 
 # Nintendo SDK libraries written in C: MultiBoot (lib/multiboot.c,
 # pokeemerald's) and the EEPROM_V120 save library (lib/eeprom.c). Each keeps

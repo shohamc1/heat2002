@@ -4,5 +4,5 @@
 
 void sub_08364190(void)
 {
-    gUnk_03007FF8 = 1;
+    gIntrCheck = 1;
 }

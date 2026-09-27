@@ -16,14 +16,14 @@ struct Unk
     u16 d;
 };
 
-extern struct Entry gUnk_08334DE2[];
+extern struct Entry gBigDigitGlyphs[];
 
 void DrawBigDigit(u16 *dest, u8 idx)
 {
-    struct Unk *e = (struct Unk *)&gUnk_08334DE2[idx];
+    struct Unk *e = (struct Unk *)&gBigDigitGlyphs[idx];
 
-    dest[0] = gUnk_08335A8C[e->a] | 0xE000;
-    dest[1] = gUnk_08335A8C[e->b] | 0xE000;
-    dest[0x20] = gUnk_08335A8C[e->c] | 0xE000;
-    dest[0x21] = 0xE000 | gUnk_08335A8C[e->d];
+    dest[0] = gFontTileEntries[e->a] | 0xE000;
+    dest[1] = gFontTileEntries[e->b] | 0xE000;
+    dest[0x20] = gFontTileEntries[e->c] | 0xE000;
+    dest[0x21] = 0xE000 | gFontTileEntries[e->d];
 }

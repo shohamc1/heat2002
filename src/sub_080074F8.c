@@ -8,7 +8,7 @@ u32 *sub_080074F8(u32 a, u8 b)
     u32 *q;
     u32 i;
 
-    p = gUnk_02025DB0;
+    p = gObjTileCache64;
     i = 0;
     q = p;
     for (; i != 4; i++, p += 5) {

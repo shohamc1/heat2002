@@ -215,7 +215,7 @@ extern const u8 gUnk_083C956A[];
 extern const u8 gUnk_083C9570[];
 
 // Its users declare it as u32 *x[], u32 x[].
-const u32 gUnk_083C9574[] = {
+const u32 gLanePointTables[] = {
     (u32)gUnk_083682BC, (u32)gUnk_083682BC, (u32)gUnk_083682BC,
     (u32)gUnk_083682BC, (u32)gUnk_0836A1B0, (u32)gUnk_0836A1B0,
     (u32)gUnk_0836A1B0, (u32)gUnk_0836BFC4, (u32)gUnk_083682BC,
@@ -266,7 +266,7 @@ const u32 gUnk_083C9574[] = {
     (u32)gUnk_083C19D4, (u32)gUnk_083C19D4, (u32)gUnk_083C19D4
 };
 // Its users declare it as u32 *x[], u32 x[].
-const u32 gUnk_083C97B4[] = {
+const u32 gLaneSegmentTables[] = {
     (u32)gUnk_0836844C, (u32)gUnk_0836844C, (u32)gUnk_0836844C,
     (u32)gUnk_0836844C, (u32)gUnk_0836A318, (u32)gUnk_0836A318,
     (u32)gUnk_0836A318, (u32)gUnk_0836C128, (u32)gUnk_0836844C,
@@ -316,7 +316,7 @@ const u32 gUnk_083C97B4[] = {
     (u32)gUnk_083C58A4, (u32)gUnk_083C7740, (u32)gUnk_083C1B5C,
     (u32)gUnk_083C1B5C, (u32)gUnk_083C1B5C, (u32)gUnk_083C1B5C
 };
-const u32 gUnk_083C99F4[] = {
+const u32 gLaneCellLists[] = {
     (u32)gUnk_08368C1C, (u32)gUnk_08368C1C, (u32)gUnk_08368C1C,
     (u32)gUnk_08368C1C, (u32)gUnk_0836AA20, (u32)gUnk_0836AA20,
     (u32)gUnk_0836AA20, (u32)gUnk_0836C81C, (u32)gUnk_08368C1C,
@@ -366,7 +366,7 @@ const u32 gUnk_083C99F4[] = {
     (u32)gUnk_083C6024, (u32)gUnk_083C7F74, (u32)gUnk_083C2304,
     (u32)gUnk_083C2304, (u32)gUnk_083C2304, (u32)gUnk_083C2304
 };
-const u32 gUnk_083C9C34[] = {
+const u32 gLaneCellGrids[] = {
     (u32)gUnk_08368FAE, (u32)gUnk_08368FAE, (u32)gUnk_08368FAE,
     (u32)gUnk_08368FAE, (u32)gUnk_0836ADC2, (u32)gUnk_0836ADC2,
     (u32)gUnk_0836ADC2, (u32)gUnk_0836CB40, (u32)gUnk_08368FAE,
@@ -417,7 +417,7 @@ const u32 gUnk_083C9C34[] = {
     (u32)gUnk_083C267E, (u32)gUnk_083C267E, (u32)gUnk_083C267E
 };
 // Its users declare it as u32 *x[].
-const u32 gUnk_083C9E74[] = {
+const u32 gLaneLengthPtrs[] = {
     (u32)gUnk_0836DD42, (u32)gUnk_0836DD42, (u32)gUnk_0836DD42,
     (u32)gUnk_0836DD42, (u32)gUnk_0836DD4A, (u32)gUnk_0836DD4A,
     (u32)gUnk_0836DD4A, (u32)gUnk_0836DD4E, (u32)gUnk_0836DD42,

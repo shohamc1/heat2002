@@ -19,13 +19,13 @@ void sub_08004980(u32 a1)
     v = *(u32 *)(a1 + 0x50) & 0xFFFF;
     w = gUnk_02025254;
     if (v <= w || w == 0) {
-        if (*(s8 *)&gUnk_0202524C != -1 && gUnk_020021E0 == 0)
-            sub_080047E8(gUnk_0202524C, gUnk_020251F8);
+        if (*(s8 *)&gTrackCueId != -1 && gRaceEndState == 0)
+            sub_080047E8(gTrackCueId, gUnk_020251F8);
     }
     v = *(u32 *)(a1 + 0x50) & 0xFFFF;
     if (v >= *(u16 *)p) {
         do {
-            gUnk_0202524C = p[2];
+            gTrackCueId = p[2];
             gUnk_020251F8 = *(u16 *)(p + 4);
             gUnk_02025254 = *(u16 *)(p + 6);
             p += 8;

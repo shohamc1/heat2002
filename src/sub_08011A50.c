@@ -18,13 +18,13 @@ void ResetLinkState(void)
     REG_SIOCNT = 0;
     i = 0;
     do {
-        ((struct Unk_0202EFA0 *)gUnk_0202EFA0)[i].unk0 |= 0xFF;
-        ((struct Unk_0202EFA0 *)gUnk_0202EFA0)[i].unk1 |= 0xFF;
-        ((struct Unk_0202EFA0 *)gUnk_0202EFA0)[i].unk2 |= 0xFF;
+        ((struct Unk_0202EFA0 *)gLinkPlayerSlots)[i].unk0 |= 0xFF;
+        ((struct Unk_0202EFA0 *)gLinkPlayerSlots)[i].unk1 |= 0xFF;
+        ((struct Unk_0202EFA0 *)gLinkPlayerSlots)[i].unk2 |= 0xFF;
         i++;
     } while (i != 4);
     gUnk_0202EDBC = 0;
-    gUnk_0200216C = 0;
+    gLinkVBlankTimeout = 0;
     SetLinkSerialIntr();
     InitMultiplayerSio();
     REG_IE |= INTR_FLAG_SERIAL;
@@ -32,10 +32,10 @@ void ResetLinkState(void)
         REG_IE |= INTR_FLAG_TIMER3;
     i = 0;
     do {
-        gUnk_0202ED78[i] = 0;
+        gLinkSendWords[i] = 0;
         j = 0;
         do {
-            *(u16 *)((u8 *)gUnk_0202EF40 + j * 2 + i * 8) = 0;
+            *(u16 *)((u8 *)gLinkRecvWords + j * 2 + i * 8) = 0;
             j++;
         } while (j < 4);
         i++;

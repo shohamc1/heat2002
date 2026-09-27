@@ -141,7 +141,7 @@ extern const u8 gUnk_083FF740[];
 extern const u8 gUnk_083FF75C[];
 extern const u8 gUnk_083FF778[];
 
-const u32 gUnk_08367FBC[] = {
+const u32 gDriverGearPowerTables[] = {
     (u32)gUnk_08367C38, (u32)gUnk_08367C42, (u32)gUnk_08367C4C,
     (u32)gUnk_08367C56, (u32)gUnk_08367C60, (u32)gUnk_08367C6A,
     (u32)gUnk_08367C74, (u32)gUnk_08367C7E, (u32)gUnk_08367C88,
@@ -153,7 +153,7 @@ const u32 gUnk_08367FBC[] = {
     (u32)gUnk_08367D28, (u32)gUnk_08367D32, (u32)gUnk_08367D3C,
     (u32)gUnk_08367D46, (u32)gUnk_08367D50, (u32)gUnk_08367D5A
 };
-const u32 gUnk_08368034[] = {
+const u32 gDriverGearRatioTables[] = {
     (u32)gUnk_08367D64, (u32)gUnk_08367D6E, (u32)gUnk_08367D78,
     (u32)gUnk_08367D82, (u32)gUnk_08367D8C, (u32)gUnk_08367D96,
     (u32)gUnk_08367DA0, (u32)gUnk_08367DAA, (u32)gUnk_08367DB4,
@@ -165,7 +165,7 @@ const u32 gUnk_08368034[] = {
     (u32)gUnk_08367E54, (u32)gUnk_08367E5E, (u32)gUnk_08367E68,
     (u32)gUnk_08367E72, (u32)gUnk_08367E7C, (u32)gUnk_08367E86
 };
-const u32 gUnk_083680AC[] = {
+const u32 gDriverRpmPerSpeedTables[] = {
     (u32)gUnk_08367E90, (u32)gUnk_08367E9A, (u32)gUnk_08367EA4,
     (u32)gUnk_08367EAE, (u32)gUnk_08367EB8, (u32)gUnk_08367EC2,
     (u32)gUnk_08367ECC, (u32)gUnk_08367ED6, (u32)gUnk_08367EE0,
@@ -177,32 +177,32 @@ const u32 gUnk_083680AC[] = {
     (u32)gUnk_08367F80, (u32)gUnk_08367F8A, (u32)gUnk_08367F94,
     (u32)gUnk_08367F9E, (u32)gUnk_08367FA8, (u32)gUnk_08367FB2
 };
-const u32 gUnk_08368124[] = INCBIN_U32("build/assets/unknown/data_08368124.bin");
-const u32 gUnk_08368134[] = INCBIN_U32("build/assets/unknown/data_08368134.bin");
-const u32 gUnk_0836813C[] = {
+const u32 gPitStopTireServiceTimes[] = INCBIN_U32("build/assets/unknown/data_08368124.bin");
+const u32 gPitStopRepairTimes[] = INCBIN_U32("build/assets/unknown/data_08368134.bin");
+const u32 gPitMenuRowLabelTexts[] = {
     (u32)gUnk_0806C7D4, (u32)gUnk_0806C7CC, (u32)gUnk_0806C7C4,
     (u32)gUnk_0806C7C0
 };
-const u32 gUnk_0836814C[] = {
+const u32 gPitMenuTireOptionTexts[] = {
     (u32)gUnk_0806C800, (u32)gUnk_0806C7F4, (u32)gUnk_0806C7E8,
     (u32)gUnk_0806C7DC
 };
-const u32 gUnk_0836815C[] = {
+const u32 gPitMenuFuelOptionTexts[] = {
     (u32)gUnk_0806C82C, (u32)gUnk_0806C81C, (u32)gUnk_0806C80C
 };
-const u32 gUnk_08368168[] = {
+const u32 gPitMenuRepairOptionTexts[] = {
     (u32)gUnk_0806C848, (u32)gUnk_0806C83C
 };
-const s32 gUnk_08368170[] = INCBIN_S32("build/assets/unknown/data_08368170.bin");
-const u8 gUnk_083681B0[] = INCBIN_U8("build/assets/unknown/data_083681B0.bin");
-const u8 gUnk_083681BC[] = INCBIN_U8("build/assets/unknown/data_083681BC.bin");
+const s32 gChallengeStartOffsetPercents[] = INCBIN_S32("build/assets/unknown/data_08368170.bin");
+const u8 gTrackStartOffsetPercents[] = INCBIN_U8("build/assets/unknown/data_083681B0.bin");
+const u8 gPitLaneIndices[] = INCBIN_U8("build/assets/unknown/data_083681BC.bin");
 // Its users declare it as u32 *x[], u32 x[].
-const u32 gUnk_083681E8[] = {
+const u32 gLinkMarkerFrameLists[] = {
     (u32)gUnk_083FF724, (u32)gUnk_083FF740, (u32)gUnk_083FF75C,
     (u32)gUnk_083FF778
 };
 // Its users declare it as u32 *x[].
-const u32 gUnk_083681F8[] = {
+const u32 gDriverNumberFrameLists[] = {
     (u32)gUnk_083FEF08, (u32)gUnk_083FEF0C, (u32)gUnk_083FEF10,
     (u32)gUnk_083FEF14, (u32)gUnk_083FEF18, (u32)gUnk_083FEF1C,
     (u32)gUnk_083FEF20, (u32)gUnk_083FEF24, (u32)gUnk_083FEF28,
@@ -214,9 +214,9 @@ const u32 gUnk_083681F8[] = {
     (u32)gUnk_083FEF68, (u32)gUnk_083FEF6C, (u32)gUnk_083FEF70,
     (u32)gUnk_083FEF74, (u32)gUnk_083FEF78, (u32)gUnk_083FEF7C
 };
-const s32 gUnk_08368270[] = INCBIN_S32("build/assets/unknown/data_08368270.bin");
-const s32 gUnk_08368280[] = INCBIN_S32("build/assets/unknown/data_08368280.bin");
-const u32 gUnk_08368290[] = {
+const s32 gCornerOffsetX[] = INCBIN_S32("build/assets/unknown/data_08368270.bin");
+const s32 gCornerOffsetZ[] = INCBIN_S32("build/assets/unknown/data_08368280.bin");
+const u32 gTrackAiDragDivisors[] = {
     0x1CC01F4, 0x1D601A4, 0x1B801CC, 0x1E001DB, 0x1CC01D6, 0x1E001D6,
     (u32)gUnk_0806C940, (u32)gUnk_0806C960
 };

@@ -8,26 +8,26 @@ void sub_0833E1F4(void)
   u16 *p1;
   u8 i;
   u8 v8;
- do { if (gUnk_020390D4 == 0) { return; } if (gUnk_020391F0 != 0) { return; } v8 = gUnk_0203916C[0] - 3; p1 = &gUnk_0203B858[0]; p2 = &gUnk_0203B6D4[0]; if (v8 <= 2) { for (i = 0; i != gUnk_020390BC[0]; i++) { gUnk_0203D68C[i * 100] = gUnk_0203D68C[i * 100] + 1; } } *p1 += 40; } while (0);
+ do { if (gModule_RaceStarted == 0) { return; } if (gModule_RaceEndState != 0) { return; } v8 = gModule_GameMode[0] - 3; p1 = &gModule_LapMs[0]; p2 = &gModule_RaceMs[0]; if (v8 <= 2) { for (i = 0; i != gModule_NumLinkPlayers[0]; i++) { gUnk_0203D68C[i * 100] = gUnk_0203D68C[i * 100] + 1; } } *p1 += 40; } while (0);
   if ((*p1) > 999)
   {
     *p1 -= 1000;
-    gUnk_0203B6A8[0] = gUnk_0203B6A8[0] + 1;
-    if (gUnk_0203B6A8[0] > 59)
+    gModule_LapSec[0] = gModule_LapSec[0] + 1;
+    if (gModule_LapSec[0] > 59)
     {
-      gUnk_0203B6A8[0] = gUnk_0203B6A8[0] - 60;
-      gUnk_0203B6C8[0] = gUnk_0203B6C8[0] + 1;
+      gModule_LapSec[0] = gModule_LapSec[0] - 60;
+      gModule_LapMin[0] = gModule_LapMin[0] + 1;
     }
   }
   *p2 += 40;
   if ((*p2) > 999)
   {
     *p2 -= 1000;
-    gUnk_0203B6D0[0] = gUnk_0203B6D0[0] + 1;
-    if (gUnk_0203B6D0[0] > 59)
+    gModule_RaceSec[0] = gModule_RaceSec[0] + 1;
+    if (gModule_RaceSec[0] > 59)
     {
-      gUnk_0203B6D0[0] = gUnk_0203B6D0[0] - 60;
-      gUnk_0203B704[0] = gUnk_0203B704[0] + 1;
+      gModule_RaceSec[0] = gModule_RaceSec[0] - 60;
+      gModule_RaceMin[0] = gModule_RaceMin[0] + 1;
     }
   }
 }

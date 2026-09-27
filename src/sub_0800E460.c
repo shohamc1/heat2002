@@ -18,16 +18,16 @@ struct CommRegs
 
 u32 SioTransferUpdate(u32 *a1)
 {
-    switch (gUnk_0202CDD0.state)
+    switch (gSioTransfer.state)
     {
     case 0:
-        if ((*(volatile u32 *)&gUnk_0202CDD0 & 0x00FF00FF) != 0)
-            gUnk_0202CDD0.state = 1;
+        if ((*(volatile u32 *)&gSioTransfer & 0x00FF00FF) != 0)
+            gSioTransfer.state = 1;
         break;
     case 1:
-        if (gUnk_0202CDD0.mode == 1)
+        if (gSioTransfer.mode == 1)
         {
-            if (gUnk_0202CDD0.retry <= 5)
+            if (gSioTransfer.retry <= 5)
                 break;
         }
         else
@@ -37,7 +37,7 @@ u32 SioTransferUpdate(u32 *a1)
         REG_SIODATA32 = 0;
         REG_IF = INTR_FLAG_TIMER3 | INTR_FLAG_SERIAL;
         {
-            register u32 mode __asm__("r4") = gUnk_0202CDD0.mode;
+            register u32 mode __asm__("r4") = gSioTransfer.mode;
 
             if (mode == 1)
             {
@@ -55,12 +55,12 @@ u32 SioTransferUpdate(u32 *a1)
                 REG_IME = 1;
             }
         }
-        gUnk_0202CDD0.retry = 0;
-        gUnk_0202CDD0.state = 2;
+        gSioTransfer.retry = 0;
+        gSioTransfer.state = 2;
         break;
     case 2:
         {
-            register s32 count __asm__("r6") = gUnk_0202CDD0.count;
+            register s32 count __asm__("r6") = gSioTransfer.count;
             register s32 chunk __asm__("r4") = count;
 
             if (count > 0x2000)
@@ -69,12 +69,12 @@ u32 SioTransferUpdate(u32 *a1)
                 chunk = 0;
             if (a1 != 0)
                 *a1 = chunk;
-            if (gUnk_0202CDD0.mode != 1)
+            if (gSioTransfer.mode != 1)
             {
-                if (gUnk_0202CDD0.index < chunk)
+                if (gSioTransfer.index < chunk)
                 {
-                    register s32 *w __asm__("r3") = (s32 *)&gUnk_0202CDD0;
-                    u32 *data = (u32 *)gUnk_0202CDD0.data;
+                    register s32 *w __asm__("r3") = (s32 *)&gSioTransfer;
+                    u32 *data = (u32 *)gSioTransfer.data;
                     {
                         s32 i;
 
@@ -89,14 +89,14 @@ u32 SioTransferUpdate(u32 *a1)
                 }
                 if (count > 0x2000)
                 {
-                    u32 t = gUnk_0202CDD0.fC + gUnk_0202CDD0.crc;
-                    gUnk_0202CDD0.fC = t;
+                    u32 t = gSioTransfer.fC + gSioTransfer.crc;
+                    gSioTransfer.fC = t;
                     if (t == -1)
-                        gUnk_0202CDD0.flag = 1;
+                        gSioTransfer.flag = 1;
                 }
             }
-            if (count > 0x2000 || gUnk_0202CDD0.retry == 0x8C)
-                gUnk_0202CDD0.state = 3;
+            if (count > 0x2000 || gSioTransfer.retry == 0x8C)
+                gSioTransfer.state = 3;
         }
         break;
     case 3:
@@ -113,21 +113,21 @@ u32 SioTransferUpdate(u32 *a1)
             p = (volatile u32 *)((u32)ie - 0xE0);
             *(volatile long long *)p = 0;
         }
-        if (gUnk_0202CDD0.mode != 0)
+        if (gSioTransfer.mode != 0)
             REG_TM3CNT = 0;
         REG_IF = INTR_FLAG_TIMER3 | INTR_FLAG_SERIAL;
-        if (gUnk_0202CDD0.mode != 0)
+        if (gSioTransfer.mode != 0)
         {
-            gUnk_0202CDD0.retry = 0;
-            gUnk_0202CDD0.state = 4;
+            gSioTransfer.retry = 0;
+            gSioTransfer.state = 4;
             break;
         }
         return 1;
     case 4:
-        if (gUnk_0202CDD0.retry <= 2)
+        if (gSioTransfer.retry <= 2)
             break;
         return 1;
     }
-    gUnk_0202CDD0.retry = gUnk_0202CDD0.retry + 1;
+    gSioTransfer.retry = gSioTransfer.retry + 1;
     return 0;
 }

@@ -4,7 +4,7 @@
 #include "variables.h"
 #include "car.h"
 
-extern u8 gUnk_0829F41C[];
+extern u8 gText_BlankRow[];
 
 void sub_08013B64(u8 a)
 {
@@ -25,10 +25,10 @@ void sub_08013B64(u8 a)
     i = 0;
     do {
         ptr = (u8 *)*walk;
-        DrawText(gUnk_0829F41C, 0, i + 4, 1);
-        if (walk < gUnk_0202F020) {
+        DrawText(gText_BlankRow, 0, i + 4, 1);
+        if (walk < gSeasonRaceIndex) {
             SplitMilliseconds(*(u32 *)(ptr + 0x16C), &m, &s, &f);
-            if (ptr != (u8 *)gCars || (gUnk_0202539C & 0x10) == 0) {
+            if (ptr != (u8 *)gCars || (gMenuBlinkCounter & 0x10) == 0) {
                 buf[0] = ((i + off + 1) / 10) % 10 + 0x30;
                 buf[1] = (i + off + 1) % 10 + 0x30;
                 buf[2] = 0x2E;
@@ -50,13 +50,13 @@ void sub_08013B64(u8 a)
         }
         i++;
     } while (i != 0x0F);
-    if ((gUnk_0202539C & 8) != 0) {
+    if ((gMenuBlinkCounter & 8) != 0) {
         if (a == 0)
-            DrawText(gUnk_0829F440, 0x1A, 0x13, 1);
+            DrawText(gText_PageNextArrow, 0x1A, 0x13, 1);
         else
-            DrawText(gUnk_0829F444, 0x1A, 0x13, 1);
+            DrawText(gText_PagePrevArrow, 0x1A, 0x13, 1);
     } else {
-        DrawText(gUnk_0829F448, 0x1A, 0x13, 1);
+        DrawText(gText_PageNoArrowBlank, 0x1A, 0x13, 1);
     }
-    gUnk_0202539C++;
+    gMenuBlinkCounter++;
 }

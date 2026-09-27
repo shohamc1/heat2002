@@ -14,15 +14,15 @@ u8 sub_08005280(void)
     u16 r;
     u32 v;
 
-    gUnk_020253C4 = 0xFF;
+    gLinkMenuPlayerIndex = 0xFF;
     sub_08004DB4();
-    if (gUnk_02025258 & 8) {
+    if (gLinkMenuKeysPressed & 8) {
         StopAllSongs();
         {
-            volatile u8 *p = &gUnk_020020C0;
+            volatile u8 *p = &gVBlankWorkDone;
 
             while (1) {
-                gUnk_02002124 = 0;
+                gVBlankCounter = 0;
                 if (ExchangeLinkInput() != 0) {
                     sub_080017D0();
                     done = 0;
@@ -36,13 +36,13 @@ u8 sub_08005280(void)
                     } while (done == 0);
                 }
                 sub_08004DB4();
-                r = gUnk_02025258 & 8;
+                r = gLinkMenuKeysPressed & 8;
                 if (r != 0) {
                     sub_0800524C();
                     return 1;
                 }
                 sub_080051E4();
-                gUnk_0200209C++;
+                gFrameCounter++;
                 *p = r;
 poll:
                 if (*p == 0)

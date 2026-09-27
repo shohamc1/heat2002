@@ -20,7 +20,7 @@ void sub_083427DC(u32 a)
         sub_0833D288(0xA, 0);
         sub_08339B18();
         REG_DISPCNT &= ~DISPCNT_OBJ_ON;
-        gUnk_020391F0 = 2;
+        gModule_RaceEndState = 2;
         sub_0833FFA8(a);
         sub_0833FF84(a);
     }

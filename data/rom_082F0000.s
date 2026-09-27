@@ -265,6 +265,6 @@ gUnk_0830E358:
 	.global gUnk_0830E418
 gUnk_0830E418:
 	.incbin "build/assets/unknown/data_0830E418.bin"
-	.global gUnk_0830E618
-gUnk_0830E618:
+	.global gTrackSelectLeftArrowGfx
+gTrackSelectLeftArrowGfx:
 	.incbin "build/assets/graphics/rl_0830E618.bin"

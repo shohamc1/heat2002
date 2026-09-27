@@ -22,8 +22,8 @@ void sub_0833F1A8(u8 *str)
         ch = c - 0x20;
         base = (ch >> 5) * 64 + 0x60;
         tile = &gUnk_0201F590[base + (ch & 0x1F)];
-        vp[0] = pal | gUnk_0201F9D0[tile[0]];
-        vp[0x20] = pal | gUnk_0201F9D0[tile[0x20]];
+        vp[0] = pal | gModule_TextGlyphTileIndices[tile[0]];
+        vp[0x20] = pal | gModule_TextGlyphTileIndices[tile[0x20]];
         vp++;
         i++;
     }
@@ -32,8 +32,8 @@ void sub_0833F1A8(u8 *str)
         ch = c - 0x20;
         base = (ch >> 5) * 64 + 0x60;
         tile = &gUnk_0201F590[base + (ch & 0x1F)];
-        vp[0] = pal | gUnk_0201F9D0[tile[0]];
-        vp[0x20] = pal | gUnk_0201F9D0[tile[0x20]];
+        vp[0] = pal | gModule_TextGlyphTileIndices[tile[0]];
+        vp[0x20] = pal | gModule_TextGlyphTileIndices[tile[0x20]];
         vp++;
         i++;
     }
@@ -42,8 +42,8 @@ void sub_0833F1A8(u8 *str)
         ch = c - 0x20;
         base = (ch >> 5) * 64 + 0x60;
         tile = &gUnk_0201F590[base + (ch & 0x1F)];
-        vp[0] = pal | gUnk_0201F9D0[tile[0]];
-        vp[0x20] = pal | gUnk_0201F9D0[tile[0x20]];
+        vp[0] = pal | gModule_TextGlyphTileIndices[tile[0]];
+        vp[0x20] = pal | gModule_TextGlyphTileIndices[tile[0x20]];
         i++;
         vp++;
     }
@@ -55,15 +55,15 @@ void sub_0833F1A8(u8 *str)
         ch = ' ' - 0x20;
         base = (ch >> 5) * 64 + 0x60;
         tile = &gUnk_0201F590[base + (ch & 0x1F)];
-        vp[0] = pal | gUnk_0201F9D0[tile[0]];
-        vp[0x20] = pal | gUnk_0201F9D0[tile[0x20]];
-        vp[0x40] = pal | gUnk_0201F9D0[tile[0x20]];
-        vp[0x60] = pal | gUnk_0201F9D0[tile[0x20]];
+        vp[0] = pal | gModule_TextGlyphTileIndices[tile[0]];
+        vp[0x20] = pal | gModule_TextGlyphTileIndices[tile[0x20]];
+        vp[0x40] = pal | gModule_TextGlyphTileIndices[tile[0x20]];
+        vp[0x60] = pal | gModule_TextGlyphTileIndices[tile[0x20]];
         vp++;
     }
     vp = (vu16 *)0x06008000;
     for (j = 0; j != 32; j++) {
-        *vp = pal | gUnk_0201F9D0[tile[0x20]];
+        *vp = pal | gModule_TextGlyphTileIndices[tile[0x20]];
         vp++;
     }
 }

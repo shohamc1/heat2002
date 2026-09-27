@@ -66,11 +66,11 @@ void sub_0833BDB4(void)
     *p = 0x1D40;
     sub_0833A830();
     sub_0833AF0C();
-    gUnk_02039134 = z2;
+    gModule_VBlanksThisFrame = z2;
     for (;;) {
         gUnk_02039194 = 3;
         sub_08344A20();
-        gUnk_020390EC = 1;
+        gModule_IsLinkRace = 1;
         gUnk_02039190 = 0;
         sub_0833D510(0, 0x0A);
         if (sub_0833BF80(0, 4, 0)) {

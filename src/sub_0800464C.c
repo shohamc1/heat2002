@@ -20,7 +20,7 @@ void FlushSortedSprites(void)
         gUnk_02024820 = p;
     }
     SortSpritesByDepth();
-    tbl = gUnk_02025160;
+    tbl = gSpriteOrderTable;
     for (i = 0; i != gUnk_02024824; tbl++, i++) {
         base = (u32)gUnk_02024C40;
         e = base + *tbl * 12;

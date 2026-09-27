@@ -196,8 +196,8 @@ voicegroup_0801D89C:
 	.incbin "build/assets/sound/cgb_waves.bin"
 	.global gUnk_0801DA90
 gUnk_0801DA90:
-	music_player gUnk_02001F20, gUnk_02000000, 10, 0
-	music_player gUnk_02001F60, gUnk_02000320, 1, 0
+	music_player gBgMusicPlayer, gUnk_02000000, 10, 0
+	music_player gEngineSoundPlayer, gUnk_02000320, 1, 0
 	music_player gUnk_02001FA0, gUnk_02000370, 1, 0
 	music_player gUnk_02002030, gUnk_020003C0, 1, 0
 	music_player gUnk_02001FE0, gUnk_02000410, 1, 0

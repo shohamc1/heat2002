@@ -22,3 +22,4 @@ tools/bin/
 # Editable sound files (make unpacks them from baserom.gba): the ROM's data is
 # copyrighted, so only the asset lists in assets/*.json are tracked.
 /assets/*/
+.omo/

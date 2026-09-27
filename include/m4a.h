@@ -13,7 +13,7 @@ void m4aMPlayFadeOut(u32 arg0, u32 arg1);
 extern u8 gMaxLines;
 extern u8 gNumMusicPlayersLow[];
 extern u8 gNumMusicPlayersHigh[];
-extern MPlayFunc gUnk_02001D90[];
+extern MPlayFunc gMPlayJumpTable[];
 extern MPlayFunc gUnk_02038DE0[];
 
 #endif

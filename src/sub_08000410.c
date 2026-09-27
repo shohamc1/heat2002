@@ -6,9 +6,9 @@ void AckVBlank(void);
 
 void VBlankIntr(void)
 {
-    if (gUnk_02000580[0] != 0)
-        /* gUnk_02000580[0]: this file's old local prototype differs from
+    if (gVBlankCallback[0] != 0)
+        /* gVBlankCallback[0]: this file's old local prototype differs from
            functions.h; call through the old signature (solved-walls 31). */
-        ((void (*)(void))gUnk_02000580[0])();
+        ((void (*)(void))gVBlankCallback[0])();
     AckVBlank();
 }

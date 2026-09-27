@@ -12,7 +12,7 @@ void sub_0833BCF8(void)
     register u32 *base asm("r9");
 
     i = 0;
-    countTemp = &gUnk_020390BC[0];
+    countTemp = &gModule_NumLinkPlayers[0];
     count = countTemp;
     base = gUnk_02039200;
     {

@@ -22,31 +22,31 @@ void sub_0800920C(u8 arg)
     u8 lim;
     u32 off;
 
-    dest = (u16 *)(gUnk_08364B08[0] + 0x290);
+    dest = (u16 *)(gTextLayerMapPtr[0] + 0x290);
     off = 0x730;
-    *dest = (0xE0 << 8) | gUnk_08335A8C[*(u16 *)((u8 *)gUnk_08334DCC + off)];
-    dest = (u16 *)(gUnk_08364B08[0] + 0x292);
+    *dest = (0xE0 << 8) | gFontTileEntries[*(u16 *)((u8 *)gFontGlyphGrid + off)];
+    dest = (u16 *)(gTextLayerMapPtr[0] + 0x292);
     row = 0;
     ctr = 0;
     do {
         lim = row + 7;
         if (arg > lim) {
             off = 0x742;
-            *dest = (0xE0 << 8) | gUnk_08335A8C[*(u16 *)((u8 *)gUnk_08334DCC + off)];
+            *dest = (0xE0 << 8) | gFontTileEntries[*(u16 *)((u8 *)gFontGlyphGrid + off)];
             dest++;
         }
         if (arg < row) {
             off = 0x732;
-            *dest = (0xE0 << 8) | gUnk_08335A8C[*(u16 *)((u8 *)gUnk_08334DCC + off)];
+            *dest = (0xE0 << 8) | gFontTileEntries[*(u16 *)((u8 *)gFontGlyphGrid + off)];
             dest++;
         } else if (arg <= lim) {
             off = 0x734 + 2 * (u8)(arg - row);
-            *dest = (0xE0 << 8) | gUnk_08335A8C[*(u16 *)((u8 *)gUnk_08334DCC + off)];
+            *dest = (0xE0 << 8) | gFontTileEntries[*(u16 *)((u8 *)gFontGlyphGrid + off)];
             dest++;
         }
         row += 8;
         ctr++;
     } while (ctr != 0x0C);
     off = 0x744;
-    *dest = (0xE0 << 8) | gUnk_08335A8C[*(u16 *)((u8 *)gUnk_08334DCC + off)];
+    *dest = (0xE0 << 8) | gFontTileEntries[*(u16 *)((u8 *)gFontGlyphGrid + off)];
 }

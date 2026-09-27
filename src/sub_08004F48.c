@@ -15,15 +15,15 @@ u8 PauseMenu(void)
     u8 bit1;
     u8 *p248b;
 
-    gUnk_02025248 = 0;
+    gPauseMenuCursor = 0;
     if (gKeysPressed & 8) {
         sub_08007EF8();
         sub_08004A18();
         StopAllSongs();
         ReadKeys();
         kp = &gKeysPressed;
-        p248 = &gUnk_02025248;
-        p39c = &gUnk_0202539C;
+        p248 = &gPauseMenuCursor;
+        p39c = &gMenuBlinkCounter;
         while (1) {
             if (*kp & 0xC0)
                 *p248 ^= 1;
@@ -39,7 +39,7 @@ u8 PauseMenu(void)
             if (bit1 != 0) {
                 *p39c = t;
                 sub_08004C44(3);
-                p248b = &gUnk_02025248;
+                p248b = &gPauseMenuCursor;
                 if (*p248b != 0)
                     sub_08004EA4();
                 sub_08004A18();

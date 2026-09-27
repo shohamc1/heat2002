@@ -4,7 +4,7 @@
 
 void sub_0800DE60(u32 id, u32 c)
 {
-    s16 *g = gUnk_0202E960;
+    s16 *g = gOamBuffer;
     u32 v = (id << 23) >> 23;
 
     g[9] = (g[9] & ~0x1FF) | v;

@@ -12,10 +12,10 @@ u8 sub_08011528(void)
     u8 v;
 
     ResetLinkState();
-    gUnk_0202EF40[0] = 0;
-    gUnk_0202EF40[4] = 0;
-    gUnk_0202EF40[8] = 0;
-    gUnk_0202EF40[12] = 0;
+    gLinkRecvWords[0] = 0;
+    gLinkRecvWords[4] = 0;
+    gLinkRecvWords[8] = 0;
+    gLinkRecvWords[12] = 0;
     v = 0;
     SortLinkCarsByTime();
     sub_08011C9C(0, (u16 *)buf);
@@ -24,14 +24,14 @@ u8 sub_08011528(void)
     sel = 0x40;
     do
     {
-        keys = gUnk_020020A0[0];
+        keys = gPlayerKeys[0];
         if (ExchangeLinkInput() != 0)
         {
             sel = 5;
         }
         else
         {
-            keys = (keys ^ gUnk_020020A0[0]) & gUnk_020020A0[0];
+            keys = (keys ^ gPlayerKeys[0]) & gPlayerKeys[0];
             sub_0801137C();
             if (gLinkPlayerId[0] != 0)
                 DrawTextCenteredHighlight((u8 *)(GetString(0x58)), 0x0E, 1);

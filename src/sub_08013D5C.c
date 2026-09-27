@@ -15,7 +15,7 @@ u8 sub_08013D5C(void)
     x = v = 0;
     ZeroTextLayer();
     sub_0800F498();
-    sub_0800F328((u32)gUnk_082EE104, (u16 *)buf);
+    sub_0800F328((u32)gResultsScreenPalette, (u16 *)buf);
     SortCarsByTime();
     sub_08013B64(0);
     FadeToBrightenedPalette((u32)buf, 0x0F);

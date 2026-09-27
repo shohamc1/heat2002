@@ -7,8 +7,8 @@ struct Unk0800C358 {
     s32 unk18;
     s32 unk1C;
     u8 unk20[0xD4];
-    u32 *unkF4;
-    u32 *unkF8;
+    u32 *lanePoints;
+    u32 *laneSegments;
     u32 *unkFC;
     u16 *unk100;
 };
@@ -31,10 +31,10 @@ u32 sub_0800C358(struct Unk0800C358 *p)
     u32 sp4;
     u32 sp8;
 
-    table = p->unkF8;
-    tex = p->unkF4;
+    table = p->laneSegments;
+    tex = p->lanePoints;
     best = -1;
-    gUnk_0202CC3C[0] = (u32)cur;
+    gClosestLaneSegment[0] = (u32)cur;
     y = p->unk18 >> 16;
     x = p->unk1C >> 16;
     yi = p->unk18 >> 23;
@@ -55,14 +55,14 @@ u32 sub_0800C358(struct Unk0800C358 *p)
         res = sub_0800C2CC(y, x, tex, cur);
         if (res <= best) {
             best = res;
-            gUnk_0202CC3C[0] = (u32)cur;
-            gUnk_0202CC34[0] = e;
-            sp4 = gUnk_0202CC24[0];
-            sp8 = gUnk_0202CC38[0];
+            gClosestLaneSegment[0] = (u32)cur;
+            gClosestLaneSegmentIndex[0] = e;
+            sp4 = gClosestLanePointX[0];
+            sp8 = gClosestLanePointZ[0];
         }
         entry++;
     }
-    gUnk_0202CC24[0] = sp4;
-    gUnk_0202CC38[0] = sp8;
+    gClosestLanePointX[0] = sp4;
+    gClosestLanePointZ[0] = sp8;
     return best;
 }

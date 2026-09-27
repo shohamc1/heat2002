@@ -13,7 +13,7 @@ void sub_0833F018(u8 *s)
   u8 t;
   u16 *e;
   u32 c;
-  dest = (u16 *) (gUnk_020251B8[0] + 0x40);
+  dest = (u16 *) (gModule_TextLayerMapPtr[0] + 0x40);
   do
   {
     color = 0xF0 << 8;
@@ -34,8 +34,8 @@ void sub_0833F018(u8 *s)
     t = c;
     idx = (((t >> 5) << 22) + 0x600000u) >> 16;
     e = &gUnk_0201F590[idx + (t & 0x1F)];
-    dest[0] = color | gUnk_0201F9D0[e[0]];
-    dest[0x20] = color | gUnk_0201F9D0[e[0x20]];
+    dest[0] = color | gModule_TextGlyphTileIndices[e[0]];
+    dest[0x20] = color | gModule_TextGlyphTileIndices[e[0x20]];
   }
 
   c = *s;
@@ -47,8 +47,8 @@ void sub_0833F018(u8 *s)
       t = c - 0x20;
       idx = (((t >> 5) << 22) + 0x600000u) >> 16;
       e = &gUnk_0201F590[idx + (t & 0x1F)];
-      dest[0] = color | gUnk_0201F9D0[e[0]];
-      dest[0x20] = color | gUnk_0201F9D0[e[0x20]];
+      dest[0] = color | gModule_TextGlyphTileIndices[e[0]];
+      dest[0x20] = color | gModule_TextGlyphTileIndices[e[0x20]];
       dest++;
       i++;
       c = *p;
@@ -61,8 +61,8 @@ void sub_0833F018(u8 *s)
     t = (*gUnk_02025230) - 0x20;
     idx = (((t >> 5) << 22) + 0x600000u) >> 16;
     e = &gUnk_0201F590[idx + (t & 0x1F)];
-    dest[0] = color | gUnk_0201F9D0[e[0]];
-    dest[0x20] = color | gUnk_0201F9D0[e[0x20]];
+    dest[0] = color | gModule_TextGlyphTileIndices[e[0]];
+    dest[0x20] = color | gModule_TextGlyphTileIndices[e[0x20]];
   }
 
 }

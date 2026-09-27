@@ -20,7 +20,7 @@ u8 GetTrackTileType(s32 x, s32 y)
     c &= x - 1;
     d &= y - 1;
     asm volatile("" : "+r"(d));
-    m = gUnk_02002200[0] * b;
+    m = gTrackMapWidth[0] * b;
     base = gUnk_0200BC50[0];
     t = (u16 *)(a * 2 + (m * 2 + base));
     v = c + d * 4;

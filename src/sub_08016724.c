@@ -2,7 +2,7 @@
 #include "functions.h"
 #include "variables.h"
 #include "car.h"
-extern u16 gUnk_0202F080[];
+extern u16 gSeasonSaveData[];
 void LoadSeason(void)
 {
     struct Car *q;
@@ -11,27 +11,27 @@ void LoadSeason(void)
     s32 i;
     StopAllSongsAndVSyncOff();
     ReadSaveBlocks(0x40, 0xF0);
-    p = gUnk_0202F080;
-    (*(u8 *)&gUnk_0202F020) = *p++;
-    gUnk_0202F024 = *p >> 8;
-    gUnk_0202EEC8 = *p++;
-    gUnk_0202F034 = *p++;
-    gUnk_0202EDD8 = *p++;
+    p = gSeasonSaveData;
+    (*(u8 *)&gSeasonRaceIndex) = *p++;
+    gQualifyingDone = *p >> 8;
+    gPracticeDone = *p++;
+    gSeasonRaceIncomplete = *p++;
+    gChampionshipIndex = *p++;
     q = gCars;
     i = 0;
     do {
         q->driverId = *p++;
         q->points = *p++;
-        q->unk16C = (*p++ << 16);
-        q->unk16C |= *p++;
+        q->finishTime = (*p++ << 16);
+        q->finishTime |= *p++;
         i++;
         q++;
     } while (i != 0x18);
     i = 0;
     do {
-        gUnk_0202EF20[i] = *p++;
+        gChampionshipAvailable[i] = *p++;
         i++;
     } while (i != 0x11);
-    gUnk_0202EF10 = *p;
+    gSeasonNumLaps = *p;
     sub_080100B0();
 }

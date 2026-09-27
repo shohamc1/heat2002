@@ -17,8 +17,8 @@ void UpdateCar(struct Car *car, u8 idx)
 
     v = gIsLinkRace;
     if (v != 0) {
-        if (gUnk_020021E0 == 0 && car->unk7D == 0)
-            UpdateCarPhysics(car, gUnk_020020A0[idx], idx);
+        if (gRaceEndState == 0 && car->finished == 0)
+            UpdateCarPhysics(car, gPlayerKeys[idx], idx);
         else
             UpdateCarPhysics(car, 2, idx);
         sub_0800A628(car);
@@ -26,26 +26,26 @@ void UpdateCar(struct Car *car, u8 idx)
         if (car->pitState != 0) {
             UpdatePitStop(car, 0);
             UpdateCarPhysics(car, car->aiInput, 0);
-        } else if (gUnk_0200215C[0] == 9 || gUnk_0200215C[0] == 0xD || gUnk_0200215C[0] == 0xE
-                || gUnk_0200215C[0] == 0xF || gUnk_0200215C[0] == 0x11) {
+        } else if (gGameMode[0] == 9 || gGameMode[0] == 0xD || gGameMode[0] == 0xE
+                || gGameMode[0] == 0xF || gGameMode[0] == 0x11) {
             UpdateAiDriver((struct Unk0800C534 *)car, idx);
             UpdateCarPhysics(car, car->aiInput, idx);
         } else {
             /* One shared sub_0800A628 call, as in the gIsLinkRace branch:
                a call that ends a block before a label gets a USE insn from
                flow, which keeps jump2 from cross-jumping the call itself. */
-            if (gUnk_020021E0 == 0)
+            if (gRaceEndState == 0)
                 UpdateCarPhysics(car, gKeysHeld, 0);
             else
                 UpdateCarPhysics(car, 2, 0);
             sub_0800A628(car);
         }
     } else {
-        if (gUnk_0200215C[0] == 9 || gUnk_0200215C[0] == 0xD || gUnk_0200215C[0] == 0xE
-                || gUnk_0200215C[0] == 0xF || gUnk_0200215C[0] == 0x11)
+        if (gGameMode[0] == 9 || gGameMode[0] == 0xD || gGameMode[0] == 0xE
+                || gGameMode[0] == 0xF || gGameMode[0] == 0x11)
             goto common;
-        if (gUnk_0200215C[0] != 4) {
-            if (gUnk_020021E0 == 0) {
+        if (gGameMode[0] != 4) {
+            if (gRaceEndState == 0) {
                 if (car->pitState != 0) {
                     UpdatePitStop(car, idx);
                 } else {
@@ -65,19 +65,19 @@ common:
         UpdateCarPhysics(car, *p, idx);
     }
 
-    if (car->damage > 0x11940 && car->unk7C != 1 && ((*(u32 *)&gUnk_0200209C) & 0x3F) == 0)
+    if (car->damage > 0x11940 && car->carState != 1 && ((*(u32 *)&gFrameCounter) & 0x3F) == 0)
         sub_0800B8A8(car);
 
     if (gIsLinkRace != 0) {
         if (idx == gLinkPlayerId[0]) {
             UpdateRacePosition(idx);
             if (gCars[idx].racePosition != 0 && gCars[idx].racePosition != 0x63)
-                gCars[idx].unk166 = 0;
+                gCars[idx].ledLapFlag = 0;
         }
     } else if (idx == 0) {
         UpdateRacePosition(0);
         if (gCars[0].racePosition != 0 && gCars[0].racePosition != 0x63)
-            gCars[0].unk166 = idx;
+            gCars[0].ledLapFlag = idx;
     }
-    car->unk15C++;
+    car->tickCount++;
 }

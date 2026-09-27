@@ -26,8 +26,8 @@ void sub_0800A628(s32 *a)
 
     rot = (((u16 *)a)[0x1A] >> 10) << 16;
     i = rot >> 14;
-    t1 = gUnk_0801CD08[i];
-    t2 = gUnk_0801CD08[i + 0x40];
+    t1 = gSinTable[i];
+    t2 = gSinTable[i + 0x40];
     m = -256;
     tmp = -(t1 * m);
     sin1 = tmp >> 8;
@@ -37,19 +37,19 @@ void sub_0800A628(s32 *a)
     v = *q;
     j = (v >> 10) & 0x3F;
     j = j << 2;
-    t3 = gUnk_0801CD08[j];
+    t3 = gSinTable[j];
     idx = j;
     asm volatile("" : "+r"(idx));
     idx += 0x40;
-    t4 = gUnk_0801CD08[idx];
+    t4 = gSinTable[idx];
     sin2 = -(t3 * m) >> 8;
     cos2 = (t4 * m) >> 8;
     if ((sin2 * sin1 + cos1 * cos2) >> 8 > 0x8D)
         return;
     rot2 = rot;
     i = rot2 >> 14;
-    p = &gUnk_0801CD08[i];
-    sin1 = gUnk_0801CD08[i + 0x40];
+    p = &gSinTable[i];
+    sin1 = gSinTable[i + 0x40];
     cos1 = *p;
     if (sin2 * sin1 + cos1 * cos2 < 0)
         val = ((u16 *)a)[0x1A] - 0x2800;

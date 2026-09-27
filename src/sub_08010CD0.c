@@ -18,11 +18,11 @@ u8 sub_08010CD0(void)
     AgeGfxCaches();
     ClearOamBuffer();
     sub_080047DC();
-    gUnk_020020C0 = 0;
+    gVBlankWorkDone = 0;
     WaitForVBlank();
     ZeroTextLayer();
     sub_0800F4FC();
-    sub_0800F328((u32)gUnk_082E4328, (u16 *)buf);
+    sub_0800F328((u32)gMenuPalette, (u16 *)buf);
     sub_08010BA8(0x0C);
     FadeToBrightenedPalette((u32)buf, 0x0F);
     REG_DISPCNT = 0xA8 << 3;
@@ -33,15 +33,15 @@ u8 sub_08010CD0(void)
         ClearOamBuffer();
         sub_08010BA8(v);
         ReadKeys();
-        if ((gKeysPressed & 1) && gUnk_0202EF20[v] != 0)
+        if ((gKeysPressed & 1) && gChampionshipAvailable[v] != 0)
             sel = v;
         v = MenuMoveHorizontal(gKeysPressed, v, 0, 0x10);
         if (gKeysPressed & 2)
             sel = 0;
         sub_080047DC();
-        gUnk_020020C0 = 0;
+        gVBlankWorkDone = 0;
     spin:
-        if (gUnk_020020C0 == 0)
+        if (gVBlankWorkDone == 0)
             goto spin;
         WaitForVBlank();
         WaitForVBlank();

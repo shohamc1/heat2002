@@ -9,6 +9,6 @@ void sub_0833E3C8(u16 *a, s32 b)
     u16 tile;
 
     i = (u8)b * 2 + (u32)gUnk_020215D2;
-    tile = (gUnk_02022254[*(u16 *)i] & 0xFFF) | 0xE000;
+    tile = (gModule_FontTileEntries[*(u16 *)i] & 0xFFF) | 0xE000;
     *a = tile;
 }

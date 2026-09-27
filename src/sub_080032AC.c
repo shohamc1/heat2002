@@ -16,7 +16,7 @@ void sub_080032AC(void)
     else
     {
         do
-            v = *(vu16 *)&gUnk_03007FF8;
+            v = *(vu16 *)&gIntrCheck;
         while ((v & 0x80) == 0);
     }
 }

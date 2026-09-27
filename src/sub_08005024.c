@@ -15,16 +15,16 @@ u8 sub_08005024(void)
     u8 bit1;
     s32 v;
 
-    gUnk_02025248 = 0;
+    gPauseMenuCursor = 0;
     ReadKeys();
     sub_08004DB4();
-    p248 = &gUnk_02025248;
-    p39c = &gUnk_0202539C;
+    p248 = &gPauseMenuCursor;
+    p39c = &gMenuBlinkCounter;
     while ((v = ExchangeLinkInput()) == 0) {
         sub_08004DB4();
-        if (gUnk_02025258 & 0xC0)
+        if (gLinkMenuKeysPressed & 0xC0)
             *p248 ^= 1;
-        k = *(volatile u16 *)&gUnk_02025258;
+        k = *(volatile u16 *)&gLinkMenuKeysPressed;
         t = k & 8;
         if (t != 0) {
             *p39c = v;
@@ -45,9 +45,9 @@ u8 sub_08005024(void)
             return 1;
         }
         sub_08004D1C(*p248);
-        gUnk_020020C0 = t2;
+        gVBlankWorkDone = t2;
 spin:
-        if (gUnk_020020C0 == 0)
+        if (gVBlankWorkDone == 0)
             goto spin;
         *p39c = (u8)(*p39c + 1);
         ReadKeys();

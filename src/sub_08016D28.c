@@ -24,22 +24,22 @@ void sub_08016D28(u8 a)
         p = gCars;
         i = 0;
         do {
-            if (p->unk7D != 0)
-                p->unk16C = p->finishMin * 60000 + p->finishSec * 1000 + p->finishMs;
+            if (p->finished != 0)
+                p->finishTime = p->finishMin * 60000 + p->finishSec * 1000 + p->finishMs;
             i++;
             p++;
         } while (i != 0x18);
     }
-    v = ((struct CarLapS8 *)gCars)->lap * gUnk_083FED18[gTrackId];
-    w = gCars[0].unk16C;
+    v = ((struct CarLapS8 *)gCars)->lap * gTrackLapLengths[gTrackId];
+    w = gCars[0].finishTime;
     u = sub_08017230(w, v);
     p = gCars;
     i = 0;
     do {
-        if (p->unk7D == 0) {
+        if (p->finished == 0) {
             x = u * (v - sub_08016D08(p->progress, gTrackId)) + w;
-            p->unk16C = x;
-            p->unk7D = 1;
+            p->finishTime = x;
+            p->finished = 1;
         }
         i++;
         p++;

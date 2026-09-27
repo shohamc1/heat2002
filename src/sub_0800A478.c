@@ -3,20 +3,20 @@
 #include "car.h"
 
 
-void sub_0800A474(struct Car *p);
+void DummyCarWreckedHook(struct Car *p);
 
 void sub_0800A478(struct Car *p)
 {
     p->damage = 0;
-    p->unk7C = 2;
+    p->carState = 2;
     p->unk80 = 1;
-    p->unk160 = 0;
-    p->unkA2 = 0;
-    sub_0800A474(p);
-    if (p == gCars && gUnk_0200215C[0] == 0)
+    p->zoneGripFlag = 0;
+    p->throttleLevel = 0;
+    DummyCarWreckedHook(p);
+    if (p == gCars && gGameMode[0] == 0)
     {
-        gUnk_0202521C += 5;
-        if (gUnk_0202521C > 0x63)
-            gUnk_0202521C = 0x63;
+        gCountdownSeconds += 5;
+        if (gCountdownSeconds > 0x63)
+            gCountdownSeconds = 0x63;
     }
 }

@@ -6,7 +6,7 @@ void sub_0833D0B8(u16 *r4)
 {
     u32 r6 = 0;
     u32 r5 = 0x1F;
-    u32 *r3 = gUnk_020392D0;
+    u32 *r3 = gModule_PaletteFadeColors;
     u32 r7 = 0x80 << 1;
 
     do

@@ -13,14 +13,14 @@ void AgeGfxCaches(void)
     u32 *q;
     u32 i;
 
-    p = gUnk_02025DB0;
+    p = gObjTileCache64;
     i = 0;
-    a2 = gUnk_02025400;
-    a3 = gUnk_020255E0;
-    a4 = gUnk_02025AE0;
-    a5 = gUnk_02025C70;
-    a6 = gUnk_02025860;
-    q = gUnk_02025E00;
+    a2 = gObjTileCache16;
+    a3 = gObjTileCache2;
+    a4 = gObjTileCache8;
+    a5 = gObjTileCache4;
+    a6 = gObjTileCache1;
+    q = gObjPaletteCache;
     for (; i != 4; i++, p += 5) {
         if (p[0] == 0)
             p[2] = 0xFFFF;

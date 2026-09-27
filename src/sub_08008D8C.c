@@ -3,7 +3,7 @@
 #include "variables.h"
 #include "car.h"
 
-extern u8 gUnk_0202CB10;
+extern u8 gChallengeEndDelay;
 
 
 void sub_08008D8C(void)
@@ -11,15 +11,15 @@ void sub_08008D8C(void)
     u8 x;
     s32 v;
 
-    if (gUnk_0200215C[0] == 0x10) {
+    if (gGameMode[0] == 0x10) {
         sub_08008CDC();
-        switch (gUnk_0202ED70) {
+        switch (gChallengeIndex) {
         case 0:
-            x = gUnk_0202CAE8;
+            x = gChallengePhase;
             switch (x) {
             case 0:
                 if (sub_08008B40(0xDC)) {
-                    gUnk_0202CAE8 = 1;
+                    gChallengePhase = 1;
                     sub_08008D20();
                 }
                 break;
@@ -27,9 +27,9 @@ void sub_08008D8C(void)
                 if (sub_08008B40(0x15E)) {
                     /* sub_08008B6C: this file's old prototype returns u8; the matched definition returns u32 */
                     if (((u8 (*)(u32))sub_08008B6C)(0x2328))
-                        gUnk_0202EEE4 = x;
+                        gChallengeResult = x;
                     EndRace();
-                    gUnk_0202CAE8 = 0;
+                    gChallengePhase = 0;
                 }
                 sub_08008B94();
                 break;
@@ -50,20 +50,20 @@ void sub_08008D8C(void)
         case 15:
             break;
         case 4:
-            x = gUnk_0202CAE8;
+            x = gChallengePhase;
             switch (x) {
             case 0:
                 if (sub_08008B40(0x55)) {
-                    gUnk_0202CAE8 = 1;
+                    gChallengePhase = 1;
                     sub_08008D20();
                 }
                 break;
             case 1:
                 if (sub_08008B40(0x96)) {
                     if (((u8 (*)(u32))sub_08008B6C)(0xFA0))
-                        gUnk_0202EEE4 = x;
+                        gChallengeResult = x;
                     EndRace();
-                    gUnk_0202CAE8 = 0;
+                    gChallengePhase = 0;
                 }
                 sub_08008B94();
                 break;
@@ -73,21 +73,21 @@ void sub_08008D8C(void)
             v = sub_08008D3C();
             if (v < 0)
                 v = 0;
-            if (v > (*(s32 *)&gUnk_0202CBD8))
-                (*(s32 *)&gUnk_0202CBD8) = v;
-            if ((*(s32 *)&gUnk_0202CBD8) > 0x76) {
-                gUnk_0202EEE4 = 1;
+            if (v > (*(s32 *)&gChallengeBestValue))
+                (*(s32 *)&gChallengeBestValue) = v;
+            if ((*(s32 *)&gChallengeBestValue) > 0x76) {
+                gChallengeResult = 1;
                 EndRace();
             }
-            if ((*(s32 *)&gUnk_0202CBD8) > 0x79) {
-                if (gUnk_0202CB10 & 8)
-                    sub_08008C48((*(s32 *)&gUnk_0202CBD8));
+            if ((*(s32 *)&gChallengeBestValue) > 0x79) {
+                if (gChallengeEndDelay & 8)
+                    sub_08008C48((*(s32 *)&gChallengeBestValue));
                 else
                     sub_08008CB8();
-                gUnk_0202CB10++;
-                if (gUnk_0202CB10 > 0x40)
+                gChallengeEndDelay++;
+                if (gChallengeEndDelay > 0x40)
                     EndRace();
-            } else if ((*(s32 *)&gUnk_0202CBD8) != 0) {
+            } else if ((*(s32 *)&gChallengeBestValue) != 0) {
                 sub_08008C48(v);
             }
             break;

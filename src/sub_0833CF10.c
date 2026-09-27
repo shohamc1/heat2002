@@ -9,8 +9,8 @@ void sub_0833CF10(void)
     s32 x;
     s32 y;
 
-    x = gUnk_02039110[6] - 0x78;
-    y = gUnk_02039110[7] - 0x50;
+    x = gModule_Camera[6] - 0x78;
+    y = gModule_Camera[7] - 0x50;
     gUnk_0203925C = x & 0xF;
     gUnk_02039260 = y & 0x1F;
     gUnk_020392A8 = x & 0xF;

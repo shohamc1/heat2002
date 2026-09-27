@@ -21,7 +21,7 @@ void sub_0833DE98(void)
     sub_0833D680();
     for (;;)
     {
-        gUnk_02039134 = 0;
+        gModule_VBlanksThisFrame = 0;
         if (sub_0833C874() != 0)
         {
             sub_0833EE88(sub_0833BD94(0), 0xA, 1);
@@ -32,7 +32,7 @@ void sub_0833DE98(void)
             sub_0833AE90();
             do
             {
-                key = gUnk_0203E1B0;
+                key = gModule_LinkPlayerId;
                 if (key == 0)
                     key = *(volatile u16 *)0x04000130;
                 sub_08344B74(key);
@@ -40,7 +40,7 @@ void sub_0833DE98(void)
         }
         else
         {
-            if (gUnk_0203E1B0 != 0)
+            if (gModule_LinkPlayerId != 0)
             {
                 sub_0833EE88(sub_0833BD94(1), 0xE, 1);
             }

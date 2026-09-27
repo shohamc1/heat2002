@@ -5,7 +5,7 @@
 void sub_08002618(u32 seed)
 {
     register u32 s asm("r1") = seed;
-    u32 *p = &gUnk_020020D4;
+    u32 *p = &gRngState;
     u32 v;
 
     if (s != 0)

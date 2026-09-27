@@ -12,13 +12,13 @@ struct EntityAF44 {
 
 void RaceEndTask(struct EntityAF44 *e)
 {
-    if (gUnk_02022E14 == 0)
+    if (gFadeActive == 0)
     {
         if (gIsLinkRace == 0)
         {
-            if (gUnk_0200215C[0] == 0x0A || gUnk_0200215C[0] == 0x0B)
+            if (gGameMode[0] == 0x0A || gGameMode[0] == 0x0B)
             {
-                if (gUnk_02002098 != 0)
+                if (gChallengeScore != 0)
                     /* sub_0800649C: the ROM callers pass a fourth argument the matched definition drops; call
                        through a function pointer with the old prototype. */
                     ((void (*)(u8 *, u32, u32, u32))sub_0800649C)((u8 *)GetString(0x8E), 0x0A, 3, 1);
@@ -33,13 +33,13 @@ void RaceEndTask(struct EntityAF44 *e)
         {
             RemoveTask((u32)e);
             FreeTask((u32)e);
-            if (gUnk_0200215C[0] != 4)
+            if (gGameMode[0] != 4)
             {
                 BeginFadeToColor(0x0A, 0);
                 WaitForVBlank();
                 REG_DISPCNT &= ~DISPCNT_OBJ_ON;
             }
-            gUnk_020021E0 = 2;
+            gRaceEndState = 2;
         }
     }
 }

@@ -284,5 +284,5 @@ gUnk_083FEEE8:
 	.4byte gUnk_0830D358
 	.4byte gUnk_0830DE8C
 	.4byte gUnk_0830E358
-	.4byte gUnk_0830E618
-	.4byte gUnk_0830E690
+	.4byte gTrackSelectLeftArrowGfx
+	.4byte gTrackSelectRightArrowGfx

@@ -52,45 +52,45 @@ void sub_08342258(struct Car *car, u32 b, u8 c)
     car->forceZ = 0;
     car->torque = 0;
     sub_0834029C(car);
-    if (car->unk55 != 0)
-        car->unk55--;
+    if (car->hitCooldown != 0)
+        car->hitCooldown--;
     sub_08342154(car, b);
     sub_08341D64(car);
     sub_08341B14(car, b);
     sub_083405F0(car, c);
     v = 0;
     sub_08341DA0(car);
-    if (gUnk_0203916C[0] == 4 || gUnk_020390DC <= 0xB) {
+    if (gModule_GameMode[0] == 4 || gModule_TrackId <= 0xB) {
         if (car->pitState != 0)
             v = 0;
         else
             v = sub_08343A6C(car);
     }
-    if (v != 0 && (u8)(car->unk7C - 1) <= 2)
+    if (v != 0 && (u8)(car->carState - 1) <= 2)
         v = -1;
     t = car->speed >> 6;
     car->drag = t * t;
     if (t > 0)
         car->drag = -car->drag;
-    if (gUnk_020390EC != 0 || gUnk_0203916C[0] == 4 || gUnk_0203916C[0] == 3) {
+    if (gModule_IsLinkRace != 0 || gModule_GameMode[0] == 4 || gModule_GameMode[0] == 3) {
         car->drag = car->drag / 215;
-    } else if (car == gModule_Cars || gUnk_0203916C[0] == 9 || gUnk_0203916C[0] == 0xD
-        || gUnk_0203916C[0] == 0xE || gUnk_0203916C[0] == 0xF || gUnk_0203916C[0] == 0x11
-        || gUnk_0203916C[0] == 4) {
-        if (car->unk170 != 0)
+    } else if (car == gModule_Cars || gModule_GameMode[0] == 9 || gModule_GameMode[0] == 0xD
+        || gModule_GameMode[0] == 0xE || gModule_GameMode[0] == 0xF || gModule_GameMode[0] == 0x11
+        || gModule_GameMode[0] == 4) {
+        if (car->onApron != 0)
             car->drag = car->drag / 250;
-        else if (car->unk171 != 0)
+        else if (car->onGrass != 0)
             car->drag = car->drag / 100;
         else
             car->drag = car->drag / 480;
     } else {
-        car->drag = car->drag / gUnk_020277D4[gUnk_020390DC];
+        car->drag = car->drag / gUnk_020277D4[gModule_TrackId];
     }
-    if (gUnk_020390B8 != 0 && (u8)(gUnk_0203916C[0] - 3) > 1)
+    if (gUnk_020390B8 != 0 && (u8)(gModule_GameMode[0] - 3) > 1)
         car->drag = 0;
-    if (car == gModule_Cars || gUnk_020390EC != 0) {
-        if (gUnk_0203916C[0] != 9 && gUnk_0203916C[0] != 0xD && gUnk_0203916C[0] != 0xE
-            && gUnk_0203916C[0] != 0xF && gUnk_0203916C[0] != 0x11
+    if (car == gModule_Cars || gModule_IsLinkRace != 0) {
+        if (gModule_GameMode[0] != 9 && gModule_GameMode[0] != 0xD && gModule_GameMode[0] != 0xE
+            && gModule_GameMode[0] != 0xF && gModule_GameMode[0] != 0x11
             && (sub_08343234(car) != 0 || car->draftTimer != 0)) {
             if (car->draftTimer != 0)
                 car->draftTimer--;
@@ -99,9 +99,9 @@ void sub_08342258(struct Car *car, u32 b, u8 c)
             sub_08342DE8(c, 1);
         }
     }
-    if (gUnk_0203916C[0] != 2)
+    if (gModule_GameMode[0] != 2)
         sub_08343EA8(car);
-    car->unk18C = car->progress;
+    car->prevProgress = car->progress;
 again:
     gUnk_020390CC = sub_0833F468(car, c);
     if (gUnk_020390CC != 0)
@@ -110,19 +110,19 @@ again:
     car->posZ += car->velZ;
     car->heading = car->heading + car->yawRate;
     if (v != 0) {
-        if (gUnk_020390F0[0] == 0 && gUnk_020391F0 == 0 && gUnk_0203E120[3] != 0) {
-            if (gUnk_020390EC == 0 ? car == gModule_Cars
-                                    : car == gModule_Cars + gUnk_0203E1B0)
+        if (gModule_IsDemo[0] == 0 && gModule_RaceEndState == 0 && gModule_Options[3] != 0) {
+            if (gModule_IsLinkRace == 0 ? car == gModule_Cars
+                                    : car == gModule_Cars + gModule_LinkPlayerId)
                 sub_0833A8C8(0x12);
         }
-        if ((u8)(car->unk7C - 5) > 2 && gUnk_0203E0E0 != 0)
+        if ((u8)(car->carState - 5) > 2 && gModule_DamagePitsEnabled != 0)
             car->damage -= v >> 12;
-        car->unk55 = 6;
+        car->hitCooldown = 6;
         sub_08341D64(car);
-        car->unk48 = car->speed;
+        car->impactSpeed = car->speed;
         if (car->speed > 0)
-            car->unk48 = 0;
-        car->rpm = (car->unk48 << 8) / -car->unkE8[car->gear];
+            car->impactSpeed = 0;
+        car->rpm = (car->impactSpeed << 8) / -car->gearRatioTable[car->gear];
     }
     car->velX += car->forceX;
     car->velZ += car->forceZ;

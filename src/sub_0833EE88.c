@@ -21,7 +21,7 @@ void sub_0833EE88(u8 *str, u32 y)
         len++;
     }
     w = (u8)((0x1E - len) / 2);
-    dest = (u16 *)(*(u32 *)&gUnk_020251B8);
+    dest = (u16 *)(*(u32 *)&gModule_TextLayerMapPtr);
     dest = (u16 *)((u32)dest + (((y << 5) + w) << 1));
     e = 0xE0 << 8;
     t = 0x47;
@@ -31,7 +31,7 @@ void sub_0833EE88(u8 *str, u32 y)
         if (c != 0x20)
         {
             v = e;
-            v |= gUnk_02022254[gUnk_02021D04[(u8)(c - 0x21)]];
+            v |= gModule_FontTileEntries[gUnk_02021D04[(u8)(c - 0x21)]];
             *dest++ = v;
         }
         else

@@ -18,22 +18,22 @@ void sub_0800545C(void)
     u8 i;
     u8 n;
 
-    if (gUnk_020253D4 == 0)
+    if (gNumFinishedCars == 0)
         return;
     p = gCars;
     if (gIsLinkRace != 0)
         p = &gCars[gLinkPlayerId[0]];
-    if (p->unk7D == 0)
+    if (p->finished == 0)
         return;
     r7v = 5;
     if (gIsLinkRace != 0)
         r7v = 2;
     r8v = 1;
-    for (i = 0; i != gUnk_020253D4; i++)
+    for (i = 0; i != gNumFinishedCars; i++)
     {
-        u32 *tbl = gUnk_08364B08;
+        u32 *tbl = gTextLayerMapPtr;
 
-        n = gUnk_020253E0[i];
+        n = gFinishedCarOrder[i];
         e = &gCars[n];
         if (gIsLinkRace != 0)
             base = (0x14 + tbl[0]) + r7v * 128;
@@ -42,7 +42,7 @@ void sub_0800545C(void)
         DrawSmallDigit((u16 *)base, r8v);
         DrawTime(base, e->finishMin, e->finishSec, e->finishMs);
         if (gIsLinkRace != 0)
-            sub_08009FA0(0x40, r7v * 16, gUnk_020253E0[i]);
+            sub_08009FA0(0x40, r7v * 16, gFinishedCarOrder[i]);
         r7v++;
         r8v++;
     }

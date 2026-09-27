@@ -9,14 +9,14 @@ void sub_0833C7F0(void)
     u16 v;
     u8 unused[4];
 
-    if (gUnk_0203E1B0 == 0)
+    if (gModule_LinkPlayerId == 0)
     {
         sub_08344B74();
     }
     else
     {
         do
-            v = *(vu16 *)&gUnk_03007FF8;
+            v = *(vu16 *)&gIntrCheck;
         while ((v & 0x80) == 0);
     }
 }

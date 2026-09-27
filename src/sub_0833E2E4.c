@@ -4,9 +4,9 @@
 
 u32 sub_0833E2E4(void)
 {
-    if (gUnk_0203B6CC != 0)
+    if (gModule_CountdownSeconds != 0)
         return 1;
-    if (gUnk_0203B84C != 0)
+    if (gModule_CountdownMs != 0)
         return 1;
     return 0;
 }

@@ -33,8 +33,8 @@
 	.endm
 @ End embedded Luvdis macros
 	.thumb
-	.global gUnk_0200C3E8
-gUnk_0200C3E8:
+	.global gModule_SinTable
+gModule_SinTable:
 	.incbin "build/assets/unknown/data_08344E68.bin"
 	.global gUnk_0200C668
 gUnk_0200C668:
@@ -131,11 +131,11 @@ gUnk_08345390:
 	.global gUnk_083454D4
 gUnk_083454D4:
 	.incbin "build/assets/unknown/data_083454D4.bin"
-	.global gUnk_0200CA74
-gUnk_0200CA74:
+	.global gModule_MPlayTable
+gModule_MPlayTable:
 	.incbin "build/assets/unknown/data_083454F4.bin"
-	.global gUnk_0200CAA4
-gUnk_0200CAA4:
+	.global gModule_SongTable
+gModule_SongTable:
 	.incbin "build/assets/unknown/data_08345524.bin"
 	.global gUnk_0200CEC0
 gUnk_0200CEC0:
@@ -255,8 +255,8 @@ gUnk_0201F550:
 gUnk_0201F590:
 	.incbin "build/assets/unknown/data_08358010.bin"
 	.incbin "build/assets/unknown/data_08358070.bin"
-	.global gUnk_0201F9D0
-gUnk_0201F9D0:
+	.global gModule_TextGlyphTileIndices
+gModule_TextGlyphTileIndices:
 	.incbin "build/assets/unknown/data_08358450.bin"
 	.global gUnk_0201FB54
 gUnk_0201FB54:
@@ -280,8 +280,8 @@ gUnk_020215EA:
 	.global gUnk_02021D04
 gUnk_02021D04:
 	.incbin "build/assets/unknown/data_0835A784.bin"
-	.global gUnk_02022254
-gUnk_02022254:
+	.global gModule_FontTileEntries
+gModule_FontTileEntries:
 	.incbin "build/assets/unknown/data_0835ACD4.bin"
 	.global gUnk_02022428
 gUnk_02022428:
@@ -310,11 +310,11 @@ gUnk_02025190:
 	.global gUnk_020251A4
 gUnk_020251A4:
 	.incbin "build/assets/unknown/data_0835DC24.bin"
-	.global gUnk_020251B8
-gUnk_020251B8:
+	.global gModule_TextLayerMapPtr
+gModule_TextLayerMapPtr:
 	.incbin "build/assets/unknown/data_0835DC38.bin"
-	.global gUnk_020251BC
-gUnk_020251BC:
+	.global gModule_TrackData
+gModule_TrackData:
 	.incbin "build/assets/unknown/data_0835DC3C.bin"
 	.global gModule_02025220
 gModule_02025220:
@@ -388,15 +388,15 @@ gUnk_0202714A:
 	.global gUnk_02027154
 gUnk_02027154:
 	.incbin "build/assets/unknown/data_0835FBD4.bin"
-	.global gUnk_02027500
-gUnk_02027500:
+	.global gModule_DriverGearPowerTables
+gModule_DriverGearPowerTables:
 	.incbin "build/assets/unknown/data_0835FF80.bin"
-	.global gUnk_02027578
-gUnk_02027578:
+	.global gModule_DriverGearRatioTables
+gModule_DriverGearRatioTables:
 	.incbin "build/assets/unknown/data_0835FFF8.bin"
 	.incbin "build/assets/unknown/data_08360000.bin"
-	.global gUnk_020275F0
-gUnk_020275F0:
+	.global gModule_DriverRpmPerSpeedTables
+gModule_DriverRpmPerSpeedTables:
 	.incbin "build/assets/unknown/data_08360070.bin"
 	.global gUnk_02027680
 gUnk_02027680:

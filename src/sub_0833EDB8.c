@@ -14,7 +14,7 @@ void sub_0833EDB8(void)
 {
     void *p;
 
-    if (gUnk_020390F0[0] != 0)
+    if (gModule_IsDemo[0] != 0)
         return;
     p = sub_0833FF44();
     if (p != 0)

@@ -5,7 +5,7 @@
 // docs/extern-headers-plan.md
 
 // struct Track: the merged view of the 0x64-byte per-track record that
-// gUnk_08364B0C (ROM) and gUnk_020251BC (the high module's EWRAM copy of
+// gTrackData (ROM) and gModule_TrackData (the high module's EWRAM copy of
 // it) are arrays of. Three src/ files declared it locally
 // (sub_08003890.c, sub_08003928.c, sub_0833CD2C.c); the two full views
 // were identical and the third (unk00/unk04 only) is a prefix of them, so
@@ -14,7 +14,7 @@
 // Two other local `struct Track` tags share the name but not the layout
 // and stay local under other tags: the 0x18-byte track segment record
 // (`struct TrackSeg` in sub_08006A34.c, sub_0833F468.c, sub_0800A4D4.c,
-// sub_08341F64.c — gUnk_020253D0/gUnk_0203B860 point at those) and the
+// sub_08341F64.c — gTrackSegs/gModule_TrackSegs point at those) and the
 // 0x1C-byte starting-grid record (`struct TrackGrid` in sub_08007BB8.c,
 // gUnk_08367A14). Their strides differ, so they can never fold into this
 // struct. This header defines the struct before declaring any array of
@@ -50,7 +50,7 @@ struct Track {
 typedef char TrackSizeCheck[sizeof(struct Track) == 0x64 ? 1 : -1];
 
 // The ROM's track table at 0x08364B0C; every user agrees on this type.
-extern struct Track gUnk_08364B0C[];
+extern struct Track gTrackData[];
 
 
 // The m4a song/player tables (defined identically in sub_08001208.c and

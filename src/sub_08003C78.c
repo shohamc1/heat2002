@@ -15,7 +15,7 @@ void sub_08003C78(u32 x, u32 y, u8 *map, u16 *dest, u8 *charBase)
     u32 row;
     u32 j;
 
-    src = map + y * gUnk_0200BC30 + x;
+    src = map + y * gBgMapWidth + x;
     d = dest;
     row = 0;
     do {
@@ -49,7 +49,7 @@ void sub_08003C78(u32 x, u32 y, u8 *map, u16 *dest, u8 *charBase)
             j++;
         } while (j != 9);
         d += 0x6C;
-        src += gUnk_0200BC30 - 9;
+        src += gBgMapWidth - 9;
         row += 4;
     } while (row != 24);
 }

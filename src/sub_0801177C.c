@@ -4,8 +4,8 @@
 #include "variables.h"
 #include "car.h"
 
-extern u8 gUnk_082B8710[], gUnk_082E4328[], gUnk_0829F30C[];
-extern u8 gUnk_06016000[];
+extern u8 gDriverSelectTiles[], gMenuPalette[], gText_BlankRowDriverSelect[];
+extern u8 gDriverSelectGfxDest[];
 
 /* MATCH. The ROM keeps &b[0] in r6 and recomputes &b[i] every iteration; the
    hard-register hint on p and the temps in the input loop select that
@@ -41,19 +41,19 @@ s8 LinkDriverSelect(void)
         i--;
     } while (i >= 0);
     e = a[(*(volatile u32 *)REG_ADDR_SIOCNT << 26) >> 30];
-    src = (u32)gUnk_082B8710;
-    dst = (u32)gUnk_06016000;
+    src = (u32)gDriverSelectTiles;
+    dst = (u32)gDriverSelectGfxDest;
     CpuCopy16(src, dst, 0x2000);
     sub_080045D8();
     InitGfxCaches();
     AgeGfxCaches();
     ClearOamBuffer();
     sub_080047DC();
-    gUnk_020020C0 = 0;
+    gVBlankWorkDone = 0;
     WaitForVBlank();
     ZeroTextLayer();
     sub_0800F4FC();
-    sub_0800F328((u32)gUnk_082E4328, (u16 *)buf);
+    sub_0800F328((u32)gMenuPalette, (u16 *)buf);
     sub_08010E04(a[(*(volatile u32 *)REG_ADDR_SIOCNT << 26) >> 30]);
     FadeToBrightenedPalette((u32)buf, 0x0F);
     REG_DISPCNT = 0xA8 << 3;
@@ -67,13 +67,13 @@ s8 LinkDriverSelect(void)
         sub_08010E04(a[gLinkPlayerId[0]]);
         n = gNumLinkPlayers[0];
         for (i = 0; i < n; i++)
-            d[i] = gUnk_020020A0[i];
+            d[i] = gPlayerKeys[i];
         if (ExchangeLinkInput() != 0) {
             sel = -1;
             break;
         }
         for (i = 0; i < gNumLinkPlayers[0]; i++) {
-            c[i] = (gUnk_020020A0[i] ^ d[i]) & gUnk_020020A0[i];
+            c[i] = (gPlayerKeys[i] ^ d[i]) & gPlayerKeys[i];
             p = b;
             q = p + i;
             if ((s8)*q == -1)
@@ -116,12 +116,12 @@ s8 LinkDriverSelect(void)
                 }
             }
         } else {
-            DrawTextCenteredHighlight((u8 *)((u32)gUnk_0829F30C), 0x11, 1);
+            DrawTextCenteredHighlight((u8 *)((u32)gText_BlankRowDriverSelect), 0x11, 1);
         }
         sub_080047DC();
-        gUnk_020020C0 = 0;
+        gVBlankWorkDone = 0;
 spin:
-        if (gUnk_020020C0 == 0)
+        if (gVBlankWorkDone == 0)
             goto spin;
     }
     if (sel == -2)

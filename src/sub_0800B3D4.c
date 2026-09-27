@@ -8,7 +8,7 @@ void AddTask(u32 a);
 
 void sub_0800B3D4(s32 a, s32 b, s32 c)
 {
-    u8 *s = gUnk_0202CC10;
+    u8 *s = gLapTimeTextBuf;
     u32 terminator = 0;
     u32 r;
 

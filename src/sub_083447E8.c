@@ -4,7 +4,7 @@
 
 void sub_083447E8(void)
 {
-    u32 *dest = (u32 *)*(u32 *)&gUnk_020251B8[0];
+    u32 *dest = (u32 *)*(u32 *)&gModule_TextLayerMapPtr[0];
     u32 r1 = 0;
     u32 val = 0;
     u32 r2 = 0xA0 << 1;

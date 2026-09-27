@@ -3,7 +3,7 @@
 #include "variables.h"
 #include "car.h"
 
-extern u16 gUnk_0202F04A[];
+extern u16 gSeasonSaveFlag[];
 
 void SaveSeason(void)
 {
@@ -13,19 +13,19 @@ void SaveSeason(void)
     u32 t;
 
     StopAllSongsAndVSyncOff();
-    p = gUnk_0202F04A;
+    p = gSeasonSaveFlag;
     *p = 1;
     p += 27;
-    *p++ = (*(u8 *)&gUnk_0202F020);
-    *p++ = (gUnk_0202F024 << 8) | gUnk_0202EEC8;
-    *p++ = gUnk_0202F034;
-    *p++ = gUnk_0202EDD8;
+    *p++ = (*(u8 *)&gSeasonRaceIndex);
+    *p++ = (gQualifyingDone << 8) | gPracticeDone;
+    *p++ = gSeasonRaceIncomplete;
+    *p++ = gChampionshipIndex;
     q = gCars;
     i = 0;
     do {
         *p++ = q->driverId;
         *p++ = q->points;
-        t = q->unk16C;
+        t = q->finishTime;
         *p++ = t >> 16;
         *p++ = t;
         i++;
@@ -33,10 +33,10 @@ void SaveSeason(void)
     } while (i != 0x18);
     i = 0;
     do {
-        *p++ = gUnk_0202EF20[i];
+        *p++ = gChampionshipAvailable[i];
         i++;
     } while (i != 0x11);
-    *p = gUnk_0202EF10;
+    *p = gSeasonNumLaps;
     WriteSaveBlocks(0x40, 0xF0);
     WriteSaveBlocks(8, 8);
     sub_080100B0();

@@ -12,9 +12,9 @@ void LoadTrackRecords(void)
     ReadSaveBlocks(0x130, 0x48);
     src = gUnk_0202F170;
     i = 0;
-    d4 = gUnk_020253A0;
-    d3 = gUnk_02025200;
-    d2 = gUnk_02025380;
+    d4 = gTrackRecordMs;
+    d3 = gTrackRecordSec;
+    d2 = gTrackRecordMin;
     do {
         *d2 = *src++;
         *d3 = *src++;

@@ -21,7 +21,7 @@ u8 sub_080126BC(void)
         sub_0801264C(v);
         if (gKeysPressed & 1) {
             sel = v;
-            gUnk_0202ED70 = v;
+            gChallengeIndex = v;
         }
         v = MenuMoveVertical(gKeysPressed, v, 0, 3);
         WaitForVBlank();

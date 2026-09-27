@@ -18,16 +18,16 @@ struct CommRegs
 
 u32 sub_08364550(u32 *a1)
 {
-    switch (gUnk_03000C00.state)
+    switch (gIsland_SioTransfer.state)
     {
     case 0:
-        if ((*(volatile u32 *)&gUnk_03000C00 & 0x00FF00FF) != 0)
-            gUnk_03000C00.state = 1;
+        if ((*(volatile u32 *)&gIsland_SioTransfer & 0x00FF00FF) != 0)
+            gIsland_SioTransfer.state = 1;
         break;
     case 1:
-        if (gUnk_03000C00.mode == 1)
+        if (gIsland_SioTransfer.mode == 1)
         {
-            if (gUnk_03000C00.retry <= 5)
+            if (gIsland_SioTransfer.retry <= 5)
                 break;
         }
         else
@@ -37,7 +37,7 @@ u32 sub_08364550(u32 *a1)
         REG_SIODATA32 = 0;
         REG_IF = INTR_FLAG_TIMER3 | INTR_FLAG_SERIAL;
         {
-            register u32 mode __asm__("r4") = gUnk_03000C00.mode;
+            register u32 mode __asm__("r4") = gIsland_SioTransfer.mode;
 
             if (mode == 1)
             {
@@ -55,12 +55,12 @@ u32 sub_08364550(u32 *a1)
                 REG_IME = 1;
             }
         }
-        gUnk_03000C00.retry = 0;
-        gUnk_03000C00.state = 2;
+        gIsland_SioTransfer.retry = 0;
+        gIsland_SioTransfer.state = 2;
         break;
     case 2:
         {
-            register s32 count __asm__("r6") = gUnk_03000C00.count;
+            register s32 count __asm__("r6") = gIsland_SioTransfer.count;
             register s32 chunk __asm__("r4") = count;
 
             if (count > 0x2000)
@@ -69,12 +69,12 @@ u32 sub_08364550(u32 *a1)
                 chunk = 0;
             if (a1 != 0)
                 *a1 = chunk;
-            if (gUnk_03000C00.mode != 1)
+            if (gIsland_SioTransfer.mode != 1)
             {
-                if (gUnk_03000C00.index < chunk)
+                if (gIsland_SioTransfer.index < chunk)
                 {
-                    register s32 *w __asm__("r3") = (s32 *)&gUnk_03000C00;
-                    u32 *data = (u32 *)gUnk_03000C00.data;
+                    register s32 *w __asm__("r3") = (s32 *)&gIsland_SioTransfer;
+                    u32 *data = (u32 *)gIsland_SioTransfer.data;
                     {
                         s32 i;
 
@@ -89,14 +89,14 @@ u32 sub_08364550(u32 *a1)
                 }
                 if (count > 0x2000)
                 {
-                    u32 t = gUnk_03000C00.fC + gUnk_03000C00.crc;
-                    gUnk_03000C00.fC = t;
+                    u32 t = gIsland_SioTransfer.fC + gIsland_SioTransfer.crc;
+                    gIsland_SioTransfer.fC = t;
                     if (t == -1)
-                        gUnk_03000C00.flag = 1;
+                        gIsland_SioTransfer.flag = 1;
                 }
             }
-            if (count > 0x2000 || gUnk_03000C00.retry == 0x8C)
-                gUnk_03000C00.state = 3;
+            if (count > 0x2000 || gIsland_SioTransfer.retry == 0x8C)
+                gIsland_SioTransfer.state = 3;
         }
         break;
     case 3:
@@ -113,21 +113,21 @@ u32 sub_08364550(u32 *a1)
             p = (volatile u32 *)((u32)ie - 0xE0);
             *(volatile long long *)p = 0;
         }
-        if (gUnk_03000C00.mode != 0)
+        if (gIsland_SioTransfer.mode != 0)
             REG_TM3CNT = 0;
         REG_IF = INTR_FLAG_TIMER3 | INTR_FLAG_SERIAL;
-        if (gUnk_03000C00.mode != 0)
+        if (gIsland_SioTransfer.mode != 0)
         {
-            gUnk_03000C00.retry = 0;
-            gUnk_03000C00.state = 4;
+            gIsland_SioTransfer.retry = 0;
+            gIsland_SioTransfer.state = 4;
             break;
         }
         return 1;
     case 4:
-        if (gUnk_03000C00.retry <= 2)
+        if (gIsland_SioTransfer.retry <= 2)
             break;
         return 1;
     }
-    gUnk_03000C00.retry = gUnk_03000C00.retry + 1;
+    gIsland_SioTransfer.retry = gIsland_SioTransfer.retry + 1;
     return 0;
 }

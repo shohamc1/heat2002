@@ -15,8 +15,8 @@ void sub_0833D3E4(s32 x)
     u32 off;
 
     i = 240;
-    bd = (s32 *)gUnk_02039ED0;
-    bs = (s32 *)gUnk_020392D0;
+    bd = (s32 *)gModule_PaletteFadeDeltas;
+    bs = (s32 *)gModule_PaletteFadeColors;
     off = 0xB40;
     s = (s32 *)((u32)bs + off);
     d = (s32 *)((u32)bd + off);

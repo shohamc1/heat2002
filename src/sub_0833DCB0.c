@@ -27,7 +27,7 @@ u8 sub_0833DCB0(void)
         sub_0833B074((struct MusicPlayerInfo *)gUnk_02038FF0);
         sub_0833B074((struct MusicPlayerInfo *)gUnk_02039040);
         for (;;) {
-            gUnk_02039134 = 0;
+            gModule_VBlanksThisFrame = 0;
             if (sub_0833C874() != 0) {
                 sub_0833EE88(sub_0833BD94(0), 0xA, 1);
                 sub_0833EE88((u32 *)gUnk_0200CF1C, 0xC, 1);
@@ -35,7 +35,7 @@ u8 sub_0833DCB0(void)
                 sub_0833AE90();
                 done = 0;
                 do {
-                    if (gUnk_0203E1B0 == 0)
+                    if (gModule_LinkPlayerId == 0)
                         return 0x27;
                     sub_08344B74();
                 } while (done == 0);
@@ -47,10 +47,10 @@ u8 sub_0833DCB0(void)
                 return 1;
             }
             sub_0833DC14();
-            (*(u32 *)&gUnk_020390AC) = (*(u32 *)&gUnk_020390AC) + 1;
-            gUnk_020390D0 = v;
+            (*(u32 *)&gModule_FrameCounter) = (*(u32 *)&gModule_FrameCounter) + 1;
+            gModule_VBlankWorkDone = v;
           spin:
-            if (gUnk_020390D0 == 0)
+            if (gModule_VBlankWorkDone == 0)
                 goto spin;
         }
     }

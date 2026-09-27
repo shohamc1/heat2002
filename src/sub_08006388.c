@@ -2,14 +2,14 @@
 #include "functions.h"
 #include "variables.h"
 
-extern u8 gUnk_0806C78C[];
+extern u8 gText_HudBestLabel[];
 
 
 void sub_08006388(void)
 {
     InitRaceHud();
-    if (gUnk_0202F030 != 0)
+    if (gIsTimeTrial != 0)
     {
-        sub_0800649C(gUnk_0806C78C, 0, 0x12);
+        sub_0800649C(gText_HudBestLabel, 0, 0x12);
     }
 }

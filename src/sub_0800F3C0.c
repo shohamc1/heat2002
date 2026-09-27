@@ -27,7 +27,7 @@ outer:
         {
             a = p[0];
             b = p[1];
-            if (a->unk16C > b->unk16C)
+            if (a->finishTime > b->finishTime)
             {
                 p[0] = b;
                 p[1] = a;

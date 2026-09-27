@@ -21,13 +21,13 @@ void sub_0800B0A0(struct EntityB0A0 *e)
     counter = e->unk18;
     idx = (u8)e->unk18 % 0x17;
     e->unk18 = counter + 1;
-    spr = sub_0800754C(gUnk_083FF5B0[idx]);
+    spr = sub_0800754C(gSplashSpriteFrames[idx]);
     if (spr != 0)
     {
         register u32 attr asm("r6") = 0x80680040;
         u32 t;
 
-        t = (RequestObjPalette((u32)gUnk_08330AD4) << 12) | 0x400;
+        t = (RequestObjPalette((u32)gSplashSpritePalette) << 12) | 0x400;
         arg1 = spr[4] | t;
         if (gIsLinkRace == 0)
             AddOamEntry(attr, arg1);
@@ -39,5 +39,5 @@ void sub_0800B0A0(struct EntityB0A0 *e)
     }
     /* DrawTextCentered: this file's old local prototype differs from
        functions.h; call through the old signature (solved-walls 31). */
-    ((void (*)(u8 *, u32, u32))DrawTextCentered)(gUnk_0806C96C, 8, 1);
+    ((void (*)(u8 *, u32, u32))DrawTextCentered)(gText_BlankRowRaceMsg, 8, 1);
 }

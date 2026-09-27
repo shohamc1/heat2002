@@ -6,7 +6,7 @@
 #include "m4a.h"
 #include "variables.h"
 
-extern u8 gUnk_083FDE78[];
+extern u8 gLinkTrackSelectTrackIds[];
 
 u8 LinkTrackSelect(void)
 {
@@ -16,74 +16,74 @@ u8 LinkTrackSelect(void)
     u16 prev;
 
     ResetLinkState();
-    gUnk_0202EF40[0] = 0;
-    gUnk_0202EF40[4] = 0;
-    gUnk_0202EF40[8] = 0;
-    gUnk_0202EF40[12] = 0;
+    gLinkRecvWords[0] = 0;
+    gLinkRecvWords[4] = 0;
+    gLinkRecvWords[8] = 0;
+    gLinkRecvWords[12] = 0;
     WaitForVBlank();
     sub_080045D8();
     InitGfxCaches();
     AgeGfxCaches();
     ClearOamBuffer();
     sub_080047DC();
-    gUnk_020020C0 = 0;
+    gVBlankWorkDone = 0;
     WaitForVBlank();
     ZeroTextLayer();
     sub_0800F4FC();
-    sub_0800F328((u32)gUnk_082E4328, (u16 *)buf);
+    sub_0800F328((u32)gMenuPalette, (u16 *)buf);
     DrawTrackSelect(0, 1);
     FadeToBrightenedPalette((u32)buf, 0x0F);
     REG_DISPCNT = 0xA8 << 3;
     WaitForVBlank();
     REG_DISPCNT = 0xAA << 5;
     sel = 0x40;
-    (*(s8 *)&gUnk_0202EF8C) = 0;
+    (*(s8 *)&gTrackSelectCursor) = 0;
     prev = 0;
     do {
         ClearOamBuffer();
         AgeGfxCaches();
-        k = gUnk_020020A0[0];
+        k = gPlayerKeys[0];
         if (ExchangeLinkInput() != 0) {
             sel = 3;
             continue;
         }
-        k = (k ^ gUnk_020020A0[0]) & gUnk_020020A0[0];
+        k = (k ^ gPlayerKeys[0]) & gPlayerKeys[0];
         if (k & DPAD_RIGHT) {
-            (*(s8 *)&gUnk_0202EF8C)++;
-            if ((*(s8 *)&gUnk_0202EF8C) == 7)
-                (*(s8 *)&gUnk_0202EF8C) = 8;
-            if ((*(s8 *)&gUnk_0202EF8C) > 0x0B)
-                (*(s8 *)&gUnk_0202EF8C) = 0x0B;
+            (*(s8 *)&gTrackSelectCursor)++;
+            if ((*(s8 *)&gTrackSelectCursor) == 7)
+                (*(s8 *)&gTrackSelectCursor) = 8;
+            if ((*(s8 *)&gTrackSelectCursor) > 0x0B)
+                (*(s8 *)&gTrackSelectCursor) = 0x0B;
         }
         if (k & DPAD_LEFT) {
-            (*(s8 *)&gUnk_0202EF8C)--;
-            if ((*(s8 *)&gUnk_0202EF8C) == 7)
-                (*(s8 *)&gUnk_0202EF8C) = 6;
-            if ((*(s8 *)&gUnk_0202EF8C) == -1)
-                (*(s8 *)&gUnk_0202EF8C) = 0;
+            (*(s8 *)&gTrackSelectCursor)--;
+            if ((*(s8 *)&gTrackSelectCursor) == 7)
+                (*(s8 *)&gTrackSelectCursor) = 6;
+            if ((*(s8 *)&gTrackSelectCursor) == -1)
+                (*(s8 *)&gTrackSelectCursor) = 0;
         }
-        if ((*(s8 *)&gUnk_0202EF8C) != prev) {
+        if ((*(s8 *)&gTrackSelectCursor) != prev) {
             m4aSongNumStart(8);
-            prev = (*(s8 *)&gUnk_0202EF8C);
+            prev = (*(s8 *)&gTrackSelectCursor);
         }
         WaitForVBlank();
         if (gLinkPlayerId[0] == 0)
 /* old prototype u8 DrawTrackSelect(s8, u8): the s8 parameter keeps the
-             sign-extending ldrsb of gUnk_0202EF8C */
-            ((u8 (*)(s8, u8))DrawTrackSelect)((s8)(*(s8 *)&gUnk_0202EF8C), 1);
+             sign-extending ldrsb of gTrackSelectCursor */
+            ((u8 (*)(s8, u8))DrawTrackSelect)((s8)(*(s8 *)&gTrackSelectCursor), 1);
         else
-            ((u8 (*)(s8, u8))DrawTrackSelect)((s8)(*(s8 *)&gUnk_0202EF8C), 1);
+            ((u8 (*)(s8, u8))DrawTrackSelect)((s8)(*(s8 *)&gTrackSelectCursor), 1);
         if (k & A_BUTTON) {
             m4aSongNumStart(9);
-            (*(s8 *)&gUnk_0202EF8C) = gUnk_083FDE78[(*(s8 *)&gUnk_0202EF8C)];
+            (*(s8 *)&gTrackSelectCursor) = gLinkTrackSelectTrackIds[(*(s8 *)&gTrackSelectCursor)];
             sel = 1;
         }
         if (k & B_BUTTON)
             sel = 2;
         sub_080047DC();
-        gUnk_020020C0 = 0;
+        gVBlankWorkDone = 0;
     spin:
-        if (gUnk_020020C0 == 0)
+        if (gVBlankWorkDone == 0)
             goto spin;
         WaitForVBlank();
     } while (sel == 0x40);

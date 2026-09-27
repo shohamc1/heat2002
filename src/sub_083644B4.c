@@ -19,7 +19,7 @@ void sub_083644B4(u32 a1, u32 a2)
     one = 1;
     *(volatile u16 *)0x04000208 = 1;
     cmd = 0;
-    g = (u32 *)&gUnk_03000C00;
+    g = (u32 *)&gIsland_SioTransfer;
     sub_083647FC((u32)&cmd, (u32)g, 0x05000006);
     *(volatile u32 *)0x04000128 = 0x2003;
     g[1] = a2;

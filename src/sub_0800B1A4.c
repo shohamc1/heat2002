@@ -18,7 +18,7 @@ void sub_0800B1A4(struct EntityB1A4 *e)
   int new_var;
   u32 x;
   u32 arg1;
-  if (gUnk_02022E14 == 0)
+  if (gFadeActive == 0)
   {
     if (((e->unk18 == 0) || (e->unk18 == 0x14)) || (e->unk18 == 0x28))
     {
@@ -39,40 +39,40 @@ void sub_0800B1A4(struct EntityB1A4 *e)
     idx = (u8) (((u8) (e->unk18 - 0x3C)) % 0x17);
     if (e->unk18 > 0x3C)
     {
-      spr = sub_0800754C(gUnk_083FF5B0[idx]);
+      spr = sub_0800754C(gSplashSpriteFrames[idx]);
       if (spr != 0)
       {
         attr = x << 0x10;
         attr = attr | new_var;
         attr = attr | (0x80 << 0x18);
-        t = (RequestObjPalette((u32) gUnk_08330AD4) << 12) | 0x400;
+        t = (RequestObjPalette((u32) gSplashSpritePalette) << 12) | 0x400;
         arg1 = spr[4] | t;
         AddOamEntry(attr, arg1);
       }
     }
     if (e->unk18 > 0x2D)
     {
-      if (gUnk_0200215C[0] == 9)
+      if (gGameMode[0] == 9)
       {
-        gUnk_0200215C[0] = 6;
+        gGameMode[0] = 6;
       }
-      if (gUnk_0200215C[0] == 0x0D)
+      if (gGameMode[0] == 0x0D)
       {
-        gUnk_0200215C[0] = 0x0C;
+        gGameMode[0] = 0x0C;
       }
-      if (gUnk_0200215C[0] == 0x0E)
+      if (gGameMode[0] == 0x0E)
       {
-        gUnk_0200215C[0] = 2;
+        gGameMode[0] = 2;
       }
-      if (gUnk_0200215C[0] == 0x0F)
+      if (gGameMode[0] == 0x0F)
       {
-        gUnk_0200215C[0] = 0x10;
+        gGameMode[0] = 0x10;
       }
-      if (gUnk_0200215C[0] == 0x11)
+      if (gGameMode[0] == 0x11)
       {
-        gUnk_0200215C[0] = 5;
+        gGameMode[0] = 5;
       }
-      gUnk_020020C4 = 1;
+      gRaceStarted = 1;
     }
     e->unk18 = e->unk18 + 1;
     if (e->unk18 == 0x7A)
@@ -80,7 +80,7 @@ void sub_0800B1A4(struct EntityB1A4 *e)
       RemoveTask((u32)e);
       FreeTask((u32)e);
     }
-    if (gUnk_020020C4 == 0)
+    if (gRaceStarted == 0)
     {
       WaitForVBlank();
     }

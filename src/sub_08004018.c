@@ -42,5 +42,5 @@ void BeginFadeToBrightenedPalette(s32 arg0, u16 *src)
     } while (i != 256);
 
     gUnk_02022E18 = arg0;
-    gUnk_02022E14 = 1;
+    gFadeActive = 1;
 }

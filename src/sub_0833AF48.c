@@ -19,7 +19,7 @@ void sub_0833AF48(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *tr
         return;
     if (r4 > 0x10)
         r4 = 0x10;
-    soundInfo = (struct SoundInfo *)gUnk_03007FF0[0];
+    soundInfo = (struct SoundInfo *)gSoundInfoPtr[0];
     if (soundInfo->ident != ID_NUMBER)
         return;
     soundInfo->ident = soundInfo->ident + 1;

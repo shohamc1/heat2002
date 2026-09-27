@@ -4,7 +4,7 @@
 
 void sub_083641D8(u16 x, u16 y)
 {
-    s16 *g = (s16 *)gUnk_03000800;
+    s16 *g = (s16 *)gIsland_OamBuffer;
     s16 *gg;
     u16 *p;
     u16 *q;

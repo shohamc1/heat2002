@@ -10,18 +10,18 @@ void sub_08342A94(void)
 {
     u32 r4;
 
-    if (gUnk_0203916C[0] == 9)
-        gUnk_0203916C[0] = 6;
-    if (gUnk_0203916C[0] == 0xD)
-        gUnk_0203916C[0] = 0xC;
-    if (gUnk_0203916C[0] == 0xE)
-        gUnk_0203916C[0] = 2;
-    if (gUnk_0203916C[0] == 0xF)
-        gUnk_0203916C[0] = 0x10;
-    if (gUnk_0203916C[0] == 0x11)
-        gUnk_0203916C[0] = 5;
+    if (gModule_GameMode[0] == 9)
+        gModule_GameMode[0] = 6;
+    if (gModule_GameMode[0] == 0xD)
+        gModule_GameMode[0] = 0xC;
+    if (gModule_GameMode[0] == 0xE)
+        gModule_GameMode[0] = 2;
+    if (gModule_GameMode[0] == 0xF)
+        gModule_GameMode[0] = 0x10;
+    if (gModule_GameMode[0] == 0x11)
+        gModule_GameMode[0] = 5;
 
-    gUnk_020390D4 = 1;
+    gModule_RaceStarted = 1;
 
     r4 = (u32)sub_0833FF44();
     if (r4 != 0)

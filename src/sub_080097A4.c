@@ -3,9 +3,9 @@
 #include "variables.h"
 #include "car.h"
 
-extern u32 gUnk_08367FBC[];
-extern u32 gUnk_08368034[];
-extern u32 gUnk_083680AC[];
+extern u32 gDriverGearPowerTables[];
+extern u32 gDriverGearRatioTables[];
+extern u32 gDriverRpmPerSpeedTables[];
 
 void sub_0800C0E8(u32 a, u8 b);
 void sub_0800C984(u32 *p, u32 v);
@@ -14,18 +14,18 @@ void InitCar(u8 a, struct Car *car, s32 b, s32 c, u32 d)
 {
     u8 i;
 
-    if (gUnk_0200215C[0] == 4)
+    if (gGameMode[0] == 4)
         car->driverId = 0;
-    car->unk18E = 0;
+    car->lapStartedFlag = 0;
     car->pitState = 0;
-    gUnk_0202CAD0 = 0;
-    car->unk180 = 0;
+    gPitMenuActive = 0;
+    car->torqueDampTimer = 0;
     car->draftTimer = 0;
-    car->unk17C = gUnk_020253B8;
-    car->unk168 = 0;
-    gUnk_0202A51C = 0;
-    car->unk166 = 1;
-    car->unk167 = 0;
+    car->trackCueCursor = gTrackCueList;
+    car->lapsLed = 0;
+    gFuelOutStutterCounter = 0;
+    car->ledLapFlag = 1;
+    car->lapLedTimer = 0;
     car->posX = b;
     car->posZ = c;
     car->heading = d;
@@ -33,48 +33,48 @@ void InitCar(u8 a, struct Car *car, s32 b, s32 c, u32 d)
     car->unk28 = 0;
     car->rpm = 0;
     car->gear = 0;
-    car->unk55 = 0;
+    car->hitCooldown = 0;
     car->waypoint = 0;
-    car->unk174 = 0;
-    if (gUnk_0200215C[0] == 4) {
-        car->unk58 = gUnk_08367730[a * 3];
+    car->firstStepCrossed = 0;
+    if (gGameMode[0] == 4) {
+        car->driverPalette = gDriverPalettes[a * 3];
     } else {
-        car->unk58 = gUnk_08367730[car->driverId];
+        car->driverPalette = gDriverPalettes[car->driverId];
     }
-    car->unk7C = 0;
+    car->carState = 0;
     car->unk84 = 1;
     car->unk30 = 0;
     car->damage = 0;
-    car->unkA2 = 0;
+    car->throttleLevel = 0;
     car->tireWear0 = 0;
     car->tireWear1 = 0;
     car->tireWear2 = 0;
     car->tireWear3 = 0;
     car->fuel = 0xB400;
-    if (gUnk_0200215C[0] == 0xF && gUnk_0202ED70 == 3 && car == gCars)
+    if (gGameMode[0] == 0xF && gChallengeIndex == 3 && car == gCars)
         car->fuel = 0x5000;
-    if (gUnk_0200215C[0] != 4)
+    if (gGameMode[0] != 4)
         sub_0800C0E8((u32)car, a);
-    if (gUnk_0200215C[0] != 5 && gUnk_0200215C[0] != 0x11)
-        car->unk16C = 0;
-    car->unk170 = 0;
-    car->unk171 = 0;
-    car->unk172 = 0;
+    if (gGameMode[0] != 5 && gGameMode[0] != 0x11)
+        car->finishTime = 0;
+    car->onApron = 0;
+    car->onGrass = 0;
+    car->behindBgFlag = 0;
     sub_0800C984((u32 *)&car->unk128, d);
     car->unk134 = 0;
     car->unk138 = -1;
-    car->unk173 = 0;
-    car->unk171 = 0;
+    car->wasOnGrass = 0;
+    car->onGrass = 0;
     i = 0;
     do {
-        gUnk_0202CBC8[i] = 0;
+        gPitStallOccupied[i] = 0;
         i++;
     } while (i != 8);
     /* One store per arm: jump2 merges the stores into one strb behind a new
        label, and jumps to a label created in that pass never cross-jump,
        so the equal-valued arms stay separate as in the ROM. */
-    if (gUnk_0200215C[0] == 0xF) {
-        switch (gUnk_0202ED70) {
+    if (gGameMode[0] == 0xF) {
+        switch (gChallengeIndex) {
         case 0:
             car->lap = 1;
             break;
@@ -115,35 +115,35 @@ void InitCar(u8 a, struct Car *car, s32 b, s32 c, u32 d)
     } else {
         car->lap = 0;
     }
-    if ((u8)(gUnk_0200215C[0] - 3) > 1)
+    if ((u8)(gGameMode[0] - 3) > 1)
         car->lap--;
     car->progress = 0;
-    car->unk15C = 0x12C;
+    car->tickCount = 0x12C;
     car->velX = 0;
     car->velZ = 0;
     car->unk110 = 0;
     car->forceX = 0;
     car->forceZ = 0;
-    car->unk13C = 0;
+    car->engineForce = 0;
     car->torque = 0;
     car->drag = 0;
     car->racePosition = 0x63;
-    (*(s32 *)&car->unkE4) = gUnk_08367FBC[car->driverId];
-    (*(s32 *)&car->unkE8) = gUnk_08368034[car->driverId];
-    (*(s32 *)&car->unkEC) = gUnk_083680AC[car->driverId];
-    if (gIsLinkRace == 0 && a != 0 && gUnk_0200215C[0] != 2) {
-        (*(s32 *)&car->unkE4) = (s32)gUnk_08367BFA;
-        (*(s32 *)&car->unkE8) = (s32)gUnk_08367C06;
-        (*(s32 *)&car->unkEC) = (s32)gUnk_08367C10;
-        (*(s32 *)&car->unkE4) = gUnk_08367FBC[0];
-        (*(s32 *)&car->unkE8) = gUnk_08368034[0];
-        (*(s32 *)&car->unkEC) = gUnk_083680AC[0];
+    (*(s32 *)&car->gearPowerTable) = gDriverGearPowerTables[car->driverId];
+    (*(s32 *)&car->gearRatioTable) = gDriverGearRatioTables[car->driverId];
+    (*(s32 *)&car->rpmPerSpeedTable) = gDriverRpmPerSpeedTables[car->driverId];
+    if (gIsLinkRace == 0 && a != 0 && gGameMode[0] != 2) {
+        (*(s32 *)&car->gearPowerTable) = (s32)gUnk_08367BFA;
+        (*(s32 *)&car->gearRatioTable) = (s32)gUnk_08367C06;
+        (*(s32 *)&car->rpmPerSpeedTable) = (s32)gUnk_08367C10;
+        (*(s32 *)&car->gearPowerTable) = gDriverGearPowerTables[0];
+        (*(s32 *)&car->gearRatioTable) = gDriverGearRatioTables[0];
+        (*(s32 *)&car->rpmPerSpeedTable) = gDriverRpmPerSpeedTables[0];
     }
     car->unk158 = 0;
-    car->unk7D = 0;
-    car->unk36 = d;
-    car->unk38 = 0;
-    car->unk160 = 0;
+    car->finished = 0;
+    car->respawnHeading = d;
+    car->respawnWaypoint = 0;
+    car->zoneGripFlag = 0;
     car->subStep = 0;
     car->yawRate = 0;
 }

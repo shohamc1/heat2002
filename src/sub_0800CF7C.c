@@ -69,10 +69,10 @@ s32 TestSegmentVsWalls(struct Seg *seg, struct Box *box2, struct Box *box,
     pbox = box;
     for (w = wallList; *w != 0xFFFF; w++) {
         wall = &gUnk_0202CC40[*w];
-        pax = gUnk_0202CC44[wall->f00].x;
-        pay = gUnk_0202CC44[wall->f00].y;
-        pbx = gUnk_0202CC44[wall->f02].x;
-        pby = gUnk_0202CC44[wall->f02].y;
+        pax = gWallVertices[wall->f00].x;
+        pay = gWallVertices[wall->f00].y;
+        pbx = gWallVertices[wall->f02].x;
+        pby = gWallVertices[wall->f02].y;
         dx0 = seg->f10;
         wf04 = wall->f04;
         if (dx0 * wf04 + seg->f14 * wall->f08 > 0)

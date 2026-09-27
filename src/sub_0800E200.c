@@ -26,7 +26,7 @@ u32 SendMultibootIsland(void)
     icon = 0;
     REG_BG3CNT = BGCNT_SCREENBASE(28) | BGCNT_CHARBASE(3);
     {
-        u8 *src = (u8 *)gUnk_0833338C;
+        u8 *src = (u8 *)gTextLayerTiles;
         CpuCopy16((u32)src, BG_SCREEN_ADDR(24), 0x2000);
     }
     {

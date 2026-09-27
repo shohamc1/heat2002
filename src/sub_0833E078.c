@@ -4,7 +4,7 @@
 
 void sub_0833E078(void)
 {
-    gUnk_0203B6D4[0] = 0;
-    gUnk_0203B6D0[0] = 0;
-    gUnk_0203B704[0] = 0;
+    gModule_RaceMs[0] = 0;
+    gModule_RaceSec[0] = 0;
+    gModule_RaceMin[0] = 0;
 }

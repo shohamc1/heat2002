@@ -14,8 +14,8 @@ void sub_0833D31C(s32 arg0, u16 *src)
     s32 scaled;
 
     i = 0;
-    base = (s32 *)gUnk_020392D0;
-    out = (s32 *)gUnk_02039ED0;
+    base = (s32 *)gModule_PaletteFadeColors;
+    out = (s32 *)gModule_PaletteFadeDeltas;
     do {
         x = *src++;
         v = x;
@@ -43,9 +43,9 @@ void sub_0833D31C(s32 arg0, u16 *src)
         i++;
     } while (i != 256);
 
-    gUnk_020392C8 = arg0;
+    gModule_PaletteFadeSteps = arg0;
     {
         register u32 one __asm__("r0") = 1;
-        gUnk_020392C4 = one;
+        gModule_PaletteFadeActive = one;
     }
 }

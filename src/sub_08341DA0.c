@@ -16,15 +16,15 @@ struct Unk08341DA0 {
     u32 unk2C;
     u32 unk30;
     u16 unk34;
-    u16 unk36;
-    u16 unk38;
+    u16 respawnHeading;
+    u16 respawnWaypoint;
     u16 unk3A;
     s16 unk3C;
     u8 pad3E[0xA4 - 0x3E];
-    s32 unkA4[4];
-    s32 unkB4[4];
-    s32 unkC4[4];
-    s32 unkD4[4];
+    s32 cornerX[4];
+    s32 cornerZ[4];
+    s32 nextCornerX[4];
+    s32 nextCornerZ[4];
 };
 
 extern s32 gUnk_020277B4[]; /* 0x020277B4 */
@@ -40,26 +40,26 @@ void sub_08341DA0(struct Unk08341DA0 *obj)
     s32 b;
 
     idx = obj->unk34 >> 8;
-    sin = gUnk_0200C3E8[idx];
-    cos = gUnk_0200C3E8[idx + 0x40];
+    sin = gModule_SinTable[idx];
+    cos = gModule_SinTable[idx + 0x40];
     for (i = 0; i != 4; i++) {
         a = gUnk_020277B4[i];
         b = gUnk_020277C4[i];
-        obj->unkA4[i] = (cos * a - sin * b) >> 8;
-        obj->unkB4[i] = (sin * a + cos * b) >> 8;
-        obj->unkA4[i] += obj->unk0;
-        obj->unkB4[i] += obj->unk8;
+        obj->cornerX[i] = (cos * a - sin * b) >> 8;
+        obj->cornerZ[i] = (sin * a + cos * b) >> 8;
+        obj->cornerX[i] += obj->unk0;
+        obj->cornerZ[i] += obj->unk8;
     }
 
     idx = (obj->unk34 + obj->unk3C) >> 8 & 0xFF;
-    sin = gUnk_0200C3E8[idx];
-    cos = gUnk_0200C3E8[idx + 0x40];
+    sin = gModule_SinTable[idx];
+    cos = gModule_SinTable[idx + 0x40];
     for (i = 0; i != 4; i++) {
         a = gUnk_020277B4[i];
         b = gUnk_020277C4[i];
-        obj->unkC4[i] = (cos * a - sin * b) >> 8;
-        obj->unkD4[i] = (sin * a + cos * b) >> 8;
-        obj->unkC4[i] += obj->unk0 + obj->unkC;
-        obj->unkD4[i] += obj->unk8 + obj->unk14;
+        obj->nextCornerX[i] = (cos * a - sin * b) >> 8;
+        obj->nextCornerZ[i] = (sin * a + cos * b) >> 8;
+        obj->nextCornerX[i] += obj->unk0 + obj->unkC;
+        obj->nextCornerZ[i] += obj->unk8 + obj->unk14;
     }
 }

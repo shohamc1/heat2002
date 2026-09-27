@@ -18,21 +18,21 @@ void sub_0833C5B0(void)
     u8 v;
 
     sub_0833A1DC();
-    (*(vu16 *)&gUnk_02039134)++;
+    (*(vu16 *)&gModule_VBlanksThisFrame)++;
     gUnk_0203917C++;
-    if (gUnk_020390EC != 0) {
-        if ((*(vu16 *)&gUnk_02039134) > 1)
+    if (gModule_IsLinkRace != 0) {
+        if ((*(vu16 *)&gModule_VBlanksThisFrame) > 1)
             gUnk_020390FC = 1;
         else
             gUnk_020390FC = 0;
     } else {
         gUnk_020390FC ^= 1;
     }
-    if (gUnk_020390EC == 0)
+    if (gModule_IsLinkRace == 0)
         gUnk_020390FC = 1;
     gUnk_020391C8++;
     if (gUnk_020391C8 > 2) {
-        v = (*(vu8 *)&gUnk_020390D0);
+        v = (*(vu8 *)&gModule_VBlankWorkDone);
         if (v == 0) {
             gUnk_020391C8 = v;
             CpuFastSet(gUnk_0203ACE0, (void *)OAM, 0x100);
@@ -50,12 +50,12 @@ void sub_0833C5B0(void)
             } else {
                 sub_0833FDC4();
             }
-            (*(vu8 *)&gUnk_020390D0) = 1;
+            (*(vu8 *)&gModule_VBlankWorkDone) = 1;
         }
     }
     sub_0833D4E4();
     sub_0833A8BC();
     REG_IME = 0;
-    (*(vu16 *)&gUnk_03007FF8) |= 1;
+    (*(vu16 *)&gIntrCheck) |= 1;
     REG_IME = 1;
 }

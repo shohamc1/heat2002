@@ -4,8 +4,8 @@
 
 void sub_0833D57C(void)
 {
-    s32 x = gUnk_02039110[0];
-    s32 y = gUnk_02039110[1];
+    s32 x = gModule_Camera[0];
+    s32 y = gModule_Camera[1];
     s32 dx;
     s32 sx;
 
@@ -17,6 +17,6 @@ void sub_0833D57C(void)
     sx = sx + 0xFF610000;
     dx = dx >> 17;
     sx = sx >> 17;
-    gUnk_02039110[6] = dx + 0x78;
-    gUnk_02039110[7] = sx + 0x50;
+    gModule_Camera[6] = dx + 0x78;
+    gModule_Camera[7] = sx + 0x50;
 }

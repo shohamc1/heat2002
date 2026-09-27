@@ -12,7 +12,7 @@
 #include "functions.h"
 #include "variables.h"
 
-extern u16 gUnk_02002178[];
+extern u16 gLinkPhase0RecvWords[];
 
 u16 PackLinkKeys(u16 keys);
 u8 sub_080032E4(u16 seq, u8 next);
@@ -34,8 +34,8 @@ s32 ExchangeLinkInput(void)
     keys = ~*(u16 *)0x04000130;
     keys = PackLinkKeys(keys);
     for (i = 0; i < gNumLinkPlayers[0]; i++) {
-        *(u16 *)((u8 *)gUnk_0202EF40 + i * 8) = 0;
-        *(u16 *)((u8 *)gUnk_02002178 + i * 2) = 0;
+        *(u16 *)((u8 *)gLinkRecvWords + i * 8) = 0;
+        *(u16 *)((u8 *)gLinkPhase0RecvWords + i * 2) = 0;
     }
     phase = 0;
     done = 0;
@@ -43,29 +43,29 @@ s32 ExchangeLinkInput(void)
     do {
 top:
         if (retry > gNumLinkPlayers[0]) {
-            gUnk_0200216C = 0;
-            gUnk_02002170 = 0;
+            gLinkVBlankTimeout = 0;
+            gLinkTxSeqNum = 0;
             return 1;
         }
         goto send;
 
 timeout:
-        gUnk_0200216C = 0;
+        gLinkVBlankTimeout = 0;
         retry++;
         goto top;
 
 send:
         if (phase == 0)
-            gUnk_0202ED78[0] = (gUnk_02002170 << 11) | ((keys & 0x7F) | ((keys & 0xF) << 7)) | 0x8000;
+            gLinkSendWords[0] = (gLinkTxSeqNum << 11) | ((keys & 0x7F) | ((keys & 0xF) << 7)) | 0x8000;
         else
-            gUnk_0202ED78[0] = (gUnk_02002170 << 11) | ((keys & 0x7F) | ((keys & 0xF) << 7)) | 0x4000;
-        SioSendWord(gUnk_0202ED78[0]);
+            gLinkSendWords[0] = (gLinkTxSeqNum << 11) | ((keys & 0x7F) | ((keys & 0xF) << 7)) | 0x4000;
+        SioSendWord(gLinkSendWords[0]);
         for (;;) {
-            if (gUnk_03007FF8 & 0x80) {
-                *(volatile u16 *)&gUnk_03007FF8 &= 0xFF7F;
+            if (gIntrCheck & 0x80) {
+                *(volatile u16 *)&gIntrCheck &= 0xFF7F;
                 break;
             }
-            if (*(volatile u16 *)&gUnk_0200216C > 100)
+            if (*(volatile u16 *)&gLinkVBlankTimeout > 100)
                 goto timeout;
         }
         if (gLinkPlayerId[0] == 0) {
@@ -73,7 +73,7 @@ send:
                 ;
         }
         for (i = 0; i < gNumLinkPlayers[0]; i++)
-            recv[i] = *(u16 *)((u8 *)gUnk_0202EF40 + i * 8);
+            recv[i] = *(u16 *)((u8 *)gLinkRecvWords + i * 8);
         if (phase == 0) {
             n = 0;
             for (i = phase; i < gNumLinkPlayers[0]; i++) {
@@ -88,7 +88,7 @@ send:
             if (n == gNumLinkPlayers[0]) {
                 phase = 1;
                 for (i = 0; i < gNumLinkPlayers[0]; i++)
-                    gUnk_02002178[i] = recv[i];
+                    gLinkPhase0RecvWords[i] = recv[i];
             }
         } else {
             n2 = 0;
@@ -101,17 +101,17 @@ send:
                         n2++;
                     else if ((recv[i] >> 14) == 2 && sub_080032E4((recv[i] >> 11) & 7, 1)) {
                         n2++;
-                        recv[i] = gUnk_02002178[i];
+                        recv[i] = gLinkPhase0RecvWords[i];
                     }
                 }
             }
             if (n2 == gNumLinkPlayers[0]) {
                 for (i = 0; i < gNumLinkPlayers[0]; i++)
-                    gUnk_020020A0[i] = UnpackLinkKeys(recv[i] & 0x7F);
+                    gPlayerKeys[i] = UnpackLinkKeys(recv[i] & 0x7F);
                 done = 1;
             }
         }
     } while (done == 0);
-    gUnk_02002170 = (gUnk_02002170 + 1) & 7;
+    gLinkTxSeqNum = (gLinkTxSeqNum + 1) & 7;
     return 0;
 }

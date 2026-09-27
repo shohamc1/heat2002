@@ -47,19 +47,19 @@ struct Ent {
     s32 unk14;
     u8 pad18[0x34 - 0x18];
     u16 unk34;
-    u16 unk36;
-    u16 unk38;
+    u16 respawnHeading;
+    u16 respawnWaypoint;
     u16 unk3A;
     u16 unk3C;
     u8 pad3E[0x7C - 0x3E];
-    u8 unk7C;
+    u8 carState;
     u8 pad7D[0xA4 - 0x7D];
-    s32 unkA4[4];
-    s32 unkB4[4];
-    s32 unkC4[4];
-    s32 unkD4[4];
+    s32 cornerX[4];
+    s32 cornerZ[4];
+    s32 nextCornerX[4];
+    s32 nextCornerZ[4];
     u8 padE4[0x12C - 0xE4];
-    s32 unk12C;
+    s32 steerHeading;
 };
 
 struct Corner {
@@ -85,7 +85,7 @@ struct Res {
 };
 
 extern s32 gUnk_0202CC4C;
-extern s32 gUnk_0202CC50[];
+extern s32 gWallCollisionNormal[];
 extern s32 gUnk_0202CC64;
 extern s32 gUnk_0202CC70;
 
@@ -108,16 +108,16 @@ s32 CollideCarWithWalls(struct Ent *a)
     long long d0;
     long long d1;
 
-    if (a->unk7C == 1)
+    if (a->carState == 1)
         return 0;
     {
         for (i = 0; i != 4; i++) {
-            corner[i].f[0] = a->unkA4[i];
-            corner[i].f[1] = a->unkB4[i];
-            corner[i].f[2] = a->unkC4[i];
-            corner[i].f[3] = a->unkD4[i];
-            corner[i].f[4] = a->unkC4[i] - a->unkA4[i];
-            corner[i].f[5] = a->unkD4[i] - a->unkB4[i];
+            corner[i].f[0] = a->cornerX[i];
+            corner[i].f[1] = a->cornerZ[i];
+            corner[i].f[2] = a->nextCornerX[i];
+            corner[i].f[3] = a->nextCornerZ[i];
+            corner[i].f[4] = a->nextCornerX[i] - a->cornerX[i];
+            corner[i].f[5] = a->nextCornerZ[i] - a->cornerZ[i];
             boxes[i].unk00 = min_0800D5BC(corner[i].f[0], corner[i].f[2]) >> 16;
             boxes[i].unk08 = min_0800D5BC(corner[i].f[1], corner[i].f[3]) >> 16;
             boxes[i].unk04 = max_0800D5C8(corner[i].f[0], corner[i].f[2]) >> 16;
@@ -148,22 +148,22 @@ s32 CollideCarWithWalls(struct Ent *a)
         gUnk_0202CC70 = a->unk0C;
         gUnk_0202CC64 = a->unk14;
         gUnk_0202CC4C = t;
-        gUnk_0202CC50[1] = res.unk04;
-        gUnk_0202CC50[2] = res.unk08;
+        gWallCollisionNormal[1] = res.unk04;
+        gWallCollisionNormal[2] = res.unk08;
         a->unk0C -= d0;
         a->unk14 -= d1;
-        sub_0800B614(a->unkA4[res.unk0C], a->unkB4[res.unk0C]);
+        sub_0800B614(a->cornerX[res.unk0C], a->cornerZ[res.unk0C]);
         {
-            s32 v1 = gUnk_0801CD08[res.unk0D];
-            s32 v2 = gUnk_0801CD08[res.unk0D + 0x40];
+            s32 v1 = gSinTable[res.unk0D];
+            s32 v2 = gSinTable[res.unk0D + 0x40];
             u8 ang = a->unk34 >> 8;
-            s32 v3 = gUnk_0801CD08[ang];
-            s32 v4 = gUnk_0801CD08[ang + 0x40];
+            s32 v3 = gSinTable[ang];
+            s32 v4 = gSinTable[ang + 0x40];
 
             v = res.unk0D;
             if (v3 * v1 + v4 * v2 <= 0)
                 v = res.unk0E;
-            a->unk12C = v << 8;
+            a->steerHeading = v << 8;
             v = ((v << 8) - a->unk34) << 16;
         v >>= 20;
         a->unk3C += v;

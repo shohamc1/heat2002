@@ -26,24 +26,24 @@ void UpdateRaceHud(void)
     else
         car = &gCars[0];
     UpdateRaceTimers();
-    dest = (u16 *)(gUnk_08364B08[0] + 0x4C6);
-    DrawTime(dest, gUnk_02025218[0], gUnk_020251FC[0], gUnk_020253CC[0]);
-    if (gUnk_0200215C[0] == 0x0E || gUnk_0200215C[0] == 0x02) {
-        dest = (u16 *)(gUnk_08364B08[0] + 0x486);
-        if (gUnk_0202F030 != 0)
+    dest = (u16 *)(gTextLayerMapPtr[0] + 0x4C6);
+    DrawTime(dest, gLapMin[0], gLapSec[0], gLapMs[0]);
+    if (gGameMode[0] == 0x0E || gGameMode[0] == 0x02) {
+        dest = (u16 *)(gTextLayerMapPtr[0] + 0x486);
+        if (gIsTimeTrial != 0)
             DrawTime(dest,
-                         gUnk_02025380[gTrackId],
-                         gUnk_02025200[gTrackId],
-                         gUnk_020253A0[gTrackId]);
+                         gTrackRecordMin[gTrackId],
+                         gTrackRecordSec[gTrackId],
+                         gTrackRecordMs[gTrackId]);
     }
     v = -car->speed >> 13;
     v = v * 3 / 2;
     if (v < 0)
         v = 0;
     sub_08005A2C(v);
-    if (gUnk_0200215C[0] != 2 && gUnk_0200215C[0] != 0x0E) {
+    if (gGameMode[0] != 2 && gGameMode[0] != 0x0E) {
         DrawRacePosition(car->racePosition + 1);
-        if (car->unk18E != 0 || (u8)(gUnk_0200215C[0] - 3) <= 1)
+        if (car->lapStartedFlag != 0 || (u8)(gGameMode[0] - 3) <= 1)
             DrawLapCounter((*(s8 *)&car->lap) + 1, gNumLaps);
         else
             DrawLapCounter(999, gNumLaps);

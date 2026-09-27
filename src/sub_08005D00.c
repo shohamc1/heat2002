@@ -21,7 +21,7 @@ void DrawLapCounter(s32 a, s32 b)
     if (a > b)
         a = b;
     sub_0800649C((u8 *)((u32)gUnk_0806C780), 0, 1);
-    base = (u8 *)gUnk_08364B08[0];
+    base = (u8 *)gTextLayerMapPtr[0];
     p = base + 8;
     if (a > 99) {
         DrawBigDigit((u16 *)p, sub_08017230(a, 100));

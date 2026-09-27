@@ -24,8 +24,8 @@ void sub_0801137C(void)
     p = (struct Car **)gCarOrder;
     for (i = 0; i != gNumLinkPlayers[0]; i++) {
         car = *p;
-        SplitMilliseconds(car->unk16C, &q1, &q2, &q3);
-        if (car == &gCars[gLinkPlayerId[0]] && (gUnk_0202539C & 0x10)) {
+        SplitMilliseconds(car->finishTime, &q1, &q2, &q3);
+        if (car == &gCars[gLinkPlayerId[0]] && (gMenuBlinkCounter & 0x10)) {
             DrawText(gUnk_0829F2F0, 4, 2 * i + 4, 1);
         } else {
             DrawText((u8 *)(GetString(i + 0xC0)), 1, 2 * i + 4, 1);
@@ -44,5 +44,5 @@ void sub_0801137C(void)
         }
         p++;
     }
-    gUnk_0202539C++;
+    gMenuBlinkCounter++;
 }

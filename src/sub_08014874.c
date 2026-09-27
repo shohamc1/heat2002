@@ -17,7 +17,7 @@ u8 sub_08014874(u8 a, u8 b)
         sub_08014708(a, v);
     retry:
         v = MenuMoveVertical(gKeysPressed, v, (b >> 2) * 4, (b >> 2) * 4 + 3);
-        if ((s8)gUnk_0202EF60[v] == -1)
+        if ((s8)gChallengeStatus[v] == -1)
             goto retry;
         if (gKeysPressed & 3)
             sel = 1;

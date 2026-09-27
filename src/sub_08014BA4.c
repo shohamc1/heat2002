@@ -23,7 +23,7 @@ u8 sub_08014BA4(void)
        functions.h; call through the old signature (solved-walls 31). */
     ((void (*)(u8))sub_08014BA0)(0);
     sub_080047DC();
-    gUnk_020020C0 = v;
+    gVBlankWorkDone = v;
     WaitForVBlank();
     FadeToBrightenedPalette((u32)buf, 0x0F);
     sel = 0x40;
@@ -36,7 +36,7 @@ u8 sub_08014BA4(void)
         ReadKeys();
         if (gKeysPressed & 1)
             sel = w;
-        gUnk_020020C0 = 0;
+        gVBlankWorkDone = 0;
         WaitForVBlank();
     } while (sel != 0);
     FadeToColor(0, 0x0F);

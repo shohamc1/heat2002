@@ -4,9 +4,9 @@
 
 void sub_08008090(void)
 {
-    gUnk_0202CBE0 = 0;
-    gUnk_0202CBC0[0] = 0;
-    gUnk_0202CBC0[1] = 0;
-    gUnk_0202CBC0[2] = 0;
-    gUnk_0202CAD0 = 1;
+    gPitMenuCursorRow = 0;
+    gPitServiceSelections[0] = 0;
+    gPitServiceSelections[1] = 0;
+    gPitServiceSelections[2] = 0;
+    gPitMenuActive = 1;
 }

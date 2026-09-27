@@ -21,9 +21,9 @@ void sub_08006738(u8 *str)
     while ((c = *str++) != 0) {
         ch = c - 0x20;
         base = (ch >> 5) * 64 + 0x60;
-        tile = &gUnk_08332DC8[base + (ch & 0x1F)];
-        vp[0] = pal | gUnk_08333208[tile[0]];
-        vp[0x20] = pal | gUnk_08333208[tile[0x20]];
+        tile = &gTextCharMap[base + (ch & 0x1F)];
+        vp[0] = pal | gTextGlyphTileIndices[tile[0]];
+        vp[0x20] = pal | gTextGlyphTileIndices[tile[0x20]];
         vp++;
         i++;
     }
@@ -31,9 +31,9 @@ void sub_08006738(u8 *str)
     while ((c = *str++) != 0) {
         ch = c - 0x20;
         base = (ch >> 5) * 64 + 0x60;
-        tile = &gUnk_08332DC8[base + (ch & 0x1F)];
-        vp[0] = pal | gUnk_08333208[tile[0]];
-        vp[0x20] = pal | gUnk_08333208[tile[0x20]];
+        tile = &gTextCharMap[base + (ch & 0x1F)];
+        vp[0] = pal | gTextGlyphTileIndices[tile[0]];
+        vp[0x20] = pal | gTextGlyphTileIndices[tile[0x20]];
         vp++;
         i++;
     }
@@ -41,9 +41,9 @@ void sub_08006738(u8 *str)
         c = *gUnk_08365340;
         ch = c - 0x20;
         base = (ch >> 5) * 64 + 0x60;
-        tile = &gUnk_08332DC8[base + (ch & 0x1F)];
-        vp[0] = pal | gUnk_08333208[tile[0]];
-        vp[0x20] = pal | gUnk_08333208[tile[0x20]];
+        tile = &gTextCharMap[base + (ch & 0x1F)];
+        vp[0] = pal | gTextGlyphTileIndices[tile[0]];
+        vp[0x20] = pal | gTextGlyphTileIndices[tile[0x20]];
         i++;
         vp++;
     }
@@ -54,16 +54,16 @@ void sub_08006738(u8 *str)
            register sum off the table base, as in the ROM. */
         ch = ' ' - 0x20;
         base = (ch >> 5) * 64 + 0x60;
-        tile = &gUnk_08332DC8[base + (ch & 0x1F)];
-        vp[0] = pal | gUnk_08333208[tile[0]];
-        vp[0x20] = pal | gUnk_08333208[tile[0x20]];
-        vp[0x40] = pal | gUnk_08333208[tile[0x20]];
-        vp[0x60] = pal | gUnk_08333208[tile[0x20]];
+        tile = &gTextCharMap[base + (ch & 0x1F)];
+        vp[0] = pal | gTextGlyphTileIndices[tile[0]];
+        vp[0x20] = pal | gTextGlyphTileIndices[tile[0x20]];
+        vp[0x40] = pal | gTextGlyphTileIndices[tile[0x20]];
+        vp[0x60] = pal | gTextGlyphTileIndices[tile[0x20]];
         vp++;
     }
     vp = (vu16 *)0x06008000;
     for (j = 0; j != 32; j++) {
-        *vp = pal | gUnk_08333208[tile[0x20]];
+        *vp = pal | gTextGlyphTileIndices[tile[0x20]];
         vp++;
     }
 }

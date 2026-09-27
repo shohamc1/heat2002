@@ -15,8 +15,8 @@ void sub_083400D4(s32 a1, s32 a2, u32 a3, u32 a4, u8 a5)
     u32 t;
     u32 v;
 
-    dx = (a1 >> 16) - gUnk_02039110[6];
-    dy = (a2 >> 16) - gUnk_02039110[7];
+    dx = (a1 >> 16) - gModule_Camera[6];
+    dy = (a2 >> 16) - gModule_Camera[7];
     dy += 0x40;
     dx += 0x70;
     if (dx + 0x10 <= 0x100 && dy <= 0xA0 && dy >= -0x10) {

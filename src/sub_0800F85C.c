@@ -6,17 +6,17 @@
 void SerialIntr(void)
 {
     if ((REG_SIOCNT & 0x40) == 0) {
-        gUnk_0202EF40[0] = REG_SIOMULTI0;
-        gUnk_0202EF40[4] = REG_SIOMULTI1;
-        gUnk_0202EF40[8] = REG_SIOMULTI2;
-        gUnk_0202EF40[12] = REG_SIOMULTI3;
+        gLinkRecvWords[0] = REG_SIOMULTI0;
+        gLinkRecvWords[4] = REG_SIOMULTI1;
+        gLinkRecvWords[8] = REG_SIOMULTI2;
+        gLinkRecvWords[12] = REG_SIOMULTI3;
     } else {
-        gUnk_0202EF40[0] = 0;
-        gUnk_0202EF40[4] = 0;
-        gUnk_0202EF40[8] = 0;
-        gUnk_0202EF40[12] = 0;
+        gLinkRecvWords[0] = 0;
+        gLinkRecvWords[4] = 0;
+        gLinkRecvWords[8] = 0;
+        gLinkRecvWords[12] = 0;
     }
     REG_IME = 0;
-    gUnk_03007FF8 |= 0x80;
+    gIntrCheck |= 0x80;
     REG_IME = 1;
 }

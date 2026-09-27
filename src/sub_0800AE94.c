@@ -20,7 +20,7 @@ void sub_0800AE94(u32 a)
         BeginFadeToColor(0xA, 0);
         WaitForVBlank();
         REG_DISPCNT &= ~DISPCNT_OBJ_ON;
-        gUnk_020021E0 = 2;
+        gRaceEndState = 2;
         RemoveTask(a);
         FreeTask(a);
     }

@@ -8,5 +8,5 @@ void sub_0833E3F8(u16 *dest, u8 idx)
     u16 v;
 
     v = *(idx + gUnk_020215EA);
-    *dest = (gUnk_02022254[v] & 0xFFF) | 0xE000;
+    *dest = (gModule_FontTileEntries[v] & 0xFFF) | 0xE000;
 }

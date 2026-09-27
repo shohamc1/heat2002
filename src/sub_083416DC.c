@@ -13,11 +13,11 @@ struct Car {
     u8 pad0C[0x34 - 0x0C];
     u16 unk34;
     u8 pad36[0x7D - 0x36];
-    u8 unk7D;
+    u8 finished;
     u8 pad7E[0x162 - 0x7E];
     u8 unk162;
     u8 pad163[0x172 - 0x163];
-    u8 unk172;
+    u8 behindBgFlag;
     u8 pad173[0x190 - 0x173];
 };
 
@@ -49,7 +49,7 @@ void sub_083416DC(struct Car *car, u8 idx)
     y = pos[1];
     pos[0] -= 0x18;
     pos[1] -= 0x10;
-    if (car->unk7D != 0 && gUnk_020390EC != 0 && (gUnk_020390AC & 8) != 0)
+    if (car->finished != 0 && gModule_IsLinkRace != 0 && (gModule_FrameCounter & 8) != 0)
         return;
     k = (car->unk34 + 0x200) >> 10;
     k += 0x28;
@@ -59,7 +59,7 @@ void sub_083416DC(struct Car *car, u8 idx)
     if (flip != 0)
         k = 0x20 - k;
     t5 = (u32)(sub_0833FD78(gUnk_02026E1C[car->unk162]) << 24) >> 12;
-    if (car->unk172 != 0)
+    if (car->behindBgFlag != 0)
         t5 |= 0x800;
     else
         t5 |= 0x400;
@@ -97,9 +97,9 @@ void sub_083416DC(struct Car *car, u8 idx)
             sub_0833D6D8(a, b, (u16)(y + 0x40));
         }
     }
-    if (gUnk_020390EC != 0) {
+    if (gModule_IsLinkRace != 0) {
         row = gUnk_0202772C[idx];
-        row += (gUnk_020390AC >> 1) % 7;
+        row += (gModule_FrameCounter >> 1) % 7;
         pos[1] -= 0xC;
         pos[0] += 0x10;
         k = (pos[1] & 0xFF) | ((pos[0] & 0x1FF) << 16) | 0x40000000;

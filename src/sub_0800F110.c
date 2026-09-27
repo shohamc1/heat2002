@@ -4,5 +4,5 @@
 
 u32 GetDriverName(u8 r0)
 {
-    return gUnk_083FDB98[r0][0];
+    return gDriverRoster[r0][0];
 }

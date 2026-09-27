@@ -17,9 +17,9 @@ u8 sub_08343234(u8 *a)
     u8 *p;
     u32 count;
 
-    count = gUnk_020390A0[0];
-    if (gUnk_020390EC != 0)
-        count = gUnk_020390BC[0];
+    count = gModule_NumCars[0];
+    if (gModule_IsLinkRace != 0)
+        count = gModule_NumLinkPlayers[0];
     p = (u8 *)gModule_Cars;
     for (i = 0; i != count; i++, p += 0x190)
     {

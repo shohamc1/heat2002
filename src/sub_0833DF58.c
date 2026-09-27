@@ -17,31 +17,31 @@ void sub_0833DF58(void)
     u8 i;
     u8 n;
 
-    if (gUnk_0203B864 == 0)
+    if (gModule_NumFinishedCars == 0)
         return;
     p = gModule_Cars;
-    if (gUnk_020390EC != 0)
-        p = &gModule_Cars[gUnk_0203E1B0];
-    if (p->unk7D == 0)
+    if (gModule_IsLinkRace != 0)
+        p = &gModule_Cars[gModule_LinkPlayerId];
+    if (p->finished == 0)
         return;
     r7v = 5;
-    if (gUnk_020390EC != 0)
+    if (gModule_IsLinkRace != 0)
         r7v = 2;
     r8v = 1;
-    for (i = 0; i != gUnk_0203B864; i++)
+    for (i = 0; i != gModule_NumFinishedCars; i++)
     {
-        u32 *tbl = gUnk_020251B8;
+        u32 *tbl = gModule_TextLayerMapPtr;
 
-        n = gUnk_0203B868[i];
+        n = gModule_FinishedCarOrder[i];
         e = &gModule_Cars[n];
-        if (gUnk_020390EC != 0)
+        if (gModule_IsLinkRace != 0)
             base = (0x14 + tbl[0]) + r7v * 128;
         else
             base = (0x14 + tbl[0]) + r7v * 64;
         sub_0833E3C8((u16 *)base, r8v);
         sub_0833DDB8(base, e->finishMin, e->finishSec, e->finishMs);
-        if (gUnk_020390EC != 0)
-            sub_08341A30(0x40, r7v * 16, gUnk_0203B868[i]);
+        if (gModule_IsLinkRace != 0)
+            sub_08341A30(0x40, r7v * 16, gModule_FinishedCarOrder[i]);
         r7v++;
         r8v++;
     }

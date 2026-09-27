@@ -12,7 +12,7 @@ struct Unk08340964 {
     s32 unk144;
     s32 unk148;
     u8 pad14C[0x180 - 0x14C];
-    u8 unk180;
+    u8 torqueDampTimer;
 };
 
 
@@ -32,43 +32,43 @@ void sub_08340964(u8 which, struct Unk08340964 *obj)
     s32 t;
     s32 *pa;
 
-    cos = gUnk_0200C3E8[((gUnk_0203DE10 + 0x40) & 0xFF) + 0x40];
-    sin = gUnk_0200C3E8[(gUnk_0203DE10 + 0x40) & 0xFF];
+    cos = gModule_SinTable[((gUnk_0203DE10 + 0x40) & 0xFF) + 0x40];
+    sin = gModule_SinTable[(gUnk_0203DE10 + 0x40) & 0xFF];
     prod = cos * gUnk_0203D51C + sin * gUnk_0203D4F4;
     dist = prod >> 8;
     if (which != 0) {
-        if (gUnk_0203E0E0 != 0) {
+        if (gModule_DamagePitsEnabled != 0) {
             obj->unk8C += ((prod >> 17) < 0 ? -(prod >> 17) : (prod >> 17));
             obj->unk90 += ((prod >> 17) < 0 ? -(prod >> 17) : (prod >> 17));
         }
         if (dist < -gUnk_0203D4E4) {
             dist = -gUnk_0203D4E4 / 2;
             sub_08342ED0(gUnk_0203DD38, 2);
-            if (gUnk_020390EC == 0) {
+            if (gModule_IsLinkRace == 0) {
                 if (gUnk_0203DD38 == 0)
                     goto e2check;
                 goto tail;
             }
-            if (gUnk_0203DD38 != gUnk_0203E1B0)
+            if (gUnk_0203DD38 != gModule_LinkPlayerId)
                 goto tail;
         } else if (dist > gUnk_0203D4E4) {
             dist = gUnk_0203D4E4 / 2;
             sub_08342ED0(gUnk_0203DD38, 3);
-            if (gUnk_020390EC == 0) {
+            if (gModule_IsLinkRace == 0) {
                 if (gUnk_0203DD38 == 0)
                     goto e2check;
                 goto tail;
             }
-            if (gUnk_0203DD38 != gUnk_0203E1B0)
+            if (gUnk_0203DD38 != gModule_LinkPlayerId)
                 goto tail;
         } else {
             goto tail;
         }
 e2check:
-        if (gUnk_0203E120[3] != 0 && gUnk_020390F0[0] == 0 && gUnk_020391F0 == 0)
+        if (gModule_Options[3] != 0 && gModule_IsDemo[0] == 0 && gModule_RaceEndState == 0)
             sub_0833A8C8(0xB);
     } else {
-        if (gUnk_0203E0E0 != 0) {
+        if (gModule_DamagePitsEnabled != 0) {
             obj->unk94 += ((prod >> 17) < 0 ? -(prod >> 17) : (prod >> 17));
             obj->unk98 += ((prod >> 17) < 0 ? -(prod >> 17) : (prod >> 17));
         }
@@ -85,15 +85,15 @@ tail:
     ti += 0x40;
     ti -= gUnk_0203DD2C;
     ti &= 0xFF;
-    mm = gUnk_0200C3E8[ti] * m;
+    mm = gModule_SinTable[ti] * m;
     m = mm >> 8;
     m <<= 7;
     t = m;
     if (m < 0)
         t = m + 0x7FFF;
     m = t >> 15;
-    if (obj->unk180 != 0) {
-        obj->unk180--;
+    if (obj->torqueDampTimer != 0) {
+        obj->torqueDampTimer--;
         obj->unk148 += t >> 16;
     } else {
         obj->unk148 += m;

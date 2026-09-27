@@ -11,19 +11,19 @@ void InitNewSaveData(void)
     gOptions[4] = 0;
     i = 0;
     do {
-        gUnk_0202EF80[i] = 1;
+        gProgressFlags[i] = 1;
         i++;
     } while (i != 0x0A);
-    gUnk_0202EF08[0] = 1;
-    gUnk_0202EF08[1] = 0;
-    gUnk_0202EF08[2] = 0;
-    gUnk_0202EF08[3] = 0;
-    gUnk_0202EF08[4] = 0;
+    gChallengeCategoryUnlocked[0] = 1;
+    gChallengeCategoryUnlocked[1] = 0;
+    gChallengeCategoryUnlocked[2] = 0;
+    gChallengeCategoryUnlocked[3] = 0;
+    gChallengeCategoryUnlocked[4] = 0;
     i = 0;
     do {
-        gUnk_0202EF60[i] |= 0xFF;
+        gChallengeStatus[i] |= 0xFF;
         i++;
     } while (i != 0x10);
-    gUnk_0202EF80[5] = 0;
-    gUnk_0202EF80[3] = 1;
+    gProgressFlags[5] = 0;
+    gProgressFlags[3] = 1;
 }

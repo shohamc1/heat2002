@@ -15,8 +15,8 @@ void sub_08342D10(void)
         r[6] = 0x40;
         r[3] = (u32)sub_08342C3C;
         sub_0833FF94((u32)r);
-        gUnk_0203DE28[0] = gUnk_0203B6C8[0];
-        gUnk_0203DE3C[0] = gUnk_0203B6A8[0];
-        gUnk_0203DE20[0] = gUnk_0203B858[0];
+        gUnk_0203DE28[0] = gModule_LapMin[0];
+        gUnk_0203DE3C[0] = gModule_LapSec[0];
+        gUnk_0203DE20[0] = gModule_LapMs[0];
     }
 }

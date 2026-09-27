@@ -11,9 +11,9 @@ void SaveTrackRecords(void)
     StopAllSongsAndVSyncOff();
     dst = gUnk_0202F170;
     i = 0;
-    s4 = gUnk_020253A0;
-    s3 = gUnk_02025200;
-    s2 = gUnk_02025380;
+    s4 = gTrackRecordMs;
+    s3 = gTrackRecordSec;
+    s2 = gTrackRecordMin;
     do {
         *dst++ = *s2;
         *dst++ = *s3;

@@ -12,16 +12,16 @@ u16 sub_08004DB4(void)
     u16 *base;
     u32 mask;
     u32 j;
-    register u8 *flag asm("r4") = &gUnk_020253C4;
+    register u8 *flag asm("r4") = &gLinkMenuPlayerIndex;
 
     if (*flag == 0xFF) {
         keys = 0;
         i = 0;
         count = gNumLinkPlayers[0];
-        newp = &gUnk_02025258;
-        oldp = &gUnk_020253BC;
+        newp = &gLinkMenuKeysPressed;
+        oldp = &gLinkMenuKeysPrev;
         if (keys != count) {
-            base = gUnk_020020A0;
+            base = gPlayerKeys;
             mask = 8;
             j = count;
             do {
@@ -36,9 +36,9 @@ u16 sub_08004DB4(void)
         *oldp = keys;
         return *newp;
     } else {
-        keys = gUnk_020020A0[*flag];
-        gUnk_02025258 = keys & ~gUnk_020253BC;
-        gUnk_020253BC = keys;
-        return gUnk_02025258;
+        keys = gPlayerKeys[*flag];
+        gLinkMenuKeysPressed = keys & ~gLinkMenuKeysPrev;
+        gLinkMenuKeysPrev = keys;
+        return gLinkMenuKeysPressed;
     }
 }

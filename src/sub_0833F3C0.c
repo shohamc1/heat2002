@@ -20,7 +20,7 @@ void sub_0833F3C0(u8 *str, u32 y, u8 shade)
         len++;
     }
     w = (u8)((0x1E - len) / 2);
-    dest = (u16 *)(*(u32 *)&gUnk_020251B8);
+    dest = (u16 *)(*(u32 *)&gModule_TextLayerMapPtr);
     dest = (u16 *)((u32)dest + (((y << 5) + w) << 1));
     e = 0xE0 << 8;
     if (shade != 0)
@@ -32,7 +32,7 @@ void sub_0833F3C0(u8 *str, u32 y, u8 shade)
         do
         {
             gw = gUnk_0201F590[(u8)(c - 0x20)];
-            *dest = e | gUnk_0201F9D0[gw];
+            *dest = e | gModule_TextGlyphTileIndices[gw];
             dest++;
             c = *str;
             str++;

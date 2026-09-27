@@ -13,9 +13,9 @@ void sub_083415B0(u8 idx)
     u32 off;
     u32 j;
 
-    count = gUnk_020390A0[0];
-    if (gUnk_020390EC != 0)
-        count = gUnk_020390BC[0];
+    count = gModule_NumCars[0];
+    if (gModule_IsLinkRace != 0)
+        count = gModule_NumLinkPlayers[0];
     result = 0;
     p = (u8 *)gModule_Cars;
     off = idx * 400;

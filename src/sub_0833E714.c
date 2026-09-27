@@ -6,10 +6,10 @@ void sub_0833E714(s32 arg)
 {
     u16 *q;
     u16 *p;
-    if (gUnk_0203916C[0] == 0x0A || gUnk_0203916C[0] == 0x02)
+    if (gModule_GameMode[0] == 0x0A || gModule_GameMode[0] == 0x02)
         return;
-    if (arg == 0x64 || gUnk_0203916C[0] == 5) {
-        p = (u16 *)gUnk_020251B8[0];
+    if (arg == 0x64 || gModule_GameMode[0] == 5) {
+        p = (u16 *)gModule_TextLayerMapPtr[0];
         p[0x16] = 0xE047;
         p[0x17] = 0xE047;
         p[0x18] = 0xE047;
@@ -32,7 +32,7 @@ void sub_0833E714(s32 arg)
     sub_0833EF0C((u8 *)((u32)gUnk_0200CF70), 0x16, 0);
     if (arg <= 9) {
         register u16 *w asm("r0");
-        p = (u16 *)gUnk_020251B8[0];
+        p = (u16 *)gModule_TextLayerMapPtr[0];
         p[0x1C] = 0xE047;
         p[0x1D] = 0xE047;
         w = p + 0x3C;
@@ -41,10 +41,10 @@ void sub_0833E714(s32 arg)
         w -= 0x23;
         sub_0833E36C((u16 *)((u32)w), (u8)arg);
     } else if (arg <= 0x13) {
-        sub_0833E36C((u16 *)(gUnk_020251B8[0] + 0x34), 1);
-        sub_0833E36C((u16 *)(gUnk_020251B8[0] + 0x38), (u8)(arg - 0x0A));
+        sub_0833E36C((u16 *)(gModule_TextLayerMapPtr[0] + 0x34), 1);
+        sub_0833E36C((u16 *)(gModule_TextLayerMapPtr[0] + 0x38), (u8)(arg - 0x0A));
     } else {
-        sub_0833E36C((u16 *)(gUnk_020251B8[0] + 0x34), 2);
-        sub_0833E36C((u16 *)(gUnk_020251B8[0] + 0x38), (u8)(arg - 0x14));
+        sub_0833E36C((u16 *)(gModule_TextLayerMapPtr[0] + 0x34), 2);
+        sub_0833E36C((u16 *)(gModule_TextLayerMapPtr[0] + 0x38), (u8)(arg - 0x14));
     }
 }

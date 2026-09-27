@@ -6,7 +6,7 @@
 
 /* Defined here (not symbols.ld): the first RAM variable moved into C,
    per the phase-6 mechanism proof in docs/extern-headers-plan.md. */
-EWRAM_DATA u8 gUnk_020021B8 = 0;
+EWRAM_DATA u8 gVBlankWorkPhase = 0;
 
 void m4aSoundVSync(void);
 void FlushTrackBgBuffers(void);
@@ -19,10 +19,10 @@ void MainVBlankCallback(void)
     u8 v;
 
     m4aSoundVSync();
-    (*(vu16 *)&gUnk_02002124)++;
-    gUnk_0200216C++;
+    (*(vu16 *)&gVBlankCounter)++;
+    gLinkVBlankTimeout++;
     if (gIsLinkRace != 0) {
-        if ((*(vu16 *)&gUnk_02002124) > 1)
+        if ((*(vu16 *)&gVBlankCounter) > 1)
             gUnk_020020EC = 1;
         else
             gUnk_020020EC = 0;
@@ -31,13 +31,13 @@ void MainVBlankCallback(void)
     }
     if (gIsLinkRace == 0)
         gUnk_020020EC = 1;
-    gUnk_020021B8++;
-    if (gUnk_020021B8 > 2) {
-        v = (*(vu8 *)&gUnk_020020C0);
+    gVBlankWorkPhase++;
+    if (gVBlankWorkPhase > 2) {
+        v = (*(vu8 *)&gVBlankWorkDone);
         if (v == 0) {
-            gUnk_020021B8 = v;
+            gVBlankWorkPhase = v;
             CpuFastSet(gUnk_02024830, (void *)OAM, 0x100);
-            if (gUnk_020021C4 != 0) {
+            if (gBgScrollUpdateEnabled != 0) {
                 REG_BG3HOFS = gUnk_02022DE0;
                 REG_BG3VOFS = gUnk_02022DE8;
                 REG_BG2HOFS = gUnk_02022DF8;
@@ -51,12 +51,12 @@ void MainVBlankCallback(void)
             } else {
                 UploadPendingGfx();
             }
-            (*(vu8 *)&gUnk_020020C0) = 1;
+            (*(vu8 *)&gVBlankWorkDone) = 1;
         }
     }
     FlushPaletteBuffer();
     m4aSoundMain();
     REG_IME = 0;
-    (*(vu16 *)&gUnk_03007FF8) |= 1;
+    (*(vu16 *)&gIntrCheck) |= 1;
     REG_IME = 1;
 }

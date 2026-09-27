@@ -1,5 +1,5 @@
 #include "global.h"
-/* no data.h: it declares gUnk_08364B08 without const,
+/* no data.h: it declares gTextLayerMapPtr without const,
    which the users' bytes need; this file needs nothing else from it. */
 
 extern const u8 gUnk_0806C664[];
@@ -123,9 +123,9 @@ const u8 gUnk_08364ADC[] = INCBIN_U8("build/assets/unknown/data_08364ADC.bin");
 const u32 gUnk_08364AE0[] = INCBIN_U32("build/assets/unknown/data_08364AE0.bin");
 const u8 gUnk_08364AF4[] = INCBIN_U8("build/assets/unknown/data_08364AF4.bin");
 // Its users declare it as u16 *x, u32 *x, u32 x, u32 x[], vu32 x[].
-const u32 gUnk_08364B08[] = INCBIN_U32("build/assets/unknown/data_08364B08.bin");
+const u32 gTextLayerMapPtr[] = INCBIN_U32("build/assets/unknown/data_08364B08.bin");
 // Its users declare it as struct Track x[].
-const u32 gUnk_08364B0C[] = {
+const u32 gTrackData[] = {
     (u32)gUnk_08086D6C, (u32)gUnk_080954F8, 0, (u32)gUnk_0807EDEC,
     (u32)gUnk_0808C638, 0, (u32)gUnk_0808A98C, 0, (u32)gUnk_0807CE30,
     (u32)gUnk_0808AB8C, 0, 0x7D, 0x64, 0x7D, 0x64, 0, 0, (u32)gUnk_08282468,

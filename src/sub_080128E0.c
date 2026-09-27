@@ -13,11 +13,11 @@ u8 sub_080128E0(void)
     u8 *p;
 
     gNumLaps = 2;
-    gUnk_0202ED84 = gUnk_083FDD48[gUnk_0202EDD8];
-    gTrackId = gUnk_083FDD34[gUnk_0202EDD8];
-    gUnk_0202EEE4 = 0;
-    gCars[0].unk16C = 0;
-    gCars[0].unk7D = 1;
+    gUnk_0202ED84 = gUnk_083FDD48[gChampionshipIndex];
+    gTrackId = gUnk_083FDD34[gChampionshipIndex];
+    gChallengeResult = 0;
+    gCars[0].finishTime = 0;
+    gCars[0].finished = 1;
     AssignRandomDrivers();
     sub_08016D28(1);
     SortCarsByTime();
@@ -30,6 +30,6 @@ u8 sub_080128E0(void)
         m4aSongNumStart(3);
     ResetBgScroll();
     /* sub_08012874: old prototype took u8; the matched definition takes s8 */
-    ((void (*)(u8))sub_08012874)(gUnk_0202EEE4);
-    return gUnk_0202EEE4;
+    ((void (*)(u8))sub_08012874)(gChallengeResult);
+    return gChallengeResult;
 }

@@ -52,7 +52,7 @@ void GameMain(void)
     *p = 0x740;
     p -= 0x28;
     *p = 0x1D40;
-    gUnk_02002124 = z2;
+    gVBlankCounter = z2;
     for (;;)
         MainMenuLoop();
 }

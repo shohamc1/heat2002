@@ -5,13 +5,13 @@
 #include "variables.h"
 #include "car.h"
 
-extern u8 gUnk_02002144;           /* 0x02002144 */
+extern u8 gExitRaceLoop;           /* 0x02002144 */
 extern u8 gUnk_02002150[];         /* 0x02002150 */
 extern u8 gUnk_02002160[];         /* 0x02002160 */
 extern u32 gUnk_020021D0[];        /* 0x020021D0 */
 extern u8 gUnk_020021EC[];         /* 0x020021EC */
 extern u8 gUnk_020021F0;           /* 0x020021F0 */
-extern u8 gUnk_02001F60[];         /* 0x02001F60 */
+extern u8 gEngineSoundPlayer[];         /* 0x02001F60 */
 extern u8 gUnk_08364ADC;           /* 0x08364ADC */
 extern u32 gUnk_08364AE0[];        /* 0x08364AE0 */
 extern u8 gUnk_08364AF4[];         /* 0x08364AF4 */
@@ -33,29 +33,29 @@ u8 RunRace(u32 a, u8 b)
     u32 off;
     u8 *dest;
 
-    gUnk_020020F0 = 0;
-    gUnk_020021BC = 0;
-    gUnk_02002144 = 0;
-    gUnk_0200215C[0] = b;
+    gNewTrackRecord = 0;
+    gRaceAborted = 0;
+    gExitRaceLoop = 0;
+    gGameMode[0] = b;
     off = a;
     dest = (u8 *)((u32)&gIsDemo + off - a);
     *dest = a;
     if (b != 0x0F)
         gNumCars[0] = 0x18;
-    if (gUnk_0200215C[0] == 0x02)
+    if (gGameMode[0] == 0x02)
         gNumCars[0] = 1;
-    if (gUnk_0200215C[0] == 0x11)
+    if (gGameMode[0] == 0x11)
         gNumCars[0] = 1;
-    if (gUnk_0200215C[0] == 0x0D)
+    if (gGameMode[0] == 0x0D)
         gNumCars[0] = 1;
-    if (gUnk_0200215C[0] == 0x0E)
+    if (gGameMode[0] == 0x0E)
         gNumCars[0] = 1;
     if (gIsDemo != 0)
         gNumCars[0] = 2;
     if (gTrackId > 6 && gTrackId != 8 && gTrackId != 9
         && gTrackId != 0x0A && gTrackId != 0x0B)
         gNumCars[0] = 1;
-    if (gUnk_0200215C[0] == 3 || gUnk_0200215C[0] == 4)
+    if (gGameMode[0] == 3 || gGameMode[0] == 4)
         gNumCars[0] = gNumLinkPlayers[0];
     gUnk_020021D0[0] = 0;
     gUnk_020021D0[1] = 0;
@@ -74,87 +74,87 @@ u8 RunRace(u32 a, u8 b)
     sub_080045D8();
     ClearOamBuffer();
     sub_080047DC();
-    gUnk_020021C4 = 1;
-    (*(vu8 *)&gUnk_020020C0) = 0;
-    while ((*(vu8 *)&gUnk_020020C0) == 0)
+    gBgScrollUpdateEnabled = 1;
+    (*(vu8 *)&gVBlankWorkDone) = 0;
+    while ((*(vu8 *)&gVBlankWorkDone) == 0)
         ;
     WaitForVBlank();
     gUnk_020020EC = 0;
     EnableRaceDisplay();
-    if (gUnk_0200215C[0] == 0x0E)
+    if (gGameMode[0] == 0x0E)
         sub_08006388();
     else
         InitRaceHud();
     if (gIsDemo != 0) {
         if (gOptions[2] != 0)
             m4aSongNumStart(1);
-        gUnk_020020C4 = 1;
+        gRaceStarted = 1;
         gUnk_08364ADC = 2;
     }
     if (gIsDemo != 0) {
         for (i = 0; i != 100; i++)
             UpdateAllCars();
         sub_0800AF20();
-    } else if (gUnk_0200215C[0] == 3 || gUnk_0200215C[0] == 4) {
+    } else if (gGameMode[0] == 3 || gGameMode[0] == 4) {
         sub_0800B334();
     }
-    if (gUnk_0200215C[0] != 9 && gUnk_0200215C[0] != 2 && gUnk_0200215C[0] != 7
+    if (gGameMode[0] != 9 && gGameMode[0] != 2 && gGameMode[0] != 7
         && gIsDemo == 0 && gOptions[3] != 0)
         m4aSongNumStart(0x1E);
     if (gIsDemo == 0)
         sub_08002950();
-    if (gUnk_0200215C[0] == 9 || gUnk_0200215C[0] == 0x0D || gUnk_0200215C[0] == 0x0E
-        || gUnk_0200215C[0] == 0x0F || gUnk_0200215C[0] == 0x11) {
-        gUnk_020020A8 = 1;
+    if (gGameMode[0] == 9 || gGameMode[0] == 0x0D || gGameMode[0] == 0x0E
+        || gGameMode[0] == 0x0F || gGameMode[0] == 0x11) {
+        gPreRaceSimActive = 1;
         for (i = 0; i != 20; i++)
             UpdateAllCars();
-        gUnk_020020A8 = 0;
+        gPreRaceSimActive = 0;
     }
-    gUnk_020020A8 = 0;
+    gPreRaceSimActive = 0;
     if (gIsLinkRace != 0) {
         SetCameraTarget((struct UnkStruct080043F8 *)(&gCars[(*(volatile u32 *)REG_ADDR_SIOCNT << 26) >> 30]));
         goto camera_ready;
 connection_error:
-        gUnk_02002144 = 1;
+        gExitRaceLoop = 1;
         goto success;
     } else
         SetCameraTarget((struct UnkStruct080043F8 *)(&gCars[0]));
 camera_ready:
     gCamera[0] = gCamera[2];
     gCamera[1] = gCamera[3];
-    gUnk_0200209C = 0;
-    gUnk_020021E0 = 0;
+    gFrameCounter = 0;
+    gRaceEndState = 0;
     gUnk_020020B4 = 1;
     if (b == 3 || b == 4)
         InitMultiplayerSio();
     if (gOptions[3] != 0 && gIsDemo == 0)
         m4aSongNumStart(0x0A);
     gUnk_020021F0 = 0;
-    gUnk_02002124 = 0;
+    gVBlankCounter = 0;
     flag = 0;
     gUnk_020021EC[3] = 0;
     gUnk_020021EC[2] = 0;
     gUnk_020021EC[1] = 0;
     gUnk_020021EC[0] = 0;
-    while (gUnk_02002144 == 0) {
+    while (gExitRaceLoop == 0) {
         AgeGfxCaches();
         ClearOamBuffer();
         DrawSpriteText(gUnk_02002150, 0x4B, 0x3C);
         if (gUnk_020021F0 != 0)
             DrawSpriteText(gUnk_02002160, 0x4B, 0x5A);
-        gUnk_02002124 = 0;
+        gVBlankCounter = 0;
         if (b != 3 && b != 4)
             p = &gCars[0];
         else
             p = &gCars[gLinkPlayerId[0]];
         /* sub_0800215C: this file's old prototype took (void *, u32, s32);
            the matched definition narrows to u16; call through the old one. */
-        ((void (*)(void *, u32, s32))sub_0800215C)(gUnk_02001F60, 1,
+        ((void (*)(void *, u32, s32))sub_0800215C)(gEngineSoundPlayer, 1,
                      (s16)(gUnk_08364AE0[p->gear]
                            + ((p->rpm * gUnk_08364AF4[p->gear]) >> 6)) >> 3);
         if (gIsDemo != 0) {
             SetCameraTarget((struct UnkStruct080043F8 *)gUnk_0202A6E0);
-            gUnk_08364ADC = t = gUnk_0200209C / 256;
+            gUnk_08364ADC = t = gFrameCounter / 256;
             if ((t & 7) == 0)
                 gUnk_08364ADC = 4;
         } else {
@@ -162,8 +162,8 @@ camera_ready:
                 SetCameraTarget((struct UnkStruct080043F8 *)(&gCars[(*(volatile u32 *)REG_ADDR_SIOCNT << 26) >> 30]));
             else
                 SetCameraTarget((struct UnkStruct080043F8 *)(&gCars[0]));
-            if (gUnk_0200215C[0] == 9 || gUnk_0200215C[0] == 0x0D || gUnk_0200215C[0] == 0x0E
-                || gUnk_0200215C[0] == 0x0F || gUnk_0200215C[0] == 0x11) {
+            if (gGameMode[0] == 9 || gGameMode[0] == 0x0D || gGameMode[0] == 0x0E
+                || gGameMode[0] == 0x0F || gGameMode[0] == 0x11) {
                 gCamera[0] = (*(u32 *)&gCars[0].posX);
                 gCamera[1] = (*(u32 *)&gCars[0].posZ);
             }
@@ -173,16 +173,16 @@ camera_ready:
         UpdateCameraScroll();
         RunTasks();
         DrawAllCars();
-        if (gUnk_0200215C[0] == 4)
+        if (gGameMode[0] == 4)
             sub_0800545C();
-        if (gUnk_020020C4 != 0 || gUnk_0200215C[0] == 9 || gUnk_0200215C[0] == 0x0D
-            || gUnk_0200215C[0] == 0x0E || gUnk_0200215C[0] == 0x0F
-            || gUnk_0200215C[0] == 0x11)
+        if (gRaceStarted != 0 || gGameMode[0] == 9 || gGameMode[0] == 0x0D
+            || gGameMode[0] == 0x0E || gGameMode[0] == 0x0F
+            || gGameMode[0] == 0x11)
             UpdateAllCars();
         ((void (*)(u32, u32))UpdateTrackScroll)(gCamera[0], gCamera[1]);
-        if (gUnk_0200215C[0] == 9 || gUnk_0200215C[0] == 0x0D || gUnk_0200215C[0] == 0x0E
-            || gUnk_0200215C[0] == 0x0F || gUnk_0200215C[0] == 0x11) {
-            if ((gUnk_0200209C & 8) == 0)
+        if (gGameMode[0] == 9 || gGameMode[0] == 0x0D || gGameMode[0] == 0x0E
+            || gGameMode[0] == 0x0F || gGameMode[0] == 0x11) {
+            if ((gFrameCounter & 8) == 0)
                 /* DrawTextCentered: the ROM callers pass a third argument the matched definition drops; call
                    through a function pointer with the old prototype. */
                 ((void (*)(u32, u32, u32))DrawTextCentered)(GetString(0x5D), 8, 1);
@@ -191,26 +191,26 @@ camera_ready:
         }
         sub_080047DC();
         sub_08008D8C();
-        gUnk_020021C4 = 1;
+        gBgScrollUpdateEnabled = 1;
         if (gIsDemo != 0) {
             if (gKeysPressed != 0) {
-                gUnk_020021BC = 1;
-                gUnk_020021E0 = 2;
+                gRaceAborted = 1;
+                gRaceEndState = 2;
                 WaitForVBlank();
                 REG_DISPCNT &= ~DISPCNT_OBJ_ON;
                 if (gOptions[2] != 0)
-                    m4aMPlayFadeOut(gUnk_02001F20, 2);
+                    m4aMPlayFadeOut(gBgMusicPlayer, 2);
                 BeginFadeToColor(0x19, 0);
             }
         } else {
-            if (gUnk_0200215C[0] != 3 && gUnk_0200215C[0] != 4 && gUnk_020021E0 == 0) {
-                if (gUnk_02022E14 == 0)
+            if (gGameMode[0] != 3 && gGameMode[0] != 4 && gRaceEndState == 0) {
+                if (gFadeActive == 0)
                     res = PauseMenu();
                 else
                     res = 0;
             } else {
-                if (gUnk_02022E14 == 0 && gUnk_020021E0 == 0) {
-                    if (gUnk_0200215C[0] == 4)
+                if (gFadeActive == 0 && gRaceEndState == 0) {
+                    if (gGameMode[0] == 4)
                         res = sub_08005280();
                     else
                         res = sub_080050F0();
@@ -226,16 +226,16 @@ camera_ready:
                     m4aSongNumStart(0x0A);
                 break;
             case 2:
-                if (gUnk_0200215C[0] == 0x02 || gUnk_0200215C[0] == 0x0E
-                    || gUnk_0200215C[0] == 0x00 || gUnk_0200215C[0] == 0x07
-                    || gUnk_0200215C[0] == 0x06 || gUnk_0200215C[0] == 0x09
-                    || gUnk_0200215C[0] == 0x05 || gUnk_0200215C[0] == 0x11
-                    || gUnk_0200215C[0] == 0x01 || gUnk_0200215C[0] == 0x03
-                    || gUnk_0200215C[0] == 0x0C || gUnk_0200215C[0] == 0x0D
-                    || gUnk_0200215C[0] == 0x10 || gUnk_0200215C[0] == 0x0F
-                    || gUnk_0200215C[0] == 0x11) {
-                    gUnk_020021BC = 1;
-                    gUnk_020021E0 = 2;
+                if (gGameMode[0] == 0x02 || gGameMode[0] == 0x0E
+                    || gGameMode[0] == 0x00 || gGameMode[0] == 0x07
+                    || gGameMode[0] == 0x06 || gGameMode[0] == 0x09
+                    || gGameMode[0] == 0x05 || gGameMode[0] == 0x11
+                    || gGameMode[0] == 0x01 || gGameMode[0] == 0x03
+                    || gGameMode[0] == 0x0C || gGameMode[0] == 0x0D
+                    || gGameMode[0] == 0x10 || gGameMode[0] == 0x0F
+                    || gGameMode[0] == 0x11) {
+                    gRaceAborted = 1;
+                    gRaceEndState = 2;
                     WaitForVBlank();
                     REG_DISPCNT &= ~DISPCNT_OBJ_ON;
                     sub_080019B4((struct MusicPlayerInfo *)gUnk_02001FA0);
@@ -254,23 +254,23 @@ camera_ready:
             if (v != 0) {
                 goto connection_error;
             }
-            (*(vu8 *)&gUnk_020020C0) = v;
+            (*(vu8 *)&gVBlankWorkDone) = v;
 wait_link:
-            if ((*(vu8 *)&gUnk_020020C0) == 0)
+            if ((*(vu8 *)&gVBlankWorkDone) == 0)
                 goto wait_link;
         } else {
-            (*(vu8 *)&gUnk_020020C0) = 0;
-            while ((*(vu8 *)&gUnk_020020C0) == 0)
+            (*(vu8 *)&gVBlankWorkDone) = 0;
+            while ((*(vu8 *)&gVBlankWorkDone) == 0)
                 ;
         }
-        gUnk_0200209C++;
-        if (gUnk_020021E0 == 2 && gUnk_02022E14 == 0)
-            gUnk_02002144 = 1;
+        gFrameCounter++;
+        if (gRaceEndState == 2 && gFadeActive == 0)
+            gExitRaceLoop = 1;
     }
     if (flag != 0) {
 success:
         return 1;
     }
-    sub_080019B4((struct MusicPlayerInfo *)gUnk_02001F60);
+    sub_080019B4((struct MusicPlayerInfo *)gEngineSoundPlayer);
     return 0;
 }

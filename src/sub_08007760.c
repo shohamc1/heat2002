@@ -3,8 +3,8 @@
 #include "gba/syscall.h"
 #include "variables.h"
 
-extern s32 gUnk_02025EC4;
-extern s32 gUnk_02025EC0;
+extern s32 gObjPalBytesCopiedThisFrame;
+extern s32 gObjPalBytesPeak;
 
 
 void UploadPendingGfx(void)
@@ -16,9 +16,9 @@ void UploadPendingGfx(void)
     s32 len;
     s32 *q;
 
-    gUnk_02025EC4 = 0;
+    gObjPalBytesCopiedThisFrame = 0;
 
-    p = (u8 *)gUnk_02025DB0;
+    p = (u8 *)gObjTileCache64;
     i = 0;
     do {
         if (p[4] != 0) {
@@ -31,7 +31,7 @@ void UploadPendingGfx(void)
         p += 0x14;
     } while (i != 4);
 
-    p = (u8 *)gUnk_02025400;
+    p = (u8 *)gObjTileCache16;
     i = 0;
     do {
         if (p[4] != 0) {
@@ -44,7 +44,7 @@ void UploadPendingGfx(void)
         p += 0x14;
     } while (i != 0x18);
 
-    p = (u8 *)gUnk_020255E0;
+    p = (u8 *)gObjTileCache2;
     i = 0;
     do {
         if (p[4] != 0) {
@@ -58,7 +58,7 @@ void UploadPendingGfx(void)
         p += 0x14;
     } while (i != 0x20);
 
-    p = (u8 *)gUnk_02025AE0;
+    p = (u8 *)gObjTileCache8;
     i = 0;
     do {
         if (p[4] != 0) {
@@ -71,7 +71,7 @@ void UploadPendingGfx(void)
         p += 0x14;
     } while (i != 0x14);
 
-    p = (u8 *)gUnk_02025C70;
+    p = (u8 *)gObjTileCache4;
     i = 0;
     do {
         if (p[4] != 0) {
@@ -84,7 +84,7 @@ void UploadPendingGfx(void)
         p += 0x14;
     } while (i != 0x10);
 
-    p = (u8 *)gUnk_02025860;
+    p = (u8 *)gObjTileCache1;
     i = 0;
     do {
         if (p[4] != 0) {
@@ -100,9 +100,9 @@ void UploadPendingGfx(void)
         p += 0x14;
     } while (i != 0x20);
 
-    p = (u8 *)gUnk_02025E00;
+    p = (u8 *)gObjPaletteCache;
     i = 0;
-    q = &gUnk_02025EC4;
+    q = &gObjPalBytesCopiedThisFrame;
     do {
         if (p[1] != 0) {
             src = *(s32 *)(p + 4);
@@ -115,6 +115,6 @@ void UploadPendingGfx(void)
         p += 0xC;
     } while (i != 0x10);
 
-    if (gUnk_02025EC4 > gUnk_02025EC0)
-        gUnk_02025EC0 = gUnk_02025EC4;
+    if (gObjPalBytesCopiedThisFrame > gObjPalBytesPeak)
+        gObjPalBytesPeak = gObjPalBytesCopiedThisFrame;
 }

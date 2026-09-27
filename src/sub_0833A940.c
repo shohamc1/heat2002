@@ -11,10 +11,10 @@
 
 void sub_0833A940(u16 n)
 {
-    struct MusicPlayerInfo *info = (struct MusicPlayerInfo *)gUnk_0200CA74[gUnk_0200CAA4[n].unk4].unk0;
+    struct MusicPlayerInfo *info = (struct MusicPlayerInfo *)gModule_MPlayTable[gModule_SongTable[n].unk4].unk0;
 
-    if (info->songHeader != gUnk_0200CAA4[n].unk0)
-        sub_0833AFC0((struct MusicPlayerInfo *)((u32)info),(struct SongHeader *)(gUnk_0200CAA4[n].unk0));
+    if (info->songHeader != gModule_SongTable[n].unk0)
+        sub_0833AFC0((struct MusicPlayerInfo *)((u32)info),(struct SongHeader *)(gModule_SongTable[n].unk0));
     else if ((info->status & MUSICPLAYER_STATUS_TRACK) == 0)
         sub_0833AFC0((struct MusicPlayerInfo *)((u32)info),(struct SongHeader *)((u32)info->songHeader));
     else if (info->status & MUSICPLAYER_STATUS_PAUSE)

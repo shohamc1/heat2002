@@ -16,36 +16,36 @@ void sub_0833E94C(struct Car *p)
     u16 *dest;
     u32 off;
 
-    if (gUnk_0203E0E0 == 0)
+    if (gModule_DamagePitsEnabled == 0)
         return;
-    dest = (u16 *)(gUnk_020251B8[0] + 0x4A4);
+    dest = (u16 *)(gModule_TextLayerMapPtr[0] + 0x4A4);
     if (p->unk8C <= 0x7CFFF || (gUnk_0203B6A4 & 8) != 0) {
         off = 0x6C2;
-        *dest = (0xE0 << 8) | gUnk_02022254[*(u16 *)&gUnk_02021594[off]];
+        *dest = (0xE0 << 8) | gModule_FontTileEntries[*(u16 *)&gUnk_02021594[off]];
     } else {
         off = 0x6BE;
-        *dest = (0xE0 << 8) | gUnk_02022254[*(u16 *)&gUnk_02021594[off]];
+        *dest = (0xE0 << 8) | gModule_FontTileEntries[*(u16 *)&gUnk_02021594[off]];
     }
     if (p->unk90 <= 0x7CFFF || (gUnk_0203B6A4 & 8) != 0) {
         off = 0x6C4;
-        dest[1] = (0xE0 << 8) | gUnk_02022254[*(u16 *)&gUnk_02021594[off]];
+        dest[1] = (0xE0 << 8) | gModule_FontTileEntries[*(u16 *)&gUnk_02021594[off]];
     } else {
         off = 0x6C0;
-        dest[1] = (0xE0 << 8) | gUnk_02022254[*(u16 *)&gUnk_02021594[off]];
+        dest[1] = (0xE0 << 8) | gModule_FontTileEntries[*(u16 *)&gUnk_02021594[off]];
     }
     if (p->unk94 <= 0x7CFFF || (gUnk_0203B6A4 & 8) != 0) {
         off = 0x74A;
-        dest[0x20] = (0xE0 << 8) | gUnk_02022254[*(u16 *)&gUnk_02021594[off]];
+        dest[0x20] = (0xE0 << 8) | gModule_FontTileEntries[*(u16 *)&gUnk_02021594[off]];
     } else {
         off = 0x746;
-        dest[0x20] = (0xE0 << 8) | gUnk_02022254[*(u16 *)&gUnk_02021594[off]];
+        dest[0x20] = (0xE0 << 8) | gModule_FontTileEntries[*(u16 *)&gUnk_02021594[off]];
     }
     if (p->unk98 <= 0x7CFFF || (gUnk_0203B6A4 & 8) != 0) {
         off = 0x74C;
-        dest[0x21] = (0xE0 << 8) | gUnk_02022254[*(u16 *)&gUnk_02021594[off]];
+        dest[0x21] = (0xE0 << 8) | gModule_FontTileEntries[*(u16 *)&gUnk_02021594[off]];
     } else {
         off = 0x748;
-        dest[0x21] = (0xE0 << 8) | gUnk_02022254[*(u16 *)&gUnk_02021594[off]];
+        dest[0x21] = (0xE0 << 8) | gModule_FontTileEntries[*(u16 *)&gUnk_02021594[off]];
     }
     gUnk_0203B6A4++;
 }

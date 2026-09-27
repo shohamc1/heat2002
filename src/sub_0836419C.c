@@ -23,7 +23,7 @@ void sub_0836419C(s16 a, u8 b)
     u8 *p;
     u8 *r;
 
-    p = (u8 *)gUnk_03000800;
+    p = (u8 *)gIsland_OamBuffer;
     ((struct Unk83_A *)(p + 0x12))->f9 = a;
     q = (struct Unk83_B *)(p + 0x13);
     p[0x10] = b;

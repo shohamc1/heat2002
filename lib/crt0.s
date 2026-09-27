@@ -115,7 +115,7 @@ IntrMain_FoundIntr:
 	bic r3, r3, #PSR_I_BIT | PSR_F_BIT | PSR_MODE_MASK
 	orr r3, r3, #PSR_SYS_MODE
 	msr cpsr_fc, r3
-	ldr r1, =gUnk_02000590
+	ldr r1, =gIntrTable
 	add r1, r1, r12
 	ldr r0, [r1]
 	stmfd sp!, {lr}

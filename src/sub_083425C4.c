@@ -14,17 +14,17 @@ void sub_083425C4(u8 *a, u8 b)
     u8 *q;
     u32 off;
 
-    if (gUnk_020390EC != 0) {
-        if (gUnk_020391F0 == 0 && a[0x7D] == 0)
+    if (gModule_IsLinkRace != 0) {
+        if (gModule_RaceEndState == 0 && a[0x7D] == 0)
             sub_08342258(a, gUnk_020390B0[b], b);
         else
             sub_08342258(a, 2, b);
         sub_08342074(a);
     }
-    if (*(s32 *)(a + 0x88) > 0x11940 && a[0x7C] != 1 && (gUnk_020390AC & 0x3F) == 0)
+    if (*(s32 *)(a + 0x88) > 0x11940 && a[0x7C] != 1 && (gModule_FrameCounter & 0x3F) == 0)
         sub_08342FAC(a);
-    if (gUnk_020390EC != 0) {
-        if (b == gUnk_0203E1B0) {
+    if (gModule_IsLinkRace != 0) {
+        if (b == gModule_LinkPlayerId) {
             sub_083415B0(b);
             q = (u8 *)gModule_Cars;
             off = b * 400;

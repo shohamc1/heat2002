@@ -21,12 +21,12 @@ void sub_08005FA8(void)
     s32 v;
 
     UpdateRaceTimers();
-    base = gUnk_08364B08[0];
+    base = gTextLayerMapPtr[0];
     obj = base + 0x448;
-    DrawTime(obj, gUnk_02025218[0], gUnk_020251FC[0], gUnk_020253CC[0]);
+    DrawTime(obj, gLapMin[0], gLapSec[0], gLapMs[0]);
     obj = base + 0x488;
-    if (gUnk_0202F030 != 0)
-        DrawTime(obj, gUnk_02025380[gTrackId], gUnk_02025200[gTrackId], gUnk_020253A0[gTrackId]);
+    if (gIsTimeTrial != 0)
+        DrawTime(obj, gTrackRecordMin[gTrackId], gTrackRecordSec[gTrackId], gTrackRecordMs[gTrackId]);
     if (gIsLinkRace != 0)
         car = &gCars[gLinkPlayerId[0]];
     else

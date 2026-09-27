@@ -17,7 +17,7 @@ u16 sub_0833DA34(void)
     if (*flag == 0xFF) {
         keys = 0;
         i = 0;
-        count = gUnk_020390BC[0];
+        count = gModule_NumLinkPlayers[0];
         newp = &gUnk_0203B6FC;
         oldp = &gUnk_0203B848;
         if (keys != count) {

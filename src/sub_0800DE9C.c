@@ -4,7 +4,7 @@
 
 void sub_0800DE9C(u16 x, u16 y)
 {
-    s16 *g = gUnk_0202E960;
+    s16 *g = gOamBuffer;
     s16 *gg;
     u16 *p;
     u16 *q;

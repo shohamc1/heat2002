@@ -5,7 +5,7 @@ extern u32 gUnk_02026E20[];
 
 void sub_08340530(u32 a, u8 b)
 {
-    if (gUnk_020390EC != 0) {
+    if (gModule_IsLinkRace != 0) {
         gUnk_0203DCF4 = gUnk_02026E20[0];
         gUnk_0203D4E0 = gUnk_02026E20[1];
         gUnk_0203DDE4 = gUnk_02026E20[2];

@@ -19,8 +19,8 @@ struct Unk8B
 
 void sub_0833A994(u16 a)
 {
-    struct Unk12A *pa = (struct Unk12A *)gUnk_0200CA74;
-    struct Unk8B *baseB = (struct Unk8B *)gUnk_0200CAA4;
+    struct Unk12A *pa = (struct Unk12A *)gModule_MPlayTable;
+    struct Unk8B *baseB = (struct Unk8B *)gModule_SongTable;
     struct Unk8B *pb = baseB + a;
 
     if (*(u32 *)pa[pb->idx].ptr == pb->field0)

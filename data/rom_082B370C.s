@@ -997,8 +997,8 @@ gUnk_082B7224:
 	.global gUnk_082B7244
 gUnk_082B7244:
 	.incbin "build/assets/unknown/data_082B7244.bin"
-	.global gUnk_082B7264
-gUnk_082B7264:
+	.global gText_BlankRowChallengeGoal
+gText_BlankRowChallengeGoal:
 	.incbin "build/assets/unknown/data_082B7264.bin"
 	.global gUnk_082B7284
 gUnk_082B7284:

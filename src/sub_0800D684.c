@@ -9,7 +9,7 @@
  * relative position and next-frame position are rotated into the other
  * car's frame (and the reverse), and each of the four box edges is tested
  * for a crossing. The nearest crossing (smallest time) is kept by
- * sub_0800D64C in gUnk_0202CC90; after the loop the impulse is applied.
+ * sub_0800D64C in gCarCollContact; after the loop the impulse is applied.
  *
  * Shapes the retail bytes depend on (see docs/learnings/parked.md):
  * - `d[2]` is written element-wise, never whole. Each partial store keeps the
@@ -36,9 +36,9 @@ struct Pt2 {
     s32 f1;
 };
 
-extern s32 gUnk_0202CCB0[8];
-extern s32 gUnk_0202CD30[8];
-extern struct Coll gUnk_0202CC90;
+extern s32 gCarCollFrameSelf[8];
+extern s32 gCarCollFrameOther[8];
+extern struct Coll gCarCollContact;
 extern struct Pt2 gUnk_083FDA2C[];
 extern u8 gUnk_0202A530;
 
@@ -71,18 +71,18 @@ u8 CollideCars(struct Car *car)
     count = gNumCars[0];
     if (gIsLinkRace != 0)
         count = gNumLinkPlayers[0];
-    if (car->unk7D != 0 && gIsLinkRace != 0)
+    if (car->finished != 0 && gIsLinkRace != 0)
         return 0;
     if (car->pitState != 0) {
         if (car == gCars)
             return 0;
-        if (car->unk18F == 0)
+        if (car->pitCollidable == 0)
             return 0;
     }
     gUnk_0202CD24 = 0x200000;
     hit = 0;
     other = gCars;
-    pa = gUnk_0202CCB0;
+    pa = gCarCollFrameSelf;
     sub_0800D5D4(car, pa);
     for (i = 0; i != count; i++, other++) {
         if (other == car)
@@ -90,10 +90,10 @@ u8 CollideCars(struct Car *car)
         if (other->pitState != 0) {
             if (other == gCars)
                 continue;
-            if (other->unk18F == 0)
+            if (other->pitCollidable == 0)
                 continue;
         }
-        if (other->unk7D != 0 && gIsLinkRace != 0)
+        if (other->finished != 0 && gIsLinkRace != 0)
             continue;
         px = car->posX;
         px -= other->posX;
@@ -107,98 +107,98 @@ u8 CollideCars(struct Car *car)
             pz = -pz;
         if (pz > 0x6400)
             continue;
-        sub_0800D5D4(other, gUnk_0202CD30);
+        sub_0800D5D4(other, gCarCollFrameOther);
 
-        d[0] = gUnk_0202CCB0[4];
-        d[1] = gUnk_0202CCB0[5];
-        d[0] -= gUnk_0202CD30[4];
-        d[1] -= gUnk_0202CD30[5];
-        v[0] = (gUnk_0202CD30[1] * d[0] - gUnk_0202CD30[0] * d[1]) >> 8;
-        v[1] = (gUnk_0202CD30[0] * d[0] + gUnk_0202CD30[1] * d[1]) >> 8;
-        d[0] = gUnk_0202CCB0[6];
-        d[1] = gUnk_0202CCB0[7];
-        d[0] -= gUnk_0202CD30[6];
-        d[1] -= gUnk_0202CD30[7];
-        v[2] = (gUnk_0202CD30[3] * d[0] - gUnk_0202CD30[2] * d[1]) >> 8;
-        v[3] = (gUnk_0202CD30[2] * d[0] + gUnk_0202CD30[3] * d[1]) >> 8;
+        d[0] = gCarCollFrameSelf[4];
+        d[1] = gCarCollFrameSelf[5];
+        d[0] -= gCarCollFrameOther[4];
+        d[1] -= gCarCollFrameOther[5];
+        v[0] = (gCarCollFrameOther[1] * d[0] - gCarCollFrameOther[0] * d[1]) >> 8;
+        v[1] = (gCarCollFrameOther[0] * d[0] + gCarCollFrameOther[1] * d[1]) >> 8;
+        d[0] = gCarCollFrameSelf[6];
+        d[1] = gCarCollFrameSelf[7];
+        d[0] -= gCarCollFrameOther[6];
+        d[1] -= gCarCollFrameOther[7];
+        v[2] = (gCarCollFrameOther[3] * d[0] - gCarCollFrameOther[2] * d[1]) >> 8;
+        v[3] = (gCarCollFrameOther[2] * d[0] + gCarCollFrameOther[3] * d[1]) >> 8;
         w = v[2] - v[0];
         u = v[3] - v[1];
         if (u < 0 && v[3] <= 0x1C00 && (e = v[1] - 0x1C00) >= 0) {
             t = (w * e) / u;
             t += v[0];
             if (t >= -0xF00 && t <= 0xF00)
-                sub_0800D64C(car, a2, other, 0, &gUnk_0202CC90, &hit, -u, (e << 16) / -u);
+                sub_0800D64C(car, a2, other, 0, &gCarCollContact, &hit, -u, (e << 16) / -u);
         }
         if (u > 0 && v[3] >= -0x1C00 && (e = -0x1C00 - v[1]) >= 0) {
             t = (w * e) / u;
             t += v[0];
             if (t >= -0xF00 && t <= 0xF00)
-                sub_0800D64C(car, a2, other, 1, &gUnk_0202CC90, &hit, u, (e << 16) / u);
+                sub_0800D64C(car, a2, other, 1, &gCarCollContact, &hit, u, (e << 16) / u);
         }
         if (w > 0 && v[2] >= -0xF00 && (e = -0xF00 - v[0]) >= 0) {
             t = (e * u) / w;
             t += v[1];
             if (t >= -0x1C00 && t <= 0x1C00)
-                sub_0800D64C(car, a2, other, 2, &gUnk_0202CC90, &hit, w, (e << 16) / w);
+                sub_0800D64C(car, a2, other, 2, &gCarCollContact, &hit, w, (e << 16) / w);
         }
         if (w < 0 && v[2] <= 0xF00 && (e = v[0] - 0xF00) >= 0) {
             t = (e * u) / w;
             t += v[1];
             if (t >= -0x1C00 && t <= 0x1C00)
-                sub_0800D64C(car, a2, other, 3, &gUnk_0202CC90, &hit, -w, (e << 16) / -w);
+                sub_0800D64C(car, a2, other, 3, &gCarCollContact, &hit, -w, (e << 16) / -w);
         }
 
-        d[0] = gUnk_0202CD30[4];
-        d[1] = gUnk_0202CD30[5];
-        d[0] -= gUnk_0202CCB0[4];
-        d[1] -= gUnk_0202CCB0[5];
-        v[0] = (gUnk_0202CCB0[1] * d[0] - gUnk_0202CCB0[0] * d[1]) >> 8;
-        v[1] = (gUnk_0202CCB0[0] * d[0] + gUnk_0202CCB0[1] * d[1]) >> 8;
-        d[0] = gUnk_0202CD30[6];
-        d[1] = gUnk_0202CD30[7];
-        d[0] -= gUnk_0202CCB0[6];
-        d[1] -= gUnk_0202CCB0[7];
-        v[2] = (gUnk_0202CCB0[3] * d[0] - gUnk_0202CCB0[2] * d[1]) >> 8;
-        v[3] = (gUnk_0202CCB0[2] * d[0] + gUnk_0202CCB0[3] * d[1]) >> 8;
+        d[0] = gCarCollFrameOther[4];
+        d[1] = gCarCollFrameOther[5];
+        d[0] -= gCarCollFrameSelf[4];
+        d[1] -= gCarCollFrameSelf[5];
+        v[0] = (gCarCollFrameSelf[1] * d[0] - gCarCollFrameSelf[0] * d[1]) >> 8;
+        v[1] = (gCarCollFrameSelf[0] * d[0] + gCarCollFrameSelf[1] * d[1]) >> 8;
+        d[0] = gCarCollFrameOther[6];
+        d[1] = gCarCollFrameOther[7];
+        d[0] -= gCarCollFrameSelf[6];
+        d[1] -= gCarCollFrameSelf[7];
+        v[2] = (gCarCollFrameSelf[3] * d[0] - gCarCollFrameSelf[2] * d[1]) >> 8;
+        v[3] = (gCarCollFrameSelf[2] * d[0] + gCarCollFrameSelf[3] * d[1]) >> 8;
         w = v[2] - v[0];
         u = v[3] - v[1];
         if (u < 0 && v[3] <= 0x1C00 && (e = v[1] - 0x1C00) >= 0) {
             t = (w * e) / u;
             t += v[0];
             if (t >= -0xF00 && t <= 0xF00)
-                sub_0800D64C(other, a2, car, 0, &gUnk_0202CC90, &hit, -u, (e << 16) / -u);
+                sub_0800D64C(other, a2, car, 0, &gCarCollContact, &hit, -u, (e << 16) / -u);
         }
         if (u > 0 && v[3] >= -0x1C00 && (e = -0x1C00 - v[1]) >= 0) {
             t = (w * e) / u;
             t += v[0];
             if (t >= -0xF00 && t <= 0xF00)
-                sub_0800D64C(other, a2, car, 1, &gUnk_0202CC90, &hit, u, (e << 16) / u);
+                sub_0800D64C(other, a2, car, 1, &gCarCollContact, &hit, u, (e << 16) / u);
         }
         if (w > 0 && v[2] >= -0xF00 && (e = -0xF00 - v[0]) >= 0) {
             t = (e * u) / w;
             t += v[1];
             if (t >= -0x1C00 && t <= 0x1C00)
-                sub_0800D64C(other, a2, car, 2, &gUnk_0202CC90, &hit, w, (e << 16) / w);
+                sub_0800D64C(other, a2, car, 2, &gCarCollContact, &hit, w, (e << 16) / w);
         }
         if (w < 0 && v[2] <= 0xF00 && (e = v[0] - 0xF00) >= 0) {
             t = (e * u) / w;
             t += v[1];
             if (t >= -0x1C00 && t <= 0x1C00)
-                sub_0800D64C(other, a2, car, 3, &gUnk_0202CC90, &hit, -w, (e << 16) / -w);
+                sub_0800D64C(other, a2, car, 3, &gCarCollContact, &hit, -w, (e << 16) / -w);
         }
     }
 
     if (hit != 0) {
-        a = gUnk_0202CC90.a;
-        b = gUnk_0202CC90.c;
+        a = gCarCollContact.a;
+        b = gCarCollContact.c;
         ang = b->heading >> 8;
-        s = gUnk_0801CD08[ang];
-        c = gUnk_0801CD08[ang + 0x40];
-        nx = gUnk_083FDA2C[gUnk_0202CC90.d].f0;
-        nz = gUnk_083FDA2C[gUnk_0202CC90.d].f1;
+        s = gSinTable[ang];
+        c = gSinTable[ang + 0x40];
+        nx = gUnk_083FDA2C[gCarCollContact.d].f0;
+        nz = gUnk_083FDA2C[gCarCollContact.d].f1;
         m[0] = (nx * c - nz * s) >> 4;
         m[1] = (nx * s + nz * c) >> 4;
-        f = -gUnk_0202CC90.g;
+        f = -gCarCollContact.g;
         q[0] = -(f * m[0]) / 256;
         q[1] = -(f * m[1]) / 256;
         a->velX += q[0];
@@ -212,10 +212,10 @@ u8 CollideCars(struct Car *car)
         b->forceZ = 0;
         b->torque = 0;
         f *= 1000;
-        if (a->unk55 == 0)
+        if (a->hitCooldown == 0)
             sub_0800BA34(0, 0, -6, 0, 0, 0, 0x400);
-        if (a->unk7C < 5 || a->unk7C > 7) {
-            if (gUnk_0202EEB0 != 0)
+        if (a->carState < 5 || a->carState > 7) {
+            if (gDamagePitsEnabled != 0)
                 a->damage -= f >> 12;
             if (a->damage > 40000) {
                 sd = -a->speed >> 12;
@@ -229,12 +229,12 @@ u8 CollideCars(struct Car *car)
             gUnk_0202A530++;
         }
         ComputeForwardSpeed(a);
-        a->unk48 = a->speed;
+        a->impactSpeed = a->speed;
         if (a->speed > 0)
-            a->unk48 = 0;
-        a->rpm = (a->unk48 << 8) / -a->unkE8[a->gear];
-        if (b->unk7C < 5 || b->unk7C > 7) {
-            if (gUnk_0202EEB0 != 0)
+            a->impactSpeed = 0;
+        a->rpm = (a->impactSpeed << 8) / -a->gearRatioTable[a->gear];
+        if (b->carState < 5 || b->carState > 7) {
+            if (gDamagePitsEnabled != 0)
                 b->damage -= f >> 14;
             if (b->damage > 40000) {
                 sd = -b->speed >> 12;
@@ -248,18 +248,18 @@ u8 CollideCars(struct Car *car)
             gUnk_0202A530++;
         }
         ComputeForwardSpeed(b);
-        b->unk48 = b->speed;
+        b->impactSpeed = b->speed;
         if (b->speed > 0)
-            b->unk48 = 0;
-        b->rpm = (b->unk48 << 8) / -b->unkE8[b->gear];
+            b->impactSpeed = 0;
+        b->rpm = (b->impactSpeed << 8) / -b->gearRatioTable[b->gear];
         if (a == gCars || b == gCars || gIsLinkRace != 0) {
-            if (gUnk_020021E0 == 0 && gIsDemo == 0 && gOptions[3] != 0
+            if (gRaceEndState == 0 && gIsDemo == 0 && gOptions[3] != 0
                 && (car == gCars || gIsLinkRace != 0)
-                && a->unk55 == 0 && b->unk55 == 0)
+                && a->hitCooldown == 0 && b->hitCooldown == 0)
                 m4aSongNumStart(0x12);
         }
-        a->unk55 = 0x10;
-        b->unk55 = 0x10;
+        a->hitCooldown = 0x10;
+        b->hitCooldown = 0x10;
         return 1;
     }
     return 0;

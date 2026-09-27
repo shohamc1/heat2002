@@ -29,7 +29,7 @@ void SioTransferIntr(void)
 {
     vu32 *sio = (vu32 *)0x04000120;
     u32 v = *sio;
-    register struct CommRegs *w asm("r5") = &gUnk_0202CDD0;
+    register struct CommRegs *w asm("r5") = &gSioTransfer;
     register struct CommRegs *p asm("r4") = w;
     s32 cnt;
     s32 n;

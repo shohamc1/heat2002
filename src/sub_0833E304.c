@@ -8,22 +8,22 @@ void sub_0833E304(void)
 {
     u32 v;
 
-    if (gUnk_020390D4 == 0)
+    if (gModule_RaceStarted == 0)
         return;
-    v = gUnk_020391F0;
+    v = gModule_RaceEndState;
     if (v != 0)
         return;
-    (*(s32 *)&gUnk_0203B84C) -= 0x18;
-    if ((*(s32 *)&gUnk_0203B84C) >= 0)
+    (*(s32 *)&gModule_CountdownMs) -= 0x18;
+    if ((*(s32 *)&gModule_CountdownMs) >= 0)
         return;
-    (*(s32 *)&gUnk_0203B84C) += 0x3E8;
-    (*(s32 *)&gUnk_0203B6CC) -= 1;
+    (*(s32 *)&gModule_CountdownMs) += 0x3E8;
+    (*(s32 *)&gModule_CountdownSeconds) -= 1;
     gUnk_0203B6E8 = 1;
-    if ((*(s32 *)&gUnk_0203B6CC) >= 0)
+    if ((*(s32 *)&gModule_CountdownSeconds) >= 0)
         return;
-    (*(s32 *)&gUnk_0203B6CC) = v;
-    (*(s32 *)&gUnk_0203B84C) = v;
-    if (gUnk_0203916C[0] != 0)
+    (*(s32 *)&gModule_CountdownSeconds) = v;
+    (*(s32 *)&gModule_CountdownMs) = v;
+    if (gModule_GameMode[0] != 0)
         return;
     sub_083429B4();
 }

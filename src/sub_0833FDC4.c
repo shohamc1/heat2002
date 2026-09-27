@@ -18,7 +18,7 @@ void sub_0833FDC4(void)
 
     gUnk_0203C334 = 0;
 
-    p = gUnk_0203C220;
+    p = gModule_ObjTileCache64;
     i = 0;
     do {
         if (p[4] != 0) {
@@ -31,7 +31,7 @@ void sub_0833FDC4(void)
         p += 0x14;
     } while (i != 4);
 
-    p = gUnk_0203B870;
+    p = gModule_ObjTileCache16;
     i = 0;
     do {
         if (p[4] != 0) {
@@ -44,7 +44,7 @@ void sub_0833FDC4(void)
         p += 0x14;
     } while (i != 0x18);
 
-    p = gUnk_0203BA50;
+    p = gModule_ObjTileCache2;
     i = 0;
     do {
         if (p[4] != 0) {
@@ -58,7 +58,7 @@ void sub_0833FDC4(void)
         p += 0x14;
     } while (i != 0x20);
 
-    p = gUnk_0203BF50;
+    p = gModule_ObjTileCache8;
     i = 0;
     do {
         if (p[4] != 0) {
@@ -71,7 +71,7 @@ void sub_0833FDC4(void)
         p += 0x14;
     } while (i != 0x14);
 
-    p = gUnk_0203C0E0;
+    p = gModule_ObjTileCache4;
     i = 0;
     do {
         if (p[4] != 0) {
@@ -84,7 +84,7 @@ void sub_0833FDC4(void)
         p += 0x14;
     } while (i != 0x10);
 
-    p = gUnk_0203BCD0;
+    p = gModule_ObjTileCache1;
     i = 0;
     do {
         if (p[4] != 0) {

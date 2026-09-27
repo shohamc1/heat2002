@@ -41,11 +41,11 @@ void sub_0800BA38(struct EntityBA38 *e)
     car = gCars;
     i = 0;
     do {
-        if (car->unk7C == 0)
+        if (car->carState == 0)
         {
             if (car->posX > xlo && car->posX < xhi
                 && car->posZ > ylo && car->posZ < yhi)
-                car->unk160 = 0x32;
+                car->zoneGripFlag = 0x32;
         }
         i++;
     } while (i != 8);

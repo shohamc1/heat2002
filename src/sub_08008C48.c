@@ -11,7 +11,7 @@ void sub_08008C48(s32 x)
     u32 *p;
     u32 s;
 
-    base = (u32 *)*(u32 *)&gUnk_08364B08;
+    base = (u32 *)*(u32 *)&gTextLayerMapPtr;
     p = base + 0xE5;
     /* DrawBigDigit: this file's old prototype took (u32 *, u32); the matched definition takes (u16 *, u8); call through a function pointer with the old signature. */
     ((void (*)(u32 *, u32))DrawBigDigit)(p, x / 100 % 10);

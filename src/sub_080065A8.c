@@ -13,7 +13,7 @@ void sub_080065A8(u8 *s)
   u8 t;
   u16 *e;
   u32 c;
-  dest = (u16 *) (gUnk_08364B08[0] + 0x40);
+  dest = (u16 *) (gTextLayerMapPtr[0] + 0x40);
   do
   {
     color = 0xF0 << 8;
@@ -33,9 +33,9 @@ void sub_080065A8(u8 *s)
     c = (*gUnk_08365340) - 0x20;
     t = c;
     idx = (((t >> 5) << 22) + 0x600000u) >> 16;
-    e = &gUnk_08332DC8[idx + (t & 0x1F)];
-    dest[0] = color | gUnk_08333208[e[0]];
-    dest[0x20] = color | gUnk_08333208[e[0x20]];
+    e = &gTextCharMap[idx + (t & 0x1F)];
+    dest[0] = color | gTextGlyphTileIndices[e[0]];
+    dest[0x20] = color | gTextGlyphTileIndices[e[0x20]];
   }
 
   c = *s;
@@ -46,9 +46,9 @@ void sub_080065A8(u8 *s)
     {
       t = c - 0x20;
       idx = (((t >> 5) << 22) + 0x600000u) >> 16;
-      e = &gUnk_08332DC8[idx + (t & 0x1F)];
-      dest[0] = color | gUnk_08333208[e[0]];
-      dest[0x20] = color | gUnk_08333208[e[0x20]];
+      e = &gTextCharMap[idx + (t & 0x1F)];
+      dest[0] = color | gTextGlyphTileIndices[e[0]];
+      dest[0x20] = color | gTextGlyphTileIndices[e[0x20]];
       dest++;
       i++;
       c = *p;
@@ -60,9 +60,9 @@ void sub_080065A8(u8 *s)
   {
     t = (*gUnk_08365340) - 0x20;
     idx = (((t >> 5) << 22) + 0x600000u) >> 16;
-    e = &gUnk_08332DC8[idx + (t & 0x1F)];
-    dest[0] = color | gUnk_08333208[e[0]];
-    dest[0x20] = color | gUnk_08333208[e[0x20]];
+    e = &gTextCharMap[idx + (t & 0x1F)];
+    dest[0] = color | gTextGlyphTileIndices[e[0]];
+    dest[0x20] = color | gTextGlyphTileIndices[e[0x20]];
   }
 
 }

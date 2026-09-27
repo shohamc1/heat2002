@@ -14,7 +14,7 @@ struct Unk080087F4 {
     s32 forceZ;
     s32 torque;
     u8 pad14C[0x180 - 0x14C];
-    u8 unk180;
+    u8 torqueDampTimer;
 };
 
 
@@ -33,43 +33,43 @@ void sub_080087F4(u8 which, struct Unk080087F4 *obj)
     s32 t;
     s32 *pa;
 
-    cos = gUnk_0801CD08[((gUnk_0202CBF0 + 0x40) & 0xFF) + 0x40];
-    sin = gUnk_0801CD08[(gUnk_0202CBF0 + 0x40) & 0xFF];
-    prod = cos * gUnk_0202A54C + sin * gUnk_0202A528;
+    cos = gSinTable[((gTireForceAngle + 0x40) & 0xFF) + 0x40];
+    sin = gSinTable[(gTireForceAngle + 0x40) & 0xFF];
+    prod = cos * gTireContactVelX + sin * gTireContactVelZ;
     dist = prod >> 8;
     if (which != 0) {
-        if (gUnk_0202EEB0 != 0) {
+        if (gDamagePitsEnabled != 0) {
             obj->tireWear0 += ((prod >> 17) < 0 ? -(prod >> 17) : (prod >> 17));
             obj->tireWear1 += ((prod >> 17) < 0 ? -(prod >> 17) : (prod >> 17));
         }
-        if (dist < -gUnk_0202A518) {
-            dist = -gUnk_0202A518 / 2;
-            sub_0800B764(gUnk_0202CB18, 2);
+        if (dist < -gTireSlipLimit) {
+            dist = -gTireSlipLimit / 2;
+            sub_0800B764(gCurrentCarIndex, 2);
             if (gIsLinkRace == 0) {
-                if (gUnk_0202CB18 == 0)
+                if (gCurrentCarIndex == 0)
                     goto e2check;
                 goto tail;
             }
-            if (gUnk_0202CB18 != gLinkPlayerId[0])
+            if (gCurrentCarIndex != gLinkPlayerId[0])
                 goto tail;
-        } else if (dist > gUnk_0202A518) {
-            dist = gUnk_0202A518 / 2;
-            sub_0800B764(gUnk_0202CB18, 3);
+        } else if (dist > gTireSlipLimit) {
+            dist = gTireSlipLimit / 2;
+            sub_0800B764(gCurrentCarIndex, 3);
             if (gIsLinkRace == 0) {
-                if (gUnk_0202CB18 == 0)
+                if (gCurrentCarIndex == 0)
                     goto e2check;
                 goto tail;
             }
-            if (gUnk_0202CB18 != gLinkPlayerId[0])
+            if (gCurrentCarIndex != gLinkPlayerId[0])
                 goto tail;
         } else {
             goto tail;
         }
 e2check:
-        if (gOptions[3] != 0 && gIsDemo == 0 && gUnk_020021E0 == 0)
+        if (gOptions[3] != 0 && gIsDemo == 0 && gRaceEndState == 0)
             m4aSongNumStart(0xB);
     } else {
-        if (gUnk_0202EEB0 != 0) {
+        if (gDamagePitsEnabled != 0) {
             obj->tireWear2 += ((prod >> 17) < 0 ? -(prod >> 17) : (prod >> 17));
             obj->tireWear3 += ((prod >> 17) < 0 ? -(prod >> 17) : (prod >> 17));
         }
@@ -82,19 +82,19 @@ tail:
     *pa += (m * cos) >> 8;
     pa = &obj->forceZ;
     *pa += (sin * m) >> 8;
-    ti = gUnk_0202CBF0;
+    ti = gTireForceAngle;
     ti += 0x40;
     ti -= gUnk_0202CB0C;
     ti &= 0xFF;
-    mm = gUnk_0801CD08[ti] * m;
+    mm = gSinTable[ti] * m;
     m = mm >> 8;
     m <<= 7;
     t = m;
     if (m < 0)
         t = m + 0x7FFF;
     m = t >> 15;
-    if (obj->unk180 != 0) {
-        obj->unk180--;
+    if (obj->torqueDampTimer != 0) {
+        obj->torqueDampTimer--;
         obj->torque += t >> 16;
     } else {
         obj->torque += m;

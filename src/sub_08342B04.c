@@ -11,9 +11,9 @@ void sub_08342B04(void)
     u8 t;
     u32 p;
 
-    gUnk_020390D4 = 0;
-    gUnk_020391F0 = 0;
-    t = gUnk_0203916C[0] - 3;
+    gModule_RaceStarted = 0;
+    gModule_RaceEndState = 0;
+    t = gModule_GameMode[0] - 3;
     if (t <= 1)
     {
         p = (u32)sub_0833FF44();

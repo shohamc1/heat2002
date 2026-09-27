@@ -12,11 +12,11 @@ extern const u8 gUnk_0829F5B4[];
 extern u8 gUnk_0202A6B2;
 extern u8 gUnk_0202CD9C[];
 extern u8 gUnk_0202CDC0[];
-extern s32 gUnk_0202EDD4;
+extern s32 gMainMenuCursor;
 extern u8 gUnk_0202EED4;
-extern u8 gUnk_0202EEF8;
-extern u8 gUnk_083FDA6E[];
-extern u8 gUnk_083FDE1C[];
+extern u8 gSeasonSession;
+extern u8 gLapsPerOption[];
+extern u8 gChampionshipTrackOrder[];
 extern u8 gUnk_083FDE2D[];
 
 u8 StartSinglePakLink(void);
@@ -93,19 +93,19 @@ u32 MainMenuLoop(void)
     s8 one;
 
     one = 1;
-    gUnk_0202F030 = 0;
+    gIsTimeTrial = 0;
     zero = 0;
-    gUnk_020021C4 = zero;
+    gBgScrollUpdateEnabled = zero;
     gIsLinkRace = zero;
     ResetBgScroll();
 
     for (i = 0; i != 0x11; i++)
-        gUnk_0202EF20[i] = 0;
-    gUnk_0202EF20[0x0C] = 1;
-    gUnk_0202EF20[0x0D] = 1;
-    gUnk_0202EF20[0x0E] = 1;
-    gUnk_0202EF20[0x0F] = 1;
-    gUnk_0202EF20[0x10] = 1;
+        gChampionshipAvailable[i] = 0;
+    gChampionshipAvailable[0x0C] = 1;
+    gChampionshipAvailable[0x0D] = 1;
+    gChampionshipAvailable[0x0E] = 1;
+    gChampionshipAvailable[0x0F] = 1;
+    gChampionshipAvailable[0x10] = 1;
 
     ResetLinkState();
     if (IsSaveValid() == 0) {
@@ -142,23 +142,23 @@ u32 MainMenuLoop(void)
     sub_08001170();
     FillFadePalette(0x7FFF);
 
-    gUnk_0202EDD0 = 0;
-    gUnk_0202A514 = 0x60;
-    gUnk_0202CBDC = 0xB6;
-    gUnk_0202CAD4 = 0xA0;
-    gUnk_0202CBC4 = 0xFF;
-    *(u32 *)&gUnk_0202A510 = 0x8950;
+    gLinkSyncByte = 0;
+    gTireGripFast = 0x60;
+    gFrontTireGripFast = 0xB6;
+    gTireGripSlow = 0xA0;
+    gFrontTireGripSlow = 0xFF;
+    *(u32 *)&gTireSlipLimitBase = 0x8950;
     sub_08008338();
-    gUnk_020020D4 = 0x009F9AC4;
+    gRngState = 0x009F9AC4;
 
     while (TitleScreen() == 1) {
-        gCars[0].unk16C = 0;
-        gCars[0].unk7D = 1;
+        gCars[0].finishTime = 0;
+        gCars[0].finished = 1;
         sub_08016D28(1);
         AssignRandomDrivers();
         SortCarsByTime();
         gNumLaps = 3;
-        gUnk_0202EEB0 = 0;
+        gDamagePitsEnabled = 0;
         /* RunRace: this file's old local prototype differs from
            functions.h; call through the old signature (solved-walls 31). */
         ((void (*)(u32, u8, void *))RunRace)(1, 0, gUnk_0202CDA8);
@@ -174,7 +174,7 @@ u32 MainMenuLoop(void)
     sub_08011C9C(1, frame);
     if (gOptions[2] != 0)
         m4aSongNumStart(2);
-    sub_08010664(gUnk_0202EDD4);
+    sub_08010664(gMainMenuCursor);
     FadeToBrightenedPalette((u32)frame, 0x0F);
 
     redraw = 0;
@@ -186,7 +186,7 @@ u32 MainMenuLoop(void)
         REG_DISPCNT = DISPCNT_OBJ_1D_MAP | DISPCNT_BG0_ON | DISPCNT_BG2_ON;
         sub_08011C9C(1, frame);
         ZeroTextLayer();
-        sub_08010664(gUnk_0202EDD4);
+        sub_08010664(gMainMenuCursor);
         FadeToBrightenedPalette((u32)frame, 0x0F);
     }
 
@@ -194,27 +194,27 @@ u32 MainMenuLoop(void)
     keys = gKeysHeld;
     keys &= gKeysPressed;
     if ((keys & DPAD_UP) != 0) {
-        if (--gUnk_0202EDD4 < 0)
-            gUnk_0202EDD4 = 6;
+        if (--gMainMenuCursor < 0)
+            gMainMenuCursor = 6;
         if (gOptions[3] != 0)
             m4aSongNumStart(8);
-        sub_08010664(gUnk_0202EDD4);
+        sub_08010664(gMainMenuCursor);
     }
     if ((keys & DPAD_DOWN) != 0) {
-        if (++gUnk_0202EDD4 > 6)
-            gUnk_0202EDD4 = 0;
+        if (++gMainMenuCursor > 6)
+            gMainMenuCursor = 0;
         if (gOptions[3] != 0)
             m4aSongNumStart(8);
-        sub_08010664(gUnk_0202EDD4);
+        sub_08010664(gMainMenuCursor);
     }
 
     if ((*(u8 *)REG_ADDR_SIOCNT & 0x30) == 0) {
-        *(u16 *)&gUnk_0202ED78 = (((*(u32 *)REG_ADDR_SIOCNT << 26) >> 30) + 1) << 12 | 1;
-        SioSendWord(*(u16 *)&gUnk_0202ED78);
+        *(u16 *)&gLinkSendWords = (((*(u32 *)REG_ADDR_SIOCNT << 26) >> 30) + 1) << 12 | 1;
+        SioSendWord(*(u16 *)&gLinkSendWords);
     }
 
-    if (gUnk_0202EDD4 == 3 && (keys & 9) != 0) {
-        gUnk_0202EEB0 = 0;
+    if (gMainMenuCursor == 3 && (keys & 9) != 0) {
+        gDamagePitsEnabled = 0;
         if (gOptions[3] != 0)
             m4aSongNumStart(9);
         FadeToColor(0, 0x0F);
@@ -225,7 +225,7 @@ u32 MainMenuLoop(void)
             if (result == 0)
                 goto state3_cleanup;
 
-            *(u8 *)&gNumLinkPlayers = gUnk_0202EEF4;
+            *(u8 *)&gNumLinkPlayers = gLinkPlayerCount;
             gIsLinkRace = 1;
             gTrackId = 0;
 
@@ -242,7 +242,7 @@ state3_menu:
             result = LinkTrackSelect();
             switch (result) {
             case 1:
-                gTrackId = gUnk_0202EF8C;
+                gTrackId = gTrackSelectCursor;
                 break;
             case 0:
                 WaitForVBlank();
@@ -254,7 +254,7 @@ state3_menu:
 state3_launch:
             WaitForVBlank();
             gNumLaps = 3;
-            gUnk_020020D4 = 0x009F9AC4;
+            gRngState = 0x009F9AC4;
             FadeToColor(0, 0x0F);
             if (((u8 (*)(u32, u8, void *))RunRace)(0, 3, gUnk_0202CDC0) != 0) {
                 FadeToColor(0, 0x0F);
@@ -265,7 +265,7 @@ state3_accept:
 
             m4aSongNumStart(2);
             ResetBgScroll();
-            if (gUnk_020021BC == 0 && sub_08011528() == 5)
+            if (gRaceAborted == 0 && sub_08011528() == 5)
                 goto state3_accept;
 
             result = sub_0801164C();
@@ -288,8 +288,8 @@ state3_cleanup:
             gIsLinkRace = 0;
             ClearOamBuffer();
             sub_080047DC();
-            gUnk_020020C0 = 0;
-            gUnk_020021C4 = 0;
+            gVBlankWorkDone = 0;
+            gBgScrollUpdateEnabled = 0;
 
 state3_menu_done:
             if (gOptions[2] != 0)
@@ -310,8 +310,8 @@ state3_done:
         redraw = 1;
     }
 
-    if (gUnk_0202EDD4 == 0 && (keys & 9) != 0) {
-        gUnk_0202EEB0 = 0;
+    if (gMainMenuCursor == 0 && (keys & 9) != 0) {
+        gDamagePitsEnabled = 0;
         if (gOptions[3] != 0)
             m4aSongNumStart(9);
         FadeToColor(0, 0x0F);
@@ -325,83 +325,83 @@ state3_done:
         if ((gKeysPressed & B_BUTTON) != 0)
             goto state0_done;
 
-        gUnk_0202F024 = 0;
-        gUnk_0202EEC8 = 0;
-        gUnk_0202F034 = 0;
-        (*(u8 *)&gUnk_0202F020) = 0;
+        gQualifyingDone = 0;
+        gPracticeDone = 0;
+        gSeasonRaceIncomplete = 0;
+        (*(u8 *)&gSeasonRaceIndex) = 0;
 
 state0_menu:
         choice = sub_080136F8(
-            gUnk_0202F024 | gUnk_0202F034,
-            gUnk_0202F034 | gUnk_0202EEC8);
+            gQualifyingDone | gSeasonRaceIncomplete,
+            gSeasonRaceIncomplete | gPracticeDone);
         if ((gKeysPressed & B_BUTTON) != 0 || choice == 3)
             goto state0_done;
 
-        gUnk_0202EEF8 = choice;
-        gTrackId = gUnk_083FDE1C[(*(u8 *)&gUnk_0202F020)];
-        switch (gUnk_0202EEF8) {
+        gSeasonSession = choice;
+        gTrackId = gChampionshipTrackOrder[(*(u8 *)&gSeasonRaceIndex)];
+        switch (gSeasonSession) {
         case 0:
             gNumLaps = 10;
-            gCars[0].unk16C = 0;
-            gCars[0].unk7D = 1;
+            gCars[0].finishTime = 0;
+            gCars[0].finished = 1;
             sub_08016D28(1);
             SortCarsByTime();
             (*(u32 *)&gCarOrder) = (u32)gCars;
-            gUnk_0202EEB0 = 0;
+            gDamagePitsEnabled = 0;
             TrackSelectMenu(0, gTrackId);
             ((void (*)(u32, u8, void *))RunRace)(0, 0x0E, gUnk_0202CD9C);
             if (gOptions[2] != 0)
                 m4aSongNumStart(2);
             ResetBgScroll();
-            if (gUnk_020020F0 != 0)
+            if (gNewTrackRecord != 0)
                 SaveTrackRecords();
-            gUnk_0202EEC8 = 1;
+            gPracticeDone = 1;
             break;
         case 1:
             gNumLaps = 2;
             (*(u32 *)&gCarOrder) = (u32)gCars;
-            gCars[0].unk16C = 0x0002BF20;
+            gCars[0].finishTime = 0x0002BF20;
             TrackSelectMenu(0, gTrackId);
             ((void (*)(u32, u8, void *))RunRace)(0, 0x11, gUnk_0202CDA8);
             if (gOptions[2] != 0)
                 m4aSongNumStart(3);
             ResetBgScroll();
             sub_08016CB0();
-            if (gUnk_020020F0 != 0)
+            if (gNewTrackRecord != 0)
                 SaveTrackRecords();
-            gUnk_0202F024 = 1;
+            gQualifyingDone = 1;
             sub_08013D5C();
             break;
         case 2:
-            if (gUnk_0202F024 == 0 || gUnk_0202F034 == 1) {
-                gCars[0].unk16C = 0x0002BF20;
+            if (gQualifyingDone == 0 || gSeasonRaceIncomplete == 1) {
+                gCars[0].finishTime = 0x0002BF20;
                 sub_08016CB0();
             }
             SortCarsByTime();
             gNumLaps = 3;
-            gNumLaps = gUnk_083FDA6E[gOptions[1]];
+            gNumLaps = gLapsPerOption[gOptions[1]];
             TrackSelectMenu(0, gTrackId);
             ((void (*)(u32, u8, void *))RunRace)(0, 9, gUnk_0202CDA8);
             if (gOptions[2] != 0)
                 m4aSongNumStart(2);
             ResetBgScroll();
-            if (gUnk_020021BC == 0) {
-                gUnk_0202F024 = 0;
-                gUnk_0202EEC8 = 0;
-                gUnk_0202F034 = 0;
-                if (gUnk_020020F0 != 0)
+            if (gRaceAborted == 0) {
+                gQualifyingDone = 0;
+                gPracticeDone = 0;
+                gSeasonRaceIncomplete = 0;
+                if (gNewTrackRecord != 0)
                     SaveTrackRecords();
                 sub_08014004();
                 AwardAllRacePoints();
                 StandingsScreen();
-                (*(u8 *)&gUnk_0202F020)++;
+                (*(u8 *)&gSeasonRaceIndex)++;
             } else {
-                gUnk_0202F034 = 1;
+                gSeasonRaceIncomplete = 1;
             }
             break;
         }
 
-        if ((*(u8 *)&gUnk_0202F020) != 0x0B)
+        if ((*(u8 *)&gSeasonRaceIndex) != 0x0B)
             goto state0_menu;
         sub_08012D34(sub_08012C20());
 
@@ -409,10 +409,10 @@ state0_done:
         redraw = 1;
     }
 
-    if (gUnk_0202EDD4 == 1 && (keys & 9) != 0) {
-        gUnk_0202EEB0 = 0;
+    if (gMainMenuCursor == 1 && (keys & 9) != 0) {
+        gDamagePitsEnabled = 0;
         if (gOptions[4] != 0)
-            gUnk_0202EEB0 = 1;
+            gDamagePitsEnabled = 1;
 
         for (i = 0; i != 0x18; i++)
             gCars[i].driverId = i % 0x0C;
@@ -433,24 +433,24 @@ state1_config:
         FadeToColor(0, 0x0F);
         if ((gKeysPressed & B_BUTTON) != 0)
             goto state1_done;
-        gTrackId = gUnk_0202EF8C;
-        gNumLaps = gUnk_083FDA6E[gOptions[1]];
+        gTrackId = gTrackSelectCursor;
+        gNumLaps = gLapsPerOption[gOptions[1]];
 
 state1_race:
-        gCars[0].unk16C = 0;
-        gCars[0].unk7D = 1;
+        gCars[0].finishTime = 0;
+        gCars[0].finished = 1;
         sub_08016D28(1);
         for (i = 0; i != 0x18; i++)
-            gCars[i].unk16C = i;
-        gCars[0].unk16C = 0x0002CAD8;
+            gCars[i].finishTime = i;
+        gCars[0].finishTime = 0x0002CAD8;
         SortCarsByTime();
         ((void (*)(u32, u8, void *))RunRace)(0, 9, gUnk_0202CDA8);
-        if (gUnk_020020F0 != 0)
+        if (gNewTrackRecord != 0)
             SaveTrackRecords();
         if (gOptions[2] != 0)
             m4aSongNumStart(2);
         ResetBgScroll();
-        if (gUnk_020021BC == 0)
+        if (gRaceAborted == 0)
             sub_08014E28();
 
         result = sub_08014F5C();
@@ -465,8 +465,8 @@ state1_done:
         redraw = 1;
     }
 
-    if (gUnk_0202EDD4 == 4 && (keys & 9) != 0) {
-        gUnk_0202EEB0 = 0;
+    if (gMainMenuCursor == 4 && (keys & 9) != 0) {
+        gDamagePitsEnabled = 0;
         if (gOptions[3] != 0)
             m4aSongNumStart(9);
         FadeToColor(0, 0x0F);
@@ -480,26 +480,26 @@ state4_load:
 
 state4_config:
         TrackSelectMenu(1, 0);
-        gTrackId = gUnk_0202EF8C;
+        gTrackId = gTrackSelectCursor;
         FadeToColor(0, 0x0F);
         if ((gKeysPressed & B_BUTTON) != 0)
             goto state4_done;
-        gTrackId = gUnk_0202EF8C;
+        gTrackId = gTrackSelectCursor;
         gNumLaps = 3;
 
 state4_race:
-        gCars[0].unk16C = 0;
-        gCars[0].unk7D = 1;
+        gCars[0].finishTime = 0;
+        gCars[0].finished = 1;
         sub_08016D28(1);
         SortCarsByTime();
         (*(u32 *)&gCarOrder) = (u32)gCars;
-        gUnk_0202F030 = 1;
+        gIsTimeTrial = 1;
         ((void (*)(u32, u8, void *))RunRace)(0, 0x0E, gUnk_0202CD9C);
-        gUnk_0202F030 = 0;
+        gIsTimeTrial = 0;
         if (gOptions[2] != 0)
             m4aSongNumStart(2);
         ResetBgScroll();
-        if (gUnk_020020F0 != 0)
+        if (gNewTrackRecord != 0)
             SaveTrackRecords();
 
         result = sub_080144F4();
@@ -514,7 +514,7 @@ state4_done:
         redraw = 1;
     }
 
-    if (gUnk_0202EDD4 == 2 && (keys & 9) != 0) {
+    if (gMainMenuCursor == 2 && (keys & 9) != 0) {
         if (gOptions[3] != 0)
             m4aSongNumStart(9);
         FadeToColor(0, 0x0F);
@@ -523,78 +523,78 @@ state2_select:
         track = sub_0801465C();
         if ((gKeysPressed & B_BUTTON) != 0)
             goto state2_done;
-        gUnk_0202ED70 = track << 2;
+        gChallengeIndex = track << 2;
 
 state2_track:
-        if ((s8)gUnk_0202EF60[gUnk_0202ED70] == -1) {
-            gUnk_0202EF60[gUnk_0202ED70] = 0;
+        if ((s8)gChallengeStatus[gChallengeIndex] == -1) {
+            gChallengeStatus[gChallengeIndex] = 0;
             SaveProgress();
         }
-        gUnk_0202ED70 = sub_08014874(track, gUnk_0202ED70);
+        gChallengeIndex = sub_08014874(track, gChallengeIndex);
         if ((gKeysPressed & B_BUTTON) != 0)
             goto state2_select;
 
-        gUnk_02002098 = 0;
+        gChallengeScore = 0;
         dst = &gTrackId;
         p = gUnk_083FDE2D;
-        p += *(volatile u8 *)&gUnk_0202ED70;
+        p += *(volatile u8 *)&gChallengeIndex;
         *dst = *p;
-        SetupChallenge(gUnk_0202ED70, dst);
-        gUnk_0202EEB0 = one;
-        if (gUnk_0202ED70 == 1)
-            gUnk_0202EEB0 = 0;
-        if (gUnk_0202ED70 == 6)
-            gUnk_0202EEB0 = 0;
-        if (gUnk_0202ED70 == 10)
-            gUnk_0202EEB0 = 0;
-        if (gUnk_0202ED70 == 14)
-            gUnk_0202EEB0 = 0;
+        SetupChallenge(gChallengeIndex, dst);
+        gDamagePitsEnabled = one;
+        if (gChallengeIndex == 1)
+            gDamagePitsEnabled = 0;
+        if (gChallengeIndex == 6)
+            gDamagePitsEnabled = 0;
+        if (gChallengeIndex == 10)
+            gDamagePitsEnabled = 0;
+        if (gChallengeIndex == 14)
+            gDamagePitsEnabled = 0;
         ((void (*)(u32, u8, void *))RunRace)(0, 0x0F, gUnk_0202CDA8);
-        gUnk_02002098 = gUnk_0202EEE4;
+        gChallengeScore = gChallengeResult;
         if (gOptions[2] != 0)
             m4aSongNumStart(2);
         ResetBgScroll();
 
-        if (gUnk_02002098 == 0)
+        if (gChallengeScore == 0)
             goto state2_no_score;
 
         sub_08012B50(
-            gUnk_0202ED70,
-            (s8)gUnk_0202EF60[gUnk_0202ED70] >= gUnk_02002098);
-        if (gUnk_02002098 > (s8)gUnk_0202EF60[gUnk_0202ED70]) {
-            gUnk_0202EF60[gUnk_0202ED70] = gUnk_02002098;
+            gChallengeIndex,
+            (s8)gChallengeStatus[gChallengeIndex] >= gChallengeScore);
+        if (gChallengeScore > (s8)gChallengeStatus[gChallengeIndex]) {
+            gChallengeStatus[gChallengeIndex] = gChallengeScore;
             SaveProgress();
         }
 
-        gUnk_0202ED70++;
-        if (gUnk_0202ED70 == 4) {
-            if (gUnk_0202EF08[1] != 0)
+        gChallengeIndex++;
+        if (gChallengeIndex == 4) {
+            if (gChallengeCategoryUnlocked[1] != 0)
                 goto state2_select;
-            gUnk_0202EF08[1] = 1;
+            gChallengeCategoryUnlocked[1] = 1;
             sub_080129E8(1);
             SaveProgress();
             goto state2_select;
         }
-        if (gUnk_0202ED70 == 8) {
-            if (gUnk_0202EF08[2] != 0)
+        if (gChallengeIndex == 8) {
+            if (gChallengeCategoryUnlocked[2] != 0)
                 goto state2_select;
-            gUnk_0202EF08[2] = 1;
+            gChallengeCategoryUnlocked[2] = 1;
             sub_080129E8(2);
             SaveProgress();
             goto state2_select;
         }
-        if (gUnk_0202ED70 == 12) {
-            if (gUnk_0202EF08[3] != 0)
+        if (gChallengeIndex == 12) {
+            if (gChallengeCategoryUnlocked[3] != 0)
                 goto state2_select;
-            gUnk_0202EF08[3] = 1;
+            gChallengeCategoryUnlocked[3] = 1;
             sub_080129E8(3);
             SaveProgress();
             goto state2_select;
         }
-        if (gUnk_0202ED70 == 16) {
-            if (gUnk_0202EF08[4] != 0)
+        if (gChallengeIndex == 16) {
+            if (gChallengeCategoryUnlocked[4] != 0)
                 goto state2_select;
-            gUnk_0202EF08[4] = 1;
+            gChallengeCategoryUnlocked[4] = 1;
             sub_080129E8(4);
             SaveProgress();
             goto state2_select;
@@ -602,15 +602,15 @@ state2_track:
         goto state2_after_unlock;
 
 state2_no_score:
-        sub_08012BBC(gUnk_0202ED70);
+        sub_08012BBC(gChallengeIndex);
         goto state2_track;
 
 state2_after_unlock:
-        if (gUnk_02002098 == 0)
+        if (gChallengeScore == 0)
             goto state2_done;
-        if (gUnk_0202ED70 == 4 || gUnk_0202ED70 == 8 ||
-            gUnk_0202ED70 == 12 || gUnk_0202ED70 == 16) {
-            gUnk_0202EF08[gUnk_0202ED70 >> 2] = 1;
+        if (gChallengeIndex == 4 || gChallengeIndex == 8 ||
+            gChallengeIndex == 12 || gChallengeIndex == 16) {
+            gChallengeCategoryUnlocked[gChallengeIndex >> 2] = 1;
             SaveOptions();
             goto state2_done;
         }
@@ -620,9 +620,9 @@ state2_done:
         redraw = 1;
     }
 
-    if (gUnk_0202EDD4 == 5 && (keys & 9) != 0) {
-        gUnk_0202EF10 = gUnk_083FDA6E[gOptions[1]];
-        gUnk_0202EEB0 = 1;
+    if (gMainMenuCursor == 5 && (keys & 9) != 0) {
+        gSeasonNumLaps = gLapsPerOption[gOptions[1]];
+        gDamagePitsEnabled = 1;
         if (gOptions[3] != 0)
             m4aSongNumStart(9);
         FadeToColor(0, 0x0F);
@@ -649,91 +649,91 @@ state5_setup:
             goto state5_done;
         }
 
-        gUnk_0202EDD8 = sub_08010CD0();
+        gChampionshipIndex = sub_08010CD0();
         if ((gKeysPressed & B_BUTTON) != 0)
             goto state5_done;
-        *(u8 *)a6b2 = sub_0800F120(gUnk_0202EDD8);
+        *(u8 *)a6b2 = sub_0800F120(gChampionshipIndex);
         if (sub_080128E0(*(u8 *)a6b2) == 0)
             goto state5_setup;
 
 state5_load:
-        *(u8 *)a6b2 = sub_0800F120(gUnk_0202EDD8);
+        *(u8 *)a6b2 = sub_0800F120(gChampionshipIndex);
         AssignRandomDrivers();
         FadeToColor(0, 0x0F);
         if ((gKeysPressed & B_BUTTON) != 0)
             goto state5_done;
 
-        gUnk_0202F024 = 0;
-        gUnk_0202EEC8 = 0;
-        gUnk_0202F034 = 0;
-        (*(u8 *)&gUnk_0202F020) = 0;
+        gQualifyingDone = 0;
+        gPracticeDone = 0;
+        gSeasonRaceIncomplete = 0;
+        (*(u8 *)&gSeasonRaceIndex) = 0;
 
 state5_menu:
         choice = sub_08013570(
-            gUnk_0202F024 | gUnk_0202F034,
-            gUnk_0202F034 | gUnk_0202EEC8);
+            gQualifyingDone | gSeasonRaceIncomplete,
+            gSeasonRaceIncomplete | gPracticeDone);
         if ((gKeysPressed & B_BUTTON) != 0 || choice == 4)
             goto state5_done;
 
-        gUnk_0202EEF8 = choice;
-        gTrackId = gUnk_083FDE1C[(*(u8 *)&gUnk_0202F020)];
-        switch (gUnk_0202EEF8) {
+        gSeasonSession = choice;
+        gTrackId = gChampionshipTrackOrder[(*(u8 *)&gSeasonRaceIndex)];
+        switch (gSeasonSession) {
         case 0:
-            gCars[0].unk16C = 0;
-            gCars[0].unk7D = 1;
+            gCars[0].finishTime = 0;
+            gCars[0].finished = 1;
             sub_08016D28(1);
             SortCarsByTime();
             (*(u32 *)&gCarOrder) = (u32)gCars;
-            gUnk_0202EEB0 = 0;
+            gDamagePitsEnabled = 0;
             TrackSelectMenu(0, gTrackId);
             ((void (*)(u32, u8, void *))RunRace)(0, 0x0E, gUnk_0202CD9C);
-            gUnk_0202EEB0 = 1;
+            gDamagePitsEnabled = 1;
             if (gOptions[2] != 0)
                 m4aSongNumStart(2);
             ResetBgScroll();
-            if (gUnk_020020F0 != 0)
+            if (gNewTrackRecord != 0)
                 SaveTrackRecords();
-            gUnk_0202EEC8 = 1;
+            gPracticeDone = 1;
             break;
         case 1:
             gNumLaps = 2;
             (*(u32 *)&gCarOrder) = (u32)gCars;
-            gCars[0].unk16C = 0x0002BF20;
+            gCars[0].finishTime = 0x0002BF20;
             TrackSelectMenu(0, gTrackId);
             ((void (*)(u32, u8, void *))RunRace)(0, 0x11, gUnk_0202CDA8);
             if (gOptions[2] != 0)
                 m4aSongNumStart(2);
             ResetBgScroll();
             sub_08016CB0();
-            if (gUnk_020020F0 != 0)
+            if (gNewTrackRecord != 0)
                 SaveTrackRecords();
-            gUnk_0202F024 = 1;
+            gQualifyingDone = 1;
             sub_08013D5C();
             break;
         case 2:
-            if (gUnk_0202F024 == 0 || gUnk_0202F034 == 1) {
-                gCars[0].unk16C = 0x0002BF20;
+            if (gQualifyingDone == 0 || gSeasonRaceIncomplete == 1) {
+                gCars[0].finishTime = 0x0002BF20;
                 sub_08016CB0();
             }
             SortCarsByTime();
-            gNumLaps = gUnk_0202EF10;
+            gNumLaps = gSeasonNumLaps;
             TrackSelectMenu(0, gTrackId);
             ((void (*)(u32, u8, void *))RunRace)(0, 9, gUnk_0202CDA8);
             if (gOptions[2] != 0)
                 m4aSongNumStart(2);
             ResetBgScroll();
-            if (gUnk_020021BC == 0) {
-                gUnk_0202F024 = 0;
-                gUnk_0202EEC8 = 0;
-                gUnk_0202F034 = 0;
-                if (gUnk_020020F0 != 0)
+            if (gRaceAborted == 0) {
+                gQualifyingDone = 0;
+                gPracticeDone = 0;
+                gSeasonRaceIncomplete = 0;
+                if (gNewTrackRecord != 0)
                     SaveTrackRecords();
                 sub_08014004();
                 AwardAllRacePoints();
                 StandingsScreen();
-                (*(u8 *)&gUnk_0202F020)++;
+                (*(u8 *)&gSeasonRaceIndex)++;
             } else {
-                gUnk_0202F034 = 1;
+                gSeasonRaceIncomplete = 1;
             }
             break;
         case 3:
@@ -741,11 +741,11 @@ state5_menu:
             break;
         }
 
-        if ((*(u8 *)&gUnk_0202F020) != 0x0B)
+        if ((*(u8 *)&gSeasonRaceIndex) != 0x0B)
             goto state5_menu;
         score = sub_08012C20();
         sub_08012D34(score);
-        if (sub_0800F2BC(gUnk_0202EDD8, score) != 0)
+        if (sub_0800F2BC(gChampionshipIndex, score) != 0)
             goto state5_setup;
         if (sub_0800F22C() != 0)
             goto state5_setup;
@@ -755,14 +755,14 @@ state5_done:
         redraw = 1;
     }
 
-    if (gUnk_0202EDD4 == 6 && (keys & 9) != 0) {
+    if (gMainMenuCursor == 6 && (keys & 9) != 0) {
         if (gOptions[3] != 0)
             m4aSongNumStart(9);
-        gUnk_0202EFB0 = 0;
+        gMenuValueChanged = 0;
         FadeToColor(0, 0x0F);
         OptionsMenu();
         redraw = 1;
-        if (gUnk_0202EFB0 != 0)
+        if (gMenuValueChanged != 0)
             SaveOptions();
     }
 

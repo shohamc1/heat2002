@@ -6,17 +6,17 @@
 void sub_083448F4(void)
 {
     if ((REG_SIOCNT & 0x40) == 0) {
-        gUnk_0203E160[0] = REG_SIOMULTI0;
-        gUnk_0203E160[4] = REG_SIOMULTI1;
-        gUnk_0203E160[8] = REG_SIOMULTI2;
-        gUnk_0203E160[12] = REG_SIOMULTI3;
+        gModule_LinkRecvWords[0] = REG_SIOMULTI0;
+        gModule_LinkRecvWords[4] = REG_SIOMULTI1;
+        gModule_LinkRecvWords[8] = REG_SIOMULTI2;
+        gModule_LinkRecvWords[12] = REG_SIOMULTI3;
     } else {
-        gUnk_0203E160[0] = 0;
-        gUnk_0203E160[4] = 0;
-        gUnk_0203E160[8] = 0;
-        gUnk_0203E160[12] = 0;
+        gModule_LinkRecvWords[0] = 0;
+        gModule_LinkRecvWords[4] = 0;
+        gModule_LinkRecvWords[8] = 0;
+        gModule_LinkRecvWords[12] = 0;
     }
     REG_IME = 0;
-    gUnk_03007FF8 |= 0x80;
+    gIntrCheck |= 0x80;
     REG_IME = 1;
 }

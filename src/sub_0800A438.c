@@ -3,7 +3,7 @@
 
 struct Unk0800A438 {
     u8 pad0[0x7D];
-    u8 unk7D;
+    u8 finished;
     u8 pad7E[0x104 - 0x7E];
     u16 finishMin;
     u16 finishSec;
@@ -13,8 +13,8 @@ struct Unk0800A438 {
 
 void RecordFinishTime(struct Unk0800A438 *obj)
 {
-    obj->finishMin = gUnk_02025260;
-    obj->finishSec = gUnk_02025220;
-    obj->finishMs = gUnk_02025224;
-    obj->unk7D = 1;
+    obj->finishMin = gRaceMin;
+    obj->finishSec = gRaceSec;
+    obj->finishMs = gRaceMs;
+    obj->finished = 1;
 }

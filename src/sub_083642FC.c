@@ -33,8 +33,8 @@ void sub_083642FC(void)
     frame = 0;
     idx = 0;
     sub_08364804(2);
-    DmaCopy32(3, sub_083640B0, gUnk_03000000, 0x800);
-    gUnk_03007FFC = (u32)gUnk_03000000;
+    DmaCopy32(3, sub_083640B0, gIsland_IntrMainBuffer, 0x800);
+    gIntrVector = (u32)gIsland_IntrMainBuffer;
     REG_IE = INTR_FLAG_VBLANK;
     if (RomHeaderMagic == 0x96 && RomHeaderGameCode == gUnk_020009B8)
         REG_IE |= INTR_FLAG_GAMEPAK;
@@ -48,7 +48,7 @@ void sub_083642FC(void)
     REG_IE = INTR_FLAG_VBLANK;
     REG_DISPSTAT = DISPSTAT_VBLANK_INTR;
     REG_IME = 1;
-    DmaFill32(3, 0xA0, (s16 *)gUnk_03000800, 0x400);
+    DmaFill32(3, 0xA0, (s16 *)gIsland_OamBuffer, 0x400);
     sub_083644B4(0, gUnk_02000964[idx]);
     for (;;) {
         t = ((idx << 15) + frame * 4) >> 10;
@@ -61,7 +61,7 @@ void sub_083642FC(void)
             sub_083644B4(0, gUnk_02000964[idx]);
             frame = 0;
         }
-        sub_083647F8((s16 *)gUnk_03000800, (void *)OAM, 0x100);
+        sub_083647F8((s16 *)gIsland_OamBuffer, (void *)OAM, 0x100);
         sub_08364808();
     }
     sub_08364804(0xE2);

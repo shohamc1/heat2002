@@ -18,13 +18,13 @@ u16 sub_08010B38(u8 id)
     buf[1] |= 0xFF;
     i = 0;
     do {
-        if (((struct Unk0B38 *)gUnk_083FDB98)[i].f4 == id)
+        if (((struct Unk0B38 *)gDriverRoster)[i].f4 == id)
             buf[0] = i;
         i++;
     } while (i != 0x1E);
     i = 0;
     do {
-        if (i != buf[0] && ((struct Unk0B38 *)gUnk_083FDB98)[i].f4 == id)
+        if (i != buf[0] && ((struct Unk0B38 *)gDriverRoster)[i].f4 == id)
             buf[1] = i;
         i++;
     } while (i != 0x1E);

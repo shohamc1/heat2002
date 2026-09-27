@@ -4,7 +4,7 @@
 
 void sub_08005598(u8 x)
 {
-    gUnk_0202521C = x;
-    if (gUnk_0202521C > 0x63)
-        gUnk_0202521C = 0x63;
+    gCountdownSeconds = x;
+    if (gCountdownSeconds > 0x63)
+        gCountdownSeconds = 0x63;
 }
