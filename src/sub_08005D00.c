@@ -4,9 +4,9 @@ extern u8 gUnk_0806C770[];
 extern u8 gUnk_0806C780[];
 extern u32 gUnk_08364B08[];
 
-extern void sub_0800649C(u32 a, u32 b, u32 c);
+extern void sub_0800649C(u8 *str, u32 x, u32 y);
 extern void DrawBigDigit(u8 *a, u8 b);
-extern void DrawSmallDigit(u8 *a, u8 b);
+extern void DrawSmallDigit(u16 *dest, u8 idx);
 extern s32 sub_08017230(s32 a, s32 b);
 extern s32 sub_080172C8(s32 a, s32 b);
 
@@ -44,19 +44,19 @@ void DrawLapCounter(s32 a, s32 b)
         p = base + 12;
     }
     p += 0x40;
-    DrawSmallDigit(p, 11);
+    DrawSmallDigit((u16 *)p, 11);
     p += 2;
     if (b > 99) {
-        DrawSmallDigit(p, sub_08017230(b, 100));
+        DrawSmallDigit((u16 *)p, sub_08017230(b, 100));
         p += 2;
-        DrawSmallDigit(p, sub_080172C8(sub_08017230(b, 10), 10));
+        DrawSmallDigit((u16 *)p, sub_080172C8(sub_08017230(b, 10), 10));
         p += 2;
-        DrawSmallDigit(p, sub_080172C8(b, 10));
+        DrawSmallDigit((u16 *)p, sub_080172C8(b, 10));
     } else if (b > 9) {
-        DrawSmallDigit(p, sub_080172C8(sub_08017230(b, 10), 10));
+        DrawSmallDigit((u16 *)p, sub_080172C8(sub_08017230(b, 10), 10));
         p += 2;
-        DrawSmallDigit(p, sub_080172C8(b, 10));
+        DrawSmallDigit((u16 *)p, sub_080172C8(b, 10));
     } else {
-        DrawSmallDigit(p, sub_080172C8(b, 10));
+        DrawSmallDigit((u16 *)p, sub_080172C8(b, 10));
     }
 }

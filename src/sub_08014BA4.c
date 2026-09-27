@@ -3,7 +3,7 @@
 #include "gba/defines.h"
 extern u16 gKeysPressed;
 extern volatile u8 gUnk_020020C0;
-extern void sub_08011C9C(u32 a, void *b);
+extern void sub_08011C9C(u8 a, u16 *dst);
 extern void sub_08014B14(void);
 extern void sub_080045D8(void);
 extern void InitGfxCaches(void);
@@ -12,7 +12,7 @@ extern void ClearOamBuffer(void);
 extern void sub_08014BA0(u8 a);
 extern void sub_080047DC(void);
 extern void WaitForVBlank(void);
-extern void FadeToBrightenedPalette(void *a, u32 b);
+extern void FadeToBrightenedPalette(u32 a, u32 b);
 extern void ReadKeys(void);
 extern void FadeToColor(u32 a, u32 b);
 
@@ -24,7 +24,7 @@ u8 sub_08014BA4(void)
     s8 w;
 
     v = 0;
-    sub_08011C9C(12, buf);
+    sub_08011C9C(12, (u16 *)buf);
     REG_DISPCNT = 0x1341;
     sub_08014B14();
     sub_080045D8();
@@ -35,7 +35,7 @@ u8 sub_08014BA4(void)
     sub_080047DC();
     gUnk_020020C0 = v;
     WaitForVBlank();
-    FadeToBrightenedPalette(buf, 0x0F);
+    FadeToBrightenedPalette((u32)buf, 0x0F);
     sel = 0x40;
     w = 0;
     do {

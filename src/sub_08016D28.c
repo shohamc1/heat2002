@@ -17,7 +17,7 @@ struct Unk0202A550 {
 };
 extern struct Unk0202A550 gCars[];
 extern u8 gTrackId;
-extern u32 sub_08017230(u32 a, s32 b);
+extern s32 sub_08017230(s32 a, s32 b);
 extern u32 sub_08016D08(u32 a, u8 b);
 void sub_08016D28(u8 a)
 {

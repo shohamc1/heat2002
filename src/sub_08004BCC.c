@@ -6,7 +6,7 @@ extern u8 gUnk_02025370;
 
 extern void sub_080047DC(void);
 extern void ReadKeys(void);
-extern u8 MenuMoveVertical(u16 keys, u8 v, u32 lo, u32 hi);
+extern s16 MenuMoveVertical(u16 keys, s16 v, s16 lo, s16 hi);
 extern void sub_08004B1C(u8 arg);
 extern void AgeGfxCaches(void);
 extern void ClearOamBuffer(void);

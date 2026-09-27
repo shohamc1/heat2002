@@ -48,6 +48,7 @@ with the target and ours asm, the cause and the fix.
 | Ours ends a loop `cmp #N-1; bls`; target has `cmp #N; bne` | The loop condition was an equality test, not `<` | [28](#28-cmp-n-1bls-vs-cmp-nbne) |
 | Ours emits `movs rX,#4; add ip,rX` at a loop head plus an extra entry home store; target has `adds rY,#4; mov ip,rY` | The counter increment was written at the loop head | [29](#29-a-counter-increment-at-the-loop-head) |
 | A pseudo dies or rematerialises where the target keeps it homed, and no source shape stops it | Zero-emission liveness keepers and hard-register materialisation | [30](#30-zero-emission-liveness-keepers) |
+| A caller changes bytes (or stops compiling) after an `extern` was rewritten to a canonical signature: extra or missing narrowing pairs, a lost `ldrsb`, a rotated register pair | The prototype decided the caller's conversions | [31](#31-the-callers-bytes-change-after-a-shared-prototype-changed) |
 | Your notes say the difference is invariant under many variants | The variants shared a wrong structure | [Start from a plain rewrite](#start-from-a-plain-rewrite) |
 
 ## Start from a plain rewrite
@@ -988,6 +989,54 @@ from the same family, all proven on one function:
 full campaign log. `sub_08341F64` closed by entry 23 instead; these
 levers remain the toolkit for allocation webs that survive a plain
 rewrite.
+
+### 31. The caller's bytes change after a shared prototype changed
+
+The function itself is untouched, but after rewriting one of its `extern`
+declarations to a canonical signature, `match.py` reports the caller
+mismatching. Four shapes, all one cause:
+
+```
+-   adds r0, r4, #0        ldrsb r0, [r5, r0]        (nothing)
++   lsls r0, r0, #16       ldrb  r0, [r5]            lsls r0, r0, #16
++   lsrs r0, r0, #16                                asrs r0, r0, #16
+```
+
+**Cause.** The prototype decides the caller's conversions. A parameter
+that narrowed (`u32` to `u16` or `u8`) adds a mask or sign-extension pair
+at the call; a parameter that widened removes the `ldrsb` the old `s8`
+declaration forced; a return that changed width or sign adds a conversion
+of the result, and can rotate the register allocation (entry 9) on top;
+and a call that passed more arguments than the new prototype takes no
+longer compiles. The original game source itself declared these functions
+inconsistently, so the "wrong" old declaration was reproducing the ROM.
+
+**Fix.** Keep the canonical `extern` and repair the one call site, in this
+order. Cast the argument or result to the old type when the cast survives
+(`(s8)ExchangeLinkInput()`); a cast the compiler elides as dead (an `(s8)`
+argument into a `u8` parameter) needs a call through a function pointer
+with the file's old signature instead:
+
+```c
+v = ((u8 (*)(u16, s8, u32, u32))MenuMoveVertical)(gKeysPressed, v, 0, 3);
+```
+
+`old_agbcc` folds a cast of a known function symbol back into the direct
+`bl`, so the wrap is byte-identical — verified function by function; add a
+comment naming the old prototype at each wrap. Note `match.py` symptoms
+first: a whole-function diff, or many files whose only differences are
+pool words and `bl` targets shifted by a constant, means some *other*
+function changed size and moved the labels — fix that one first (compare
+`arm-none-eabi-nm -S` sizes against a pristine build) before touching
+callers that look broken.
+
+**Seen in:** the phase-1 signature unification of 29 functions
+(`FadeToBrightenedPalette`, `sub_08011C9C`, `GetString`, `MenuMoveVertical`,
+...) in 96 files: `SendMultibootIsland` and `sub_080132F8` (return-width
+pairs), `LinkTrackSelect` (the `ldrsb` of an `s8` parameter),
+`sub_0801465C` (an `s16` return rotating r5/r6), `sub_0833E7FC` (removed
+narrowing restored as `(u8)` argument casts), `RunRace` (an `s8` return
+cast).
 
 ## Open walls
 

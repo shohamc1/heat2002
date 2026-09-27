@@ -7,12 +7,12 @@ extern u8 gOptions[];
 extern void SortCarsByPoints(void);
 extern void ZeroTextLayer(void);
 extern void sub_0800F498(void);
-extern void sub_0800F328(void *a, void *b);
+extern void sub_0800F328(u32 src, u16 *dst);
 extern void sub_08014104(u8 a);
-extern void FadeToBrightenedPalette(void *a, u32 b);
+extern void FadeToBrightenedPalette(u32 a, u32 b);
 extern void ReadKeys(void);
 extern void m4aSongNumStart(u16 a);
-extern u8 MenuMoveVertical(u16 keys, s8 v, u32 lo, u32 hi);
+extern s16 MenuMoveVertical(u16 keys, s16 v, s16 lo, s16 hi);
 extern void WaitForVBlank(void);
 extern void FadeToColor(u32 a, u32 b);
 u8 StandingsScreen(void)
@@ -28,9 +28,9 @@ u8 StandingsScreen(void)
     ZeroTextLayer();
     sub_0800F498();
     p = gUnk_082EE104;
-    sub_0800F328(p, buf);
+    sub_0800F328((u32)p, (u16 *)buf);
     sub_08014104(0);
-    FadeToBrightenedPalette(buf, 0x0F);
+    FadeToBrightenedPalette((u32)buf, 0x0F);
     sel = 0x40;
     do {
         ReadKeys();

@@ -2,19 +2,19 @@
 extern u16 gKeysPressed;
 extern u8 gIsLinkRace;
 extern u32 gUnk_083FDE18;
-extern void sub_080019B4(u32 a);
+extern void sub_080019B4(struct MusicPlayerInfo *mplayInfo);
 extern void sub_080045D8(void);
 extern void InitGfxCaches(void);
 extern void AgeGfxCaches(void);
 extern void ClearOamBuffer(void);
 extern void sub_080047DC(void);
 extern void ResetBgScroll(void);
-extern void sub_08011C9C(u32 a, void *b);
+extern void sub_08011C9C(u8 a, u16 *dst);
 extern void sub_08006734(u32 a);
 extern u32 GetString(u16 idx);
 extern void sub_080065A8(void);
-extern void DrawTextCenteredHighlight(u32 a, u32 b, u32 c);
-extern void FadeToBrightenedPalette(void *a, u32 b);
+extern void DrawTextCenteredHighlight(u8 *p, u32 a1, u8 a2);
+extern void FadeToBrightenedPalette(u32 a, u32 b);
 extern void VBlankIntrWait(void);
 extern void ReadKeys(void);
 extern void FadeToColor(u32 a, u32 b);
@@ -31,12 +31,12 @@ void sub_080164A8(void)
     sub_080047DC();
     ResetBgScroll();
     gIsLinkRace = 0;
-    sub_08011C9C(1, buf);
+    sub_08011C9C(1, (u16 *)buf);
     sub_08006734(gUnk_083FDE18);
     GetString(0x75);
     sub_080065A8();
     DrawTextCenteredHighlight(GetString(0x75), 0x0A, 1);
-    FadeToBrightenedPalette(buf, 0x0F);
+    FadeToBrightenedPalette((u32)buf, 0x0F);
     do {
         VBlankIntrWait();
         ReadKeys();

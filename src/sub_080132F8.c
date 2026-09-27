@@ -10,16 +10,16 @@ extern u8 gOptions[];
 extern u8 gUnk_0202EEB4;
 extern u8 gUnk_0202EDB0;
 
-extern void sub_08011C9C(u32 a, void *b);
+extern void sub_08011C9C(u8 a, u16 *dst);
 extern void sub_080131F8(u8 a);
-extern void FadeToBrightenedPalette(void *a, u32 b);
+extern void FadeToBrightenedPalette(u32 a, u32 b);
 extern void ReadKeys(void);
 extern s8 sub_0801319C(void);
 extern void sub_08016330(u8 a);
 extern void SaveProgress(void);
 extern void m4aSongNumStart(u16 a);
-extern u8 MenuMoveHorizontal(u16 keys, s8 v, u32 lo, u32 hi);
-extern u32 MenuMoveVertical(u16 keys, u8 v, u32 lo, u32 hi);
+extern s16 MenuMoveHorizontal(u16 keys, s16 v, s16 lo, s16 hi);
+extern s16 MenuMoveVertical(u16 keys, s16 v, s16 lo, s16 hi);
 extern void WaitForVBlank(void);
 extern void FadeToColor(u32 a, u32 b);
 
@@ -38,9 +38,9 @@ void sub_080132F8(void)
     gUnk_0202EF78[2] = 0;
     gUnk_0202EF78[3] = 0;
     gUnk_0202EF78[4] = 0;
-    sub_08011C9C(6, buf);
+    sub_08011C9C(6, (u16 *)buf);
     sub_080131F8(0);
-    FadeToBrightenedPalette(buf, 0xF);
+    FadeToBrightenedPalette((u32)buf, 0xF);
     gUnk_0202EEB4 = 0;
     sel = 0x40;
     do {
@@ -97,7 +97,9 @@ void sub_080132F8(void)
             /* The r0 pin keeps CSE from folding t into the call result:
                the store reads r0, and only the copy t lives on in r1. */
             register u32 r asm("r0") =
-                MenuMoveVertical(gKeysPressed, gUnk_0202EF78[v], 0, 9);
+/* old prototype u32 MenuMoveVertical(...): the s16 return would add a
+                         sign-extension pair before the r0 copy */
+                ((u32 (*)(u16, u8, u32, u32))MenuMoveVertical)(gKeysPressed, gUnk_0202EF78[v], 0, 9);
             gUnk_0202EF78[v] = t = r;
         }
         if (gKeysPressed & 0xC0

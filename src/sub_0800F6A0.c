@@ -8,8 +8,8 @@ extern const u8 gUnk_08313AA8[];
 extern const u8 gUnk_0831377C[];
 extern void WaitForVBlank(void);
 extern void sub_080106CC(u32 a, u32 b);
-extern void sub_0800F328(u32 a, void *b);
-extern void FadeToBrightenedPalette(void *a, u32 b);
+extern void sub_0800F328(u32 src, u16 *dst);
+extern void FadeToBrightenedPalette(u32 a, u32 b);
 extern void WaitFramesOrKey(u32 a);
 extern void FadeToColor(u32 a, u32 b);
 void sub_0800F6A0(void)
@@ -22,8 +22,8 @@ void sub_0800F6A0(void)
     WaitForVBlank();
     REG_DISPCNT = 0x88 << 3;
     sub_080106CC((u32)gUnk_0831397C, (u32)gUnk_08313AA8);
-    sub_0800F328((u32)gUnk_0831377C, buf);
-    FadeToBrightenedPalette(buf, 0x0F);
+    sub_0800F328((u32)gUnk_0831377C, (u16 *)buf);
+    FadeToBrightenedPalette((u32)buf, 0x0F);
     WaitFramesOrKey(0x96 << 2);
     FadeToColor(0, 0x0F);
 }

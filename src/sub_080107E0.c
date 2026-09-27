@@ -18,10 +18,10 @@ extern void ClearOamBuffer(void);
 extern void sub_080047DC(void);
 extern void ZeroTextLayer(void);
 extern void sub_0800F4FC(void);
-extern void sub_0800F328(u32 a, void *b);
-extern void DrawTrackSelect(s8 a, u8 b);
-extern void FadeToBrightenedPalette(void *a, u32 b);
-extern u32 ExchangeLinkInput(void);
+extern void sub_0800F328(u32 src, u16 *dst);
+extern u8 DrawTrackSelect(u8 a, u8 b);
+extern void FadeToBrightenedPalette(u32 a, u32 b);
+extern s32 ExchangeLinkInput(void);
 extern void m4aSongNumStart(u16 a);
 
 u8 LinkTrackSelect(void)
@@ -46,9 +46,9 @@ u8 LinkTrackSelect(void)
     WaitForVBlank();
     ZeroTextLayer();
     sub_0800F4FC();
-    sub_0800F328((u32)gUnk_082E4328, buf);
+    sub_0800F328((u32)gUnk_082E4328, (u16 *)buf);
     DrawTrackSelect(0, 1);
-    FadeToBrightenedPalette(buf, 0x0F);
+    FadeToBrightenedPalette((u32)buf, 0x0F);
     REG_DISPCNT = 0xA8 << 3;
     WaitForVBlank();
     REG_DISPCNT = 0xAA << 5;
@@ -84,9 +84,11 @@ u8 LinkTrackSelect(void)
         }
         WaitForVBlank();
         if (gLinkPlayerId == 0)
-            DrawTrackSelect(gUnk_0202EF8C, 1);
+/* old prototype u8 DrawTrackSelect(s8, u8): the s8 parameter keeps the
+             sign-extending ldrsb of gUnk_0202EF8C */
+            ((u8 (*)(s8, u8))DrawTrackSelect)((s8)gUnk_0202EF8C, 1);
         else
-            DrawTrackSelect(gUnk_0202EF8C, 1);
+            ((u8 (*)(s8, u8))DrawTrackSelect)((s8)gUnk_0202EF8C, 1);
         if (k & A_BUTTON) {
             m4aSongNumStart(9);
             gUnk_0202EF8C = gUnk_083FDE78[gUnk_0202EF8C];

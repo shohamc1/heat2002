@@ -5,7 +5,7 @@ extern const u8 gUnk_082E4B04[];
 extern const u32 gUnk_0833338C[];
 extern const u8 gUnk_082E4528[];
 extern void WaitForVBlank(void);
-extern void sub_08010680(u32 a);
+extern void sub_08010680(u16 *data);
 void sub_0800F4FC(void)
 {
     REG_BG0CNT = BGCNT_PRIORITY(1) | BGCNT_CHARBASE(3) | BGCNT_SCREENBASE(28);

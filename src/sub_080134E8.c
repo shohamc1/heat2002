@@ -6,7 +6,7 @@ extern u8 gUnk_0829F3BC[];
 extern void sub_08006734(u32 a);
 extern u32 GetString(u16 idx);
 extern void sub_080065A8(void);
-extern void DrawTextCenteredHighlight(u32 a, u32 b, u32 c);
+extern void DrawTextCenteredHighlight(u8 *p, u32 a1, u8 a2);
 
 void sub_080134E8(u8 a)
 {

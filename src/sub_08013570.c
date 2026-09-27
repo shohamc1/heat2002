@@ -1,11 +1,11 @@
 #include "global.h"
 extern u16 gKeysPressed;
 extern u8 gOptions[];
-extern void sub_08011C9C(u32 a, void *b);
+extern void sub_08011C9C(u8 a, u16 *dst);
 extern void sub_080134E8(u8 a, u8 b, u8 c);
-extern void FadeToBrightenedPalette(void *a, u32 b);
+extern void FadeToBrightenedPalette(u32 a, u32 b);
 extern void ReadKeys(void);
-extern u8 MenuMoveVertical(u16 keys, s8 v, u32 lo, u32 hi);
+extern s16 MenuMoveVertical(u16 keys, s16 v, s16 lo, s16 hi);
 extern void WaitForVBlank(void);
 extern void m4aSongNumStart(u16 a);
 extern void FadeToColor(u32 a, u32 b);
@@ -15,9 +15,9 @@ s8 sub_08013570(u8 a, u8 b)
     s8 v;
     s8 sel;
     v = 0;
-    sub_08011C9C(6, buf);
+    sub_08011C9C(6, (u16 *)buf);
     sub_080134E8(0, a, b | a);
-    FadeToBrightenedPalette(buf, 0x0F);
+    FadeToBrightenedPalette((u32)buf, 0x0F);
     sel = 0x40;
     do {
         ReadKeys();

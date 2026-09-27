@@ -21,7 +21,7 @@ extern struct Unk0801DACC gUnk_0801DACC[];
 extern struct Unk0801DA90 gUnk_0801DA90[];
 
 extern void sub_08001900(u32 a, u32 b);
-extern void sub_08001134(u32 a);
+extern void sub_08001134(struct MusicPlayerInfo *mplayInfo);
 
 void sub_08001280(u16 n)
 {
@@ -32,5 +32,5 @@ void sub_08001280(u16 n)
     else if ((info->status & MUSICPLAYER_STATUS_TRACK) == 0)
         sub_08001900((u32)info, (u32)info->songHeader);
     else if (info->status & MUSICPLAYER_STATUS_PAUSE)
-        sub_08001134((u32)info);
+        sub_08001134(info);
 }

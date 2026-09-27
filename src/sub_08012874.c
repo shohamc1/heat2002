@@ -5,9 +5,9 @@ extern u16 gKeysPressed;
 
 extern void ZeroTextLayer(void);
 extern void sub_0800F498(void);
-extern void sub_0800F328(void *a, void *b);
+extern void sub_0800F328(u32 src, u16 *dst);
 extern void sub_080127E4(u8 a);
-extern void FadeToBrightenedPalette(void *a, u32 b);
+extern void FadeToBrightenedPalette(u32 a, u32 b);
 extern void ReadKeys(void);
 extern void WaitForVBlank(void);
 extern void FadeToColor(u32 a, u32 b);
@@ -21,9 +21,9 @@ void sub_08012874(s8 a)
     ZeroTextLayer();
     sub_0800F498();
     p = gUnk_082EE104;
-    sub_0800F328(p, buf);
+    sub_0800F328((u32)p, (u16 *)buf);
     sub_080127E4(a);
-    FadeToBrightenedPalette(buf, 0x0F);
+    FadeToBrightenedPalette((u32)buf, 0x0F);
     sel = 0x40;
     do {
         ReadKeys();

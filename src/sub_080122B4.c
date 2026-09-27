@@ -8,9 +8,9 @@ extern u8 gOptions[];
 extern void ResetLinkState(void);
 extern void ZeroTextLayer(void);
 extern void sub_0800F4FC(void);
-extern void sub_0800F328(u32 a, void *b);
+extern void sub_0800F328(u32 src, u16 *dst);
 extern void sub_08012228(u8 a);
-extern void FadeToBrightenedPalette(void *a, u32 b);
+extern void FadeToBrightenedPalette(u32 a, u32 b);
 extern void ReadKeys(void);
 extern s8 sub_08012074(void);
 extern void m4aSongNumStart(u16 a);
@@ -28,9 +28,9 @@ u8 sub_080122B4(void)
     ResetLinkState();
     ZeroTextLayer();
     sub_0800F4FC();
-    sub_0800F328((u32)gUnk_082E4328, buf);
+    sub_0800F328((u32)gUnk_082E4328, (u16 *)buf);
     sub_08012228(0);
-    FadeToBrightenedPalette(buf, 0x0F);
+    FadeToBrightenedPalette((u32)buf, 0x0F);
     gUnk_020020B8 = v;
     do
     {

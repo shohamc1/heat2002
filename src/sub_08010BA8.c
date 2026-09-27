@@ -6,7 +6,7 @@ extern u32 *gUnk_083FDF74[];
 extern u32 *gUnk_083FDFEC[];
 
 extern s32 sub_08010B38(u8 id);
-extern u32 GetString(u32 idx);
+extern u32 GetString(u16 idx);
 extern void sub_080065A8(void);
 extern void sub_08010AA4(u8 idx);
 extern void RLUnCompVram(u32 a, u32 b);

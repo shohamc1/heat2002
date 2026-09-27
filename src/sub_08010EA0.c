@@ -13,11 +13,11 @@ extern void sub_080047DC(void);
 extern void WaitForVBlank(void);
 extern void ZeroTextLayer(void);
 extern void sub_0800F4FC(void);
-extern void sub_0800F328(u32 a, void *b);
+extern void sub_0800F328(u32 src, u16 *dst);
 extern void sub_08010E04(u8 a);
-extern void FadeToBrightenedPalette(void *a, u32 b);
+extern void FadeToBrightenedPalette(u32 a, u32 b);
 extern void ReadKeys(void);
-extern u8 MenuMoveHorizontal(u16 keys, s8 v, u32 lo, u32 hi);
+extern s16 MenuMoveHorizontal(u16 keys, s16 v, s16 lo, s16 hi);
 extern void m4aSongNumStart(u16 a);
 extern void FadeToColor(u32 a, u32 b);
 
@@ -37,9 +37,9 @@ u8 sub_08010EA0(void)
     WaitForVBlank();
     ZeroTextLayer();
     sub_0800F4FC();
-    sub_0800F328((u32)gUnk_082E4328, buf);
+    sub_0800F328((u32)gUnk_082E4328, (u16 *)buf);
     sub_08010E04(0);
-    FadeToBrightenedPalette(buf, 0x0F);
+    FadeToBrightenedPalette((u32)buf, 0x0F);
     REG_DISPCNT = 0xA8 << 3;
     WaitForVBlank();
     REG_DISPCNT = 0xAA << 5;

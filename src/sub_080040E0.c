@@ -3,7 +3,7 @@
 extern u32 gUnk_02022E20[];
 extern u32 gUnk_02023A20[];
 
-extern u32 sub_08017230(u32 a, u32 b);
+extern s32 sub_08017230(s32 a, s32 b);
 
 void sub_080040E0(u32 a)
 {

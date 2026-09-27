@@ -15,7 +15,7 @@ extern u8 gUnk_0202539C;
 extern u8 gUnk_0829F2F0[];
 
 extern void sub_08006734(u32 a);
-extern u32 GetString(u32 idx);
+extern u32 GetString(u16 idx);
 extern void sub_080065A8(void);
 extern void SplitMilliseconds(u32 a, u16 *b, u16 *c, u16 *d);
 extern void DrawText(u8 *p, u32 a1, u32 a2, u8 a3);

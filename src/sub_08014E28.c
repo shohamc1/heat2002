@@ -4,9 +4,9 @@
 extern u16 gKeysPressed;
 extern u8 gOptions[];
 extern void SortCarsByTime(void);
-extern void sub_08011C9C(u32 a, void *b);
+extern void sub_08011C9C(u8 a, u16 *dst);
 extern void sub_08014C60(u8 a);
-extern void FadeToBrightenedPalette(void *a, u32 b);
+extern void FadeToBrightenedPalette(u32 a, u32 b);
 extern void ReadKeys(void);
 extern void WaitForVBlank(void);
 extern void m4aSongNumStart(u16 a);
@@ -20,9 +20,9 @@ u8 sub_08014E28(void)
     z = 0;
     v = 0;
     SortCarsByTime();
-    sub_08011C9C(1, buf);
+    sub_08011C9C(1, (u16 *)buf);
     sub_08014C60(0);
-    FadeToBrightenedPalette(buf, 0x0F);
+    FadeToBrightenedPalette((u32)buf, 0x0F);
     sel = 0x40;
     do {
         ReadKeys();

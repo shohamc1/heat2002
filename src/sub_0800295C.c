@@ -57,14 +57,14 @@ extern void sub_08002718(void);
 extern void WaitForVBlank(void);
 extern void m4aMPlayFadeOut(void *a, u32 b);
 extern void m4aSongNumStart(u16 idx);
-extern void sub_080019B4(void *a);
+extern void sub_080019B4(struct MusicPlayerInfo *mplayInfo);
 extern void sub_0800215C(void *a, u32 b, s32 c);
 extern void EnableRaceDisplay(void);
 extern void sub_08002950(void);
-extern s8 ExchangeLinkInput(void);
+extern s32 ExchangeLinkInput(void);
 extern void LoadTrack(u32 a);
 extern void UpdateTrackScroll(u32 a, u32 b);
-extern void BeginFadeToColor(u32 a, u32 b);
+extern void BeginFadeToColor(s32 a, u32 b);
 extern void UpdatePaletteFade(void);
 extern void UpdateCameraScroll(void);
 extern void SmoothCamera(void);
@@ -81,7 +81,7 @@ extern void sub_0800545C(void);
 extern void InitRaceHud(void);
 extern void sub_08006388(void);
 extern void sub_080063B0(void);
-extern void DrawTextCentered(u32 a, u32 b, u32 c);
+extern void DrawTextCentered(u8 *str, u32 y);
 extern void sub_08006A14(u32 a);
 extern void InitGfxCaches(void);
 extern void AgeGfxCaches(void);
@@ -92,7 +92,7 @@ extern void DrawAllCars(void);
 extern void UpdateAllCars(void);
 extern void sub_0800AF20(void);
 extern void sub_0800B334(void);
-extern void DrawSpriteText(void *a, u32 b, u32 c);
+extern void DrawSpriteText(u8 *a, u32 b, u32 c);
 extern void LoadTrackWalls(u32 a);
 extern void InitMultiplayerSio(void);
 extern u32 GetString(u16 idx);
@@ -260,9 +260,11 @@ camera_ready:
         if (gUnk_0200215C == 9 || gUnk_0200215C == 0x0D || gUnk_0200215C == 0x0E
             || gUnk_0200215C == 0x0F || gUnk_0200215C == 0x11) {
             if ((gUnk_0200209C & 8) == 0)
-                DrawTextCentered(GetString(0x5D), 8, 1);
+                /* DrawTextCentered: the ROM callers pass a third argument the matched definition drops; call
+                   through a function pointer with the old prototype. */
+                ((void (*)(u32, u32, u32))DrawTextCentered)(GetString(0x5D), 8, 1);
             else
-                DrawTextCentered((u32)gUnk_0806C678, 8, 1);
+                ((void (*)(u32, u32, u32))DrawTextCentered)((u32)gUnk_0806C678, 8, 1);
         }
         sub_080047DC();
         sub_08008D8C();
@@ -313,9 +315,9 @@ camera_ready:
                     gUnk_020021E0 = 2;
                     WaitForVBlank();
                     REG_DISPCNT &= ~DISPCNT_OBJ_ON;
-                    sub_080019B4(gUnk_02001FA0);
-                    sub_080019B4(gUnk_02002030);
-                    sub_080019B4(gUnk_02001FE0);
+                    sub_080019B4((struct MusicPlayerInfo *)gUnk_02001FA0);
+                    sub_080019B4((struct MusicPlayerInfo *)gUnk_02002030);
+                    sub_080019B4((struct MusicPlayerInfo *)gUnk_02001FE0);
                     BeginFadeToColor(0x19, 0);
                 }
                 break;
@@ -325,7 +327,7 @@ camera_ready:
             }
         }
         if (gIsLinkRace != 0) {
-            v = ExchangeLinkInput();
+            v = (s8)ExchangeLinkInput();
             if (v != 0) {
                 goto connection_error;
             }
@@ -346,6 +348,6 @@ wait_link:
 success:
         return 1;
     }
-    sub_080019B4(gUnk_02001F60);
+    sub_080019B4((struct MusicPlayerInfo *)gUnk_02001F60);
     return 0;
 }

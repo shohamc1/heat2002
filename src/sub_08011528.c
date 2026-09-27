@@ -6,12 +6,12 @@ extern u8 gLinkPlayerId;
 
 extern void ResetLinkState(void);
 extern void SortLinkCarsByTime(void);
-extern void sub_08011C9C(u8 a, void *b);
+extern void sub_08011C9C(u8 a, u16 *dst);
 extern void sub_0801137C(void);
-extern void FadeToBrightenedPalette(void *a, u32 b);
+extern void FadeToBrightenedPalette(u32 a, u32 b);
 extern s32 ExchangeLinkInput(void);
 extern u32 GetString(u16 idx);
-extern void DrawTextCenteredHighlight(u32 a, u32 b, u32 c);
+extern void DrawTextCenteredHighlight(u8 *p, u32 a1, u8 a2);
 extern void WaitForVBlank(void);
 extern void FadeToColor(u32 a, u32 b);
 
@@ -29,9 +29,9 @@ u8 sub_08011528(void)
     gUnk_0202EF40[12] = 0;
     v = 0;
     SortLinkCarsByTime();
-    sub_08011C9C(0, buf);
+    sub_08011C9C(0, (u16 *)buf);
     sub_0801137C();
-    FadeToBrightenedPalette(buf, 0x0F);
+    FadeToBrightenedPalette((u32)buf, 0x0F);
     sel = 0x40;
     do
     {

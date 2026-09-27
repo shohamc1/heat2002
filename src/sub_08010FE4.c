@@ -27,7 +27,7 @@ struct Big
 extern struct Big gUnk_083FDA78[];
 extern u8 gUnk_0202EED8;
 
-extern void GetString(u16 idx);
+extern u32 GetString(u16 idx);
 void sub_080065A8(void);
 void DrawText(u8 *p, u32 a1, u32 a2, u8 a3);
 void DrawTextCenteredHighlight(u32 a, u32 b, u32 c);

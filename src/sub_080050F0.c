@@ -6,8 +6,8 @@ extern u16 gUnk_02025258;
 extern u8 gUnk_0202539C;
 extern volatile u8 gUnk_020020C0;
 
-extern void sub_08004DB4(void);
-extern u32 ExchangeLinkInput(void);
+extern u16 sub_08004DB4(void);
+extern s32 ExchangeLinkInput(void);
 extern void StopAllSongs(void);
 extern void sub_08004C44(u8 arg);
 extern void sub_08005024(void);

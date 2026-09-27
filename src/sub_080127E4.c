@@ -5,7 +5,7 @@ extern u32 gUnk_083FDD8C[];
 
 extern u32 GetString(u16 idx);
 extern void sub_080065A8(void);
-extern void DrawText(u32 p, u32 a1, u32 a2, u8 a3);
+extern void DrawText(u8 *p, u32 a1, u32 a2, u8 a3);
 
 void sub_080127E4(s8 a)
 {

@@ -6,7 +6,7 @@ extern u8 gUnk_0202539C;
 extern volatile u8 gUnk_020020C0;
 
 extern void ReadKeys(void);
-extern u32 sub_08004DB4(void);
+extern u16 sub_08004DB4(void);
 extern void sub_08004D1C(u8 a);
 extern s32 ExchangeLinkInput(void);
 

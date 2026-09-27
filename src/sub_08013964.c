@@ -3,9 +3,9 @@ extern u16 gKeysPressed;
 extern u8 gOptions[];
 extern s8 sub_08016634(void);
 extern s8 sub_08013878(void);
-extern void sub_08011C9C(u32 a, void *b);
+extern void sub_08011C9C(u8 a, u16 *dst);
 extern void sub_08013908(u32 a);
-extern void FadeToBrightenedPalette(void *a, u32 b);
+extern void FadeToBrightenedPalette(u32 a, u32 b);
 extern void SaveSeason(void);
 extern void ReadKeys(void);
 extern void WaitForVBlank(void);
@@ -21,9 +21,9 @@ s8 sub_08013964(void)
         if (sub_08013878() == 0)
             return;
     }
-    sub_08011C9C(6, buf);
+    sub_08011C9C(6, (u16 *)buf);
     sub_08013908(0);
-    FadeToBrightenedPalette(buf, 0x0F);
+    FadeToBrightenedPalette((u32)buf, 0x0F);
     SaveSeason();
     sub_08013908(1);
     sel = 0x40;

@@ -7,7 +7,7 @@ extern u8 gUnk_0833338C[];
 extern u8 gUnk_08363EE8[];
 extern u8 gUnk_08364AC8[];
 extern void VBlankIntrWait(void);
-extern u32 GetString(u32 idx);
+extern u32 GetString(u16 idx);
 extern void DrawTextCenteredHighlight(u8 *p, u32 a1, u8 a2);
 extern void sub_08011C9C(u8 a, u16 *dst);
 extern void FadeToBrightenedPalette(u32 a, u32 b);
@@ -76,10 +76,12 @@ loop:
             if ((shifted & bit2) != 0)
                 goto show1;
 show0:
-            DrawTextCenteredHighlight((u8 *)GetString(x), y, 0);
+/* old prototype u32 GetString(u32): the canonical u16 parameter would
+            narrow x with an extra lsls/lsrs pair */
+            DrawTextCenteredHighlight((u8 *)((u32 (*)(u32))GetString)(x), y, 0);
             goto pnext;
 show1:
-            DrawTextCenteredHighlight((u8 *)GetString(x), y, 1);
+            DrawTextCenteredHighlight((u8 *)((u32 (*)(u32))GetString)(x), y, 1);
 pnext:
             ;
             y = y + 1;
@@ -118,7 +120,7 @@ pnext:
             goto show_empty;
 show_icon:
         __asm__ volatile ("" : : : "r0");
-        DrawTextCenteredHighlight((u8 *)GetString(icon), 0x0E, 1);
+        DrawTextCenteredHighlight((u8 *)((u32 (*)(u32))GetString)(icon), 0x0E, 1);
         goto shown;
 show_empty:
         DrawTextCenteredHighlight(gUnk_0807CA60, 0x0E, 1);

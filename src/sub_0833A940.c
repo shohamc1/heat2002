@@ -20,7 +20,7 @@ extern struct Unk0801DACC gUnk_0200CAA4[];
 extern struct Unk0801DA90 gUnk_0200CA74[];
 
 extern void sub_0833AFC0(u32 a, u32 b);
-extern void sub_0833A7F4(u32 a);
+extern void sub_0833A7F4(struct MusicPlayerInfo *mplayInfo);
 
 void sub_0833A940(u16 n)
 {

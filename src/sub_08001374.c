@@ -11,7 +11,7 @@ struct Unk0801DA90
 
 extern struct Unk0801DA90 gUnk_0801DA90[];
 
-extern void sub_08001134(u32 a);
+extern void sub_08001134(struct MusicPlayerInfo *mplayInfo);
 
 void sub_08001374(void)
 {

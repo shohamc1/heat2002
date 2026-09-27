@@ -3,11 +3,11 @@
 extern u16 gUnk_020020A0;
 
 extern void ResetLinkState(void);
-extern void sub_08011C9C(u8 a, void *b);
+extern void sub_08011C9C(u8 a, u16 *dst);
 extern void sub_080115D8(u8 a);
-extern void FadeToBrightenedPalette(void *a, u32 b);
+extern void FadeToBrightenedPalette(u32 a, u32 b);
 extern s32 ExchangeLinkInput(void);
-extern u8 MenuMoveVertical(u16 keys, s8 v, u32 lo, u32 hi);
+extern s16 MenuMoveVertical(u16 keys, s16 v, s16 lo, s16 hi);
 extern void WaitForVBlank(void);
 extern void FadeToColor(u32 a, u32 b);
 
@@ -21,9 +21,9 @@ u8 sub_0801164C(void)
 
     ResetLinkState();
     v = 0;
-    sub_08011C9C(1, buf);
+    sub_08011C9C(1, (u16 *)buf);
     sub_080115D8(0);
-    FadeToBrightenedPalette(buf, 0x0F);
+    FadeToBrightenedPalette((u32)buf, 0x0F);
     sel = 0x40;
     do
     {

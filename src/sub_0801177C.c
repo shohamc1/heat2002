@@ -23,13 +23,13 @@ extern void sub_080047DC(void);
 extern void WaitForVBlank(void);
 extern void ZeroTextLayer(void);
 extern void sub_0800F4FC(void);
-extern void sub_0800F328(u32 a, void *b);
+extern void sub_0800F328(u32 src, u16 *dst);
 extern void sub_08010E04(u8 a);
-extern void FadeToBrightenedPalette(void *a, u32 b);
-extern u32 ExchangeLinkInput(void);
+extern void FadeToBrightenedPalette(u32 a, u32 b);
+extern s32 ExchangeLinkInput(void);
 extern u8 sub_080116D4(u16 a, u8 b, u32 c, u32 d, u8 *e, u8 f);
-extern u32 GetString(u32 a);
-extern void DrawTextCenteredHighlight(u32 a, u32 b, u32 c);
+extern u32 GetString(u16 idx);
+extern void DrawTextCenteredHighlight(u8 *p, u32 a1, u8 a2);
 
 /* MATCH. The ROM keeps &b[0] in r6 and recomputes &b[i] every iteration; the
    hard-register hint on p and the temps in the input loop select that
@@ -77,9 +77,9 @@ s8 LinkDriverSelect(void)
     WaitForVBlank();
     ZeroTextLayer();
     sub_0800F4FC();
-    sub_0800F328((u32)gUnk_082E4328, buf);
+    sub_0800F328((u32)gUnk_082E4328, (u16 *)buf);
     sub_08010E04(a[(*(volatile u32 *)REG_ADDR_SIOCNT << 26) >> 30]);
-    FadeToBrightenedPalette(buf, 0x0F);
+    FadeToBrightenedPalette((u32)buf, 0x0F);
     REG_DISPCNT = 0xA8 << 3;
     WaitForVBlank();
     REG_DISPCNT = 0xAA << 5;

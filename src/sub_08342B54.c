@@ -4,7 +4,7 @@ extern u8 gUnk_0203DE30[];         /* 0x0203DE30 */
 extern u8 gUnk_0200D118[];         /* 0x0200D118 */
 
 u32 sub_0833BD94(u16 a);
-extern void sub_0833EF0C(u32 a, u32 b, u32 c);
+extern void sub_0833EF0C(u8 *str, u32 a2, u32 a3);
 void sub_0833FFA8(u32 a);
 void sub_0833FF84(u32 a);
 

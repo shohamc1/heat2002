@@ -5,7 +5,7 @@ extern const u8 gUnk_082A9F0C[];
 extern const u32 gUnk_0833338C[];
 extern const u8 gUnk_082A9930[];
 extern void WaitForVBlank(void);
-extern void sub_08010680(u32 a);
+extern void sub_08010680(u16 *data);
 
 void sub_0800F434(void)
 {

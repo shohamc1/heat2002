@@ -39,14 +39,14 @@ extern u8 gIsDemo;
 extern u8 gUnk_020021E0;
 
 extern void sub_080080B4(void);
-extern void DrawTextCentered(u8 *str, u32 y, u32 z);
+extern void DrawTextCentered(u8 *str, u32 y);
 extern void UpdateAiDriver(struct Car *a, u8 b);
 extern void StopCar(void *p);
 extern void sub_080091F8(void);
 extern u8 Random8(void);
 extern void m4aSongNumStart(u16 idx);
 extern void sub_0800920C(u8 a);
-extern void sub_0800649C(u32 a, u32 b, u32 c);
+extern void sub_0800649C(u8 *str, u32 x, u32 y);
 extern void sub_0800BE00(void *base, s32 arg);
 
 void UpdatePitStop(struct Car *a1, u8 a2)
@@ -57,7 +57,9 @@ void UpdatePitStop(struct Car *a1, u8 a2)
     if (gUnk_0202CAD0 != 0 && a1 == gCars)
         sub_080080B4();
     if (a1 == gCars && gUnk_0202EEB0 == 0)
-        DrawTextCentered(gUnk_0806C918, 10, 1);
+        /* DrawTextCentered: the ROM callers pass a third argument the matched definition drops; call
+           through a function pointer with the old prototype. */
+        ((void (*)(u8 *, u32, u32))DrawTextCentered)(gUnk_0806C918, 10, 1);
     switch (a1->pitState) {
     case 0:
         break;

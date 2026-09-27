@@ -19,9 +19,9 @@ extern void SetLinkSerialIntr(void);
 extern void FadeToColor(u32 a, u32 b);
 extern void WaitForVBlank(void);
 extern void DetectLinkPlayers(void);
-extern u8 RunRace(u32 a, u32 b, void *c);
-extern u32 GetString(u32 a);
-extern void DrawTextCentered(u32 a, u32 b, u32 c);
+extern u8 RunRace(u32 a, u8 b);
+extern u32 GetString(u16 idx);
+extern void DrawTextCentered(u8 *str, u32 y);
 extern void StopAllSongsAndVSyncOff(void);
 extern void SortLinkCarsByTime(void);
 extern void sub_080053B8(void);
@@ -60,9 +60,13 @@ loop:
            pinning them emits their loads first. */
         register u32 a0 asm("r0") = 0;
         register u32 a1 asm("r1") = 4;
-        if (RunRace(a0, a1, gUnk_0202CD90) != 0) {
-        DrawTextCentered(GetString(0x75), 0x0A, 1);
-        DrawTextCentered((u32)gUnk_0806C688, 0x0C, 1);
+        /* RunRace: the ROM caller passes a third argument the matched definition drops; call
+           through a function pointer with the old prototype. */
+        if (((u8 (*)(u32, u32, void *))RunRace)(a0, a1, gUnk_0202CD90) != 0) {
+        /* DrawTextCentered: the ROM callers pass a third argument the matched definition drops; call
+           through a function pointer with the old prototype. */
+        ((void (*)(u32, u32, u32))DrawTextCentered)(GetString(0x75), 0x0A, 1);
+        ((void (*)(u32, u32, u32))DrawTextCentered)((u32)gUnk_0806C688, 0x0C, 1);
         StopAllSongsAndVSyncOff();
 wait1:
         ReadKeys();

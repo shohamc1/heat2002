@@ -15,7 +15,7 @@ extern u8 gUnk_0829F3B4[];
 extern void sub_08006734(u32 a);
 extern u32 GetString(u16 idx);
 extern void sub_080065A8(void);
-extern void DrawTextCenteredHighlight(u32 a, u32 b, u32 c);
+extern void DrawTextCenteredHighlight(u8 *p, u32 a1, u8 a2);
 extern void RLUnCompVram(u32 a, u32 b);
 extern void sub_080100CC(u32 a0, u32 a1, u32 a2, u32 a3, u8 a4);
 

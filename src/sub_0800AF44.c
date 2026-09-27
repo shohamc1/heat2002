@@ -12,12 +12,12 @@ extern u8 gUnk_0200215C;           /* 0x0200215C */
 extern u8 gUnk_02002098;           /* 0x02002098 */
 extern u8 gUnk_020021E0;           /* 0x020021E0 */
 
-extern u32 GetString(u32 a);
-extern void sub_0800649C(u8 *str, u32 x, u32 y, u32 z);
+extern u32 GetString(u16 idx);
+extern void sub_0800649C(u8 *str, u32 x, u32 y);
 extern void BeginFadeToColor(s32 a, u32 b);
 extern void WaitForVBlank(void);
-extern void RemoveTask(struct EntityAF44 *e);
-extern void FreeTask(struct EntityAF44 *e);
+extern void RemoveTask(u32 p);
+extern void FreeTask(u32 p);
 
 void RaceEndTask(struct EntityAF44 *e)
 {
@@ -28,18 +28,20 @@ void RaceEndTask(struct EntityAF44 *e)
             if (gUnk_0200215C == 0x0A || gUnk_0200215C == 0x0B)
             {
                 if (gUnk_02002098 != 0)
-                    sub_0800649C((u8 *)GetString(0x8E), 0x0A, 3, 1);
+                    /* sub_0800649C: the ROM callers pass a fourth argument the matched definition drops; call
+                       through a function pointer with the old prototype. */
+                    ((void (*)(u8 *, u32, u32, u32))sub_0800649C)((u8 *)GetString(0x8E), 0x0A, 3, 1);
             }
             else
             {
-                sub_0800649C((u8 *)GetString(0x97), 0x0A, 3, 1);
+                ((void (*)(u8 *, u32, u32, u32))sub_0800649C)((u8 *)GetString(0x97), 0x0A, 3, 1);
             }
         }
         e->unk18 = e->unk18 - 1;
         if (e->unk18 == 0)
         {
-            RemoveTask(e);
-            FreeTask(e);
+            RemoveTask((u32)e);
+            FreeTask((u32)e);
             if (gUnk_0200215C != 4)
             {
                 BeginFadeToColor(0x0A, 0);

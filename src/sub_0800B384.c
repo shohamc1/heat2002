@@ -4,7 +4,7 @@
 extern u8 gUnk_0202CC10[];         /* 0x0202CC10 */
 
 u32 GetString(u16 idx);
-extern void sub_0800649C(u32 a, u32 b, u32 c);
+extern void sub_0800649C(u8 *str, u32 x, u32 y);
 void RemoveTask(u32 a);
 void FreeTask(u32 a);
 

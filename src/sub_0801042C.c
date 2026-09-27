@@ -14,12 +14,12 @@ extern u8 gOptions[];
 extern u16 *gUnk_08364B08;
 extern void m4aSongNumStart(u16 a);
 extern void WaitForVBlank(void);
-extern void sub_08010680(u32 a);
+extern void sub_08010680(u16 *data);
 extern u16 RgbFromPercent(u32 r, u32 g, u32 b);
-extern void FadeToBrightenedPalette(void *a, u32 b);
+extern void FadeToBrightenedPalette(u32 a, u32 b);
 extern void ReadKeys(void);
 extern u32 GetString(u16 idx);
-extern void DrawTextCenteredHighlight(u32 a, u32 b, u32 c);
+extern void DrawTextCenteredHighlight(u8 *p, u32 a1, u8 a2);
 extern void m4aMPlayFadeOut(void *a, u32 b);
 extern void FadeToColor(u32 a, u32 b);
 
@@ -53,7 +53,7 @@ u8 TitleScreen(void)
     buf[0xEB] = RgbFromPercent(0x24, 0x24, 0x24);
     buf[0xEC] = RgbFromPercent(0x0E, 0x0E, 0x0E);
     buf[0xED] = RgbFromPercent(0, 0, 0);
-    FadeToBrightenedPalette(buf, 0x0F);
+    FadeToBrightenedPalette((u32)buf, 0x0F);
     j = 0;
     while (!(gKeysHeld & 8) && n != 0) {
         ReadKeys();
