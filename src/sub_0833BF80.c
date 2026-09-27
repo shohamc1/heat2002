@@ -12,6 +12,7 @@
  * - the r dispatch is a goto net; see parked.md for the switch findings.
  */
 #include "global.h"
+#include "functions.h"
 
 struct Ent {
     u8 pad00[0x3E];
@@ -69,7 +70,6 @@ void sub_0833FF1C(void);
 void sub_0833D7D4(void);
 void sub_0833D680(void);
 void sub_0833D9D8(void);
-void sub_08339B18(void);
 void sub_0833BF6C(void);
 void sub_0833EDF8(void);
 void sub_0833EDB8(void);
@@ -79,7 +79,6 @@ void sub_08342868(void);
 void sub_08342B04(void);
 void sub_0833D5F4(void *);
 void sub_08344878(void);
-void sub_08343148(u8 *, u32, u32);
 void sub_0833B81C(void *, u16, s16);
 void sub_0833D448(void);
 void sub_0833D5B8(void);
@@ -94,8 +93,6 @@ u32 sub_0833DBC8(void);
 u32 sub_0833DCB0(void);
 u32 sub_0833DBF4(void);
 s8 sub_0833C874(void);
-void sub_0833D288(u32, u32);
-void sub_0833B074(void *);
 void sub_0833FA3C(void);
 
 s32 sub_0833BF80(u8 arg0, u8 arg1)
@@ -345,6 +342,6 @@ wait_ec:
 ret1:
         return 1;
     }
-    sub_0833B074(gUnk_02038FB0);
+    sub_0833B074((struct MusicPlayerInfo *)gUnk_02038FB0);
     return 0;
 }

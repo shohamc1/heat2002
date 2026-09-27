@@ -2,27 +2,14 @@
 #include "gba/defines.h"
 #include "gba/io_reg.h"
 #include "data.h"
+#include "functions.h"
+#include "m4a.h"
 
 extern u16 gKeysPressed;
 extern volatile u8 gUnk_020020C0;
 extern u8 gUnk_0202EED8;
 extern u8 gOptions[];
 extern u8 gUnk_0202EF8C;
-extern void sub_080045D8(void);
-extern void InitGfxCaches(void);
-extern void AgeGfxCaches(void);
-extern void ClearOamBuffer(void);
-extern void sub_080047DC(void);
-extern void WaitForVBlank(void);
-extern void ZeroTextLayer(void);
-extern void sub_0800F4FC(void);
-extern void sub_0800F328(u32 src, u16 *dst);
-extern u8 DrawTrackSelect(u8 a, u8 b);
-extern void FadeToBrightenedPalette(u32 a, u32 b);
-extern void ReadKeys(void);
-extern u8 MenuMoveHorizontalClamped(u16 keys, s8 v, u32 lo, u32 hi);
-extern void m4aSongNumStart(u16 a);
-extern void FadeToColor(u32 a, u32 b);
 
 u8 TrackSelectMenu(u8 a, u8 b)
 {

@@ -1,9 +1,9 @@
 #include "global.h"
+#include "functions.h"
+#include "m4a.h"
 
 extern u8 gOptions[];
 
-void m4aSongNumStart(u32 a);
-void sub_0800184C(void);
 
 void sub_080100B0(void)
 {

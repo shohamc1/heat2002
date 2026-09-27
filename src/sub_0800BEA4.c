@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 
 struct Car {
     s32 posX;
@@ -30,13 +31,9 @@ extern s32 gUnk_0202CC3C;
 
 s32 sub_0800BBFC(s32 a, s32 b, s32 c, s32 d, s32 e);
 void sub_0800BD44(s32 a, s32 b, s32 c, struct Car *d);
-void sub_0800BD98(s32 a, s32 *b, s32 c, s32 d);
-void sub_0800BE00(struct Car *a, s32 b);
 void sub_0800C28C(struct Car *a);
 s32 sub_0800C358(struct Car *a, s32 b);
-void UpdateAiDriver(struct Car *a, u8 b);
 s32 Atan2(s32 a, s32 b);
-s32 sub_080172C8(s32 a, s32 b);
 
 void sub_0800BEA4(struct Car **arr, s32 a1, s32 a2, s32 a3, u8 a4)
 {
@@ -83,7 +80,7 @@ void sub_0800BEA4(struct Car **arr, s32 a1, s32 a2, s32 a3, u8 a4)
             else
                 sub_0800BE00(car, 0x500);
             sub_0800BD44(x, car->unkF4, car->unkF8, car);
-            sub_0800BD98(x, out, car->unkF4, car->unkF8);
+            sub_0800BD98(x,(struct OutBD98 *)out,(u16 *)(car->unkF4),(void *)(car->unkF8));
             car->posX = out[0] << 16;
             car->posZ = out[1] << 16;
             sub_0800BD98(sub_080172C8(x + 0x32, car->unk154), out, car->unkF4,
@@ -115,7 +112,7 @@ void sub_0800BEA4(struct Car **arr, s32 a1, s32 a2, s32 a3, u8 a4)
         pp = arr;
         for (i = 0; i != gNumCars; i++) {
             car = *pp++;
-            UpdateAiDriver(car, (u8)i);
+            UpdateAiDriver((struct Unk0800C534 *)car, (u8)i);
         }
     }
 }

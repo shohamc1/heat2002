@@ -1,5 +1,6 @@
 #include "global.h"
 #include "data.h"
+#include "functions.h"
 
 struct EntityB120 {
     /* 0x00 */ u8 pad0[0x18];
@@ -9,11 +10,6 @@ struct EntityB120 {
 extern volatile u8 gIsLinkRace;  /* 0x020020DC */
 extern u8 gUnk_020020C4;           /* 0x020020C4 */
 
-u32 *sub_0800754C(u32 a);
-u8 RequestObjPalette(u32 a);
-u32 AddOamEntry(u32 a, u32 b);
-void RemoveTask(struct EntityB120 *e);
-void FreeTask(struct EntityB120 *e);
 
 void sub_0800B120(struct EntityB120 *e)
 {
@@ -41,8 +37,8 @@ void sub_0800B120(struct EntityB120 *e)
     }
     if (e->unk18 == 0x4E)
     {
-        RemoveTask(e);
-        FreeTask(e);
+        RemoveTask((u32)e);
+        FreeTask((u32)e);
         gUnk_020020C4 = 1;
     }
 }

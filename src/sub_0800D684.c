@@ -1,5 +1,6 @@
 #include "global.h"
 #include "data.h"
+#include "m4a.h"
 
 /*
  * Car-vs-car box collision test. For every other car within range, the
@@ -90,7 +91,6 @@ void sub_0800D64C(struct Ent *a, s32 b, struct Ent *c, s32 d, struct Coll *e,
 void sub_0800BA34(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g);
 void sub_0800E708(s32 a, u8 b);
 void ComputeForwardSpeed(struct Ent *a);
-void m4aSongNumStart(u16 idx);
 
 u8 CollideCars(struct Ent *car)
 {

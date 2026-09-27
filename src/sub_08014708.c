@@ -1,10 +1,7 @@
 #include "global.h"
+#include "functions.h"
 
 extern u32 gUnk_083FDE18;
-extern u32 GetString(u16 idx);
-extern void sub_080065A8(void);
-extern void DrawText(u8 *p, u32 a1, u32 a2, u8 a3);
-extern void sub_08006734(u32 a);
 extern u8 *gUnk_083FE9EC[];
 extern u8 gUnk_0202EF60[];
 extern u8 gUnk_0829F4EC[];
@@ -19,9 +16,11 @@ void sub_08014708(u8 a, u8 b)
     u8 base;
     s8 sv;
 
-    sub_08006734(gUnk_083FDE18);
+    /* sub_08006734: this file's old local prototype differs from
+       functions.h; call through the old signature (solved-walls 31). */
+    ((void (*)(u32))sub_08006734)(gUnk_083FDE18);
     GetString(a + 0xAE);
-    sub_080065A8();
+    ((void (*)(void))sub_080065A8)();
     base = (u8)(a * 4);
     y = 3;
     i = 0;

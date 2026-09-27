@@ -1,12 +1,10 @@
 #include "global.h"
 #include "gba/compat.h"
 #include "data.h"
+#include "functions.h"
 
 extern const u8 gUnk_082A9730[];
 
-extern void sub_08010664(u8 a);
-extern void ZeroTextLayer(void);
-extern u16 RgbFromPercent(u32 r, u32 g, u32 b);
 void sub_08011C9C(u8 a, u16 *dst)
 {
     sub_08010664(a);

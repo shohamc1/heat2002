@@ -1,6 +1,7 @@
 #include "global.h"
 #include "tilemap.h"
 #include "gba/defines.h"
+#include "functions.h"
 
 extern u32 gCamera[];
 extern u32 gUnk_0200BC48;
@@ -17,7 +18,6 @@ extern u8 *gUnk_0200BC54;
 extern u8 *gUnk_02002210;
 extern u16 gUnk_0200BC34;
 
-extern void sub_08003BFC(u32 x, u32 y, u8 *map, u32 *dest, u8 *charBase, u16 pal);
 
 void UpdateTrackScroll(void)
 {
@@ -35,6 +35,8 @@ void UpdateTrackScroll(void)
     gUnk_02002218 = x & 0x10;
     x >>= 5;
     y >>= 5;
-    sub_08003BFC(x, y, gUnk_02002208, (u32 *)TILEMAP_BUFFER(0), gUnk_0200221C, gUnk_02022DE4);
-    sub_08003BFC(x, y, gUnk_0200BC54, (u32 *)TILEMAP_BUFFER(1), gUnk_02002210, gUnk_0200BC34);
+    /* sub_08003BFC: this file's old local prototype differs from
+       functions.h; call through the old signature (solved-walls 31). */
+    ((void (*)(u32, u32, u8 *, u32 *, u8 *, u16))sub_08003BFC)(x, y, gUnk_02002208, (u32 *)TILEMAP_BUFFER(0), gUnk_0200221C, gUnk_02022DE4);
+    ((void (*)(u32, u32, u8 *, u32 *, u8 *, u16))sub_08003BFC)(x, y, gUnk_0200BC54, (u32 *)TILEMAP_BUFFER(1), gUnk_02002210, gUnk_0200BC34);
 }

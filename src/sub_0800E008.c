@@ -3,6 +3,7 @@
 #include "gba/io_reg.h"
 #include "gba/macro.h"
 #include "gba/syscall.h"
+#include "functions.h"
 
 void sub_0800DFC0(void);
 void SioTransferIntr(void);
@@ -20,12 +21,10 @@ extern u8 gUnk_0807CA34[];
 extern u8 gUnk_0807CB58[];
 extern u8 gUnk_0202E960[];
 
-void DrawTextCenteredHighlight(u8 *p, u32 a1, u8 a2);
 void SioTransferInit(u32 a1, u32 a2);
 void sub_0800DE9C(u16 x, u16 y);
 void sub_0800DE60(u32 id, u32 c);
 u32 SioTransferUpdate(u32 *frame);
-void sub_0800DFCC(void);
 
 u32 SendMultibootPayload(void)
 {

@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 
 extern s32 gCars[];
 extern u32 gCamera[];
@@ -14,7 +15,6 @@ extern u8 gUnk_0806C8DC[];
 u8 GetTrackTileType(s32 x, s32 y);
 u32 WorldToScreen(s32 x, s32 y, s32 *out);
 void sub_08007A7C(s32 a1, s32 a2, u32 a3, u32 a4, u32 a5);
-void DrawSpriteText(u8 *a, u32 b, u32 c);
 void sub_08017594(u8 *a, u8 *b, s32 c, s32 d);
 
 void sub_08008160(void)

@@ -1,7 +1,6 @@
 #include "global.h"
+#include "functions.h"
 
-void RemoveTask(u32 a);
-void FreeTask(u32 a);
 
 void sub_0800B5D4(u32 a)
 {

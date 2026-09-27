@@ -1,15 +1,11 @@
 #include "global.h"
+#include "functions.h"
 
 extern u32 gUnk_083FF6A4[];
 extern u8 gUnk_08331F88[];
 
 u32 WorldToScreen(s32 x, s32 y, s32 *out);
-u32 *sub_0800754C(u32 a);
 u32 GetTrackTileType(s32 x, s32 y);
-s32 RequestObjPalette(u32 a);
-u32 AddOamEntry(u32 a, u32 b);
-void RemoveTask(u32 a);
-void FreeTask(u32 a);
 
 struct Unk0800B8EC
 {

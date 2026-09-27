@@ -1,10 +1,9 @@
 #include "global.h"
+#include "functions.h"
 
 extern u32 *gUnk_08364B08;
 extern u8 gUnk_0806C8EC[];
 
-void DrawBigDigit(u32 *dest, u32 idx);
-void sub_0800649C(u32 r0, u32 r1, u32 r2);
 
 void sub_08008C48(s32 x)
 {
@@ -14,11 +13,12 @@ void sub_08008C48(s32 x)
 
     base = gUnk_08364B08;
     p = base + 0xE5;
-    DrawBigDigit(p, x / 100 % 10);
+    /* DrawBigDigit: this file's old prototype took (u32 *, u32); the matched definition takes (u16 *, u8); call through a function pointer with the old signature. */
+    ((void (*)(u32 *, u32))DrawBigDigit)(p, x / 100 % 10);
     p = base + 0xE6;
-    DrawBigDigit(p, x / 10 % 10);
+    ((void (*)(u32 *, u32))DrawBigDigit)(p, x / 10 % 10);
     p = base + 0xE7;
-    DrawBigDigit(p, x % 10);
+    ((void (*)(u32 *, u32))DrawBigDigit)(p, x % 10);
     s = (u32)gUnk_0806C8EC;
-    sub_0800649C(s, 0x10, 0x0F);
+    sub_0800649C((u8 *)s, 0x10, 0x0F);
 }

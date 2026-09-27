@@ -1,11 +1,6 @@
 #include "global.h"
+#include "functions.h"
 extern u16 gKeysPressed;
-extern void sub_08011C9C(u8 a, u16 *dst);
-extern void DrawMessageBox(u32 a, u32 b, u32 c);
-extern void FadeToBrightenedPalette(u32 a, u32 b);
-extern void ReadKeys(void);
-extern void WaitForVBlank(void);
-extern void FadeToColor(u32 a, u32 b);
 u8 MessageBox(u32 a, u32 b, u32 c)
 {
     u8 buf[0x200];

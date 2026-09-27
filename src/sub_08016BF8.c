@@ -1,7 +1,6 @@
 #include "global.h"
+#include "functions.h"
 extern u16 gUnk_0202F040[];
-extern void InitEeprom(void);
-extern void ReadSaveBlocks(u32 a, u32 b);
 u32 IsSaveValid(void)
 {
     InitEeprom();

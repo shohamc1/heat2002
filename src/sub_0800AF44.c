@@ -1,5 +1,6 @@
 #include "global.h"
 #include "gba/io_reg.h"
+#include "functions.h"
 
 struct EntityAF44 {
     /* 0x00 */ u8 pad0[0x18];
@@ -12,12 +13,6 @@ extern u8 gUnk_0200215C;           /* 0x0200215C */
 extern u8 gUnk_02002098;           /* 0x02002098 */
 extern u8 gUnk_020021E0;           /* 0x020021E0 */
 
-extern u32 GetString(u16 idx);
-extern void sub_0800649C(u8 *str, u32 x, u32 y);
-extern void BeginFadeToColor(s32 a, u32 b);
-extern void WaitForVBlank(void);
-extern void RemoveTask(u32 p);
-extern void FreeTask(u32 p);
 
 void RaceEndTask(struct EntityAF44 *e)
 {

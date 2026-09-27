@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 
 struct Unk0202A550
 {
@@ -9,7 +10,6 @@ struct Unk0202A550
 
 extern struct Unk0202A550 gCars[];
 
-extern u8 Random8(void);
 
 void FillUnassignedDrivers(void)
 {

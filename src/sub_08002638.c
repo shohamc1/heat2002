@@ -1,16 +1,12 @@
 #include "global.h"
+#include "functions.h"
 
 extern u8 gUnk_020020B4;
 extern u16 gUnk_02002124;
 void MainVBlankCallback(void);
 
 void RegisterRamReset(u32 r0);
-void InitIntrHandlers(void);
-void ReadKeys(void);
-void SetVBlankCallback(u32 r0);
 void FillFadePalette(u16 color);
-void FadeToColor(u32 r0, u32 r1);
-void WaitForVBlank(void);
 u32 MainMenuLoop(void);
 
 void GameMain(void)

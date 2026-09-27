@@ -1,5 +1,6 @@
 #include "global.h"
 #include "gba/m4a_internal.h"
+#include "functions.h"
 
 /* CgbSound, an older m4a revision than pokeemerald's and tmc's: no NR52
  * channel-status check, no pseudo-echo envelope write, and
@@ -7,8 +8,6 @@
 
 extern const u8 gUnk_0801D1EC[];
 
-extern void sub_08001C20(struct CgbChannel *);
-extern void sub_08001BD0(u8);
 
 void sub_08001C88(void)
 {
@@ -77,7 +76,7 @@ void sub_08001C88(void)
             {
                 channels->statusFlags = 3; // attack
                 channels->modify = CGB_CHANNEL_MO_PIT | CGB_CHANNEL_MO_VOL;
-                sub_08001C20(channels);
+                sub_08001C20((struct Unk1C20 *)channels);
                 switch (ch)
                 {
                     case 1:
@@ -167,7 +166,7 @@ void sub_08001C88(void)
                 if (ch == 3)
                     channels->modify |= CGB_CHANNEL_MO_VOL;
 
-                sub_08001C20(channels);
+                sub_08001C20((struct Unk1C20 *)channels);
                 if ((channels->statusFlags & SOUND_CHANNEL_SF_ENV) == 0) // release
                 {
                     channels->envelopeVolume--;

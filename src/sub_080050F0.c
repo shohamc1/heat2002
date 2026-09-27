@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 
 extern u8 gUnk_020253C4;
 extern u8 gUnk_02025248;
@@ -6,11 +7,6 @@ extern u16 gUnk_02025258;
 extern u8 gUnk_0202539C;
 extern volatile u8 gUnk_020020C0;
 
-extern u16 sub_08004DB4(void);
-extern s32 ExchangeLinkInput(void);
-extern void StopAllSongs(void);
-extern void sub_08004C44(u8 arg);
-extern void sub_08005024(void);
 
 u8 sub_080050F0(void)
 {

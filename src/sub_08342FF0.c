@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 
 extern u32 gUnk_0202B370[];
 extern u8 gUnk_0201F370[];
@@ -8,8 +9,6 @@ u32 *sub_0833FBB0(u32 a);
 u32 sub_08343464(s32 x, s32 y);
 s32 sub_0833FD78(u32 a);
 u32 sub_0833D6A0(u32 a, u32 b);
-void sub_0833FFA8(u32 a);
-void sub_0833FF84(u32 a);
 
 struct Unk08342FF0
 {

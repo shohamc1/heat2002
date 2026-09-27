@@ -1,29 +1,14 @@
 #include "global.h"
+#include "functions.h"
 extern u16 gKeysPressed;
 extern u8 gIsLinkRace;
 extern u32 gUnk_083FDE18;
-extern void sub_080019B4(struct MusicPlayerInfo *mplayInfo);
-extern void sub_080045D8(void);
-extern void InitGfxCaches(void);
-extern void AgeGfxCaches(void);
-extern void ClearOamBuffer(void);
-extern void sub_080047DC(void);
-extern void ResetBgScroll(void);
-extern void sub_08011C9C(u8 a, u16 *dst);
-extern void sub_08006734(u32 a);
-extern u32 GetString(u16 idx);
-extern void sub_080065A8(void);
-extern void DrawTextCenteredHighlight(u8 *p, u32 a1, u8 a2);
-extern void FadeToBrightenedPalette(u32 a, u32 b);
-extern void VBlankIntrWait(void);
-extern void ReadKeys(void);
-extern void FadeToColor(u32 a, u32 b);
 void sub_080164A8(void)
 {
     u8 buf[0x200];
     u16 keys;
-    sub_080019B4(0x02001F60);
-    sub_080019B4(0x02001F20);
+    sub_080019B4((struct MusicPlayerInfo *)0x02001F60);
+    sub_080019B4((struct MusicPlayerInfo *)0x02001F20);
     sub_080045D8();
     InitGfxCaches();
     AgeGfxCaches();
@@ -32,15 +17,17 @@ void sub_080164A8(void)
     ResetBgScroll();
     gIsLinkRace = 0;
     sub_08011C9C(1, (u16 *)buf);
-    sub_08006734(gUnk_083FDE18);
+    /* sub_08006734: this file's old local prototype differs from
+       functions.h; call through the old signature (solved-walls 31). */
+    ((void (*)(u32))sub_08006734)(gUnk_083FDE18);
     GetString(0x75);
-    sub_080065A8();
-    DrawTextCenteredHighlight(GetString(0x75), 0x0A, 1);
+    ((void (*)(void))sub_080065A8)();
+    DrawTextCenteredHighlight((u8 *)(GetString(0x75)), 0x0A, 1);
     FadeToBrightenedPalette((u32)buf, 0x0F);
     do {
         VBlankIntrWait();
         ReadKeys();
-        DrawTextCenteredHighlight(GetString(0x0F), 0x0F, 1);
+        DrawTextCenteredHighlight((u8 *)(GetString(0x0F)), 0x0F, 1);
     } while (!(*(u16 *)0x020005CC & 8));
     FadeToColor(0, 0x0F);
 }

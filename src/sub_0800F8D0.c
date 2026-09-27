@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 
 struct UnkCar {
     /* 0x000 */ u8 filler000[0x7D];
@@ -19,10 +20,6 @@ extern u32 gUnk_0202CBD8;             /* 0x0202CBD8 */
 extern u8 gUnk_0202EEE4;              /* 0x0202EEE4 */
 extern struct UnkCar *gCarOrder;  /* 0x0202EFC0 */
 
-extern void AssignRandomDrivers(void);
-extern void FillUnassignedDrivers(void);
-extern void SortCarsByTime(void);
-extern void sub_08016D28(u8 a);
 
 /* Matching reconstruction: accept the menu's address argument, unused here. */
 void SetupChallenge(u8 a, u8 *unused)

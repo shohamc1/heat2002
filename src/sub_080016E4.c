@@ -2,11 +2,11 @@
 #include "gba/defines.h"
 #include "gba/io_reg.h"
 #include "gba/m4a_internal.h"
+#include "functions.h"
 
 /* m4aSoundMode */
 
 void sub_080017D0(void);
-void sub_08001640(u32 a);
 
 void sub_080016E4(u32 mode)
 {

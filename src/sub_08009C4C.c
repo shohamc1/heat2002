@@ -1,5 +1,6 @@
 #include "global.h"
 #include "data.h"
+#include "functions.h"
 
 struct Thing {
     u8 pad00[0x10];
@@ -31,13 +32,9 @@ extern u32 *gUnk_083681F8[];
 extern u8 gUnk_0831D0EC[];
 
 u32 AddDepthSortedSprite(u32 a, u32 b, u32 c);
-struct Thing *sub_0800754C(u32 a);
 struct Thing *sub_08007598(u32 a);
 struct Thing *sub_080075E4(u32 a);
-struct Thing *sub_08007630(u32 a);
-u8 RequestObjPalette(u32 a);
 u32 WorldToScreen(s32 x, s32 y, s32 *out);
-s32 sub_080172C8(s32 a, s32 b);
 
 void DrawCar(struct Car *car, u8 idx)
 {
@@ -63,7 +60,7 @@ void DrawCar(struct Car *car, u8 idx)
     k &= 0x1F;
     if (flip != 0)
         k = 0x20 - k;
-    t5 = (u32)(RequestObjPalette(gUnk_08367730[car->driverId]) << 24) >> 12;
+    t5 = (u32)(RequestObjPalette((u32)gUnk_08367730[car->driverId]) << 24) >> 12;
     if (car->unk172 != 0)
         t5 |= 0x800;
     else
@@ -112,7 +109,7 @@ void DrawCar(struct Car *car, u8 idx)
         if (t == NULL)
             return;
         t5 = t->unk10 | 0x400;
-        t5 |= (u32)(RequestObjPalette(gUnk_08337C20) << 24) >> 12;
+        t5 |= (u32)(RequestObjPalette((u32)gUnk_08337C20) << 24) >> 12;
         AddDepthSortedSprite(k, t5, (u16)(y + 0x40));
     } else {
         row = gUnk_083681F8[car->driverId];
@@ -123,7 +120,7 @@ void DrawCar(struct Car *car, u8 idx)
         if (t == NULL)
             return;
         t5 = t->unk10 | 0x400;
-        t5 |= (u32)(RequestObjPalette(gUnk_0831D0EC) << 24) >> 12;
+        t5 |= (u32)(RequestObjPalette((u32)gUnk_0831D0EC) << 24) >> 12;
         AddDepthSortedSprite(k, t5, (u16)(y + 0x40));
     }
 }

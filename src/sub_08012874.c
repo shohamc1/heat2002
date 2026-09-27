@@ -1,16 +1,9 @@
 #include "global.h"
 #include "data.h"
+#include "functions.h"
 
 extern u16 gKeysPressed;
 
-extern void ZeroTextLayer(void);
-extern void sub_0800F498(void);
-extern void sub_0800F328(u32 src, u16 *dst);
-extern void sub_080127E4(u8 a);
-extern void FadeToBrightenedPalette(u32 a, u32 b);
-extern void ReadKeys(void);
-extern void WaitForVBlank(void);
-extern void FadeToColor(u32 a, u32 b);
 
 void sub_08012874(s8 a)
 {
@@ -22,12 +15,13 @@ void sub_08012874(s8 a)
     sub_0800F498();
     p = gUnk_082EE104;
     sub_0800F328((u32)p, (u16 *)buf);
-    sub_080127E4(a);
+    /* sub_080127E4: this file's old prototype took u8; the matched definition takes s8 */
+    ((void (*)(u8))sub_080127E4)(a);
     FadeToBrightenedPalette((u32)buf, 0x0F);
     sel = 0x40;
     do {
         ReadKeys();
-        sub_080127E4(a);
+        ((void (*)(u8))sub_080127E4)(a);
         if (gKeysPressed & 1)
             sel = a;
         WaitForVBlank();

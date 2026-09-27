@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 
 extern u8 gUnk_0202CBE0;
 extern u8 gUnk_0202CBC0[];
@@ -6,10 +7,6 @@ extern u16 gKeysPressed;
 extern u8 gUnk_0202CAD0;
 extern u8 gUnk_0202A53C;
 
-extern void sub_08007F44(u8 a);
-extern s16 MenuMoveVerticalSilent(u16 keys, s16 v, s16 lo, s16 hi);
-extern s16 MenuMoveHorizontalSilent(u16 keys, s16 v, s16 lo, s16 hi);
-extern void sub_08007EF8(void);
 
 void sub_080080B4(void)
 {

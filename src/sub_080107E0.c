@@ -2,6 +2,8 @@
 #include "gba/defines.h"
 #include "gba/io_reg.h"
 #include "data.h"
+#include "functions.h"
+#include "m4a.h"
 
 extern u16 gUnk_020020A0;
 extern volatile u8 gUnk_020020C0;
@@ -9,20 +11,6 @@ extern u16 gUnk_0202EF40[];
 extern s8 gUnk_0202EF8C;
 extern u8 gLinkPlayerId;
 extern u8 gUnk_083FDE78[];
-extern void ResetLinkState(void);
-extern void WaitForVBlank(void);
-extern void sub_080045D8(void);
-extern void InitGfxCaches(void);
-extern void AgeGfxCaches(void);
-extern void ClearOamBuffer(void);
-extern void sub_080047DC(void);
-extern void ZeroTextLayer(void);
-extern void sub_0800F4FC(void);
-extern void sub_0800F328(u32 src, u16 *dst);
-extern u8 DrawTrackSelect(u8 a, u8 b);
-extern void FadeToBrightenedPalette(u32 a, u32 b);
-extern s32 ExchangeLinkInput(void);
-extern void m4aSongNumStart(u16 a);
 
 u8 LinkTrackSelect(void)
 {

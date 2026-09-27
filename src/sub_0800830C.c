@@ -1,6 +1,6 @@
 #include "global.h"
+#include "functions.h"
 
-u16 sub_08017230(u32 freq, u16 arg2);
 
 void sub_0800830C(u16 *a1, u16 *a2)
 {

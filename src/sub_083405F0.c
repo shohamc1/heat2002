@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 
 struct Car {
     s32 unk00;                          /* 0x00 */
@@ -55,8 +56,6 @@ extern s32 gUnk_0203DD2C;
 extern s32 gUnk_0203DE10;
 extern s16 gUnk_0200C3E8[];
 
-extern void sub_08340530(u32 a, u8 b);
-extern void sub_08340964(u32 a, struct Car *b);
 
 void sub_083405F0(struct Car *car, u8 b)
 {
@@ -111,7 +110,7 @@ void sub_083405F0(struct Car *car, u8 b)
     gUnk_0203DDF4 = *caec;
     gUnk_0203DD2C = gUnk_0203DE04;
     gUnk_0203DE10 = ((((car->unk12C >> 8) - 0x40) & 0xFF) >> 2) << 2;
-    sub_08340964(0, car);
+    sub_08340964(0,(struct Unk08340964 *)car);
     if (car->unk160 != 0) {
         gUnk_0203D51C = car->unk0C - (gUnk_0203DE08 >> 1);
         gUnk_0203D4F4 = car->unk14 - (gUnk_0203DE0C >> 1);
@@ -122,7 +121,7 @@ void sub_083405F0(struct Car *car, u8 b)
     gUnk_0203DDF4 = gUnk_0203DD4C;
     gUnk_0203DD2C = (*(cbe4 = &gUnk_0203DE04) + 0x80) & 0xFF;
     gUnk_0203DE10 = *cbe4 & 0xFF;
-    sub_08340964(1, car);
+    sub_08340964(1,(struct Unk08340964 *)car);
     caec = &car->unk13C;
     if (*caec != 0) {
         car->unk140 += (*caec >> 8) * gUnk_0200C3E8[*cbe4 + 0x40];

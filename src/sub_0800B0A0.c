@@ -1,5 +1,6 @@
 #include "global.h"
 #include "data.h"
+#include "functions.h"
 
 struct EntityB0A0 {
     /* 0x00 */ u8 pad0[0x18];
@@ -8,12 +9,6 @@ struct EntityB0A0 {
 
 extern volatile u8 gIsLinkRace;  /* 0x020020DC */
 
-u32 *sub_0800754C(u32 a);
-u8 RequestObjPalette(u32 a);
-u32 AddOamEntry(u32 a, u32 b);
-void DrawTextCentered(u8 *str, u32 y, u32 z);
-void RemoveTask(struct EntityB0A0 *e);
-void FreeTask(struct EntityB0A0 *e);
 
 void sub_0800B0A0(struct EntityB0A0 *e)
 {
@@ -39,8 +34,10 @@ void sub_0800B0A0(struct EntityB0A0 *e)
     }
     if (e->unk18 == 0x30)
     {
-        RemoveTask(e);
-        FreeTask(e);
+        RemoveTask((u32)e);
+        FreeTask((u32)e);
     }
-    DrawTextCentered(gUnk_0806C96C, 8, 1);
+    /* DrawTextCentered: this file's old local prototype differs from
+       functions.h; call through the old signature (solved-walls 31). */
+    ((void (*)(u8 *, u32, u32))DrawTextCentered)(gUnk_0806C96C, 8, 1);
 }

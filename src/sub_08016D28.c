@@ -1,5 +1,6 @@
 #include "global.h"
 #include "data.h"
+#include "functions.h"
 struct Unk0202A550 {
     u8 filler0[0x4C];
     s8 lap;
@@ -17,8 +18,6 @@ struct Unk0202A550 {
 };
 extern struct Unk0202A550 gCars[];
 extern u8 gTrackId;
-extern s32 sub_08017230(s32 a, s32 b);
-extern u32 sub_08016D08(u32 a, u8 b);
 void sub_08016D28(u8 a)
 {
     struct Unk0202A550 *p;

@@ -1,13 +1,11 @@
 #include "global.h"
+#include "functions.h"
 
 extern u8 gUnk_0202EED0;
 extern u32 gUnk_0202EDE4;
 extern u16 gUnk_0202EDF0[];
 extern u16 gUnk_0500013C;
 
-extern s32 sub_080172C8(s32 a, s32 b);
-extern void LoadFadePalette(u16 *a);
-extern void sub_08016E10(u32 src, u32 dst, u32 n);
 
 void sub_08010768(s32 a)
 {

@@ -1,5 +1,7 @@
 #include "global.h"
 #include "gba/io_reg.h"
+#include "functions.h"
+#include "m4a.h"
 
 struct UnkCar {
     /* 0x00 */ u32 posX;
@@ -53,49 +55,6 @@ extern u32 gUnk_08364AE0[];        /* 0x08364AE0 */
 extern u8 gUnk_08364AF4[];         /* 0x08364AF4 */
 extern u8 gUnk_0806C678[];         /* 0x0806C678 */
 
-extern void sub_08002718(void);
-extern void WaitForVBlank(void);
-extern void m4aMPlayFadeOut(void *a, u32 b);
-extern void m4aSongNumStart(u16 idx);
-extern void sub_080019B4(struct MusicPlayerInfo *mplayInfo);
-extern void sub_0800215C(void *a, u32 b, s32 c);
-extern void EnableRaceDisplay(void);
-extern void sub_08002950(void);
-extern s32 ExchangeLinkInput(void);
-extern void LoadTrack(u32 a);
-extern void UpdateTrackScroll(u32 a, u32 b);
-extern void BeginFadeToColor(s32 a, u32 b);
-extern void UpdatePaletteFade(void);
-extern void UpdateCameraScroll(void);
-extern void SmoothCamera(void);
-extern void SetCameraTarget(void *a);
-extern void ClearOamBuffer(void);
-extern void sub_080045D8(void);
-extern void sub_080047DC(void);
-extern void sub_080040E0(u32 a);
-extern void sub_08004944(u32 a);
-extern u8 PauseMenu(void);
-extern u8 sub_080050F0(void);
-extern u8 sub_08005280(void);
-extern void sub_0800545C(void);
-extern void InitRaceHud(void);
-extern void sub_08006388(void);
-extern void sub_080063B0(void);
-extern void DrawTextCentered(u8 *str, u32 y);
-extern void sub_08006A14(u32 a);
-extern void InitGfxCaches(void);
-extern void AgeGfxCaches(void);
-extern void InitTasks(void);
-extern void RunTasks(void);
-extern void sub_08008D8C(void);
-extern void DrawAllCars(void);
-extern void UpdateAllCars(void);
-extern void sub_0800AF20(void);
-extern void sub_0800B334(void);
-extern void DrawSpriteText(u8 *a, u32 b, u32 c);
-extern void LoadTrackWalls(u32 a);
-extern void InitMultiplayerSio(void);
-extern u32 GetString(u16 idx);
 
 /* The cancelling offset gives the destination address an earlier quantity,
    selecting the ROM's r3/r4 allocation without emitting extra code. */
@@ -191,13 +150,13 @@ u8 RunRace(u32 a, u8 b)
     }
     gUnk_020020A8 = 0;
     if (gIsLinkRace != 0) {
-        SetCameraTarget(&gCars[(*(volatile u32 *)REG_ADDR_SIOCNT << 26) >> 30]);
+        SetCameraTarget((struct UnkStruct080043F8 *)(&gCars[(*(volatile u32 *)REG_ADDR_SIOCNT << 26) >> 30]));
         goto camera_ready;
 connection_error:
         gUnk_02002144 = 1;
         goto success;
     } else
-        SetCameraTarget(&gCars[0]);
+        SetCameraTarget((struct UnkStruct080043F8 *)(&gCars[0]));
 camera_ready:
     gCamera[0] = gCamera[2];
     gCamera[1] = gCamera[3];
@@ -226,19 +185,21 @@ camera_ready:
             p = &gCars[0];
         else
             p = &gCars[gLinkPlayerId];
-        sub_0800215C(gUnk_02001F60, 1,
+        /* sub_0800215C: this file's old prototype took (void *, u32, s32);
+           the matched definition narrows to u16; call through the old one. */
+        ((void (*)(void *, u32, s32))sub_0800215C)(gUnk_02001F60, 1,
                      (s16)(gUnk_08364AE0[p->gear]
                            + ((p->rpm * gUnk_08364AF4[p->gear]) >> 6)) >> 3);
         if (gIsDemo != 0) {
-            SetCameraTarget(gUnk_0202A6E0);
+            SetCameraTarget((struct UnkStruct080043F8 *)gUnk_0202A6E0);
             gUnk_08364ADC = t = gUnk_0200209C / 256;
             if ((t & 7) == 0)
                 gUnk_08364ADC = 4;
         } else {
             if (gIsLinkRace != 0)
-                SetCameraTarget(&gCars[(*(volatile u32 *)REG_ADDR_SIOCNT << 26) >> 30]);
+                SetCameraTarget((struct UnkStruct080043F8 *)(&gCars[(*(volatile u32 *)REG_ADDR_SIOCNT << 26) >> 30]));
             else
-                SetCameraTarget(&gCars[0]);
+                SetCameraTarget((struct UnkStruct080043F8 *)(&gCars[0]));
             if (gUnk_0200215C == 9 || gUnk_0200215C == 0x0D || gUnk_0200215C == 0x0E
                 || gUnk_0200215C == 0x0F || gUnk_0200215C == 0x11) {
                 gCamera[0] = gCars[0].posX;
@@ -256,7 +217,7 @@ camera_ready:
             || gUnk_0200215C == 0x0E || gUnk_0200215C == 0x0F
             || gUnk_0200215C == 0x11)
             UpdateAllCars();
-        UpdateTrackScroll(gCamera[0], gCamera[1]);
+        ((void (*)(u32, u32))UpdateTrackScroll)(gCamera[0], gCamera[1]);
         if (gUnk_0200215C == 9 || gUnk_0200215C == 0x0D || gUnk_0200215C == 0x0E
             || gUnk_0200215C == 0x0F || gUnk_0200215C == 0x11) {
             if ((gUnk_0200209C & 8) == 0)

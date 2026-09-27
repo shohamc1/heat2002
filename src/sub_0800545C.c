@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 
 struct Drv
 {
@@ -18,7 +19,6 @@ extern u8 gIsLinkRace;
 extern u8 gLinkPlayerId;
 extern u32 gUnk_08364B08[];
 
-void DrawSmallDigit(u32 a, u8 b);
 void DrawTime(u32 a, u16 b, u16 c, u16 d);
 void sub_08009FA0(u8 a, u32 b, u8 c);
 
@@ -53,7 +53,7 @@ void sub_0800545C(void)
             base = (0x14 + tbl[0]) + r7v * 128;
         else
             base = (0x14 + tbl[0]) + r7v * 64;
-        DrawSmallDigit(base, r8v);
+        DrawSmallDigit((u16 *)base, r8v);
         DrawTime(base, e->finishMin, e->finishSec, e->finishMs);
         if (gIsLinkRace != 0)
             sub_08009FA0(0x40, r7v * 16, gUnk_020253E0[i]);

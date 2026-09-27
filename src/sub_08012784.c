@@ -1,13 +1,8 @@
 #include "global.h"
+#include "functions.h"
 
 extern u16 gKeysPressed;
 
-extern void sub_08011C9C(u8 a, u16 *dst);
-extern void sub_08012758(s8 a);
-extern void FadeToBrightenedPalette(u32 a, u32 b);
-extern void ReadKeys(void);
-extern void WaitForVBlank(void);
-extern void FadeToColor(u32 a, u32 b);
 
 u8 sub_08012784(void)
 {
@@ -17,12 +12,14 @@ u8 sub_08012784(void)
 
     v = 0;
     sub_08011C9C(0, (u16 *)buf);
-    sub_08012758(0);
+    /* sub_08012758: this file's old local prototype differs from
+       functions.h; call through the old signature (solved-walls 31). */
+    ((void (*)(s8))sub_08012758)(0);
     FadeToBrightenedPalette((u32)buf, 0x0F);
     sel = 0x40;
     do {
         ReadKeys();
-        sub_08012758(v);
+        ((void (*)(s8))sub_08012758)(v);
         if (gKeysPressed & 1)
             sel = v;
         WaitForVBlank();

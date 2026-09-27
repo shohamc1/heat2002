@@ -1,17 +1,12 @@
 #include "global.h"
 #include "gba/io_reg.h"
+#include "functions.h"
 
 extern u8 gUnk_0806C948[];
 extern u8 gUnk_0806C954[];
 extern u16 gKeysHeld;
 extern u8 gUnk_020021E0;
 
-extern void sub_0800649C(u8 *str, u32 x, u32 y);
-extern void ReadKeys(void);
-extern void BeginFadeToColor(s32 a, u32 b);
-extern void WaitForVBlank(void);
-extern void RemoveTask(u32 a);
-extern void FreeTask(u32 a);
 
 void sub_0800AE94(u32 a)
 {

@@ -1,20 +1,12 @@
 #include "global.h"
 #include "data.h"
+#include "functions.h"
+#include "m4a.h"
 
 extern u16 gKeysPressed;
 extern u16 gUnk_020020B8;
 extern u8 gOptions[];
 
-extern void ResetLinkState(void);
-extern void ZeroTextLayer(void);
-extern void sub_0800F4FC(void);
-extern void sub_0800F328(u32 src, u16 *dst);
-extern void sub_08012228(u8 a);
-extern void FadeToBrightenedPalette(u32 a, u32 b);
-extern void ReadKeys(void);
-extern s8 sub_08012074(void);
-extern void m4aSongNumStart(u16 a);
-extern void FadeToColor(u32 a, u32 b);
 
 u8 sub_080122B4(void)
 {
@@ -29,13 +21,15 @@ u8 sub_080122B4(void)
     ZeroTextLayer();
     sub_0800F4FC();
     sub_0800F328((u32)gUnk_082E4328, (u16 *)buf);
-    sub_08012228(0);
+    /* sub_08012228: this file's old local prototype differs from
+       functions.h; call through the old signature (solved-walls 31). */
+    ((void (*)(u8))sub_08012228)(0);
     FadeToBrightenedPalette((u32)buf, 0x0F);
     gUnk_020020B8 = v;
     do
     {
         ReadKeys();
-        sub_08012228(v);
+        ((void (*)(u8))sub_08012228)(v);
         r = sub_08012074();
         switch (r)
         {

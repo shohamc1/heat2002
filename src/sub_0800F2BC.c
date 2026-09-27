@@ -1,10 +1,8 @@
 #include "global.h"
+#include "functions.h"
 extern u8 gUnk_083FDCDD[];
 extern u8 gUnk_0202EF20[];
 extern u8 gUnk_083FDCCC[];
-extern void sub_0800F1B4(void);
-extern void sub_0800F1D0(void);
-extern void sub_0800F14C(u8 a);
 u8 sub_0800F2BC(u8 a, u8 b)
 {
     u8 i;

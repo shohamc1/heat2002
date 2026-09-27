@@ -1,12 +1,11 @@
 #include "global.h"
 #include "gba/compat.h"
+#include "functions.h"
+#include "gba/syscall.h"
 
 extern u32 gUnk_082B370C[];
 extern u32 gUnk_082B350C[];
 
-void FadeToBrightenedPalette(u32 a, u32 b);
-void WaitFramesOrKey(u32 a);
-void FadeToColor(u32 a, u32 b);
 
 void sub_080102F0(void)
 {

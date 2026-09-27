@@ -1,17 +1,12 @@
 #include "global.h"
 #include "gba/compat.h"
+#include "functions.h"
 
 extern const u8 gUnk_08313DF0[];
 extern const u32 gUnk_0833338C[];
 extern const u8 gUnk_0831397C[];
 extern const u8 gUnk_08313AA8[];
 extern const u8 gUnk_0831377C[];
-extern void WaitForVBlank(void);
-extern void sub_080106CC(u32 a, u32 b);
-extern void sub_0800F328(u32 src, u16 *dst);
-extern void FadeToBrightenedPalette(u32 a, u32 b);
-extern void WaitFramesOrKey(u32 a);
-extern void FadeToColor(u32 a, u32 b);
 void sub_0800F6A0(void)
 {
     u8 buf[0x200];
@@ -21,7 +16,7 @@ void sub_0800F6A0(void)
     CpuCopy16((u32)gUnk_0833338C, BG_SCREEN_ADDR(24), 0x2000);
     WaitForVBlank();
     REG_DISPCNT = 0x88 << 3;
-    sub_080106CC((u32)gUnk_0831397C, (u32)gUnk_08313AA8);
+    sub_080106CC((u16 *)((u32)gUnk_0831397C),(u16 *)((u32)gUnk_08313AA8));
     sub_0800F328((u32)gUnk_0831377C, (u16 *)buf);
     FadeToBrightenedPalette((u32)buf, 0x0F);
     WaitFramesOrKey(0x96 << 2);

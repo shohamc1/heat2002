@@ -1,14 +1,11 @@
 #include "global.h"
+#include "functions.h"
 
 extern u16 gUnk_02025258;
 extern u8 gUnk_02025248;
 extern u8 gUnk_0202539C;
 extern volatile u8 gUnk_020020C0;
 
-extern void ReadKeys(void);
-extern u16 sub_08004DB4(void);
-extern void sub_08004D1C(u8 a);
-extern s32 ExchangeLinkInput(void);
 
 u8 sub_08005024(void)
 {

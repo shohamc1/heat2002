@@ -1,9 +1,8 @@
 #include "global.h"
+#include "functions.h"
 
 extern volatile u16 gKeysPressed; /* 0x020005CC */
 
-void WaitForVBlank(void);
-void ReadKeys(void);
 
 void WaitFramesOrKey(s32 count)
 {

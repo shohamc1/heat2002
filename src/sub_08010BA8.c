@@ -1,16 +1,12 @@
 #include "global.h"
 #include "gba/compat.h"
 #include "data.h"
+#include "functions.h"
+#include "gba/syscall.h"
 
 extern u32 *gUnk_083FDF74[];
 extern u32 *gUnk_083FDFEC[];
 
-extern s32 sub_08010B38(u8 id);
-extern u32 GetString(u16 idx);
-extern void sub_080065A8(void);
-extern void sub_08010AA4(u8 idx);
-extern void RLUnCompVram(u32 a, u32 b);
-extern void sub_08010194(u32 a, u32 b, u32 c);
 
 u32 sub_08010BA8(u8 param)
 {
@@ -18,11 +14,12 @@ u32 sub_08010BA8(u8 param)
     u8 buf[2];
     s32 ret;
 
-    ret = sub_08010B38(param);
+    /* sub_08010B38: this file's old prototype returns s32; the matched definition returns u16 */
+    ret = ((s32 (*)(u8))sub_08010B38)(param);
     buf[0] = ret;
     buf[1] = (ret & 0xFF00) >> 8;
     GetString(0x70);
-    sub_080065A8();
+    ((void (*)(void))sub_080065A8)();
     sub_08010AA4(param);
     CpuCopy16(gUnk_083FDEF4[0], OBJ_PLTT, OBJ_PLTT_SIZE);
     if (buf[1] == 0xFF) {

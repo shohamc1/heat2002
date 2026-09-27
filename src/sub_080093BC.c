@@ -1,4 +1,6 @@
 #include "global.h"
+#include "functions.h"
+#include "m4a.h"
 
 struct Car {
     u8 pad00[0x88];
@@ -38,16 +40,6 @@ extern u8 gOptions[];
 extern u8 gIsDemo;
 extern u8 gUnk_020021E0;
 
-extern void sub_080080B4(void);
-extern void DrawTextCentered(u8 *str, u32 y);
-extern void UpdateAiDriver(struct Car *a, u8 b);
-extern void StopCar(void *p);
-extern void sub_080091F8(void);
-extern u8 Random8(void);
-extern void m4aSongNumStart(u16 idx);
-extern void sub_0800920C(u8 a);
-extern void sub_0800649C(u8 *str, u32 x, u32 y);
-extern void sub_0800BE00(void *base, s32 arg);
 
 void UpdatePitStop(struct Car *a1, u8 a2)
 {
@@ -66,17 +58,17 @@ void UpdatePitStop(struct Car *a1, u8 a2)
     case 1:
     case 2:
     case 3:
-        UpdateAiDriver(a1, a2);
+        UpdateAiDriver((struct Unk0800C534 *)a1, a2);
         break;
     case 4:
         if (gUnk_0202CAD0 == 0 && gUnk_0202A53C == 0)
             a1->pitState = 5;
         else if (gUnk_0202EEB0 != 0)
-            StopCar(a1);
+            StopCar((struct Unk0A5BC *)a1);
         else
             a1->pitState = 5;
         if (gUnk_0202CAD0 != 0 && a1 == gCars) {
-            StopCar(a1);
+            StopCar((struct Unk0A5BC *)a1);
             break;
         }
         a1->pitProgress = 0;
@@ -103,7 +95,7 @@ void UpdatePitStop(struct Car *a1, u8 a2)
         break;
     case 5:
         if (gUnk_0202EEB0 != 0)
-            StopCar(a1);
+            StopCar((struct Unk0A5BC *)a1);
         if (a1->pitProgress < a1->pitDuration
             && (a1 != gCars || gUnk_0202A53C != 0)
             && gUnk_0202EEB0 != 0)
@@ -176,7 +168,7 @@ l_big:
             if (a1 == gCars)
                 sub_0800649C(gUnk_0806C924, 9, 10);
         } else {
-            UpdateAiDriver(a1, a2);
+            UpdateAiDriver((struct Unk0800C534 *)a1, a2);
             if (a1 == gCars && gUnk_0202EEB0 != 0)
                 sub_0800649C(gUnk_0806C934, 10, 10);
         }

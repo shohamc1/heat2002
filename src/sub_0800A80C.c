@@ -1,4 +1,5 @@
 #include "global.h"
+#include "m4a.h"
 
 /*
  * Per-frame car update: zero the impulse accumulators, run the sub-steps,
@@ -88,7 +89,6 @@ s32 CheckDrafting(struct Car *a);
 void sub_0800B618(u8 a, u8 b);
 u8 CollideCars(struct Car *a);
 u8 UpdateLapProgress(struct Car *p, u8 a1);
-void m4aSongNumStart(u16 idx);
 
 void UpdateCarPhysics(struct Car *car, u32 b, u8 c)
 {

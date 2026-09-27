@@ -27,6 +27,7 @@
  * pad[10]) is as documented in the previous draft header below.
  */
 #include "global.h"
+#include "functions.h"
 
 struct Unk0800C534 {
     s32 posX;
@@ -77,8 +78,6 @@ void sub_08008394(u32 a);
 void sub_0800C430(u32 a);
 s32 sub_0800C358(u32 a, u32 b);
 s32 sub_0800BBFC(u32 a, u32 b, u32 c, u32 d, u32 e);
-void sub_0800BD98(s32 a, void *b, u32 c, u32 d);
-void sub_0800BE00(void *a, s32 b);
 void sub_0800C28C(struct Unk0800C534 *a);
 s32 sub_0800C4E0(u32 a);
 s32 Atan2(s32 a, s32 b);
@@ -144,7 +143,7 @@ void UpdateAiDriver(struct Unk0800C534 *ent, u8 param)
     diff = diff + 0x40;
     if (diff >= ent->unk154)
         diff = diff - ent->unk154;
-    sub_0800BD98(diff, buf, ent->unkF4, ent->unkF8);
+    sub_0800BD98(diff,(struct OutBD98 *)buf,(u16 *)(ent->unkF4),(void *)(ent->unkF8));
     ps = &ent->pitState;
     stv = 0;
     stv = *ps;

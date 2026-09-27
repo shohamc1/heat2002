@@ -1,11 +1,11 @@
 #include "global.h"
+#include "functions.h"
 
 extern s32 gUnk_020392D0[];
 extern s32 gUnk_02039ED0[];
 extern u16 gUnk_020392C8;
 extern volatile u8 gUnk_020392C4;
 
-u32 sub_08344BB8(u32 a, u32 b);
 
 void sub_0833D31C(s32 arg0, u16 *src)
 {

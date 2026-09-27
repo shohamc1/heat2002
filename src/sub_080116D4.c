@@ -1,10 +1,10 @@
 #include "global.h"
 #include "gba/io_reg.h"
+#include "m4a.h"
 
 extern u8 gUnk_0202EFB0;
 extern u8 gLinkPlayerId;
 extern u8 gOptions[];
-extern void m4aSongNumStart(u16 a);
 
 s16 sub_080116D4(u16 keys, s16 v, s16 lo, s16 hi, u8 f, u8 e)
 {

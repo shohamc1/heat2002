@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 
 struct EntityBA38 {
     /* 0x00 */ s32 unk00;
@@ -22,8 +23,6 @@ extern s32 gCamera[];        /* 0x02002100 */
 extern struct CarBA38 gCars[];  /* 0x0202A550 */
 
 u32 WorldToScreen(s32 x, s32 y, s32 *out);
-void RemoveTask(struct EntityBA38 *e);
-void FreeTask(struct EntityBA38 *e);
 
 void sub_0800BA38(struct EntityBA38 *e)
 {
@@ -60,7 +59,7 @@ void sub_0800BA38(struct EntityBA38 *e)
     e->unk18 = e->unk18 - 1;
     if (e->unk18 == 0)
     {
-        RemoveTask(e);
-        FreeTask(e);
+        RemoveTask((u32)e);
+        FreeTask((u32)e);
     }
 }

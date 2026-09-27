@@ -1,5 +1,7 @@
 #include "global.h"
 #include "gba/io_reg.h"
+#include "functions.h"
+#include "m4a.h"
 
 extern const u8 gUnk_0829F590[];
 extern const u8 gUnk_0829F59C[];
@@ -66,40 +68,21 @@ extern u8 gUnk_083FDA6E[];
 extern u8 gUnk_083FDE1C[];
 extern u8 gUnk_083FDE2D[];
 
-void WaitForVBlank(void);
-void ReadKeys(void);
-void sub_08001170(void);
-void m4aSongNumStart(u16 index);
-u8 RunRace(u32 mode, u8 screen, void *data);
 u8 StartSinglePakLink(void);
 void FillFadePalette(u16 color);
-void FadeToColor(u32 value, u32 count);
-void FadeToBrightenedPalette(u32 src, u32 count);
-void ClearOamBuffer(void);
-void sub_080047DC(void);
 void sub_08008338(void);
-void AssignRandomDrivers(void);
-void SioSendWord(u16 value);
 u8 sub_0800F120(u8 value);
 u8 sub_0800F190(void);
 u8 sub_0800F22C(void);
 u8 sub_0800F2BC(u8 a, u8 b);
-void ZeroTextLayer(void);
-void SortCarsByTime(void);
 void sub_0800F560(void);
 void SetupChallenge(u8 value, u8 *unused);
-void TrackSelectMenu(u8 value, u8 selection);
 void sub_080102F0(void);
 void sub_08010334(void);
 u8 TitleScreen(void);
-void sub_08010664(u8 value);
 s8 LinkTrackSelect(void);
 u8 sub_08010EA0(void);
 u8 sub_08010CD0(void);
-void StopAllSongsAndVSyncOff(void);
-void sub_080100B0(void);
-void ResetLinkState(void);
-void sub_08011C9C(u8 value, u16 *dst);
 u8 sub_08011FC4(void);
 u8 sub_08011528(void);
 s8 sub_0801164C(void);
@@ -128,20 +111,16 @@ u8 sub_08014874(u8 a, u8 b);
 u8 sub_08014A84(void);
 u8 sub_08014E28(void);
 u8 sub_08014F5C(void);
-void ResetBgScroll(void);
 void SaveTrackRecords(void);
 void LoadTrackRecords(void);
 void LoadProgress(void);
-void SaveProgress(void);
 void LoadOptions(void);
 void SaveOptions(void);
 void FormatSave(void);
 void sub_08016CB0(void);
 u8 IsSaveValid(void);
 void sub_080164A8(void);
-u8 sub_08016634(void);
 void LoadSeason(void);
-void sub_08016D28(u8 value);
 
 u32 MainMenuLoop(void)
 {
@@ -229,7 +208,9 @@ u32 MainMenuLoop(void)
         SortCarsByTime();
         gNumLaps = 3;
         gUnk_0202EEB0 = 0;
-        RunRace(1, 0, gUnk_0202CDA8);
+        /* RunRace: this file's old local prototype differs from
+           functions.h; call through the old signature (solved-walls 31). */
+        ((void (*)(u32, u8, void *))RunRace)(1, 0, gUnk_0202CDA8);
         ResetBgScroll();
     }
 
@@ -324,7 +305,7 @@ state3_launch:
             gNumLaps = 3;
             gUnk_020020D4 = 0x009F9AC4;
             FadeToColor(0, 0x0F);
-            if (RunRace(0, 3, gUnk_0202CDC0) != 0) {
+            if (((u8 (*)(u32, u8, void *))RunRace)(0, 3, gUnk_0202CDC0) != 0) {
                 FadeToColor(0, 0x0F);
 state3_accept:
                 sub_080164A8();
@@ -417,7 +398,7 @@ state0_menu:
             gCarOrder = (u8 *)gCars;
             gUnk_0202EEB0 = 0;
             TrackSelectMenu(0, gTrackId);
-            RunRace(0, 0x0E, gUnk_0202CD9C);
+            ((void (*)(u32, u8, void *))RunRace)(0, 0x0E, gUnk_0202CD9C);
             if (gOptions[2] != 0)
                 m4aSongNumStart(2);
             ResetBgScroll();
@@ -430,7 +411,7 @@ state0_menu:
             gCarOrder = (u8 *)gCars;
             gCars[0].unk16C = 0x0002BF20;
             TrackSelectMenu(0, gTrackId);
-            RunRace(0, 0x11, gUnk_0202CDA8);
+            ((void (*)(u32, u8, void *))RunRace)(0, 0x11, gUnk_0202CDA8);
             if (gOptions[2] != 0)
                 m4aSongNumStart(3);
             ResetBgScroll();
@@ -449,7 +430,7 @@ state0_menu:
             gNumLaps = 3;
             gNumLaps = gUnk_083FDA6E[gOptions[1]];
             TrackSelectMenu(0, gTrackId);
-            RunRace(0, 9, gUnk_0202CDA8);
+            ((void (*)(u32, u8, void *))RunRace)(0, 9, gUnk_0202CDA8);
             if (gOptions[2] != 0)
                 m4aSongNumStart(2);
             ResetBgScroll();
@@ -512,7 +493,7 @@ state1_race:
             gCars[i].unk16C = i;
         gCars[0].unk16C = 0x0002CAD8;
         SortCarsByTime();
-        RunRace(0, 9, gUnk_0202CDA8);
+        ((void (*)(u32, u8, void *))RunRace)(0, 9, gUnk_0202CDA8);
         if (gUnk_020020F0 != 0)
             SaveTrackRecords();
         if (gOptions[2] != 0)
@@ -562,7 +543,7 @@ state4_race:
         SortCarsByTime();
         gCarOrder = (u8 *)gCars;
         gUnk_0202F030 = 1;
-        RunRace(0, 0x0E, gUnk_0202CD9C);
+        ((void (*)(u32, u8, void *))RunRace)(0, 0x0E, gUnk_0202CD9C);
         gUnk_0202F030 = 0;
         if (gOptions[2] != 0)
             m4aSongNumStart(2);
@@ -617,7 +598,7 @@ state2_track:
             gUnk_0202EEB0 = 0;
         if (gUnk_0202ED70 == 14)
             gUnk_0202EEB0 = 0;
-        RunRace(0, 0x0F, gUnk_0202CDA8);
+        ((void (*)(u32, u8, void *))RunRace)(0, 0x0F, gUnk_0202CDA8);
         gUnk_02002098 = gUnk_0202EEE4;
         if (gOptions[2] != 0)
             m4aSongNumStart(2);
@@ -698,7 +679,8 @@ state2_done:
         for (i = 0; i != 0x18; i++)
             gCars[i].points = 0;
 
-        if (sub_08016634() != 0) {
+        /* sub_08016634: this file's old prototype returns u8; the matched definition returns u32 */
+        if (((u8 (*)(void))sub_08016634)() != 0) {
             result = sub_08014A84();
             if ((gKeysPressed & B_BUTTON) != 0)
                 goto state5_done;
@@ -753,7 +735,7 @@ state5_menu:
             gCarOrder = (u8 *)gCars;
             gUnk_0202EEB0 = 0;
             TrackSelectMenu(0, gTrackId);
-            RunRace(0, 0x0E, gUnk_0202CD9C);
+            ((void (*)(u32, u8, void *))RunRace)(0, 0x0E, gUnk_0202CD9C);
             gUnk_0202EEB0 = 1;
             if (gOptions[2] != 0)
                 m4aSongNumStart(2);
@@ -767,7 +749,7 @@ state5_menu:
             gCarOrder = (u8 *)gCars;
             gCars[0].unk16C = 0x0002BF20;
             TrackSelectMenu(0, gTrackId);
-            RunRace(0, 0x11, gUnk_0202CDA8);
+            ((void (*)(u32, u8, void *))RunRace)(0, 0x11, gUnk_0202CDA8);
             if (gOptions[2] != 0)
                 m4aSongNumStart(2);
             ResetBgScroll();
@@ -785,7 +767,7 @@ state5_menu:
             SortCarsByTime();
             gNumLaps = gUnk_0202EF10;
             TrackSelectMenu(0, gTrackId);
-            RunRace(0, 9, gUnk_0202CDA8);
+            ((void (*)(u32, u8, void *))RunRace)(0, 9, gUnk_0202CDA8);
             if (gOptions[2] != 0)
                 m4aSongNumStart(2);
             ResetBgScroll();

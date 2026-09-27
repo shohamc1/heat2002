@@ -1,13 +1,10 @@
 #include "global.h"
+#include "functions.h"
 
 extern u32 gUnk_0202CC08[];
 extern u32 gUnk_0202CC1C[];
 extern u32 gUnk_0202CC00[];
 
-s32 sub_08017230(s32 a, s32 b);
-s32 sub_080172C8(s32 a, s32 b);
-void RemoveTask(u32 a);
-void FreeTask(u32 a);
 
 struct Unk0800B46C
 {

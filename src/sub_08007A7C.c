@@ -1,10 +1,8 @@
 #include "global.h"
+#include "functions.h"
 
 extern u32 gCamera[];
 
-u32 *sub_08007630(u32 p);
-s32 RequestObjPalette(u32 a);
-u32 AddOamEntry(u32 a, u32 b);
 
 void sub_08007A7C(s32 a1, s32 a2, u32 a3, u32 a4, u8 a5)
 {

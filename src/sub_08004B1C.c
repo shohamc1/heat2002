@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 
 extern u32 gUnk_0202A540[];
 extern u32 gUnk_0202CB20[];
@@ -8,7 +9,6 @@ extern s32 gUnk_083652B8[];
 extern s32 gUnk_083652E0[];
 extern u32 gUnk_0202CB00[];
 
-void sub_0800830C(u32 *a, u32 *b);
 
 void sub_08004B1C(u8 arg)
 {
@@ -39,5 +39,5 @@ void sub_08004B1C(u8 arg)
         gUnk_0202A540[idx] = val;
     else
         *(p + (j = idx - 5)) = val;
-    sub_0800830C(p, gUnk_0202CB00);
+    sub_0800830C((u16 *)p,(u16 *)gUnk_0202CB00);
 }

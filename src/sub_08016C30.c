@@ -1,6 +1,6 @@
 #include "global.h"
+#include "functions.h"
 
-u32 Random8(void);
 
 u32 RandomInRange(u32 a, u32 b)
 {

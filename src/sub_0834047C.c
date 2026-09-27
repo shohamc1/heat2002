@@ -1,6 +1,6 @@
 #include "global.h"
+#include "functions.h"
 
-u32 sub_08344BB8(u32 a, u32 b);
 
 void sub_0834047C(u16 *a, u16 *b)
 {

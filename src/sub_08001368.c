@@ -1,6 +1,6 @@
 #include "global.h"
+#include "functions.h"
 
-extern void sub_08001134(struct MusicPlayerInfo *mplayInfo);
 
 void m4aMPlayContinue(void)
 {

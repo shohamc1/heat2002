@@ -21,6 +21,8 @@
  */
 
 #include "global.h"
+#include "functions.h"
+#include "m4a.h"
 
 struct Car {
     s32 posX;                          /* 0x00 */
@@ -100,16 +102,6 @@ extern u16 gUnk_02025224;
 extern u8 gUnk_020253D4;
 extern u8 gUnk_020253E0[];
 
-extern void EndRace(void);
-extern void RecordFinishTime(struct Car *p);
-extern void CheckTrackRecord(u16 a, u16 b, u16 c);
-extern void sub_0800B3D4(u16 a, u16 b, u16 c);
-extern void sub_0800B540(void);
-extern void sub_0800B2C4(void);
-extern void ResetLapTimer(void);
-extern void sub_08005598(u8 x);
-extern void m4aSongNumStart(u16 idx);
-extern void sub_08016D28(u8 a);
 
 u8 UpdateLapProgress(struct Car *p, u8 a1)
 {
@@ -327,7 +319,7 @@ u8 UpdateLapProgress(struct Car *p, u8 a1)
             if (a1 == v6C && p->unk18E != 0)
                 sub_0800B3D4(gUnk_02025218, gUnk_020251FC, gUnk_020253CC);
             if (gUnk_0200215C != 2) {
-                RecordFinishTime(p);
+                RecordFinishTime((struct Unk0800A438 *)p);
                 gUnk_020253E0[gUnk_020253D4] = a1;
                 gUnk_020253D4 = gUnk_020253D4 + 1;
                 if ((u8)(gUnk_0200215C - 3) <= 1)

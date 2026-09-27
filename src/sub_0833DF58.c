@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 
 struct Drv
 {
@@ -18,7 +19,6 @@ extern u8 gUnk_020390EC;
 extern u8 gUnk_0203E1B0;
 extern u32 gUnk_020251B8[];
 
-void sub_0833E3C8(u32 a, u8 b);
 void sub_0833DDB8(u32 a, u16 b, u16 c, u16 d);
 void sub_08341A30(u8 a, u32 b, u8 c);
 
@@ -53,7 +53,7 @@ void sub_0833DF58(void)
             base = (0x14 + tbl[0]) + r7v * 128;
         else
             base = (0x14 + tbl[0]) + r7v * 64;
-        sub_0833E3C8(base, r8v);
+        sub_0833E3C8((u16 *)base, r8v);
         sub_0833DDB8(base, e->unk104, e->unk106, e->unk108);
         if (gUnk_020390EC != 0)
             sub_08341A30(0x40, r7v * 16, gUnk_0203B868[i]);

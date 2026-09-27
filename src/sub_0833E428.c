@@ -1,7 +1,6 @@
 #include "global.h"
+#include "functions.h"
 
-u32 sub_08344BB8(u32 a, u32 b);
-s32 sub_08344C50(s32 a, s32 b);
 void sub_0833D6A0(u32 a, u32 b);
 
 void sub_0833E428(u32 x, u32 pal, u32 tiles, u32 a, u32 b)

@@ -1,16 +1,10 @@
 #include "global.h"
 #include "gba/io_reg.h"
+#include "functions.h"
+#include "m4a.h"
 
 extern u16 gKeysPressed;
 extern u8 gOptions[];
-extern void SortCarsByTime(void);
-extern void sub_08011C9C(u8 a, u16 *dst);
-extern void sub_08014C60(u8 a);
-extern void FadeToBrightenedPalette(u32 a, u32 b);
-extern void ReadKeys(void);
-extern void WaitForVBlank(void);
-extern void m4aSongNumStart(u16 a);
-extern void FadeToColor(u32 a, u32 b);
 u8 sub_08014E28(void)
 {
     u8 buf[0x200];

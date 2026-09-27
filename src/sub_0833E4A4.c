@@ -1,14 +1,11 @@
 #include "global.h"
+#include "functions.h"
 
 extern u8 gUnk_0203B700[];
 extern s32 gUnk_0203B6CC;
 extern u32 gUnk_020251B8[];
 extern s32 gUnk_0203B84C;
 
-extern void sub_0833E36C(u16 *dest, u8 idx);
-extern void sub_0833E3C8(u16 *a, s32 b);
-extern s32 sub_08344BB8(s32 a, s32 b);
-extern s32 sub_08344C50(s32 a, s32 b);
 
 void sub_0833E4A4(void)
 {

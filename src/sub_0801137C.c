@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 
 struct Car137C {
     u8 pad[0x16C];
@@ -14,11 +15,6 @@ extern u8 gNumLinkPlayers[];
 extern u8 gUnk_0202539C;
 extern u8 gUnk_0829F2F0[];
 
-extern void sub_08006734(u32 a);
-extern u32 GetString(u16 idx);
-extern void sub_080065A8(void);
-extern void SplitMilliseconds(u32 a, u16 *b, u16 *c, u16 *d);
-extern void DrawText(u8 *p, u32 a1, u32 a2, u8 a3);
 
 void sub_0801137C(void)
 {
@@ -29,9 +25,11 @@ void sub_0801137C(void)
     u8 i;
     u16 tile;
 
-    sub_08006734(gUnk_083FDE18[0]);
+    /* sub_08006734: this file's old local prototype differs from
+       functions.h; call through the old signature (solved-walls 31). */
+    ((void (*)(u32))sub_08006734)(gUnk_083FDE18[0]);
     GetString(0x5B);
-    sub_080065A8();
+    ((void (*)(void))sub_080065A8)();
     p = gCarOrder;
     for (i = 0; i != gNumLinkPlayers[0]; i++) {
         car = *p;
@@ -39,9 +37,9 @@ void sub_0801137C(void)
         if (car == &gCars[gLinkPlayerId[0]] && (gUnk_0202539C & 0x10)) {
             DrawText(gUnk_0829F2F0, 4, 2 * i + 4, 1);
         } else {
-            DrawText(GetString(i + 0xC0), 1, 2 * i + 4, 1);
+            DrawText((u8 *)(GetString(i + 0xC0)), 1, 2 * i + 4, 1);
             tile = 0x53 + (car - gCars);
-            DrawText(GetString(tile), 6, 2 * i + 4, 1);
+            DrawText((u8 *)(GetString(tile)), 6, 2 * i + 4, 1);
             buf[0] = (u16)(q1 / 10) % 10 + 0x30;
             buf[1] = q1 % 10 + 0x30;
             buf[2] = 0x3A;

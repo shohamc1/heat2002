@@ -1,10 +1,10 @@
 #include "global.h"
 #include "gba/m4a_internal.h"
+#include "functions.h"
 
 /* MPlayStart */
 
 void TrackStop(struct MusicPlayerInfo *, struct MusicPlayerTrack *);
-void sub_080016E4(u32);
 
 void sub_08001900(struct MusicPlayerInfo *mplayInfo, struct SongHeader *songHeader)
 {

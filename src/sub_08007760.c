@@ -1,4 +1,6 @@
 #include "global.h"
+#include "functions.h"
+#include "gba/syscall.h"
 
 extern u8 gUnk_02025DB0[];
 extern u8 gUnk_02025400[];
@@ -10,8 +12,6 @@ extern u8 gUnk_02025E00[];
 extern s32 gUnk_02025EC4;
 extern s32 gUnk_02025EC0;
 
-void RLUnCompVram(u32 a, u32 b);
-void CpuSet(u32 src, u32 dest, u32 control);
 
 void UploadPendingGfx(void)
 {
@@ -56,8 +56,8 @@ void UploadPendingGfx(void)
         if (p[4] != 0) {
             src = *(s32 *)(p + 8);
             len = *(s32 *)(p + 0xC);
-            RLUnCompVram(src, (u32)buf);
-            CpuSet((u32)buf, len, 0x20);
+            RLUnCompVram((const void *)src, buf);
+            CpuSet(buf, (void *)len, 0x20);
             p[4] = 0;
         }
         i++;

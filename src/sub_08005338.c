@@ -1,6 +1,6 @@
 #include "global.h"
+#include "functions.h"
 
-extern void DrawSmallDigit(u16 *dest, u8 idx);
 
 void DrawTime(u16 *dest, s32 a, s32 b, s32 c)
 {

@@ -1,10 +1,10 @@
 #include "global.h"
+#include "functions.h"
 extern u16 gUnk_0203D510[];
 extern u16 gUnk_0203DD40[];
 extern u16 gUnk_0203DD20[];
 extern u16 gUnk_020270C6[];
 extern u16 gUnk_020270D0[];
-extern void sub_0834047C(u16 *a, u16 *b);
 void sub_083404A8(void)
 {
     u16 *dst;

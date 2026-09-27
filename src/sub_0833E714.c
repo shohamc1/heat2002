@@ -1,9 +1,8 @@
 #include "global.h"
+#include "functions.h"
 extern u8 gUnk_0203916C;
 extern u32 gUnk_020251B8[];
 extern u8 gUnk_0200CF70[];
-void sub_0833EF0C(u32,u32,u32);
-void sub_0833E36C(u32,u8);
 void sub_0833E714(s32 arg)
 {
     u16 *q;
@@ -31,7 +30,7 @@ void sub_0833E714(s32 arg)
         *q = 0xE047;
         return;
     }
-    sub_0833EF0C((u32)gUnk_0200CF70, 0x16, 0);
+    sub_0833EF0C((u8 *)((u32)gUnk_0200CF70), 0x16, 0);
     if (arg <= 9) {
         register u16 *w asm("r0");
         p = (u16 *)gUnk_020251B8[0];
@@ -41,12 +40,12 @@ void sub_0833E714(s32 arg)
         *w++ = 0xE047;
         *w = 0xE047;
         w -= 0x23;
-        sub_0833E36C((u32)w, (u8)arg);
+        sub_0833E36C((u16 *)((u32)w), (u8)arg);
     } else if (arg <= 0x13) {
-        sub_0833E36C(gUnk_020251B8[0] + 0x34, 1);
-        sub_0833E36C(gUnk_020251B8[0] + 0x38, (u8)(arg - 0x0A));
+        sub_0833E36C((u16 *)(gUnk_020251B8[0] + 0x34), 1);
+        sub_0833E36C((u16 *)(gUnk_020251B8[0] + 0x38), (u8)(arg - 0x0A));
     } else {
-        sub_0833E36C(gUnk_020251B8[0] + 0x34, 2);
-        sub_0833E36C(gUnk_020251B8[0] + 0x38, (u8)(arg - 0x14));
+        sub_0833E36C((u16 *)(gUnk_020251B8[0] + 0x34), 2);
+        sub_0833E36C((u16 *)(gUnk_020251B8[0] + 0x38), (u8)(arg - 0x14));
     }
 }

@@ -1,5 +1,7 @@
 #include "global.h"
 #include "data.h"
+#include "functions.h"
+#include "m4a.h"
 
 extern u8 gOptions[];
 extern u8 gUnk_0829F94C[];
@@ -13,15 +15,8 @@ struct Tbl {
 
 extern struct Tbl gUnk_083FE114[];
 
-void FadeToColor(u32 a, u32 b);
-void m4aSongNumStart(u16 a);
 void sub_08011D2C(u32 a, void *b);
 void sub_08006738(u8 *a);
-void DrawTextCenteredHighlight(u8 *p, u32 a1, u8 a2);
-void FadeToBrightenedPalette(void *a, u32 b);
-void VBlankIntrWait(void);
-void ReadKeys(void);
-void ResetBgScroll(void);
 
 void sub_08016330(u8 x)
 {
@@ -49,7 +44,7 @@ void sub_08016330(u8 x)
         DrawTextCenteredHighlight(gUnk_083FE114[i + j - 0x14].f00, (i + j - 0x14) % 32,
                      gUnk_083FE114[i + j - 0x14].f04);
     }
-    FadeToBrightenedPalette(buf, 0xF);
+    FadeToBrightenedPalette((u32)buf, 0xF);
     for (i = 0; i <= 0x13; i++)
         VBlankIntrWait();
     for (;;) {

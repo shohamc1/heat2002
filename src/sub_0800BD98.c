@@ -1,6 +1,6 @@
 #include "global.h"
+#include "functions.h"
 
-s32 sub_08017230(s32 a, s32 b);
 
 struct OutBD98 {
     s32 x;

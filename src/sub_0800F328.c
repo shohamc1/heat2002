@@ -1,7 +1,7 @@
 #include "global.h"
 #include "gba/compat.h"
 #include "data.h"
-extern u16 RgbFromPercent(u32 r, u32 g, u32 b);
+#include "functions.h"
 
 void sub_0800F328(u32 src, u16 *dst)
 {

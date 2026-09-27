@@ -1,23 +1,22 @@
 #include "global.h"
+#include "functions.h"
 
 extern u32 gUnk_083FDE18[];
 
-extern void sub_08006734(u32 a);
-extern u32 GetString(u16 idx);
-extern void sub_080065A8(void);
-extern void DrawTextCenteredHighlight(u8 *p, u32 a1, u8 a2);
 
 void sub_080139F0(void)
 {
-    sub_08006734(gUnk_083FDE18[0]);
+    /* sub_08006734: this file's old local prototype differs from
+       functions.h; call through the old signature (solved-walls 31). */
+    ((void (*)(u32))sub_08006734)(gUnk_083FDE18[0]);
     GetString(0x30);
-    sub_080065A8();
-    DrawTextCenteredHighlight(GetString(0x11), 7, 1);
-    DrawTextCenteredHighlight(GetString(0x11), 8, 1);
-    DrawTextCenteredHighlight(GetString(0x11), 9, 1);
-    DrawTextCenteredHighlight(GetString(0x11), 10, 1);
-    DrawTextCenteredHighlight(GetString(0x11), 11, 1);
-    DrawTextCenteredHighlight(GetString(0x11), 12, 1);
-    DrawTextCenteredHighlight(GetString(0x11), 13, 1);
-    DrawTextCenteredHighlight(GetString(0x11), 14, 1);
+    ((void (*)(void))sub_080065A8)();
+    DrawTextCenteredHighlight((u8 *)(GetString(0x11)), 7, 1);
+    DrawTextCenteredHighlight((u8 *)(GetString(0x11)), 8, 1);
+    DrawTextCenteredHighlight((u8 *)(GetString(0x11)), 9, 1);
+    DrawTextCenteredHighlight((u8 *)(GetString(0x11)), 10, 1);
+    DrawTextCenteredHighlight((u8 *)(GetString(0x11)), 11, 1);
+    DrawTextCenteredHighlight((u8 *)(GetString(0x11)), 12, 1);
+    DrawTextCenteredHighlight((u8 *)(GetString(0x11)), 13, 1);
+    DrawTextCenteredHighlight((u8 *)(GetString(0x11)), 14, 1);
 }

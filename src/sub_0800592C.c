@@ -1,8 +1,6 @@
 #include "global.h"
+#include "functions.h"
 
-extern s32 sub_08017230(s32 a, s32 b);
-extern s32 sub_080172C8(s32 a, s32 b);
-void AddOamEntry(u32 a, u32 b);
 
 void sub_0800592C(u32 x, u32 pal, u32 tiles, u32 a, u32 b)
 {

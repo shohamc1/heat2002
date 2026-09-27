@@ -1,6 +1,7 @@
 #include "global.h"
 #include "gba/defines.h"
 #include "gba/io_reg.h"
+#include "functions.h"
 
 extern vu16 gUnk_0203DFB8[];
 extern u8 gUnk_0203E004;
@@ -13,7 +14,6 @@ extern u8 gUnk_020390BC;
 void sub_08344968(void);
 void sub_08344B74(void);
 void sub_08344B68(u32 a, u32 b);
-void sub_08339B4C(void);
 void sub_083448B0(u16 a);
 
 void sub_08344A20(void)

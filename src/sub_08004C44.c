@@ -1,5 +1,6 @@
 #include "global.h"
 #include "data.h"
+#include "functions.h"
 
 extern u8 gIsLinkRace;
 extern u8 gUnk_020253C4;
@@ -11,8 +12,6 @@ extern u8 gUnk_0806C6C8[];
 extern u8 gUnk_0806C6D4[];
 extern u8 gUnk_0806C6E0[];
 
-extern void DrawTextCentered(u8 *str, u32 y);
-extern u32 GetString(u16 idx);
 
 void sub_08004C44(u8 arg)
 {

@@ -1,6 +1,7 @@
 #include "global.h"
 #include "gba/defines.h"
 #include "gba/io_reg.h"
+#include "functions.h"
 
 extern u8 gKeysHeld;
 extern u16 gKeysPressed;
@@ -17,11 +18,6 @@ extern u8 gUnk_0202EEF4;
 extern u16 gUnk_0202EF40[4][4];
 extern u8 gLinkPlayerId;
 extern u8 gUnk_0829F32C[];
-extern void VBlankIntrWait(void);
-extern void ReadKeys(void);
-extern void SioSendWord(u16 a);
-extern u32 GetString(u16 idx);
-extern void DrawTextCenteredHighlight(u8 *p, u32 a1, u8 a2);
 
 s32 sub_08012074(void)
 {

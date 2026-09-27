@@ -1,14 +1,10 @@
 #include "global.h"
+#include "functions.h"
 
 extern u8 gUnk_0200CF74[];
 extern u8 gUnk_0200CF84[];
 extern u32 gUnk_020251B8[];
 
-extern void sub_0833EF0C(u8 *str, u32 a2, u32 a3);
-extern void sub_0833E36C(u16 *dest, u8 idx);
-extern void sub_0833E3C8(u16 *a, s32 b);
-extern s32 sub_08344BB8(s32 a, s32 b);
-extern s32 sub_08344C50(s32 a, s32 b);
 
 void sub_0833E7FC(s32 a, s32 b)
 {
@@ -18,13 +14,13 @@ void sub_0833E7FC(s32 a, s32 b)
 
     if (a == 999) {
         q = gUnk_0200CF74;
-        sub_0833EF0C((u32)q, 0, 1);
-        sub_0833EF0C((u32)q, 0, 0);
+        sub_0833EF0C((u8 *)((u32)q), 0, 1);
+        sub_0833EF0C((u8 *)((u32)q), 0, 0);
         return;
     }
     if (a > b)
         a = b;
-    sub_0833EF0C((u32)gUnk_0200CF84, 0, 1);
+    sub_0833EF0C((u8 *)((u32)gUnk_0200CF84), 0, 1);
     base = (u8 *)gUnk_020251B8[0];
     p = base + 8;
     if (a > 99) {

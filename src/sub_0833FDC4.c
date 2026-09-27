@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 
 extern u8 gUnk_0203C220[];
 extern u8 gUnk_0203B870[];
@@ -11,7 +12,6 @@ extern s32 gUnk_0203C334;
 extern s32 gUnk_0203C330;
 
 void sub_08344B70(u32 a, u32 b);
-void sub_08344B64(u32 src, u32 dest, u32 control);
 
 void sub_0833FDC4(void)
 {

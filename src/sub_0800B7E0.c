@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 
 struct EntityB7E0 {
     /* 0x00 */ s32 unk00;
@@ -17,10 +18,6 @@ extern u8 gUnk_08330D18[];         /* 0x08330D18 */
 
 u32 WorldToScreen(s32 x, s32 y, s32 *out);
 u32 *sub_080076C8(u32 a);
-u8 RequestObjPalette(u32 a);
-u32 AddOamEntry(u32 a, u32 b);
-void RemoveTask(struct EntityB7E0 *e);
-void FreeTask(struct EntityB7E0 *e);
 
 void sub_0800B7E0(struct EntityB7E0 *e)
 {
@@ -56,7 +53,7 @@ void sub_0800B7E0(struct EntityB7E0 *e)
     e->unk08 = e->unk08 + (e->unk30 >> 1);
     if (e->unk18 == 0x10)
     {
-        RemoveTask(e);
-        FreeTask(e);
+        RemoveTask((u32)e);
+        FreeTask((u32)e);
     }
 }

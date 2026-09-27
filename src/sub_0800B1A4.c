@@ -1,5 +1,7 @@
 #include "global.h"
 #include "data.h"
+#include "functions.h"
+#include "m4a.h"
 
 struct EntityB1A4
 {
@@ -11,13 +13,6 @@ extern u8 gOptions[];
 extern u8 gIsDemo;
 extern u8 gUnk_0200215C;
 extern u8 gUnk_020020C4;
-void m4aSongNumStart(u16 idx);
-u32 *sub_0800754C(u32 a);
-u8 RequestObjPalette(u32 a);
-u32 AddOamEntry(u32 a, u32 b);
-void RemoveTask(struct EntityB1A4 *e);
-void FreeTask(struct EntityB1A4 *e);
-void WaitForVBlank(void);
 void sub_0800B1A4(struct EntityB1A4 *e)
 {
   u32 *spr;
@@ -86,8 +81,8 @@ void sub_0800B1A4(struct EntityB1A4 *e)
     e->unk18 = e->unk18 + 1;
     if (e->unk18 == 0x7A)
     {
-      RemoveTask(e);
-      FreeTask(e);
+      RemoveTask((u32)e);
+      FreeTask((u32)e);
     }
     if (gUnk_020020C4 == 0)
     {

@@ -1,5 +1,6 @@
 #include "global.h"
 #include "data.h"
+#include "functions.h"
 
 struct EntityB658
 {
@@ -25,10 +26,6 @@ extern u32 gUnk_083FF64C[];
 extern u8 gUnk_08331188[];
 u32 WorldToScreen(s32 x, s32 y, s32 *out);
 u32 *sub_080076C8(u32 a);
-u8 RequestObjPalette(u32 a);
-u32 AddOamEntry(u32 a, u32 b);
-void RemoveTask(struct EntityB658 *e);
-void FreeTask(struct EntityB658 *e);
 void sub_0800B658(struct EntityB658 *e)
 {
   struct CarB658 *car;
@@ -78,7 +75,7 @@ void sub_0800B658(struct EntityB658 *e)
   e->unk08 = e->unk08 + 0x10000;
   if (e->unk18 == 0x10)
   {
-    RemoveTask(e);
-    FreeTask(e);
+    RemoveTask((u32)e);
+    FreeTask((u32)e);
   }
 }

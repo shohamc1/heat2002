@@ -1,5 +1,6 @@
 #include "global.h"
 #include "gba/io_reg.h"
+#include "functions.h"
 
 void MainVBlankCallback(void);
 
@@ -9,26 +10,12 @@ extern u8 gTrackId;
 extern u8 gNumLaps;
 extern u8 gUnk_0202CD90[];
 extern u8 gUnk_0806C688[];
-extern u8 SendMultibootIsland(void);
-extern void InitIntrHandlers(void);
-extern void ReadKeys(void);
-extern void SetVBlankCallback(u32 a);
-extern void sub_08001170(void);
-extern void sub_0800184C(void);
-extern void SetLinkSerialIntr(void);
-extern void FadeToColor(u32 a, u32 b);
-extern void WaitForVBlank(void);
-extern void DetectLinkPlayers(void);
-extern u8 RunRace(u32 a, u8 b);
-extern u32 GetString(u16 idx);
-extern void DrawTextCentered(u8 *str, u32 y);
-extern void StopAllSongsAndVSyncOff(void);
-extern void SortLinkCarsByTime(void);
-extern void sub_080053B8(void);
 u8 StartSinglePakLink(void)
 {
     s32 i;
-    if (SendMultibootIsland() == 1)
+    /* SendMultibootIsland: this file's old prototype returns u8; the
+       matched definition returns u32; call through a function pointer. */
+    if (((u8 (*)(void))SendMultibootIsland)() == 1)
         return 1;
     InitIntrHandlers();
     REG_IE = 0;

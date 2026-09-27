@@ -1,26 +1,25 @@
 #include "global.h"
+#include "functions.h"
 
 extern u32 gUnk_083FDE18[];
 
-extern void sub_08006734(u32 a);
-extern u32 GetString(u16 idx);
-extern void sub_080065A8(void);
-extern void DrawTextCenteredHighlight(u8 *p, u32 a1, u8 a2);
 
 void sub_08013684(u8 a)
 {
     u8 b = a;
     u32 v;
 
-    sub_08006734(gUnk_083FDE18[0]);
+    /* sub_08006734: this file's old local prototype differs from
+       functions.h; call through the old signature (solved-walls 31). */
+    ((void (*)(u32))sub_08006734)(gUnk_083FDE18[0]);
     GetString(0x00);
-    sub_080065A8();
+    ((void (*)(void))sub_080065A8)();
     v = GetString(0x01);
-    DrawTextCenteredHighlight(v, 6, a == 0);
+    DrawTextCenteredHighlight((u8 *)v, 6, a == 0);
     v = GetString(0x02);
-    DrawTextCenteredHighlight(v, 8, a == 1);
+    DrawTextCenteredHighlight((u8 *)v, 8, a == 1);
     v = GetString(0x03);
-    DrawTextCenteredHighlight(v, 0xA, a == 2);
+    DrawTextCenteredHighlight((u8 *)v, 0xA, a == 2);
     v = GetString(0x08);
-    DrawTextCenteredHighlight(v, 0xC, b == 3);
+    DrawTextCenteredHighlight((u8 *)v, 0xC, b == 3);
 }

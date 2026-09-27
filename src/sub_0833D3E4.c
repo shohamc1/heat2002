@@ -1,9 +1,9 @@
 #include "global.h"
+#include "functions.h"
 
 extern s32 gUnk_02039ED0[];
 extern s32 gUnk_020392D0[];
 
-s32 sub_08344BB8(s32 a, s32 b);
 
 void sub_0833D3E4(s32 x)
 {

@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 
 extern u8 gUnk_020390C4;
 extern u16 gUnk_02039134;
@@ -12,18 +13,13 @@ extern u8 gUnk_02038F70[];
 extern u8 gUnk_02038FB0[];
 
 void sub_08339A40(void);
-void sub_08339B4C(void);
 void sub_08339AB8(u32 r0);
 void sub_0833D250(u16 color);
 void sub_0833D510(u32 r0, u32 r1);
-void sub_08339B18(void);
 void sub_0833A830(void);
-void sub_0833AF0C(void);
 void sub_08344A20(void);
 u8 sub_0833BF80(u32 r0, u32 r1, u32 r2);
-u32 sub_0833BD94(u32 r0);
 void sub_0833EE88(u32 r0, u32 r1, u32 r2);
-void sub_0833B074(u32 r0);
 void sub_0833AE90(void);
 void sub_0833D9D8(void);
 void sub_08344B74(void);
@@ -86,8 +82,8 @@ void sub_0833BDB4(void)
             sub_0833EE88(sub_0833BD94(0), 0x0A, 1);
             sub_0833EE88((u32)gUnk_0200CEC0, 0x0C, 1);
             sub_0833EE88((u32)gUnk_0200CED8, 0x0D, 1);
-            sub_0833B074((u32)gUnk_02038F70);
-            sub_0833B074((u32)gUnk_02038FB0);
+            sub_0833B074((struct MusicPlayerInfo *)((u32)gUnk_02038F70));
+            sub_0833B074((struct MusicPlayerInfo *)((u32)gUnk_02038FB0));
             sub_0833AE90();
             for (;;) {
                 sub_0833D9D8();

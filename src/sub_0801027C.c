@@ -1,6 +1,6 @@
 #include "global.h"
+#include "functions.h"
 
-extern u32 AddOamEntry(u32 a, u32 b);
 
 void sub_0801027C(u32 tile, u32 pal, u32 c)
 {

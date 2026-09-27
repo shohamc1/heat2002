@@ -1,6 +1,6 @@
 #include "global.h"
+#include "functions.h"
 
-u8 Random8(void);
 
 u32 sub_08016CF8(void)
 {

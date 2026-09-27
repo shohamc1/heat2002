@@ -9,6 +9,7 @@
  *   them, but not the flag test.
  */
 #include "global.h"
+#include "functions.h"
 
 extern u8 gNumLinkPlayers;
 extern u16 gUnk_0202EF40[][4];
@@ -24,7 +25,6 @@ u16 PackLinkKeys(u16 keys);
 u8 sub_080032E4(u16 seq, u8 next);
 u8 sub_08003314(u16 id);
 u16 UnpackLinkKeys(u16 id);
-void SioSendWord(u16 data);
 
 s32 ExchangeLinkInput(void)
 {

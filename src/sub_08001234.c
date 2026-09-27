@@ -1,5 +1,6 @@
 #include "global.h"
 #include "gba/m4a_internal.h"
+#include "functions.h"
 
 /* m4aSongNumStartOrChange (this revision passes info->songHeader to the
    restart, not song->header). */
@@ -20,14 +21,13 @@ struct Unk0801DA90
 extern struct Unk0801DACC gUnk_0801DACC[];
 extern struct Unk0801DA90 gUnk_0801DA90[];
 
-extern void sub_08001900(u32 a, u32 b);
 
 void sub_08001234(u16 n)
 {
     struct MusicPlayerInfo *info = (struct MusicPlayerInfo *)gUnk_0801DA90[gUnk_0801DACC[n].unk4].unk0;
 
     if (info->songHeader != gUnk_0801DACC[n].unk0)
-        sub_08001900((u32)info, gUnk_0801DACC[n].unk0);
+        sub_08001900((struct MusicPlayerInfo *)((u32)info),(struct SongHeader *)(gUnk_0801DACC[n].unk0));
     else if ((info->status & MUSICPLAYER_STATUS_TRACK) == 0 || info->status & MUSICPLAYER_STATUS_PAUSE)
-        sub_08001900((u32)info, (u32)info->songHeader);
+        sub_08001900((struct MusicPlayerInfo *)((u32)info),(struct SongHeader *)((u32)info->songHeader));
 }

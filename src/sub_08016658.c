@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 
 extern u8 gUnk_0202F020;
 extern u8 gUnk_0202F024;
@@ -8,9 +9,6 @@ extern u8 gUnk_0202EDD8;
 extern u16 gUnk_0202F04A[];
 extern u8 gUnk_0202EF10;
 extern u8 gUnk_0202EF20[];
-extern void StopAllSongsAndVSyncOff(void);
-extern void WriteSaveBlocks(u32 a, u32 b);
-extern void sub_080100B0(void);
 
 struct Car {
     u8 filler0[0x162];

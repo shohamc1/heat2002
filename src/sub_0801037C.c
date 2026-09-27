@@ -1,5 +1,6 @@
 #include "global.h"
 #include "gba/compat.h"
+#include "functions.h"
 
 extern u8 gUnk_0833338C[];
 extern u32 gUnk_0600C000[];
@@ -7,10 +8,6 @@ extern u32 gUnk_082B76F0[];
 extern vu32 gUnk_08364B08[];
 extern u32 gUnk_082B731C[];
 
-void WaitForVBlank(void);
-void FadeToBrightenedPalette(u32 a, u32 b);
-void WaitFrames(s32 n);
-void FadeToColor(u32 a, u32 b);
 void sub_08010714(void);
 
 void sub_0801037C(void)

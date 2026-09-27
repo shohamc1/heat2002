@@ -1,7 +1,7 @@
 #include "global.h"
+#include "functions.h"
 
 extern u16 gUnk_0202F040[];
-u32 ReadSaveBlocks(u32 r0, u32 r1);
 
 u32 sub_08016634(void)
 {

@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 
 struct Unk12A
 {
@@ -16,7 +17,6 @@ struct Unk8B
 extern struct Unk12A gUnk_0200CA74[];
 extern struct Unk8B gUnk_0200CAA4[];
 
-void sub_0833A7F4(u32 r0);
 
 void sub_0833A9C8(u16 a)
 {
@@ -25,5 +25,5 @@ void sub_0833A9C8(u16 a)
     struct Unk8B *pb = baseB + a;
 
     if (*(u32 *)pa[pb->idx].ptr == pb->field0)
-        sub_0833A7F4((u32)pa[pb->idx].ptr);
+        sub_0833A7F4((struct MusicPlayerInfo *)((u32)pa[pb->idx].ptr));
 }

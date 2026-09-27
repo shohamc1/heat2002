@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 extern u8 gUnk_0202F050[];
 extern u8 gUnk_0202EF80[];
 extern u8 gUnk_0202EF08[];
@@ -6,9 +7,6 @@ extern u8 gUnk_0202EF60[];
 extern u8 gUnk_0202EEC0[];
 extern u8 gUnk_0202EDC8[];
 extern u8 gUnk_0202ED80[];
-extern void StopAllSongsAndVSyncOff(void);
-extern void ReadSaveBlocks(u32 a, u32 b);
-extern void sub_080100B0(void);
 void LoadProgress(void)
 {
     u8 *p;

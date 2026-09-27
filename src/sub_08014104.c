@@ -1,12 +1,8 @@
 #include "global.h"
 #include "data.h"
+#include "functions.h"
 
 extern u32 gUnk_083FDE18;
-extern u32 GetString(u16 idx);
-extern void sub_080065A8(void);
-extern void DrawText(u8 *p, u32 a1, u32 a2, u8 a3);
-extern u32 GetDriverName(u8 r0);
-extern void sub_08006734(u32 a);
 extern u32 gCarOrder[];
 extern u32 gUnk_0202F020[];
 extern u8 gCars[];
@@ -24,9 +20,11 @@ void sub_08014104(u8 a)
     u8 *p;
 
     off = a * 15;
-    sub_08006734(gUnk_083FDE18);
+    /* sub_08006734: this file's old local prototype differs from
+       functions.h; call through the old signature (solved-walls 31). */
+    ((void (*)(u32))sub_08006734)(gUnk_083FDE18);
     GetString(0x32);
-    sub_080065A8();
+    ((void (*)(void))sub_080065A8)();
     walk = (u32 *)((u8 *)gCarOrder + off * 4);
     i = 0;
     p = buf;

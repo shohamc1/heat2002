@@ -1,8 +1,8 @@
 #include "global.h"
+#include "functions.h"
 
 extern u32 gUnk_0203DD60[];
 
-u32 sub_08344BB8(u32 r0, u32 r1);
 
 u32 sub_08340EAC(void)
 {

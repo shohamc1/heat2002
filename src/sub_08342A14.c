@@ -1,12 +1,10 @@
 #include "global.h"
+#include "functions.h"
 
 extern u8 gUnk_020392C4;
 extern u8 gUnk_0203916C;
 extern u8 gUnk_020390D4;
 
-void sub_0833FFA8(u32 a);
-void sub_0833FF84(u32 a);
-void sub_08339B18(void);
 
 void sub_08342A14(u32 a)
 {

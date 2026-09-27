@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 
 struct Unk10CC
 {
@@ -9,7 +10,6 @@ struct Unk10CC
 extern const u8 gUnk_0801D018[];
 extern const u32 gUnk_0801D0CC[];
 
-extern s32 umul3232H32(s32 a, s32 b);
 
 s32 MidiKeyToFreq(struct Unk10CC *arg0, u8 arg1, u32 arg2)
 {

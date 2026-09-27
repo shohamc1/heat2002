@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 
 struct Car {
     u8 pad00[0x2C];
@@ -34,7 +35,6 @@ extern u8 gUnk_020021E0;
 extern u8 gIsLinkRace;
 
 s16 sub_0800A034(struct Car *a);
-void StopCar(struct Car *a);
 
 void UpdateEngine(struct Car *car, s32 mode)
 {
@@ -74,7 +74,7 @@ void UpdateEngine(struct Car *car, s32 mode)
         car->drag += 0x18000;
         if (car->speed > 0) {
             if (gUnk_020021E0 != 0 || (gIsLinkRace != 0 && car->unk7D != 0))
-                StopCar(car);
+                StopCar((struct Unk0A5BC *)car);
             else if (car->speed > 0x3E800)
                 car->drag = 0x3E800 - car->speed;
         }

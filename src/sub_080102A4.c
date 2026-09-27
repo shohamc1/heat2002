@@ -1,6 +1,6 @@
 #include "global.h"
+#include "functions.h"
 
-extern void WaitForVBlank(void);
 
 void WaitFrames(s32 n)
 {

@@ -1,7 +1,7 @@
 #include "global.h"
+#include "functions.h"
 extern u16 gUnk_083FECB0[];
 extern u8 gUnk_0202F050[];
-extern void WriteSaveBlocks(u32 off, u32 len);
 
 void FormatSave(void)
 {

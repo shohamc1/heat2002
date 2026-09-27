@@ -1,4 +1,6 @@
 #include "global.h"
+#include "functions.h"
+#include "m4a.h"
 
 extern u16 gKeysPressed;
 extern u8 gUnk_0202EF78[];
@@ -10,18 +12,6 @@ extern u8 gOptions[];
 extern u8 gUnk_0202EEB4;
 extern u8 gUnk_0202EDB0;
 
-extern void sub_08011C9C(u8 a, u16 *dst);
-extern void sub_080131F8(u8 a);
-extern void FadeToBrightenedPalette(u32 a, u32 b);
-extern void ReadKeys(void);
-extern s8 sub_0801319C(void);
-extern void sub_08016330(u8 a);
-extern void SaveProgress(void);
-extern void m4aSongNumStart(u16 a);
-extern s16 MenuMoveHorizontal(u16 keys, s16 v, s16 lo, s16 hi);
-extern s16 MenuMoveVertical(u16 keys, s16 v, s16 lo, s16 hi);
-extern void WaitForVBlank(void);
-extern void FadeToColor(u32 a, u32 b);
 
 void sub_080132F8(void)
 {

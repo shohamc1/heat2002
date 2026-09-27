@@ -1,6 +1,7 @@
 #include "global.h"
 #include "gba/compat.h"
 #include "gba/m4a_internal.h"
+#include "functions.h"
 
 /* MPlayExtender */
 
@@ -13,12 +14,8 @@ void ply_mod(void);
 void sub_08002498(void);
 void ply_endtie(void);
 void sub_08001C88(void);
-void sub_08001BD0(void);
 void sub_08001B28(void);
 
-extern void sub_08001640(u32 a);
-extern void sub_080019F4(void);
-extern void sub_08001A74(void);
 
 void sub_080013F8(struct CgbChannel *cgbChans)
 {

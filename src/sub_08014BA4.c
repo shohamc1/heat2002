@@ -1,20 +1,9 @@
 #include "global.h"
 #include "gba/io_reg.h"
 #include "gba/defines.h"
+#include "functions.h"
 extern u16 gKeysPressed;
 extern volatile u8 gUnk_020020C0;
-extern void sub_08011C9C(u8 a, u16 *dst);
-extern void sub_08014B14(void);
-extern void sub_080045D8(void);
-extern void InitGfxCaches(void);
-extern void AgeGfxCaches(void);
-extern void ClearOamBuffer(void);
-extern void sub_08014BA0(u8 a);
-extern void sub_080047DC(void);
-extern void WaitForVBlank(void);
-extern void FadeToBrightenedPalette(u32 a, u32 b);
-extern void ReadKeys(void);
-extern void FadeToColor(u32 a, u32 b);
 
 u8 sub_08014BA4(void)
 {
@@ -31,7 +20,9 @@ u8 sub_08014BA4(void)
     InitGfxCaches();
     AgeGfxCaches();
     ClearOamBuffer();
-    sub_08014BA0(0);
+    /* sub_08014BA0: this file's old local prototype differs from
+       functions.h; call through the old signature (solved-walls 31). */
+    ((void (*)(u8))sub_08014BA0)(0);
     sub_080047DC();
     gUnk_020020C0 = v;
     WaitForVBlank();
@@ -41,7 +32,7 @@ u8 sub_08014BA4(void)
     do {
         AgeGfxCaches();
         ClearOamBuffer();
-        sub_08014BA0(w);
+        ((void (*)(u8))sub_08014BA0)(w);
         sub_080047DC();
         ReadKeys();
         if (gKeysPressed & 1)

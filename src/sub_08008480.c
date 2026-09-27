@@ -1,5 +1,6 @@
 #include "global.h"
 #include "data.h"
+#include "functions.h"
 
 struct Car {
     s32 posX;                          /* 0x00 */
@@ -55,8 +56,6 @@ extern s32 gUnk_0202CBD4;
 extern s32 gUnk_0202CB0C;
 extern s32 gUnk_0202CBF0;
 
-extern void sub_080083C0(u32 a, u8 b);
-extern void sub_080087F4(u32 a, struct Car *b);
 
 void sub_08008480(struct Car *car, u8 b)
 {
@@ -111,7 +110,7 @@ void sub_08008480(struct Car *car, u8 b)
     gUnk_0202CBD4 = *caec;
     gUnk_0202CB0C = gUnk_0202CBE4;
     gUnk_0202CBF0 = ((((car->unk12C >> 8) - 0x40) & 0xFF) >> 2) << 2;
-    sub_080087F4(0, car);
+    sub_080087F4(0,(struct Unk080087F4 *)car);
     if (car->unk160 != 0) {
         gUnk_0202A54C = car->velX - (gUnk_0202CBE8 >> 1);
         gUnk_0202A528 = car->velZ - (gUnk_0202CBEC >> 1);
@@ -122,7 +121,7 @@ void sub_08008480(struct Car *car, u8 b)
     gUnk_0202CBD4 = gUnk_0202CB2C;
     gUnk_0202CB0C = (*(cbe4 = &gUnk_0202CBE4) + 0x80) & 0xFF;
     gUnk_0202CBF0 = *cbe4 & 0xFF;
-    sub_080087F4(1, car);
+    sub_080087F4(1,(struct Unk080087F4 *)car);
     caec = &car->unk13C;
     if (*caec != 0) {
         car->forceX += (*caec >> 8) * gUnk_0801CD08[*cbe4 + 0x40];

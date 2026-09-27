@@ -1,14 +1,10 @@
 #include "global.h"
+#include "functions.h"
 
 extern u8 gUnk_0806C770[];
 extern u8 gUnk_0806C780[];
 extern u32 gUnk_08364B08[];
 
-extern void sub_0800649C(u8 *str, u32 x, u32 y);
-extern void DrawBigDigit(u8 *a, u8 b);
-extern void DrawSmallDigit(u16 *dest, u8 idx);
-extern s32 sub_08017230(s32 a, s32 b);
-extern s32 sub_080172C8(s32 a, s32 b);
 
 void DrawLapCounter(s32 a, s32 b)
 {
@@ -18,29 +14,29 @@ void DrawLapCounter(s32 a, s32 b)
 
     if (a == 999) {
         q = gUnk_0806C770;
-        sub_0800649C((u32)q, 0, 1);
-        sub_0800649C((u32)q, 0, 0);
+        sub_0800649C((u8 *)((u32)q), 0, 1);
+        sub_0800649C((u8 *)((u32)q), 0, 0);
         return;
     }
     if (a > b)
         a = b;
-    sub_0800649C((u32)gUnk_0806C780, 0, 1);
+    sub_0800649C((u8 *)((u32)gUnk_0806C780), 0, 1);
     base = (u8 *)gUnk_08364B08[0];
     p = base + 8;
     if (a > 99) {
-        DrawBigDigit(p, sub_08017230(a, 100));
+        DrawBigDigit((u16 *)p, sub_08017230(a, 100));
         p += 4;
-        DrawBigDigit(p, sub_080172C8(sub_08017230(a, 10), 10));
+        DrawBigDigit((u16 *)p, sub_080172C8(sub_08017230(a, 10), 10));
         p += 4;
-        DrawBigDigit(p, sub_080172C8(a, 10));
+        DrawBigDigit((u16 *)p, sub_080172C8(a, 10));
         p += 4;
     } else if (a > 9) {
-        DrawBigDigit(p, sub_080172C8(sub_08017230(a, 10), 10));
+        DrawBigDigit((u16 *)p, sub_080172C8(sub_08017230(a, 10), 10));
         p = base + 12;
-        DrawBigDigit(p, sub_080172C8(a, 10));
+        DrawBigDigit((u16 *)p, sub_080172C8(a, 10));
         p += 4;
     } else {
-        DrawBigDigit(p, sub_080172C8(a, 10));
+        DrawBigDigit((u16 *)p, sub_080172C8(a, 10));
         p = base + 12;
     }
     p += 0x40;

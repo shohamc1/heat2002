@@ -2,6 +2,7 @@
 #define GBA_CPUSET sub_08344B64
 #include "gba/compat.h"
 #include "gba/m4a_internal.h"
+#include "functions.h"
 
 /* MPlayExtender (high copy) */
 
@@ -18,7 +19,6 @@ void sub_0833A488(void);
 void sub_0833B0B4(void);
 void sub_0833B134(void);
 void sub_0833B348(void);
-void sub_0833B290(void);
 void sub_0833B1E8(void);
 
 void sub_0833AAB8(struct CgbChannel *cgbChans)

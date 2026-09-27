@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 
 struct Car {
     u8 pad00[0x50];
@@ -22,7 +23,6 @@ extern u16 gUnk_02026DC4[];
 extern u16 gUnk_02026DDC[];
 extern u8 gUnk_020390DC;
 
-void sub_08339B4C(void);
 void sub_083425C4(struct Car *p, u8 idx);
 u8 sub_08340028(struct Car *p);
 u8 sub_08340004(u8 a);

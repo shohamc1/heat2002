@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 
 struct Car {
     u8 pad00[0x50];
@@ -14,15 +15,6 @@ extern u8 gUnk_0203DD30;
 extern u32 gUnk_0203DD34;
 extern struct Car gUnk_0203D520[];
 
-extern void sub_08340E4C(void);
-extern u8 sub_08340CB0(u32 a);
-extern u8 sub_08340CDC(u32 a);
-extern void sub_08340D04(void);
-extern void sub_08340E90(void);
-extern void sub_08342908(void);
-extern s32 sub_08340EAC(void);
-extern void sub_08340DB8(s32 a);
-extern void sub_08340E28(void);
 
 void sub_08340EFC(void)
 {
@@ -43,7 +35,9 @@ void sub_08340EFC(void)
                 break;
             case 1:
                 if (sub_08340CB0(0x15E)) {
-                    if (sub_08340CDC(0x2328))
+                    /* sub_08340CDC: this file's old prototype returns u8;
+                       the matched definition returns u32 */
+                    if (((u8 (*)(u32))sub_08340CDC)(0x2328))
                         gUnk_0203E104 = x;
                     sub_08342908();
                     gUnk_0203DD08 = 0;
@@ -77,7 +71,7 @@ void sub_08340EFC(void)
                 break;
             case 1:
                 if (sub_08340CB0(0x96)) {
-                    if (sub_08340CDC(0xFA0))
+                    if (((u8 (*)(u32))sub_08340CDC)(0xFA0))
                         gUnk_0203E104 = x;
                     sub_08342908();
                     gUnk_0203DD08 = 0;

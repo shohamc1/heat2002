@@ -1,11 +1,9 @@
 #include "global.h"
+#include "functions.h"
 
 extern u8 gOptions[];
 extern u8 gUnk_0202F1B8[];
 
-void StopAllSongsAndVSyncOff(void);
-void WriteSaveBlocks(u32 a, u32 b);
-void sub_080100B0(void);
 
 void SaveOptions(void)
 {

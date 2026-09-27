@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 
 extern u8 gNumMusicPlayersLow[];
 
@@ -11,7 +12,6 @@ struct Unk0801DA90
 
 extern struct Unk0801DA90 gUnk_0801DA90[];
 
-extern void sub_08001134(struct MusicPlayerInfo *mplayInfo);
 
 void sub_08001374(void)
 {
@@ -25,7 +25,7 @@ void sub_08001374(void)
         p = gUnk_0801DA90;
         n = cnt;
     loop:
-        sub_08001134(p->unk0);
+        sub_08001134((struct MusicPlayerInfo *)(p->unk0));
         p++;
         n--;
         if (n != 0)

@@ -8,6 +8,7 @@
  */
 
 #include "global.h"
+#include "functions.h"
 
 struct Car {
     s32 unk00;                          /* 0x00 */
@@ -74,14 +75,6 @@ extern u16 gUnk_0203B6D4;
 extern u8 gUnk_0203B864;
 extern u8 gUnk_0203B868[];
 
-extern void sub_08342908(void);
-extern void sub_08341EC8(struct Car *p);
-extern void sub_0833E160(u16 a, u16 b, u16 c);
-extern void sub_08342BA4(u16 a, u16 b, u16 c);
-extern void sub_08342D10(void);
-extern void sub_08342A94(void);
-extern void sub_0833E05C(void);
-extern void sub_0833E094(u8 x);
 
 u8 sub_0833F468(struct Car *p, u8 a1)
 {
@@ -189,7 +182,7 @@ u8 sub_0833F468(struct Car *p, u8 a1)
             if (a1 == v6C && p->unk18E != 0)
                 sub_08342BA4(gUnk_0203B6C8, gUnk_0203B6A8, gUnk_0203B858);
             if (gUnk_0203916C != 2) {
-                sub_08341EC8(p);
+                sub_08341EC8((u16 *)p);
                 gUnk_0203B868[gUnk_0203B864] = a1;
                 gUnk_0203B864 = gUnk_0203B864 + 1;
                 if ((u8)(gUnk_0203916C - 3) <= 1)

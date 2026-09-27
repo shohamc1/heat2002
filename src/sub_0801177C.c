@@ -1,5 +1,6 @@
 #include "global.h"
 #include "gba/compat.h"
+#include "functions.h"
 
 extern u16 gUnk_020020A0[];
 extern u8 gNumLinkPlayers;
@@ -13,23 +14,7 @@ struct Car
     u8 rest[400 - 0x163];
 };
 extern struct Car gCars[];
-extern void ResetLinkState(void);
 extern u8 gUnk_06016000[];
-extern void sub_080045D8(void);
-extern void InitGfxCaches(void);
-extern void AgeGfxCaches(void);
-extern void ClearOamBuffer(void);
-extern void sub_080047DC(void);
-extern void WaitForVBlank(void);
-extern void ZeroTextLayer(void);
-extern void sub_0800F4FC(void);
-extern void sub_0800F328(u32 src, u16 *dst);
-extern void sub_08010E04(u8 a);
-extern void FadeToBrightenedPalette(u32 a, u32 b);
-extern s32 ExchangeLinkInput(void);
-extern u8 sub_080116D4(u16 a, u8 b, u32 c, u32 d, u8 *e, u8 f);
-extern u32 GetString(u16 idx);
-extern void DrawTextCenteredHighlight(u8 *p, u32 a1, u8 a2);
 
 /* MATCH. The ROM keeps &b[0] in r6 and recomputes &b[i] every iteration; the
    hard-register hint on p and the temps in the input loop select that
@@ -101,7 +86,10 @@ s8 LinkDriverSelect(void)
             p = b;
             q = p + i;
             if ((s8)*q == -1)
-                a[i] = sub_080116D4(c[i], a[i], 0, 0x1D, a, i);
+                /* sub_080116D4: this file's old prototype is
+                   u8 (u16, u8, u32, u32, u8 *, u8); the matched definition
+                   narrows differently; call through the old one. */
+                a[i] = ((u8 (*)(u16, u8, u32, u32, u8 *, u8))sub_080116D4)(c[i], a[i], 0, 0x1D, (u32)a, i);
             if (c[i] & 1) {
                 assign = a[i];
                 out = q;
@@ -129,7 +117,7 @@ s8 LinkDriverSelect(void)
                 count++;
         }
         if ((s8)b[gLinkPlayerId] != -1) {
-            DrawTextCenteredHighlight(GetString(0x58), 0x11, 1);
+            DrawTextCenteredHighlight((u8 *)(GetString(0x58)), 0x11, 1);
             if (count == *(volatile u8 *)&gNumLinkPlayers) {
                 for (i = 0; i < gNumLinkPlayers; i++) {
                     gCars[i].driverId = b[i];
@@ -137,7 +125,7 @@ s8 LinkDriverSelect(void)
                 }
             }
         } else {
-            DrawTextCenteredHighlight((u32)gUnk_0829F30C, 0x11, 1);
+            DrawTextCenteredHighlight((u8 *)((u32)gUnk_0829F30C), 0x11, 1);
         }
         sub_080047DC();
         gUnk_020020C0 = 0;

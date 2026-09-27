@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 
 extern u16 gUnk_0203B6DC;
 extern u16 gUnk_0203B828;
@@ -6,7 +7,6 @@ extern u16 gUnk_0203B6A0;
 extern u8 gUnk_0203B854;
 extern u8 gUnk_0203B6EC;
 
-extern void sub_0833D848(void);
 
 typedef struct {
     u32 a;

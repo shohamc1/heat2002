@@ -1,5 +1,6 @@
 #include "global.h"
 #include "gba/compat.h"
+#include "functions.h"
 
 extern const u8 gUnk_08331FC8[];
 
@@ -10,7 +11,6 @@ extern u8 gUnk_0806C784[];
 u32 AllocTask(void);
 void AddTask(u32 a);
 void sub_08006214(void);
-void sub_0800649C(u32 r0, u32 r1, u32 r2);
 void sub_080055B0(void);
 
 void InitRaceHud(void)
@@ -27,7 +27,7 @@ void InitRaceHud(void)
         AddTask((u32)r);
     }
     sub_08006214();
-    sub_0800649C((u32)gUnk_0806C784, 0, 0x13);
+    sub_0800649C((u8 *)((u32)gUnk_0806C784), 0, 0x13);
     src = (u32)gUnk_08331FC8;
     dst = (u32)OBJ_VRAM1 + 0x2280;
     CpuCopy16(src, dst, 0x180);

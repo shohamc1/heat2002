@@ -1,5 +1,7 @@
 #include "global.h"
 #include "data.h"
+#include "functions.h"
+#include "m4a.h"
 
 extern u8 gUnk_0202EEB0;
 extern u8 gUnk_02025228;
@@ -11,10 +13,6 @@ extern u8 gUnk_08334DCC[];
 extern u8 gOptions[];
 extern u8 gIsDemo;
 
-u32 sub_08007630(u32 r0);
-u32 RequestObjPalette(u32 r0);
-void AddOamEntry(u32 r0, u32 r1);
-void m4aSongNumStart(u32 r0);
 
 void sub_08005AF0(s32 arg)
 {

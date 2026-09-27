@@ -1,10 +1,10 @@
 #include "global.h"
 #include "gba/m4a_internal.h"
+#include "functions.h"
 
 /* MPlayStart (high copy) */
 
 void sub_0833A488(struct MusicPlayerInfo *, struct MusicPlayerTrack *);
-void sub_0833ADA4(u32);
 
 void sub_0833AFC0(struct MusicPlayerInfo *mplayInfo, struct SongHeader *songHeader)
 {

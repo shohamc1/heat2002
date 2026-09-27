@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 
 struct Car {
     u32 posX;
@@ -30,14 +31,9 @@ extern u32 *gUnk_083C9574[];
 extern u32 *gUnk_083C97B4[];
 extern s32 gUnk_08368170[];
 
-extern void sub_08004944(u32 a);
-extern void BuildStartingGrid(u8 a);
-extern void sub_08008D70(void);
-extern void InitCar(u8 a1, u32 a2, u32 a3, u32 a4, u32 a5, u32 a6);
-extern void sub_0800BD98(s32 x, s16 *out, u16 *a3, void *a4);
-extern void sub_0800BEA4(u32 a1, u32 a2, u32 a3, u32 a4, u32 a5);
-extern void sub_08008D20(void);
 
+/* InitCar: this file's old prototype takes a sixth argument the matched
+   definition drops; call through a function pointer with the old signature. */
 void InitRaceCars(u32 a1)
 {
     u8 a;
@@ -56,7 +52,8 @@ void InitRaceCars(u32 a1)
     s16 out[4];
     register u32 garbage asm("r1");
 
-    sub_08004944(a1);
+    /* sub_08004944: this file's old prototype differs from the matched definition; call through the old one */
+    ((void (*)(u32))sub_08004944)(a1);
     a = a1;
     BuildStartingGrid(a);
     gUnk_0202CAF0 = 0;
@@ -67,7 +64,7 @@ void InitRaceCars(u32 a1)
         p = gUnk_0202A3F0;
         i = 0;
         do {
-            InitCar(i, (u32)*pp, p[0] << 16, p[1] << 16, p[2] << 8,
+            ((void (*)(u8, u32, u32, u32, u32, u32))InitCar)(i, (u32)*pp, p[0] << 16, p[1] << 16, p[2] << 8,
                          *pp++ - gCars + eed0);
             p += 3;
             i++;
@@ -77,7 +74,7 @@ void InitRaceCars(u32 a1)
         i = 0;
         off = 0;
         do {
-            InitCar(i, off + (u32)gCars, p[0] << 16, p[1] << 16, p[2] << 8,
+            ((void (*)(u8, u32, u32, u32, u32, u32))InitCar)(i, off + (u32)gCars, p[0] << 16, p[1] << 16, p[2] << 8,
                          i + eed0);
             p += 3;
             off += 400;
@@ -131,7 +128,7 @@ l_inner:
             goto l_50;
         if (gUnk_0202ED70 == 6) {
             obj = (u32)gCarOrder;
-            sub_0800BEA4(obj, 0, 0, 0x28, 1);
+            sub_0800BEA4((struct Car **)obj, 0, 0, 0x28, 1);
             goto l_1d0;
         }
         if (gUnk_0202ED70 == 0xB)
@@ -140,7 +137,7 @@ l_inner:
             goto l_16c;
 l_50:
         obj = (u32)gCarOrder;
-        sub_0800BEA4(obj, 0, 0, 0x50, 1);
+        sub_0800BEA4((struct Car **)obj, 0, 0, 0x50, 1);
         goto l_1d0;
 l_16c:
         gCarOrder[0] = gCars;

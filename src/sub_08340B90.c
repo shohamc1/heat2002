@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 
 struct Unk0202A550
 {
@@ -9,7 +10,6 @@ struct Unk0202A550
 
 extern struct Unk0202A550 gUnk_0203D520[];
 
-extern u8 sub_0833BCBC(void);
 
 void sub_08340B90(void)
 {

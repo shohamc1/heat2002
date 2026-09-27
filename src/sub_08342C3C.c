@@ -1,13 +1,10 @@
 #include "global.h"
+#include "functions.h"
 
 extern u32 gUnk_0203DE28[];
 extern u32 gUnk_0203DE3C[];
 extern u32 gUnk_0203DE20[];
 
-u32 sub_08344BB8(u32 a, u32 b);
-s32 sub_08344C50(s32 a, s32 b);
-void sub_0833FFA8(u32 a);
-void sub_0833FF84(u32 a);
 
 struct Unk08342C3C
 {

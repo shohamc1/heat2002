@@ -1,8 +1,7 @@
 #include "global.h"
+#include "functions.h"
 
 void BeginFadeToBrightenedPalette(u32 a, u32 b);
-void WaitForVBlank(void);
-void UpdatePaletteFade(void);
 
 void FadeToBrightenedPalette(u32 a, u32 b)
 {

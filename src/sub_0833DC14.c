@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 
 extern u8 gUnk_0203B850[];
 extern u8 gUnk_0200CEEC[];
@@ -6,7 +7,6 @@ extern u8 gUnk_0200CEF8[];
 extern u8 gUnk_0200CF04[];
 extern u8 gUnk_0200CF10[];
 
-u8 *sub_0833BD94(u16 a);
 void sub_0833EE88(u8 *s, u32 a, u32 b);
 
 void sub_0833DC14(void)

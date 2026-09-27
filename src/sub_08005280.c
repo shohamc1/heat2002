@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 
 extern u8 gUnk_020253C4;
 extern u16 gUnk_02025258;
@@ -7,11 +8,7 @@ extern u16 gUnk_02002124;
 extern u8 gLinkPlayerId;
 extern s32 gUnk_0200209C;
 
-void sub_08004DB4(void);
-void StopAllSongs(void);
-u32 ExchangeLinkInput(void);
 void sub_080017D0(void);
-void VBlankIntrWait(u32 a);
 void sub_0800524C(void);
 void sub_080051E4(void);
 
@@ -38,7 +35,9 @@ u8 sub_08005280(void)
                         v = gLinkPlayerId;
                         if (v == 0)
                             return 0x27;
-                        VBlankIntrWait(v);
+                        /* VBlankIntrWait: this file's old local prototype differs from
+                           functions.h; call through the old signature (solved-walls 31). */
+                        ((void (*)(u32))VBlankIntrWait)(v);
                     } while (done == 0);
                 }
                 sub_08004DB4();

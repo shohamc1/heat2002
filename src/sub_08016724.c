@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 struct Unk_0202A550 {
     u8 filler0[0x162];
     u8 driverId;
@@ -17,9 +18,6 @@ extern u8 gUnk_0202F034;
 extern u8 gUnk_0202EDD8;
 extern u8 gUnk_0202EF10;
 extern u8 gUnk_0202EF20[];
-extern void StopAllSongsAndVSyncOff(void);
-extern void ReadSaveBlocks(u32 a, u32 b);
-extern void sub_080100B0(void);
 void LoadSeason(void)
 {
     struct Unk_0202A550 *q;

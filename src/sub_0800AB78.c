@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 
 struct Car {
     u8 pad00[0x7C];
@@ -32,7 +33,6 @@ void UpdatePitStop(struct Car *a, u8 b);
 void UpdateRacePosition(u8 a);
 void sub_0800A628(struct Car *a);
 void sub_0800B8A8(struct Car *a);
-void UpdateAiDriver(struct Car *a, u8 b);
 void UpdateCarPhysics(struct Car *a, u16 b, u8 c);
 
 void UpdateCar(struct Car *car, u8 idx)
@@ -53,7 +53,7 @@ void UpdateCar(struct Car *car, u8 idx)
             UpdateCarPhysics(car, car->aiInput, 0);
         } else if (gUnk_0200215C == 9 || gUnk_0200215C == 0xD || gUnk_0200215C == 0xE
                 || gUnk_0200215C == 0xF || gUnk_0200215C == 0x11) {
-            UpdateAiDriver(car, idx);
+            UpdateAiDriver((struct Unk0800C534 *)car, idx);
             UpdateCarPhysics(car, car->aiInput, idx);
         } else {
             /* One shared sub_0800A628 call, as in the gIsLinkRace branch:
@@ -75,7 +75,7 @@ void UpdateCar(struct Car *car, u8 idx)
                     UpdatePitStop(car, idx);
                 } else {
 common:
-                    UpdateAiDriver(car, idx);
+                    UpdateAiDriver((struct Unk0800C534 *)car, idx);
                 }
                 p = &car->aiInput;
             } else {

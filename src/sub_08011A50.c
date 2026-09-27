@@ -1,5 +1,6 @@
 #include "global.h"
 #include "gba/io_reg.h"
+#include "functions.h"
 
 extern u32 gUnk_0202EDBC;
 extern u16 gUnk_0200216C;
@@ -12,8 +13,6 @@ struct Unk_0202EFA0 {
 extern struct Unk_0202EFA0 gUnk_0202EFA0[];
 extern u16 gUnk_0202ED78[];
 extern u16 gUnk_0202EF40[4][4];
-extern void SetLinkSerialIntr(void);
-extern void InitMultiplayerSio(void);
 void ResetLinkState(void)
 {
     u8 i;

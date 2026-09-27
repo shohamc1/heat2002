@@ -1,11 +1,9 @@
 #include "global.h"
+#include "functions.h"
 extern u16 gUnk_0202F170[];
 extern u16 gUnk_020253A0[];
 extern u16 gUnk_02025200[];
 extern u16 gUnk_02025380[];
-extern void StopAllSongsAndVSyncOff(void);
-extern void ReadSaveBlocks(u32 a, u32 b);
-extern void sub_080100B0(void);
 void LoadTrackRecords(void)
 {
     u16 *src;

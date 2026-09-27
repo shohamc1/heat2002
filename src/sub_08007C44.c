@@ -1,4 +1,6 @@
 #include "global.h"
+#include "functions.h"
+#include "m4a.h"
 
 struct Car {
     s32 posX;
@@ -29,11 +31,8 @@ extern u8 gUnk_02002030[];
 extern u8 gUnk_02001FE0[];
 extern struct Car gCars[];
 
-void m4aSongNumStart(u16 idx);
-u8 Random8(void);
 void EnterPit(u8 *a, u8 b);
 u8 GetTrackTileType(s32 x, s32 y);
-void sub_080019B4(s32 a);
 
 void sub_08007C44(struct Car *car)
 {
@@ -102,9 +101,9 @@ void sub_08007C44(struct Car *car)
     }
     if (car == &gCars[p]) {
         if ((*(u32 *)&car->unk170 & 0xFF00FF00) == 0x01000000) {
-            sub_080019B4((s32)gUnk_02001FA0);
-            sub_080019B4((s32)gUnk_02002030);
-            sub_080019B4((s32)gUnk_02001FE0);
+            sub_080019B4((struct MusicPlayerInfo *)((s32)gUnk_02001FA0));
+            sub_080019B4((struct MusicPlayerInfo *)((s32)gUnk_02002030));
+            sub_080019B4((struct MusicPlayerInfo *)((s32)gUnk_02001FE0));
         }
     }
     if (gUnk_0200215C == 0x10 && gUnk_0202ED70 == 0xC)

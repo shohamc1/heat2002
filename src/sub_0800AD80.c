@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 
 struct Car {
     u8 pad00[0x50];
@@ -22,7 +23,6 @@ extern u8 gUnk_0202EEB0;
 extern u16 gUnk_083675F0[];
 extern u16 gUnk_08367608[];
 
-void ReadKeys(void);
 void UpdateCar(struct Car *p, u8 idx);
 u8 CarNeedsPit(struct Car *p);
 u8 FindFreePitStall(u8 a);

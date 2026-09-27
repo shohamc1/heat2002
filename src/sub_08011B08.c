@@ -2,6 +2,7 @@
 #include "gba/defines.h"
 #include "gba/io_reg.h"
 #include "gba/syscall.h"
+#include "functions.h"
 
 extern vu16 gUnk_0202ED78[];
 extern u8 gUnk_0202EDD0;
@@ -11,9 +12,6 @@ extern u16 gUnk_0202EF40[];
 extern u8 gLinkPlayerId;
 extern u8 gNumLinkPlayers;
 
-void ResetLinkState(void);
-void ReadKeys(void);
-void SioSendWord(u16 a);
 
 void DetectLinkPlayers(void)
 {

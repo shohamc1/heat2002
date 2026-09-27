@@ -2,13 +2,12 @@
 #include "gba/defines.h"
 #include "gba/io_reg.h"
 #include "gba/m4a_internal.h"
+#include "functions.h"
 
 /* SampleFreqSet (high copy) */
 
 extern u32 gUnk_03007FF0;
 extern u16 gUnk_0200C7DC[];
-extern s32 sub_08344BB8(s32 a, s32 b);
-extern void sub_0833AF0C(void);
 void sub_0833AD00(u32 freq)
 {
     struct SoundInfo *soundInfo = SOUND_INFO_PTR;

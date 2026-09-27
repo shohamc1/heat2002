@@ -1,6 +1,6 @@
 #include "global.h"
+#include "functions.h"
 
-extern void sub_0833A7F4(struct MusicPlayerInfo *mplayInfo);
 
 void sub_0833AA28(void)
 {

@@ -1,4 +1,6 @@
 #include "global.h"
+#include "functions.h"
+#include "m4a.h"
 
 struct Unk0202A550
 {
@@ -20,14 +22,6 @@ extern struct Unk0202A550 gCars[];
 extern u8 gUnk_0202CDA8[];
 extern u8 gOptions[];
 
-extern void AssignRandomDrivers(void);
-extern void sub_08016D28(u8 a);
-extern void SortCarsByTime(void);
-extern void TrackSelectMenu(u8 a, u8 b);
-extern u8 RunRace(u32 a, u8 b);
-extern void m4aSongNumStart(u16 a);
-extern void ResetBgScroll(void);
-extern void sub_08012874(u8 a);
 
 u8 sub_080128E0(void)
 {
@@ -50,6 +44,7 @@ u8 sub_080128E0(void)
     if (gOptions[2] != 0)
         m4aSongNumStart(3);
     ResetBgScroll();
-    sub_08012874(gUnk_0202EEE4);
+    /* sub_08012874: old prototype took u8; the matched definition takes s8 */
+    ((void (*)(u8))sub_08012874)(gUnk_0202EEE4);
     return gUnk_0202EEE4;
 }

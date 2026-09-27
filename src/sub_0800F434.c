@@ -1,11 +1,10 @@
 #include "global.h"
 #include "gba/compat.h"
+#include "functions.h"
 
 extern const u8 gUnk_082A9F0C[];
 extern const u32 gUnk_0833338C[];
 extern const u8 gUnk_082A9930[];
-extern void WaitForVBlank(void);
-extern void sub_08010680(u16 *data);
 
 void sub_0800F434(void)
 {
@@ -15,5 +14,5 @@ void sub_0800F434(void)
     CpuCopy16((u32)gUnk_0833338C, BG_SCREEN_ADDR(24), 0x2000);
     WaitForVBlank();
     REG_DISPCNT = 0xA8 << 3;
-    sub_08010680((u32)gUnk_082A9930);
+    sub_08010680((u16 *)((u32)gUnk_082A9930));
 }

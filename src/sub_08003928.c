@@ -1,6 +1,7 @@
 #include "global.h"
 #include "tilemap.h"
 #include "gba/compat.h"
+#include "functions.h"
 
 extern u16 *gUnk_02002208;
 extern u16 *gUnk_0200BC54;
@@ -55,11 +56,9 @@ extern struct Track gUnk_08364B0C[];
 void LoadTrackTiles(u8 idx);
 void BeginFadeToBrightenedPalette(s32 arg0, u16 *src);
 void RleDecode16(u16 *src, u16 *dst, u16 count);
-void sub_08003BFC(u32 x, u32 y, u16 *map, u32 *dest, u16 *charBase, u16 a6);
 void FlushTrackBgBuffers(void);
 void SetCameraPos(u32 x, u32 y);
 void InitRaceCars(u32 idx);
-void ResetLapTimer(void);
 void ResetRaceTimer(void);
 
 void LoadTrack(u32 idx)
@@ -109,8 +108,10 @@ void LoadTrack(u32 idx)
         gUnk_02002200[0] = 0x5E;
     if (idx == 11)
         gUnk_02002200[0] = 0x7D;
-    sub_08003BFC(0, 0, gUnk_02002208, (u32 *)TILEMAP_BUFFER(0), gUnk_0200221C, gUnk_02022DE4);
-    sub_08003BFC(0, 0, gUnk_0200BC54, (u32 *)TILEMAP_BUFFER(1), gUnk_02002210, gUnk_0200BC34);
+    /* sub_08003BFC: this file's old local prototype differs from
+       functions.h; call through the old signature (solved-walls 31). */
+    ((void (*)(u32, u32, u16 *, u32 *, u16 *, u16))sub_08003BFC)(0, 0, gUnk_02002208, (u32 *)TILEMAP_BUFFER(0), gUnk_0200221C, gUnk_02022DE4);
+    ((void (*)(u32, u32, u16 *, u32 *, u16 *, u16))sub_08003BFC)(0, 0, gUnk_0200BC54, (u32 *)TILEMAP_BUFFER(1), gUnk_02002210, gUnk_0200BC34);
     FlushTrackBgBuffers();
     SetCameraPos(0, 0);
     InitRaceCars(idx);

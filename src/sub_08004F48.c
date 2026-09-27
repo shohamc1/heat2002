@@ -1,16 +1,10 @@
 #include "global.h"
+#include "functions.h"
 
 extern u16 gKeysPressed;   /* 0x020005CC */
 extern u8 gUnk_02025248;
 extern u8 gUnk_0202539C;
 
-extern void sub_08007EF8(void);
-extern void sub_08004A18(void);
-extern void StopAllSongs(void);
-extern void ReadKeys(void);
-extern void sub_08004C44(u8 a);
-extern void sub_08004EA4(void);
-extern void WaitForVBlank(void);
 
 u8 PauseMenu(void)
 {

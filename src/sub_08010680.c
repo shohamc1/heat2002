@@ -1,8 +1,8 @@
 #include "global.h"
+#include "functions.h"
 
 extern u16 gUnk_0829FC80[][4];
 extern u16 gUnk_0600F800[];
-extern void sub_08010680(u16 *a);
 
 void sub_08010680(u16 *data)
 {

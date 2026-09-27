@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 
 extern u16 gUnk_02039134;
 extern u8 gUnk_0200CF1C[];
@@ -10,9 +11,7 @@ extern u8 gUnk_0203E1B0;
 void sub_0833FA3C(void);
 void sub_0833D680(void);
 u32 sub_0833C874(void);
-u8 *sub_0833BD94(u32 a);
 void sub_0833EE88(u8 *str, u32 y, u32 shade);
-void sub_0833B074(u32 a);
 void sub_0833AE90(void);
 void sub_08344B74(u32 a);
 u32 sub_0833DA34(void);
@@ -33,8 +32,8 @@ void sub_0833DE98(void)
             sub_0833EE88(sub_0833BD94(0), 0xA, 1);
             sub_0833EE88(gUnk_0200CF1C, 0xC, 1);
             sub_0833EE88(gUnk_0200CF34, 0xD, 1);
-            sub_0833B074((u32)gUnk_02038F70);
-            sub_0833B074((u32)gUnk_02038FB0);
+            sub_0833B074((struct MusicPlayerInfo *)((u32)gUnk_02038F70));
+            sub_0833B074((struct MusicPlayerInfo *)((u32)gUnk_02038FB0));
             sub_0833AE90();
             do
             {

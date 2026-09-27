@@ -1,9 +1,9 @@
 #include "global.h"
+#include "functions.h"
 
 extern u8 gLinkPlayerId;
 extern volatile u16 gUnk_03007FF8;
 
-void VBlankIntrWait(void);
 
 void sub_080032AC(void)
 {

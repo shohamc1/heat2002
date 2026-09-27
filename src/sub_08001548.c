@@ -1,6 +1,7 @@
 #include "global.h"
 #include "gba/compat.h"
 #include "gba/m4a_internal.h"
+#include "functions.h"
 
 void ply_note(void);
 void sub_080025B8(void);
@@ -10,7 +11,6 @@ void sub_080025B8(void);
 extern struct SoundInfo *gUnk_03007FF0;
 extern MPlayFunc gUnk_02001D90[];
 
-void sub_08001640(u32 a);
 
 void sub_08001548(struct SoundInfo *soundInfo)
 {

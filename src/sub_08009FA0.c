@@ -1,13 +1,10 @@
 #include "global.h"
 #include "data.h"
+#include "functions.h"
 
 extern u32 gUnk_083681E8[];
 extern s32 gUnk_0200209C;
 
-s32 sub_080172C8(s32 a, s32 b);
-u32 *sub_08007630(u32 p);
-s32 RequestObjPalette(u32 a);
-u32 AddOamEntry(u32 a, u32 b);
 
 void sub_08009FA0(u32 a1, u32 a2, u32 a3)
 {

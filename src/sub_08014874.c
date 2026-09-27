@@ -1,15 +1,9 @@
 #include "global.h"
+#include "functions.h"
+#include "m4a.h"
 extern u16 gKeysPressed;
 extern u8 gOptions[];
 extern s8 gUnk_0202EF60[];
-extern void sub_08011C9C(u8 a, u16 *dst);
-extern void sub_08014708(u8 a, u8 b);
-extern void FadeToBrightenedPalette(u32 a, u32 b);
-extern void ReadKeys(void);
-extern s16 MenuMoveVertical(u16 keys, s16 v, s16 lo, s16 hi);
-extern void WaitForVBlank(void);
-extern void m4aSongNumStart(u16 a);
-extern void FadeToColor(u32 a, u32 b);
 u8 sub_08014874(u8 a, u8 b)
 {
     u8 buf[0x200];

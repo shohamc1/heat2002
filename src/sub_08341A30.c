@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 
 struct Unk08341A30Ent
 {
@@ -13,7 +14,6 @@ extern u32 *gUnk_0202772C[];
 extern s32 gUnk_020390AC;
 extern u32 gUnk_020243E8[];
 
-s32 sub_08344C50(s32 a, s32 b);
 struct Unk08341A30Ent *sub_0833FC94(u32 a);
 u32 sub_0833FD78(u32 a);
 void sub_0833D6A0(u32 a, u32 b);

@@ -1,8 +1,6 @@
 #include "global.h"
+#include "functions.h"
 
-extern void sub_08011C9C(u8 a, u16 *dst);
-extern void sub_08011F78(s32 a);
-extern void FadeToBrightenedPalette(u32 a, u32 b);
 
 void sub_08012354(void)
 {

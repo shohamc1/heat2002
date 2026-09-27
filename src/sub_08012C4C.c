@@ -1,5 +1,7 @@
 #include "global.h"
 #include "gba/compat.h"
+#include "functions.h"
+#include "gba/syscall.h"
 
 extern u32 gUnk_083FDE18[];
 extern u32 gUnk_083FEF00;
@@ -12,25 +14,21 @@ extern u8 gUnk_0829F3A4[];
 extern u8 gUnk_0829F3AC[];
 extern u8 gUnk_0829F3B4[];
 
-extern void sub_08006734(u32 a);
-extern u32 GetString(u16 idx);
-extern void sub_080065A8(void);
-extern void DrawTextCenteredHighlight(u8 *p, u32 a1, u8 a2);
-extern void RLUnCompVram(u32 a, u32 b);
-extern void sub_080100CC(u32 a0, u32 a1, u32 a2, u32 a3, u8 a4);
 
 void sub_08012C4C(u32 a)
 {
     u32 t;
 
-    sub_08006734(gUnk_083FDE18[0]);
+    /* sub_08006734: this file's old local prototype differs from
+       functions.h; call through the old signature (solved-walls 31). */
+    ((void (*)(u32))sub_08006734)(gUnk_083FDE18[0]);
     GetString(0x8F);
-    sub_080065A8();
+    ((void (*)(void))sub_080065A8)();
     if (a <= 2) {
-        DrawTextCenteredHighlight(GetString(0x91), 4, 1);
+        DrawTextCenteredHighlight((u8 *)(GetString(0x91)), 4, 1);
     } else {
-        DrawTextCenteredHighlight((u32)gUnk_0829F374, 6, 1);
-        DrawTextCenteredHighlight((u32)gUnk_0829F388, 0xA, 1);
+        DrawTextCenteredHighlight((u8 *)((u32)gUnk_0829F374), 6, 1);
+        DrawTextCenteredHighlight((u8 *)((u32)gUnk_0829F388), 0xA, 1);
     }
     if (a <= 2)
         RLUnCompVram(gUnk_083FEF00, OBJ_VRAM0);
@@ -47,9 +45,9 @@ void sub_08012C4C(u32 a)
         sub_080100CC(0x58, 0x40, 0, t, 0);
     }
     if (a == 0)
-        DrawTextCenteredHighlight((u32)gUnk_0829F3A4, 0x12, 1);
+        DrawTextCenteredHighlight((u8 *)((u32)gUnk_0829F3A4), 0x12, 1);
     if (a == 1)
-        DrawTextCenteredHighlight((u32)gUnk_0829F3AC, 0x12, 1);
+        DrawTextCenteredHighlight((u8 *)((u32)gUnk_0829F3AC), 0x12, 1);
     if (a == 2)
-        DrawTextCenteredHighlight((u32)gUnk_0829F3B4, 0x12, 1);
+        DrawTextCenteredHighlight((u8 *)((u32)gUnk_0829F3B4), 0x12, 1);
 }

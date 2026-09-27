@@ -1,8 +1,6 @@
 #include "global.h"
+#include "functions.h"
 
-void BeginFadeToColor(u32 a, u32 b);
-void WaitForVBlank(void);
-void UpdatePaletteFade(void);
 
 void FadeToColor(u32 r0, u32 r1)
 {

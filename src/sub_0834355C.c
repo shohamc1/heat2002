@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 
 struct WallRec {
     u16 f00;
@@ -64,7 +65,6 @@ extern s32 gUnk_020375C0;
 extern s32 gUnk_020375C4;
 extern s32 gUnk_020375C8;
 
-u32 sub_08344BB8(u32 a, u32 b);
 
 s32 sub_0834355C(struct Corner *corn, struct Box *box, struct Box *cbox,
                  struct Hit *out, u16 *wallList, s32 *best)

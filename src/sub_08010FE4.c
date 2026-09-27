@@ -1,6 +1,8 @@
 #include "global.h"
 #include "gba/compat.h"
 #include "data.h"
+#include "functions.h"
+#include "gba/syscall.h"
 
 extern const u8 gUnk_0829F2CC[];
 extern const u8 gUnk_0829F2D8[];
@@ -27,11 +29,6 @@ struct Big
 extern struct Big gUnk_083FDA78[];
 extern u8 gUnk_0202EED8;
 
-extern u32 GetString(u16 idx);
-void sub_080065A8(void);
-void DrawText(u8 *p, u32 a1, u32 a2, u8 a3);
-void DrawTextCenteredHighlight(u32 a, u32 b, u32 c);
-void sub_08010194(u32 a, u32 b, u32 c);
 void sub_0801027C(u32 tile, u32 pal, u32 c);
 
 u8 DrawTrackSelect(u8 a, u8 b)
@@ -41,16 +38,18 @@ u8 DrawTrackSelect(u8 a, u8 b)
 
     if (b != 0) {
         GetString(0xA1);
-        sub_080065A8();
+        /* sub_080065A8: this file's old local prototype differs from
+           functions.h; call through the old signature (solved-walls 31). */
+        ((void (*)(void))sub_080065A8)();
     }
     p = (u8 *)gUnk_0829F2AC;
     DrawText(p, 0, 4, 0);
     DrawText(p, 0, 5, 0);
     if (a != 3) {
-        DrawTextCenteredHighlight(gUnk_083FDA78[a].fieldC, 4, 1);
+        DrawTextCenteredHighlight((u8 *)(gUnk_083FDA78[a].fieldC), 4, 1);
     } else {
-        DrawTextCenteredHighlight((u32)gUnk_0829F2CC, 4, 1);
-        DrawTextCenteredHighlight((u32)gUnk_0829F2D8, 5, 1);
+        DrawTextCenteredHighlight((u8 *)((u32)gUnk_0829F2CC), 4, 1);
+        DrawTextCenteredHighlight((u8 *)((u32)gUnk_0829F2D8), 5, 1);
     }
     CpuCopy16(gUnk_083FDA78[a].field14, OBJ_PLTT, OBJ_PLTT_SIZE);
     CpuCopy16((u32)gUnk_0830E670, OBJ_PLTT + 0x1E0, 0x20);

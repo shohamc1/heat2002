@@ -1,6 +1,8 @@
 #include "global.h"
 #include "gba/compat.h"
 #include "data.h"
+#include "functions.h"
+#include "m4a.h"
 
 extern const u8 gUnk_082A0130[];
 extern const u32 gUnk_0833338C[];
@@ -12,16 +14,6 @@ extern u8 gUnk_02001F20[];
 extern u8 gUnk_020020B4;
 extern u8 gOptions[];
 extern u16 *gUnk_08364B08;
-extern void m4aSongNumStart(u16 a);
-extern void WaitForVBlank(void);
-extern void sub_08010680(u16 *data);
-extern u16 RgbFromPercent(u32 r, u32 g, u32 b);
-extern void FadeToBrightenedPalette(u32 a, u32 b);
-extern void ReadKeys(void);
-extern u32 GetString(u16 idx);
-extern void DrawTextCenteredHighlight(u8 *p, u32 a1, u8 a2);
-extern void m4aMPlayFadeOut(void *a, u32 b);
-extern void FadeToColor(u32 a, u32 b);
 
 u8 TitleScreen(void)
 {
@@ -40,7 +32,7 @@ u8 TitleScreen(void)
     REG_DISPCNT = 0xA8 << 3;
     CpuCopy16((u32)gUnk_082A0130, VRAM, 0xA280);
     CpuCopy16((u32)gUnk_0833338C, BG_SCREEN_ADDR(24), 0x2000);
-    sub_08010680((u32)gUnk_0829FB54);
+    sub_08010680((u16 *)((u32)gUnk_0829FB54));
     i = 0;
     do {
         gUnk_08364B08[i] = 0;
@@ -63,7 +55,7 @@ u8 TitleScreen(void)
             i++;
         } while (i != 0x380);
         if ((j & 0x1F) <= 0x0E)
-            DrawTextCenteredHighlight(GetString(0x0F), 0x10, 1);
+            DrawTextCenteredHighlight((u8 *)(GetString(0x0F)), 0x10, 1);
         j++;
         if ((gKeysHeld & 8) && gOptions[3] != 0)
             m4aSongNumStart(9);

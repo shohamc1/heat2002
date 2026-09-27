@@ -1,23 +1,12 @@
 #include "global.h"
 #include "gba/compat.h"
+#include "functions.h"
 
 extern u16 gKeysPressed;
 extern u8 gUnk_0807CA60[];
 extern u8 gUnk_0833338C[];
 extern u8 gUnk_08363EE8[];
 extern u8 gUnk_08364AC8[];
-extern void VBlankIntrWait(void);
-extern u32 GetString(u16 idx);
-extern void DrawTextCenteredHighlight(u8 *p, u32 a1, u8 a2);
-extern void sub_08011C9C(u8 a, u16 *dst);
-extern void FadeToBrightenedPalette(u32 a, u32 b);
-extern void sub_0800DFCC(void);
-extern void ReadKeys(void);
-extern void sub_0800EA64(void *a1);
-extern void sub_0800EEFC(u8 *a1, u32 a2, void *a3, u32 a4, u32 a5);
-extern u32 sub_0800EAA0(void *a1);
-extern u32 sub_0800EFC0(u8 *ptr);
-extern void SendMultibootPayload(void);
 
 u32 SendMultibootIsland(void)
 {
@@ -130,7 +119,7 @@ shown:
         {
             if (work[0x18] == 0 && work[0x1E] != 0)
             {
-                sub_0800EEFC(work, start + 0xC0, len - 0xC0, 4, 1);
+                sub_0800EEFC(work,(u32)(start + 0xC0),(void *)(len - 0xC0), 4, 1);
                 {
                     register u32 value __asm__("r1");
                     __asm__ volatile ("" : "=r" (value) : "0" (1));

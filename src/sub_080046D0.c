@@ -1,5 +1,6 @@
 #include "global.h"
 #include "data.h"
+#include "functions.h"
 
 extern u16 gUnk_0202522C;
 extern u16 gUnk_02025398;
@@ -7,7 +8,6 @@ extern u16 gUnk_020251F0;
 extern u8 gUnk_020253C8;
 extern u8 gUnk_0202523C;
 
-extern void FlushSortedSprites(void);
 
 typedef struct {
     u32 a;

@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 
 extern u8 gUnk_0200215C;
 extern u8 gCars[][0x190];
@@ -8,7 +9,6 @@ extern u8 gTrackId;
 extern u8 gUnk_0202EEB0;
 extern u8 gUnk_0202CBC8[];
 
-void sub_0800BE00(void *base, s32 arg);
 void sub_08008090(void);
 
 void EnterPit(u8 *r4, u8 r5)

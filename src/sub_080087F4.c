@@ -1,5 +1,6 @@
 #include "global.h"
 #include "data.h"
+#include "m4a.h"
 
 struct Unk080087F4 {
     u8 pad0[0x8C];
@@ -30,7 +31,6 @@ extern s32 gUnk_0202CBD4; /* 0x0202CBD4 */
 extern volatile s32 gUnk_0202CB0C; /* 0x0202CB0C */
 
 void sub_0800B764(u8 a, u8 b);
-void m4aSongNumStart(u16 idx);
 
 void sub_080087F4(u8 which, struct Unk080087F4 *obj)
 {

@@ -2,6 +2,7 @@
 #define GBA_CPUSET sub_08344B64
 #include "tilemap.h"
 #include "gba/compat.h"
+#include "functions.h"
 
 struct Track {
     /* +0x00 */ u32 unk00;
@@ -54,7 +55,6 @@ void sub_0833CFC8(u32 x, u32 y, u16 *map, u32 *dest, u16 *charBase, u16 a6);
 void sub_0833D094(void);
 void sub_0833D564(u32 x, u32 y);
 void sub_0834108C(u32 idx);
-void sub_0833E05C(void);
 void sub_0833E078(void);
 
 void sub_0833CD2C(u32 idx)

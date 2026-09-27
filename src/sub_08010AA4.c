@@ -1,13 +1,12 @@
 #include "global.h"
 #include "data.h"
+#include "functions.h"
 
 extern u8 *gUnk_083FDDD0[];
 extern u8 gUnk_0202EF20[];
 extern u8 *gUnk_083FDCF0[];
 extern u8 *gUnk_083FDC88[];
 
-extern void DrawText(u8 *p, u32 a1, u32 a2, u8 a3);
-extern void DrawTextCenteredHighlight(u8 *p, u32 a1, u8 a2);
 
 void sub_08010AA4(u8 idx)
 {
