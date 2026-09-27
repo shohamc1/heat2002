@@ -71,7 +71,7 @@ struct Track {
     u8 pad15[3];
 };
 
-extern volatile u8 gIsLinkRace;
+extern u8 gIsLinkRace;
 extern u8 gUnk_020020BC;
 extern u8 gOptions[];
 extern u8 gLinkPlayerId;

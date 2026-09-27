@@ -28,7 +28,7 @@ struct Unk0800A310 {
 };
 
 extern s32 gUnk_08368270[]; /* 0x08368270 */
-extern volatile s32 gUnk_08368280[]; /* 0x08368280 */
+extern s32 gUnk_08368280[]; /* 0x08368280 */
 
 void ComputeCarCorners(struct Unk0800A310 *obj)
 {

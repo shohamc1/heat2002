@@ -159,19 +159,28 @@ is combined with:
 
 `old_agbcc` hoists the constant; `agbcc` never does. The ROM contains both
 orders, and **`volatile` is the lever**: under `old_agbcc` a `volatile`
-global suppresses the hoist and gives the second form. `agbcc` can only
+access suppresses the hoist and gives the second form. `agbcc` can only
 ever produce the second form, so ~27 functions are unreachable from any C
 under it.
 
-Verified 2026-09-10: `make check` prints MATCH for the whole ROM under
-`old_agbcc`, with four globals needing `extern volatile` (`gKeysHeld`,
-`gKeysPressed`, `gUnk_02000DD0`, `gUnk_02037E20`, `gUnk_02037618`,
-`gUnk_0203761C`). `-fprologue-bugfix` does not exist in `old_agbcc` and is
-not needed: all 211 functions matched without it.
+Never declare a global `extern volatile`: a declaration shared through a
+header must work for every file, and most files want the hoisted order.
+Declare the global plain, and where the ROM loads the memory *before* the
+constant it combines with, cast that one access to a volatile pointer:
 
-So when the asm loads a constant *before* the memory it operates on, write
-the global non-`volatile`; when it loads the memory first, write it
-`volatile`.
+    gUnk_02000DD0 &= 0xFFFE;           *(vu16 *)&gUnk_02000DD0 &= 0xFFFE;
+    constant hoisted first             memory loaded first
+
+Verified 2026-09-27: `volatile` was removed from every `extern` line in
+`src/` (43 files, keyword and `vu16` spellings alike) and every function
+in each file re-matched. Twelve functions lost the memory-first order and
+got it back with a `*(vuX *)&g` cast at those accesses; the other 31
+matched without any cast. `make check` prints `MATCH` with no `extern
+volatile` left in the tree. (`-fprologue-bugfix` does not exist in
+`old_agbcc` and was never needed.)
+
+So when the asm loads a constant *before* the memory it operates on, no
+cast is needed; when it loads the memory first, cast that access.
 
 ## Writing C that matches
 

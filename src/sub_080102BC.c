@@ -1,7 +1,7 @@
 #include "global.h"
 #include "functions.h"
 
-extern volatile u16 gKeysPressed; /* 0x020005CC */
+extern u16 gKeysPressed; /* 0x020005CC */
 
 
 void WaitFramesOrKey(s32 count)

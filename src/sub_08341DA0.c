@@ -28,7 +28,7 @@ struct Unk08341DA0 {
 
 extern s16 gUnk_0200C3E8[]; /* 0x0200C3E8 */
 extern s32 gUnk_020277B4[]; /* 0x020277B4 */
-extern volatile s32 gUnk_020277C4[]; /* 0x020277C4 */
+extern s32 gUnk_020277C4[]; /* 0x020277C4 */
 
 void sub_08341DA0(struct Unk08341DA0 *obj)
 {

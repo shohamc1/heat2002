@@ -12,7 +12,7 @@ extern u32 gUnk_0200CF1C[];
 extern u32 gUnk_0200CF34[];
 extern u8 gUnk_0203E1B0;
 extern u32 gUnk_020390AC;
-extern volatile u8 gUnk_020390D0;
+extern u8 gUnk_020390D0;
 
 void sub_0833DA34(void);
 u32 sub_0833C874(void);

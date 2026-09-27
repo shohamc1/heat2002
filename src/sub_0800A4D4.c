@@ -89,7 +89,7 @@ struct Track {
 };
 
 extern u8 gTrackId;
-extern struct Track *volatile gUnk_020253D0;
+extern struct Track * gUnk_020253D0;
 
 s32 Atan2(s32 a, s32 b);
 

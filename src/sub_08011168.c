@@ -6,7 +6,7 @@
 #include "m4a.h"
 
 extern u16 gKeysPressed;
-extern volatile u8 gUnk_020020C0;
+extern u8 gUnk_020020C0;
 extern u8 gUnk_0202EED8;
 extern u8 gOptions[];
 extern u8 gUnk_0202EF8C;

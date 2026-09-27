@@ -1,7 +1,7 @@
 #include "global.h"
 #include "gba/defines.h"
 
-extern volatile u32 gUnk_0200BC30;
+extern u32 gUnk_0200BC30;
 
 void sub_08003C78(u32 x, u32 y, u8 *map, u16 *dest, u8 *charBase)
 {

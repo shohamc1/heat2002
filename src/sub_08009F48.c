@@ -4,7 +4,7 @@ extern u8 gNumCars;
 extern u8 gIsLinkRace;
 extern u8 gNumLinkPlayers;
 extern u8 gCars[];
-extern volatile u8 gUnk_0200215C;
+extern u8 gUnk_0200215C;
 
 void DrawCar(u32 arg0, u8 arg1);
 

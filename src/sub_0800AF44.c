@@ -8,7 +8,7 @@ struct EntityAF44 {
 };
 
 extern u8 gUnk_02022E14;           /* 0x02022E14 */
-extern volatile u8 gIsLinkRace;  /* 0x020020DC */
+extern u8 gIsLinkRace;  /* 0x020020DC */
 extern u8 gUnk_0200215C;           /* 0x0200215C */
 extern u8 gUnk_02002098;           /* 0x02002098 */
 extern u8 gUnk_020021E0;           /* 0x020021E0 */

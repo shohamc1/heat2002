@@ -2,7 +2,7 @@
 #include "functions.h"
 
 extern u8 gLinkPlayerId;
-extern volatile u16 gUnk_03007FF8;
+extern u16 gUnk_03007FF8;
 
 
 void sub_080032AC(void)
@@ -17,7 +17,7 @@ void sub_080032AC(void)
     else
     {
         do
-            v = gUnk_03007FF8;
+            v = *(vu16 *)&gUnk_03007FF8;
         while ((v & 0x80) == 0);
     }
 }

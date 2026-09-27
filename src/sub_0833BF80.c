@@ -32,7 +32,7 @@ extern u8 gUnk_020390BC;
 extern u32 gUnk_020391E0[4];
 extern u32 gUnk_02039158;
 extern u8 gUnk_020391D4;
-extern volatile s8 gUnk_020390D0;
+extern s8 gUnk_020390D0;
 extern u8 gUnk_020390FC;
 extern u8 gUnk_0203E120[];
 extern u8 gUnk_020390D4;
@@ -151,13 +151,13 @@ s32 sub_0833BF80(u8 arg0, u8 arg1)
     sub_0833D680();
     sub_0833D9D8();
     gUnk_020391D4 = 1;
-    gUnk_020390D0 = 0;
-    first = gUnk_020390D0;
+    (*(volatile s8 *)&gUnk_020390D0) = 0;
+    first = (*(volatile s8 *)&gUnk_020390D0);
     t -= 3;
     if (first == 0) {
         do
             ;
-        while (gUnk_020390D0 == 0);
+        while ((*(volatile s8 *)&gUnk_020390D0) == 0);
     }
     sub_08339B18();
     gUnk_020390FC = 0;
@@ -325,13 +325,13 @@ r_end: ;
             rr = sub_0833C874();
             if (rr != 0)
                 goto rrret;
-            gUnk_020390D0 = rr;
+            (*(volatile s8 *)&gUnk_020390D0) = rr;
 wait_ec:
-            if (gUnk_020390D0 == 0)
+            if ((*(volatile s8 *)&gUnk_020390D0) == 0)
                 goto wait_ec;
         } else {
-            gUnk_020390D0 = 0;
-            while (gUnk_020390D0 == 0)
+            (*(volatile s8 *)&gUnk_020390D0) = 0;
+            while ((*(volatile s8 *)&gUnk_020390D0) == 0)
                 ;
         }
         gUnk_020390AC = gUnk_020390AC + 1;

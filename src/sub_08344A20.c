@@ -3,7 +3,7 @@
 #include "gba/io_reg.h"
 #include "functions.h"
 
-extern vu16 gUnk_0203DFB8[];
+extern u16 gUnk_0203DFB8[];
 extern u8 gUnk_0203E004;
 extern u8 gUnk_0203E1C0[];
 extern u8 gUnk_0203E110;

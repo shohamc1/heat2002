@@ -3,7 +3,7 @@
 
 extern u8 gUnk_020253C4;
 extern u16 gUnk_02025258;
-extern volatile u8 gUnk_020020C0;
+extern u8 gUnk_020020C0;
 extern u16 gUnk_02002124;
 extern u8 gLinkPlayerId;
 extern s32 gUnk_0200209C;

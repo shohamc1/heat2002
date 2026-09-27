@@ -19,7 +19,7 @@ extern s32 gUnk_0200209C;          /* 0x0200209C */
 extern u8 gUnk_020020A8;           /* 0x020020A8 */
 extern u8 gNumLinkPlayers;           /* 0x020020AC */
 extern u8 gUnk_020020B4;           /* 0x020020B4 */
-extern volatile u8 gUnk_020020C0;  /* 0x020020C0 */
+extern u8 gUnk_020020C0;  /* 0x020020C0 */
 extern u8 gUnk_020020C4;           /* 0x020020C4 */
 extern u8 gTrackId;           /* 0x020020CC */
 extern u8 gIsLinkRace;           /* 0x020020DC */
@@ -113,8 +113,8 @@ u8 RunRace(u32 a, u8 b)
     ClearOamBuffer();
     sub_080047DC();
     gUnk_020021C4 = 1;
-    gUnk_020020C0 = 0;
-    while (gUnk_020020C0 == 0)
+    (*(vu8 *)&gUnk_020020C0) = 0;
+    while ((*(vu8 *)&gUnk_020020C0) == 0)
         ;
     WaitForVBlank();
     gUnk_020020EC = 0;
@@ -292,13 +292,13 @@ camera_ready:
             if (v != 0) {
                 goto connection_error;
             }
-            gUnk_020020C0 = v;
+            (*(vu8 *)&gUnk_020020C0) = v;
 wait_link:
-            if (gUnk_020020C0 == 0)
+            if ((*(vu8 *)&gUnk_020020C0) == 0)
                 goto wait_link;
         } else {
-            gUnk_020020C0 = 0;
-            while (gUnk_020020C0 == 0)
+            (*(vu8 *)&gUnk_020020C0) = 0;
+            while ((*(vu8 *)&gUnk_020020C0) == 0)
                 ;
         }
         gUnk_0200209C++;

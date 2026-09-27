@@ -6,7 +6,7 @@
 extern u8 gKeysHeld;
 extern u16 gKeysPressed;
 extern u16 gUnk_03007FF8;
-extern volatile u16 gUnk_0202ED78;
+extern u16 gUnk_0202ED78;
 struct UnkEFA0 {
     u8 unk0;
     u8 unk1;

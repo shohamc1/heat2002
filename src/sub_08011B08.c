@@ -4,7 +4,7 @@
 #include "gba/syscall.h"
 #include "functions.h"
 
-extern vu16 gUnk_0202ED78[];
+extern u16 gUnk_0202ED78[];
 extern u8 gUnk_0202EDD0;
 extern u8 gUnk_0202EFA0[];
 extern u8 gUnk_0202EEF4;

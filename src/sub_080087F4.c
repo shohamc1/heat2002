@@ -28,7 +28,7 @@ extern u8 gOptions[]; /* 0x0202EF00 */
 extern u8 gIsDemo; /* 0x020020E0 */
 extern u8 gUnk_020021E0; /* 0x020021E0 */
 extern s32 gUnk_0202CBD4; /* 0x0202CBD4 */
-extern volatile s32 gUnk_0202CB0C; /* 0x0202CB0C */
+extern s32 gUnk_0202CB0C; /* 0x0202CB0C */
 
 void sub_0800B764(u8 a, u8 b);
 

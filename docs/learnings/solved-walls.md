@@ -49,6 +49,7 @@ with the target and ours asm, the cause and the fix.
 | Ours emits `movs rX,#4; add ip,rX` at a loop head plus an extra entry home store; target has `adds rY,#4; mov ip,rY` | The counter increment was written at the loop head | [29](#29-a-counter-increment-at-the-loop-head) |
 | A pseudo dies or rematerialises where the target keeps it homed, and no source shape stops it | Zero-emission liveness keepers and hard-register materialisation | [30](#30-zero-emission-liveness-keepers) |
 | A caller changes bytes (or stops compiling) after an `extern` was rewritten to a canonical signature: extra or missing narrowing pairs, a lost `ldrsb`, a rotated register pair | The prototype decided the caller's conversions | [31](#31-the-callers-bytes-change-after-a-shared-prototype-changed) |
+| Target loads the memory *before* the pool constant it combines with, ours loads the constant first, after `volatile` left the `extern` | The access needs its volatile order back, as a cast | [32](#32-a-memory-load-the-target-puts-before-a-constant) |
 | Your notes say the difference is invariant under many variants | The variants shared a wrong structure | [Start from a plain rewrite](#start-from-a-plain-rewrite) |
 
 ## Start from a plain rewrite
@@ -1037,6 +1038,51 @@ pairs), `LinkTrackSelect` (the `ldrsb` of an `s8` parameter),
 `sub_0801465C` (an `s16` return rotating r5/r6), `sub_0833E7FC` (removed
 narrowing restored as `(u8)` argument casts), `RunRace` (an `s8` return
 cast).
+
+### 32. A memory load the target puts before a constant
+
+You removed `volatile` from an `extern` (or moved the declaration to a
+header, where it must be plain), and the function now mismatches: the
+target loads the memory first and its pool constant after; ours hoists the
+constant above the memory access.
+
+```asm
+-8000430: ldr  r2, [pc, #8]      @ &gUnk_02000DD0
+-8000432: ldrh r1, [r2, #0]      @ memory first
+-8000434: ldr  r0, [pc, #8]      @ constant second
+-8000436: ands r0, r1
++8000430: ldr  r1, [pc, #8]
++8000432: ldr  r0, [pc, #12]     @ constant first
++8000434: ldrh r2, [r1, #0]      @ memory second
++8000436: ands r0, r2
+```
+
+**Cause.** Under `old_agbcc` a volatile access suppresses the constant
+hoist (see "Use `old_agbcc`, not `agbcc`" in `CLAUDE.md`). The file once
+declared the global `extern volatile`, or through a `vu16`/`vu32` typedef,
+so every access in it compiled in the memory-first order.
+
+**Fix.** Keep the `extern` plain — a declaration shared through a header
+must work for every file — and cast the accesses that need the order to a
+volatile pointer: `*(vu16 *)&gUnk_02000DD0 &= 0xFFFE;`. The cast is
+byte-identical to the old volatile extern. There is no `vs8` typedef:
+write `*(volatile s8 *)&g`. Two shapes to know: a statement that is only
+a read (`*(vu8 *)&gUnk_0200215C[0];`) keeps a load the compiler would
+otherwise delete; casting every access to the once-volatile global
+reproduces the old build exactly, so start there and let `match.py` decide.
+
+**The 2026-09-27 sweep.** `volatile` was removed from every `extern` line
+in `src/` — 49 lines in 43 files, keyword and `vu16`/`vu32` typedef
+spellings, plus one `struct Track *volatile` pointer. Each object was
+rebuilt and every function in it re-matched (list them with
+`arm-none-eabi-nm build/src/FILE.o | awk '$2 == "T" {print $3}'`). Thirty-
+one functions matched without a cast. Twelve lost the memory-first order
+and got casts at their accesses to the once-volatile global:
+`ClearVBlankFlag`, `ReadKeys`, `RunRace`, `MainVBlankCallback`,
+`sub_080032AC`, `sub_08008394`, `sub_08339AF0`, `sub_08339B4C`,
+`sub_0833BF80`, `sub_0833C5B0`, `sub_0833C7F0`, `sub_08340504`. All 43
+printed `MATCH`, and `make check` printed `MATCH` with no `extern
+volatile` left in the tree.
 
 ## Open walls
 

@@ -27,7 +27,7 @@ extern u8 gUnk_0203E120[]; /* 0x0203E120 */
 extern u8 gUnk_020390F0; /* 0x020390F0 */
 extern u8 gUnk_020391F0; /* 0x020391F0 */
 extern s32 gUnk_0203DDF4; /* 0x0203DDF4 */
-extern volatile s32 gUnk_0203DD2C; /* 0x0203DD2C */
+extern s32 gUnk_0203DD2C; /* 0x0203DD2C */
 
 void sub_08342ED0(u8 a, u8 b);
 void sub_0833A8C8(u16 idx);

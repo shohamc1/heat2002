@@ -4,7 +4,7 @@
 extern u16 gUnk_02025258;
 extern u8 gUnk_02025248;
 extern u8 gUnk_0202539C;
-extern volatile u8 gUnk_020020C0;
+extern u8 gUnk_020020C0;
 
 
 u8 sub_08005024(void)

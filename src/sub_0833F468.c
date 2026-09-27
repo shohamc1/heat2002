@@ -51,7 +51,7 @@ struct Track {
     u8 pad15[3];
 };
 
-extern volatile u8 gUnk_020390EC;
+extern u8 gUnk_020390EC;
 extern u8 gUnk_020390CC;
 extern u8 gUnk_0203E120[];
 extern u8 gUnk_0203E1B0;

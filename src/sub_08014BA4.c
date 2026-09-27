@@ -3,7 +3,7 @@
 #include "gba/defines.h"
 #include "functions.h"
 extern u16 gKeysPressed;
-extern volatile u8 gUnk_020020C0;
+extern u8 gUnk_020020C0;
 
 u8 sub_08014BA4(void)
 {
