@@ -70,9 +70,9 @@ struct Pt2 {
     s32 f1;
 };
 
-extern u8 gNumCars;
+extern u8 gNumCars[];
 extern u8 gIsLinkRace;
-extern u8 gNumLinkPlayers;
+extern u8 gNumLinkPlayers[];
 extern struct Ent gCars[];
 extern s32 gUnk_0202CD24;
 extern s32 gUnk_0202CCB0[8];
@@ -111,9 +111,9 @@ u8 CollideCars(struct Ent *car)
     s32 ang, s, c, nx, nz, f;
     s32 sd;
 
-    count = gNumCars;
+    count = gNumCars[0];
     if (gIsLinkRace != 0)
-        count = gNumLinkPlayers;
+        count = gNumLinkPlayers[0];
     if (car->unk7D != 0 && gIsLinkRace != 0)
         return 0;
     if (car->pitState != 0) {

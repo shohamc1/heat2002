@@ -65,7 +65,7 @@ struct Car {
     u8 pad18E[0x190 - 0x18E];
 };
 
-extern u8 gUnk_0200215C;
+extern u8 gUnk_0200215C[];
 extern u8 gTrackId;
 extern u8 gIsLinkRace;
 extern u8 gUnk_020020A8;
@@ -73,7 +73,7 @@ extern u8 gIsDemo;
 extern u8 gUnk_020021E0;
 extern u8 gOptions[];
 extern u8 gUnk_0202EEB0;
-extern u8 gLinkPlayerId;
+extern u8 gLinkPlayerId[];
 extern u8 gUnk_020020BC;
 extern struct Car gCars[];
 extern u16 gUnk_08368290[];
@@ -108,7 +108,7 @@ void UpdateCarPhysics(struct Car *car, u32 b, u8 c)
     sub_08008480(car, c);
     v = 0;
     ComputeCarCorners(car);
-    if (gUnk_0200215C == 4 || gTrackId <= 0xB) {
+    if (gUnk_0200215C[0] == 4 || gTrackId <= 0xB) {
         if (car->pitState != 0)
             v = 0;
         else
@@ -120,11 +120,11 @@ void UpdateCarPhysics(struct Car *car, u32 b, u8 c)
     car->drag = t * t;
     if (t > 0)
         car->drag = -car->drag;
-    if (gIsLinkRace != 0 || gUnk_0200215C == 4 || gUnk_0200215C == 3) {
+    if (gIsLinkRace != 0 || gUnk_0200215C[0] == 4 || gUnk_0200215C[0] == 3) {
         car->drag = car->drag / 215;
-    } else if (car == gCars || gUnk_0200215C == 9 || gUnk_0200215C == 0xD
-        || gUnk_0200215C == 0xE || gUnk_0200215C == 0xF || gUnk_0200215C == 0x11
-        || gUnk_0200215C == 4) {
+    } else if (car == gCars || gUnk_0200215C[0] == 9 || gUnk_0200215C[0] == 0xD
+        || gUnk_0200215C[0] == 0xE || gUnk_0200215C[0] == 0xF || gUnk_0200215C[0] == 0x11
+        || gUnk_0200215C[0] == 4) {
         if (car->unk170 != 0)
             car->drag = car->drag / 250;
         else if (car->unk171 != 0)
@@ -134,11 +134,11 @@ void UpdateCarPhysics(struct Car *car, u32 b, u8 c)
     } else {
         car->drag = car->drag / gUnk_08368290[gTrackId];
     }
-    if (gUnk_020020A8 != 0 && (u8)(gUnk_0200215C - 3) > 1)
+    if (gUnk_020020A8 != 0 && (u8)(gUnk_0200215C[0] - 3) > 1)
         car->drag = 0;
     if (car == gCars || gIsLinkRace != 0) {
-        if (gUnk_0200215C != 9 && gUnk_0200215C != 0xD && gUnk_0200215C != 0xE
-            && gUnk_0200215C != 0xF && gUnk_0200215C != 0x11
+        if (gUnk_0200215C[0] != 9 && gUnk_0200215C[0] != 0xD && gUnk_0200215C[0] != 0xE
+            && gUnk_0200215C[0] != 0xF && gUnk_0200215C[0] != 0x11
             && (CheckDrafting(car) != 0 || car->draftTimer != 0)) {
             if (car->draftTimer != 0)
                 car->draftTimer--;
@@ -147,7 +147,7 @@ void UpdateCarPhysics(struct Car *car, u32 b, u8 c)
             sub_0800B618(c, 1);
         }
     }
-    if (gUnk_0200215C != 2)
+    if (gUnk_0200215C[0] != 2)
         CollideCars(car);
     car->unk18C = car->progress;
 again:
@@ -160,7 +160,7 @@ again:
     if (v != 0) {
         if (gIsDemo == 0 && gUnk_020021E0 == 0 && gOptions[3] != 0) {
             if (gIsLinkRace == 0 ? car == gCars
-                                    : car == gCars + gLinkPlayerId)
+                                    : car == gCars + gLinkPlayerId[0])
                 m4aSongNumStart(0x12);
         }
         if ((u8)(car->unk7C - 5) > 2 && gUnk_0202EEB0 != 0)

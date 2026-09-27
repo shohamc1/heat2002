@@ -9,12 +9,12 @@
  */
 #include "global.h"
 
-extern u8 gUnk_020390BC;
+extern u8 gUnk_020390BC[];
 extern u16 gUnk_0203E160[][4];
 extern u16 gUnk_02039188[];
 extern u16 gUnk_0203917C;
 extern u16 gUnk_02039180;
-extern u16 gUnk_0203DFB8;
+extern u16 gUnk_0203DFB8[];
 extern u16 gUnk_03007FF8;
 extern u8 gUnk_0203E1B0;
 extern u16 gUnk_020390B0[];
@@ -39,7 +39,7 @@ s32 sub_0833C874(void)
 
     keys = ~*(u16 *)0x04000130;
     keys = sub_0833C70C(keys);
-    for (i = 0; i < gUnk_020390BC; i++) {
+    for (i = 0; i < gUnk_020390BC[0]; i++) {
         gUnk_0203E160[i][0] = 0;
         gUnk_02039188[i] = 0;
     }
@@ -48,7 +48,7 @@ s32 sub_0833C874(void)
     retry = 0;
     do {
 top:
-        if (retry > gUnk_020390BC) {
+        if (retry > gUnk_020390BC[0]) {
             gUnk_0203917C = 0;
             gUnk_02039180 = 0;
             return 1;
@@ -62,10 +62,10 @@ timeout:
 
 send:
         if (phase == 0)
-            gUnk_0203DFB8 = (gUnk_02039180 << 11) | ((keys & 0x7F) | ((keys & 0xF) << 7)) | 0x8000;
+            gUnk_0203DFB8[0] = (gUnk_02039180 << 11) | ((keys & 0x7F) | ((keys & 0xF) << 7)) | 0x8000;
         else
-            gUnk_0203DFB8 = (gUnk_02039180 << 11) | ((keys & 0x7F) | ((keys & 0xF) << 7)) | 0x4000;
-        sub_083448B0(gUnk_0203DFB8);
+            gUnk_0203DFB8[0] = (gUnk_02039180 << 11) | ((keys & 0x7F) | ((keys & 0xF) << 7)) | 0x4000;
+        sub_083448B0(gUnk_0203DFB8[0]);
         for (;;) {
             if (gUnk_03007FF8 & 0x80) {
                 *(volatile u16 *)&gUnk_03007FF8 &= 0xFF7F;
@@ -78,11 +78,11 @@ send:
             for (i = 0; i <= 0x257; i++)
                 ;
         }
-        for (i = 0; i < gUnk_020390BC; i++)
+        for (i = 0; i < gUnk_020390BC[0]; i++)
             recv[i] = gUnk_0203E160[i][0];
         if (phase == 0) {
             n = 0;
-            for (i = phase; i < gUnk_020390BC; i++) {
+            for (i = phase; i < gUnk_020390BC[0]; i++) {
                 if ((recv[i] & 0xF) == ((recv[i] >> 7) & 0xF)
                     && recv[i] != 0xFFFF
                     && recv[i] != 0
@@ -91,14 +91,14 @@ send:
                     && sub_0833C858(recv[i] & 0x7F))
                     n++;
             }
-            if (n == gUnk_020390BC) {
+            if (n == gUnk_020390BC[0]) {
                 phase = 1;
-                for (i = 0; i < gUnk_020390BC; i++)
+                for (i = 0; i < gUnk_020390BC[0]; i++)
                     gUnk_02039188[i] = recv[i];
             }
         } else {
             n2 = 0;
-            for (i = 0; i < gUnk_020390BC; i++) {
+            for (i = 0; i < gUnk_020390BC[0]; i++) {
                 if ((recv[i] & 0xF) == ((recv[i] >> 7) & 0xF)
                     && recv[i] != 0xFFFF
                     && recv[i] != 0
@@ -111,8 +111,8 @@ send:
                     }
                 }
             }
-            if (n2 == gUnk_020390BC) {
-                for (i = 0; i < gUnk_020390BC; i++)
+            if (n2 == gUnk_020390BC[0]) {
+                for (i = 0; i < gUnk_020390BC[0]; i++)
                     gUnk_020390B0[i] = sub_0833C77C(recv[i] & 0x7F);
                 done = 1;
             }

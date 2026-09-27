@@ -21,8 +21,8 @@ struct Car {
     s32 unk154;
 };
 
-extern u8 gNumCars;
-extern u8 gUnk_0200215C;
+extern u8 gNumCars[];
+extern u8 gUnk_0200215C[];
 extern u8 gUnk_0202ED70;
 extern s32 gUnk_0202CC24;
 extern s32 gUnk_0202CC34;
@@ -70,7 +70,7 @@ void sub_0800BEA4(struct Car **arr, s32 a1, s32 a2, s32 a3, u8 a4)
         x += car->unk154;
     pp = arr;
     i = 0;
-    if (i != gNumCars) {
+    if (i != gNumCars[0]) {
         do {
             car = *pp;
             if (a4 != 0)
@@ -90,7 +90,7 @@ void sub_0800BEA4(struct Car **arr, s32 a1, s32 a2, s32 a3, u8 a4)
             /* Stored straight to the s16 field, the minus is done in
                HImode, which gives the ROM's constant copy (adds r1, r2, #0). */
             car->heading = -0x7C00 - (Atan2(da >> 5, db >> 5) << 8);
-            if (gUnk_0200215C == 0xF && i == 0 && gUnk_0202ED70 == 3)
+            if (gUnk_0200215C[0] == 0xF && i == 0 && gUnk_0202ED70 == 3)
                 x -= 500;
             /* Two copies, merged by cross-jumping after allocation. The two
                uses let loop.c hoist a3 * 3 / 2 and give it r10 ahead of
@@ -106,11 +106,11 @@ void sub_0800BEA4(struct Car **arr, s32 a1, s32 a2, s32 a3, u8 a4)
             }
             i++;
             pp++;
-        } while (i != gNumCars);
+        } while (i != gNumCars[0]);
     }
     for (k = 0; k != 0x32; k++) {
         pp = arr;
-        for (i = 0; i != gNumCars; i++) {
+        for (i = 0; i != gNumCars[0]; i++) {
             car = *pp++;
             UpdateAiDriver((struct Unk0800C534 *)car, (u8)i);
         }

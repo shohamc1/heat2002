@@ -1,7 +1,7 @@
 #include "global.h"
 #include "functions.h"
 
-extern u8 gUnk_0203B850;
+extern u8 gUnk_0203B850[];
 extern u16 gUnk_0203B6FC;
 extern u32 gUnk_02038F70[];
 extern u32 gUnk_02038FB0[];
@@ -28,7 +28,7 @@ u8 sub_0833DCB0(void)
     u32 done;
     u16 v;
 
-    gUnk_0203B850 = 0xFF;
+    gUnk_0203B850[0] = 0xFF;
     sub_0833DA34();
     if (gUnk_0203B6FC & 8) {
         sub_0833B074((struct MusicPlayerInfo *)gUnk_02038F70);

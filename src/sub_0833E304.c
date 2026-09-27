@@ -5,7 +5,7 @@ extern u8 gUnk_020391F0;
 extern s32 gUnk_0203B84C;
 extern s32 gUnk_0203B6CC;
 extern u8 gUnk_0203B6E8;
-extern u8 gUnk_0203916C;
+extern u8 gUnk_0203916C[];
 
 void sub_083429B4(void);
 
@@ -28,7 +28,7 @@ void sub_0833E304(void)
         return;
     gUnk_0203B6CC = v;
     gUnk_0203B84C = v;
-    if (gUnk_0203916C != 0)
+    if (gUnk_0203916C[0] != 0)
         return;
     sub_083429B4();
 }

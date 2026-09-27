@@ -74,19 +74,19 @@ struct Track {
 extern u8 gIsLinkRace;
 extern u8 gUnk_020020BC;
 extern u8 gOptions[];
-extern u8 gLinkPlayerId;
+extern u8 gLinkPlayerId[];
 extern u8 gNumLinkPlayers[];
 extern u8 gNumCars[];
 extern u8 gUnk_0202CAF0;
-extern u8 gUnk_0200215C;
+extern u8 gUnk_0200215C[];
 extern u32 gUnk_0202ED84;
 extern u8 gUnk_0202EEE4;
 extern u8 gUnk_0202ED70;
 extern struct Car gCars[];
 extern u8 gUnk_0202524C;
-extern u16 gUnk_02025218;
-extern u16 gUnk_020251FC;
-extern u16 gUnk_020253CC;
+extern u16 gUnk_02025218[];
+extern u16 gUnk_020251FC[];
+extern u16 gUnk_020253CC[];
 extern u8 gIsDemo;
 extern u8 gUnk_020021E0;
 extern u32 gUnk_0202CB40[];
@@ -118,7 +118,7 @@ u8 UpdateLapProgress(struct Car *p, u8 a1)
 
     v58 = 3 - gOptions[0];
     gUnk_020020BC = 0;
-    v6C = gIsLinkRace != 0 ? gLinkPlayerId : 0;
+    v6C = gIsLinkRace != 0 ? gLinkPlayerId[0] : 0;
     if (gIsLinkRace != 0)
         v68 = gNumLinkPlayers[0];
     else
@@ -173,7 +173,7 @@ u8 UpdateLapProgress(struct Car *p, u8 a1)
     if (p->subStep != 0x10)
         return 1;
     p->subStep = 0;
-    if (p == gCars && gUnk_0200215C == 0x10 && gUnk_0202ED70 == 9) {
+    if (p == gCars && gUnk_0200215C[0] == 0x10 && gUnk_0202ED70 == 9) {
         gUnk_0202CB40[p->waypoint] = -p->speed / 7000;
     }
     p->unk36 = p->heading;
@@ -187,11 +187,11 @@ u8 UpdateLapProgress(struct Car *p, u8 a1)
             u16 w;
             gUnk_0202524C = (w = -v);
         }
-        if (gUnk_0200215C == 0x0C) {
-            if ((time = gUnk_02025218 * 60000 + gUnk_020251FC * 1000 + gUnk_020253CC) < gUnk_0202ED84)
+        if (gUnk_0200215C[0] == 0x0C) {
+            if ((time = gUnk_02025218[0] * 60000 + gUnk_020251FC[0] * 1000 + gUnk_020253CC[0]) < gUnk_0202ED84)
                 gUnk_0202EEE4 = t;
         }
-        if (a1 == v6C && gUnk_0200215C != 0x0C && p->unk166 != 0) {
+        if (a1 == v6C && gUnk_0200215C[0] != 0x0C && p->unk166 != 0) {
             p->unk167 = 0x1E;
             p->unk168 = p->unk168 + 1;
         }
@@ -205,11 +205,11 @@ u8 UpdateLapProgress(struct Car *p, u8 a1)
         p->progress = ((s8)p->lap << 16) + p->waypoint * 16;
         if (a1 == v6C) {
             if (gUnk_0202F030 != 0 && p->unk18E != 0)
-                CheckTrackRecord(gUnk_02025218, gUnk_020251FC, gUnk_020253CC);
+                CheckTrackRecord(gUnk_02025218[0], gUnk_020251FC[0], gUnk_020253CC[0]);
         }
-        if (gUnk_0200215C == 0x10) {
+        if (gUnk_0200215C[0] == 0x10) {
             if (gUnk_0202ED70 == 1) {
-                if (gUnk_02025218 * 60000 + gUnk_020251FC * 1000 + gUnk_020253CC <= 0x7D00)
+                if (gUnk_02025218[0] * 60000 + gUnk_020251FC[0] * 1000 + gUnk_020253CC[0] <= 0x7D00)
                     gUnk_0202EEE4 = gUnk_0202ED70;
                 EndRace();
             }
@@ -245,13 +245,13 @@ u8 UpdateLapProgress(struct Car *p, u8 a1)
                 }
             }
             if (gUnk_0202ED70 == 7) {
-                if (gUnk_02025218 * 60000 + gUnk_020251FC * 1000 + gUnk_020253CC <= 0x68CE) {
+                if (gUnk_02025218[0] * 60000 + gUnk_020251FC[0] * 1000 + gUnk_020253CC[0] <= 0x68CE) {
                     gUnk_0202EEE4 = 1;
                     EndRace();
                 }
             }
             if (gUnk_0202ED70 == 8) {
-                if (gUnk_02025218 * 60000 + gUnk_020251FC * 1000 + gUnk_020253CC <= 0x6E87) {
+                if (gUnk_02025218[0] * 60000 + gUnk_020251FC[0] * 1000 + gUnk_020253CC[0] <= 0x6E87) {
                     gUnk_0202EEE4 = 1;
                     EndRace();
                 }
@@ -309,23 +309,23 @@ u8 UpdateLapProgress(struct Car *p, u8 a1)
             }
         }
         p->unk166 = 1;
-        if (p == gCars && gUnk_0200215C == 5 && p->unk18E != 0) {
-            if ((time = gUnk_02025218 * 60000 + gUnk_020251FC * 1000 + gUnk_020253CC) < p->unk16C)
-                p->unk16C = gUnk_02025218 * 60000 + gUnk_020251FC * 1000 + gUnk_020253CC;
+        if (p == gCars && gUnk_0200215C[0] == 5 && p->unk18E != 0) {
+            if ((time = gUnk_02025218[0] * 60000 + gUnk_020251FC[0] * 1000 + gUnk_020253CC[0]) < p->unk16C)
+                p->unk16C = gUnk_02025218[0] * 60000 + gUnk_020251FC[0] * 1000 + gUnk_020253CC[0];
         }
         if (*(s8 *)&p->lap == gNumLaps) {
-            if (gUnk_0200215C == 0 || gUnk_0200215C == 6 || gUnk_0200215C == 1)
+            if (gUnk_0200215C[0] == 0 || gUnk_0200215C[0] == 6 || gUnk_0200215C[0] == 1)
                 p->unk16C = gUnk_02025260 * 60000 + gUnk_02025220 * 1000 + gUnk_02025224;
             if (a1 == v6C && p->unk18E != 0)
-                sub_0800B3D4(gUnk_02025218, gUnk_020251FC, gUnk_020253CC);
-            if (gUnk_0200215C != 2) {
+                sub_0800B3D4(gUnk_02025218[0], gUnk_020251FC[0], gUnk_020253CC[0]);
+            if (gUnk_0200215C[0] != 2) {
                 RecordFinishTime((struct Unk0800A438 *)p);
                 gUnk_020253E0[gUnk_020253D4] = a1;
                 gUnk_020253D4 = gUnk_020253D4 + 1;
-                if ((u8)(gUnk_0200215C - 3) <= 1)
+                if ((u8)(gUnk_0200215C[0] - 3) <= 1)
                     p->unk16C = gUnk_02025260 * 60000 + gUnk_02025220 * 1000 + gUnk_02025224;
                 if (a1 == v6C) {
-                    s32 v2 = *(volatile u8 *)&gUnk_0200215C;
+                    s32 v2 = *(volatile u8 *)&gUnk_0200215C[0];
                     if (v2 == 0 || v2 == 6 || v2 == 1) {
                         /* sub_08016D28: the ROM call passes no argument; the matched definition takes one; call
                            through a function pointer with the old prototype. */
@@ -334,10 +334,10 @@ u8 UpdateLapProgress(struct Car *p, u8 a1)
                     }
                 }
                 if (gUnk_020253D4 == v68) {
-                    if (gUnk_0200215C != 0x10) {
-                        if (gUnk_0200215C != 0xF) {
-                            if (gUnk_0200215C != 2) {
-                                if (gUnk_0200215C != 0xE)
+                    if (gUnk_0200215C[0] != 0x10) {
+                        if (gUnk_0200215C[0] != 0xF) {
+                            if (gUnk_0200215C[0] != 2) {
+                                if (gUnk_0200215C[0] != 0xE)
                                     EndRace();
                             }
                         }
@@ -346,7 +346,7 @@ u8 UpdateLapProgress(struct Car *p, u8 a1)
             }
         } else {
             if (a1 == v6C && p->unk18E != 0)
-                sub_0800B3D4(gUnk_02025218, gUnk_020251FC, gUnk_020253CC);
+                sub_0800B3D4(gUnk_02025218[0], gUnk_020251FC[0], gUnk_020253CC[0]);
         }
         if (a1 == v6C)
             ResetLapTimer();
@@ -360,7 +360,7 @@ u8 UpdateLapProgress(struct Car *p, u8 a1)
                 sub_0800B540();
             if (gOptions[3] != 0 && gIsDemo == 0 && gUnk_020021E0 == 0)
                 m4aSongNumStart(0x33);
-            if (a1 == v6C && gUnk_0200215C != 0xA) {
+            if (a1 == v6C && gUnk_0200215C[0] != 0xA) {
                 s32 inner = v58 / 2 + 6;
                 sub_08005598((u8)(e->unk14 + inner));
             }

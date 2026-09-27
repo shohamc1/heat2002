@@ -7,7 +7,7 @@ void DummyIntr(void);
 void IntrMain(void);
 void VBlankIntr(void);
 
-extern u32 gUnk_02000580;
+extern u32 gUnk_02000580[];
 extern u32 gUnk_03007FFC;
 extern u32 gUnk_02000590[];
 
@@ -16,7 +16,7 @@ void ClearVBlankFlag(void);
 void InitIntrHandlers(void)
 {
     ClearVBlankFlag();
-    gUnk_02000580 = (u32)DummyIntr;
+    gUnk_02000580[0] = (u32)DummyIntr;
     DmaCopy16(3, (u32)IntrMain, 0x020005D0, 0x800);
     INTR_VECTOR = (void *)0x020005D0;
     REG_WAITCNT = WAITCNT_SRAM_4 | WAITCNT_WS0_N_3 | WAITCNT_WS0_S_1 | WAITCNT_PREFETCH_ENABLE;

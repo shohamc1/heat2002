@@ -24,7 +24,7 @@ extern u8 gUnk_0203DD38; /* 0x0203DD38 */
 extern u8 gUnk_020390EC; /* 0x020390EC */
 extern u8 gUnk_0203E1B0; /* 0x0203E1B0 */
 extern u8 gUnk_0203E120[]; /* 0x0203E120 */
-extern u8 gUnk_020390F0; /* 0x020390F0 */
+extern u8 gUnk_020390F0[]; /* 0x020390F0 */
 extern u8 gUnk_020391F0; /* 0x020391F0 */
 extern s32 gUnk_0203DDF4; /* 0x0203DDF4 */
 extern s32 gUnk_0203DD2C; /* 0x0203DD2C */
@@ -78,7 +78,7 @@ void sub_08340964(u8 which, struct Unk08340964 *obj)
             goto tail;
         }
 e2check:
-        if (gUnk_0203E120[3] != 0 && gUnk_020390F0 == 0 && gUnk_020391F0 == 0)
+        if (gUnk_0203E120[3] != 0 && gUnk_020390F0[0] == 0 && gUnk_020391F0 == 0)
             sub_0833A8C8(0xB);
     } else {
         if (gUnk_0203E0E0 != 0) {

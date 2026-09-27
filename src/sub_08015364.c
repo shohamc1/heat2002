@@ -20,7 +20,7 @@ struct UnkCar {
 };
 
 extern u8 gNumLaps;
-extern u8 gNumLinkPlayers;
+extern u8 gNumLinkPlayers[];
 extern u8 gUnk_020020C0;
 extern u8 gTrackId;
 extern u32 gUnk_020020D4;
@@ -41,7 +41,7 @@ extern u8 gUnk_0202CBDC;
 extern u8 gUnk_0202CDA8[];
 extern u8 gUnk_0202CD9C[];
 extern u8 gUnk_0202CDC0[];
-extern u16 gUnk_0202ED78;
+extern u16 gUnk_0202ED78[];
 extern u8 gUnk_0202ED70;
 extern u8 gUnk_0202EDD0;
 extern s32 gUnk_0202EDD4;
@@ -258,8 +258,8 @@ u32 MainMenuLoop(void)
     }
 
     if ((*(u8 *)REG_ADDR_SIOCNT & 0x30) == 0) {
-        gUnk_0202ED78 = (((*(u32 *)REG_ADDR_SIOCNT << 26) >> 30) + 1) << 12 | 1;
-        SioSendWord(gUnk_0202ED78);
+        *(u16 *)&gUnk_0202ED78 = (((*(u32 *)REG_ADDR_SIOCNT << 26) >> 30) + 1) << 12 | 1;
+        SioSendWord(*(u16 *)&gUnk_0202ED78);
     }
 
     if (gUnk_0202EDD4 == 3 && (keys & 9) != 0) {
@@ -274,7 +274,7 @@ u32 MainMenuLoop(void)
             if (result == 0)
                 goto state3_cleanup;
 
-            gNumLinkPlayers = gUnk_0202EEF4;
+            *(u8 *)&gNumLinkPlayers = gUnk_0202EEF4;
             gIsLinkRace = 1;
             gTrackId = 0;
 

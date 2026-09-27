@@ -13,10 +13,10 @@ struct Car {
 };
 
 extern struct Car gCars[];
-extern u8 gNumCars;
+extern u8 gNumCars[];
 extern u8 gIsLinkRace;
-extern u8 gUnk_0200215C;
-extern u8 gNumLinkPlayers;
+extern u8 gUnk_0200215C[];
+extern u8 gNumLinkPlayers[];
 extern u8 gUnk_0202A51C;
 extern u8 gTrackId;
 extern u8 gUnk_0202EEB0;
@@ -38,10 +38,10 @@ void UpdateAllCars(void)
 
     ReadKeys();
     p = gCars;
-    count = gNumCars;
-    if (gIsLinkRace != 0 || gUnk_0200215C == 4)
-        count = gNumLinkPlayers;
-    if (gUnk_0200215C == 2)
+    count = gNumCars[0];
+    if (gIsLinkRace != 0 || gUnk_0200215C[0] == 4)
+        count = gNumLinkPlayers[0];
+    if (gUnk_0200215C[0] == 2)
         count = 1;
     gUnk_0202A51C++;
     for (i = 0; i != count; i++) {

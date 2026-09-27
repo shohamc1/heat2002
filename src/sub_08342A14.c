@@ -2,7 +2,7 @@
 #include "functions.h"
 
 extern u8 gUnk_020392C4;
-extern u8 gUnk_0203916C;
+extern u8 gUnk_0203916C[];
 extern u8 gUnk_020390D4;
 
 
@@ -15,16 +15,16 @@ void sub_08342A14(u32 a)
         t = *(s32 *)(a + 0x18);
         if (t > 0x2D)
         {
-            if (gUnk_0203916C == 9)
-                gUnk_0203916C = 6;
-            if (gUnk_0203916C == 0xD)
-                gUnk_0203916C = 0xC;
-            if (gUnk_0203916C == 0xE)
-                gUnk_0203916C = 2;
-            if (gUnk_0203916C == 0xF)
-                gUnk_0203916C = 0x10;
-            if (gUnk_0203916C == 0x11)
-                gUnk_0203916C = 5;
+            if (gUnk_0203916C[0] == 9)
+                gUnk_0203916C[0] = 6;
+            if (gUnk_0203916C[0] == 0xD)
+                gUnk_0203916C[0] = 0xC;
+            if (gUnk_0203916C[0] == 0xE)
+                gUnk_0203916C[0] = 2;
+            if (gUnk_0203916C[0] == 0xF)
+                gUnk_0203916C[0] = 0x10;
+            if (gUnk_0203916C[0] == 0x11)
+                gUnk_0203916C[0] = 5;
             gUnk_020390D4 = 1;
         }
         *(s32 *)(a + 0x18) = t + 1;

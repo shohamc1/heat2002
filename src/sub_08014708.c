@@ -1,7 +1,7 @@
 #include "global.h"
 #include "functions.h"
 
-extern u32 gUnk_083FDE18;
+extern u32 gUnk_083FDE18[];
 extern u8 *gUnk_083FE9EC[];
 extern u8 gUnk_0202EF60[];
 extern u8 gUnk_0829F4EC[];
@@ -18,7 +18,7 @@ void sub_08014708(u8 a, u8 b)
 
     /* sub_08006734: this file's old local prototype differs from
        functions.h; call through the old signature (solved-walls 31). */
-    ((void (*)(u32))sub_08006734)(gUnk_083FDE18);
+    ((void (*)(u32))sub_08006734)(gUnk_083FDE18[0]);
     GetString(a + 0xAE);
     ((void (*)(void))sub_080065A8)();
     base = (u8)(a * 4);

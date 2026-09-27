@@ -9,7 +9,7 @@ extern u8 gUnk_0203E1C0[];
 extern u8 gUnk_0203E110;
 extern u16 gUnk_0203E160[];
 extern u8 gUnk_0203E1B0;
-extern u8 gUnk_020390BC;
+extern u8 gUnk_020390BC[];
 
 void sub_08344968(void);
 void sub_08344B74(void);
@@ -66,8 +66,8 @@ void sub_08344A20(void)
             }
         }
         gUnk_0203E1B0 = (*(vu32 *)REG_ADDR_SIOCNT << 26) >> 30;
-        gUnk_020390BC = gUnk_0203E110;
-        if (gUnk_020390BC <= 1)
+        *(u8 *)&gUnk_020390BC = gUnk_0203E110;
+        if (*(u8 *)&gUnk_020390BC <= 1)
             i--;
         gUnk_0203E160[0] = 0;
         gUnk_0203E160[4] = 0;

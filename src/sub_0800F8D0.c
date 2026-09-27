@@ -11,7 +11,7 @@ struct UnkCar {
     /* 0x170 */ u8 filler170[400 - 0x170];
 };
 
-extern u8 gNumCars;              /* 0x02002090 */
+extern u8 gNumCars[];              /* 0x02002090 */
 extern u8 gNumLaps;              /* 0x02002184 */
 extern struct UnkCar gCars[]; /* 0x0202A550 */
 extern u32 gUnk_0202CB40[];           /* 0x0202CB40 */
@@ -33,7 +33,7 @@ void SetupChallenge(u8 a, u8 *unused)
 
     switch (a) {
     case 0:
-        gNumCars = 1;
+        (*(u8 *)&gNumCars) = 1;
         gCars[0].driverId = 0;
         AssignRandomDrivers();
         gCars[0].unk16C = 0;
@@ -44,7 +44,7 @@ void SetupChallenge(u8 a, u8 *unused)
         gCarOrder = gCars;
         break;
     case 1:
-        gNumCars = 1;
+        (*(u8 *)&gNumCars) = 1;
         gCars[0].driverId = 0;
         AssignRandomDrivers();
         gCars[0].unk16C = 0;
@@ -55,7 +55,7 @@ void SetupChallenge(u8 a, u8 *unused)
         gCarOrder = gCars;
         break;
     case 2:
-        gNumCars = 24;
+        (*(u8 *)&gNumCars) = 24;
         gCars[0].driverId = 0;
         AssignRandomDrivers();
         for (i = 1; i != 24; i++) {
@@ -68,7 +68,7 @@ void SetupChallenge(u8 a, u8 *unused)
         gNumLaps = 10;
         break;
     case 3:
-        gNumCars = 24;
+        (*(u8 *)&gNumCars) = 24;
         gCars[0].driverId = 0;
         AssignRandomDrivers();
         gCars[0].unk16C = 0;
@@ -89,11 +89,11 @@ void SetupChallenge(u8 a, u8 *unused)
         sub_08016D28(0);
         SortCarsByTime();
         gNumLaps = 2;
-        gNumCars = 1;
+        (*(u8 *)&gNumCars) = 1;
         gCarOrder = gCars;
         break;
     case 5:
-        gNumCars = 24;
+        (*(u8 *)&gNumCars) = 24;
         gCars[0].driverId = 11;
         AssignRandomDrivers();
         for (i = 1; i != 24; i++) {
@@ -106,7 +106,7 @@ void SetupChallenge(u8 a, u8 *unused)
         gNumLaps = 10;
         break;
     case 6:
-        gNumCars = 24;
+        (*(u8 *)&gNumCars) = 24;
         gCars[0].driverId = 4;
         AssignRandomDrivers();
         for (i = 1; i != 15; i++) {
@@ -123,7 +123,7 @@ void SetupChallenge(u8 a, u8 *unused)
         gNumLaps = 50;
         break;
     case 7:
-        gNumCars = 1;
+        (*(u8 *)&gNumCars) = 1;
         gCars[0].driverId = 8;
         AssignRandomDrivers();
         for (i = 0; i != 24; i++)
@@ -136,7 +136,7 @@ void SetupChallenge(u8 a, u8 *unused)
         gCarOrder = gCars;
         break;
     case 8:
-        gNumCars = 1;
+        (*(u8 *)&gNumCars) = 1;
         gCars[0].driverId = 0;
         AssignRandomDrivers();
         for (i = 0; i != 24; i++)
@@ -149,7 +149,7 @@ void SetupChallenge(u8 a, u8 *unused)
         gCarOrder = gCars;
         break;
     case 9:
-        gNumCars = 1;
+        (*(u8 *)&gNumCars) = 1;
         gCars[0].driverId = 9;
         AssignRandomDrivers();
         for (i = 0; i != 24; i++)
@@ -165,7 +165,7 @@ void SetupChallenge(u8 a, u8 *unused)
             gUnk_0202CB40[i] = 0;
         break;
     case 10:
-        gNumCars = 24;
+        (*(u8 *)&gNumCars) = 24;
         gCars[0].driverId = 5;
         AssignRandomDrivers();
         for (i = 1; i != 24; i++) {
@@ -178,7 +178,7 @@ void SetupChallenge(u8 a, u8 *unused)
         gNumLaps = 25;
         break;
     case 11:
-        gNumCars = 24;
+        (*(u8 *)&gNumCars) = 24;
         gCars[0].driverId = 0;
         AssignRandomDrivers();
         for (i = 1; i != 24; i++) {
@@ -191,7 +191,7 @@ void SetupChallenge(u8 a, u8 *unused)
         gNumLaps = 20;
         break;
     case 12:
-        gNumCars = 6;
+        (*(u8 *)&gNumCars) = 6;
         gCars[0].driverId = 0;
         AssignRandomDrivers();
         for (i = 1; i != 4; i++) {
@@ -208,7 +208,7 @@ void SetupChallenge(u8 a, u8 *unused)
         gNumLaps = 100;
         break;
     case 13:
-        gNumCars = 24;
+        (*(u8 *)&gNumCars) = 24;
         for (i = 0; i != 24; i++)
             gCars[i].driverId = 99;
         gCars[0].driverId = 1;
@@ -229,7 +229,7 @@ void SetupChallenge(u8 a, u8 *unused)
         gNumLaps = 20;
         break;
     case 14:
-        gNumCars = 24;
+        (*(u8 *)&gNumCars) = 24;
         gCars[0].driverId = 1;
         AssignRandomDrivers();
         for (i = 1; i != 3; i++) {
@@ -246,7 +246,7 @@ void SetupChallenge(u8 a, u8 *unused)
         gNumLaps = 20;
         break;
     case 15:
-        gNumCars = 24;
+        (*(u8 *)&gNumCars) = 24;
         gCars[0].driverId = 4;
         AssignRandomDrivers();
         for (i = 1; i != 24; i++) {

@@ -61,9 +61,9 @@ struct Pt2 {
     s32 f1;
 };
 
-extern u8 gUnk_020390A0;
+extern u8 gUnk_020390A0[];
 extern u8 gUnk_020390EC;
-extern u8 gUnk_020390BC;
+extern u8 gUnk_020390BC[];
 extern struct Ent gUnk_0203D520[];
 extern s32 gUnk_0203DF44;
 extern s32 gUnk_0203DED0[8];
@@ -74,7 +74,7 @@ extern struct Pt2 gUnk_0202AF08[];
 extern u8 gUnk_0203E0E0;
 extern u8 gUnk_0203D4FC;
 extern u8 gUnk_020391F0;
-extern u8 gUnk_020390F0;
+extern u8 gUnk_020390F0[];
 extern u8 gUnk_0203E120[];
 
 void sub_08343DF8(struct Ent *a, s32 *d);
@@ -104,9 +104,9 @@ u8 sub_08343EA8(struct Ent *car)
     s32 ang, s, c, nx, nz, f;
     s32 sd;
 
-    count = gUnk_020390A0;
+    count = gUnk_020390A0[0];
     if (gUnk_020390EC != 0)
-        count = gUnk_020390BC;
+        count = gUnk_020390BC[0];
     if (car->unk7D != 0 && gUnk_020390EC != 0)
         return 0;
     if (car->unk175 != 0) {
@@ -289,7 +289,7 @@ u8 sub_08343EA8(struct Ent *car)
             b->unk48 = 0;
         b->unk40 = (b->unk48 << 8) / -b->unkE8[b->unk3E];
         if (a == gUnk_0203D520 || b == gUnk_0203D520 || gUnk_020390EC != 0) {
-            if (gUnk_020391F0 == 0 && gUnk_020390F0 == 0 && gUnk_0203E120[3] != 0
+            if (gUnk_020391F0 == 0 && gUnk_020390F0[0] == 0 && gUnk_0203E120[3] != 0
                 && (car == gUnk_0203D520 || gUnk_020390EC != 0)
                 && a->unk55 == 0 && b->unk55 == 0)
                 sub_0833A8C8(0x12);

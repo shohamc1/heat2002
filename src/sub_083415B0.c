@@ -1,8 +1,8 @@
 #include "global.h"
 
-extern u8 gUnk_020390A0;
+extern u8 gUnk_020390A0[];
 extern u8 gUnk_020390EC;
-extern u8 gUnk_020390BC;
+extern u8 gUnk_020390BC[];
 extern u8 gUnk_0203D520[];
 
 void sub_083415B0(u8 idx)
@@ -16,9 +16,9 @@ void sub_083415B0(u8 idx)
     u32 off;
     u32 j;
 
-    count = gUnk_020390A0;
+    count = gUnk_020390A0[0];
     if (gUnk_020390EC != 0)
-        count = gUnk_020390BC;
+        count = gUnk_020390BC[0];
     result = 0;
     p = gUnk_0203D520;
     off = idx * 400;

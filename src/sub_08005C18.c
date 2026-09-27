@@ -1,15 +1,15 @@
 #include "global.h"
 #include "functions.h"
-extern u8 gUnk_0200215C;
+extern u8 gUnk_0200215C[];
 extern u32 gUnk_08364B08[];
 extern u8 gUnk_0806C76C[];
 void DrawRacePosition(s32 arg)
 {
     u16 *q;
     u16 *p;
-    if (gUnk_0200215C == 0x0A || gUnk_0200215C == 0x02)
+    if (gUnk_0200215C[0] == 0x0A || gUnk_0200215C[0] == 0x02)
         return;
-    if (arg == 0x64 || gUnk_0200215C == 5) {
+    if (arg == 0x64 || gUnk_0200215C[0] == 5) {
         p = (u16 *)gUnk_08364B08[0];
         p[0x16] = 0xE047;
         p[0x17] = 0xE047;

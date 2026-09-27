@@ -6,7 +6,7 @@
 extern u8 gKeysHeld;
 extern u16 gKeysPressed;
 extern u16 gUnk_03007FF8;
-extern u16 gUnk_0202ED78;
+extern u16 gUnk_0202ED78[];
 struct UnkEFA0 {
     u8 unk0;
     u8 unk1;
@@ -16,7 +16,7 @@ struct UnkEFA0 {
 extern struct UnkEFA0 gUnk_0202EFA0[];
 extern u8 gUnk_0202EEF4;
 extern u16 gUnk_0202EF40[4][4];
-extern u8 gLinkPlayerId;
+extern u8 gLinkPlayerId[];
 extern u8 gUnk_0829F32C[];
 
 s32 sub_08012074(void)
@@ -39,7 +39,7 @@ s32 sub_08012074(void)
         } while ((INTR_CHECK & 0x80) == 0);
     }
     ReadKeys();
-    ed = &gUnk_0202ED78;
+    ed = &gUnk_0202ED78[0];
     t = ((((*(u32 *)REG_ADDR_SIOCNT << 26) >> 30) + 1) << 12) | 0x100;
     t |= gKeysHeld;
     z = 0;
@@ -80,7 +80,7 @@ s32 sub_08012074(void)
             count++;
         i++;
     } while (i < 4);
-    gLinkPlayerId = (*(u32 *)REG_ADDR_SIOCNT << 26) >> 30;
+    gLinkPlayerId[0] = (*(u32 *)REG_ADDR_SIOCNT << 26) >> 30;
     if ((*(u8 *)REG_ADDR_SIOCNT & 0x30) == 0) {
         if (gUnk_0202EEF4 > 1 && gUnk_0202EEF4 == count)
             DrawTextCenteredHighlight((u8 *)GetString(0xF), 0xF, 1);

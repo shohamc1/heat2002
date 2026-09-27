@@ -9,10 +9,10 @@ struct Car0833EAA4 {
 };
 
 extern u32 gUnk_020251B8[];
-extern u16 gUnk_0203B6C8;
-extern u16 gUnk_0203B6A8;
-extern u16 gUnk_0203B858;
-extern u8 gUnk_0203E1E0;
+extern u16 gUnk_0203B6C8[];
+extern u16 gUnk_0203B6A8[];
+extern u16 gUnk_0203B858[];
+extern u8 gUnk_0203E1E0[];
 extern u16 gUnk_0203B810[];
 extern u8 gUnk_020390DC;
 extern u16 gUnk_0203B6B0[];
@@ -40,9 +40,9 @@ void sub_0833EAA4(void)
     sub_0833E1F4();
     base = gUnk_020251B8[0];
     obj = base + 0x448;
-    sub_0833DDB8(obj, gUnk_0203B6C8, gUnk_0203B6A8, gUnk_0203B858);
+    sub_0833DDB8(obj, gUnk_0203B6C8[0], gUnk_0203B6A8[0], gUnk_0203B858[0]);
     obj = base + 0x488;
-    if (gUnk_0203E1E0 != 0)
+    if (gUnk_0203E1E0[0] != 0)
         sub_0833DDB8(obj, gUnk_0203B810[gUnk_020390DC], gUnk_0203B6B0[gUnk_020390DC], gUnk_0203B830[gUnk_020390DC]);
     if (gUnk_020390EC != 0)
         car = &gUnk_0203D520[gUnk_0203E1B0];

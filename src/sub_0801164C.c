@@ -1,7 +1,7 @@
 #include "global.h"
 #include "functions.h"
 
-extern u16 gUnk_020020A0;
+extern u16 gUnk_020020A0[];
 
 
 u8 sub_0801164C(void)
@@ -20,14 +20,14 @@ u8 sub_0801164C(void)
     sel = 0x40;
     do
     {
-        old = gUnk_020020A0;
+        old = gUnk_020020A0[0];
         if (ExchangeLinkInput() != 0)
         {
             sel = 5;
         }
         else
         {
-            keys = (gUnk_020020A0 ^ old) & gUnk_020020A0;
+            keys = (gUnk_020020A0[0] ^ old) & gUnk_020020A0[0];
             if (keys & 9)
                 sel = v;
             v = MenuMoveVertical(keys, v, 0, 3);

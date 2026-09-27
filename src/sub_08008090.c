@@ -1,7 +1,7 @@
 #include "global.h"
 
 extern u8 gUnk_0202CBE0;
-extern u8 gUnk_0202CBC0[3];
+extern u8 gUnk_0202CBC0[];
 extern u8 gUnk_0202CAD0;
 
 void sub_08008090(void)

@@ -3,9 +3,9 @@
 #include "functions.h"
 
 extern u16 gUnk_020020A0[];
-extern u8 gNumLinkPlayers;
+extern u8 gNumLinkPlayers[];
 extern u8 gUnk_020020C0;
-extern u8 gLinkPlayerId;
+extern u8 gLinkPlayerId[];
 extern u8 gUnk_082B8710[], gUnk_082E4328[], gUnk_0829F30C[];
 struct Car
 {
@@ -18,7 +18,7 @@ extern u8 gUnk_06016000[];
 
 /* MATCH. The ROM keeps &b[0] in r6 and recomputes &b[i] every iteration; the
    hard-register hint on p and the temps in the input loop select that
-   allocation. The final gNumLinkPlayers test is a volatile read so its value
+   allocation. The final gNumLinkPlayers[0] test is a volatile read so its value
    lands in r0 rather than being reused from r1. */
 s8 LinkDriverSelect(void)
 {
@@ -69,19 +69,19 @@ s8 LinkDriverSelect(void)
     WaitForVBlank();
     REG_DISPCNT = 0xAA << 5;
     sel = 0x40;
-    for (i = 0; i < gNumLinkPlayers; i++)
+    for (i = 0; i < gNumLinkPlayers[0]; i++)
         b[i] |= 0xFF;
     while (sel == 0x40) {
         ClearOamBuffer();
-        sub_08010E04(a[gLinkPlayerId]);
-        n = gNumLinkPlayers;
+        sub_08010E04(a[gLinkPlayerId[0]]);
+        n = gNumLinkPlayers[0];
         for (i = 0; i < n; i++)
             d[i] = gUnk_020020A0[i];
         if (ExchangeLinkInput() != 0) {
             sel = -1;
             break;
         }
-        for (i = 0; i < gNumLinkPlayers; i++) {
+        for (i = 0; i < gNumLinkPlayers[0]; i++) {
             c[i] = (gUnk_020020A0[i] ^ d[i]) & gUnk_020020A0[i];
             p = b;
             q = p + i;
@@ -112,14 +112,14 @@ s8 LinkDriverSelect(void)
             }
         }
         count = 0;
-        for (i = 0; i < gNumLinkPlayers; i++) {
+        for (i = 0; i < gNumLinkPlayers[0]; i++) {
             if ((s8)b[i] != -1)
                 count++;
         }
-        if ((s8)b[gLinkPlayerId] != -1) {
+        if ((s8)b[gLinkPlayerId[0]] != -1) {
             DrawTextCenteredHighlight((u8 *)(GetString(0x58)), 0x11, 1);
-            if (count == *(volatile u8 *)&gNumLinkPlayers) {
-                for (i = 0; i < gNumLinkPlayers; i++) {
+            if (count == *(volatile u8 *)&gNumLinkPlayers[0]) {
+                for (i = 0; i < gNumLinkPlayers[0]; i++) {
                     gCars[i].driverId = b[i];
                     sel = b[i];
                 }

@@ -1,6 +1,6 @@
 #include "global.h"
 
-extern u8 gNumLinkPlayers;
+extern u8 gNumLinkPlayers[];
 extern u16 gUnk_02025258;
 extern u16 gUnk_020253BC;
 extern u16 gUnk_020020A0[];
@@ -17,7 +17,7 @@ u16 sub_08004E58(void)
 
     keys = 0;
     i = 0;
-    count = gNumLinkPlayers;
+    count = gNumLinkPlayers[0];
     newp = &gUnk_02025258;
     oldp = &gUnk_020253BC;
     if (keys != count) {

@@ -5,11 +5,11 @@
 #include "functions.h"
 #include "m4a.h"
 
-extern u16 gUnk_020020A0;
+extern u16 gUnk_020020A0[];
 extern u8 gUnk_020020C0;
 extern u16 gUnk_0202EF40[];
 extern s8 gUnk_0202EF8C;
-extern u8 gLinkPlayerId;
+extern u8 gLinkPlayerId[];
 extern u8 gUnk_083FDE78[];
 
 u8 LinkTrackSelect(void)
@@ -46,12 +46,12 @@ u8 LinkTrackSelect(void)
     do {
         ClearOamBuffer();
         AgeGfxCaches();
-        k = gUnk_020020A0;
+        k = gUnk_020020A0[0];
         if (ExchangeLinkInput() != 0) {
             sel = 3;
             continue;
         }
-        k = (k ^ gUnk_020020A0) & gUnk_020020A0;
+        k = (k ^ gUnk_020020A0[0]) & gUnk_020020A0[0];
         if (k & DPAD_RIGHT) {
             gUnk_0202EF8C++;
             if (gUnk_0202EF8C == 7)
@@ -71,7 +71,7 @@ u8 LinkTrackSelect(void)
             prev = gUnk_0202EF8C;
         }
         WaitForVBlank();
-        if (gLinkPlayerId == 0)
+        if (gLinkPlayerId[0] == 0)
 /* old prototype u8 DrawTrackSelect(s8, u8): the s8 parameter keeps the
              sign-extending ldrsb of gUnk_0202EF8C */
             ((u8 (*)(s8, u8))DrawTrackSelect)((s8)gUnk_0202EF8C, 1);

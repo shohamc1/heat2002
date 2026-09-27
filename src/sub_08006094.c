@@ -15,13 +15,13 @@ struct UnkCar6094 {
 };
 
 extern u8 gIsLinkRace;
-extern u8 gLinkPlayerId;
+extern u8 gLinkPlayerId[];
 extern struct UnkCar6094 gCars[];
 extern u32 gUnk_08364B08[];
-extern u16 gUnk_02025218;
-extern u16 gUnk_020251FC;
-extern u16 gUnk_020253CC;
-extern u8 gUnk_0200215C;
+extern u16 gUnk_02025218[];
+extern u16 gUnk_020251FC[];
+extern u16 gUnk_020253CC[];
+extern u8 gUnk_0200215C[];
 extern u8 gUnk_0202F030;
 extern u16 gUnk_02025380[];
 extern u8 gTrackId;
@@ -47,13 +47,13 @@ void UpdateRaceHud(void)
     s32 v;
 
     if (gIsLinkRace != 0)
-        car = &gCars[gLinkPlayerId];
+        car = &gCars[gLinkPlayerId[0]];
     else
         car = &gCars[0];
     UpdateRaceTimers();
     dest = (u16 *)(gUnk_08364B08[0] + 0x4C6);
-    DrawTime(dest, gUnk_02025218, gUnk_020251FC, gUnk_020253CC);
-    if (gUnk_0200215C == 0x0E || gUnk_0200215C == 0x02) {
+    DrawTime(dest, gUnk_02025218[0], gUnk_020251FC[0], gUnk_020253CC[0]);
+    if (gUnk_0200215C[0] == 0x0E || gUnk_0200215C[0] == 0x02) {
         dest = (u16 *)(gUnk_08364B08[0] + 0x486);
         if (gUnk_0202F030 != 0)
             DrawTime(dest,
@@ -66,9 +66,9 @@ void UpdateRaceHud(void)
     if (v < 0)
         v = 0;
     sub_08005A2C(v);
-    if (gUnk_0200215C != 2 && gUnk_0200215C != 0x0E) {
+    if (gUnk_0200215C[0] != 2 && gUnk_0200215C[0] != 0x0E) {
         DrawRacePosition(car->racePosition + 1);
-        if (car->unk18E != 0 || (u8)(gUnk_0200215C - 3) <= 1)
+        if (car->unk18E != 0 || (u8)(gUnk_0200215C[0] - 3) <= 1)
             DrawLapCounter(car->lap + 1, gNumLaps);
         else
             DrawLapCounter(999, gNumLaps);

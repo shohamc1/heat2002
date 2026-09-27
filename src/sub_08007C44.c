@@ -18,10 +18,10 @@ struct Car {
     u8 pad184[0x190 - 0x184];
 };
 
-extern u8 gUnk_0200215C;
+extern u8 gUnk_0200215C[];
 extern u8 gTrackId;
 extern u8 gIsLinkRace;
-extern u8 gLinkPlayerId;
+extern u8 gLinkPlayerId[];
 extern u8 gUnk_0202ED70;
 extern u8 gOptions[];
 extern u8 gIsDemo;
@@ -49,13 +49,13 @@ void sub_08007C44(struct Car *car)
     car->unk173 = car->unk171;
     car->unk171 = 0;
     car->unk172 = 0;
-    if (gUnk_0200215C == 4)
+    if (gUnk_0200215C[0] == 4)
         return;
     if (gTrackId == 7)
         return;
     p = 0;
     if (gIsLinkRace != 0)
-        p = gLinkPlayerId;
+        p = gLinkPlayerId[0];
     a = car->posX;
     b = car->posZ;
     cx = a >> 19;
@@ -87,7 +87,7 @@ void sub_08007C44(struct Car *car)
             EnterPit((u8 *)car, 0);
     }
     f2 = 0;
-    if ((u8)(gUnk_0200215C - 0xF) <= 1 && gUnk_0202ED70 == 0xC)
+    if ((u8)(gUnk_0200215C[0] - 0xF) <= 1 && gUnk_0202ED70 == 0xC)
         f2 = 1;
     if (car == &gCars[p]) {
         if (car->unk171 != 0 && car->unk173 == 0 && f2 == 0 && gOptions[3] != 0
@@ -106,6 +106,6 @@ void sub_08007C44(struct Car *car)
             sub_080019B4((struct MusicPlayerInfo *)((s32)gUnk_02001FE0));
         }
     }
-    if (gUnk_0200215C == 0x10 && gUnk_0202ED70 == 0xC)
+    if (gUnk_0200215C[0] == 0x10 && gUnk_0202ED70 == 0xC)
         car->unk171 = 0;
 }

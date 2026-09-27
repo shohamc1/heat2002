@@ -14,7 +14,7 @@ struct Ent1F08 {
 };
 
 extern struct Ent1F08 gUnk_0203D520[];
-extern u8 gUnk_0203916C;
+extern u8 gUnk_0203916C[];
 extern s32 gUnk_0203B6CC;
 
 void sub_08341F04(struct Ent1F08 *p);
@@ -27,7 +27,7 @@ void sub_08341F08(struct Ent1F08 *p)
     p->unk160 = 0;
     p->unkA2 = 0;
     sub_08341F04(p);
-    if (p == gUnk_0203D520 && gUnk_0203916C == 0)
+    if (p == gUnk_0203D520 && gUnk_0203916C[0] == 0)
     {
         gUnk_0203B6CC += 5;
         if (gUnk_0203B6CC > 0x63)

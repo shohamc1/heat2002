@@ -88,7 +88,7 @@ struct Ent {
     u8 f18E;
 };
 
-extern u8 gUnk_0200215C;
+extern u8 gUnk_0200215C[];
 extern u8 gIsLinkRace;
 extern u8 gUnk_0202CAD0;
 extern u8 gUnk_0202A51C;
@@ -110,7 +110,7 @@ void InitCar(u8 a, struct Ent *car, s32 b, s32 c, u32 d)
 {
     u8 i;
 
-    if (gUnk_0200215C == 4)
+    if (gUnk_0200215C[0] == 4)
         car->driverId = 0;
     car->f18E = 0;
     car->pitState = 0;
@@ -132,7 +132,7 @@ void InitCar(u8 a, struct Ent *car, s32 b, s32 c, u32 d)
     car->f55 = 0;
     car->waypoint = 0;
     car->f174 = 0;
-    if (gUnk_0200215C == 4) {
+    if (gUnk_0200215C[0] == 4) {
         car->f58 = gUnk_08367730[a * 3];
     } else {
         car->f58 = gUnk_08367730[car->driverId];
@@ -147,11 +147,11 @@ void InitCar(u8 a, struct Ent *car, s32 b, s32 c, u32 d)
     car->tireWear2 = 0;
     car->tireWear3 = 0;
     car->fuel = 0xB400;
-    if (gUnk_0200215C == 0xF && gUnk_0202ED70 == 3 && car == gCars)
+    if (gUnk_0200215C[0] == 0xF && gUnk_0202ED70 == 3 && car == gCars)
         car->fuel = 0x5000;
-    if (gUnk_0200215C != 4)
+    if (gUnk_0200215C[0] != 4)
         sub_0800C0E8((u32)car, a);
-    if (gUnk_0200215C != 5 && gUnk_0200215C != 0x11)
+    if (gUnk_0200215C[0] != 5 && gUnk_0200215C[0] != 0x11)
         car->f16C = 0;
     car->f170 = 0;
     car->f171 = 0;
@@ -169,7 +169,7 @@ void InitCar(u8 a, struct Ent *car, s32 b, s32 c, u32 d)
     /* One store per arm: jump2 merges the stores into one strb behind a new
        label, and jumps to a label created in that pass never cross-jump,
        so the equal-valued arms stay separate as in the ROM. */
-    if (gUnk_0200215C == 0xF) {
+    if (gUnk_0200215C[0] == 0xF) {
         switch (gUnk_0202ED70) {
         case 0:
             car->lap = 1;
@@ -211,7 +211,7 @@ void InitCar(u8 a, struct Ent *car, s32 b, s32 c, u32 d)
     } else {
         car->lap = 0;
     }
-    if ((u8)(gUnk_0200215C - 3) > 1)
+    if ((u8)(gUnk_0200215C[0] - 3) > 1)
         car->lap--;
     car->progress = 0;
     car->f15C = 0x12C;
@@ -227,7 +227,7 @@ void InitCar(u8 a, struct Ent *car, s32 b, s32 c, u32 d)
     car->fE4 = gUnk_08367FBC[car->driverId];
     car->fE8 = gUnk_08368034[car->driverId];
     car->fEC = gUnk_083680AC[car->driverId];
-    if (gIsLinkRace == 0 && a != 0 && gUnk_0200215C != 2) {
+    if (gIsLinkRace == 0 && a != 0 && gUnk_0200215C[0] != 2) {
         car->fE4 = (s32)gUnk_08367BFA;
         car->fE8 = (s32)gUnk_08367C06;
         car->fEC = (s32)gUnk_08367C10;

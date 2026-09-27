@@ -9,8 +9,8 @@ extern u8 gUnk_0202EDD0;
 extern u8 gUnk_0202EFA0[];
 extern u8 gUnk_0202EEF4;
 extern u16 gUnk_0202EF40[];
-extern u8 gLinkPlayerId;
-extern u8 gNumLinkPlayers;
+extern u8 gLinkPlayerId[];
+extern u8 gNumLinkPlayers[];
 
 
 void DetectLinkPlayers(void)
@@ -62,9 +62,9 @@ void DetectLinkPlayers(void)
                 }
             }
         }
-        gLinkPlayerId = (*(vu32 *)REG_ADDR_SIOCNT << 26) >> 30;
-        gNumLinkPlayers = gUnk_0202EEF4;
-        if (gNumLinkPlayers <= 1)
+        *(u8 *)&gLinkPlayerId = (*(vu32 *)REG_ADDR_SIOCNT << 26) >> 30;
+        *(u8 *)&gNumLinkPlayers = gUnk_0202EEF4;
+        if (*(u8 *)&gNumLinkPlayers <= 1)
             i--;
         gUnk_0202EF40[0] = 0;
         gUnk_0202EF40[4] = 0;

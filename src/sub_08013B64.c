@@ -2,7 +2,7 @@
 #include "data.h"
 #include "functions.h"
 
-extern u32 gUnk_083FDE18;
+extern u32 gUnk_083FDE18[];
 extern u32 gCarOrder[];
 extern u32 gUnk_0202F020[];
 extern u8 gCars[];
@@ -21,7 +21,7 @@ void sub_08013B64(u8 a)
     off = a * 15;
     /* sub_08006734: this file's old local prototype differs from
        functions.h; call through the old signature (solved-walls 31). */
-    ((void (*)(u32))sub_08006734)(gUnk_083FDE18);
+    ((void (*)(u32))sub_08006734)(gUnk_083FDE18[0]);
     GetString(0x31);
     ((void (*)(void))sub_080065A8)();
     walk = (u32 *)((u8 *)gCarOrder + off * 4);

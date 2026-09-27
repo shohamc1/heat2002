@@ -1039,6 +1039,17 @@ pairs), `LinkTrackSelect` (the `ldrsb` of an `s8` parameter),
 narrowing restored as `(u8)` argument casts), `RunRace` (an `s8` return
 cast).
 
+**Variant:** phase 2's scalar-to-array rewrite (a `gX` extern became
+`gX[]`, every use became `gX[0]`) rotated registers in four of the 108
+files it touched, with the bytes otherwise identical: `SetupChallenge`
+(r5/r6 around sixteen `gNumCars[0] = C` stores), `MainMenuLoop`, and the
+twins `DetectLinkPlayers`/`sub_08344A20` (a `movs r2, #0` for a later
+store group hoisted above the block). `arr[0]` and the scalar end up as
+the same `MEM` of a `SYMBOL_REF`, but the `ARRAY_REF` expansion path
+changes local-alloc's pseudo priorities (entry 12). Spelling the access
+as a pointer deref — `*(u8 *)&gNumLinkPlayers = v;` — reproduces the
+scalar's expansion and matched all four.
+
 ### 32. A memory load the target puts before a constant
 
 You removed `volatile` from an `extern` (or moved the declaration to a

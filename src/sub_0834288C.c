@@ -3,7 +3,7 @@
 
 extern u8 gUnk_020392C4;
 extern u8 gUnk_020390EC;
-extern u8 gUnk_0203916C;
+extern u8 gUnk_0203916C[];
 extern u8 gUnk_020391F0;
 
 
@@ -19,7 +19,7 @@ void sub_0834288C(u32 a)
         {
             sub_0833FFA8(a);
             sub_0833FF84(a);
-            if (gUnk_0203916C != 4)
+            if (gUnk_0203916C[0] != 4)
             {
                 sub_0833D288(0xA, 0);
                 sub_08339B18();

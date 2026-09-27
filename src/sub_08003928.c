@@ -15,7 +15,7 @@ extern u32 gUnk_0200BC30;
 extern u32 gUnk_02022DD8;
 extern u32 gUnk_02022DF0;
 extern u32 gUnk_0201567C;
-extern u32 gUnk_02022DEC;
+extern u32 gUnk_02022DEC[];
 extern u32 gUnk_02002200[];
 extern u16 gUnk_02022DE4;
 extern u16 gUnk_0200BC34;
@@ -85,7 +85,7 @@ void LoadTrack(u32 idx)
     gUnk_0201567C = gUnk_08364B0C[idx].unk40;
     gUnk_0200BC50 = gUnk_02015690;
     RleDecode16(gUnk_08364B0C[idx].unk44, gUnk_02015690, gUnk_08364B0C[idx].unk60);
-    gUnk_02022DEC = gUnk_08364B0C[idx].unk48;
+    gUnk_02022DEC[0] = gUnk_08364B0C[idx].unk48;
     if (idx == 0)
         gUnk_02002200[0] = 0x7D;
     if (idx == 1)

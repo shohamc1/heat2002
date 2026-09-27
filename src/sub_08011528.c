@@ -2,8 +2,8 @@
 #include "functions.h"
 
 extern u16 gUnk_0202EF40[];
-extern u16 gUnk_020020A0;
-extern u8 gLinkPlayerId;
+extern u16 gUnk_020020A0[];
+extern u8 gLinkPlayerId[];
 
 
 u8 sub_08011528(void)
@@ -26,16 +26,16 @@ u8 sub_08011528(void)
     sel = 0x40;
     do
     {
-        keys = gUnk_020020A0;
+        keys = gUnk_020020A0[0];
         if (ExchangeLinkInput() != 0)
         {
             sel = 5;
         }
         else
         {
-            keys = (keys ^ gUnk_020020A0) & gUnk_020020A0;
+            keys = (keys ^ gUnk_020020A0[0]) & gUnk_020020A0[0];
             sub_0801137C();
-            if (gLinkPlayerId != 0)
+            if (gLinkPlayerId[0] != 0)
                 DrawTextCenteredHighlight((u8 *)(GetString(0x58)), 0x0E, 1);
             else
                 DrawTextCenteredHighlight((u8 *)(GetString(0x0F)), 0x0E, 1);

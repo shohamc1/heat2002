@@ -14,7 +14,7 @@ struct EntA478 {
 };
 
 extern struct EntA478 gCars[];
-extern u8 gUnk_0200215C;
+extern u8 gUnk_0200215C[];
 extern s32 gUnk_0202521C;
 
 void sub_0800A474(struct EntA478 *p);
@@ -27,7 +27,7 @@ void sub_0800A478(struct EntA478 *p)
     p->unk160 = 0;
     p->unkA2 = 0;
     sub_0800A474(p);
-    if (p == gCars && gUnk_0200215C == 0)
+    if (p == gCars && gUnk_0200215C[0] == 0)
     {
         gUnk_0202521C += 5;
         if (gUnk_0202521C > 0x63)

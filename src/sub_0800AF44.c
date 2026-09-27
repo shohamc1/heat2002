@@ -9,7 +9,7 @@ struct EntityAF44 {
 
 extern u8 gUnk_02022E14;           /* 0x02022E14 */
 extern u8 gIsLinkRace;  /* 0x020020DC */
-extern u8 gUnk_0200215C;           /* 0x0200215C */
+extern u8 gUnk_0200215C[];           /* 0x0200215C */
 extern u8 gUnk_02002098;           /* 0x02002098 */
 extern u8 gUnk_020021E0;           /* 0x020021E0 */
 
@@ -20,7 +20,7 @@ void RaceEndTask(struct EntityAF44 *e)
     {
         if (gIsLinkRace == 0)
         {
-            if (gUnk_0200215C == 0x0A || gUnk_0200215C == 0x0B)
+            if (gUnk_0200215C[0] == 0x0A || gUnk_0200215C[0] == 0x0B)
             {
                 if (gUnk_02002098 != 0)
                     /* sub_0800649C: the ROM callers pass a fourth argument the matched definition drops; call
@@ -37,7 +37,7 @@ void RaceEndTask(struct EntityAF44 *e)
         {
             RemoveTask((u32)e);
             FreeTask((u32)e);
-            if (gUnk_0200215C != 4)
+            if (gUnk_0200215C[0] != 4)
             {
                 BeginFadeToColor(0x0A, 0);
                 WaitForVBlank();

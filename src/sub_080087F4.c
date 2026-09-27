@@ -23,7 +23,7 @@ extern u8 gUnk_0202EEB0; /* 0x0202EEB0 */
 extern s32 gUnk_0202A518; /* 0x0202A518 */
 extern u8 gUnk_0202CB18; /* 0x0202CB18 */
 extern u8 gIsLinkRace; /* 0x020020DC */
-extern u8 gLinkPlayerId; /* 0x0202EF90 */
+extern u8 gLinkPlayerId[]; /* 0x0202EF90 */
 extern u8 gOptions[]; /* 0x0202EF00 */
 extern u8 gIsDemo; /* 0x020020E0 */
 extern u8 gUnk_020021E0; /* 0x020021E0 */
@@ -62,7 +62,7 @@ void sub_080087F4(u8 which, struct Unk080087F4 *obj)
                     goto e2check;
                 goto tail;
             }
-            if (gUnk_0202CB18 != gLinkPlayerId)
+            if (gUnk_0202CB18 != gLinkPlayerId[0])
                 goto tail;
         } else if (dist > gUnk_0202A518) {
             dist = gUnk_0202A518 / 2;
@@ -72,7 +72,7 @@ void sub_080087F4(u8 which, struct Unk080087F4 *obj)
                     goto e2check;
                 goto tail;
             }
-            if (gUnk_0202CB18 != gLinkPlayerId)
+            if (gUnk_0202CB18 != gLinkPlayerId[0])
                 goto tail;
         } else {
             goto tail;

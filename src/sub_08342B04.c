@@ -2,7 +2,7 @@
 
 extern u8 gUnk_020390D4;
 extern u8 gUnk_020391F0;
-extern u8 gUnk_0203916C;
+extern u8 gUnk_0203916C[];
 extern u32 gUnk_0203DE24;
 
 void *sub_0833FF44(void);
@@ -16,7 +16,7 @@ void sub_08342B04(void)
 
     gUnk_020390D4 = 0;
     gUnk_020391F0 = 0;
-    t = gUnk_0203916C - 3;
+    t = gUnk_0203916C[0] - 3;
     if (t <= 1)
     {
         p = (u32)sub_0833FF44();

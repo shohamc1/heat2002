@@ -1,6 +1,6 @@
 #include "global.h"
 
-extern u8 gNumLinkPlayers;
+extern u8 gNumLinkPlayers[];
 extern u32 gCarOrder[];
 extern u8 gCars[][0x190];
 
@@ -13,7 +13,7 @@ void SortLinkCarsByTime(void)
     register u32 *base asm("r9");
 
     i = 0;
-    countTemp = &gNumLinkPlayers;
+    countTemp = &gNumLinkPlayers[0];
     count = countTemp;
     base = gCarOrder;
     {

@@ -5,7 +5,7 @@ extern u8 gUnk_020253C4;
 extern u16 gUnk_02025258;
 extern u8 gUnk_020020C0;
 extern u16 gUnk_02002124;
-extern u8 gLinkPlayerId;
+extern u8 gLinkPlayerId[];
 extern s32 gUnk_0200209C;
 
 void sub_080017D0(void);
@@ -32,7 +32,7 @@ u8 sub_08005280(void)
                     sub_080017D0();
                     done = 0;
                     do {
-                        v = gLinkPlayerId;
+                        v = gLinkPlayerId[0];
                         if (v == 0)
                             return 0x27;
                         /* VBlankIntrWait: this file's old local prototype differs from

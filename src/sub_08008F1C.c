@@ -15,7 +15,7 @@ struct Car {
     u8 pad36[0x190 - 0x36];
 };
 
-extern u8 gUnk_0200215C;
+extern u8 gUnk_0200215C[];
 extern u8 gUnk_0202CAF0;
 extern u8 gUnk_0202EED0;
 extern struct Car *gCarOrder[];
@@ -59,7 +59,7 @@ void InitRaceCars(u32 a1)
     gUnk_0202CAF0 = 0;
     eed0 = gUnk_0202EED0;
     sub_08008D70();
-    if (gUnk_0200215C == 0) {
+    if (gUnk_0200215C[0] == 0) {
         pp = gCarOrder;
         p = gUnk_0202A3F0;
         i = 0;
@@ -81,8 +81,8 @@ void InitRaceCars(u32 a1)
             i++;
         } while (i != 0x18);
     }
-    if (gUnk_0200215C == 0x0E || gUnk_0200215C == 0x09 || gUnk_0200215C == 0x0D
-        || gUnk_0200215C == 0x11) {
+    if (gUnk_0200215C[0] == 0x0E || gUnk_0200215C[0] == 0x09 || gUnk_0200215C[0] == 0x0D
+        || gUnk_0200215C[0] == 0x11) {
         car = gCarOrder[0];
         d = *(u16 *)gUnk_083C9E74[gTrackId * 12 + 5] * gUnk_083681B0[gTrackId] / 100;
         sub_0800BD98(d, out, (u16 *)gUnk_083C9574[gTrackId * 12 + 5],
@@ -100,7 +100,7 @@ void InitRaceCars(u32 a1)
         else
             sub_0800BEA4(gCarOrder, garbage, car->unk04, 0x64, 1);
     }
-    if (gUnk_0200215C == 0x0F) {
+    if (gUnk_0200215C[0] == 0x0F) {
         car = gCarOrder[0];
         d = *(u16 *)gUnk_083C9E74[gTrackId * 12 + 5] * gUnk_08368170[gUnk_0202ED70] / 100;
         sub_0800BD98(d, out, (u16 *)gUnk_083C9574[gTrackId * 12 + 5],

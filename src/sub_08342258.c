@@ -69,11 +69,11 @@ struct Car {
     u8 pad18E[0x190 - 0x18E];
 };
 
-extern u8 gUnk_0203916C;
+extern u8 gUnk_0203916C[];
 extern u8 gUnk_020390DC;
 extern u8 gUnk_020390EC;
 extern u8 gUnk_020390B8;
-extern u8 gUnk_020390F0;
+extern u8 gUnk_020390F0[];
 extern u8 gUnk_020391F0;
 extern u8 gUnk_0203E120[];
 extern u8 gUnk_0203E0E0;
@@ -113,7 +113,7 @@ void sub_08342258(struct Car *car, u32 b, u8 c)
     sub_083405F0(car, c);
     v = 0;
     sub_08341DA0(car);
-    if (gUnk_0203916C == 4 || gUnk_020390DC <= 0xB) {
+    if (gUnk_0203916C[0] == 4 || gUnk_020390DC <= 0xB) {
         if (car->unk175 != 0)
             v = 0;
         else
@@ -125,11 +125,11 @@ void sub_08342258(struct Car *car, u32 b, u8 c)
     car->unk14C = t * t;
     if (t > 0)
         car->unk14C = -car->unk14C;
-    if (gUnk_020390EC != 0 || gUnk_0203916C == 4 || gUnk_0203916C == 3) {
+    if (gUnk_020390EC != 0 || gUnk_0203916C[0] == 4 || gUnk_0203916C[0] == 3) {
         car->unk14C = car->unk14C / 215;
-    } else if (car == gUnk_0203D520 || gUnk_0203916C == 9 || gUnk_0203916C == 0xD
-        || gUnk_0203916C == 0xE || gUnk_0203916C == 0xF || gUnk_0203916C == 0x11
-        || gUnk_0203916C == 4) {
+    } else if (car == gUnk_0203D520 || gUnk_0203916C[0] == 9 || gUnk_0203916C[0] == 0xD
+        || gUnk_0203916C[0] == 0xE || gUnk_0203916C[0] == 0xF || gUnk_0203916C[0] == 0x11
+        || gUnk_0203916C[0] == 4) {
         if (car->unk170 != 0)
             car->unk14C = car->unk14C / 250;
         else if (car->unk171 != 0)
@@ -139,11 +139,11 @@ void sub_08342258(struct Car *car, u32 b, u8 c)
     } else {
         car->unk14C = car->unk14C / gUnk_020277D4[gUnk_020390DC];
     }
-    if (gUnk_020390B8 != 0 && (u8)(gUnk_0203916C - 3) > 1)
+    if (gUnk_020390B8 != 0 && (u8)(gUnk_0203916C[0] - 3) > 1)
         car->unk14C = 0;
     if (car == gUnk_0203D520 || gUnk_020390EC != 0) {
-        if (gUnk_0203916C != 9 && gUnk_0203916C != 0xD && gUnk_0203916C != 0xE
-            && gUnk_0203916C != 0xF && gUnk_0203916C != 0x11
+        if (gUnk_0203916C[0] != 9 && gUnk_0203916C[0] != 0xD && gUnk_0203916C[0] != 0xE
+            && gUnk_0203916C[0] != 0xF && gUnk_0203916C[0] != 0x11
             && (sub_08343234(car) != 0 || car->unk176 != 0)) {
             if (car->unk176 != 0)
                 car->unk176--;
@@ -152,7 +152,7 @@ void sub_08342258(struct Car *car, u32 b, u8 c)
             sub_08342DE8(c, 1);
         }
     }
-    if (gUnk_0203916C != 2)
+    if (gUnk_0203916C[0] != 2)
         sub_08343EA8(car);
     car->unk18C = car->unk50;
 again:
@@ -163,7 +163,7 @@ again:
     car->unk08 += car->unk14;
     car->unk34 = car->unk34 + car->unk3C;
     if (v != 0) {
-        if (gUnk_020390F0 == 0 && gUnk_020391F0 == 0 && gUnk_0203E120[3] != 0) {
+        if (gUnk_020390F0[0] == 0 && gUnk_020391F0 == 0 && gUnk_0203E120[3] != 0) {
             if (gUnk_020390EC == 0 ? car == gUnk_0203D520
                                     : car == gUnk_0203D520 + gUnk_0203E1B0)
                 sub_0833A8C8(0x12);

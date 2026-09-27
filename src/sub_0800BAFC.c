@@ -1,6 +1,6 @@
 #include "global.h"
 
-extern u8 gUnk_0200215C;           /* 0x0200215C */
+extern u8 gUnk_0200215C[];           /* 0x0200215C */
 
 u32 AllocTask(void);
 void AddTask(u32 a);
@@ -10,7 +10,7 @@ void sub_0800BAFC(s32 a, s32 b)
 {
     u32 *r;
 
-    if (gUnk_0200215C == 2 || gUnk_0200215C == 0xA)
+    if (gUnk_0200215C[0] == 2 || gUnk_0200215C[0] == 0xA)
         return;
     r = (u32 *)AllocTask();
     if (r != 0) {

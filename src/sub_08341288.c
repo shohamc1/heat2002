@@ -87,7 +87,7 @@ struct Ent {
     u8 f18E;
 };
 
-extern u8 gUnk_0203916C;
+extern u8 gUnk_0203916C[];
 extern u8 gUnk_020390EC;
 extern u8 gUnk_0203DCF0;
 extern u8 gUnk_0203D4E8;
@@ -108,7 +108,7 @@ void sub_08341288(u8 a, struct Ent *car, s32 b, s32 c, u32 d)
 {
     u8 i;
 
-    if (gUnk_0203916C == 4)
+    if (gUnk_0203916C[0] == 4)
         car->f162 = 0;
     car->f18E = 0;
     car->f175 = 0;
@@ -140,9 +140,9 @@ void sub_08341288(u8 a, struct Ent *car, s32 b, s32 c, u32 d)
     car->f94 = 0;
     car->f98 = 0;
     car->f9C = 0xB400;
-    if (gUnk_0203916C == 0xF && gUnk_0203DFB0 == 3 && car == gUnk_0203D520)
+    if (gUnk_0203916C[0] == 0xF && gUnk_0203DFB0 == 3 && car == gUnk_0203D520)
         car->f9C = 0x5000;
-    if (gUnk_0203916C != 5 && gUnk_0203916C != 0x11)
+    if (gUnk_0203916C[0] != 5 && gUnk_0203916C[0] != 0x11)
         car->f16C = 0;
     car->f170 = 0;
     car->f171 = 0;
@@ -160,7 +160,7 @@ void sub_08341288(u8 a, struct Ent *car, s32 b, s32 c, u32 d)
     /* One store per arm: jump2 merges the stores into one strb behind a new
        label, and jumps to a label created in that pass never cross-jump,
        so the equal-valued arms stay separate as in the ROM. */
-    if (gUnk_0203916C == 0xF) {
+    if (gUnk_0203916C[0] == 0xF) {
         switch (gUnk_0203DFB0) {
         case 0:
             car->f4C = 1;
@@ -202,7 +202,7 @@ void sub_08341288(u8 a, struct Ent *car, s32 b, s32 c, u32 d)
     } else {
         car->f4C = 0;
     }
-    if ((u8)(gUnk_0203916C - 3) > 1)
+    if ((u8)(gUnk_0203916C[0] - 3) > 1)
         car->f4C--;
     car->f50 = 0;
     car->f15C = 0x12C;
@@ -218,7 +218,7 @@ void sub_08341288(u8 a, struct Ent *car, s32 b, s32 c, u32 d)
     car->fE4 = gUnk_02027500[car->f162];
     car->fE8 = gUnk_02027578[car->f162];
     car->fEC = gUnk_020275F0[car->f162];
-    if (gUnk_020390EC == 0 && a != 0 && gUnk_0203916C != 2) {
+    if (gUnk_020390EC == 0 && a != 0 && gUnk_0203916C[0] != 2) {
         car->fE4 = (s32)gUnk_0202713E;
         car->fE8 = (s32)gUnk_0202714A;
         car->fEC = (s32)gUnk_02027154;

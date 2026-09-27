@@ -2,7 +2,7 @@
 #include "functions.h"
 extern u16 gKeysPressed;
 extern u8 gIsLinkRace;
-extern u32 gUnk_083FDE18;
+extern u32 gUnk_083FDE18[];
 void sub_080164A8(void)
 {
     u8 buf[0x200];
@@ -19,7 +19,7 @@ void sub_080164A8(void)
     sub_08011C9C(1, (u16 *)buf);
     /* sub_08006734: this file's old local prototype differs from
        functions.h; call through the old signature (solved-walls 31). */
-    ((void (*)(u32))sub_08006734)(gUnk_083FDE18);
+    ((void (*)(u32))sub_08006734)(gUnk_083FDE18[0]);
     GetString(0x75);
     ((void (*)(void))sub_080065A8)();
     DrawTextCenteredHighlight((u8 *)(GetString(0x75)), 0x0A, 1);

@@ -23,10 +23,10 @@ struct Car {
 extern u8 gIsLinkRace;
 extern u8 gUnk_020021E0;
 extern u16 gUnk_020020A0[];
-extern u8 gUnk_0200215C;
+extern u8 gUnk_0200215C[];
 extern u16 gKeysHeld;
 extern u32 gUnk_0200209C;
-extern u8 gLinkPlayerId;
+extern u8 gLinkPlayerId[];
 extern struct Car gCars[];
 
 void UpdatePitStop(struct Car *a, u8 b);
@@ -51,8 +51,8 @@ void UpdateCar(struct Car *car, u8 idx)
         if (car->pitState != 0) {
             UpdatePitStop(car, 0);
             UpdateCarPhysics(car, car->aiInput, 0);
-        } else if (gUnk_0200215C == 9 || gUnk_0200215C == 0xD || gUnk_0200215C == 0xE
-                || gUnk_0200215C == 0xF || gUnk_0200215C == 0x11) {
+        } else if (gUnk_0200215C[0] == 9 || gUnk_0200215C[0] == 0xD || gUnk_0200215C[0] == 0xE
+                || gUnk_0200215C[0] == 0xF || gUnk_0200215C[0] == 0x11) {
             UpdateAiDriver((struct Unk0800C534 *)car, idx);
             UpdateCarPhysics(car, car->aiInput, idx);
         } else {
@@ -66,10 +66,10 @@ void UpdateCar(struct Car *car, u8 idx)
             sub_0800A628(car);
         }
     } else {
-        if (gUnk_0200215C == 9 || gUnk_0200215C == 0xD || gUnk_0200215C == 0xE
-                || gUnk_0200215C == 0xF || gUnk_0200215C == 0x11)
+        if (gUnk_0200215C[0] == 9 || gUnk_0200215C[0] == 0xD || gUnk_0200215C[0] == 0xE
+                || gUnk_0200215C[0] == 0xF || gUnk_0200215C[0] == 0x11)
             goto common;
-        if (gUnk_0200215C != 4) {
+        if (gUnk_0200215C[0] != 4) {
             if (gUnk_020021E0 == 0) {
                 if (car->pitState != 0) {
                     UpdatePitStop(car, idx);
@@ -94,7 +94,7 @@ common:
         sub_0800B8A8(car);
 
     if (gIsLinkRace != 0) {
-        if (idx == gLinkPlayerId) {
+        if (idx == gLinkPlayerId[0]) {
             UpdateRacePosition(idx);
             if (gCars[idx].racePosition != 0 && gCars[idx].racePosition != 0x63)
                 gCars[idx].unk166 = 0;

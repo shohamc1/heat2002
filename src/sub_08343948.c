@@ -46,7 +46,7 @@ struct Ent
   u8 pad2C[0x30 - 0x2C];
   s32 f30;
 };
-extern u8 gUnk_0203916C;
+extern u8 gUnk_0203916C[];
 long long sub_08344D20(long long a, long long b);
 u16 *sub_083434BC(s32 a, s32 b);
 u8 sub_083437A0(struct Seg *a, struct Box *b, struct Box *c, struct Hit *d, u16 *e);
@@ -67,7 +67,7 @@ s32 sub_08343948(struct Ent *ent)
   s32 dot;
   long long q1;
   long long q2;
-  if (gUnk_0203916C == 7)
+  if (gUnk_0203916C[0] == 7)
   {
     goto miss;
   }

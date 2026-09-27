@@ -7,7 +7,7 @@ extern u32 gUnk_020392A8;
 extern u32 gUnk_02039240;
 extern u32 gUnk_02039290;
 extern u32 gUnk_02039298;
-extern u8 gUnk_02039234;
+extern u8 gUnk_02039234[];
 extern u32 gUnk_02039228;
 extern u32 gUnk_02039238;
 extern u16 gUnk_02039248;
@@ -32,7 +32,7 @@ void sub_0833CF10(void)
     gUnk_02039240 = y & 0x1F;
     gUnk_02039290 = x & 0xF;
     gUnk_02039298 = y & 0x1F;
-    gUnk_02039234 = x & 0x10;
+    gUnk_02039234[0] = x & 0x10;
     x = x >> 5;
     y = y >> 5;
     sub_0833CFC8(x, y, gUnk_02039228, 0x03000000, gUnk_02039238, gUnk_02039248);

@@ -1,8 +1,8 @@
 #include "global.h"
 
-extern u8 gNumCars;
+extern u8 gNumCars[];
 extern u8 gIsLinkRace;
-extern u8 gNumLinkPlayers;
+extern u8 gNumLinkPlayers[];
 extern u8 gCars[][0x190];
 
 void WorldToCarLocal(s32 *a, s32 b, s32 c, s32 *d);
@@ -15,9 +15,9 @@ u8 CheckDrafting(u8 *a)
     u8 i;
     u8 *e;
 
-    count = gNumCars;
+    count = gNumCars[0];
     if (gIsLinkRace != 0)
-        count = gNumLinkPlayers;
+        count = gNumLinkPlayers[0];
     e = gCars;
     for (i = 0; i != count; i++, e += 0x190) {
         if (e == a)

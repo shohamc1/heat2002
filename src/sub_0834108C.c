@@ -2,7 +2,7 @@
 
 extern u8 gUnk_0203DD10;
 extern u8 gUnk_0203E0F8;
-extern u8 gUnk_0203916C;
+extern u8 gUnk_0203916C[];
 extern u8 gUnk_02039200[];
 extern u8 gUnk_0203D4A0[];
 extern u8 gUnk_0203D520[];
@@ -25,7 +25,7 @@ void sub_0834108C(u32 a1)
     gUnk_0203DD10 = 0;
     v = gUnk_0203E0F8;
     sub_08340EE0();
-    if (gUnk_0203916C == 0) {
+    if (gUnk_0203916C[0] == 0) {
         q = (u32 *)gUnk_02039200;
         ep = (u32 *)gUnk_0203D4A0;
         for (i = 0; i != 5; i++) {

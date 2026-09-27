@@ -24,11 +24,11 @@ struct Ent {
 extern u8 gUnk_02039100;
 extern u8 gUnk_020391CC;
 extern u8 gUnk_02039154;
-extern u8 gUnk_0203916C;
-extern u8 gUnk_020390F0;
-extern u8 gUnk_020390A0;
+extern u8 gUnk_0203916C[];
+extern u8 gUnk_020390F0[];
+extern u8 gUnk_020390A0[];
 extern u8 gUnk_020390DC;
-extern u8 gUnk_020390BC;
+extern u8 gUnk_020390BC[];
 extern u32 gUnk_020391E0[4];
 extern u32 gUnk_02039158;
 extern u8 gUnk_020391D4;
@@ -113,26 +113,26 @@ s32 sub_0833BF80(u8 arg0, u8 arg1)
     gUnk_02039100 = 0;
     gUnk_020391CC = 0;
     gUnk_02039154 = 0;
-    gUnk_0203916C = t;
-    pf = &gUnk_020390F0;
+    gUnk_0203916C[0] = t;
+    pf = &gUnk_020390F0[0];
     *pf = arg0;
     if (t != 0xF)
-        gUnk_020390A0 = 5;
-    if (gUnk_0203916C == 2)
-        gUnk_020390A0 = 1;
-    if (gUnk_0203916C == 0x11)
-        gUnk_020390A0 = 1;
-    if (gUnk_0203916C == 0xD)
-        gUnk_020390A0 = 1;
-    if (gUnk_0203916C == 0xE)
-        gUnk_020390A0 = 1;
+        gUnk_020390A0[0] = 5;
+    if (gUnk_0203916C[0] == 2)
+        gUnk_020390A0[0] = 1;
+    if (gUnk_0203916C[0] == 0x11)
+        gUnk_020390A0[0] = 1;
+    if (gUnk_0203916C[0] == 0xD)
+        gUnk_020390A0[0] = 1;
+    if (gUnk_0203916C[0] == 0xE)
+        gUnk_020390A0[0] = 1;
     if (*pf != 0)
-        gUnk_020390A0 = 2;
+        gUnk_020390A0[0] = 2;
     if (gUnk_020390DC > 6 && gUnk_020390DC != 8 && gUnk_020390DC != 9
         && gUnk_020390DC != 0xA && gUnk_020390DC != 0xB)
-        gUnk_020390A0 = 1;
-    if ((u8)(gUnk_0203916C - 3) <= 1)
-        gUnk_020390A0 = gUnk_020390BC;
+        gUnk_020390A0[0] = 1;
+    if ((u8)(gUnk_0203916C[0] - 3) <= 1)
+        gUnk_020390A0[0] = gUnk_020390BC[0];
     gUnk_020391E0[0] = 0;
     gUnk_020391E0[1] = 0;
     gUnk_020391E0[2] = 0;
@@ -162,28 +162,28 @@ s32 sub_0833BF80(u8 arg0, u8 arg1)
     sub_08339B18();
     gUnk_020390FC = 0;
     sub_0833BF6C();
-    if (gUnk_0203916C == 0xE) {
+    if (gUnk_0203916C[0] == 0xE) {
         sub_0833EDF8();
     } else {
         sub_0833EDB8();
     }
-    if (gUnk_020390F0 != 0) {
+    if (gUnk_020390F0[0] != 0) {
         if (gUnk_0203E120[2] != 0)
             sub_0833A8C8(1);
         gUnk_020390D4 = 1;
         gUnk_020250EC = 2;
-        if (gUnk_020390F0 != 0) {
+        if (gUnk_020390F0[0] != 0) {
             for (i = 0; i != 100; i++)
                 sub_083426C8();
             sub_08342868();
             goto skip42B04;
         }
     }
-    if ((u8)(gUnk_0203916C - 3) <= 1)
+    if ((u8)(gUnk_0203916C[0] - 3) <= 1)
         sub_08342B04();
 skip42B04:
-    if (gUnk_0203916C == 9 || gUnk_0203916C == 0xD || gUnk_0203916C == 0xE
-        || gUnk_0203916C == 0xF || gUnk_0203916C == 0x11) {
+    if (gUnk_0203916C[0] == 9 || gUnk_0203916C[0] == 0xD || gUnk_0203916C[0] == 0xE
+        || gUnk_0203916C[0] == 0xF || gUnk_0203916C[0] == 0x11) {
         gUnk_020390B8 = 1;
         for (i = 0; i != 20; i++)
             sub_083426C8();
@@ -233,7 +233,7 @@ after_d5f4: ;
         sub_0833B81C(gUnk_02038FB0, 1,
                     ((s16)(gUnk_02025190[ent->unk3E]
                          + ((ent->unk40 * gUnk_020251A4[ent->unk3E]) >> 6))) >> 3);
-        if (gUnk_020390F0 != 0) {
+        if (gUnk_020390F0[0] != 0) {
             sub_0833D5F4(gUnk_0203D6B0);
             gUnk_020250EC = t2 = gUnk_020390AC / 256;
             if (t2 % 8 == 0)
@@ -243,8 +243,8 @@ after_d5f4: ;
                 sub_0833D5F4(&gUnk_0203D520[(*(volatile u32 *)0x04000128 << 0x1A) >> 0x1E]);
             else
                 sub_0833D5F4(gUnk_0203D520);
-            if (gUnk_0203916C == 9 || gUnk_0203916C == 0xD || gUnk_0203916C == 0xE
-                || gUnk_0203916C == 0xF || gUnk_0203916C == 0x11) {
+            if (gUnk_0203916C[0] == 9 || gUnk_0203916C[0] == 0xD || gUnk_0203916C[0] == 0xE
+                || gUnk_0203916C[0] == 0xF || gUnk_0203916C[0] == 0x11) {
                 gUnk_02039110[0] = *(u32 *)&gUnk_0203D520[0];
                 gUnk_02039110[1] = *(u32 *)((u8 *)&gUnk_0203D520[0] + 8);
             }
@@ -255,14 +255,14 @@ after_d5f4: ;
         sub_0833FFC4();
         sub_083419D8();
         sub_0833DF58();
-        if (gUnk_020390D4 != 0 || gUnk_0203916C == 9 || gUnk_0203916C == 0xD
-            || gUnk_0203916C == 0xE || gUnk_0203916C == 0xF || gUnk_0203916C == 0x11)
+        if (gUnk_020390D4 != 0 || gUnk_0203916C[0] == 9 || gUnk_0203916C[0] == 0xD
+            || gUnk_0203916C[0] == 0xE || gUnk_0203916C[0] == 0xF || gUnk_0203916C[0] == 0x11)
             sub_083426C8();
         sub_0833CF10(gUnk_02039110[0], gUnk_02039110[1]);
         sub_0833D9D8();
         sub_08340EFC();
         gUnk_020391D4 = 1;
-        if (gUnk_020390F0 != 0) {
+        if (gUnk_020390F0[0] != 0) {
             if (gUnk_0203761C != 0) {
                 gUnk_020391CC = 1;
                 gUnk_020391F0 = 2;
@@ -273,7 +273,7 @@ after_d5f4: ;
                 sub_0833D288(0x19, 0);
             }
         } else {
-            if ((u8)(gUnk_0203916C - 3) > 1 && gUnk_020391F0 == 0) {
+            if ((u8)(gUnk_0203916C[0] - 3) > 1 && gUnk_020391F0 == 0) {
                 if (gUnk_020392C4 != 0)
                     goto r_zero;
                 r = sub_0833DBC8();
@@ -281,7 +281,7 @@ after_d5f4: ;
             }
             if (gUnk_020392C4 != 0 || gUnk_020391F0 != 0)
                 goto r_zero;
-            if (gUnk_0203916C == 4)
+            if (gUnk_0203916C[0] == 4)
                 r = sub_0833DCB0();
             else
                 r = sub_0833DBF4();
@@ -304,12 +304,12 @@ r_case1:
             sub_0833A8C8(0x38);
             goto r_end;
 r_case2:
-            if (gUnk_0203916C == 2 || gUnk_0203916C == 0xE || gUnk_0203916C == 0
-                || gUnk_0203916C == 7 || gUnk_0203916C == 6 || gUnk_0203916C == 9
-                || gUnk_0203916C == 5 || gUnk_0203916C == 0x11 || gUnk_0203916C == 1
-                || gUnk_0203916C == 3 || gUnk_0203916C == 0xC || gUnk_0203916C == 0xD
-                || gUnk_0203916C == 0x10 || gUnk_0203916C == 0xF
-                || gUnk_0203916C == 0x11) {
+            if (gUnk_0203916C[0] == 2 || gUnk_0203916C[0] == 0xE || gUnk_0203916C[0] == 0
+                || gUnk_0203916C[0] == 7 || gUnk_0203916C[0] == 6 || gUnk_0203916C[0] == 9
+                || gUnk_0203916C[0] == 5 || gUnk_0203916C[0] == 0x11 || gUnk_0203916C[0] == 1
+                || gUnk_0203916C[0] == 3 || gUnk_0203916C[0] == 0xC || gUnk_0203916C[0] == 0xD
+                || gUnk_0203916C[0] == 0x10 || gUnk_0203916C[0] == 0xF
+                || gUnk_0203916C[0] == 0x11) {
                 gUnk_020391CC = 1;
                 gUnk_020391F0 = 2;
                 sub_08339B18();

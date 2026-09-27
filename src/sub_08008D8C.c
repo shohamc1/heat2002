@@ -6,7 +6,7 @@ struct Car {
     u32 progress;
 };
 
-extern u8 gUnk_0200215C;
+extern u8 gUnk_0200215C[];
 extern u8 gUnk_0202ED70;
 extern u8 gUnk_0202CAE8;
 extern u8 gUnk_0202EEE4;
@@ -21,7 +21,7 @@ void sub_08008D8C(void)
     u8 x;
     s32 v;
 
-    if (gUnk_0200215C == 0x10) {
+    if (gUnk_0200215C[0] == 0x10) {
         sub_08008CDC();
         switch (gUnk_0202ED70) {
         case 0:

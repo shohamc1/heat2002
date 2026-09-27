@@ -11,7 +11,7 @@ struct EntityB1A4
 extern u8 gUnk_02022E14;
 extern u8 gOptions[];
 extern u8 gIsDemo;
-extern u8 gUnk_0200215C;
+extern u8 gUnk_0200215C[];
 extern u8 gUnk_020020C4;
 void sub_0800B1A4(struct EntityB1A4 *e)
 {
@@ -56,25 +56,25 @@ void sub_0800B1A4(struct EntityB1A4 *e)
     }
     if (e->unk18 > 0x2D)
     {
-      if (gUnk_0200215C == 9)
+      if (gUnk_0200215C[0] == 9)
       {
-        gUnk_0200215C = 6;
+        gUnk_0200215C[0] = 6;
       }
-      if (gUnk_0200215C == 0x0D)
+      if (gUnk_0200215C[0] == 0x0D)
       {
-        gUnk_0200215C = 0x0C;
+        gUnk_0200215C[0] = 0x0C;
       }
-      if (gUnk_0200215C == 0x0E)
+      if (gUnk_0200215C[0] == 0x0E)
       {
-        gUnk_0200215C = 2;
+        gUnk_0200215C[0] = 2;
       }
-      if (gUnk_0200215C == 0x0F)
+      if (gUnk_0200215C[0] == 0x0F)
       {
-        gUnk_0200215C = 0x10;
+        gUnk_0200215C[0] = 0x10;
       }
-      if (gUnk_0200215C == 0x11)
+      if (gUnk_0200215C[0] == 0x11)
       {
-        gUnk_0200215C = 5;
+        gUnk_0200215C[0] = 5;
       }
       gUnk_020020C4 = 1;
     }

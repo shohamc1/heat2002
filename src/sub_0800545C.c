@@ -16,7 +16,7 @@ extern struct Drv gCars[];
 extern u8 gUnk_020253D4;
 extern u8 gUnk_020253E0[];
 extern u8 gIsLinkRace;
-extern u8 gLinkPlayerId;
+extern u8 gLinkPlayerId[];
 extern u32 gUnk_08364B08[];
 
 void DrawTime(u32 a, u16 b, u16 c, u16 d);
@@ -36,7 +36,7 @@ void sub_0800545C(void)
         return;
     p = gCars;
     if (gIsLinkRace != 0)
-        p = &gCars[gLinkPlayerId];
+        p = &gCars[gLinkPlayerId[0]];
     if (p->unk7D == 0)
         return;
     r7v = 5;

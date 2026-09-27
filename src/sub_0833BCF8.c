@@ -1,6 +1,6 @@
 #include "global.h"
 
-extern u8 gUnk_020390BC;
+extern u8 gUnk_020390BC[];
 extern u32 gUnk_02039200[];
 extern u8 gUnk_0203D520[][0x190];
 
@@ -13,7 +13,7 @@ void sub_0833BCF8(void)
     register u32 *base asm("r9");
 
     i = 0;
-    countTemp = &gUnk_020390BC;
+    countTemp = &gUnk_020390BC[0];
     count = countTemp;
     base = gUnk_02039200;
     {

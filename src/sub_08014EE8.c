@@ -1,7 +1,7 @@
 #include "global.h"
 #include "functions.h"
 
-extern u32 gUnk_083FDE18;
+extern u32 gUnk_083FDE18[];
 
 void sub_08014EE8(u8 a)
 {
@@ -10,7 +10,7 @@ void sub_08014EE8(u8 a)
     b = a;
     /* sub_08006734: this file's old prototype takes an argument the matched definition drops; call
        through a function pointer with the old signature. */
-    ((void (*)(u32))sub_08006734)(gUnk_083FDE18);
+    ((void (*)(u32))sub_08006734)(gUnk_083FDE18[0]);
     GetString(9);
     ((void (*)(void))sub_080065A8)();
     DrawTextCenteredHighlight((u8 *)(GetString(5)), 7, a == 0);

@@ -72,7 +72,7 @@ extern u8 gUnk_0202CAD0;
 extern u8 gUnk_0202A53C;
 extern struct Unk0800C534 gCars[];
 extern u32 gUnk_083672F0[];
-extern u8 gUnk_0200215C;
+extern u8 gUnk_0200215C[];
 
 void sub_08008394(u32 a);
 void sub_0800C430(u32 a);
@@ -108,8 +108,8 @@ void UpdateAiDriver(struct Unk0800C534 *ent, u8 param)
     sub_08008394((u32)ent);
     sub_0800C430((u32)ent);
     zero = 0;
-    if (gUnk_0202CC28 == 0 || gUnk_0200215C == 9 || gUnk_0200215C == 0xD
-        || gUnk_0200215C == 0xE || gUnk_0200215C == 0xF || gUnk_0200215C == 0x11)
+    if (gUnk_0202CC28 == 0 || gUnk_0200215C[0] == 9 || gUnk_0200215C[0] == 0xD
+        || gUnk_0200215C[0] == 0xE || gUnk_0200215C[0] == 0xF || gUnk_0200215C[0] == 0x11)
     {
         ent->aiInput = 1;
         gUnk_0202CC28 = 0;
@@ -176,8 +176,8 @@ void UpdateAiDriver(struct Unk0800C534 *ent, u8 param)
         }
     }
     limit = 4;
-    if (gUnk_0200215C == 9 || gUnk_0200215C == 0xD || gUnk_0200215C == 0xE
-        || gUnk_0200215C == 0xF || gUnk_0200215C == 0x11)
+    if (gUnk_0200215C[0] == 9 || gUnk_0200215C[0] == 0xD || gUnk_0200215C[0] == 0xE
+        || gUnk_0200215C[0] == 0xF || gUnk_0200215C[0] == 0x11)
         limit = -99;
     if (result > limit || ent->pitState != 0)
     {

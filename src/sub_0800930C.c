@@ -1,7 +1,7 @@
 #include "global.h"
 #include "functions.h"
 
-extern u8 gUnk_0200215C;
+extern u8 gUnk_0200215C[];
 extern u8 gCars[][0x190];
 extern u8 gUnk_0202CBD0;
 extern u8 gUnk_083681BC[];
@@ -16,7 +16,7 @@ void EnterPit(u8 *r4, u8 r5)
     u8 *r1;
     u32 r0;
 
-    if (gUnk_0200215C == 3)
+    if (gUnk_0200215C[0] == 3)
         return;
     if (r4[0x175] != 0)
         return;

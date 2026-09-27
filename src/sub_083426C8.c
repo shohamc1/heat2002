@@ -13,10 +13,10 @@ struct Car {
 };
 
 extern struct Car gUnk_0203D520[];
-extern u8 gUnk_020390A0;
+extern u8 gUnk_020390A0[];
 extern u8 gUnk_020390EC;
-extern u8 gUnk_0203916C;
-extern u8 gUnk_020390BC;
+extern u8 gUnk_0203916C[];
+extern u8 gUnk_020390BC[];
 extern u8 gUnk_0203D4E8;
 extern u8 gUnk_0203E0E0;
 extern u16 gUnk_02026DC4[];
@@ -38,10 +38,10 @@ void sub_083426C8(void)
 
     sub_08339B4C();
     p = gUnk_0203D520;
-    count = gUnk_020390A0;
-    if (gUnk_020390EC != 0 || gUnk_0203916C == 4)
-        count = gUnk_020390BC;
-    if (gUnk_0203916C == 2)
+    count = gUnk_020390A0[0];
+    if (gUnk_020390EC != 0 || gUnk_0203916C[0] == 4)
+        count = gUnk_020390BC[0];
+    if (gUnk_0203916C[0] == 2)
         count = 1;
     gUnk_0203D4E8++;
     for (i = 0; i != count; i++) {

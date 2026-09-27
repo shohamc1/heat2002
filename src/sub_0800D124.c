@@ -37,7 +37,7 @@ struct Ent {
     s32 f30;
 };
 
-extern u8 gUnk_0200215C;
+extern u8 gUnk_0200215C[];
 
 u16 *GetWallListAt(s32 a, s32 b);
 u8 TestSegmentVsWalls(struct Seg *a, struct Box *b, struct Box *c, struct Hit *d,
@@ -53,7 +53,7 @@ s32 BounceOffWalls(struct Ent *ent)
     s32 dot;
     long long q1, q2;
 
-    if (gUnk_0200215C == 7)
+    if (gUnk_0200215C[0] == 7)
         goto miss;
     seg.f00 = ent->posX >> 16;
     seg.f04 = ent->posZ >> 16;
