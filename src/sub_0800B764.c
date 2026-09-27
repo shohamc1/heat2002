@@ -1,15 +1,6 @@
 #include "global.h"
+#include "car.h"
 
-struct UnkCarB764 {
-    /* 0x000 */ u8 pad0[0xA4];
-    /* 0x0A4 */ u32 unkA4[4];
-    /* 0x0B4 */ u32 unkB4[4];
-    /* 0x0C4 */ u32 unkC4[4];
-    /* 0x0D4 */ u32 unkD4[4];
-    /* 0x0E4 */ u8 pad1[400 - 0xE4];
-};
-
-extern struct UnkCarB764 gCars[];   /* 0x0202A550 */
 void sub_0800B7E0(void);
 
 u32 AllocTask(void);
@@ -19,7 +10,7 @@ void sub_0800B764(u8 a, u8 b)
 {
     u32 r;
     u32 v1, v2;
-    struct UnkCarB764 *car;
+    struct Car *car;
 
     r = AllocTask();
     if (r != 0) {

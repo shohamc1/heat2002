@@ -1,16 +1,8 @@
 #include "global.h"
 #include "variables.h"
-
-struct Car08005FA8 {
-    u8 pad00[0x2C];
-    s32 speed;
-    u8 pad30[0x9C - 0x30];
-    s32 fuel;
-    u8 padA0[0x190 - 0xA0];
-};
+#include "car.h"
 
 extern u32 gUnk_08364B08[];
-extern struct Car08005FA8 gCars[];
 
 void UpdateRaceTimers(void);
 void DrawTime(u32 a, u16 b, u16 c, u16 d);
@@ -25,7 +17,7 @@ void sub_08005FA8(void)
 {
     u32 base;
     u32 obj;
-    struct Car08005FA8 *car;
+    struct Car *car;
     s32 v;
 
     UpdateRaceTimers();

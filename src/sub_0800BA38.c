@@ -1,5 +1,6 @@
 #include "global.h"
 #include "functions.h"
+#include "car.h"
 
 struct EntityBA38 {
     /* 0x00 */ s32 unk00;
@@ -9,24 +10,13 @@ struct EntityBA38 {
     /* 0x18 */ s32 unk18;
 };
 
-struct CarBA38 {
-    /* 0x000 */ s32 posX;
-    /* 0x004 */ u8 pad04[4];
-    /* 0x008 */ s32 posZ;
-    /* 0x00C */ u8 pad0C[0x7C - 0x00C];
-    /* 0x07C */ u8 unk7C;
-    /* 0x07D */ u8 pad7D[0x160 - 0x07D];
-    /* 0x160 */ u16 unk160;
-};
-
 extern s32 gCamera[];        /* 0x02002100 */
-extern struct CarBA38 gCars[];  /* 0x0202A550 */
 
 u32 WorldToScreen(s32 x, s32 y, s32 *out);
 
 void sub_0800BA38(struct EntityBA38 *e)
 {
-    struct CarBA38 *car;
+    struct Car *car;
     s32 pos[2];
     s32 x, y;
     s32 xlo, xhi, ylo, yhi;

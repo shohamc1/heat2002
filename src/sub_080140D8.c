@@ -1,7 +1,6 @@
 #include "global.h"
 #include "functions.h"
-struct Unk0202A550 { u8 filler[400]; };
-extern struct Unk0202A550 gCars[];
+#include "car.h"
 u32 AwardAllRacePoints(void)
 {
     u8 i = 0;

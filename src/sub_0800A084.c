@@ -1,34 +1,7 @@
 #include "global.h"
 #include "functions.h"
 #include "variables.h"
-
-struct Car {
-    u8 pad00[0x2C];
-    s32 speed;
-    u8 pad30[0x3E - 0x30];
-    u8 gear;
-    u16 rpm;
-    u8 pad42[0x7C - 0x42];
-    u8 unk7C;
-    u8 unk7D;
-    u8 pad7E[0x9C - 0x7E];
-    s32 fuel;
-    u8 padA0[0xA2 - 0xA0];
-    u16 unkA2;
-    u8 padA4[0xE4 - 0xA4];
-    u16 *unkE4;
-    u16 *unkE8;
-    u16 *unkEC;
-    u8 padF0[0x13C - 0xF0];
-    s32 unk13C;
-    u8 pad140[0x14C - 0x140];
-    s32 drag;
-    u8 pad150[0x175 - 0x150];
-    u8 pitState;
-    u8 pad176[0x190 - 0x176];
-};
-
-extern struct Car gCars[];
+#include "car.h"
 
 s16 sub_0800A034(struct Car *a);
 

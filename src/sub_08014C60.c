@@ -2,10 +2,10 @@
 #include "data.h"
 #include "functions.h"
 #include "variables.h"
+#include "car.h"
 
 extern u32 gCarOrder[];
 extern u32 gUnk_0202F020[];
-extern u8 gCars[];
 
 void sub_08014C60(u8 a)
 {
@@ -27,7 +27,7 @@ void sub_08014C60(u8 a)
         if (walk < gUnk_0202F020) {
             ptr = (u8 *)*walk;
             SplitMilliseconds(*(u32 *)(ptr + 0x16C), &m, &s, &f);
-            if (ptr == gCars && (gUnk_0202539C & 0x10) != 0) {
+            if (ptr == (u8 *)gCars && (gUnk_0202539C & 0x10) != 0) {
                 DrawText(gUnk_0829F44C, 1, i + 4, 1);
             } else {
                 DrawText((u8 *)GetDriverName(ptr[0x162]), 1, i + 4, 1);

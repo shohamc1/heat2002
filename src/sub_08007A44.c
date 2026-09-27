@@ -1,6 +1,5 @@
 #include "global.h"
-
-extern u8 gCars[];
+#include "car.h"
 
 u32 sub_08007A44(u32 a0, u32 a1, u32 count)
 {

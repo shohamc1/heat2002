@@ -2,24 +2,7 @@
 #include "functions.h"
 #include "m4a.h"
 #include "variables.h"
-
-struct Car {
-    s32 posX;
-    u8 pad04[0x08 - 0x04];
-    s32 posZ;
-    u8 pad0C[0x170 - 0x0C];
-    u8 unk170;
-    u8 unk171;
-    u8 unk172;
-    u8 unk173;
-    u8 unk174;
-    u8 pitState;
-    u8 pad176[0x182 - 0x176];
-    u16 unk182;
-    u8 pad184[0x190 - 0x184];
-};
-
-extern struct Car gCars[];
+#include "car.h"
 
 void EnterPit(u8 *a, u8 b);
 u8 GetTrackTileType(s32 x, s32 y);

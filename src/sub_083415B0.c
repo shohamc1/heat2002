@@ -1,7 +1,6 @@
 #include "global.h"
 #include "variables.h"
-
-extern u8 gUnk_0203D520[];
+#include "car.h"
 
 void sub_083415B0(u8 idx)
 {
@@ -18,11 +17,11 @@ void sub_083415B0(u8 idx)
     if (gUnk_020390EC != 0)
         count = gUnk_020390BC[0];
     result = 0;
-    p = gUnk_0203D520;
+    p = (u8 *)gModule_Cars;
     off = idx * 400;
     t = p + 0x50;
     mykey = *(s32 *)(off + t);
-    for (j = 0, q = gUnk_0203D520; j != count; j++) {
+    for (j = 0, q = (u8 *)gModule_Cars; j != count; j++) {
         if (j != idx && *(s32 *)(t + j * 400) > mykey)
             result++;
     }

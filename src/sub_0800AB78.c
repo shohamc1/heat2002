@@ -1,29 +1,10 @@
 #include "global.h"
 #include "functions.h"
 #include "variables.h"
-
-struct Car {
-    u8 pad00[0x7C];
-    u8 unk7C;
-    u8 unk7D;
-    u8 pad7E[0x88 - 0x7E];
-    s32 damage;
-    u8 pad8C[0xA0 - 0x8C];
-    u16 aiInput;
-    u8 padA2[0x150 - 0xA2];
-    u8 racePosition;
-    u8 pad151[0x15C - 0x151];
-    s32 unk15C;
-    u8 pad160[0x166 - 0x160];
-    u8 unk166;
-    u8 pad167[0x175 - 0x167];
-    u8 pitState;
-    u8 pad176[0x190 - 0x176];
-};
+#include "car.h"
 
 extern u16 gKeysHeld;
 extern u32 gUnk_0200209C;
-extern struct Car gCars[];
 
 void UpdatePitStop(struct Car *a, u8 b);
 void UpdateRacePosition(u8 a);

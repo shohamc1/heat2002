@@ -1,6 +1,5 @@
 #include "global.h"
-
-extern u8 gUnk_0203D520[];
+#include "car.h"
 
 u32 sub_08340028(u32 a)
 {
@@ -8,7 +7,7 @@ u32 sub_08340028(u32 a)
     s32 v;
     s32 c;
 
-    if (a != (u32)gUnk_0203D520)
+    if (a != (u32)gModule_Cars)
     {
         r = 0;
         if (*(s32 *)(a + 0x9C) <= 0xA0 << 6)

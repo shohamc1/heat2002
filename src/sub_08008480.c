@@ -2,41 +2,8 @@
 #include "data.h"
 #include "functions.h"
 #include "variables.h"
+#include "car.h"
 
-struct Car {
-    s32 posX;                          /* 0x00 */
-    u8 pad04[8];
-    s32 velX;                          /* 0x0C */
-    u8 pad10[4];
-    s32 velZ;                          /* 0x14 */
-    u8 pad18[0x2C - 0x18];
-    s32 speed;                          /* 0x2C */
-    u8 pad30[4];
-    u16 heading;                          /* 0x34 */
-    u8 pad36[0x3C - 0x36];
-    s16 yawRate;                          /* 0x3C */
-    u8 pad3E[0x8C - 0x3E];
-    s32 tireWear0;                          /* 0x8C */
-    s32 tireWear1;                          /* 0x90 */
-    s32 tireWear2;                          /* 0x94 */
-    s32 tireWear3;                          /* 0x98 */
-    u8 pad9C[0x12C - 0x9C];
-    s32 unk12C;                         /* 0x12C */
-    u8 pad130[0x13C - 0x130];
-    s32 unk13C;                         /* 0x13C */
-    s32 forceX;                         /* 0x140 */
-    s32 forceZ;                         /* 0x144 */
-    s32 torque;                         /* 0x148 */
-    s32 drag;                         /* 0x14C */
-    u8 pad150[0x160 - 0x150];
-    u16 unk160;                         /* 0x160 */
-    u8 pad162[0x170 - 0x162];
-    u8 unk170;                          /* 0x170 */
-    u8 unk171;                          /* 0x171 */
-    u8 pad172[0x190 - 0x172];
-};
-
-extern struct Car gCars[];
 extern u32 gUnk_0202A510;
 extern s32 gUnk_0202CB2C;
 extern s32 gUnk_0202CAEC;
@@ -86,7 +53,7 @@ void sub_08008480(struct Car *car, u8 b)
             *caec >>= 1;
     }
     gUnk_0202CBE4 = ((car->heading >> 8) - 0x40) & 0xFF;
-    gUnk_0202CAD8 = spd = car->yawRate << 7;
+    gUnk_0202CAD8 = spd = (*(s16 *)&car->yawRate) << 7;
     gUnk_0202CBE8 = (v1 = spd * -gUnk_0801CD08[((car->heading >> 8) - 0x40) & 0xFF]) >> 8;
     gUnk_0202CBEC = (v2 = spd * gUnk_0801CD08[(((car->heading >> 8) - 0x40) & 0xFF) + 0x40]) >> 8;
     if (car->unk160 != 0) {

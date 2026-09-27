@@ -2,15 +2,9 @@
 #include "gba/compat.h"
 #include "functions.h"
 #include "variables.h"
+#include "car.h"
 
 extern u8 gUnk_082B8710[], gUnk_082E4328[], gUnk_0829F30C[];
-struct Car
-{
-    u8 pad[0x162];
-    u8 driverId;
-    u8 rest[400 - 0x163];
-};
-extern struct Car gCars[];
 extern u8 gUnk_06016000[];
 
 /* MATCH. The ROM keeps &b[0] in r6 and recomputes &b[i] every iteration; the

@@ -1,19 +1,8 @@
 #include "global.h"
 #include "functions.h"
 #include "variables.h"
+#include "car.h"
 
-struct Car {
-    u8 pad00[0x50];
-    u32 progress;
-    u8 pad54[0x175 - 0x54];
-    u8 pitState;
-    u8 pad176[0x18C - 0x176];
-    u16 unk18C;
-    u8 pad18E[0x18F - 0x18E];
-    u8 unk18F;
-};
-
-extern struct Car gCars[];
 extern u16 gUnk_083675F0[];
 extern u16 gUnk_08367608[];
 
@@ -41,7 +30,7 @@ void UpdateAllCars(void)
     for (i = 0; i != count; i++) {
         UpdateCar(p, i);
         if (p->unk18C <= gUnk_083675F0[gTrackId]
-            && (p->progress & 0xFFFF) >= gUnk_083675F0[gTrackId] && CarNeedsPit(p) != 0
+            && ((*(u32 *)&p->progress) & 0xFFFF) >= gUnk_083675F0[gTrackId] && CarNeedsPit(p) != 0
             && p != gCars) {
             v = gUnk_0202EEB0;
             if (v != 0) {
@@ -52,7 +41,7 @@ void UpdateAllCars(void)
         }
         if (p != gCars && p->pitState != 0) {
             if (p->unk18C <= gUnk_08367608[gTrackId]
-                && (p->progress & 0xFFFF) >= gUnk_08367608[gTrackId])
+                && ((*(u32 *)&p->progress) & 0xFFFF) >= gUnk_08367608[gTrackId])
                 p->unk18F = 0;
         }
         p++;

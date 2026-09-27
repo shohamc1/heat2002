@@ -1,17 +1,12 @@
 #include "global.h"
 #include "functions.h"
 #include "variables.h"
-
-struct Car {
-    u8 pad00[0x50];
-    u32 unk50;
-};
+#include "car.h"
 
 extern u8 gUnk_0203DD08;
 extern s32 gUnk_0203DDF8;
 extern u8 gUnk_0203DD30;
 extern u32 gUnk_0203DD34;
-extern struct Car gUnk_0203D520[];
 
 
 void sub_08340EFC(void)
@@ -101,6 +96,6 @@ void sub_08340EFC(void)
             }
             break;
         }
-        gUnk_0203DD34 = gUnk_0203D520[0].unk50 & 0xFFFF;
+        gUnk_0203DD34 = gModule_Cars[0].progress & 0xFFFF;
     }
 }

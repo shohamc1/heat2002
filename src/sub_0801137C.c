@@ -2,15 +2,9 @@
 #include "functions.h"
 #include "data.h"
 #include "variables.h"
+#include "car.h"
 
-struct Car137C {
-    u8 pad[0x16C];
-    u32 unk16C;
-    u8 pad2[0x190 - 0x170];
-};
-
-extern struct Car137C gCars[];
-extern struct Car137C *gCarOrder[];
+extern struct Car *gCarOrder[];
 extern u8 gUnk_0829F2F0[];
 
 
@@ -18,8 +12,8 @@ void sub_0801137C(void)
 {
     u8 buf[0x28];
     u16 q1, q2, q3;
-    struct Car137C **p;
-    struct Car137C *car;
+    struct Car **p;
+    struct Car *car;
     u8 i;
     u16 tile;
 

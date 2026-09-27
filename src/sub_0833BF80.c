@@ -14,13 +14,7 @@
 #include "global.h"
 #include "functions.h"
 #include "variables.h"
-
-struct Ent {
-    u8 pad00[0x3E];
-    u8 unk3E;
-    u16 unk40;
-    u8 pad42[0x190 - 0x42];
-};
+#include "car.h"
 
 extern u8 gUnk_020391CC;
 extern u8 gUnk_02039154;
@@ -28,7 +22,6 @@ extern u32 gUnk_020391E0[4];
 extern u32 gUnk_02039158;
 extern s8 gUnk_020390D0;
 extern u8 gUnk_020250EC;
-extern struct Ent gUnk_0203D520[];
 extern u32 gUnk_02039110[4];
 extern s32 gUnk_020390AC;
 extern u8 gUnk_0203921C;
@@ -87,7 +80,7 @@ s32 sub_0833BF80(u8 arg0, u8 arg1)
     s32 rt;
     s32 i;
     u32 flag;
-    struct Ent *ent;
+    struct Car *ent;
     s32 t2;
     s32 rr;
     u8 first;
@@ -174,14 +167,14 @@ skip42B04:
     }
     gUnk_020390B8 = 0;
     if (gUnk_020390EC != 0) {
-        sub_0833D5F4(&gUnk_0203D520[(*(volatile u32 *)0x04000128 << 0x1A) >> 0x1E]);
+        sub_0833D5F4(&gModule_Cars[(*(volatile u32 *)0x04000128 << 0x1A) >> 0x1E]);
         goto after_d5f4;
 rrret:
         gUnk_02039154 = 1;
         goto ret1;
 after_d5f4: ;
     } else {
-        sub_0833D5F4(gUnk_0203D520);
+        sub_0833D5F4(gModule_Cars);
     }
     gUnk_02039110[0] = gUnk_02039110[2];
     gUnk_02039110[1] = gUnk_02039110[3];
@@ -210,12 +203,12 @@ after_d5f4: ;
             sub_08343148(gUnk_02039170, 0x4B, 0x5A);
         gUnk_02039134 = 0;
         if ((u8)t > 1)
-            ent = gUnk_0203D520;
+            ent = gModule_Cars;
         else
-            ent = &gUnk_0203D520[gUnk_0203E1B0];
+            ent = &gModule_Cars[gUnk_0203E1B0];
         sub_0833B81C(gUnk_02038FB0, 1,
-                    ((s16)(gUnk_02025190[ent->unk3E]
-                         + ((ent->unk40 * gUnk_020251A4[ent->unk3E]) >> 6))) >> 3);
+                    ((s16)(gUnk_02025190[ent->gear]
+                         + ((ent->rpm * gUnk_020251A4[ent->gear]) >> 6))) >> 3);
         if (gUnk_020390F0[0] != 0) {
             sub_0833D5F4(gUnk_0203D6B0);
             gUnk_020250EC = t2 = gUnk_020390AC / 256;
@@ -223,13 +216,13 @@ after_d5f4: ;
                 gUnk_020250EC = 4;
         } else {
             if (gUnk_020390EC != 0)
-                sub_0833D5F4(&gUnk_0203D520[(*(volatile u32 *)0x04000128 << 0x1A) >> 0x1E]);
+                sub_0833D5F4(&gModule_Cars[(*(volatile u32 *)0x04000128 << 0x1A) >> 0x1E]);
             else
-                sub_0833D5F4(gUnk_0203D520);
+                sub_0833D5F4(gModule_Cars);
             if (gUnk_0203916C[0] == 9 || gUnk_0203916C[0] == 0xD || gUnk_0203916C[0] == 0xE
                 || gUnk_0203916C[0] == 0xF || gUnk_0203916C[0] == 0x11) {
-                gUnk_02039110[0] = *(u32 *)&gUnk_0203D520[0];
-                gUnk_02039110[1] = *(u32 *)((u8 *)&gUnk_0203D520[0] + 8);
+                gUnk_02039110[0] = *(u32 *)&gModule_Cars[0];
+                gUnk_02039110[1] = *(u32 *)((u8 *)&gModule_Cars[0] + 8);
             }
         }
         sub_0833D448();

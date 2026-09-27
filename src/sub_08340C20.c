@@ -1,14 +1,7 @@
 #include "global.h"
 #include "functions.h"
+#include "car.h"
 
-struct Unk0202A550
-{
-    u8 filler0[0x162];
-    u8 unk162;
-    u8 filler163[400 - 0x163];
-};
-
-extern struct Unk0202A550 gUnk_0203D520[];
 
 
 void sub_08340C20(void)
@@ -20,7 +13,7 @@ void sub_08340C20(void)
 
     for (i = 1; i != 0x5; i++)
     {
-        if (gUnk_0203D520[i].unk162 != 99)
+        if (gModule_Cars[i].driverId != 99)
             continue;
         for (;;)
         {
@@ -31,7 +24,7 @@ void sub_08340C20(void)
             j = 0;
             do
             {
-                if (v == gUnk_0203D520[j].unk162)
+                if (v == gModule_Cars[j].driverId)
                     dup = 1;
                 j++;
             } while (j != 0x5);
@@ -39,6 +32,6 @@ void sub_08340C20(void)
                 continue;
             break;
         }
-        gUnk_0203D520[i].unk162 = v;
+        gModule_Cars[i].driverId = v;
     }
 }

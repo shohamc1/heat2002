@@ -1062,6 +1062,23 @@ placement stay — matched everything. When a header replaces local
 externs, give it the agreed type verbatim; force `const` only on plain
 data arrays, never on the pointer object itself.
 
+**Variant:** the 2026-09-27 struct-Car merge (81 files onto
+`include/car.h`) found three rules for view-casts that keep a file's
+bytes when the shared type differs from the local one. (1) On a bare
+array symbol, a field-address cast folds the offset into the pool word:
+`(*(u32 *)&gCars[0].progress)` emits `ldr r0, =0x0202A5A0; ldr r0,
+[r0]` where the ROM has `ldr r0, =gCars; ldr r0, [r0, #0x50]`. Cast the
+ARRAY first instead — `((volatile struct Car *)gCars)[0].progress` or
+`((struct S8View *)gCars)->lap` — which keeps the offset inside the
+`MEM`; through a pointer local, `&p->field` wraps are safe. (2) A
+same-width sign-only difference (u32 vs s32, an s16 store into a u16
+field) needs no cast when the value is only loaded, stored, or passed —
+and adding one can itself rotate registers; a cast is required only when
+the old sign fed a comparison (`bhi` vs `bgt`), a sign-extending
+promotion, or a shift. (3) A load-WIDTH difference (s8 vs u8 field,
+u32 vs `u16 *` slot) always needs the cast. Longest-first ordering stops
+`->unk14` renames clobbering `->unk140`/`->unk14C`.
+
 ### 32. A memory load the target puts before a constant
 
 You removed `volatile` from an `extern` (or moved the declaration to a

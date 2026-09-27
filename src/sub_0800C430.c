@@ -6,19 +6,8 @@
  */
 #include "global.h"
 #include "variables.h"
+#include "car.h"
 
-
-struct Car {
-    s32 posX;
-    u8 pad04[4];
-    s32 posZ;
-    s32 velX;
-    u8 pad10[4];
-    s32 velZ;
-    u8 pad18[0x190 - 0x18];
-};
-
-extern struct Car gCars[];
 
 void WorldToCarLocal(s32 *a, s32 b, s32 c, s32 *d);
 

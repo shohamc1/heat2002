@@ -3,26 +3,14 @@
 #include "functions.h"
 #include "m4a.h"
 #include "variables.h"
+#include "car.h"
 
 extern const u8 gUnk_0829F590[];
 extern const u8 gUnk_0829F59C[];
 extern const u8 gUnk_0829F5B4[];
 
-struct UnkCar {
-    u8 filler000[0x7D];
-    u8 unk7D;
-    u8 filler07E[0x162 - 0x7E];
-    u8 driverId;
-    u8 filler163[0x164 - 0x163];
-    u16 points;
-    u8 filler166[0x16C - 0x166];
-    u32 unk16C;
-    u8 filler170[0x190 - 0x170];
-};
-
 extern u16 gKeysHeld;
 extern u8 gUnk_0202A510[];
-extern struct UnkCar gCars[];
 extern u8 gUnk_0202A6B2;
 extern u8 gUnk_0202CD9C[];
 extern u8 gUnk_0202CDC0[];

@@ -1,8 +1,8 @@
 #include "global.h"
 #include "functions.h"
 #include "variables.h"
+#include "car.h"
 
-extern u8 gCars[][0x190];
 extern u8 gUnk_083681BC[];
 
 void sub_08008090(void);

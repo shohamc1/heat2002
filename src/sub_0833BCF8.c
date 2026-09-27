@@ -1,8 +1,8 @@
 #include "global.h"
 #include "variables.h"
+#include "car.h"
 
 extern u32 gUnk_02039200[];
-extern u8 gUnk_0203D520[][0x190];
 
 void sub_0833BCF8(void)
 {
@@ -23,7 +23,7 @@ void sub_0833BCF8(void)
             register u8 current asm("r0");
             do {
                 register u32 *slot asm("r0") = (u32 *)(((u32)i << 2) + (u32)dst);
-                *slot = (u32)&gUnk_0203D520[i][0];
+                    *slot = (u32)&((u8 (*)[0x190])gModule_Cars)[i][0];
                 i++;
                 current = *countTemp;
             } while (i != current);

@@ -1,7 +1,7 @@
 #include "global.h"
+#include "car.h"
 
 extern u32 gCarOrder[0x18];
-extern u32 gCars;
 
 u32 sub_08012C20(void)
 {

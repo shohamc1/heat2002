@@ -1,7 +1,6 @@
 #include "global.h"
 #include "variables.h"
-
-extern u8 gCars[];
+#include "car.h"
 
 void DrawCar(u32 arg0, u8 arg1);
 
@@ -14,7 +13,7 @@ void DrawAllCars(void)
     n = gNumCars[0];
     if (gIsLinkRace != 0)
         n = gNumLinkPlayers[0];
-    p = gCars;
+    p = (u8 *)gCars;
     i = 0;
     while (i != n) {
         if (gUnk_0200215C[0] != 2 || i == 0)

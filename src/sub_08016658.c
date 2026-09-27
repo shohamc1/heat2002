@@ -1,19 +1,10 @@
 #include "global.h"
 #include "functions.h"
 #include "variables.h"
+#include "car.h"
 
 extern u8 gUnk_0202F020;
 extern u16 gUnk_0202F04A[];
-
-struct Car {
-    u8 filler0[0x162];
-    u8 driverId;
-    u16 points;
-    u8 filler166[0x16C - 0x166];
-    u32 unk16C;
-    u8 filler170[400 - 0x170];
-};
-extern struct Car gCars[];
 
 void SaveSeason(void)
 {

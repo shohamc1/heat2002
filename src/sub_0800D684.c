@@ -2,6 +2,7 @@
 #include "data.h"
 #include "m4a.h"
 #include "variables.h"
+#include "car.h"
 
 /*
  * Car-vs-car box collision test. For every other car within range, the
@@ -22,45 +23,9 @@
  * - The range pre-check is `px` load-then-subtract and `pz` in one expression.
  */
 
-struct Ent {
-    s32 posX;
-    u8 pad04[4];
-    s32 posZ;
-    s32 velX;
-    u8 pad10[4];
-    s32 velZ;
-    u8 pad18[0x2C - 0x18];
-    s32 speed;
-    u8 pad30[0x34 - 0x30];
-    u16 heading;
-    u8 pad36[0x3E - 0x36];
-    u8 gear;
-    u8 pad3F;
-    s16 rpm;
-    u8 pad42[0x48 - 0x42];
-    s32 unk48;
-    u8 pad4C[0x55 - 0x4C];
-    u8 unk55;
-    u8 pad56[0x7C - 0x56];
-    u8 unk7C;
-    u8 unk7D;
-    u8 pad7E[0x88 - 0x7E];
-    s32 damage;
-    u8 pad8C[0xE8 - 0x8C];
-    u16 *unkE8;
-    u8 padEC[0x140 - 0xEC];
-    s32 forceX;
-    s32 forceZ;
-    s32 torque;
-    u8 pad14C[0x175 - 0x14C];
-    u8 pitState;
-    u8 pad176[0x18F - 0x176];
-    u8 unk18F;
-};
-
 struct Coll {
-    struct Ent *a;
-    struct Ent *c;
+    struct Car *a;
+    struct Car *c;
     u8 b;
     u8 d;
     s32 g;
@@ -71,27 +36,26 @@ struct Pt2 {
     s32 f1;
 };
 
-extern struct Ent gCars[];
 extern s32 gUnk_0202CCB0[8];
 extern s32 gUnk_0202CD30[8];
 extern struct Coll gUnk_0202CC90;
 extern struct Pt2 gUnk_083FDA2C[];
 extern u8 gUnk_0202A530;
 
-void sub_0800D5D4(struct Ent *a, s32 *d);
-void sub_0800D64C(struct Ent *a, s32 b, struct Ent *c, s32 d, struct Coll *e,
+void sub_0800D5D4(struct Car *a, s32 *d);
+void sub_0800D64C(struct Car *a, s32 b, struct Car *c, s32 d, struct Coll *e,
                   u8 *f, s32 g, s32 h);
 void sub_0800BA34(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g);
 void sub_0800E708(s32 a, u8 b);
-void ComputeForwardSpeed(struct Ent *a);
+void ComputeForwardSpeed(struct Car *a);
 
-u8 CollideCars(struct Ent *car)
+u8 CollideCars(struct Car *car)
 {
     u8 hit;
     s32 v[4];
     s32 a2;
     u8 i;
-    struct Ent *other;
+    struct Car *other;
     s32 d[2];
     s32 px, pz;
     s32 w, u;
@@ -100,7 +64,7 @@ u8 CollideCars(struct Ent *car)
     s32 m[2];
     s32 q[2];
     u8 count;
-    struct Ent *a, *b;
+    struct Car *a, *b;
     s32 ang, s, c, nx, nz, f;
     s32 sd;
 

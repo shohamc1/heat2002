@@ -2,19 +2,10 @@
 #include "functions.h"
 #include "m4a.h"
 #include "variables.h"
-
-struct Unk0202A550
-{
-    u8 filler0[0x7D];
-    u8 unk7D;
-    u8 filler7E[0x16C - 0x7E];
-    u32 unk16C;
-    u8 filler170[400 - 0x170];
-};
+#include "car.h"
 
 extern u32 gUnk_083FDD48[];
 extern u8 gUnk_083FDD34[];
-extern struct Unk0202A550 gCars[];
 
 
 u8 sub_080128E0(void)

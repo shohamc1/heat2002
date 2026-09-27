@@ -1,8 +1,8 @@
 #include "global.h"
 #include "variables.h"
+#include "car.h"
 
 extern s32 gUnk_020390AC;
-extern u8 gUnk_0203D520[];
 
 void sub_08342258(u8 *a, u16 b, u8 c);
 void sub_08342074(u8 *a);
@@ -27,7 +27,7 @@ void sub_083425C4(u8 *a, u8 b)
     if (gUnk_020390EC != 0) {
         if (b == gUnk_0203E1B0) {
             sub_083415B0(b);
-            q = gUnk_0203D520;
+            q = (u8 *)gModule_Cars;
             off = b * 400;
             p = off + q;
             if (p[0x150] != 0 && p[0x150] != 0x63)
@@ -35,7 +35,7 @@ void sub_083425C4(u8 *a, u8 b)
         }
     } else if (b == 0) {
         sub_083415B0(0);
-        p = gUnk_0203D520;
+        p = (u8 *)gModule_Cars;
         off = 0x150;
         if (p[off] != 0 && p[off] != 0x63)
             p[off + 0x16] = b;

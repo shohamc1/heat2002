@@ -1,27 +1,20 @@
 #include "global.h"
+#include "car.h"
 
-struct Unk0202A550
-{
-    u8 filler0[0x16C];
-    u32 unk16C;
-    u8 filler170[400 - 0x170];
-};
-
-extern struct Unk0202A550 gUnk_0203D520[];
-extern struct Unk0202A550 *gUnk_02039200[];
+extern struct Car *gUnk_02039200[];
 
 void sub_08344804(void)
 {
     u8 i;
-    struct Unk0202A550 **p;
-    struct Unk0202A550 *a;
-    struct Unk0202A550 *b;
+    struct Car **p;
+    struct Car *a;
+    struct Car *b;
     u32 swapped;
 
     i = 0;
     do
     {
-        gUnk_02039200[i] = &gUnk_0203D520[i];
+        gUnk_02039200[i] = &gModule_Cars[i];
         i++;
     } while (i != 0x5);
     /* A goto keeps the field-offset setup inside each sort pass. */

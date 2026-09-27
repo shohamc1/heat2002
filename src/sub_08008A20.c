@@ -1,14 +1,6 @@
 #include "global.h"
 #include "functions.h"
-
-struct Unk0202A550
-{
-    u8 filler0[0x162];
-    u8 driverId;
-    u8 filler163[400 - 0x163];
-};
-
-extern struct Unk0202A550 gCars[];
+#include "car.h"
 
 
 void AssignRandomDrivers(void)

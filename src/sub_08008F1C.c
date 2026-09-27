@@ -2,23 +2,9 @@
 #include "functions.h"
 #include "data.h"
 #include "variables.h"
-
-struct Car {
-    u32 posX;
-    u32 unk04;
-    u32 posZ;
-    u32 velX;
-    u8 pad10[0x14 - 0x10];
-    u32 velZ;
-    u8 pad18[0x2C - 0x18];
-    u32 speed;
-    u8 pad30[0x34 - 0x30];
-    u16 heading;
-    u8 pad36[0x190 - 0x36];
-};
+#include "car.h"
 
 extern struct Car *gCarOrder[];
-extern struct Car gCars[];
 extern u32 gUnk_0202CB14;
 extern u8 gUnk_083681B0[];
 extern u32 *gUnk_083C9574[];

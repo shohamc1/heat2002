@@ -3,17 +3,7 @@
 #include "functions.h"
 #include "m4a.h"
 #include "variables.h"
-
-struct UnkCar {
-    /* 0x00 */ u32 posX;
-    /* 0x04 */ u32 unk04;
-    /* 0x08 */ u32 posZ;
-    /* 0x0C */ u8 filler0C[0x3E - 0x0C];
-    /* 0x3E */ u8 gear;
-    /* 0x3F */ u8 filler3F[1];
-    /* 0x40 */ u16 rpm;
-    /* 0x42 */ u8 filler42[400 - 0x42];
-};
+#include "car.h"
 
 extern s32 gUnk_0200209C;          /* 0x0200209C */
 extern u32 gCamera[];        /* 0x02002100 */
@@ -25,7 +15,6 @@ extern u32 gUnk_020021D0[];        /* 0x020021D0 */
 extern u8 gUnk_020021EC[];         /* 0x020021EC */
 extern u8 gUnk_020021F0;           /* 0x020021F0 */
 extern u8 gUnk_02001F60[];         /* 0x02001F60 */
-extern struct UnkCar gCars[]; /* 0x0202A550 */
 extern u8 gUnk_0202A6E0[];         /* 0x0202A6E0 */
 extern u8 gUnk_08364ADC;           /* 0x08364ADC */
 extern u32 gUnk_08364AE0[];        /* 0x08364AE0 */
@@ -40,7 +29,7 @@ u8 RunRace(u32 a, u8 b)
     /* The ROM reserves an otherwise unused stack word. */
     u8 buf[4];
     u32 i;
-    struct UnkCar *p;
+    struct Car *p;
     s32 res;
     u8 flag;
     s32 v;
@@ -179,8 +168,8 @@ camera_ready:
                 SetCameraTarget((struct UnkStruct080043F8 *)(&gCars[0]));
             if (gUnk_0200215C[0] == 9 || gUnk_0200215C[0] == 0x0D || gUnk_0200215C[0] == 0x0E
                 || gUnk_0200215C[0] == 0x0F || gUnk_0200215C[0] == 0x11) {
-                gCamera[0] = gCars[0].posX;
-                gCamera[1] = gCars[0].posZ;
+                gCamera[0] = (*(u32 *)&gCars[0].posX);
+                gCamera[1] = (*(u32 *)&gCars[0].posZ);
             }
         }
         UpdatePaletteFade();

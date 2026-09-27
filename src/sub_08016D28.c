@@ -2,25 +2,19 @@
 #include "data.h"
 #include "functions.h"
 #include "variables.h"
-struct Unk0202A550 {
-    u8 filler0[0x4C];
+#include "car.h"
+
+/* car.h types 0x4C as u8 lap, but this function's load is a signed ldrsb
+   (its old local view typed the field s8). Reach it through this view so
+   the offset stays inside the MEM like a plain component access. */
+struct CarLapS8 {
+    u8 pad[0x4C];
     s8 lap;
-    u8 filler4D[0x50 - 0x4D];
-    u32 progress;
-    u8 filler54[0x7D - 0x54];
-    u8 unk7D;
-    u8 filler7E[0x104 - 0x7E];
-    u16 finishMin;
-    u16 finishSec;
-    u16 finishMs;
-    u8 filler10A[0x16C - 0x10A];
-    u32 unk16C;
-    u8 filler170[400 - 0x170];
 };
-extern struct Unk0202A550 gCars[];
+
 void sub_08016D28(u8 a)
 {
-    struct Unk0202A550 *p;
+    struct Car *p;
     s32 i;
     s32 v;
     u32 w;
@@ -36,7 +30,7 @@ void sub_08016D28(u8 a)
             p++;
         } while (i != 0x18);
     }
-    v = gCars[0].lap * gUnk_083FED18[gTrackId];
+    v = ((struct CarLapS8 *)gCars)->lap * gUnk_083FED18[gTrackId];
     w = gCars[0].unk16C;
     u = sub_08017230(w, v);
     p = gCars;

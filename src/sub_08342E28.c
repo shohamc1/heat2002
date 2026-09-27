@@ -1,8 +1,7 @@
 #include "global.h"
 #include "functions.h"
 #include "variables.h"
-
-extern u8 gUnk_0203D520[];
+#include "car.h"
 
 u32 sub_08341644(s32 x, s32 y, s32 *out);
 
@@ -27,7 +26,7 @@ void sub_08342E28(u32 a)
     s32 dy;
     s32 t;
 
-    tbl = (struct Tbl *)(gUnk_0203D520 + *(u8 *)(a + 0x34) * 0x190);
+    tbl = (struct Tbl *)((u8 *)gModule_Cars + *(u8 *)(a + 0x34) * 0x190);
     v0 = tbl->unkC4[*(s32 *)(a + 0x1C) + 2];
     v1 = tbl->unkD4[*(s32 *)(a + 0x1C) + 2];
     idx = *(u16 *)((u8 *)tbl + 0x34) >> 8;

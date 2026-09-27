@@ -24,42 +24,7 @@
 #include "functions.h"
 #include "m4a.h"
 #include "variables.h"
-
-struct Car {
-    s32 posX;                          /* 0x00 */
-    u8 pad04[4];
-    s32 posZ;                          /* 0x08 */
-    s32 velX;                          /* 0x0C */
-    u8 pad10[4];
-    s32 velZ;                          /* 0x14 */
-    u8 pad18[0x2C - 0x18];
-    s32 speed;                          /* 0x2C */
-    u8 pad30[4];
-    u16 heading;                          /* 0x34 */
-    u16 unk36;                          /* 0x36 */
-    u16 unk38;                          /* 0x38 */
-    u8 pad3A[0x4C - 0x3A];
-    u8 lap;                           /* 0x4C */
-    u8 waypoint;                           /* 0x4D */
-    u8 subStep;                           /* 0x4E */
-    s32 progress;                          /* 0x50 */
-    u8 pad54[0x150 - 0x54];
-    u8 racePosition;                         /* 0x150 */
-    u8 pad151[0x15C - 0x151];
-    u32 unk15C;                         /* 0x15C */
-    u8 pad160[0x166 - 0x160];
-    u8 unk166;                          /* 0x166 */
-    u8 unk167;                          /* 0x167 */
-    u8 unk168;                          /* 0x168 */
-    u8 pad169[0x16C - 0x169];
-    u32 unk16C;                         /* 0x16C */
-    u8 pad170[0x174 - 0x170];
-    u8 unk174;                          /* 0x174 */
-    u8 pad175[0x17C - 0x175];
-    u32 unk17C;                         /* 0x17C */
-    u8 pad180[0x18E - 0x180];
-    u8 unk18E;                          /* 0x18E */
-};
+#include "car.h"
 
 struct Track {
     s32 f0;
@@ -72,7 +37,6 @@ struct Track {
     u8 pad15[3];
 };
 
-extern struct Car gCars[];
 extern u8 gUnk_0202524C;
 extern struct Track *gUnk_020253D0;
 extern u32 gUnk_0202CC20;
@@ -156,7 +120,8 @@ u8 UpdateLapProgress(struct Car *p, u8 a1)
     {
     s32 t = e->unk10;
     if (t == 1) {
-        p->unk17C = gUnk_020253B8;
+            (*(u32 *)&p->unk17C) = gUnk_020253B8;
+
         if (p == gCars) {
             s32 v = 1;
             u16 w;
@@ -330,7 +295,7 @@ u8 UpdateLapProgress(struct Car *p, u8 a1)
 
     if ((u16)(e->unk10 - 1) <= 1) {
         if (a1 == v6C) {
-            gUnk_0202CC20 = p->unk15C;
+            gUnk_0202CC20 = (*(u32 *)&p->unk15C);
             if (e->unk10 != 1)
                 sub_0800B540();
             if (gOptions[3] != 0 && gIsDemo == 0 && gUnk_020021E0 == 0)

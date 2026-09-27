@@ -1,10 +1,10 @@
 #include "global.h"
 #include "variables.h"
+#include "car.h"
 
 extern u8 gUnk_0203E0F8;
 extern u8 gUnk_02039200[];
 extern u8 gUnk_0203D4A0[];
-extern u8 gUnk_0203D520[];
 
 void sub_0833D9E8(void);
 void sub_08340210(u8 a);
@@ -29,7 +29,7 @@ void sub_0834108C(u32 a1)
         ep = (u32 *)gUnk_0203D4A0;
         for (i = 0; i != 5; i++) {
             sub_08341288((u8)i, *q, ep[0] << 16, ep[1] << 16, ep[2] << 8,
-                         ((((s32)(*q++ - (u32)gUnk_0203D520)) * (s32)0xC28F5C29) >> 4) + v);
+                         ((((s32)(*q++ - (u32)gModule_Cars)) * (s32)0xC28F5C29) >> 4) + v);
             ep += 3;
         }
     } else {
@@ -37,7 +37,7 @@ void sub_0834108C(u32 a1)
         i = 0;
         off = 0;
         for (; i != 5; i++) {
-            sub_08341288((u8)i, off + (u32)gUnk_0203D520, ep[0] << 16, ep[1] << 16, ep[2] << 8, i + v);
+            sub_08341288((u8)i, off + (u32)gModule_Cars, ep[0] << 16, ep[1] << 16, ep[2] << 8, i + v);
             ep += 3;
             off += 0x190;
         }

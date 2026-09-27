@@ -1,16 +1,7 @@
 #include "global.h"
 #include "variables.h"
+#include "car.h"
 
-
-struct Standing {
-    u8 pad0[0x50];
-    s32 progress;
-    u8 pad54[0xFC];
-    u8 racePosition;
-    u8 pad151[0x3F];
-};
-
-extern struct Standing gCars[];
 
 void UpdateRacePosition(u8 idx)
 {

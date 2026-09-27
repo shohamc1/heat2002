@@ -1,6 +1,7 @@
 #include "global.h"
 #include "data.h"
 #include "functions.h"
+#include "car.h"
 
 struct EntityB658
 {
@@ -12,23 +13,13 @@ struct EntityB658
   u8 pad20[0x34 - 0x20];
   u8 unk34;
 };
-struct CarB658
-{
-  u8 pad00[0x34];
-  u16 heading;
-  u8 pad36[0xC4 - 0x36];
-  u32 unkC4[4];
-  u32 unkD4[4];
-  u8 padE4[400 - 0xE4];
-};
-extern struct CarB658 gCars[];
 extern u32 gUnk_083FF64C[];
 extern u8 gUnk_08331188[];
 u32 WorldToScreen(s32 x, s32 y, s32 *out);
 u32 *sub_080076C8(u32 a);
 void sub_0800B658(struct EntityB658 *e)
 {
-  struct CarB658 *car;
+  struct Car *car;
   s32 pos[2];
   s32 v0;
   s32 v1;

@@ -1,19 +1,8 @@
 #include "global.h"
 #include "functions.h"
 #include "variables.h"
+#include "car.h"
 
-struct Drv
-{
-    u8 filler0[0x7D];
-    u8 unk7D;
-    u8 filler7E[0x104 - 0x7E];
-    u16 finishMin;
-    u16 finishSec;
-    u16 finishMs;
-    u8 filler10A[400 - 0x10A];
-};
-
-extern struct Drv gCars[];
 extern u32 gUnk_08364B08[];
 
 void DrawTime(u32 a, u16 b, u16 c, u16 d);
@@ -21,8 +10,8 @@ void sub_08009FA0(u8 a, u32 b, u8 c);
 
 void sub_0800545C(void)
 {
-    struct Drv *p;
-    struct Drv *e;
+    struct Car *p;
+    struct Car *e;
     u32 base;
     u8 r7v;
     u8 r8v;

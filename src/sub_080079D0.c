@@ -1,18 +1,7 @@
 #include "global.h"
+#include "car.h"
 
-struct Unk0202A550Drv
-{
-    u8 filler0[0x8C];
-    s32 tireWear0;
-    s32 tireWear1;
-    s32 tireWear2;
-    s32 tireWear3;
-    s32 fuel;
-};
-
-extern struct Unk0202A550Drv gCars[];
-
-u8 CarNeedsPit(struct Unk0202A550Drv *a1)
+u8 CarNeedsPit(struct Car *a1)
 {
     u8 ret;
 

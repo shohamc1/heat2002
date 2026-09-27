@@ -1,7 +1,6 @@
 #include "global.h"
 #include "variables.h"
-
-extern u8 gUnk_0203D520[];
+#include "car.h"
 
 void sub_083431CC(u32 a, u32 b, u32 c, void *d);
 
@@ -21,7 +20,7 @@ u8 sub_08343234(u8 *a)
     count = gUnk_020390A0[0];
     if (gUnk_020390EC != 0)
         count = gUnk_020390BC[0];
-    p = gUnk_0203D520;
+    p = (u8 *)gModule_Cars;
     for (i = 0; i != count; i++, p += 0x190)
     {
         if (p == a)

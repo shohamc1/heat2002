@@ -1,7 +1,7 @@
 #include "global.h"
 #include "functions.h"
+#include "car.h"
 
-extern s32 gCars[];
 extern u32 gCamera[];
 extern u32 gUnk_083FF68C[];
 extern u8 gUnk_08331360[];
@@ -36,8 +36,8 @@ void sub_08008160(void)
     s32 cy;
     s32 j;
 
-    x = gCars[0];
-    y = gCars[2];
+    x = ((s32 *)gCars)[0];
+    y = ((s32 *)gCars)[2];
     cx = x >> 19;
     cy = y >> 19;
     cy += 2;
@@ -81,6 +81,6 @@ void sub_08008160(void)
         DrawSpriteText(gUnk_0806C8CC, 0x64, 0x6E);
     else
         DrawSpriteText(gUnk_0806C8D4, 0x64, 0x6E);
-    sub_08017594(buf, gUnk_0806C8DC, gCars[0] >> 19, gCars[2] >> 19);
+    sub_08017594(buf, gUnk_0806C8DC, ((s32 *)gCars)[0] >> 19, ((s32 *)gCars)[2] >> 19);
     DrawSpriteText(buf, 0x64, 0x78);
 }

@@ -1,6 +1,7 @@
 #include "global.h"
 #include "m4a.h"
 #include "variables.h"
+#include "car.h"
 
 /*
  * Per-frame car update: zero the impulse accumulators, run the sub-steps,
@@ -22,51 +23,6 @@
  *   `if (v != 0)`.
  */
 
-struct Car {
-    s32 posX;                          /* 0x00 */
-    u8 pad04[4];
-    s32 posZ;                          /* 0x08 */
-    s32 velX;                          /* 0x0C */
-    u8 pad10[4];
-    s32 velZ;                          /* 0x14 */
-    u8 pad18[0x2C - 0x18];
-    s32 speed;                          /* 0x2C */
-    u8 pad30[4];
-    u16 heading;                          /* 0x34 */
-    u8 pad36[0x3C - 0x36];
-    u16 yawRate;                          /* 0x3C */
-    u8 gear;                           /* 0x3E */
-    u8 pad3F;
-    s16 rpm;                          /* 0x40 */
-    u8 pad42[0x48 - 0x42];
-    s32 unk48;                          /* 0x48 */
-    u8 pad4C[4];
-    s32 progress;                          /* 0x50 */
-    u8 pad54;
-    u8 unk55;                           /* 0x55 */
-    u8 pad56[0x7C - 0x56];
-    u8 unk7C;                           /* 0x7C */
-    u8 pad7D[0x88 - 0x7D];
-    s32 damage;                          /* 0x88 */
-    u8 pad8C[0xE8 - 0x8C];
-    u16 *unkE8;                         /* 0xE8 */
-    u8 padEC[0x140 - 0xEC];
-    s32 forceX;                         /* 0x140 */
-    s32 forceZ;                         /* 0x144 */
-    s32 torque;                         /* 0x148 */
-    s32 drag;                         /* 0x14C */
-    u8 pad150[0x170 - 0x150];
-    u8 unk170;                          /* 0x170 */
-    u8 unk171;                          /* 0x171 */
-    u8 pad172[3];
-    u8 pitState;                          /* 0x175 */
-    u8 draftTimer;                          /* 0x176 */
-    u8 pad177[0x18C - 0x177];
-    u16 unk18C;                         /* 0x18C */
-    u8 pad18E[0x190 - 0x18E];
-};
-
-extern struct Car gCars[];
 extern u16 gUnk_08368290[];
 
 void sub_08007C44(struct Car *a);

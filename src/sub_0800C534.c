@@ -27,56 +27,30 @@
  * pad[10]) is as documented in the previous draft header below.
  */
 #include "global.h"
+/* functions.h prototypes UpdateAiDriver with the legacy local tag
+   Unk0800C534 (its gCars view). Bind that tag to the canonical record
+   for this TU only, so the prototype and the definition agree without
+   duplicating the struct. */
+#define Unk0800C534 Car
 #include "functions.h"
 #include "variables.h"
-
-struct Unk0800C534 {
-    s32 posX;
-    s32 unk04;
-    s32 posZ;
-    u32 velX;
-    u32 unk10;
-    u32 velZ;
-    u32 unk18;
-    u32 unk1C;
-    u32 unk20;
-    u32 unk24;
-    u32 unk28;
-    s32 speed;
-    u8 pad30[4];
-    u16 heading;
-    u8 pad36[0xA0 - 0x36];
-    u16 aiInput;
-    u8 padA2[0xF0 - 0xA2];
-    s32 unkF0;
-    u32 unkF4;
-    u32 unkF8;
-    u8 padFC[0x12C - 0xFC];
-    s32 unk12C;
-    u8 pad130[0x154 - 0x130];
-    s32 unk154;
-    u8 pad158[0x175 - 0x158];
-    u8 pitState;
-    u8 pad176[0x181 - 0x176];
-    u8 pitStall;
-};
+#include "car.h"
 
 extern u32 gUnk_0202CC24;
 extern u32 gUnk_0202CC34;
 extern u32 gUnk_0202CC38;
 extern u32 gUnk_0202CC3C;
-extern struct Unk0800C534 gCars[];
 extern u32 gUnk_083672F0[];
 
 void sub_08008394(u32 a);
 void sub_0800C430(u32 a);
 s32 sub_0800C358(u32 a, u32 b);
 s32 sub_0800BBFC(u32 a, u32 b, u32 c, u32 d, u32 e);
-void sub_0800C28C(struct Unk0800C534 *a);
+void sub_0800C28C(struct Car *a);
 s32 sub_0800C4E0(u32 a);
 s32 Atan2(s32 a, s32 b);
 
-void UpdateAiDriver(struct Unk0800C534 *ent, u8 param)
+void UpdateAiDriver(struct Car *ent, u8 param)
 {
     register u8 stv;
     u32 pad[10];
@@ -133,11 +107,11 @@ void UpdateAiDriver(struct Unk0800C534 *ent, u8 param)
     result = sub_0800C358((u32)ent, param);
     if (result == -1)
         return;
-    diff = sub_0800BBFC(gUnk_0202CC24, gUnk_0202CC38, ent->unkF4, gUnk_0202CC3C, gUnk_0202CC34);
+    diff = sub_0800BBFC(gUnk_0202CC24, gUnk_0202CC38, (*(u32 *)&ent->unkF4), gUnk_0202CC3C, gUnk_0202CC34);
     diff = diff + 0x40;
     if (diff >= ent->unk154)
         diff = diff - ent->unk154;
-    sub_0800BD98(diff,(struct OutBD98 *)buf,(u16 *)(ent->unkF4),(void *)(ent->unkF8));
+    sub_0800BD98(diff,(struct OutBD98 *)buf,(u16 *)(*(u32 *)&ent->unkF4),(void *)(*(u32 *)&ent->unkF8));
     ps = &ent->pitState;
     stv = 0;
     stv = *ps;

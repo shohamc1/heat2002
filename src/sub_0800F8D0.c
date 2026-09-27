@@ -1,20 +1,10 @@
 #include "global.h"
 #include "functions.h"
 #include "variables.h"
+#include "car.h"
 
-struct UnkCar {
-    /* 0x000 */ u8 filler000[0x7D];
-    /* 0x07D */ u8 unk7D;
-    /* 0x07E */ u8 filler07E[0x162 - 0x7E];
-    /* 0x162 */ u8 driverId;
-    /* 0x163 */ u8 filler163[0x16C - 0x163];
-    /* 0x16C */ u32 unk16C;
-    /* 0x170 */ u8 filler170[400 - 0x170];
-};
-
-extern struct UnkCar gCars[]; /* 0x0202A550 */
 extern u32 gUnk_0202CBD8;             /* 0x0202CBD8 */
-extern struct UnkCar *gCarOrder;  /* 0x0202EFC0 */
+extern struct Car *gCarOrder;  /* 0x0202EFC0 */
 
 
 /* Matching reconstruction: accept the menu's address argument, unused here. */

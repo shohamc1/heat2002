@@ -1,21 +1,12 @@
 #include "global.h"
 #include "functions.h"
 #include "variables.h"
-struct Unk_0202A550 {
-    u8 filler0[0x162];
-    u8 driverId;
-    u8 filler163;
-    u16 points;
-    u8 filler166[6];
-    u32 unk16C;
-    u8 filler170[400 - 0x170];
-};
-extern struct Unk_0202A550 gCars[];
+#include "car.h"
 extern u16 gUnk_0202F080[];
 extern u8 gUnk_0202F020;
 void LoadSeason(void)
 {
-    struct Unk_0202A550 *q;
+    struct Car *q;
     u16 *p;
     u32 t;
     s32 i;

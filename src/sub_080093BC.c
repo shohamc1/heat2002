@@ -2,29 +2,8 @@
 #include "functions.h"
 #include "m4a.h"
 #include "variables.h"
+#include "car.h"
 
-struct Car {
-    u8 pad00[0x88];
-    u32 damage;
-    u32 tireWear0;
-    u32 tireWear1;
-    u32 tireWear2;
-    u32 tireWear3;
-    s32 fuel;
-    u8 padA0[0x175 - 0xA0];
-    u8 pitState;
-    u8 pad176[0x178 - 0x176];
-    u32 unk178;
-    u8 pad17C[0x181 - 0x17C];
-    u8 pitStall;
-    u16 unk182;
-    s32 pitProgress;
-    s32 pitDuration;
-    u8 pad18C[0x18F - 0x18C];
-    u8 unk18F;
-};
-
-extern struct Car gCars[];
 extern u8 gUnk_0806C918[];
 extern u8 gUnk_0806C924[];
 extern u8 gUnk_0806C934[];

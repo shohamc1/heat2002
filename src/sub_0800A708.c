@@ -1,7 +1,6 @@
 #include "global.h"
 #include "gba/io_reg.h"
-
-extern u8 gCars[][0x190]; /* 0x0202A550 */
+#include "car.h"
 
 void UpdateSteering(s32 *a, u16 keys)
 {

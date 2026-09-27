@@ -1,6 +1,6 @@
 #include "global.h"
+#include "car.h"
 
-extern u8 gUnk_0203D520[];
 void sub_08342F4C(void);
 
 void *sub_0833FF44(void);
@@ -17,7 +17,7 @@ void sub_08342ED0(u8 a1, u8 a2)
 
     p = (u32 *)sub_0833FF44();
     if (p != 0) {
-        e = (u32)gUnk_0203D520 + a1 * 400;
+        e = (u32)gModule_Cars + a1 * 400;
         p[6] = 0;
         *(u8 *)((u32)p + 0x34) = a1;
         p[7] = a2;

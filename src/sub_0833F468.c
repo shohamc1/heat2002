@@ -10,36 +10,7 @@
 #include "global.h"
 #include "functions.h"
 #include "variables.h"
-
-struct Car {
-    s32 unk00;                          /* 0x00 */
-    u8 pad04[4];
-    s32 unk08;                          /* 0x08 */
-    s32 unk0C;                          /* 0x0C */
-    u8 pad10[4];
-    s32 unk14;                          /* 0x14 */
-    u8 pad18[0x34 - 0x18];
-    u16 unk34;                          /* 0x34 */
-    u16 unk36;                          /* 0x36 */
-    u16 unk38;                          /* 0x38 */
-    u8 pad3A[0x4C - 0x3A];
-    u8 unk4C;                           /* 0x4C */
-    u8 unk4D;                           /* 0x4D */
-    u8 unk4E;                           /* 0x4E */
-    s32 unk50;                          /* 0x50 */
-    u8 pad54[0x15C - 0x54];
-    u32 unk15C;                         /* 0x15C */
-    u8 pad160[0x166 - 0x160];
-    u8 unk166;                          /* 0x166 */
-    u8 unk167;                          /* 0x167 */
-    u8 unk168;                          /* 0x168 */
-    u8 pad169[0x16C - 0x169];
-    u32 unk16C;                         /* 0x16C */
-    u8 pad170[0x174 - 0x170];
-    u8 unk174;                          /* 0x174 */
-    u8 pad175[0x18E - 0x175];
-    u8 unk18E;                          /* 0x18E */
-};
+#include "car.h"
 
 struct Track {
     s32 f0;
@@ -53,7 +24,6 @@ struct Track {
 };
 
 extern u32 gUnk_0203DFC4;
-extern struct Car gUnk_0203D520[];
 extern struct Track *gUnk_0203B860;
 extern u32 gUnk_0203DE40;
 
@@ -79,15 +49,15 @@ u8 sub_0833F468(struct Car *p, u8 a1)
     else
         v68 = gUnk_020390A0[0];
 
-    e = &gUnk_0203B860[p->unk4D];
+    e = &gUnk_0203B860[p->waypoint];
     b = e + 1;
     if (e->unk10 == 1)
         b = gUnk_0203B860;
 
-    corners[0] = p->unk00 >> 16;
-    corners[1] = p->unk08 >> 16;
-    corners[2] = (p->unk00 + p->unk0C) >> 16;
-    corners[3] = (p->unk08 + p->unk14) >> 16;
+    corners[0] = p->posX >> 16;
+    corners[1] = p->posZ >> 16;
+    corners[2] = (p->posX + p->velX) >> 16;
+    corners[3] = (p->posZ + p->velZ) >> 16;
 
     x0 = e->f0;
     x1 = e->f4;
@@ -98,12 +68,12 @@ u8 sub_0833F468(struct Car *p, u8 a1)
     y2 = b->f8;
     y3 = b->fC;
 
-    l0 = (x0 * (16 - p->unk4E) + y0 * p->unk4E) >> 4;
-    l8 = (x2 * (16 - p->unk4E) + y2 * p->unk4E) >> 4;
-    l4 = (x1 * (16 - p->unk4E) + y1 * p->unk4E) >> 4;
-    lC = (x3 * (16 - p->unk4E) + y3 * p->unk4E) >> 4;
+    l0 = (x0 * (16 - p->subStep) + y0 * p->subStep) >> 4;
+    l8 = (x2 * (16 - p->subStep) + y2 * p->subStep) >> 4;
+    l4 = (x1 * (16 - p->subStep) + y1 * p->subStep) >> 4;
+    lC = (x3 * (16 - p->subStep) + y3 * p->subStep) >> 4;
 
-    p->unk50 = ((s8)p->unk4C << 16) + p->unk4D * 16 + p->unk4E;
+    p->progress = ((s8)p->lap << 16) + p->waypoint * 16 + p->subStep;
 
     det = (corners[2] - corners[0]) * (lC - l4)
         - (corners[3] - corners[1]) * (l8 - l0);
@@ -122,14 +92,14 @@ u8 sub_0833F468(struct Car *p, u8 a1)
         p->unk174 = 1;
         gUnk_0203DD10 = gUnk_0203DD10 + 1;
     }
-    p->unk4E = p->unk4E + 1;
+    p->subStep = p->subStep + 1;
     gUnk_020390CC = 1;
-    p->unk50 = ((s8)p->unk4C << 16) + p->unk4D * 16 + p->unk4E;
-    if (p->unk4E != 0x10)
+    p->progress = ((s8)p->lap << 16) + p->waypoint * 16 + p->subStep;
+    if (p->subStep != 0x10)
         return 1;
-    p->unk4E = 0;
-    p->unk36 = p->unk34;
-    p->unk38 = p->unk4D;
+    p->subStep = 0;
+    p->unk36 = p->heading;
+    p->unk38 = p->waypoint;
     {
     s32 t = e->unk10;
     if (t == 1) {
@@ -141,24 +111,24 @@ u8 sub_0833F468(struct Car *p, u8 a1)
             p->unk167 = 0x1E;
             p->unk168 = p->unk168 + 1;
         }
-        p->unk4C = p->unk4C + 1;
+        p->lap = p->lap + 1;
         {
         s32 z = 0;
         s32 m = z - 1;
-        p->unk4D = m;
+        p->waypoint = m;
         }
-        p->unk4E = 0;
-        p->unk50 = ((s8)p->unk4C << 16) + p->unk4D * 16;
+        p->subStep = 0;
+        p->progress = ((s8)p->lap << 16) + p->waypoint * 16;
         if (a1 == v6C) {
             if (gUnk_0203E1E0[0] != 0 && p->unk18E != 0)
                 sub_0833E160(gUnk_0203B6C8[0], gUnk_0203B6A8[0], gUnk_0203B858[0]);
         }
         p->unk166 = 1;
-        if (p == gUnk_0203D520 && gUnk_0203916C[0] == 5 && p->unk18E != 0) {
+        if (p == gModule_Cars && gUnk_0203916C[0] == 5 && p->unk18E != 0) {
             if ((time = gUnk_0203B6C8[0] * 60000 + gUnk_0203B6A8[0] * 1000 + gUnk_0203B858[0]) < p->unk16C)
                 p->unk16C = gUnk_0203B6C8[0] * 60000 + gUnk_0203B6A8[0] * 1000 + gUnk_0203B858[0];
         }
-        if (*(s8 *)&p->unk4C == gUnk_02039194) {
+        if (*(s8 *)&p->lap == gUnk_02039194) {
             if (gUnk_0203916C[0] == 0 || gUnk_0203916C[0] == 6 || gUnk_0203916C[0] == 1)
                 p->unk16C = gUnk_0203B704[0] * 60000 + gUnk_0203B6D0[0] * 1000 + gUnk_0203B6D4[0];
             if (a1 == v6C && p->unk18E != 0)
@@ -202,12 +172,12 @@ u8 sub_0833F468(struct Car *p, u8 a1)
         {
         s32 t2 = e->unk10;
         if (t2 == 1 && p->unk18E == 0) {
-            if (p == gUnk_0203D520)
+            if (p == gModule_Cars)
                 sub_08342A94();
             p->unk18E = t2;
         }
         }
     }
-    p->unk4D = p->unk4D + 1;
+    p->waypoint = p->waypoint + 1;
     return 1;
 }

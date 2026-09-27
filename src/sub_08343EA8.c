@@ -1,5 +1,6 @@
 #include "global.h"
 #include "variables.h"
+#include "car.h"
 
 /*
  * Car-vs-car box collision test: the high-region (0x0834 module) copy of
@@ -13,45 +14,10 @@
  * directly loses the libcall's hard-r0 return and flips the allocation.
  */
 
-struct Ent {
-    s32 unk00;
-    u8 pad04[4];
-    s32 unk08;
-    s32 unk0C;
-    u8 pad10[4];
-    s32 unk14;
-    u8 pad18[0x2C - 0x18];
-    s32 unk2C;
-    u8 pad30[0x34 - 0x30];
-    u16 unk34;
-    u8 pad36[0x3E - 0x36];
-    u8 unk3E;
-    u8 pad3F;
-    s16 unk40;
-    u8 pad42[0x48 - 0x42];
-    s32 unk48;
-    u8 pad4C[0x55 - 0x4C];
-    u8 unk55;
-    u8 pad56[0x7C - 0x56];
-    u8 unk7C;
-    u8 unk7D;
-    u8 pad7E[0x88 - 0x7E];
-    s32 unk88;
-    u8 pad8C[0xE8 - 0x8C];
-    u16 *unkE8;
-    u8 padEC[0x140 - 0xEC];
-    s32 unk140;
-    s32 unk144;
-    s32 unk148;
-    u8 pad14C[0x175 - 0x14C];
-    u8 unk175;
-    u8 pad176[0x18F - 0x176];
-    u8 unk18F;
-};
 
 struct Coll {
-    struct Ent *a;
-    struct Ent *c;
+    struct Car *a;
+    struct Car *c;
     u8 b;
     u8 d;
     s32 g;
@@ -62,28 +28,27 @@ struct Pt2 {
     s32 f1;
 };
 
-extern struct Ent gUnk_0203D520[];
 extern s32 gUnk_0203DED0[8];
 extern s32 gUnk_0203DF50[8];
 extern struct Coll gUnk_0203DEB0;
 extern struct Pt2 gUnk_0202AF08[];
 extern u8 gUnk_0203D4FC;
 
-void sub_08343DF8(struct Ent *a, s32 *d);
-void sub_08343E70(struct Ent *a, s32 b, struct Ent *c, s32 d, struct Coll *e,
+void sub_08343DF8(struct Car *a, s32 *d);
+void sub_08343E70(struct Car *a, s32 b, struct Car *c, s32 d, struct Coll *e,
                   u8 *f, s32 g, s32 h);
 void sub_08343138(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g);
 void sub_08344680(s32 a, u8 b);
-void sub_08341D64(struct Ent *a);
+void sub_08341D64(struct Car *a);
 void sub_0833A8C8(u16 idx);
 
-u8 sub_08343EA8(struct Ent *car)
+u8 sub_08343EA8(struct Car *car)
 {
     u8 hit;
     s32 v[4];
     s32 a2;
     u8 i;
-    struct Ent *other;
+    struct Car *other;
     s32 d[2];
     s32 px, pz;
     s32 w, u;
@@ -92,7 +57,7 @@ u8 sub_08343EA8(struct Ent *car)
     s32 m[2];
     s32 q[2];
     u8 count;
-    struct Ent *a, *b;
+    struct Car *a, *b;
     s32 ang, s, c, nx, nz, f;
     s32 sd;
 
@@ -101,31 +66,31 @@ u8 sub_08343EA8(struct Ent *car)
         count = gUnk_020390BC[0];
     if (car->unk7D != 0 && gUnk_020390EC != 0)
         return 0;
-    if (car->unk175 != 0) {
-        if (car == gUnk_0203D520)
+    if (car->pitState != 0) {
+        if (car == gModule_Cars)
             return 0;
         if (car->unk18F == 0)
             return 0;
     }
     gUnk_0203DF44 = 0x200000;
     hit = 0;
-    other = gUnk_0203D520;
+    other = gModule_Cars;
     pa = gUnk_0203DED0;
     sub_08343DF8(car, pa);
     for (i = 0; i != count; i++, other++) {
         if (other == car)
             continue;
-        if (other->unk175 != 0) {
-            if (other == gUnk_0203D520)
+        if (other->pitState != 0) {
+            if (other == gModule_Cars)
                 continue;
             if (other->unk18F == 0)
                 continue;
         }
         if (other->unk7D != 0 && gUnk_020390EC != 0)
             continue;
-        px = car->unk00;
-        px -= other->unk00;
-        pz = (car->unk08 - other->unk08) >> 8;
+        px = car->posX;
+        px -= other->posX;
+        pz = (car->posZ - other->posZ) >> 8;
         px >>= 8;
         if (px < 0)
             px = -px;
@@ -219,7 +184,7 @@ u8 sub_08343EA8(struct Ent *car)
     if (hit != 0) {
         a = gUnk_0203DEB0.a;
         b = gUnk_0203DEB0.c;
-        ang = b->unk34 >> 8;
+        ang = b->heading >> 8;
         s = gUnk_0200C3E8[ang];
         c = gUnk_0200C3E8[ang + 0x40];
         nx = gUnk_0202AF08[gUnk_0203DEB0.d].f0;
@@ -229,60 +194,60 @@ u8 sub_08343EA8(struct Ent *car)
         f = -gUnk_0203DEB0.g;
         q[0] = -(f * m[0]) / 256;
         q[1] = -(f * m[1]) / 256;
-        a->unk0C += q[0];
-        a->unk14 += q[1];
-        a->unk140 = 0;
-        a->unk144 = 0;
-        a->unk148 = 0;
-        b->unk0C -= q[0];
-        b->unk14 -= q[1];
-        b->unk140 = 0;
-        b->unk144 = 0;
-        b->unk148 = 0;
+        a->velX += q[0];
+        a->velZ += q[1];
+        a->forceX = 0;
+        a->forceZ = 0;
+        a->torque = 0;
+        b->velX -= q[0];
+        b->velZ -= q[1];
+        b->forceX = 0;
+        b->forceZ = 0;
+        b->torque = 0;
         f *= 1000;
         if (a->unk55 == 0)
             sub_08343138(0, 0, -6, 0, 0, 0, 0x400);
         if (a->unk7C < 5 || a->unk7C > 7) {
             if (gUnk_0203E0E0 != 0)
-                a->unk88 -= f >> 12;
-            if (a->unk88 > 40000) {
-                sd = -a->unk2C >> 12;
+                a->damage -= f >> 12;
+            if (a->damage > 40000) {
+                sd = -a->speed >> 12;
                 if (sd < 0)
                     sd = 0;
                 if (sd > 50)
-                    sub_08344680(a - gUnk_0203D520, gUnk_0203D4FC % 3);
+                    sub_08344680(a - gModule_Cars, gUnk_0203D4FC % 3);
                 else
-                    sub_08344680(a - gUnk_0203D520, 4);
+                    sub_08344680(a - gModule_Cars, 4);
             }
             gUnk_0203D4FC++;
         }
         sub_08341D64(a);
-        a->unk48 = a->unk2C;
-        if (a->unk2C > 0)
+        a->unk48 = a->speed;
+        if (a->speed > 0)
             a->unk48 = 0;
-        a->unk40 = (a->unk48 << 8) / -a->unkE8[a->unk3E];
+        a->rpm = (a->unk48 << 8) / -a->unkE8[a->gear];
         if (b->unk7C < 5 || b->unk7C > 7) {
             if (gUnk_0203E0E0 != 0)
-                b->unk88 -= f >> 14;
-            if (b->unk88 > 40000) {
-                sd = -b->unk2C >> 12;
+                b->damage -= f >> 14;
+            if (b->damage > 40000) {
+                sd = -b->speed >> 12;
                 if (sd < 0)
                     sd = 0;
                 if (sd > 50)
-                    sub_08344680(b - gUnk_0203D520, gUnk_0203D4FC % 3);
+                    sub_08344680(b - gModule_Cars, gUnk_0203D4FC % 3);
                 else
-                    sub_08344680(b - gUnk_0203D520, 4);
+                    sub_08344680(b - gModule_Cars, 4);
             }
             gUnk_0203D4FC++;
         }
         sub_08341D64(b);
-        b->unk48 = b->unk2C;
-        if (b->unk2C > 0)
+        b->unk48 = b->speed;
+        if (b->speed > 0)
             b->unk48 = 0;
-        b->unk40 = (b->unk48 << 8) / -b->unkE8[b->unk3E];
-        if (a == gUnk_0203D520 || b == gUnk_0203D520 || gUnk_020390EC != 0) {
+        b->rpm = (b->unk48 << 8) / -b->unkE8[b->gear];
+        if (a == gModule_Cars || b == gModule_Cars || gUnk_020390EC != 0) {
             if (gUnk_020391F0 == 0 && gUnk_020390F0[0] == 0 && gUnk_0203E120[3] != 0
-                && (car == gUnk_0203D520 || gUnk_020390EC != 0)
+                && (car == gModule_Cars || gUnk_020390EC != 0)
                 && a->unk55 == 0 && b->unk55 == 0)
                 sub_0833A8C8(0x12);
         }

@@ -1,21 +1,14 @@
 #include "global.h"
+#include "car.h"
 
-struct Unk0202A550
-{
-    u8 filler0[0x16C];
-    u32 unk16C;
-    u8 filler170[400 - 0x170];
-};
-
-extern struct Unk0202A550 gCars[];
-extern struct Unk0202A550 *gCarOrder[];
+extern struct Car *gCarOrder[];
 
 void SortCarsByTime(void)
 {
     u8 i;
-    struct Unk0202A550 **p;
-    struct Unk0202A550 *a;
-    struct Unk0202A550 *b;
+    struct Car **p;
+    struct Car *a;
+    struct Car *b;
     u32 swapped;
 
     i = 0;
