@@ -37,7 +37,8 @@ lines = 0
 types = collections.defaultdict(collections.Counter)
 files = collections.defaultdict(set)
 for path in glob.glob("src/**/*.c", recursive=True):
-    text = open(path, errors="replace").read()
+    text = re.sub(r"/\*.*?\*/|//[^\n]*", "",
+                  open(path, errors="replace").read(), flags=re.S)
     for m in EXTERN.finditer(text):
         lines += 1
         kind, name, sig = parse(m.group(1))

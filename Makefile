@@ -397,6 +397,7 @@ check: $(TARGET).gba check-code
 # Every byte outside the extracted assets: the code and the data still in
 # asm/. This is all CI can verify, since it never has baserom.gba.
 check-code: $(TARGET).gba $(TARGET).code.sha1
+	python3 scripts/externs.py --check
 	python3 scripts/assets.py mask $< $(BUILD)/$(TARGET).code.gba
 	@shasum -c $(TARGET).code.sha1 && echo "CODE MATCH" || (echo "CODE MISMATCH"; exit 1)
 

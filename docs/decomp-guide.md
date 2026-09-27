@@ -93,9 +93,7 @@ names locals by register. Read it, then write the C yourself.
 
 ```c
 #include "global.h"
-
-extern u16 gKeysHeld;      /* 0x020005C8, defined in symbols.ld */
-extern u16 gKeysPressed;   /* 0x020005CC */
+#include "variables.h"
 
 void sub_0800048C(void)
 {
@@ -105,22 +103,37 @@ void sub_0800048C(void)
 }
 ```
 
+`gKeysHeld` and `gKeysPressed` come from `include/variables.h` — every
+shared RAM global is declared there once (ROM data lives in
+`include/data.h`, functions in `include/functions.h` and `m4a.h`, the
+car structs in `include/car.h`, other shared structs in
+`include/structs.h`). A variable only your file uses can stay a local
+`extern`; the moment a second file needs it, move the declaration into
+the header. `make check-code` fails if two files declare the same
+symbol locally.
+
 Rules that decide whether this matches:
 
 - **Types from `include/global.h`**: `u8 u16 u32 s8 s16 s32`. Never `int`
   unless the asm shows no narrowing at all. `int` and `s32` are the same
   thing to the compiler, but be explicit anyway.
-- **RAM/ROM addresses become `extern` symbols**, not casts. Write
-  `extern u32 gFoo[];`. For RAM, add `gFoo = 0x0202EF00;` to `symbols.ld`
-  (one line, semicolon, hex). For ROM, label the data where it's defined
-  instead (see "Never write a ROM address" in `CLAUDE.md`). A cast like `((u32 *)0x083FE6C4)[i]` produces
+- **RAM/ROM addresses become `extern` symbols**, not casts. Shared ones
+  are already in a header — check `variables.h`/`data.h` first and add
+  the include. For a new RAM variable, add `extern TYPE gFoo;` to
+  `include/variables.h` (address-sorted) and `gFoo = 0x0202EF00;` to
+  `symbols.ld` (one line, semicolon, hex). For ROM, label the data where
+  it's defined instead and declare it in `include/data.h` (see "Never
+  write a ROM address" in `CLAUDE.md`). A cast like `((u32 *)0x083FE6C4)[i]` produces
   the same instructions in a *different order* and will not match. Hardware registers (`0x04xxxxxx`) are the exception: cast
   those, `*(volatile u16 *)0x04000130`.
 - **Name the symbol after its address** until you know what it is:
-  `gUnk_083FE6C4`. Renaming later is a one-line change in two places.
-- **Callee prototypes** go in the same `.c` file for now:
-  `void sub_0800BE00(u32 a, u32 b);` above your function. Get the parameter
-  widths from the callee's asm (its narrowing shifts at the top).
+  `gUnk_083FE6C4`. Renaming later is one scripted edit.
+- **Callee prototypes** already exist in `include/functions.h` (every
+  game function is declared there; sound calls are in `m4a.h`). If the
+  prototype's types don't fit your call site, cast the argument or the
+  result — or, when a cast changes the bytes, call through a function
+  pointer with the old signature and leave a comment naming the old
+  prototype (solved-walls entry 31).
 - **Locals: exact count, declaration order.** agbcc assigns registers in the
   order you declare. If the asm uses `r4` and `r5`, you likely have two
   locals that live across a call. If stack traffic appears in your output

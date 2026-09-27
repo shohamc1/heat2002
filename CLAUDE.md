@@ -58,6 +58,18 @@ SHA1 is wrong, no matter how clean the C looks. Never edit `baserom.gba`,
   does. `tools/bin/preproc` (built from `tools/tmc`) expands each call
   between cpp and agbcc. `include/data.h` declares the tables that several
   files read. See "Define ROM data in C" below.
+- `include/` — one declaration per shared symbol, enforced by
+  `make check-code` (`scripts/externs.py --check` fails if two files
+  declare the same symbol locally). `functions.h` holds every game
+  function's prototype, `m4a.h` the sound API and its tables,
+  `variables.h` the shared RAM globals (address-sorted, main program and
+  high-module sections; the addresses stay in `symbols.ld`),
+  `data.h` the shared ROM data, `car.h` the 0x190-byte `struct Car`
+  with `gCars`/`gModule_Cars`, and `structs.h` the other shared structs
+  (the 0x64 `struct Track`, the m4a table structs). A variable only one
+  file uses stays a local `extern` in that file. When a view-cast must
+  keep a file's old access width, follow the rules in solved-walls
+  entry 31 and its variants.
 - `docs/recon.md` — function inventory, call graph, entry-point trace, candidate ranking.
 - `docs/learnings/solved-walls.md`: **read when a function stalls.** It maps
   `match.py` diff symptoms to the source fixes that matched earlier walls,
@@ -187,6 +199,17 @@ cast is needed; when it loads the memory first, cast that access.
 The compiler is old and literal. It does almost no reordering, so the asm
 maps closely onto the source:
 
+- Declare every function you call in `include/functions.h` (or `m4a.h`
+  for the sound API), never a local prototype. Declare a variable in
+  `include/variables.h` (RAM) or `include/data.h` (ROM data) as soon as
+  a second file uses it; before that a local `extern` in its only user
+  is fine. `make check-code` rejects a symbol declared locally in more
+  than one file. A shared array of structs needs its struct completed in
+  a header above the extern (`car.h`, `structs.h`): a header that
+  declares a struct array before the file defines the struct changes
+  the generated code. When a header's type differs from what a matched
+  file's code assumed, cast at the access site — solved-walls entry 31
+  and its variants list the cast shapes that keep the bytes.
 - Match the exact number and order of locals; agbcc assigns registers in
   declaration order.
 - An address (or any argument costing more than one cheap move) is loaded
