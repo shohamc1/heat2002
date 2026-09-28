@@ -11,7 +11,7 @@ extern s32 gUnk_0202CAD8;
 extern s32 gUnk_0202CBE8;
 extern s32 gUnk_0202CBEC;
 #include "m4a.h"
-void sub_0800B764(u8 a, u8 b);
+void AddSkidSmokeTask(u8 a, u8 b);
 
 
 void UpdateTireForces(struct Car *car, u8 carIndex)
@@ -115,7 +115,7 @@ void ComputeAxleTireForce(u8 axle, struct Car *car)
         }
         if (slipSpeed < -gTireSlipLimit) {
             slipSpeed = -gTireSlipLimit / 2;
-            sub_0800B764(gCurrentCarIndex, 2);
+            AddSkidSmokeTask(gCurrentCarIndex, 2);
             if (gIsLinkRace == 0) {
                 if (gCurrentCarIndex == 0)
                     goto e2check;
@@ -125,7 +125,7 @@ void ComputeAxleTireForce(u8 axle, struct Car *car)
                 goto tail;
         } else if (slipSpeed > gTireSlipLimit) {
             slipSpeed = gTireSlipLimit / 2;
-            sub_0800B764(gCurrentCarIndex, 3);
+            AddSkidSmokeTask(gCurrentCarIndex, 3);
             if (gIsLinkRace == 0) {
                 if (gCurrentCarIndex == 0)
                     goto e2check;

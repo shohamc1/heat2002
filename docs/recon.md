@@ -72,7 +72,7 @@ Ties are ordered by address. The caller column is included to distinguish merely
 |---:|---|---:|---:|---:|
 | 1 | `DummyHudHook [sub_08005AEC]` | `0x08005AEC` | 1 | 0 |
 | 2 | `DummyUiFontLoad` | `0x08006734` | 1 | **38** |
-| 3 | `sub_0800B614` | `0x0800B614` | 1 | 1 |
+| 3 | `DummyWallHitHook [sub_0800B614]` | `0x0800B614` | 1 | 1 |
 | 4 | `sub_0800BA34` | `0x0800BA34` | 1 | 1 |
 | 5 | `sub_0800E708` | `0x0800E708` | 1 | 1 |
 | 6 | `sub_0800E730` | `0x0800E730` | 1 | 1 |

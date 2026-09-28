@@ -6,7 +6,7 @@
 
 
 void DrawTime(u32 a, u16 b, u16 c, u16 d);
-void sub_08009FA0(u8 a, u32 b, u8 c);
+void DrawLinkMarker(u8 a, u32 b, u8 c);
 
 void DrawLinkFinishTimes(void)
 {
@@ -42,7 +42,7 @@ void DrawLinkFinishTimes(void)
         DrawSmallDigit((u16 *)dest, place);
         DrawTime(dest, finishedCar->finishMin, finishedCar->finishSec, finishedCar->finishMs);
         if (gIsLinkRace != 0)
-            sub_08009FA0(0x40, row * 16, gFinishedCarOrder[i]);
+            DrawLinkMarker(0x40, row * 16, gFinishedCarOrder[i]);
         row++;
         place++;
     }

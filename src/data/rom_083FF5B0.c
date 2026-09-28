@@ -2,8 +2,8 @@
 #include "data.h"
 
 /* 0x083FF5B0-0x083FF724: OBJ gfx frame lists. gSplashSpriteFrames is
- * the 23-frame animation shared by the splash loop (sub_0800B0A0), the
- * race intro (sub_0800B120) and the start countdown (sub_0800B1A4);
+ * the 23-frame animation shared by the splash loop (RaceStartSplashTask), the
+ * race intro (LinkRaceStartSplashTask) and the start countdown (sub_0800B1A4);
  * the four tables after it feed the race particle effects and the
  * minimap track tiles. */
 

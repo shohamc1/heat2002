@@ -2,7 +2,7 @@
 #include "functions.h"
 #include "variables.h"
 #include "car.h"
-s16 sub_0800A034(struct Car *a);
+s16 GetGearForSpeed(struct Car *a);
 #include "data.h"
 struct Unk0800A310 {
     u32 posX;
@@ -87,7 +87,7 @@ void UpdateEngine(struct Car *car, s32 mode)
     }
     t3 = car->speed;
     if (t3 <= 0)
-        r = sub_0800A034(car);
+        r = GetGearForSpeed(car);
     else
         r = 0;
     car->engineForce = -((-car->gearRatioTable[car->gear]) * v) >> 8;

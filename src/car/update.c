@@ -24,9 +24,7 @@
  * - Everything from the sound check to the unk40 division is inside
  *   `if (v != 0)`.
  */
-
 extern u16 gTrackAiDragDivisors[];
-
 void UpdateCarSurface(struct Car *a);
 void ComputeForwardSpeed(struct Car *a);
 void UpdateEngine(struct Car *a, u32 b);
@@ -34,22 +32,79 @@ void UpdateTireForces(struct Car *a, u8 b);
 void ComputeCarCorners(struct Car *a);
 s32 CollideCarWithWalls(struct Car *a);
 s32 CheckDrafting(struct Car *a);
-void sub_0800B618(u8 a, u8 b);
+void AddDraftStreakTask(u8 a, u8 b);
 u8 CollideCars(struct Car *a);
 u8 UpdateLapProgress(struct Car *p, u8 a1);
-
 void UpdatePitStop(struct Car *a, u8 b);
 void UpdateRacePosition(u8 a);
-void sub_0800A628(struct Car *a);
-void sub_0800B8A8(struct Car *a);
-
+void ClampSteerHeading(s32 *car);
+void AddDamageSmokeTask(struct Car *a);
 extern u16 gPitEntryProgressPoints[];
 extern u16 gPitExitProgressPoints[];
-
 void UpdateCar(struct Car *p, u8 idx);
 u8 CarNeedsPit(struct Car *p);
 u8 FindFreePitStall(u8 a);
 void EnterPit(struct Car *p, u8 a);
+#include "data.h"
+
+
+void ClampSteerHeading(s32 *car)
+{
+    register u32 rot asm("r9");
+    u32 tableIdx;
+    register s32 scale asm("r1");
+    s32 sinHeading;
+    s32 cosHeading;
+    register s32 sin1 asm("r5");
+    register s32 cos1 asm("r4");
+    register s32 steerIdx asm("r2");
+    register s32 steerVal asm("r0");
+    register s32 sinSteer asm("r3");
+    register s32 cosSteer asm("r2");
+    register s32 sin2 asm("r8");
+    s32 cos2;
+    s32 newSteer;
+    register s32 *steerPtr asm("r6");
+    s16 *p;
+    register u32 rot2 asm("r1");
+    s32 tmp;
+    register s32 idx asm("r0");
+
+    rot = (((u16 *)car)[0x1A] >> 10) << 16;
+    tableIdx = rot >> 14;
+    sinHeading = gSinTable[tableIdx];
+    cosHeading = gSinTable[tableIdx + 0x40];
+    scale = -256;
+    tmp = -(sinHeading * scale);
+    sin1 = tmp >> 8;
+    tmp = cosHeading * scale;
+    cos1 = tmp >> 8;
+    steerPtr = &car[0x4B];
+    steerVal = *steerPtr;
+    steerIdx = (steerVal >> 10) & 0x3F;
+    steerIdx = steerIdx << 2;
+    sinSteer = gSinTable[steerIdx];
+    idx = steerIdx;
+    asm volatile("" : "+r"(idx));
+    idx += 0x40;
+    cosSteer = gSinTable[idx];
+    sin2 = -(sinSteer * scale) >> 8;
+    cos2 = (cosSteer * scale) >> 8;
+    if ((sin2 * sin1 + cos1 * cos2) >> 8 > 0x8D)
+        return;
+    rot2 = rot;
+    tableIdx = rot2 >> 14;
+    p = &gSinTable[tableIdx];
+    sin1 = gSinTable[tableIdx + 0x40];
+    cos1 = *p;
+    if (sin2 * sin1 + cos1 * cos2 < 0)
+        newSteer = ((u16 *)car)[0x1A] - 0x2800;
+    else
+        newSteer = ((u16 *)car)[0x1A] + 0x2800;
+    *steerPtr = newSteer;
+    car[0x4B] = *(u16 *)&car[0x4B];
+}
+
 
 void UpdateSteering(s32 *a, u16 keys)
 {
@@ -91,6 +146,7 @@ void UpdateSteering(s32 *a, u16 keys)
         ((u8 *)a)[0x84] = 2;
     }
 }
+
 
 void UpdateCarPhysics(struct Car *car, u32 b, u8 c)
 {
@@ -145,8 +201,8 @@ void UpdateCarPhysics(struct Car *car, u32 b, u8 c)
             if (car->draftTimer != 0)
                 car->draftTimer--;
             car->drag = (car->drag * 3) >> 2;
-            sub_0800B618(c, 0);
-            sub_0800B618(c, 1);
+            AddDraftStreakTask(c, 0);
+            AddDraftStreakTask(c, 1);
         }
     }
     if (gGameMode[0] != 2)
@@ -180,6 +236,7 @@ again:
     car->yawRate = ((s16)car->yawRate * 31) >> 5;
 }
 
+
 void UpdateCar(struct Car *car, u8 idx)
 {
     u16 *p;
@@ -191,7 +248,7 @@ void UpdateCar(struct Car *car, u8 idx)
             UpdateCarPhysics(car, gPlayerKeys[idx], idx);
         else
             UpdateCarPhysics(car, 2, idx);
-        sub_0800A628(car);
+        ClampSteerHeading((s32 *)car);
     } else if (idx == 0) {
         if (car->pitState != 0) {
             UpdatePitStop(car, 0);
@@ -201,14 +258,14 @@ void UpdateCar(struct Car *car, u8 idx)
             UpdateAiDriver((struct Unk0800C534 *)car, idx);
             UpdateCarPhysics(car, car->aiInput, idx);
         } else {
-            /* One shared sub_0800A628 call, as in the gIsLinkRace branch:
+            /* One shared ClampSteerHeading call, as in the gIsLinkRace branch:
                a call that ends a block before a label gets a USE insn from
                flow, which keeps jump2 from cross-jumping the call itself. */
             if (gRaceEndState == 0)
                 UpdateCarPhysics(car, gKeysHeld, 0);
             else
                 UpdateCarPhysics(car, 2, 0);
-            sub_0800A628(car);
+            ClampSteerHeading((s32 *)car);
         }
     } else {
         if (gGameMode[0] == 9 || gGameMode[0] == 0xD || gGameMode[0] == 0xE
@@ -231,12 +288,12 @@ common:
             car->aiInput = v;
             p = &car->aiInput;
         }
-        sub_0800A628(car);
+        ClampSteerHeading((s32 *)car);
         UpdateCarPhysics(car, *p, idx);
     }
 
     if (car->damage > 0x11940 && car->carState != 1 && ((*(u32 *)&gFrameCounter) & 0x3F) == 0)
-        sub_0800B8A8(car);
+        AddDamageSmokeTask(car);
 
     if (gIsLinkRace != 0) {
         if (idx == gLinkPlayerId[0]) {
@@ -251,6 +308,7 @@ common:
     }
     car->tickCount++;
 }
+
 
 void UpdateAllCars(void)
 {
@@ -288,3 +346,4 @@ void UpdateAllCars(void)
         p++;
     }
 }
+

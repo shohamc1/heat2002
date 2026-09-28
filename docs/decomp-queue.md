@@ -244,14 +244,14 @@ What the source shapes turned out to be:
   counter (`s32` where the ROM compares `ble`), the
   `sub_0833FFA8(a)`/`sub_0833FF84(a)` unlink+flag pair on death, and the
   `t = (sub_08007714(...) << 12) | CONST; arg1 = spr[4] | t;` OAM idiom
-  as two statements. `sub_0800AE94` reads `gKeysHeld` NON-volatile (the
+  as two statements. `DemoEndTask [sub_0800AE94]` reads `gKeysHeld` NON-volatile (the
   old_agbcc constant-hoist order).
-- New matching lessons (details in solved-walls): `sub_0800B46C`'s
+- New matching lessons (details in solved-walls): `LapSnapshotTask [sub_0800B46C]`'s
   N-separate-pointer store groups (a pointer reassigned per group gets
   punted to global allocation and lands high, rotating every register);
   `sub_0800B1A4`'s runtime-built `0x80680040` attr (pieces hidden from
   cse across a block boundary, then reload rematerializes them at the
-  use); `sub_0800B658`'s permuter-found rel/dy variable chaining; and
+  use); `DraftStreakTask [sub_0800B658]`'s permuter-found rel/dy variable chaining; and
   `sub_08342E28`'s ARRAY_REF member-array indexing to stop address-fold
   CSE. The permuter masks `bl` targets — its score 0 can hide swapped
   calls; only match.py decides.
@@ -262,30 +262,30 @@ What the source shapes turned out to be:
 | 92 | `sub_0833FF84` | 14 | port of `sub_0800792C`; helper, 12 callers |
 | 93 | `sub_08007950` | 26 | helper, 13 callers |
 | 94 | `sub_0833FFA8` | 26 | port of `sub_08007950`; helper, 12 callers |
-| 95 | `sub_0800B5D4` | 28 |  |
-| 96 | `sub_08342DA4` | 28 | port of `sub_0800B5D4` |
-| 97 | `sub_0800B384` | 62 |  |
-| 98 | `sub_08342B54` | 62 | port of `sub_0800B384` |
+| 95 | `DelayTask [sub_0800B5D4]` | 28 |  |
+| 96 | `sub_08342DA4` | 28 | port of `DelayTask` |
+| 97 | `LapTimeTask [sub_0800B384]` | 62 |  |
+| 98 | `sub_08342B54` | 62 | port of `LapTimeTask` |
 | 99 | `sub_083429E8` | 36 |  |
 | 100 | `sub_083429B8` | 38 |  |
 | 101 | `sub_0800B030` | 86 |  |
 | 102 | `sub_08342948` | 86 | port of `sub_0800B030` |
-| 103 | `sub_0800AE94` | 110 |  |
-| 104 | `sub_083427DC` | 110 | port of `sub_0800AE94` |
-| 105 | `sub_0800B46C` | 178 |  |
-| 106 | `sub_08342C3C` | 178 | port of `sub_0800B46C` |
+| 103 | `DemoEndTask` | 110 |  |
+| 104 | `sub_083427DC` | 110 | port of `DemoEndTask` |
+| 105 | `LapSnapshotTask` | 178 |  |
+| 106 | `sub_08342C3C` | 178 | port of `LapSnapshotTask` |
 | 107 | `sub_08342F4C` | 90 |  |
 | 108 | `sub_0834288C` | 100 |  |
-| 109 | `sub_0800B0A0` | 104 |  |
-| 110 | `sub_0800B120` | 108 |  |
+| 109 | `RaceStartSplashTask [sub_0800B0A0]` | 104 |  |
+| 110 | `LinkRaceStartSplashTask [sub_0800B120]` | 108 |  |
 | 111 | `sub_08342A14` | 116 |  |
-| 112 | `sub_0800B8EC` | 256 |  |
-| 113 | `sub_08342FF0` | 256 | port of `sub_0800B8EC` |
+| 112 | `DamageSmokeTask [sub_0800B8EC]` | 256 |  |
+| 113 | `sub_08342FF0` | 256 | port of `DamageSmokeTask` |
 | 114 | `sub_0800AF44` | 140 |  |
 | 115 | `sub_08342E28` | 156 |  |
-| 116 | `sub_0800B7E0` | 182 |  |
+| 116 | `SkidSmokeTask [sub_0800B7E0]` | 182 |  |
 | 117 | `sub_0800BA38` | 184 |  |
-| 118 | `sub_0800B658` | 244 |  |
+| 118 | `DraftStreakTask` | 244 |  |
 | 119 | `sub_0800B1A4` | 262 |  |
 
 ## Tier 4: Pairs to decompile once and port — finished 2026-09-24

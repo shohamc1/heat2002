@@ -368,7 +368,7 @@ if (gUnk_020021E0 == 0)
     sub_0800A80C(car, gKeysHeld, 0);
 else
     sub_0800A80C(car, 2, 0);
-sub_0800A628(car);   /* once, not in each arm */
+ClampSteerHeading [sub_0800A628](car);   /* once, not in each arm */
 ```
 
 **Seen in:** `sub_0800AB78` (`9e6d1fa`).
@@ -632,7 +632,7 @@ register, rotating everything below it.
 what places `mov rX, sp` before the calls — a plain `buf[i] = f() + c`
 emits the sp copy after them.
 
-**Seen in:** `sub_0800B46C` (`6305f70`).
+**Seen in:** `LapSnapshotTask [sub_0800B46C]` (`6305f70`).
 
 ### 17. A comparison folded into a branchless bit trick
 

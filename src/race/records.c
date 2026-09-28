@@ -1,7 +1,7 @@
 #include "global.h"
 #include "variables.h"
 void SetTrackRecord(u32 a, u32 b, u32 c);
-void sub_0800B594(void);
+void AddTrackRecordTasks(void);
 
 void SetTrackRecord(u32 a, u32 b, u32 c)
 {
@@ -20,6 +20,6 @@ void CheckTrackRecord(u16 a1, u16 a2, u16 a3)
             return;
         SetTrackRecord(a1, a2, a3);
         gNewTrackRecord = 1;
-        sub_0800B594();
+        AddTrackRecordTasks();
     }
 }

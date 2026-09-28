@@ -92,7 +92,7 @@ extern s32 gUnk_0202CC70;
 u16 *GetWallListAt(s16 x, s16 y);
 void TestCornersVsWalls(struct Corner *a1, struct Box *a2, struct Box *a3,
                   struct Res *a4, u16 *a5, s32 *a6);
-void sub_0800B614(s32 a, s32 b);
+void DummyWallHitHook(s32 a, s32 b);
 
 s32 CollideCarWithWalls(struct Ent *a)
 {
@@ -152,7 +152,7 @@ s32 CollideCarWithWalls(struct Ent *a)
         gWallCollisionNormal[2] = res.unk08;
         a->unk0C -= d0;
         a->unk14 -= d1;
-        sub_0800B614(a->cornerX[res.unk0C], a->cornerZ[res.unk0C]);
+        DummyWallHitHook(a->cornerX[res.unk0C], a->cornerZ[res.unk0C]);
         {
             s32 v1 = gSinTable[res.unk0D];
             s32 v2 = gSinTable[res.unk0D + 0x40];

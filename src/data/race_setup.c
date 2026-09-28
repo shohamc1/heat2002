@@ -589,5 +589,5 @@ const s32 gCornerOffsetZ[4] = { -917504, -917504, 1114112, 1114112 };
 const u16 gTrackAiDragDivisors[12] = { 500, 460, 420, 470, 460, 440, 475, 480, 470, 460, 470, 480 };
 // No decompiled code reads this pointer pair yet.
 const u8 *const gUnk_083682A8[] = { gText_Demo, gText_OutOfTime };
-// One parameter per task spawned by sub_0800B594 (records screen rows).
+// One parameter per task spawned by AddTrackRecordTasks (records screen rows).
 const u8 gRecordsTaskParams[12] = { 64, 72, 80, 96, 104, 112, 128, 136, 144, 152, 160, 168 };

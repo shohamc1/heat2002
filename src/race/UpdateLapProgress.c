@@ -244,7 +244,7 @@ u8 UpdateLapProgress(struct Car *p, u8 a1)
             if (gGameMode[0] == 0 || gGameMode[0] == 6 || gGameMode[0] == 1)
                 p->finishTime = gRaceMin * 60000 + gRaceSec * 1000 + gRaceMs;
             if (a1 == v6C && p->lapStartedFlag != 0)
-                sub_0800B3D4(gLapMin[0], gLapSec[0], gLapMs[0]);
+                DrawLapTime(gLapMin[0], gLapSec[0], gLapMs[0]);
             if (gGameMode[0] != 2) {
                 RecordFinishTime((struct Unk0800A438 *)p);
                 gFinishedCarOrder[gNumFinishedCars] = a1;
@@ -273,7 +273,7 @@ u8 UpdateLapProgress(struct Car *p, u8 a1)
             }
         } else {
             if (a1 == v6C && p->lapStartedFlag != 0)
-                sub_0800B3D4(gLapMin[0], gLapSec[0], gLapMs[0]);
+                DrawLapTime(gLapMin[0], gLapSec[0], gLapMs[0]);
         }
         if (a1 == v6C)
             ResetLapTimer();
@@ -284,7 +284,7 @@ u8 UpdateLapProgress(struct Car *p, u8 a1)
         if (a1 == v6C) {
             gUnk_0202CC20 = (*(u32 *)&p->tickCount);
             if (e->unk10 != 1)
-                sub_0800B540();
+                SaveLapTime();
             if (gOptions[3] != 0 && gIsDemo == 0 && gRaceEndState == 0)
                 m4aSongNumStart(0x33);
             if (a1 == v6C && gGameMode[0] != 0xA) {
@@ -296,7 +296,7 @@ u8 UpdateLapProgress(struct Car *p, u8 a1)
         s32 t2 = e->unk10;
         if (t2 == 1 && p->lapStartedFlag == 0) {
             if (p == gCars)
-                sub_0800B2C4();
+                StartRace();
             p->lapStartedFlag = t2;
         }
         }

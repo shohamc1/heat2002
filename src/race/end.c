@@ -7,9 +7,45 @@ struct EntityAF44 {
     /* 0x00 */ u8 pad0[0x18];
     /* 0x18 */ u32 unk18;
 };
-
 u32 AllocTask(void);
 void AddTask(u32 a);
+extern u8 gText_DemoMode[];
+extern u8 gText_BlankRow12_3[];
+void DemoEndTask(u32 task);
+void AddTask(u32);
+
+
+void DemoEndTask(u32 task)
+{
+    if (*(u32 *)(task + 0x18) & 0x10)
+        DrawTextAt(gText_DemoMode, 0xB, 0xA);
+    else
+        DrawTextAt(gText_BlankRow12_3, 0xB, 0xA);
+    --*(u32 *)(task + 0x18);
+    ReadKeys();
+    if ((gKeysHeld & 0x3FF) != 0 || *(u32 *)(task + 0x18) == 0)
+    {
+        BeginFadeToColor(0xA, 0);
+        WaitForVBlank();
+        REG_DISPCNT &= ~DISPCNT_OBJ_ON;
+        gRaceEndState = 2;
+        RemoveTask(task);
+        FreeTask(task);
+    }
+}
+
+
+void AddDemoEndTask(void)
+{
+    u32 task = AllocTask();
+
+    if (task != 0) {
+        *(u32 *)(task + 0x18) = 0xE1 << 2;
+        *(u32 *)(task + 0x0C) = (u32)DemoEndTask;
+        AddTask(task);
+    }
+}
+
 
 void RaceEndTask(struct EntityAF44 *e)
 {
@@ -45,6 +81,7 @@ void RaceEndTask(struct EntityAF44 *e)
     }
 }
 
+
 void EndRace(void)
 {
     u8 *p = &gRaceEndState;
@@ -61,3 +98,4 @@ void EndRace(void)
         *p = 1;
     }
 }
+

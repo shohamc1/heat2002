@@ -94,9 +94,9 @@ u8 RunRace(u32 a, u8 b)
     if (gIsDemo != 0) {
         for (i = 0; i != 100; i++)
             UpdateAllCars();
-        sub_0800AF20();
+        AddDemoEndTask();
     } else if (gGameMode[0] == 3 || gGameMode[0] == 4) {
-        sub_0800B334();
+        InitLinkRaceStart();
     }
     if (gGameMode[0] != 9 && gGameMode[0] != 2 && gGameMode[0] != 7
         && gIsDemo == 0 && gOptions[3] != 0)
@@ -190,7 +190,7 @@ camera_ready:
                 ((void (*)(u32, u32, u32))DrawTextCentered)((u32)gText_BlankRow16, 8, 1);
         }
         UpdateSprites();
-        sub_08008D8C();
+        UpdateChallenge();
         gBgScrollUpdateEnabled = 1;
         if (gIsDemo != 0) {
             if (gKeysPressed != 0) {
