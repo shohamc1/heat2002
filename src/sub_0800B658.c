@@ -16,7 +16,7 @@ struct EntityB658
 extern const u8 *const gDraftStreakFrames[];
 extern u8 gDraftStreakPalette[];
 u32 WorldToScreen(s32 x, s32 y, s32 *out);
-u32 *sub_080076C8(u32 a);
+u32 *RequestObjTiles1Compressed(u32 a);
 void sub_0800B658(struct EntityB658 *e)
 {
   struct Car *car;
@@ -52,7 +52,7 @@ void sub_0800B658(struct EntityB658 *e)
     pos[1] = pos[1] - 6;
     if (((((u32) (old + 0x1B)) <= 0x10E) && (pos[1] <= 0x9F)) && (pos[1] > (-0x20)))
     {
-      spr = sub_080076C8(gDraftStreakFrames[e->unk18 & 0xF]);
+      spr = RequestObjTiles1Compressed(gDraftStreakFrames[e->unk18 & 0xF]);
       if (spr != 0)
       {
         attr = (pos[1] & 0xFF) | ((pos[0] & 0x1FF) << 0x10);

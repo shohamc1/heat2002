@@ -34,7 +34,7 @@ void sub_08007A7C(s32 a1, s32 a2, u32 a3, u32 a4, u8 a5)
     dy += 0x40;
     dx += 0x70;
     if (dx + 0x10 <= 0x100 && dy <= 0xA0 && dy >= -0x10) {
-        q = sub_08007630(a3);
+        q = RequestObjTiles4(a3);
         if (q != 0) {
             v = RequestObjPalette(a4) << 24;
             attr = (dy & 0xFF) | ((dx & 0x1FF) << 16) | 0x40000000;

@@ -34,7 +34,7 @@ void InitRaceCars(u32 a1)
     BuildStartingGrid(a);
     gStartedCarCount = 0;
     eed0 = gUnk_0202EED0;
-    sub_08008D70();
+    ClearWaypointSpeedSamples();
     if (gGameMode[0] == 0) {
         pp = (struct Car **)gCarOrder;
         p = gUnk_0202A3F0;
@@ -136,6 +136,6 @@ l_180:
 l_1d0:
         gChallengePhase = 0;
         gUnk_0202CB14 = 0;
-        sub_08008D20();
+        ResetChallengeTimer();
     }
 }

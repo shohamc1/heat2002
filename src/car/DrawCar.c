@@ -102,7 +102,7 @@ void DrawCar(struct Car *car, u8 idx)
         pos[1] -= 0xC;
         pos[0] += 0x10;
         k = (pos[1] & 0xFF) | ((pos[0] & 0x1FF) << 16) | 0x40000000;
-        t = sub_08007630(*row);
+        t = RequestObjTiles4(*row);
         if (t == NULL)
             return;
         t5 = t->unk10 | 0x400;

@@ -68,7 +68,7 @@ void sub_08004B1C(u8 arg)
         gUnk_0202A540[idx] = val;
     else
         *(p + (j = idx - 5)) = val;
-    sub_0800830C((u16 *)p,(u16 *)gUnk_0202CB00);
+    ComputeGearRatioReciprocals((u16 *)p,(u16 *)gUnk_0202CB00);
 }
 
 void sub_08004BCC(void)

@@ -1180,7 +1180,7 @@ rebuilt and every function in it re-matched (list them with
 one functions matched without a cast. Twelve lost the memory-first order
 and got casts at their accesses to the once-volatile global:
 `ClearVBlankFlag`, `ReadKeys`, `RunRace`, `MainVBlankCallback`,
-`sub_080032AC`, `sub_08008394`, `sub_08339AF0`, `sub_08339B4C`,
+`sub_080032AC`, `SetAiDriverGearTables [sub_08008394]`, `sub_08339AF0`, `sub_08339B4C`,
 `sub_0833BF80`, `sub_0833C5B0`, `sub_0833C7F0`, `sub_08340504`. All 43
 printed `MATCH`, and `make check` printed `MATCH` with no `extern
 volatile` left in the tree.

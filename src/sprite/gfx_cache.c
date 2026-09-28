@@ -281,3 +281,81 @@ u32 *RequestObjTiles8(u32 gfx)
     return 0;
 }
 
+
+u32 *RequestObjTiles4(u32 gfx)
+{
+    u32 i;
+    u32 *entry;
+
+    entry = gObjTileCache4;
+    i = 0;
+    do {
+        if (entry[2] == gfx) {
+            entry[0] = 1;
+            return entry;
+        }
+        i++;
+        entry += 5;
+    } while (i != 16);
+    entry = gObjTileCache4;
+    for (i = 0; i != 16; i++, entry += 5) {
+        if (entry[0] == 0) {
+            entry[0] = 1;
+            *(u8 *)(entry + 1) = 1;
+            entry[2] = gfx;
+            return entry;
+        }
+    }
+    return 0;
+}
+
+
+u32 *RequestObjTiles1(u32 gfx)
+{
+    u32 *entry;
+    u32 i;
+
+    entry = gObjTileCache1;
+    for (i = 0; i != 0x20; i++, entry += 5) {
+        if (entry[2] == gfx) {
+            entry[0] = 1;
+            return entry;
+        }
+    }
+    entry = gObjTileCache1;
+    for (i = 0; i != 0x20; i++, entry += 5) {
+        if (entry[0] == 0) {
+            entry[0] = 1;
+            *(u8 *)(entry + 1) = 1;
+            entry[2] = gfx;
+            return entry;
+        }
+    }
+    return 0;
+}
+
+
+u32 *RequestObjTiles1Compressed(u32 gfx)
+{
+    u32 *entry;
+    u32 i;
+
+    entry = gObjTileCache1;
+    for (i = 0; i != 0x20; i++, entry += 5) {
+        if (entry[2] == gfx) {
+            entry[0] = 1;
+            return entry;
+        }
+    }
+    entry = gObjTileCache1;
+    for (i = 0; i != 0x20; i++, entry += 5) {
+        if (entry[0] == 0) {
+            entry[0] = 1;
+            *(u8 *)(entry + 1) = 3;
+            entry[2] = gfx;
+            return entry;
+        }
+    }
+    return 0;
+}
+

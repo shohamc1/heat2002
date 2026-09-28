@@ -27,10 +27,10 @@
 
 extern u16 gTrackAiDragDivisors[];
 
-void sub_08007C44(struct Car *a);
+void UpdateCarSurface(struct Car *a);
 void ComputeForwardSpeed(struct Car *a);
 void UpdateEngine(struct Car *a, u32 b);
-void sub_08008480(struct Car *a, u8 b);
+void UpdateTireForces(struct Car *a, u8 b);
 void ComputeCarCorners(struct Car *a);
 s32 CollideCarWithWalls(struct Car *a);
 s32 CheckDrafting(struct Car *a);
@@ -101,13 +101,13 @@ void UpdateCarPhysics(struct Car *car, u32 b, u8 c)
     car->forceX = 0;
     car->forceZ = 0;
     car->torque = 0;
-    sub_08007C44(car);
+    UpdateCarSurface(car);
     if (car->hitCooldown != 0)
         car->hitCooldown--;
     UpdateSteering((s32 *)car, b);
     ComputeForwardSpeed(car);
     UpdateEngine(car, b);
-    sub_08008480(car, c);
+    UpdateTireForces(car, c);
     v = 0;
     ComputeCarCorners(car);
     if (gGameMode[0] == 4 || gTrackId <= 0xB) {

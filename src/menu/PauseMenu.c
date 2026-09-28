@@ -53,7 +53,7 @@ u8 PauseMenu(void)
 
     gPauseMenuCursor = 0;
     if (gKeysPressed & 8) {
-        sub_08007EF8();
+        ClearPitMenu();
         ClearPauseMenuBox();
         StopAllSongs();
         ReadKeys();

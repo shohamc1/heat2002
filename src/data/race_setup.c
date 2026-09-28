@@ -250,9 +250,9 @@ const struct TrackGrid gTrackStartGrids[12] = {
 };
 // Seven car setups of three 5-entry rows each (gear power, gear ratio,
 // rpm per speed, one entry per gear), the layout of the per-driver rows
-// below. sub_08008338 copies the second setup's power and ratio rows
+// below. InitTuneSettings copies the second setup's power and ratio rows
 // (gUnk_08367B82, gUnk_08367B8C) into the tune menu. The sixth setup is
-// the AI driver's (sub_08008394, InitCar), with one stray u16 between
+// the AI driver's (SetAiDriverGearTables, InitCar), with one stray u16 between
 // its power and ratio rows.
 const u16 gUnk_08367B64[5] = { 450, 420, 400, 400, 475 };
 const u16 gUnk_08367B6E[5] = { 5500, 9000, 12000, 13500, 18200 };

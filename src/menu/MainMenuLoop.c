@@ -21,7 +21,7 @@ extern u8 gUnk_083FDE2D[];
 
 u8 StartSinglePakLink(void);
 void FillFadePalette(u16 color);
-void sub_08008338(void);
+void InitTuneSettings(void);
 u8 sub_0800F120(u8 value);
 u8 sub_0800F190(void);
 u8 sub_0800F22C(void);
@@ -147,7 +147,7 @@ u32 MainMenuLoop(void)
     gTireGripSlow = 0xA0;
     gFrontTireGripSlow = 0xFF;
     *(u32 *)&gTireSlipLimitBase = 0x8950;
-    sub_08008338();
+    InitTuneSettings();
     gRngState = 0x009F9AC4;
 
     while (TitleScreen() == 1) {

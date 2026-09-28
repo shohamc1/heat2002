@@ -38,7 +38,7 @@
 #include "data.h"
 
 
-void sub_08008394(u32 a);
+void SetAiDriverGearTables(struct Car *car);
 void sub_0800C430(u32 a);
 s32 sub_0800C358(u32 a, u32 b);
 s32 sub_0800BBFC(u32 a, u32 b, u32 c, u32 d, u32 e);
@@ -69,7 +69,7 @@ void UpdateAiDriver(struct Car *ent, u8 param)
     s32 t2;
     s32 t3;
 
-    sub_08008394((u32)ent);
+    SetAiDriverGearTables((struct Car *)ent);
     sub_0800C430((u32)ent);
     zero = 0;
     if (gAiCarAheadSide == 0 || gGameMode[0] == 9 || gGameMode[0] == 0xD

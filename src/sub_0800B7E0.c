@@ -17,7 +17,7 @@ extern const u8 *const gSkidSmokeFrames[];        /* 0x083FF60C */
 extern u8 gSkidSmokePalette[];         /* 0x08330D18 */
 
 u32 WorldToScreen(s32 x, s32 y, s32 *out);
-u32 *sub_080076C8(u32 a);
+u32 *RequestObjTiles1Compressed(u32 a);
 
 void sub_0800B7E0(struct EntityB7E0 *e)
 {
@@ -37,7 +37,7 @@ void sub_0800B7E0(struct EntityB7E0 *e)
         pos[1] = t1 + (e->unk04 >> 2);
         if ((u32)(old + 0x1B) <= 0x10E && pos[1] <= 0x9F && pos[1] > -0x20)
         {
-            spr = sub_080076C8(gSkidSmokeFrames[((e->unk18 + 8) & 7) + 8]);
+            spr = RequestObjTiles1Compressed(gSkidSmokeFrames[((e->unk18 + 8) & 7) + 8]);
             if (spr != 0)
             {
                 attr = (pos[1] & 0xFF) | ((pos[0] & 0x1FF) << 0x10);

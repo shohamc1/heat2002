@@ -24,7 +24,7 @@ void DrawSpriteText(u8 *a, u32 b, u32 c)
 loop:
     if (v != 0x20) {
         q = v + gSpriteTextControlCharCodes;
-        p = sub_0800767C((u32)((u8 *)gTextLayerTiles + gTextGlyphTileIndices[*q] * TILE_SIZE_4BPP));
+        p = RequestObjTiles1((u32)((u8 *)gTextLayerTiles + gTextGlyphTileIndices[*q] * TILE_SIZE_4BPP));
         if (p != 0) {
             x = ((b & 0x1FF) << 0x10) | pal;
             AddOamEntry(x, p[4] | (RequestObjPalette((u32)((u8 *)gFontPalette)) << 12));

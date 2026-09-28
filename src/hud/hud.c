@@ -83,7 +83,7 @@ void DrawLowFuelWarning(s32 fuel)
     gUnk_02025228++;
     pos[0] = 0xAA;
     pos[1] = 0x89;
-    entry = sub_08007630((u32)gUnk_083387A8);
+    entry = RequestObjTiles4((u32)gUnk_083387A8);
     if (entry != 0) {
         attr = pos[1] & 0xFF;
         attr |= (pos[0] & 0x1FF) << 16;

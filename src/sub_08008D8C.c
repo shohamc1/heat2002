@@ -12,26 +12,26 @@ void sub_08008D8C(void)
     s32 v;
 
     if (gGameMode[0] == 0x10) {
-        sub_08008CDC();
+        UpdateChallengeTimer();
         switch (gChallengeIndex) {
         case 0:
             x = gChallengePhase;
             switch (x) {
             case 0:
-                if (sub_08008B40(0xDC)) {
+                if (IsProgressPointCrossed(0xDC)) {
                     gChallengePhase = 1;
-                    sub_08008D20();
+                    ResetChallengeTimer();
                 }
                 break;
             case 1:
-                if (sub_08008B40(0x15E)) {
-                    /* sub_08008B6C: this file's old prototype returns u8; the matched definition returns u32 */
-                    if (((u8 (*)(u32))sub_08008B6C)(0x2328))
+                if (IsProgressPointCrossed(0x15E)) {
+                    /* IsChallengeTimeWithin: this file's old prototype returns u8; the matched definition returns u32 */
+                    if (((u8 (*)(u32))IsChallengeTimeWithin)(0x2328))
                         gChallengeResult = x;
                     EndRace();
                     gChallengePhase = 0;
                 }
-                sub_08008B94();
+                DrawChallengeTimer();
                 break;
             }
             break;
@@ -53,24 +53,24 @@ void sub_08008D8C(void)
             x = gChallengePhase;
             switch (x) {
             case 0:
-                if (sub_08008B40(0x55)) {
+                if (IsProgressPointCrossed(0x55)) {
                     gChallengePhase = 1;
-                    sub_08008D20();
+                    ResetChallengeTimer();
                 }
                 break;
             case 1:
-                if (sub_08008B40(0x96)) {
-                    if (((u8 (*)(u32))sub_08008B6C)(0xFA0))
+                if (IsProgressPointCrossed(0x96)) {
+                    if (((u8 (*)(u32))IsChallengeTimeWithin)(0xFA0))
                         gChallengeResult = x;
                     EndRace();
                     gChallengePhase = 0;
                 }
-                sub_08008B94();
+                DrawChallengeTimer();
                 break;
             }
             break;
         case 9:
-            v = sub_08008D3C();
+            v = GetAverageWaypointSpeed();
             if (v < 0)
                 v = 0;
             if (v > (*(s32 *)&gChallengeBestValue))
@@ -81,14 +81,14 @@ void sub_08008D8C(void)
             }
             if ((*(s32 *)&gChallengeBestValue) > 0x79) {
                 if (gChallengeEndDelay & 8)
-                    sub_08008C48((*(s32 *)&gChallengeBestValue));
+                    DrawChallengeSpeed((*(s32 *)&gChallengeBestValue));
                 else
-                    sub_08008CB8();
+                    ClearChallengeSpeed();
                 gChallengeEndDelay++;
                 if (gChallengeEndDelay > 0x40)
                     EndRace();
             } else if ((*(s32 *)&gChallengeBestValue) != 0) {
-                sub_08008C48(v);
+                DrawChallengeSpeed(v);
             }
             break;
         }

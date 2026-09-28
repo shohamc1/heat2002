@@ -203,7 +203,7 @@ What the source shapes turned out to be:
   second argument every iteration; right-to-left evaluation gives the
   asm's load order for free.
 - Sprite family G is `sub_080100CC` with a one-argument allocator
-  (`RequestObjTiles16 [sub_0800754C](a2)`/`sub_08007630(a2)`), attr constant `0x80000000`/
+  (`RequestObjTiles16 [sub_0800754C](a2)`/`RequestObjTiles4 [sub_08007630](a2)`), attr constant `0x80000000`/
   `0x40000000`, and no `| 0x800` in the oam build-up (`x = idx << 12`).
 
 | # | Function | Bytes | Notes |
@@ -303,7 +303,7 @@ What the source shapes turned out to be:
   iterations: pool constants -> the module's own EWRAM copies, bl
   targets -> the module's twins. The high module's `_call_via_r0`
   stub is `_08344B7C` (r1/r2 are B80/B84).
-- `sub_08008B40`/`sub_08008B6C`: symbols.ld still carried their
+- `IsProgressPointCrossed [sub_08008B40]`/`IsChallengeTimeWithin [sub_08008B6C]`: symbols.ld still carried their
   pre-decompilation aliases (`= sub_08008AB0 + off`), which collide
   with the C definitions under match.py's link. Deleted at
   extraction; both then matched unchanged.
@@ -344,10 +344,10 @@ What the source shapes turned out to be:
 | 135 | `sub_0833E2E4` | 28 | port of `sub_080057E8` |
 | 136 | `sub_08003D6C` | 32 |  |
 | 137 | `sub_0833D070` | 32 | port of `sub_08003D6C` |
-| 138 | `sub_08008B40` | 36 |  |
-| 139 | `sub_08340CB0` | 36 | port of `sub_08008B40` |
-| 140 | `sub_08008B6C` | 36 |  |
-| 141 | `sub_08340CDC` | 36 | port of `sub_08008B6C` |
+| 138 | `IsProgressPointCrossed` | 36 |  |
+| 139 | `sub_08340CB0` | 36 | port of `IsProgressPointCrossed` |
+| 140 | `IsChallengeTimeWithin` | 36 |  |
+| 141 | `sub_08340CDC` | 36 | port of `IsChallengeTimeWithin` |
 | 142 | `sub_0800BA0C` | 36 |  |
 | 143 | `sub_08343110` | 36 | port of `sub_0800BA0C` |
 | 144 | `sub_080032AC` | 40 |  |

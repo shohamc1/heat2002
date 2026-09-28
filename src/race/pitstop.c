@@ -3,7 +3,7 @@
 #include "variables.h"
 #include "car.h"
 extern u8 gPitLaneIndices[];
-void sub_08008090(void);
+void InitPitMenu(void);
 #include "m4a.h"
 extern u8 gText_PitControl[];
 extern u8 gText_BlankRow16_3[];
@@ -36,7 +36,7 @@ void EnterPit(u8 *r4, u8 r5)
     r4[0x175] = 1;
     sub_0800BE00(r4, gPitLaneIndices[gTrackId] << 8);
     if (r4 == (u8 *)gCars && gDamagePitsEnabled != 0)
-        sub_08008090();
+        InitPitMenu();
     r4[0x181] = r5;
     gPitStallOccupied[r5] = 1;
 }
@@ -47,7 +47,7 @@ void UpdatePitStop(struct Car *a1, u8 a2)
     s32 *p;
 
     if (gPitMenuActive != 0 && a1 == gCars)
-        sub_080080B4();
+        UpdatePitMenu();
     if (a1 == gCars && gDamagePitsEnabled == 0)
         /* DrawTextCentered: the ROM callers pass a third argument the matched definition drops; call
            through a function pointer with the old prototype. */

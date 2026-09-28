@@ -2,12 +2,26 @@
 #include "car.h"
 extern u8 gRacePointsTable[];
 void UpdateRacePosition(u8 idx);
-u32 sub_08007B10(u32 ptr);
+u32 GetCarOrderIndex(struct Car *car);
 #include "variables.h"
 /* Non-const on purpose: with a const extern, old_agbcc allocates the
    table base to r3 and the destination pointer to r2, swapped from the
    ROM. Solved-walls 31 variant: keep this file's declared view. */
 extern struct TrackGrid gTrackStartGrids[];
+
+
+u32 GetCarOrderIndex(struct Car *car)
+{
+    u32 *order = gCarOrder;
+    u8 i;
+
+    for (i = 0; i != 0x18; i++, order++) {
+        if (*order == (u32)car)
+            return i;
+    }
+    return 0x18;
+}
+
 
 void AwardRacePoints(struct Car *a1, u32 a2)
 {
@@ -16,7 +30,7 @@ void AwardRacePoints(struct Car *a1, u32 a2)
     s32 t;
 
     UpdateRacePosition((u8)a2);
-    t = sub_08007B10((u32)a1);
+    t = GetCarOrderIndex(a1);
     a1->points = a1->points + gRacePointsTable[(u8)t];
     if (a1->lapsLed != 0)
         a1->points += 5;
@@ -31,6 +45,7 @@ void AwardRacePoints(struct Car *a1, u32 a2)
     if (flag != 0)
         a1->points += 10;
 }
+
 
 void BuildStartingGrid(u8 a1)
 {
@@ -52,3 +67,4 @@ void BuildStartingGrid(u8 a1)
         y += gTrackStartGrids[a1].rowStepY;
     }
 }
+
