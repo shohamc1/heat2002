@@ -20,23 +20,23 @@ addresses.
 
 | Low address | High address | Name | Confidence | Decompiled? | Struct pass (Stage B3) |
 |---|---|---|---|---|---|
-| `MPlayExtender [sub_080013F8]` | `sub_0833AAB8` | `MPlayExtender` | certain | yes | converted |
-| `ClearChain [sub_08001520]` | `sub_0833ABE0` | `ClearChain` | certain | yes | nothing to convert (already just a jump-table call, no offset casts) |
-| `Clear64byte [sub_08001534]` | `sub_0833ABF4` | `Clear64byte` | certain | yes | nothing to convert (already just a jump-table call, no offset casts) |
-| `SoundInit [sub_08001548]` | `sub_0833AC08` | `SoundInit` | certain | yes | converted |
-| `SampleFreqSet [sub_08001640]` | `sub_0833AD00` | `SampleFreqSet` | certain | yes | converted |
-| `m4aSoundMode [sub_080016E4]` | `sub_0833ADA4` | `m4aSoundMode` | certain | yes | converted |
-| `m4aSoundVSyncOff [sub_080017D0]` | `sub_0833AE90` | `m4aSoundVSyncOff` | certain | yes | converted |
-| `m4aSoundVSyncOn [sub_0800184C]` | `sub_0833AF0C` | `m4aSoundVSyncOn` | certain | yes | converted |
-| `MPlayOpen [sub_08001888]` | `sub_0833AF48` | `MPlayOpen` | certain | yes | converted |
-| `MPlayStart [sub_08001900]` | `sub_0833AFC0` | `MPlayStart` | certain | yes | converted (kept the r4/r0 register pins) |
-| `m4aMPlayStop [sub_080019B4]` | `sub_0833B074` | `m4aMPlayStop` | certain | yes | converted |
-| `m4aMPlayPitchControl [sub_0800215C]` | `sub_0833B81C` | `m4aMPlayPitchControl` | certain | yes | converted |
+| `MPlayExtender [sub_080013F8]` | `ModuleMPlayExtender [sub_0833AAB8]` | `MPlayExtender` | certain | yes | converted |
+| `ClearChain [sub_08001520]` | `ModuleClearChain [sub_0833ABE0]` | `ClearChain` | certain | yes | nothing to convert (already just a jump-table call, no offset casts) |
+| `Clear64byte [sub_08001534]` | `ModuleClear64byte [sub_0833ABF4]` | `Clear64byte` | certain | yes | nothing to convert (already just a jump-table call, no offset casts) |
+| `SoundInit [sub_08001548]` | `ModuleSoundInit [sub_0833AC08]` | `SoundInit` | certain | yes | converted |
+| `SampleFreqSet [sub_08001640]` | `ModuleSampleFreqSet [sub_0833AD00]` | `SampleFreqSet` | certain | yes | converted |
+| `m4aSoundMode [sub_080016E4]` | `ModuleM4aSoundMode [sub_0833ADA4]` | `m4aSoundMode` | certain | yes | converted |
+| `m4aSoundVSyncOff [sub_080017D0]` | `ModuleM4aSoundVSyncOff [sub_0833AE90]` | `m4aSoundVSyncOff` | certain | yes | converted |
+| `m4aSoundVSyncOn [sub_0800184C]` | `ModuleM4aSoundVSyncOn [sub_0833AF0C]` | `m4aSoundVSyncOn` | certain | yes | converted |
+| `MPlayOpen [sub_08001888]` | `ModuleMPlayOpen [sub_0833AF48]` | `MPlayOpen` | certain | yes | converted |
+| `MPlayStart [sub_08001900]` | `ModuleMPlayStart [sub_0833AFC0]` | `MPlayStart` | certain | yes | converted (kept the r4/r0 register pins) |
+| `m4aMPlayStop [sub_080019B4]` | `ModuleM4aMPlayStop [sub_0833B074]` | `m4aMPlayStop` | certain | yes | converted |
+| `m4aMPlayPitchControl [sub_0800215C]` | `ModuleM4aMPlayPitchControl [sub_0833B81C]` | `m4aMPlayPitchControl` | certain | yes | converted |
 | `m4aSoundInit [sub_08001170]` | `ModuleM4aSoundInit [sub_0833A830]` | `m4aSoundInit` | certain | yes | n/a (no offset casts; see the build constants below) |
 | `sub_08001150` | `ModuleMPlayFadeOut [sub_0833A810]` | fade-control setter (`m4aMPlayFadeIn`/`m4aMPlayFadeOutTemporarily` family) | likely | yes | not touched (confidence is only "likely", not certain) |
 | `sub_08000DC8` | `sub_0833A488` | `TrackStop` | certain | n/a (hand-written asm in `m4a_1.s`; built from `lib/m4a_1.s`) | n/a |
-| `FadeOutBody [sub_080019F4]` | `sub_0833B0B4` | `FadeOutBody` | certain | yes | not converted |
-| `TrkVolPitSet [sub_08001A74]` | `sub_0833B134` | `TrkVolPitSet` | certain | yes | not converted |
+| `FadeOutBody [sub_080019F4]` | `ModuleFadeOutBody [sub_0833B0B4]` | `FadeOutBody` | certain | yes | not converted |
+| `TrkVolPitSet [sub_08001A74]` | `ModuleTrkVolPitSet [sub_0833B134]` | `TrkVolPitSet` | certain | yes | not converted |
 
 All 20 files across the 10 "converted" rows still print `MATCH` individually
 (`python3 scripts/match.py <name>`), and `make check` prints `MATCH` for the
@@ -76,21 +76,21 @@ differs, the note in `docs/decomp-queue.md`'s Tier 1 section is the record.
 | `sub_080013B0` | `sub_0833AA70` | track reinit (ImmInit-style; see queue notes) |
 | `sub_0800151C` | `sub_0833ABDC` | `SoundGetJumpList` (`svc 0x2A` stub, inline asm) |
 | `sub_0800177C` | `sub_0833AE3C` | `SoundClear` |
-| `MidiKeyToCgbFreq [sub_08001B28]` | `sub_0833B1E8` | `MidiKeyToCgbFreq` |
-| `CgbOscOff [sub_08001BD0]` | `sub_0833B290` | `CgbOscOff` |
+| `MidiKeyToCgbFreq [sub_08001B28]` | `ModuleMidiKeyToCgbFreq [sub_0833B1E8]` | `MidiKeyToCgbFreq` |
+| `CgbOscOff [sub_08001BD0]` | `ModuleCgbOscOff [sub_0833B290]` | `CgbOscOff` |
 | `sub_080020CC` | `sub_0833B78C` | `m4aMPlayTempoControl` |
 | `sub_080020F4` | `sub_0833B7B4` | `m4aMPlayVolumeControl` |
 | `sub_080021D0` | `sub_0833B890` | `m4aMPlayPanpotControl` (3rd param `u8`, not `s8`) |
 | `sub_08002238` | `sub_0833B8F8` | `ClearModM` |
 | `sub_08002258` | `sub_0833B918` | `m4aMPlayModDepthSet` |
 | `sub_080022CC` | `sub_0833B98C` | `m4aMPlayLFOSpeedSet` |
-| `ply_memacc [sub_08002340]` | `sub_0833BA00` | `ply_memacc` (high copy is a RAM module, base 0x02002F80) |
-| `ply_xcmd [sub_08002498]` | `sub_0833BB58` | `ply_xcmd` |
-| `ply_xxx [sub_080024B8]` | `sub_0833BB78` | `ply_xxx` (revision difference; see queue notes) |
-| `ply_xwave [sub_080024CC]` | `sub_0833BB8C` | `ply_xwave` |
-| `ply_xtype [sub_08002514]` | `sub_0833BBD4` | `ply_xtype` |
-| `ply_xatta [sub_08002528]` | `sub_0833BBE8` | `ply_xatta` |
-| `ply_xdeca [sub_0800253C]` | `sub_0833BBFC` | `ply_xdeca` |
+| `ply_memacc [sub_08002340]` | `ModulePlyMemacc [sub_0833BA00]` | `ply_memacc` (high copy is a RAM module, base 0x02002F80) |
+| `ply_xcmd [sub_08002498]` | `ModulePlyXcmd [sub_0833BB58]` | `ply_xcmd` |
+| `ply_xxx [sub_080024B8]` | `ModulePlyXxx [sub_0833BB78]` | `ply_xxx` (revision difference; see queue notes) |
+| `ply_xwave [sub_080024CC]` | `ModulePlyXwave [sub_0833BB8C]` | `ply_xwave` |
+| `ply_xtype [sub_08002514]` | `ModulePlyXtype [sub_0833BBD4]` | `ply_xtype` |
+| `ply_xatta [sub_08002528]` | `ModulePlyXatta [sub_0833BBE8]` | `ply_xatta` |
+| `ply_xdeca [sub_0800253C]` | `ModulePlyXdeca [sub_0833BBFC]` | `ply_xdeca` |
 | `ply_xsust [sub_08002550]` | `sub_0833BC10` | `ply_xsust` |
 | `ply_xrele [sub_08002564]` | `sub_0833BC24` | `ply_xrele` |
 | `ply_xiecv [sub_08002578]` | `sub_0833BC38` | `ply_xiecv` |

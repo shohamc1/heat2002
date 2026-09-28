@@ -8,7 +8,7 @@ extern u32 gUnk_02039040[];
 void sub_0833DA34(void);
 u32 sub_0833C874(void);
 void ModuleDrawTextCenteredHighlight(u32 *a, u32 b, u32 c);
-void sub_0833AE90(void);
+void ModuleM4aSoundVSyncOff(void);
 void sub_08344B74(void);
 void sub_0833DC7C(void);
 void sub_0833DC14(void);
@@ -22,17 +22,17 @@ u8 sub_0833DCB0(void)
     gUnk_0203B850[0] = 0xFF;
     sub_0833DA34();
     if (gUnk_0203B6FC & 8) {
-        sub_0833B074((struct MusicPlayerInfo *)gUnk_02038F70);
-        sub_0833B074((struct MusicPlayerInfo *)gUnk_02038FB0);
-        sub_0833B074((struct MusicPlayerInfo *)gUnk_02038FF0);
-        sub_0833B074((struct MusicPlayerInfo *)gUnk_02039040);
+        ModuleM4aMPlayStop((struct MusicPlayerInfo *)gUnk_02038F70);
+        ModuleM4aMPlayStop((struct MusicPlayerInfo *)gUnk_02038FB0);
+        ModuleM4aMPlayStop((struct MusicPlayerInfo *)gUnk_02038FF0);
+        ModuleM4aMPlayStop((struct MusicPlayerInfo *)gUnk_02039040);
         for (;;) {
             gModule_VBlanksThisFrame = 0;
             if (sub_0833C874() != 0) {
                 ModuleDrawTextCenteredHighlight(ModuleGetString(MODULE_MSG_LINK_FAIL), 0xA, 1);
                 ModuleDrawTextCenteredHighlight((u32 *)gModule_PleaseTurnOffYour_2, 0xC, 1);
                 ModuleDrawTextCenteredHighlight((u32 *)gModule_GameBoyAdvance_2, 0xD, 1);
-                sub_0833AE90();
+                ModuleM4aSoundVSyncOff();
                 done = 0;
                 do {
                     if (gModule_LinkPlayerId == 0)

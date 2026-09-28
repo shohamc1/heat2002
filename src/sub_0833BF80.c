@@ -50,7 +50,7 @@ void sub_08342868(void);
 void sub_08342B04(void);
 void sub_0833D5F4(void *);
 void sub_08344878(void);
-void sub_0833B81C(void *, u16, s16);
+void ModuleM4aMPlayPitchControl(void *, u16, s16);
 void sub_0833D448(void);
 void sub_0833D5B8(void);
 void sub_0833D57C(void);
@@ -201,7 +201,7 @@ after_d5f4: ;
             ent = gModule_Cars;
         else
             ent = &gModule_Cars[gModule_LinkPlayerId];
-        sub_0833B81C(gUnk_02038FB0, 1,
+        ModuleM4aMPlayPitchControl(gUnk_02038FB0, 1,
                     ((s16)(gUnk_02025190[ent->gear]
                          + ((ent->rpm * gUnk_020251A4[ent->gear]) >> 6))) >> 3);
         if (gModule_IsDemo[0] != 0) {
@@ -313,6 +313,6 @@ wait_ec:
 ret1:
         return 1;
     }
-    sub_0833B074((struct MusicPlayerInfo *)gUnk_02038FB0);
+    ModuleM4aMPlayStop((struct MusicPlayerInfo *)gUnk_02038FB0);
     return 0;
 }

@@ -1,7 +1,15 @@
 #include "global.h"
-#include "gba/m4a_internal.h"
-#include "functions.h"
 
+/* MidiKeyToCgbFreq, high 0x0833 module copy: same code as MidiKeyToCgbFreq
+ * with the tables read from the module's EWRAM image (delta 0x17FF6E0 from
+ * the low copies): gUnk_0200C7F4 = gCgbScaleTable, gUnk_0200C878 =
+ * gCgbFreqTable, gUnk_0200C890 = gNoiseTable. */
+extern const u8 gUnk_0200C7F4[];
+extern const s16 gUnk_0200C878[];
+extern const u8 gUnk_0200C890[];
+#include "gba/m4a_internal.h"
+/* CgbOscOff, high 0x0833 module copy: same code as CgbOscOff. */
+#include "functions.h"
 /* CgbSound, an older m4a revision than pokeemerald's and tmc's: no NR52
  * channel-status check, no pseudo-echo envelope write, and
  * envelopeStepTimeAndDir is a u8 kept across channels.
@@ -9,11 +17,118 @@
  * This is the high 0x0833 module's copy: same code as CgbSound with
  * the callees and the gCgb3Vol table relocated (the table is the module's
  * EWRAM image at 0x0200C8CC). */
-
 extern const u8 gUnk_0200C8CC[];
 
 
-void sub_0833B348(void)
+u32 ModuleMidiKeyToCgbFreq(u8 chanNum, u8 key, u8 fineAdjust)
+{
+    if (chanNum == 4)
+    {
+        if (key <= 20)
+        {
+            key = 0;
+        }
+        else
+        {
+            key -= 21;
+            if (key > 59)
+                key = 59;
+        }
+
+        return gUnk_0200C890[key];
+    }
+    else
+    {
+        s32 val1;
+        s32 val2;
+
+        if (key <= 35)
+        {
+            fineAdjust = 0;
+            key = 0;
+        }
+        else
+        {
+            key -= 36;
+            if (key > 130)
+            {
+                key = 130;
+                fineAdjust = 255;
+            }
+        }
+
+        val1 = gUnk_0200C7F4[key];
+        val1 = gUnk_0200C878[val1 & 0xF] >> (val1 >> 4);
+
+        val2 = gUnk_0200C7F4[key + 1];
+        val2 = gUnk_0200C878[val2 & 0xF] >> (val2 >> 4);
+
+        return val1 + ((fineAdjust * (val2 - val1)) >> 8) + 2048;
+    }
+}
+
+
+void ModuleCgbOscOff(u8 chanNum)
+{
+    switch (chanNum)
+    {
+        case 1:
+            REG_NR12 = 8;
+            REG_NR14 = 0x80;
+            break;
+        case 2:
+            REG_NR22 = 8;
+            REG_NR24 = 0x80;
+            break;
+        case 3:
+            REG_NR30 = 0;
+            break;
+        default:
+            REG_NR42 = 8;
+            REG_NR44 = 0x80;
+            break;
+    }
+}
+
+
+void ModuleCgbModVol(struct CgbChannel *chan)
+{
+    u32 vol;
+
+    if (chan->rightVolume >= chan->leftVolume)
+    {
+        if ((chan->rightVolume >> 1) >= chan->leftVolume)
+        {
+            chan->pan = 0x0F;
+            goto clip;
+        }
+    }
+    else
+    {
+        if ((chan->leftVolume >> 1) >= chan->rightVolume)
+        {
+            chan->pan = 0xF0;
+            goto clip;
+        }
+    }
+    chan->pan = 0xFF;
+    vol = (u32)(chan->rightVolume + chan->leftVolume) >> 4;
+    chan->envelopeGoal = (u8)vol;
+    goto tail;
+
+clip:
+    vol = (u32)(chan->rightVolume + chan->leftVolume) >> 4;
+    chan->envelopeGoal = (u8)vol;
+    if (vol > 0xF)
+        chan->envelopeGoal = 0xF;
+
+tail:
+    chan->sustainGoal = (s8)(((chan->envelopeGoal * chan->sustain) + 0xF) >> 4);
+    chan->pan = chan->pan & chan->panMask;
+}
+
+
+void ModuleCgbSound(void)
 {
     s32 ch;
     struct CgbChannel *channels;
@@ -80,7 +195,7 @@ void sub_0833B348(void)
             {
                 channels->statusFlags = 3; // attack
                 channels->modify = CGB_CHANNEL_MO_PIT | CGB_CHANNEL_MO_VOL;
-                sub_0833B2E0((struct Unk1C20 *)channels);
+                ModuleCgbModVol(channels);
                 switch (ch)
                 {
                     case 1:
@@ -139,7 +254,7 @@ void sub_0833B348(void)
             if ((s8)(channels->pseudoEchoLength & mask) <= 0)
             {
             oscillator_off:
-                sub_0833B290(ch);
+                ModuleCgbOscOff(ch);
                 channels->statusFlags = 0;
                 goto channel_complete;
             }
@@ -170,7 +285,7 @@ void sub_0833B348(void)
                 if (ch == 3)
                     channels->modify |= CGB_CHANNEL_MO_VOL;
 
-                sub_0833B2E0((struct Unk1C20 *)channels);
+                ModuleCgbModVol(channels);
                 if ((channels->statusFlags & SOUND_CHANNEL_SF_ENV) == 0) // release
                 {
                     channels->envelopeVolume--;
@@ -307,3 +422,4 @@ void sub_0833B348(void)
         channels->modify = 0;
     }
 }
+

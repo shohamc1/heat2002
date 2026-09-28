@@ -68,10 +68,10 @@ gUnk_0200C668:
 	.4byte sub_0833A1C4
 	.4byte sub_08339FE8
 	.4byte sub_0833A6FC
-	.4byte sub_0833AD00
+	.4byte ModuleSampleFreqSet
 	.4byte sub_0833A488
-	.4byte sub_0833B0B4
-	.4byte sub_0833B134
+	.4byte ModuleFadeOutBody
+	.4byte ModuleTrkVolPitSet
 	.4byte sub_08339FC8
 	.4byte sub_08339FB0
 	.global gUnk_0200C6F8
@@ -100,12 +100,12 @@ gUnk_0200C8DC:
 	.incbin "build/assets/unknown/data_0834535C.bin"
 	.global gUnk_08345390
 gUnk_08345390:
-	.4byte sub_0833BB78
-	.4byte sub_0833BB8C
-	.4byte sub_0833BBD4
-	.4byte sub_0833BB78
-	.4byte sub_0833BBE8
-	.4byte sub_0833BBFC
+	.4byte ModulePlyXxx
+	.4byte ModulePlyXwave
+	.4byte ModulePlyXtype
+	.4byte ModulePlyXxx
+	.4byte ModulePlyXatta
+	.4byte ModulePlyXdeca
 	.4byte sub_0833BC10
 	.4byte sub_0833BC24
 	.4byte sub_0833BC38

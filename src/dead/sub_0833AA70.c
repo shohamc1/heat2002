@@ -1,9 +1,9 @@
 #include "global.h"
 #include "gba/m4a_internal.h"
 
-/* Track immediate-reinit, high copy (ClearChain -> sub_0833ABF4). */
+/* Track immediate-reinit, high copy (ClearChain -> ModuleClear64byte). */
 
-void sub_0833ABF4(void *a);
+void ModuleClear64byte(void *a);
 
 void sub_0833AA70(struct MusicPlayerInfo *mplayInfo)
 {
@@ -16,7 +16,7 @@ void sub_0833AA70(struct MusicPlayerInfo *mplayInfo)
         {
             if (track->flags & MPT_FLG_START)
             {
-                sub_0833ABF4(track);
+                ModuleClear64byte(track);
                 track->flags = MPT_FLG_EXIST;
                 track->bendRange = 2;
                 track->volX = 0x40;

@@ -42,9 +42,9 @@ void ModuleM4aSoundInit(void)
     u32 tracksOffset;
 
     CpuCopy32((u32)sub_08339C0C & ~1, IWRAM_START + 0x7000, 0x400);
-    sub_0833AC08((void *)EWRAM_START + 0x37E30);
-    sub_0833AAB8((void *)EWRAM_START + 0x38E70);
-    sub_0833ADA4(0x0097D800);
+    ModuleSoundInit((void *)EWRAM_START + 0x37E30);
+    ModuleMPlayExtender((void *)EWRAM_START + 0x38E70);
+    ModuleM4aSoundMode(0x0097D800);
     playerCount = (u16)(u32)gNumMusicPlayersHigh;
     if (playerCount != 0)
     {
@@ -56,7 +56,7 @@ void ModuleM4aSoundInit(void)
     loop:
         tracksOffset = 4;
         mplayInfo = playerEntry->unk0;
-        sub_0833AF48((struct MusicPlayerInfo *)mplayInfo,(struct MusicPlayerTrack *)(*(u32 *)(entryOffset + (tableBase + tracksOffset))), (*(u8 *)&playerEntry->unk8));
+        ModuleMPlayOpen((struct MusicPlayerInfo *)mplayInfo,(struct MusicPlayerTrack *)(*(u32 *)(entryOffset + (tableBase + tracksOffset))), (*(u8 *)&playerEntry->unk8));
         *(u32 *)(mplayInfo + 0x18) = EWRAM_START + 0x39030;
         playerEntry++;
         entryOffset += 12;
@@ -76,6 +76,6 @@ void ModuleM4aSoundMain(void)
 void ModuleM4aSongNumStart(u16 idx)
 {
     u32 mplayInfo = gModule_MPlayTable[gModule_SongTable[idx].unk4].unk0;
-    sub_0833AFC0((struct MusicPlayerInfo *)mplayInfo,(struct SongHeader *)(gModule_SongTable[idx].unk0));
+    ModuleMPlayStart((struct MusicPlayerInfo *)mplayInfo,(struct SongHeader *)(gModule_SongTable[idx].unk0));
 }
 

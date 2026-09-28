@@ -40,7 +40,7 @@ void sub_0833A9FC(void)
         p = gModule_MPlayTable;
         n = cnt;
     loop:
-        sub_0833B074((struct MusicPlayerInfo *)(p->unk0));
+        ModuleM4aMPlayStop((struct MusicPlayerInfo *)(p->unk0));
         p++;
         n--;
         if (n != 0)

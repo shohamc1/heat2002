@@ -54,8 +54,8 @@ syscall_of = $(lastword $(subst :, ,$(filter $(1):%,$(AGBSYSCALL_COPIES))))
 # names, and its externs point at the high module's own m4a.c twins and data.
 M4A_OBJS := $(BUILD)/lib/m4a/m4a_1.o $(BUILD)/lib/m4a/m4a_1_high.o
 M4A_HIGH_BASE := 0x08339B78
-M4A_HIGH_EXTERNS := Clear64byte=sub_0833ABF4 ClearChain=sub_0833ABE0 \
-	FadeOutBody=sub_0833B0B4 MidiKeyToFreq=ModuleMidiKeyToFreq TrkVolPitSet=sub_0833B134 \
+M4A_HIGH_EXTERNS := Clear64byte=ModuleClear64byte ClearChain=ModuleClearChain \
+	FadeOutBody=ModuleFadeOutBody MidiKeyToFreq=ModuleMidiKeyToFreq TrkVolPitSet=ModuleTrkVolPitSet \
 	gClockTable=gUnk_0200C8DC gMPlayJumpTableTemplate=gUnk_0200C668
 
 # libgcc, built from tools/agbcc/libgcc as its own Makefile builds it: the
@@ -122,7 +122,7 @@ all: $(TARGET).gba
 #
 # The high 0x0833/0x0834 module was linked with its own libgcc copy, so its
 # `/` and `%` libcalls land on sub_08344BB8 and friends, not the low copies
-# that symbols.ld aliases. Every caller at or above sub_0833AD00 uses the
+# that symbols.ld aliases. Every caller at or above ModuleSampleFreqSet uses the
 # high copies and no lower caller does (checked against the ROM's bl
 # targets), so objects that ldscript.ld places in the EWRAM images get their
 # libcall symbols renamed after assembly, whatever their file is called. A

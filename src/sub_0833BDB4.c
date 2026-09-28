@@ -14,7 +14,7 @@ void sub_0833D510(u32 r0, u32 r1);
 void ModuleM4aSoundInit(void);
 u8 sub_0833BF80(u32 r0, u32 r1, u32 r2);
 void ModuleDrawTextCenteredHighlight(u32 r0, u32 r1, u32 r2);
-void sub_0833AE90(void);
+void ModuleM4aSoundVSyncOff(void);
 void sub_0833D9D8(void);
 void sub_08344B74(void);
 void sub_0833BCF8(void);
@@ -64,7 +64,7 @@ void sub_0833BDB4(void)
     p -= 0x28;
     *p = 0x1D40;
     ModuleM4aSoundInit();
-    sub_0833AF0C();
+    ModuleM4aSoundVSyncOn();
     gModule_VBlanksThisFrame = z2;
     for (;;) {
         gUnk_02039194 = 3;
@@ -76,9 +76,9 @@ void sub_0833BDB4(void)
             ModuleDrawTextCenteredHighlight(ModuleGetString(MODULE_MSG_LINK_FAIL), 0x0A, 1);
             ModuleDrawTextCenteredHighlight((u32)gModule_PleaseTurnOffYour, 0x0C, 1);
             ModuleDrawTextCenteredHighlight((u32)gModule_GameBoyAdvance, 0x0D, 1);
-            sub_0833B074((struct MusicPlayerInfo *)((u32)gUnk_02038F70));
-            sub_0833B074((struct MusicPlayerInfo *)((u32)gUnk_02038FB0));
-            sub_0833AE90();
+            ModuleM4aMPlayStop((struct MusicPlayerInfo *)((u32)gUnk_02038F70));
+            ModuleM4aMPlayStop((struct MusicPlayerInfo *)((u32)gUnk_02038FB0));
+            ModuleM4aSoundVSyncOff();
             for (;;) {
                 sub_0833D9D8();
                 sub_08344B74();

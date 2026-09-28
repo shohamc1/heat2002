@@ -8,19 +8,19 @@
 
 /* MPlayExtender (high copy) */
 
-void sub_0833BA00(void);
+void ModulePlyMemacc(void);
 void sub_0833A764(void);
 void sub_0833A778(void);
-void sub_0833BB58(void);
+void ModulePlyXcmd(void);
 void sub_0833A6FC(void);
-void sub_0833AD00(void);
+void ModuleSampleFreqSet(void);
 void sub_0833A488(void);
-void sub_0833B0B4(void);
-void sub_0833B134(void);
-void sub_0833B348(void);
-void sub_0833B1E8(void);
+void ModuleFadeOutBody(void);
+void ModuleTrkVolPitSet(void);
+void ModuleCgbSound(void);
+void ModuleMidiKeyToCgbFreq(void);
 
-void sub_0833AAB8(struct CgbChannel *cgbChans)
+void ModuleMPlayExtender(struct CgbChannel *cgbChans)
 {
     u32 ident;
     struct SoundInfo *soundInfo;
@@ -40,19 +40,19 @@ void sub_0833AAB8(struct CgbChannel *cgbChans)
     if (ident == ID_NUMBER)
     {
         soundInfo->ident = ident + 1;
-        gUnk_02038DE0[8] = (MPlayFunc)sub_0833BA00;
+        gUnk_02038DE0[8] = (MPlayFunc)ModulePlyMemacc;
         gUnk_02038DE0[0x11] = (MPlayFunc)sub_0833A764;
         gUnk_02038DE0[0x13] = (MPlayFunc)sub_0833A778;
-        gUnk_02038DE0[0x1C] = (MPlayFunc)sub_0833BB58;
+        gUnk_02038DE0[0x1C] = (MPlayFunc)ModulePlyXcmd;
         gUnk_02038DE0[0x1D] = (MPlayFunc)sub_0833A6FC;
-        gUnk_02038DE0[0x1E] = (MPlayFunc)sub_0833AD00;
+        gUnk_02038DE0[0x1E] = (MPlayFunc)ModuleSampleFreqSet;
         gUnk_02038DE0[0x1F] = (MPlayFunc)sub_0833A488;
-        gUnk_02038DE0[0x20] = (MPlayFunc)sub_0833B0B4;
-        gUnk_02038DE0[0x21] = (MPlayFunc)sub_0833B134;
+        gUnk_02038DE0[0x20] = (MPlayFunc)ModuleFadeOutBody;
+        gUnk_02038DE0[0x21] = (MPlayFunc)ModuleTrkVolPitSet;
         soundInfo->cgbChans = cgbChans;
-        soundInfo->CgbSound = (CgbSoundFunc)sub_0833B348;
-        soundInfo->CgbOscOff = (CgbOscOffFunc)sub_0833B290;
-        soundInfo->MidiKeyToCgbFreq = (MidiKeyToCgbFreqFunc)sub_0833B1E8;
+        soundInfo->CgbSound = (CgbSoundFunc)ModuleCgbSound;
+        soundInfo->CgbOscOff = (CgbOscOffFunc)ModuleCgbOscOff;
+        soundInfo->MidiKeyToCgbFreq = (MidiKeyToCgbFreqFunc)ModuleMidiKeyToCgbFreq;
         soundInfo->maxLines = (u8)(u32)&gMaxLines;
         CpuFill32(0, (u32)cgbChans, 0x100);
         cgbChans[0].type = 1;

@@ -52,7 +52,7 @@ What the source shapes turned out to be, for the next stub batch:
 - `sub_080079A0` family (2): `arg->unkC(arg);` — callback at offset 0x0C
   of a linked-list entity (next 0x10, prev 0x14; see the tier 3 helpers).
   The high port calls `_08344B80(arg, arg->unkC)` — the module's renamed
-  `_call_via_r1` — following `sub_0833ABF4`'s convention.
+  `_call_via_r1` — following `ModuleClear64byte [sub_0833ABF4]`'s convention.
 - `MultibootVBlankIntr [sub_0800DFC0]` family (2): `gUnk_03007FF8 = 1;`.
 - `sub_08016CF8`: `return sub_080025FC() * 2;` with a u8-prototyped
   callee — the caller re-narrows and fuses with the `* 2` into
@@ -90,7 +90,7 @@ What the source shapes turned out to be, for the next m4a batch:
   tables.
 - Both `ply_memacc` copies were mis-scoped (jump table + 18 case bodies as
   `.byte` rows; 344 bytes each, not 54). The low copy hand-cut like
-  `sub_0800F8D0`. The high copy `sub_0833BA00` runs from EWRAM
+  `sub_0800F8D0`. The high copy `ModulePlyMemacc [sub_0833BA00]` runs from EWRAM
   (0x02002F80): its switch table embeds EWRAM addresses. It links in
   `ldscript.ld`'s `.high_module` section like the rest of the module.
 - The two `svc 0x2A` stubs (`sub_0800151C`, `sub_0833ABDC`) are C after
@@ -114,7 +114,7 @@ What the source shapes turned out to be, for the next m4a batch:
 | 17 | `ply_xrele [sub_08002564]` | 18 | `ply_xrele`; port of `ply_xdeca` |
 | 18 | `ply_xleng [sub_08002590]` | 18 | `ply_xleng`; port of `ply_xdeca` |
 | 19 | `ply_xswee` | 18 | `ply_xswee`; port of `ply_xdeca` |
-| 20 | `sub_0833BBFC` | 18 | port of `ply_xdeca` |
+| 20 | `ModulePlyXdeca [sub_0833BBFC]` | 18 | port of `ply_xdeca` |
 | 21 | `sub_0833BC10` | 18 | port of `ply_xdeca` |
 | 22 | `sub_0833BC24` | 18 | port of `ply_xdeca` |
 | 23 | `sub_0833BC50` | 18 | port of `ply_xdeca` |
@@ -127,10 +127,10 @@ What the source shapes turned out to be, for the next m4a batch:
 | 30 | `sub_0833BC44` | 12 | port of `ply_xiecv` |
 | 31 | `ply_xtype [sub_08002514]` | 18 | `ply_xtype` |
 | 32 | `ply_xatta [sub_08002528]` | 18 | `ply_xatta`; port of `ply_xtype` |
-| 33 | `sub_0833BBD4` | 18 | port of `ply_xtype` |
-| 34 | `sub_0833BBE8` | 18 | port of `ply_xtype` |
+| 33 | `ModulePlyXtype [sub_0833BBD4]` | 18 | port of `ply_xtype` |
+| 34 | `ModulePlyXatta [sub_0833BBE8]` | 18 | port of `ply_xtype` |
 | 35 | `ply_xxx` | 14 | `ply_xxx` |
-| 36 | `sub_0833BB78` | 14 | port of `ply_xxx` |
+| 36 | `ModulePlyXxx [sub_0833BB78]` | 14 | port of `ply_xxx` |
 | 37 | `sub_0800133C` | 38 | `m4aSongNumStop` |
 | 38 | `sub_08001374` | 38 | `m4aSongNumContinue`; port of `sub_0800133C` |
 | 39 | `sub_0833A9FC` | 38 | port of `sub_0800133C` |
@@ -138,7 +138,7 @@ What the source shapes turned out to be, for the next m4a batch:
 | 41 | `sub_08001134` | 24 | `MPlayContinue` |
 | 42 | `sub_0833A7F4` | 24 | port of `sub_08001134` |
 | 43 | `ply_xcmd [sub_08002498]` | 26 | `ply_xcmd` |
-| 44 | `sub_0833BB58` | 26 | port of `ply_xcmd` |
+| 44 | `ModulePlyXcmd [sub_0833BB58]` | 26 | port of `ply_xcmd` |
 | 45 | `sub_08002238` | 30 | `ClearModM` |
 | 46 | `sub_0833B8F8` | 30 | port of `sub_08002238` |
 | 47 | `sub_080020CC` | 36 | `m4aMPlayTempoControl` |
@@ -148,17 +148,17 @@ What the source shapes turned out to be, for the next m4a batch:
 | 51 | `sub_0833B7B4` | 104 | port of `sub_080020F4` |
 | 52 | `sub_0833B890` | 104 | port of `sub_080020F4` |
 | 53 | `ply_memacc [sub_08002340]` | 54 | `ply_memacc`; jump table or inline data |
-| 54 | `sub_0833BA00` | 54 | port of `ply_memacc`; jump table or inline data |
+| 54 | `ModulePlyMemacc` | 54 | port of `ply_memacc`; jump table or inline data |
 | 55 | `sub_08002258` | 112 | `m4aMPlayModDepthSet` |
 | 56 | `sub_080022CC` | 112 | `m4aMPlayLFOSpeedSet`; port of `sub_08002258` |
 | 57 | `sub_0833B918` | 112 | port of `sub_08002258` |
 | 58 | `sub_0833B98C` | 112 | port of `sub_08002258` |
 | 59 | `ply_xwave [sub_080024CC]` | 62 | `ply_xwave` |
-| 60 | `sub_0833BB8C` | 62 | port of `ply_xwave` |
+| 60 | `ModulePlyXwave [sub_0833BB8C]` | 62 | port of `ply_xwave` |
 | 61 | `sub_08001234` | 66 | `m4aSongNumStart` |
 | 62 | `sub_0833A8F4` | 66 | port of `sub_08001234` |
 | 63 | `CgbOscOff [sub_08001BD0]` | 68 | `CgbOscOff` |
-| 64 | `sub_0833B290` | 68 | port of `CgbOscOff` |
+| 64 | `ModuleCgbOscOff [sub_0833B290]` | 68 | port of `CgbOscOff` |
 | 65 | `sub_080013B0` | 70 | `m4aMPlayAllStop` |
 | 66 | `sub_0833AA70` | 70 | port of `sub_080013B0` |
 | 67 | `sub_08001280` | 72 | `m4aSongNumStartOrChange` |
@@ -166,7 +166,7 @@ What the source shapes turned out to be, for the next m4a batch:
 | 69 | `sub_0800177C` | 80 | `SoundClear` |
 | 70 | `sub_0833AE3C` | 80 | port of `sub_0800177C` |
 | 71 | `MidiKeyToCgbFreq [sub_08001B28]` | 160 | `MidiKeyToCgbFreq` |
-| 72 | `sub_0833B1E8` | 160 | port of `MidiKeyToCgbFreq` |
+| 72 | `ModuleMidiKeyToCgbFreq [sub_0833B1E8]` | 160 | port of `MidiKeyToCgbFreq` |
 
 ## Tier 2: Near copies of matched functions — finished 2026-09-24
 
@@ -503,7 +503,7 @@ end (mostly `0x02037xxx`-`0x0203Exxx`) or below its start. These are
 variables with no bytes in the ROM. Replace each with an `extern
 gUnk_<EWRAM address>` and one `symbols.ld` line, as for any RAM variable.
 Leave true constants as literals, such as `0x02000000` (the start of
-EWRAM) in `sub_0833BA00.c`.
+EWRAM) in `ModulePlyMemacc.c`.
 
 These names stay fixed numbers. To make them move with the image, link
 the module's `.bss` as a `NOLOAD` section after `.high_module`. That's a

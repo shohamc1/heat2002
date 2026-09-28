@@ -8,17 +8,34 @@
  * addresses (module linked to run from 0x02000000), so under match.py's
  * ROM-address link the 18 table words plus the pool word that feeds
  * ldr r1 cannot match; everything else is byte-identical. */
-
-
 void _08344B84(u32 arg0, u32 arg1, u32 arg2);
-
 #define MEMACC_COND_JUMP(cond) \
     if (cond)                  \
         goto cond_true;        \
     else                       \
         goto cond_false;
+/* ply_xcmd, high-module copy. Its xcmd table lives at 0x0200C910 and the
+ * indirect call goes through the high module's _call_via_r2 stub at
+ * 0x08344B84: calling _08344B84(a, b, target) leaves a in r0, b in r1 and
+ * jumps to the address in r2. */
+extern MPlayFunc gUnk_0200C910[];
+/* ply_xxx (high copy). The high module links its own libgcc copy, so the
+   indirect call routes through _08344B84, its _call_via_r2, not the low
+   copy's _call_via_r2 (same pattern as ModuleClearChain with _08344B80). */
+/* ply_xwave, high-module copy. */
+#define READ_XCMD_BYTE(var, n)         \
+    {                                  \
+        u32 byte = track->cmdPtr[(n)]; \
+        byte <<= n * 8;                \
+        (var) &= ~(0xFF << (n * 8));   \
+        (var) |= byte;                 \
+    }
+/* ply_xtype (high copy) */
+/* ply_xatta (high copy) */
+/* ply_xdeca (high copy) */
 
-void sub_0833BA00(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
+
+void ModulePlyMemacc(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
 {
     u32 op;
     u8 *addr;
@@ -99,3 +116,54 @@ cond_true:
 cond_false:
     track->cmdPtr += 4;
 }
+
+
+void ModulePlyXcmd(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
+{
+    u32 n = *track->cmdPtr;
+    track->cmdPtr++;
+
+    _08344B84(mplayInfo, track, gUnk_0200C910[n]);
+}
+
+
+void ModulePlyXxx(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
+{
+    _08344B84(mplayInfo, track, (u32)gUnk_02038DE0[0]);
+}
+
+
+void ModulePlyXwave(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
+{
+    u32 wav;
+
+    READ_XCMD_BYTE(wav, 0)
+    READ_XCMD_BYTE(wav, 1)
+    READ_XCMD_BYTE(wav, 2)
+    READ_XCMD_BYTE(wav, 3)
+
+    track->tone.wav = (struct WaveData *)wav;
+    track->cmdPtr += 4;
+}
+
+
+void ModulePlyXtype(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
+{
+    track->tone.type = *track->cmdPtr;
+    track->cmdPtr++;
+}
+
+
+void ModulePlyXatta(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
+{
+    track->tone.attack = *track->cmdPtr;
+    track->cmdPtr++;
+}
+
+
+void ModulePlyXdeca(u32 mplayInfo, struct MusicPlayerTrack *track)
+{
+    track->tone.decay = *track->cmdPtr;
+    track->cmdPtr++;
+}
+

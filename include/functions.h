@@ -250,15 +250,15 @@ void ModuleWaitForVBlank(void);
 void ModuleReadKeys(void);
 s32 sub_08339B78(s32 a, s32 b);
 void sub_0833A7F4(struct MusicPlayerInfo *mplayInfo);
-void sub_0833AAB8(struct CgbChannel *cgbChans);
-void sub_0833AC08(struct SoundInfo *soundInfo);
-void sub_0833ADA4(u32 mode);
-void sub_0833AF0C(void);
-void sub_0833AF48(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *tracks, u32 r2);
-void sub_0833AFC0(struct MusicPlayerInfo *mplayInfo, struct SongHeader *songHeader);
-void sub_0833B074(struct MusicPlayerInfo *mplayInfo);
-void sub_0833B290(u8 chanNum);
-void sub_0833B2E0(struct Unk1C20 *s);
+void ModuleMPlayExtender(struct CgbChannel *cgbChans);
+void ModuleSoundInit(struct SoundInfo *soundInfo);
+void ModuleM4aSoundMode(u32 mode);
+void ModuleM4aSoundVSyncOn(void);
+void ModuleMPlayOpen(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *tracks, u32 r2);
+void ModuleMPlayStart(struct MusicPlayerInfo *mplayInfo, struct SongHeader *songHeader);
+void ModuleM4aMPlayStop(struct MusicPlayerInfo *mplayInfo);
+void ModuleCgbOscOff(u8 chanNum);
+void ModuleCgbModVol(struct CgbChannel *chan);
 u8 sub_0833BCBC(void);
 /* Localized message ids: rows of gModule_LocalizedText[8][5] (EN/FR/DE/ES/IT). */
 #define MODULE_MSG_LINK_FAIL   0

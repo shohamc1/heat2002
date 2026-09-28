@@ -18,10 +18,10 @@ struct MPlayInfo
   struct Track *tracks;
 };
 void sub_0833A488(struct MPlayInfo *mplayInfo, struct Track *track);
-void sub_0833B0B4(struct MPlayInfo *mplayInfo)
+void ModuleFadeOutBody(struct MPlayInfo *mplayInfo)
 {
   s32 i;
-  s32 v;
+  s32 fadeOV;
   struct Track *track;
   unsigned long long mask;
   if (mplayInfo->fadeOI != 0)
@@ -29,8 +29,8 @@ void sub_0833B0B4(struct MPlayInfo *mplayInfo)
     if ((--mplayInfo->fadeOC) == 0)
     {
       mask = 0xFFFF;
-      v = (mplayInfo->fadeOV = (mplayInfo->fadeOV - 16) & mask);
-      if (((s16) v) <= 0)
+      fadeOV = (mplayInfo->fadeOV = (mplayInfo->fadeOV - 16) & mask);
+      if (((s16) fadeOV) <= 0)
       {
         for (i = mplayInfo->trackCount, track = mplayInfo->tracks; i > 0; i--, track++)
         {

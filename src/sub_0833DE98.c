@@ -7,7 +7,7 @@ void sub_0833FA3C(void);
 void sub_0833D680(void);
 u32 sub_0833C874(void);
 void ModuleDrawTextCenteredHighlight(u8 *str, u32 y, u32 shade);
-void sub_0833AE90(void);
+void ModuleM4aSoundVSyncOff(void);
 void sub_08344B74(u32 a);
 u32 sub_0833DA34(void);
 void sub_0833D510(u32 a, u32 b);
@@ -27,9 +27,9 @@ void sub_0833DE98(void)
             ModuleDrawTextCenteredHighlight(ModuleGetString(MODULE_MSG_LINK_FAIL), 0xA, 1);
             ModuleDrawTextCenteredHighlight(gModule_PleaseTurnOffYour_2, 0xC, 1);
             ModuleDrawTextCenteredHighlight(gModule_GameBoyAdvance_2, 0xD, 1);
-            sub_0833B074((struct MusicPlayerInfo *)((u32)gUnk_02038F70));
-            sub_0833B074((struct MusicPlayerInfo *)((u32)gUnk_02038FB0));
-            sub_0833AE90();
+            ModuleM4aMPlayStop((struct MusicPlayerInfo *)((u32)gUnk_02038F70));
+            ModuleM4aMPlayStop((struct MusicPlayerInfo *)((u32)gUnk_02038FB0));
+            ModuleM4aSoundVSyncOff();
             do
             {
                 key = gModule_LinkPlayerId;
