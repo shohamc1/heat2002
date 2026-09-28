@@ -1035,7 +1035,7 @@ callers that look broken.
 (`FadeToBrightenedPalette`, `LoadMenuScreen [sub_08011C9C]`, `GetString`, `MenuMoveVertical`,
 ...) in 96 files: `SendMultibootIsland` and `sub_080132F8` (return-width
 pairs), `LinkTrackSelect` (the `ldrsb` of an `s8` parameter),
-`ChallengeCategorySelect [sub_0801465C]` (an `s16` return rotating r5/r6), `sub_0833E7FC` (removed
+`ChallengeCategorySelect [sub_0801465C]` (an `s16` return rotating r5/r6), `ModuleDrawLapCounter [sub_0833E7FC]` (removed
 narrowing restored as `(u8)` argument casts), `RunRace` (an `s8` return
 cast).
 
@@ -1098,7 +1098,7 @@ reloads**: a loop that read an extern POINTER variable (`gP[i] = 0`)
 reloads `gP`'s word every iteration; under an array canonical the
 equivalent load gets hoisted out of the loop. Write the read as
 `(*(volatile u32 *)&gP[0])` — one volatile word read inside the loop —
-and the reload returns (`InitSinglePakLinkScreen [sub_0800DFCC]`, `ClearPausedPlayerText [sub_0800524C]`, `sub_0833DC7C`,
+and the reload returns (`InitSinglePakLinkScreen [sub_0800DFCC]`, `ClearPausedPlayerText [sub_0800524C]`, `ModuleClearPausedPlayerText [sub_0833DC7C]`,
 `TitleScreen`). (3) A struct-*array* extern in a header above the
 files' local struct definitions changes their codegen (the
 extern-headers-plan trap); complete the tag in a shared header first —

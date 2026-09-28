@@ -539,6 +539,6 @@ and the declarations callers use, most common first:
 | `FinishAllCars [sub_08016D28]` | C | `void (u8)` (2); `void (void)` (1) |
 | `sub_08017230` | asm | `s32 (s32, s32)` (5); `u32 (u32, s32)` (1); `u32 (u32, u32)` (1) |
 | `sub_0833A7F4` | C | `void (u32)` (2); `void (void)` (1) |
-| `sub_0833E36C` | C | `void (u16 *, u32)` (1); `void (u8 *, u8)` (1) |
-| `sub_0833E3C8` | C | `void (u16 *, s32)` (1); `void (u8 *, u8)` (1) |
+| `ModuleDrawBigDigit [sub_0833E36C]` | C | `void (u16 *, u32)` (1); `void (u8 *, u8)` (1) |
+| `ModuleDrawSmallDigit [sub_0833E3C8]` | C | `void (u16 *, s32)` (1); `void (u8 *, u8)` (1) |
 | `sub_0833EF0C` | C | `void (u32, u32, u32)` (2); `void (u8 *, u32, u32)` (1) |

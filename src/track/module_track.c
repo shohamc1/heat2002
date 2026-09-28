@@ -18,7 +18,7 @@ void ModuleBeginFadeToBrightenedPalette(s32 arg0, u16 *src);
 void ModuleFlushTrackBgBuffers(void);
 void ModuleSetCameraPos(u32 x, u32 y);
 void sub_0834108C(u32 idx);
-void sub_0833E078(void);
+void ModuleResetRaceTimer(void);
 void sub_08344B60(u32 a, u32 b, u32 c);
 
 
@@ -88,8 +88,8 @@ void ModuleLoadTrack(u32 idx)
     ModuleFlushTrackBgBuffers();
     ModuleSetCameraPos(0, 0);
     sub_0834108C(idx);
-    sub_0833E05C();
-    sub_0833E078();
+    ModuleResetLapTimer();
+    ModuleResetRaceTimer();
     gModule_NumFinishedCars = 0;
 }
 

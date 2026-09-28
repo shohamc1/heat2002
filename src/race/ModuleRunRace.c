@@ -56,12 +56,12 @@ void ModuleSmoothCamera(void);
 void ModuleUpdateCameraScroll(void);
 void sub_0833FFC4(void);
 void sub_083419D8(void);
-void sub_0833DF58(void);
+void ModuleDrawLinkFinishTimes(void);
 void ModuleUpdateTrackScroll(u32, u32);
 void sub_08340EFC(void);
 void ModuleM4aMPlayFadeOut(u32, u16);
 u32 ModulePauseMenu(void);
-u32 sub_0833DCB0(void);
+u32 ModuleSinglePakPauseMenu(void);
 u32 ModuleLinkPauseMenu(void);
 s8 ModuleExchangeLinkInput(void);
 void sub_0833FA3C(void);
@@ -225,7 +225,7 @@ after_d5f4: ;
         ModuleUpdateCameraScroll();
         sub_0833FFC4();
         sub_083419D8();
-        sub_0833DF58();
+        ModuleDrawLinkFinishTimes();
         if (gModule_RaceStarted != 0 || gModule_GameMode[0] == 9 || gModule_GameMode[0] == 0xD
             || gModule_GameMode[0] == 0xE || gModule_GameMode[0] == 0xF || gModule_GameMode[0] == 0x11)
             sub_083426C8();
@@ -253,7 +253,7 @@ after_d5f4: ;
             if (gModule_PaletteFadeActive != 0 || gModule_RaceEndState != 0)
                 goto r_zero;
             if (gModule_GameMode[0] == 4)
-                r = sub_0833DCB0();
+                r = ModuleSinglePakPauseMenu();
             else
                 r = ModuleLinkPauseMenu();
 r_ext:

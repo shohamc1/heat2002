@@ -18,7 +18,7 @@ void ModuleM4aSoundVSyncOff(void);
 void ModuleUpdateSprites(void);
 void sub_08344B74(void);
 void ModuleSortLinkCarsByTime(void);
-void sub_0833DE98(void);
+void ModuleWaitForLinkRestart(void);
 
 void ModuleGameMain(void)
 {
@@ -85,6 +85,6 @@ void ModuleGameMain(void)
             }
         }
         ModuleSortLinkCarsByTime();
-        sub_0833DE98();
+        ModuleWaitForLinkRestart();
     }
 }

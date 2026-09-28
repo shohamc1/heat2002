@@ -2,7 +2,7 @@
 #include "global.h"
 #include "variables.h"
 extern u32 gUnk_0203D68C[];
-void sub_0833E1F4(void)
+void ModuleUpdateRaceTimers(void)
 {
   u16 *p2;
   u16 *p1;

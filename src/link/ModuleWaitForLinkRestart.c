@@ -12,10 +12,10 @@ void sub_08344B74(u32 a);
 u32 ModuleReadLinkMenuKeys(void);
 void ModuleFadeToColor(u32 a, u32 b);
 
-void sub_0833DE98(void)
+void ModuleWaitForLinkRestart(void)
 {
-    u32 key;
-    u32 t2;
+    u32 playerId;
+    u32 keys;
 
     sub_0833FA3C();
     ModuleClearOamBuffer();
@@ -32,10 +32,10 @@ void sub_0833DE98(void)
             ModuleM4aSoundVSyncOff();
             do
             {
-                key = gModule_LinkPlayerId;
-                if (key == 0)
-                    key = *(volatile u16 *)0x04000130;
-                sub_08344B74(key);
+                playerId = gModule_LinkPlayerId;
+                if (playerId == 0)
+                    playerId = *(volatile u16 *)0x04000130;
+                sub_08344B74(playerId);
             } while (1);
         }
         else
@@ -49,8 +49,8 @@ void sub_0833DE98(void)
                 ModuleDrawTextCenteredHighlight(ModuleGetString(MODULE_MSG_PRESS_START), 0xE, 1);
             }
         }
-        t2 = (u16)ModuleReadLinkMenuKeys();
-        if ((t2 & 8) == 0)
+        keys = (u16)ModuleReadLinkMenuKeys();
+        if ((keys & 8) == 0)
             continue;
         ModuleFadeToColor(0, 0x32);
         return;

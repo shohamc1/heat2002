@@ -51,12 +51,12 @@ void sub_0833E4A4(void)
     v = (*(s32 *)&gModule_CountdownSeconds);
     d[1] = sub_08344C50(v, 10);
     d[0] = sub_08344BB8(v, 10);
-    sub_0833E36C((u16 *)(gModule_TextLayerMapPtr[0] + 0x82), d[0]);
-    sub_0833E36C((u16 *)(gModule_TextLayerMapPtr[0] + 0x86), d[1]);
+    ModuleDrawBigDigit((u16 *)(gModule_TextLayerMapPtr[0] + 0x82), d[0]);
+    ModuleDrawBigDigit((u16 *)(gModule_TextLayerMapPtr[0] + 0x86), d[1]);
     w = (*(s32 *)&gModule_CountdownMs);
     d[1] = sub_08344C50(sub_08344BB8(w, 10), 10);
     d[0] = sub_08344BB8(w, 100);
-    sub_0833E3C8((u16 *)(gModule_TextLayerMapPtr[0] + 0xCA), 10);
-    sub_0833E3C8((u16 *)(gModule_TextLayerMapPtr[0] + 0xCC), d[0]);
-    sub_0833E3C8((u16 *)(gModule_TextLayerMapPtr[0] + 0xCE), d[1]);
+    ModuleDrawSmallDigit((u16 *)(gModule_TextLayerMapPtr[0] + 0xCA), 10);
+    ModuleDrawSmallDigit((u16 *)(gModule_TextLayerMapPtr[0] + 0xCC), d[0]);
+    ModuleDrawSmallDigit((u16 *)(gModule_TextLayerMapPtr[0] + 0xCE), d[1]);
 }

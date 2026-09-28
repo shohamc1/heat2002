@@ -399,7 +399,7 @@ What the source shapes turned out to be:
 | 190 | `sub_0800306C` | 258 | jump table or inline data |
 | 191 | `ModuleMainVBlankCallback [sub_0833C5B0]` | 258 | port of `sub_0800306C`; jump table or inline data |
 | 192 | `sub_08006094` | 286 | jump table or inline data |
-| 193 | `sub_0833EB90` | 286 | port of `sub_08006094`; jump table or inline data |
+| 193 | `ModuleUpdateRaceHud [sub_0833EB90]` | 286 | port of `sub_08006094`; jump table or inline data |
 | 194 | `sub_0800E75C` | 286 | jump table or inline data |
 | 195 | `sub_0800E8A0` | 290 | port of `sub_0800E75C`; jump table or inline data |
 
@@ -488,7 +488,7 @@ missed:
   `sub_083397C4`, `ModuleVBlankIntr` and `ModuleDummyIntr [sub_08339AEC]` now.
 - In the module, `0x02025220` and `0x0202522C` are initialised data in
   the image. `data_0835DC3C` splits at `0x0835DCA0` and `0x0835DCAC`,
-  and `sub_0833E0AC` and `sub_0833F1A8` read the labels
+  and `ModuleInitCountdown [sub_0833E0AC]` and `sub_0833F1A8` read the labels
   `gModule_02025220` and `gModule_0202522C`. The prefix keeps them apart
   from the main program's `gUnk_` names for the same addresses.
 

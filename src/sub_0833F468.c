@@ -115,7 +115,7 @@ u8 sub_0833F468(struct Car *p, u8 a1)
         p->progress = ((s8)p->lap << 16) + p->waypoint * 16;
         if (a1 == v6C) {
             if (gUnk_0203E1E0[0] != 0 && p->lapStartedFlag != 0)
-                sub_0833E160(gModule_LapMin[0], gModule_LapSec[0], gModule_LapMs[0]);
+                ModuleCheckTrackRecord(gModule_LapMin[0], gModule_LapSec[0], gModule_LapMs[0]);
         }
         p->ledLapFlag = 1;
         if (p == gModule_Cars && gModule_GameMode[0] == 5 && p->lapStartedFlag != 0) {
@@ -149,7 +149,7 @@ u8 sub_0833F468(struct Car *p, u8 a1)
                 sub_08342BA4(gModule_LapMin[0], gModule_LapSec[0], gModule_LapMs[0]);
         }
         if (a1 == v6C)
-            sub_0833E05C();
+            ModuleResetLapTimer();
     }
     }
 
@@ -160,7 +160,7 @@ u8 sub_0833F468(struct Car *p, u8 a1)
                 sub_08342D10();
             if (a1 == v6C && gModule_GameMode[0] != 0xA) {
                 s32 inner = v58 / 2 + 6;
-                sub_0833E094((u8)(e->unk14 + inner));
+                ModuleSetCountdownSeconds((u8)(e->unk14 + inner));
             }
         }
         {

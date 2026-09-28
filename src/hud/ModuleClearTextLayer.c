@@ -2,7 +2,7 @@
 #include "variables.h"
 
 
-void sub_0833ECEC(void)
+void ModuleClearTextLayer(void)
 {
     u16 *p = (u16 *)(*(u32 *)&gModule_TextLayerMapPtr);
     u32 i = 0;
