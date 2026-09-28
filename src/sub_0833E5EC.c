@@ -6,7 +6,7 @@ extern u8 gUnk_02024F70[];
 
 u32 sub_0833FC94(u32 r0);
 u32 sub_0833FD78(u32 r0);
-void sub_0833D6A0(u32 r0, u32 r1);
+void ModuleAddOamEntry(u32 r0, u32 r1);
 void ModuleM4aSongNumStart(u32 r0);
 
 void sub_0833E5EC(s32 arg)
@@ -29,7 +29,7 @@ void sub_0833E5EC(s32 arg)
         v |= (buf[0] & 0x1FF) << 16;
         v |= 0x40000000;
         r1v = *(u32 *)(ptr + 0x10) | (((u32)sub_0833FD78((u32)gUnk_02024F50) << 24) >> 12);
-        sub_0833D6A0(v | 0x02000100, r1v);
+        ModuleAddOamEntry(v | 0x02000100, r1v);
     }
     gUnk_0203B828 = ((arg >> 16) + 0xBE) & 0xFF;
     dest = (u16 *)(gModule_TextLayerMapPtr[0] + 0x4EE);

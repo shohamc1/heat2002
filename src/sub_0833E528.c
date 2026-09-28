@@ -15,7 +15,7 @@ extern u32 gUnk_02024EE8[];
 
 struct Unk0833E528Ent *sub_0833FBB0(void *a, u16 *b);
 u32 sub_0833FD78(u32 a);
-void sub_0833D6A0(u32 a, u32 b);
+void ModuleAddOamEntry(u32 a, u32 b);
 
 void sub_0833E528(u32 a0)
 {
@@ -34,7 +34,7 @@ void sub_0833E528(u32 a0)
         bits |= 0x80000000;
         v = ret->field_10 | ((sub_0833FD78((u32 *)gUnk_02024F50) << 24) >> 12);
         bits |= 0x100;
-        sub_0833D6A0(bits, v);
+        ModuleAddOamEntry(bits, v);
     }
     gUnk_0203B6DC = (a0 + 0xA0) & 0xFF;
 }

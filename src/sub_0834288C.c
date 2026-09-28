@@ -18,7 +18,7 @@ void sub_0834288C(u32 a)
             sub_0833FF84(a);
             if (gModule_GameMode[0] != 4)
             {
-                sub_0833D288(0xA, 0);
+                ModuleBeginFadeToColor(0xA, 0);
                 ModuleWaitForVBlank();
                 *(volatile u16 *)0x04000000 &= 0xEFFF;
             }

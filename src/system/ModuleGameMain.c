@@ -10,12 +10,12 @@ extern u8 gModule_GameBoyAdvance[];
 void ModuleInitIntrHandlers(void);
 void ModuleSetVBlankCallback(u32 r0);
 void ModuleFillFadePalette(u16 color);
-void sub_0833D510(u32 r0, u32 r1);
+void ModuleFadeToColor(u32 r0, u32 r1);
 void ModuleM4aSoundInit(void);
 u8 ModuleRunRace(u32 r0, u32 r1, u32 r2);
 void ModuleDrawTextCenteredHighlight(u32 r0, u32 r1, u32 r2);
 void ModuleM4aSoundVSyncOff(void);
-void sub_0833D9D8(void);
+void ModuleUpdateSprites(void);
 void sub_08344B74(void);
 void ModuleSortLinkCarsByTime(void);
 void sub_0833DE98(void);
@@ -47,7 +47,7 @@ void ModuleGameMain(void)
     *ie = 0x2001;
     *ds = eight;
     ModuleFillFadePalette(0x7FFF);
-    sub_0833D510(0, 0x32);
+    ModuleFadeToColor(0, 0x32);
     ModuleWaitForVBlank();
     p = (volatile u16 *)0x0400000E;
     *p = 0x3D0B;
@@ -71,7 +71,7 @@ void ModuleGameMain(void)
         ModuleLinkHandshake();
         gModule_IsLinkRace = 1;
         gUnk_02039190 = 0;
-        sub_0833D510(0, 0x0A);
+        ModuleFadeToColor(0, 0x0A);
         if (ModuleRunRace(0, 4, 0)) {
             ModuleDrawTextCenteredHighlight(ModuleGetString(MODULE_MSG_LINK_FAIL), 0x0A, 1);
             ModuleDrawTextCenteredHighlight((u32)gModule_PleaseTurnOffYour, 0x0C, 1);
@@ -80,7 +80,7 @@ void ModuleGameMain(void)
             ModuleM4aMPlayStop((struct MusicPlayerInfo *)((u32)gUnk_02038FB0));
             ModuleM4aSoundVSyncOff();
             for (;;) {
-                sub_0833D9D8();
+                ModuleUpdateSprites();
                 sub_08344B74();
             }
         }

@@ -2,7 +2,7 @@
 #include "variables.h"
 
 
-u32 sub_0833DBF4(void)
+u32 ModuleLinkPauseMenu(void)
 {
     u8 unused[0x200];
 

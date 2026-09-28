@@ -10,7 +10,7 @@ extern u8 gUnk_020391C8;
 void sub_0833A1DC(void);
 void ModuleFlushTrackBgBuffers(void);
 void sub_0833FDC4(void);
-void sub_0833D4E4(void);
+void ModuleFlushPaletteBuffer(void);
 void ModuleM4aSoundMain(void);
 
 void ModuleMainVBlankCallback(void)
@@ -53,7 +53,7 @@ void ModuleMainVBlankCallback(void)
             (*(vu8 *)&gModule_VBlankWorkDone) = 1;
         }
     }
-    sub_0833D4E4();
+    ModuleFlushPaletteBuffer();
     ModuleM4aSoundMain();
     REG_IME = 0;
     (*(vu16 *)&gIntrCheck) |= 1;

@@ -12,7 +12,7 @@ void sub_0833E3F8(u16 *dest, u8 idx)
     *dest = (gModule_FontTileEntries[v] & 0xFFF) | 0xE000;
 }
 
-void sub_0833D6A0(u32 a, u32 b);
+void ModuleAddOamEntry(u32 a, u32 b);
 
 void sub_0833E428(u32 x, u32 pal, u32 tiles, u32 a, u32 b)
 {
@@ -32,7 +32,7 @@ void sub_0833E428(u32 x, u32 pal, u32 tiles, u32 a, u32 b)
     pal &= 0xFF;
     p = arr;
     do {
-        sub_0833D6A0(((x & 0x1FF) << 0x10) | pal, (*p++ + 0x3D4) | 0x3000);
+        ModuleAddOamEntry(((x & 0x1FF) << 0x10) | pal, (*p++ + 0x3D4) | 0x3000);
         x += 4;
         i++;
     } while (i != 8);

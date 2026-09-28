@@ -30,17 +30,17 @@ extern u8 gUnk_020251A4[];
 extern u8 gUnk_0203D6B0[];
 
 void ModuleLoadTrack(u8);
-void sub_0833D9E8(u8);
+void ModuleLoadTrackCues(u8);
 void sub_0833EE20(void);
 void ModuleSetTrackBgCnt(void);
-void sub_0833D3E4(s32);
+void ModuleSetFadeDeltasColors240To255(s32);
 void sub_08343504(u32);
 void sub_0833F448(u32);
 void sub_0833F9A8(void);
 void sub_0833FF1C(void);
-void sub_0833D7D4(void);
-void sub_0833D680(void);
-void sub_0833D9D8(void);
+void ModuleResetSpriteOrderTable(void);
+void ModuleClearOamBuffer(void);
+void ModuleUpdateSprites(void);
 void ModuleEnableRaceDisplay(void);
 void sub_0833EDF8(void);
 void sub_0833EDB8(void);
@@ -48,21 +48,21 @@ void ModuleM4aSongNumStart(u16);
 void sub_083426C8(void);
 void sub_08342868(void);
 void sub_08342B04(void);
-void sub_0833D5F4(void *);
+void ModuleSetCameraTarget(void *);
 void sub_08344878(void);
 void ModuleM4aMPlayPitchControl(void *, u16, s16);
-void sub_0833D448(void);
-void sub_0833D5B8(void);
-void sub_0833D57C(void);
+void ModuleUpdatePaletteFade(void);
+void ModuleSmoothCamera(void);
+void ModuleUpdateCameraScroll(void);
 void sub_0833FFC4(void);
 void sub_083419D8(void);
 void sub_0833DF58(void);
 void ModuleUpdateTrackScroll(u32, u32);
 void sub_08340EFC(void);
 void ModuleM4aMPlayFadeOut(u32, u16);
-u32 sub_0833DBC8(void);
+u32 ModulePauseMenu(void);
 u32 sub_0833DCB0(void);
-u32 sub_0833DBF4(void);
+u32 ModuleLinkPauseMenu(void);
 s8 ModuleExchangeLinkInput(void);
 void sub_0833FA3C(void);
 
@@ -110,17 +110,17 @@ s32 ModuleRunRace(u8 isDemo, u8 gameMode)
     gUnk_020391E0[3] = 0;
     ModuleLoadTrack(gModule_TrackId);
     sub_0833F448(gModule_TrackId);
-    sub_0833D9E8(gModule_TrackId);
+    ModuleLoadTrackCues(gModule_TrackId);
     sub_0833EE20();
     ModuleSetTrackBgCnt();
     gUnk_02039158 = 0x100;
-    sub_0833D3E4(0x32);
+    ModuleSetFadeDeltasColors240To255(0x32);
     sub_08343504(gModule_TrackId);
     sub_0833F9A8();
     sub_0833FF1C();
-    sub_0833D7D4();
-    sub_0833D680();
-    sub_0833D9D8();
+    ModuleResetSpriteOrderTable();
+    ModuleClearOamBuffer();
+    ModuleUpdateSprites();
     gUnk_020391D4 = 1;
     (*(volatile s8 *)&gModule_VBlankWorkDone) = 0;
     first = (*(volatile s8 *)&gModule_VBlankWorkDone);
@@ -162,14 +162,14 @@ skip42B04:
     }
     gUnk_020390B8 = 0;
     if (gModule_IsLinkRace != 0) {
-        sub_0833D5F4(&gModule_Cars[(*(volatile u32 *)0x04000128 << 0x1A) >> 0x1E]);
+        ModuleSetCameraTarget(&gModule_Cars[(*(volatile u32 *)0x04000128 << 0x1A) >> 0x1E]);
         goto after_d5f4;
 rrret:
         gUnk_02039154 = 1;
         goto ret1;
 after_d5f4: ;
     } else {
-        sub_0833D5F4(gModule_Cars);
+        ModuleSetCameraTarget(gModule_Cars);
     }
     gModule_Camera[0] = gModule_Camera[2];
     gModule_Camera[1] = gModule_Camera[3];
@@ -192,7 +192,7 @@ after_d5f4: ;
     gUnk_02039218[0] = 0;
     while (gUnk_02039154 == 0) {
         sub_0833FA3C();
-        sub_0833D680();
+        ModuleClearOamBuffer();
         sub_08343148(gUnk_02039160, 0x4B, 0x3C);
         if (gUnk_0203921C != 0)
             sub_08343148(gUnk_02039170, 0x4B, 0x5A);
@@ -205,24 +205,24 @@ after_d5f4: ;
                     ((s16)(gUnk_02025190[car->gear]
                          + ((car->rpm * gUnk_020251A4[car->gear]) >> 6))) >> 3);
         if (gModule_IsDemo[0] != 0) {
-            sub_0833D5F4(gUnk_0203D6B0);
+            ModuleSetCameraTarget(gUnk_0203D6B0);
             gUnk_020250EC = t2 = gModule_FrameCounter / 256;
             if (t2 % 8 == 0)
                 gUnk_020250EC = 4;
         } else {
             if (gModule_IsLinkRace != 0)
-                sub_0833D5F4(&gModule_Cars[(*(volatile u32 *)0x04000128 << 0x1A) >> 0x1E]);
+                ModuleSetCameraTarget(&gModule_Cars[(*(volatile u32 *)0x04000128 << 0x1A) >> 0x1E]);
             else
-                sub_0833D5F4(gModule_Cars);
+                ModuleSetCameraTarget(gModule_Cars);
             if (gModule_GameMode[0] == 9 || gModule_GameMode[0] == 0xD || gModule_GameMode[0] == 0xE
                 || gModule_GameMode[0] == 0xF || gModule_GameMode[0] == 0x11) {
                 gModule_Camera[0] = *(u32 *)&gModule_Cars[0];
                 gModule_Camera[1] = *(u32 *)((u8 *)&gModule_Cars[0] + 8);
             }
         }
-        sub_0833D448();
-        sub_0833D5B8();
-        sub_0833D57C();
+        ModuleUpdatePaletteFade();
+        ModuleSmoothCamera();
+        ModuleUpdateCameraScroll();
         sub_0833FFC4();
         sub_083419D8();
         sub_0833DF58();
@@ -230,7 +230,7 @@ after_d5f4: ;
             || gModule_GameMode[0] == 0xE || gModule_GameMode[0] == 0xF || gModule_GameMode[0] == 0x11)
             sub_083426C8();
         ModuleUpdateTrackScroll(gModule_Camera[0], gModule_Camera[1]);
-        sub_0833D9D8();
+        ModuleUpdateSprites();
         sub_08340EFC();
         gUnk_020391D4 = 1;
         if (gModule_IsDemo[0] != 0) {
@@ -241,13 +241,13 @@ after_d5f4: ;
                 *(volatile u16 *)0x04000000 &= 0xEFFF;
                 if (gModule_Options[2] != 0)
                     ModuleM4aMPlayFadeOut(gUnk_02038F70, 2);
-                sub_0833D288(0x19, 0);
+                ModuleBeginFadeToColor(0x19, 0);
             }
         } else {
             if ((u8)(gModule_GameMode[0] - 3) > 1 && gModule_RaceEndState == 0) {
                 if (gModule_PaletteFadeActive != 0)
                     goto r_zero;
-                r = sub_0833DBC8();
+                r = ModulePauseMenu();
                 goto r_ext;
             }
             if (gModule_PaletteFadeActive != 0 || gModule_RaceEndState != 0)
@@ -255,7 +255,7 @@ after_d5f4: ;
             if (gModule_GameMode[0] == 4)
                 r = sub_0833DCB0();
             else
-                r = sub_0833DBF4();
+                r = ModuleLinkPauseMenu();
 r_ext:
             rt = (u8)r;
             goto r_tests;
@@ -285,7 +285,7 @@ r_case2:
                 gModule_RaceEndState = 2;
                 ModuleWaitForVBlank();
                 *(volatile u16 *)0x04000000 &= 0xEFFF;
-                sub_0833D288(0x19, 0);
+                ModuleBeginFadeToColor(0x19, 0);
             }
             goto r_end;
 r_case27:

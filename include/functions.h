@@ -272,8 +272,8 @@ u8 sub_0833BCBC(void);
 
 void ModuleLinkHandshake(void);
 const u8 *ModuleGetString(u16 messageId);
-void sub_0833D288(u32 a0, u32 a1);
-void sub_0833D848(void);
+void ModuleBeginFadeToColor(u32 a0, u32 a1);
+void ModuleFlushSortedSprites(void);
 void sub_0833DA2C(void);
 void sub_0833E05C(void);
 void sub_0833E094(u8 value);

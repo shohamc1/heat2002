@@ -180,7 +180,7 @@ What the source shapes turned out to be:
 - The four constant-store twins are two `strh`s sharing one `movs` value
   (`*(vu16 *)0x04000202 = 1; gUnk_02000DD0 = 1;` etc.); plain
   non-volatile `extern u16` was correct everywhere.
-- `sub_0833DBE0` is `sub_0833DBC8` minus `return 0;` — `void f(void)
+- `sub_0833DBE0` is `ModulePauseMenu [sub_0833DBC8]` minus `return 0;` — `void f(void)
   { u32 buf[128]; }` reproduces the 0x200 frame without the dead `movs`.
 - Family E (`sub_08009C00`/`sub_08341690`) is `sub_08009BB4` with the
   viewport bounds tightened: `(u32)(u + 0x10) > 0x110` and `> 0xC0`
@@ -214,7 +214,7 @@ What the source shapes turned out to be:
 | 76 | `sub_08339B38` | 16 | from `sub_08005560`; port of `sub_08000444` |
 | 77 | `sub_08000214` | 10 | from `sub_08000260` |
 | 78 | `sub_083398D4` | 10 | from `sub_08000260`; port of `sub_08000214` |
-| 79 | `sub_0833DBE0` | 18 | from `sub_0833DBC8` |
+| 79 | `sub_0833DBE0` | 18 | from `ModulePauseMenu` |
 | 80 | `sub_0801303C` | 104 | from `CareerOverwriteConfirm [sub_08013878]` |
 | 81 | `sub_08013A7C` | 104 | from `CareerOverwriteConfirm`; port of `sub_0801303C` |
 | 82 | `sub_08014400` | 104 | from `CareerOverwriteConfirm`; port of `sub_0801303C` |

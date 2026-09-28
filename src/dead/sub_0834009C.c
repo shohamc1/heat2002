@@ -21,7 +21,7 @@ u32 sub_0834009C(u32 a0, u32 a1, u32 count)
 
 u32 *sub_0833FC94(u32 p);
 s32 sub_0833FD78(u32 a);
-u32 sub_0833D6A0(u32 a, u32 b);
+u32 ModuleAddOamEntry(u32 a, u32 b);
 
 void sub_083400D4(s32 a1, s32 a2, u32 a3, u32 a4, u8 a5)
 {
@@ -46,7 +46,7 @@ void sub_083400D4(s32 a1, s32 a2, u32 a3, u32 a4, u8 a5)
             t = *(u32 *)((u32)q + 0x10) | v;
             if (a5 != 0)
                 attr |= 0x10000000;
-            sub_0833D6A0(attr, t);
+            ModuleAddOamEntry(attr, t);
         }
     }
 }

@@ -12,7 +12,7 @@ void sub_0833E5EC(s32 arg);
 void sub_0833E94C(struct Car *p);
 void sub_0833E59C(struct Car *p);
 void sub_0833E5E8(struct Car *p);
-void sub_0833D9EC(struct Car *p);
+void ModuleUpdateTrackCues(struct Car *p);
 
 void sub_0833EB90(void)
 {
@@ -51,5 +51,5 @@ void sub_0833EB90(void)
         sub_0833E59C(car);
         sub_0833E5E8(car);
     }
-    sub_0833D9EC(car);
+    ModuleUpdateTrackCues(car);
 }

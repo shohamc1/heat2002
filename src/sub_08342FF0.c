@@ -8,7 +8,7 @@ u32 sub_08341644(s32 x, s32 y, s32 *out);
 u32 *sub_0833FBB0(u32 a);
 u32 sub_08343464(s32 x, s32 y);
 s32 sub_0833FD78(u32 a);
-u32 sub_0833D6A0(u32 a, u32 b);
+u32 ModuleAddOamEntry(u32 a, u32 b);
 
 struct Unk08342FF0
 {
@@ -57,13 +57,13 @@ void sub_08342FF0(struct Unk08342FF0 *e)
                 {
                     attr = (out[1] & 0xFF) | ((out[0] & 0x1FF) << 16) | 0x40000000;
                     t = ((u8)sub_0833FD78((u32)gUnk_0201F370) << 12) | 0x800;
-                    sub_0833D6A0(attr, oam->f10 | t);
+                    ModuleAddOamEntry(attr, oam->f10 | t);
                 }
                 else
                 {
                     attr = (out[1] & 0xFF) | ((out[0] & 0x1FF) << 16) | 0x40000000;
                     t = ((u8)sub_0833FD78((u32)gUnk_0201F370) << 12) | 0x400;
-                    sub_0833D6A0(attr, oam->f10 | t);
+                    ModuleAddOamEntry(attr, oam->f10 | t);
                 }
             }
         }

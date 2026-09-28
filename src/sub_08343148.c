@@ -7,7 +7,7 @@ extern u8 gUnk_0201F390[];
 
 struct SoundSlot0833F *sub_0833FCE0(void *a);
 u32 sub_0833FD78(u32 a);
-void sub_0833D6A0(u32 a, u32 b);
+void ModuleAddOamEntry(u32 a, u32 b);
 
 void sub_08343148(const u8 *a, u32 b, u32 c)
 {
@@ -41,7 +41,7 @@ void sub_08343148(const u8 *a, u32 b, u32 c)
                     v = (q & 0x1FF) << 16;
                     v = v | m;
                     x = (sub_0833FD78((u32)gUnk_0201F390) << 24) >> 12;
-                    sub_0833D6A0(v, *(u32 *)((u32)r5 + 0x10) | x);
+                    ModuleAddOamEntry(v, *(u32 *)((u32)r5 + 0x10) | x);
                 }
             }
             q += 8;

@@ -4,13 +4,13 @@
 
 
 void sub_0833FA3C(void);
-void sub_0833D680(void);
+void ModuleClearOamBuffer(void);
 u32 ModuleExchangeLinkInput(void);
 void ModuleDrawTextCenteredHighlight(u8 *str, u32 y, u32 shade);
 void ModuleM4aSoundVSyncOff(void);
 void sub_08344B74(u32 a);
-u32 sub_0833DA34(void);
-void sub_0833D510(u32 a, u32 b);
+u32 ModuleReadLinkMenuKeys(void);
+void ModuleFadeToColor(u32 a, u32 b);
 
 void sub_0833DE98(void)
 {
@@ -18,7 +18,7 @@ void sub_0833DE98(void)
     u32 t2;
 
     sub_0833FA3C();
-    sub_0833D680();
+    ModuleClearOamBuffer();
     for (;;)
     {
         gModule_VBlanksThisFrame = 0;
@@ -49,10 +49,10 @@ void sub_0833DE98(void)
                 ModuleDrawTextCenteredHighlight(ModuleGetString(MODULE_MSG_PRESS_START), 0xE, 1);
             }
         }
-        t2 = (u16)sub_0833DA34();
+        t2 = (u16)ModuleReadLinkMenuKeys();
         if ((t2 & 8) == 0)
             continue;
-        sub_0833D510(0, 0x32);
+        ModuleFadeToColor(0, 0x32);
         return;
     }
 }

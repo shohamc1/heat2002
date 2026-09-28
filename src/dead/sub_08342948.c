@@ -16,7 +16,7 @@ void sub_08342948(u32 a)
         {
             sub_0833FFA8(a);
             sub_0833FF84(a);
-            sub_0833D288(0xA, 0);
+            ModuleBeginFadeToColor(0xA, 0);
             ModuleWaitForVBlank();
             REG_DISPCNT &= ~DISPCNT_OBJ_ON;
             gModule_RaceEndState = 2;

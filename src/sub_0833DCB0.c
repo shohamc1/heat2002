@@ -5,7 +5,7 @@
 extern u32 gUnk_02038FF0[];
 extern u32 gUnk_02039040[];
 
-void sub_0833DA34(void);
+void ModuleReadLinkMenuKeys(void);
 u32 ModuleExchangeLinkInput(void);
 void ModuleDrawTextCenteredHighlight(u32 *a, u32 b, u32 c);
 void ModuleM4aSoundVSyncOff(void);
@@ -20,7 +20,7 @@ u8 sub_0833DCB0(void)
     u16 v;
 
     gUnk_0203B850[0] = 0xFF;
-    sub_0833DA34();
+    ModuleReadLinkMenuKeys();
     if (gUnk_0203B6FC & 8) {
         ModuleM4aMPlayStop((struct MusicPlayerInfo *)gUnk_02038F70);
         ModuleM4aMPlayStop((struct MusicPlayerInfo *)gUnk_02038FB0);
@@ -40,7 +40,7 @@ u8 sub_0833DCB0(void)
                     sub_08344B74();
                 } while (done == 0);
             }
-            sub_0833DA34();
+            ModuleReadLinkMenuKeys();
             v = gUnk_0203B6FC & 8;
             if (v != 0) {
                 sub_0833DC7C();

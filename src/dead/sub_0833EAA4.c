@@ -9,7 +9,7 @@ void sub_0833E5EC(s32 a);
 void sub_0833E94C(void *a);
 void sub_0833E59C(void *a);
 void sub_0833E5E8(void *a);
-void sub_0833D9EC(void *a);
+void ModuleUpdateTrackCues(void *a);
 
 void sub_0833EAA4(void)
 {
@@ -38,7 +38,7 @@ void sub_0833EAA4(void)
     sub_0833E94C(car);
     sub_0833E59C(car);
     sub_0833E5E8(car);
-    sub_0833D9EC(car);
+    ModuleUpdateTrackCues(car);
 }
 
 void sub_0833EB8C(void)

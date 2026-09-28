@@ -84,7 +84,7 @@ Ties are ordered by address. The caller column is included to distinguish merely
 | 12 | `sub_0801A56C` | `0x0801A56C` | 1 | 3 |
 | 13 | `sub_08120E3A` † | `0x08120E3A` | 1 | 0 |
 | 14 | `sub_08248272` † | `0x08248272` | 1 | 0 |
-| 15 | `sub_0833D9E8` | `0x0833D9E8` | 1 | 2 |
+| 15 | `ModuleLoadTrackCues [sub_0833D9E8]` | `0x0833D9E8` | 1 | 2 |
 | 16 | `sub_0833E5E8` | `0x0833E5E8` | 1 | 0 |
 | 17 | `sub_08341280` | `0x08341280` | 1 | 1 |
 | 18 | `sub_08342DE4` | `0x08342DE4` | 1 | 1 |
