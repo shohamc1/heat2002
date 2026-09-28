@@ -36,7 +36,7 @@ u8 UpdateLapProgress(struct Car *p, u8 a1)
     u8 unused2[28];
     u8 v58;
     s32 l0, l4, l8, lC;
-    struct TrackSeg *e, *b;
+    const struct TrackSeg *e, *b;
     u8 v68, v6C;
     s32 x0, x1, x2, x3, y0, y1, y2, y3;
     s32 det;
@@ -50,10 +50,10 @@ u8 UpdateLapProgress(struct Car *p, u8 a1)
     else
         v68 = gNumCars[0];
 
-    e = &((struct TrackSeg *)gTrackSegs)[p->waypoint];
+    e = &gTrackSegs[p->waypoint];
     b = e + 1;
     if (e->unk10 == 1)
-        b = (struct TrackSeg *)gTrackSegs;
+        b = gTrackSegs;
 
     corners[0] = p->posX >> 16;
     corners[1] = p->posZ >> 16;

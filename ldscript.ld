@@ -218,7 +218,7 @@ SECTIONS
         build/src/dead/sub_08006738.o(.text*);
         build/src/hud/DrawTextCenteredHighlight.o(.text*);
         build/src/dead/sub_080069D8.o(.text*);
-        build/src/sub_08006A14.o(.text*);
+        build/src/track/LoadTrackSegs.o(.text*);
         build/src/race/UpdateLapProgress.o(.text*);
         build/src/sub_080072F4.o(.text*);
         build/src/sub_08007304.o(.text*);

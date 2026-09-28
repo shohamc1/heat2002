@@ -29,7 +29,7 @@ u8 sub_0833F468(struct Car *p, u8 a1)
     u8 unused2[28];
     u8 v58;
     s32 l0, l4, l8, lC;
-    struct TrackSeg *e, *b;
+    const struct TrackSeg *e, *b;
     u8 v68, v6C;
     s32 x0, x1, x2, x3, y0, y1, y2, y3;
     s32 det;
@@ -43,10 +43,10 @@ u8 sub_0833F468(struct Car *p, u8 a1)
     else
         v68 = gModule_NumCars[0];
 
-    e = &((struct TrackSeg *)gModule_TrackSegs)[p->waypoint];
+    e = &gModule_TrackSegs[p->waypoint];
     b = e + 1;
     if (e->unk10 == 1)
-        b = (struct TrackSeg *)gModule_TrackSegs;
+        b = gModule_TrackSegs;
 
     corners[0] = p->posX >> 16;
     corners[1] = p->posZ >> 16;

@@ -62,7 +62,7 @@ u8 RunRace(u32 a, u8 b)
     gUnk_020021D0[2] = 0;
     gUnk_020021D0[3] = 0;
     LoadTrack(gTrackId);
-    sub_08006A14(gTrackId);
+    LoadTrackSegs(gTrackId);
     sub_08004944(gTrackId);
     sub_080063B0();
     sub_08002718();

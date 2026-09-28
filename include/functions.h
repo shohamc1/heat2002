@@ -95,7 +95,7 @@ void sub_0800649C(const u8 *str, u32 x, u32 y);
 void DrawBigText(const u8 *text);
 void sub_08006734(const u8 *unused);
 void DrawTextCenteredHighlight(const u8 *text, u32 y, u8 highlight);
-void sub_08006A14(u32 arg0);
+void LoadTrackSegs(u32 trackId);
 void InitGfxCaches(void);
 void AgeGfxCaches(void);
 u32 * sub_080074F8(u32 a, u8 b);
