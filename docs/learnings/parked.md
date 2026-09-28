@@ -391,6 +391,14 @@ C-lexer trap found the hard way: a `\0` escape followed by a digit
 NULs are written `\000` (`gModule_PitLabelBlock` in `high_module_text.c` is
 the multi-string blob that needs it).
 
+The driver engine block `0x08367C38-0x08367FBC` (power, gear ratio,
+rpm-per-speed: 30 rows x 5 `u16`) is plain `u16` literals in
+`src/data/race_setup.c` (merged with the race setup tables in
+2026-09-28's later pass), one row per driver named in
+`gDriverRoster` order (`gDriverSteveParkPower` etc.); `InitCar`
+indexes the tables and the roster with the same `car->driverId`, which
+is the alignment proof.
+
 The conversion covered every `symbols.ld` ROM line that starts an
 `assets/unknown.json` blob and that C reads, outside the sound range and
 the two EWRAM images: 232 symbols in 43 files. That left 58 ROM lines in

@@ -32,8 +32,8 @@
 	.size \name, .-\name
 	.endm
 @ End embedded Luvdis macros
-	.global gUnk_083FF724
-gUnk_083FF724:
+	.global gLinkMarkerP1FrameList
+gLinkMarkerP1FrameList:
 	.4byte gUnk_083378A0
 	.4byte gUnk_08337920
 	.4byte gUnk_083379A0
@@ -41,8 +41,8 @@ gUnk_083FF724:
 	.4byte gUnk_08337AA0
 	.4byte gUnk_08337B20
 	.4byte gUnk_08337BA0
-	.global gUnk_083FF740
-gUnk_083FF740:
+	.global gLinkMarkerP2FrameList
+gLinkMarkerP2FrameList:
 	.4byte gUnk_08337C40
 	.4byte gUnk_08337CC0
 	.4byte gUnk_08337D40
@@ -50,8 +50,8 @@ gUnk_083FF740:
 	.4byte gUnk_08337E40
 	.4byte gUnk_08337EC0
 	.4byte gUnk_08337F40
-	.global gUnk_083FF75C
-gUnk_083FF75C:
+	.global gLinkMarkerP3FrameList
+gLinkMarkerP3FrameList:
 	.4byte gUnk_08337FE0
 	.4byte gUnk_08338060
 	.4byte gUnk_083380E0
@@ -59,8 +59,8 @@ gUnk_083FF75C:
 	.4byte gUnk_083381E0
 	.4byte gUnk_08338260
 	.4byte gUnk_083382E0
-	.global gUnk_083FF778
-gUnk_083FF778:
+	.global gLinkMarkerP4FrameList
+gLinkMarkerP4FrameList:
 	.4byte gUnk_08338380
 	.4byte gUnk_08338400
 	.4byte gUnk_08338480

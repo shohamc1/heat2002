@@ -41,7 +41,7 @@ void DrawRacePosition(s32 arg)
         *q = 0xE047;
         return;
     }
-    sub_0800649C((u8 *)((u32)gText_HudPosLabel), 0x16, 0);
+    sub_0800649C(gText_HudPosLabel, 0x16, 0);
     if (arg <= 9) {
         register u16 *w asm("r0");
         p = (u16 *)gTextLayerMapPtr[0];
@@ -69,13 +69,13 @@ void DrawLapCounter(s32 a, s32 b)
 
     if (a == 999) {
         q = gText_BlankRow16_2;
-        sub_0800649C((u8 *)((u32)q), 0, 1);
-        sub_0800649C((u8 *)((u32)q), 0, 0);
+        sub_0800649C(q, 0, 1);
+        sub_0800649C(q, 0, 0);
         return;
     }
     if (a > b)
         a = b;
-    sub_0800649C((u8 *)((u32)gText_Lap), 0, 1);
+    sub_0800649C(gText_Lap, 0, 1);
     base = (u8 *)gTextLayerMapPtr[0];
     p = base + 8;
     if (a > 99) {

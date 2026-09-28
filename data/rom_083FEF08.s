@@ -32,95 +32,95 @@
 	.size \name, .-\name
 	.endm
 @ End embedded Luvdis macros
-	.global gUnk_083FEF08
-gUnk_083FEF08:
+	.global gDriverSteveParkNumberFrames
+gDriverSteveParkNumberFrames:
 	.4byte gUnk_0831C898
-	.global gUnk_083FEF0C
-gUnk_083FEF0C:
+	.global gDriverDaleEarnhardtJRNumberFrames
+gDriverDaleEarnhardtJRNumberFrames:
 	.4byte gUnk_0831C8D4
-	.global gUnk_083FEF10
-gUnk_083FEF10:
+	.global gDriverKevinHarvickNumberFrames
+gDriverKevinHarvickNumberFrames:
 	.4byte gUnk_0831C918
-	.global gUnk_083FEF14
-gUnk_083FEF14:
+	.global gDriverDaleJarrettNumberFrames
+gDriverDaleJarrettNumberFrames:
 	.4byte gUnk_0831C960
-	.global gUnk_083FEF18
-gUnk_083FEF18:
+	.global gDriverRickyRuddNumberFrames
+gDriverRickyRuddNumberFrames:
 	.4byte gUnk_0831C9A8
-	.global gUnk_083FEF1C
-gUnk_083FEF1C:
+	.global gDriverJeffGordonNumberFrames
+gDriverJeffGordonNumberFrames:
 	.4byte gUnk_0831C9F0
-	.global gUnk_083FEF20
-gUnk_083FEF20:
+	.global gDriverJasonPopeNumberFrames
+gDriverJasonPopeNumberFrames:
 	.4byte gUnk_0831CA38
-	.global gUnk_083FEF24
-gUnk_083FEF24:
+	.global gDriverJoeFriedNumberFrames
+gDriverJoeFriedNumberFrames:
 	.4byte gUnk_0831CA80
-	.global gUnk_083FEF28
-gUnk_083FEF28:
+	.global gDriverRustyWallaceNumberFrames
+gDriverRustyWallaceNumberFrames:
 	.4byte gUnk_0831CAC8
-	.global gUnk_083FEF2C
-gUnk_083FEF2C:
+	.global gDriverSterlingMarlinNumberFrames
+gDriverSterlingMarlinNumberFrames:
 	.4byte gUnk_0831CB04
-	.global gUnk_083FEF30
-gUnk_083FEF30:
+	.global gDriverBrianLockeNumberFrames
+gDriverBrianLockeNumberFrames:
 	.4byte gUnk_0831CB4C
-	.global gUnk_083FEF34
-gUnk_083FEF34:
+	.global gDriverJayMcgeeNumberFrames
+gDriverJayMcgeeNumberFrames:
 	.4byte gUnk_0831CB94
-	.global gUnk_083FEF38
-gUnk_083FEF38:
+	.global gDriverMitchellSlaterNumberFrames
+gDriverMitchellSlaterNumberFrames:
 	.4byte gUnk_0831CBDC
-	.global gUnk_083FEF3C
-gUnk_083FEF3C:
+	.global gDriverJamesBrownNumberFrames
+gDriverJamesBrownNumberFrames:
 	.4byte gUnk_0831CC24
-	.global gUnk_083FEF40
-gUnk_083FEF40:
+	.global gDriverNeilWilsonNumberFrames
+gDriverNeilWilsonNumberFrames:
 	.4byte gUnk_0831CC6C
-	.global gUnk_083FEF44
-gUnk_083FEF44:
+	.global gDriverTimMunsonNumberFrames
+gDriverTimMunsonNumberFrames:
 	.4byte gUnk_0831CCB4
-	.global gUnk_083FEF48
-gUnk_083FEF48:
+	.global gDriverAndrewBishopNumberFrames
+gDriverAndrewBishopNumberFrames:
 	.4byte gUnk_0831CCFC
-	.global gUnk_083FEF4C
-gUnk_083FEF4C:
+	.global gDriverDanielEvansNumberFrames
+gDriverDanielEvansNumberFrames:
 	.4byte gUnk_0831CD44
-	.global gUnk_083FEF50
-gUnk_083FEF50:
+	.global gDriverSeanKendrickNumberFrames
+gDriverSeanKendrickNumberFrames:
 	.4byte gUnk_0831CD8C
-	.global gUnk_083FEF54
-gUnk_083FEF54:
+	.global gDriverJakeMayNumberFrames
+gDriverJakeMayNumberFrames:
 	.4byte gUnk_0831CDD4
-	.global gUnk_083FEF58
-gUnk_083FEF58:
+	.global gDriverChrisWalshNumberFrames
+gDriverChrisWalshNumberFrames:
 	.4byte gUnk_0831CE1C
-	.global gUnk_083FEF5C
-gUnk_083FEF5C:
+	.global gDriverJamesDalyNumberFrames
+gDriverJamesDalyNumberFrames:
 	.4byte gUnk_0831CE64
-	.global gUnk_083FEF60
-gUnk_083FEF60:
+	.global gDriverAdamBouskillNumberFrames
+gDriverAdamBouskillNumberFrames:
 	.4byte gUnk_0831CEAC
-	.global gUnk_083FEF64
-gUnk_083FEF64:
+	.global gDriverTimCoodeNumberFrames
+gDriverTimCoodeNumberFrames:
 	.4byte gUnk_0831CEF4
-	.global gUnk_083FEF68
-gUnk_083FEF68:
+	.global gDriverWillGreenoughNumberFrames
+gDriverWillGreenoughNumberFrames:
 	.4byte gUnk_0831CF3C
-	.global gUnk_083FEF6C
-gUnk_083FEF6C:
+	.global gDriverJonnieShearnNumberFrames
+gDriverJonnieShearnNumberFrames:
 	.4byte gUnk_0831CF84
-	.global gUnk_083FEF70
-gUnk_083FEF70:
+	.global gDriverDaveMurphyNumberFrames
+gDriverDaveMurphyNumberFrames:
 	.4byte gUnk_0831CFCC
-	.global gUnk_083FEF74
-gUnk_083FEF74:
+	.global gDriverDarrenJacksonNumberFrames
+gDriverDarrenJacksonNumberFrames:
 	.4byte gUnk_0831D014
-	.global gUnk_083FEF78
-gUnk_083FEF78:
+	.global gDriverMikeMerrenNumberFrames
+gDriverMikeMerrenNumberFrames:
 	.4byte gUnk_0831D05C
-	.global gUnk_083FEF7C
-gUnk_083FEF7C:
+	.global gDriverCameronSheppardNumberFrames
+gDriverCameronSheppardNumberFrames:
 	.4byte gUnk_0831D0A4
 	.global gUnk_083FEF80
 gUnk_083FEF80:

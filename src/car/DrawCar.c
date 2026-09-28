@@ -25,7 +25,7 @@ struct Car {
 
 extern u32 *gDriverCarSpriteHalfATables[];
 extern u32 *gDriverCarSpriteHalfBTables[];
-extern u32 *gDriverNumberFrameLists[];
+extern const u32 *const gDriverNumberFrameLists[];
 extern u8 gUnk_0831D0EC[];
 
 u32 AddDepthSortedSprite(u32 a, u32 b, u32 c);
@@ -109,7 +109,7 @@ void DrawCar(struct Car *car, u8 idx)
         t5 |= (u32)(RequestObjPalette((u32)gUnk_08337C20) << 24) >> 12;
         AddDepthSortedSprite(k, t5, (u16)(y + 0x40));
     } else {
-        row = gDriverNumberFrameLists[car->driverId];
+        row = (u32 *)gDriverNumberFrameLists[car->driverId];
         pos[1] -= 8;
         pos[0] += 0x10;
         k = (pos[1] & 0xFF) | ((pos[0] & 0x1FF) << 16) | 0x4000;

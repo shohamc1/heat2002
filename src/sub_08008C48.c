@@ -20,5 +20,5 @@ void sub_08008C48(s32 x)
     p = base + 0xE7;
     ((void (*)(u32 *, u32))DrawBigDigit)(p, x % 10);
     s = (u32)gText_MPH;
-    sub_0800649C((u8 *)s, 0x10, 0x0F);
+    sub_0800649C(s, 0x10, 0x0F);
 }

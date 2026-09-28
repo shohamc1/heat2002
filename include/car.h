@@ -60,9 +60,9 @@ struct Car {
     /* 0xB4 */ s32 cornerZ[4];
     /* 0xC4 */ s32 nextCornerX[4];
     /* 0xD4 */ s32 nextCornerZ[4];
-    /* 0xE4 */ u16 *gearPowerTable; /* per-driver gDriverGearPowerTables[driverId] */
-    /* 0xE8 */ u16 *gearRatioTable; /* per-driver gDriverGearRatioTables[driverId] */
-    /* 0xEC */ u16 *rpmPerSpeedTable; /* per-driver gDriverRpmPerSpeedTables[driverId] */
+    /* 0xE4 */ const u16 *gearPowerTable; /* per-driver gDriverGearPowerTables[driverId] */
+    /* 0xE8 */ const u16 *gearRatioTable; /* per-driver gDriverGearRatioTables[driverId] */
+    /* 0xEC */ const u16 *rpmPerSpeedTable; /* per-driver gDriverRpmPerSpeedTables[driverId] */
     /* 0xF0 */ s32 lanePosition; /* row index (>>8) into the wall tables below */
     /* 0xF4 */ s32 lanePoints; /* u16 (x,y) pairs, gLanePointTables[row+gTrackId*12] */
     /* 0xF8 */ s32 laneSegments; /* 20-byte records, gLaneSegmentTables[row+gTrackId*12] */

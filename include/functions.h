@@ -91,7 +91,7 @@ void sub_08006388(void);
 void sub_080063B0(void);
 void DrawText(u8 *p, u32 a1, u32 a2, u8 a3);
 void DrawTextCentered(u8 *str, u32 y);
-void sub_0800649C(u8 *str, u32 x, u32 y);
+void sub_0800649C(const u8 *str, u32 x, u32 y);
 void sub_080065A8(u8 *s);
 void sub_08006734(void);
 void DrawTextCenteredHighlight(u8 *p, u32 a1, u8 a2);

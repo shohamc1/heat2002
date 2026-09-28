@@ -3,9 +3,9 @@
 #include "variables.h"
 #include "car.h"
 
-extern u32 gDriverGearPowerTables[];
-extern u32 gDriverGearRatioTables[];
-extern u32 gDriverRpmPerSpeedTables[];
+extern const u16 *const gDriverGearPowerTables[];
+extern const u16 *const gDriverGearRatioTables[];
+extern const u16 *const gDriverRpmPerSpeedTables[];
 
 void sub_0800C0E8(u32 a, u8 b);
 void sub_0800C984(u32 *p, u32 v);
@@ -128,16 +128,16 @@ void InitCar(u8 a, struct Car *car, s32 b, s32 c, u32 d)
     car->torque = 0;
     car->drag = 0;
     car->racePosition = 0x63;
-    (*(s32 *)&car->gearPowerTable) = gDriverGearPowerTables[car->driverId];
-    (*(s32 *)&car->gearRatioTable) = gDriverGearRatioTables[car->driverId];
-    (*(s32 *)&car->rpmPerSpeedTable) = gDriverRpmPerSpeedTables[car->driverId];
+    car->gearPowerTable = gDriverGearPowerTables[car->driverId];
+    car->gearRatioTable = gDriverGearRatioTables[car->driverId];
+    car->rpmPerSpeedTable = gDriverRpmPerSpeedTables[car->driverId];
     if (gIsLinkRace == 0 && a != 0 && gGameMode[0] != 2) {
-        (*(s32 *)&car->gearPowerTable) = (s32)gUnk_08367BFA;
-        (*(s32 *)&car->gearRatioTable) = (s32)gUnk_08367C06;
-        (*(s32 *)&car->rpmPerSpeedTable) = (s32)gUnk_08367C10;
-        (*(s32 *)&car->gearPowerTable) = gDriverGearPowerTables[0];
-        (*(s32 *)&car->gearRatioTable) = gDriverGearRatioTables[0];
-        (*(s32 *)&car->rpmPerSpeedTable) = gDriverRpmPerSpeedTables[0];
+        car->gearPowerTable = gAiDriverGearPowerTable;
+        car->gearRatioTable = gAiDriverGearRatioTable;
+        car->rpmPerSpeedTable = gAiDriverRpmPerSpeedTable;
+        car->gearPowerTable = gDriverGearPowerTables[0];
+        car->gearRatioTable = gDriverGearRatioTables[0];
+        car->rpmPerSpeedTable = gDriverRpmPerSpeedTables[0];
     }
     car->unk158 = 0;
     car->finished = 0;

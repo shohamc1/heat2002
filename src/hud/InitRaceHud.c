@@ -27,7 +27,7 @@ void InitRaceHud(void)
         AddTask((u32)r);
     }
     sub_08006214();
-    sub_0800649C((u8 *)((u32)gText_TimeLabel), 0, 0x13);
+    sub_0800649C(gText_TimeLabel, 0, 0x13);
     src = (u32)gUnk_08331FC8;
     dst = (u32)OBJ_VRAM1 + 0x2280;
     CpuCopy16(src, dst, 0x180);

@@ -2,7 +2,7 @@
 #include "data.h"
 
 
-void sub_0800649C(u8 *str, u32 x, u32 y)
+void sub_0800649C(const u8 *str, u32 x, u32 y)
 {
     u16 *dest;
     u32 color;

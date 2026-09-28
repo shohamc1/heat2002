@@ -116,4 +116,10 @@ const u32 gTireGripDefaults[] = INCBIN_U32("build/assets/unknown/data_083677A8.b
 // Its users declare it as struct Track x[].
 const u32 gUnk_08367A14[] = INCBIN_U32("build/assets/unknown/data_08367A14.bin");
 const u16 gUnk_08367B8C[] = INCBIN_U16("build/assets/unknown/data_08367B8C.bin");
-const u8 gUnk_08367C10[] = INCBIN_U8("build/assets/unknown/data_08367C10.bin");
+// The AI driver's default setup, applied by sub_08008394 (UpdateAiDriver).
+// Only the first 5 entries are the rpm-per-speed row the car field uses;
+// the rest repeats the default power and ratio rows.
+const u16 gAiDriverRpmPerSpeedTable[20] = {
+    10, 7, 7, 4, 3, 280, 280, 320, 340, 360,
+    6000, 8600, 9300, 13600, 16600, 10, 7, 7, 4, 3
+};

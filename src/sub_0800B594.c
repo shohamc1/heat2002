@@ -1,6 +1,6 @@
 #include "global.h"
 
-extern u8 gUnk_083682B0[];
+extern u8 gRecordsTaskParams[];
 void sub_0800B5D4(void);
 
 u32 AllocTask(void);
@@ -15,7 +15,7 @@ void sub_0800B594(void)
         {
             r[6] = 0x60;
             r[7] = i << 5;
-            r[0] = gUnk_083682B0[i];
+            r[0] = gRecordsTaskParams[i];
             r[1] = 0x28;
             r[3] = (u32)sub_0800B5D4;
             AddTask((u32)r);
