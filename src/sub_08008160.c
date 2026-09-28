@@ -5,12 +5,12 @@
 
 extern u32 gUnk_083FF68C[];
 extern u8 gUnk_08331360[];
-extern u8 gUnk_0806C8B4[];
-extern u8 gUnk_0806C8BC[];
-extern u8 gUnk_0806C8C4[];
-extern u8 gUnk_0806C8CC[];
-extern u8 gUnk_0806C8D4[];
-extern u8 gUnk_0806C8DC[];
+extern u8 gText_Gravel[];
+extern u8 gText_Grass[];
+extern u8 gText_Tarmac[];
+extern u8 gText_Behind[];
+extern u8 gText_Infront[];
+extern u8 gText_FormatDCommaD[];
 
 u8 GetTrackTileType(s32 x, s32 y);
 u32 WorldToScreen(s32 x, s32 y, s32 *out);
@@ -72,15 +72,15 @@ void sub_08008160(void)
         }
     }
     if (flag1 != 0)
-        DrawSpriteText(gUnk_0806C8B4, 0x64, 0x64);
+        DrawSpriteText(gText_Gravel, 0x64, 0x64);
     if (flag2 != 0)
-        DrawSpriteText(gUnk_0806C8BC, 0x64, 0x64);
+        DrawSpriteText(gText_Grass, 0x64, 0x64);
     if (flag1 == 0 && flag2 == 0)
-        DrawSpriteText(gUnk_0806C8C4, 0x64, 0x64);
+        DrawSpriteText(gText_Tarmac, 0x64, 0x64);
     if (flag3 != 0)
-        DrawSpriteText(gUnk_0806C8CC, 0x64, 0x6E);
+        DrawSpriteText(gText_Behind, 0x64, 0x6E);
     else
-        DrawSpriteText(gUnk_0806C8D4, 0x64, 0x6E);
-    sub_08017594(buf, gUnk_0806C8DC, ((s32 *)gCars)[0] >> 19, ((s32 *)gCars)[2] >> 19);
+        DrawSpriteText(gText_Infront, 0x64, 0x6E);
+    sub_08017594(buf, gText_FormatDCommaD, ((s32 *)gCars)[0] >> 19, ((s32 *)gCars)[2] >> 19);
     DrawSpriteText(buf, 0x64, 0x78);
 }

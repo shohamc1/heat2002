@@ -1,62 +1,62 @@
 #include "global.h"
 #include "data.h"
 
-extern const u8 gUnk_0829F5CC[];
-extern const u8 gUnk_0829F5DC[];
-extern const u8 gUnk_0829F5EC[];
-extern const u8 gUnk_0829F5FC[];
-extern const u8 gUnk_0829F60C[];
-extern const u8 gUnk_0829F624[];
-extern const u8 gUnk_0829F630[];
-extern const u8 gUnk_0829F64C[];
-extern const u8 gUnk_0829F65C[];
-extern const u8 gUnk_0829F668[];
-extern const u8 gUnk_0829F674[];
-extern const u8 gUnk_0829F684[];
-extern const u8 gUnk_0829F694[];
-extern const u8 gUnk_0829F6A0[];
-extern const u8 gUnk_0829F6B8[];
-extern const u8 gUnk_0829F6D0[];
-extern const u8 gUnk_0829F6DC[];
-extern const u8 gUnk_0829F6F0[];
-extern const u8 gUnk_0829F6FC[];
-extern const u8 gUnk_0829F710[];
-extern const u8 gUnk_0829F720[];
-extern const u8 gUnk_0829F738[];
-extern const u8 gUnk_0829F748[];
-extern const u8 gUnk_0829F758[];
-extern const u8 gUnk_0829F764[];
-extern const u8 gUnk_0829F784[];
-extern const u8 gUnk_0829F798[];
-extern const u8 gUnk_0829F7B8[];
-extern const u8 gUnk_0829F7C4[];
-extern const u8 gUnk_0829F7D0[];
-extern const u8 gUnk_0829F7E4[];
-extern const u8 gUnk_0829F7F4[];
-extern const u8 gUnk_0829F800[];
-extern const u8 gUnk_0829F814[];
-extern const u8 gUnk_0829F824[];
-extern const u8 gUnk_0829F838[];
-extern const u8 gUnk_0829F850[];
-extern const u8 gUnk_0829F860[];
-extern const u8 gUnk_0829F874[];
-extern const u8 gUnk_0829F88C[];
-extern const u8 gUnk_0829F8A0[];
-extern const u8 gUnk_0829F8B0[];
-extern const u8 gUnk_0829F8BC[];
-extern const u8 gUnk_0829F8C8[];
-extern const u8 gUnk_0829F8D8[];
-extern const u8 gUnk_0829F8E4[];
-extern const u8 gUnk_0829F8F4[];
-extern const u8 gUnk_0829F908[];
-extern const u8 gUnk_0829F920[];
-extern const u8 gUnk_0829F930[];
+extern const u8 gText_MarinaCerra[];
+extern const u8 gText_CherylSlater[];
+extern const u8 gText_DanielWalsh[];
+extern const u8 gText_MichelleLamb[];
+extern const u8 gText_ExtraSpecialThanks[];
+extern const u8 gText_BillHudson[];
+extern const u8 gText_MikeCartabianoAtSennari[];
+extern const u8 gText_JonTrafford[];
+extern const u8 gText_JohnTaylor[];
+extern const u8 gText_RobWalkley[];
+extern const u8 gText_LynneBradstock[];
+extern const u8 gText_SpecialThanks[];
+extern const u8 gText_LoriDrazen[];
+extern const u8 gText_WorldWideMarketing[];
+extern const u8 gText_LeezaMariaElkhazen[];
+extern const u8 gText_ElieSamaha[];
+extern const u8 gText_FranchisePictures[];
+extern const u8 gText_CatChannon[];
+extern const u8 gText_EuropeanPrManager[];
+extern const u8 gText_SusanKramer[];
+extern const u8 gText_DirectorOfAmericanPr[];
+extern const u8 gText_DavidBlundell[];
+extern const u8 gText_ProductManager[];
+extern const u8 gText_ScottSmith[];
+extern const u8 gText_DirectorOfAmericanMarketing[];
+extern const u8 gText_LisaCheneyBolcato[];
+extern const u8 gText_DirectorOfEuropeanMarketing[];
+extern const u8 gText_AaronEndo[];
+extern const u8 gText_JoeBooth[];
+extern const u8 gText_ExecutiveProducer[];
+extern const u8 gText_AndrewWilliams[];
+extern const u8 gText_Producer[];
+extern const u8 gText_BamEntertainment[];
+extern const u8 gText_JonathanShearn[];
+extern const u8 gText_QualityAssurance[];
+extern const u8 gText_DevelopmentAssistant[];
+extern const u8 gText_ColinKendrick[];
+extern const u8 gText_TechnicalManager[];
+extern const u8 gText_DirectorOfDevelopment[];
+extern const u8 gText_ProducerDesigner[];
+extern const u8 gText_RockettMusic[];
+extern const u8 gText_MusicSfx[];
+extern const u8 gText_JoStearn[];
+extern const u8 gText_AdditionalArt[];
+extern const u8 gText_TerryFord[];
+extern const u8 gText_GraphicArtist[];
+extern const u8 gText_GianlucaCancelmi[];
+extern const u8 gText_AssistantProgrammer[];
+extern const u8 gText_LeadProgrammer[];
+extern const u8 gText_CrawfishInteractive[];
 extern const u8 gText_EmptyCreditLine[];
-extern const u8 gUnk_082B57B0[];
-extern const u8 gUnk_082B57C8[];
-extern const u8 gUnk_082B57DC[];
-extern const u8 gUnk_082B57F0[];
-extern const u8 gUnk_082B5804[];
+extern const u8 gText_HardcoreChallenges[];
+extern const u8 gText_HardChallenges[];
+extern const u8 gText_MediumChallenges[];
+extern const u8 gText_EasyChallenges[];
+extern const u8 gText_YouHaveBeatenAllThe[];
 extern const u8 gUnk_082B581C[];
 extern const u8 gUnk_082B582C[];
 extern const u8 gUnk_082B5830[];
@@ -389,54 +389,54 @@ const u32 gCreditTexts[] = {
     (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1,
     (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1,
     (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1,
-    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F930, 0x1,
-    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F920, 0,
-    (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829ED0C, 0x1, (u32)gText_EmptyCreditLine, 0x1,
-    (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F908, 0, (u32)gText_EmptyCreditLine, 0x1,
-    (u32)gUnk_0829F8F4, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1,
-    (u32)gUnk_0829F8E4, 0, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F8D8, 0x1,
-    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F8C8, 0,
-    (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F8BC, 0x1, (u32)gText_EmptyCreditLine, 0x1,
-    (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F8B0, 0, (u32)gText_EmptyCreditLine, 0x1,
-    (u32)gUnk_0829F8A0, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1,
-    (u32)gUnk_0829F88C, 0, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829ED78, 0x1,
-    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F874, 0,
-    (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829EC9C, 0x1, (u32)gText_EmptyCreditLine, 0x1,
-    (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F860, 0, (u32)gText_EmptyCreditLine, 0x1,
-    (u32)gUnk_0829F850, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1,
-    (u32)gUnk_0829F838, 0, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829ECB8, 0x1,
-    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F824, 0,
-    (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829ECE4, 0x1, (u32)gText_EmptyCreditLine, 0x1,
-    (u32)gUnk_0829ECD4, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F814, 0x1,
-    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F800, 0x1,
-    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F7F4, 0,
-    (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F7E4, 0x1, (u32)gText_EmptyCreditLine, 0x1,
-    (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F7D0, 0, (u32)gText_EmptyCreditLine, 0x1,
-    (u32)gUnk_0829F7C4, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F7B8, 0x1,
-    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F798, 0,
-    (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F784, 0x1, (u32)gText_EmptyCreditLine, 0x1,
-    (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F764, 0, (u32)gText_EmptyCreditLine, 0x1,
-    (u32)gUnk_0829F758, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1,
-    (u32)gUnk_0829F748, 0, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F738, 0x1,
-    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F720, 0,
-    (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F710, 0x1, (u32)gText_EmptyCreditLine, 0x1,
-    (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F6FC, 0, (u32)gText_EmptyCreditLine, 0x1,
-    (u32)gUnk_0829F6F0, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1,
-    (u32)gUnk_0829F6DC, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1,
-    (u32)gUnk_0829F7D0, 0, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F6D0, 0x1,
-    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F7F4, 0,
-    (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F6B8, 0x1, (u32)gText_EmptyCreditLine, 0x1,
-    (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F6A0, 0, (u32)gText_EmptyCreditLine, 0x1,
-    (u32)gUnk_0829F694, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1,
-    (u32)gUnk_0829F684, 0, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829EC88, 0x1,
-    (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F674, 0x1, (u32)gText_EmptyCreditLine, 0x1,
-    (u32)gUnk_0829F668, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F65C, 0x1,
-    (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F64C, 0x1, (u32)gText_EmptyCreditLine, 0x1,
-    (u32)gUnk_0829F630, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F624, 0x1,
-    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F60C, 0,
-    (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F5FC, 0x1, (u32)gText_EmptyCreditLine, 0x1,
-    (u32)gUnk_0829F5EC, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F5DC, 0x1,
-    (u32)gText_EmptyCreditLine, 0x1, (u32)gUnk_0829F5CC, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_CrawfishInteractive, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_LeadProgrammer, 0,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_ChrisWalsh, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_AssistantProgrammer, 0, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_GianlucaCancelmi, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_GraphicArtist, 0, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_TerryFord, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_AdditionalArt, 0,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_JoStearn, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_MusicSfx, 0, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_RockettMusic, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_ProducerDesigner, 0, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_MitchellSlater, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_DirectorOfDevelopment, 0,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_MikeMerren, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_TechnicalManager, 0, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_ColinKendrick, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_DevelopmentAssistant, 0, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_DaveMurphy, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_QualityAssurance, 0,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_TimCoode, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_WillGreenough, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_JonathanShearn, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_BamEntertainment, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_Producer, 0,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_AndrewWilliams, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_ExecutiveProducer, 0, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_JoeBooth, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_AaronEndo, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_DirectorOfEuropeanMarketing, 0,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_LisaCheneyBolcato, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_DirectorOfAmericanMarketing, 0, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_ScottSmith, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_ProductManager, 0, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_DavidBlundell, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_DirectorOfAmericanPr, 0,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_SusanKramer, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EuropeanPrManager, 0, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_CatChannon, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_FranchisePictures, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_ExecutiveProducer, 0, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_ElieSamaha, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_Producer, 0,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_LeezaMariaElkhazen, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_WorldWideMarketing, 0, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_LoriDrazen, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_SpecialThanks, 0, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_CameronSheppard, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_LynneBradstock, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_RobWalkley, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_JohnTaylor, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_JonTrafford, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_MikeCartabianoAtSennari, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_BillHudson, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_ExtraSpecialThanks, 0,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_MichelleLamb, 0x1, (u32)gText_EmptyCreditLine, 0x1,
+    (u32)gText_DanielWalsh, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_CherylSlater, 0x1,
+    (u32)gText_EmptyCreditLine, 0x1, (u32)gText_MarinaCerra, 0x1, (u32)gText_EmptyCreditLine, 0x1,
     (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1,
     (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1,
     (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1, (u32)gText_EmptyCreditLine, 0x1,
@@ -511,9 +511,9 @@ const u32 gUnk_083FE6C4[] = {
     (u32)gUnk_082B5E28, (u32)gUnk_082B5878, (u32)gUnk_082B5E24,
     (u32)gUnk_082B586C, (u32)gUnk_082B5850, (u32)gUnk_082B583C,
     (u32)gUnk_082B5838, (u32)gUnk_082B5834, (u32)gUnk_082B5830,
-    (u32)gUnk_082B582C, (u32)gUnk_082B581C, (u32)gUnk_082B5804,
-    (u32)gUnk_082B57F0, (u32)gUnk_082B57DC, (u32)gUnk_082B57C8,
-    (u32)gUnk_082B57B0
+    (u32)gUnk_082B582C, (u32)gUnk_082B581C, (u32)gText_YouHaveBeatenAllThe,
+    (u32)gText_EasyChallenges, (u32)gText_MediumChallenges, (u32)gText_HardChallenges,
+    (u32)gText_HardcoreChallenges
 };
 // Its users declare it as u8 *x[].
 const u32 gChallengeNameTexts[] = {

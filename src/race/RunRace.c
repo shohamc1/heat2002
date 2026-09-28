@@ -15,7 +15,7 @@ extern u8 gEngineSoundPlayer[];         /* 0x02001F60 */
 extern u8 gUnk_08364ADC;           /* 0x08364ADC */
 extern u32 gUnk_08364AE0[];        /* 0x08364AE0 */
 extern u8 gUnk_08364AF4[];         /* 0x08364AF4 */
-extern u8 gUnk_0806C678[];         /* 0x0806C678 */
+extern u8 gText_BlankRow16[];         /* 0x0806C678 */
 
 
 /* The cancelling offset gives the destination address an earlier quantity,
@@ -187,7 +187,7 @@ camera_ready:
                    through a function pointer with the old prototype. */
                 ((void (*)(u32, u32, u32))DrawTextCentered)(GetString(0x5D), 8, 1);
             else
-                ((void (*)(u32, u32, u32))DrawTextCentered)((u32)gUnk_0806C678, 8, 1);
+                ((void (*)(u32, u32, u32))DrawTextCentered)((u32)gText_BlankRow16, 8, 1);
         }
         sub_080047DC();
         sub_08008D8C();

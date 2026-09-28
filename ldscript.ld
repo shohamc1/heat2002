@@ -708,31 +708,14 @@ SECTIONS
         build/data/rom_0801D1FC.o(.text*);
         build/src/data/rom_0801D230.o(.rodata);
         build/data/rom_0801D29C.o(.text*);
-        build/src/data/rom_0806C678.o(.rodata);
-        build/data/rom_0806C794.o(.text*);
-        build/src/data/rom_0806C854.o(.rodata);
-        build/src/data/rom_0806C904.o(.rodata);
-        build/src/data/rom_0806C918.o(.rodata);
-        build/data/rom_0806C940.o(.text*);
-        build/src/data/rom_0806C948.o(.rodata);
-        build/data/rom_0806C960.o(.text*);
-        build/src/data/rom_0806C96C.o(.rodata);
+        build/src/data/race_text.o(.rodata);
         build/data/rom_0806FFF4.o(.text*);
-        build/src/data/rom_0807C9CC.o(.rodata);
+        build/src/data/link_text.o(.rodata);
         build/data/rom_0807CA7C.o(.text*);
         build/src/data/rom_0807CB58.o(.rodata);
         build/data/rom_0807CE30.o(.text*);
-        build/src/data/rom_0829EED8.o(.rodata);
-        build/src/data/rom_0829EF08.o(.rodata);
-        build/data/rom_0829EF78.o(.text*);
-        build/src/data/rom_0829F24C.o(.rodata);
-        build/src/data/rom_0829F2CC.o(.rodata);
-        build/src/data/rom_0829F2F0.o(.rodata);
-        build/src/data/rom_0829F470.o(.rodata);
-        build/src/data/rom_0829F4EC.o(.rodata);
-        build/src/data/rom_0829F504.o(.rodata);
-        build/data/rom_0829F5CC.o(.text*);
-        build/src/data/rom_0829F94C.o(.rodata);
+        build/src/data/game_text.o(.rodata);
+        build/src/data/rom_0829F954.o(.rodata);
         build/src/data/rom_0829F954.o(.rodata);
         build/src/data/rom_0829FC80.o(.rodata);
         build/src/data/rom_082A0130.o(.rodata);
@@ -741,6 +724,7 @@ SECTIONS
         build/data/rom_082B0028.o(.text*);
         build/src/data/rom_082B350C.o(.rodata);
         build/data/rom_082B370C.o(.text*);
+        build/src/data/strings.o(.rodata);
         build/src/data/rom_082B731C.o(.rodata);
         build/data/rom_082BA310.o(.text*);
         build/src/data/rom_082E4328.o(.rodata);
@@ -1178,6 +1162,10 @@ SECTIONS
         build/lib/libgcc/high/_negdi2.o(.text);
         build/lib/libgcc/high/_umodsi3.o(.text);
         build/data/rom_08344E68.o(.text*);
+        build/src/data/high_module_text.o(.rodata);
+        build/data/rom_08345B98.o(.text*);
+        build/src/data/career_text.o(.rodata);
+        build/data/rom_083534D4.o(.text*);
     }
     /* The multiboot island: the image the main program sends with the
        BIOS MultiBoot call. It runs from the start of EWRAM. */

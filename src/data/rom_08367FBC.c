@@ -1,21 +1,21 @@
 #include "global.h"
 #include "data.h"
 
-extern const u8 gUnk_0806C7C0[];
-extern const u8 gUnk_0806C7C4[];
-extern const u8 gUnk_0806C7CC[];
-extern const u8 gUnk_0806C7D4[];
-extern const u8 gUnk_0806C7DC[];
-extern const u8 gUnk_0806C7E8[];
-extern const u8 gUnk_0806C7F4[];
-extern const u8 gUnk_0806C800[];
-extern const u8 gUnk_0806C80C[];
-extern const u8 gUnk_0806C81C[];
-extern const u8 gUnk_0806C82C[];
-extern const u8 gUnk_0806C83C[];
-extern const u8 gUnk_0806C848[];
-extern const u8 gUnk_0806C940[];
-extern const u8 gUnk_0806C960[];
+extern const u8 gText_Ok[];
+extern const u8 gText_DamageLabel[];
+extern const u8 gText_FuelLabel[];
+extern const u8 gText_TiresLabel[];
+extern const u8 gText_None[];
+extern const u8 gText_Right2[];
+extern const u8 gText_Left2[];
+extern const u8 gText_AllTires[];
+extern const u8 gText_None_2[];
+extern const u8 gText_SplashAndDash[];
+extern const u8 gText_FullTank[];
+extern const u8 gText_NoRepair[];
+extern const u8 gText_Repair[];
+extern const u8 gText_Demo[];
+extern const u8 gText_OutOfTime[];
 extern const u8 gUnk_08367C38[];
 extern const u8 gUnk_08367C42[];
 extern const u8 gUnk_08367C4C[];
@@ -180,18 +180,18 @@ const u32 gDriverRpmPerSpeedTables[] = {
 const u32 gPitStopTireServiceTimes[] = INCBIN_U32("build/assets/unknown/data_08368124.bin");
 const u32 gPitStopRepairTimes[] = INCBIN_U32("build/assets/unknown/data_08368134.bin");
 const u32 gPitMenuRowLabelTexts[] = {
-    (u32)gUnk_0806C7D4, (u32)gUnk_0806C7CC, (u32)gUnk_0806C7C4,
-    (u32)gUnk_0806C7C0
+    (u32)gText_TiresLabel, (u32)gText_FuelLabel, (u32)gText_DamageLabel,
+    (u32)gText_Ok
 };
 const u32 gPitMenuTireOptionTexts[] = {
-    (u32)gUnk_0806C800, (u32)gUnk_0806C7F4, (u32)gUnk_0806C7E8,
-    (u32)gUnk_0806C7DC
+    (u32)gText_AllTires, (u32)gText_Left2, (u32)gText_Right2,
+    (u32)gText_None
 };
 const u32 gPitMenuFuelOptionTexts[] = {
-    (u32)gUnk_0806C82C, (u32)gUnk_0806C81C, (u32)gUnk_0806C80C
+    (u32)gText_FullTank, (u32)gText_SplashAndDash, (u32)gText_None_2
 };
 const u32 gPitMenuRepairOptionTexts[] = {
-    (u32)gUnk_0806C848, (u32)gUnk_0806C83C
+    (u32)gText_Repair, (u32)gText_NoRepair
 };
 const s32 gChallengeStartOffsetPercents[] = INCBIN_S32("build/assets/unknown/data_08368170.bin");
 const u8 gTrackStartOffsetPercents[] = INCBIN_U8("build/assets/unknown/data_083681B0.bin");
@@ -218,6 +218,6 @@ const s32 gCornerOffsetX[] = INCBIN_S32("build/assets/unknown/data_08368270.bin"
 const s32 gCornerOffsetZ[] = INCBIN_S32("build/assets/unknown/data_08368280.bin");
 const u32 gTrackAiDragDivisors[] = {
     0x1CC01F4, 0x1D601A4, 0x1B801CC, 0x1E001DB, 0x1CC01D6, 0x1E001D6,
-    (u32)gUnk_0806C940, (u32)gUnk_0806C960
+    (u32)gText_Demo, (u32)gText_OutOfTime
 };
 const u8 gUnk_083682B0[] = INCBIN_U8("build/assets/unknown/data_083682B0.bin");

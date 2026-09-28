@@ -2,7 +2,7 @@
 #include "functions.h"
 #include "variables.h"
 
-extern u8 gUnk_0200D0B8[];
+extern u8 gModule_Timer[];
 
 
 void sub_08340D04(void)
@@ -14,7 +14,7 @@ void sub_08340D04(void)
 
     base = *(u16 **)&gModule_TextLayerMapPtr;
     p = base + 0x128;
-    sub_0833EF0C(gUnk_0200D0B8, 8, 8);
+    sub_0833EF0C(gModule_Timer, 8, 8);
     /* sub_0833E36C: this file's old prototype took
        (u16 *, u32); the matched definition narrows idx
        to u8; call through the old one. */

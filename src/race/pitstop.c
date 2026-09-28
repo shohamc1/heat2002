@@ -6,8 +6,8 @@ extern u8 gPitLaneIndices[];
 void sub_08008090(void);
 #include "m4a.h"
 extern u8 gText_PitControl[];
-extern u8 gUnk_0806C924[];
-extern u8 gUnk_0806C934[];
+extern u8 gText_BlankRow16_3[];
+extern u8 gText_GetReady[];
 extern u32 gPitStopTireServiceTimes[];
 extern u32 gPitStopRepairTimes[];
 extern s32 gPitFuelToAdd;
@@ -166,11 +166,11 @@ l_big:
             }
             gPitStallOccupied[a1->pitStall] = v;
             if (a1 == gCars)
-                sub_0800649C(gUnk_0806C924, 9, 10);
+                sub_0800649C(gText_BlankRow16_3, 9, 10);
         } else {
             UpdateAiDriver((struct Unk0800C534 *)a1, a2);
             if (a1 == gCars && gDamagePitsEnabled != 0)
-                sub_0800649C(gUnk_0806C934, 10, 10);
+                sub_0800649C(gText_GetReady, 10, 10);
         }
         break;
     }

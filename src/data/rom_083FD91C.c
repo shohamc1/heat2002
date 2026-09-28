@@ -2,101 +2,101 @@
 #include "data.h"
 
 
-extern const u8 gUnk_0807C97C[];
-extern const u8 gUnk_0807C988[];
-extern const u8 gUnk_0807C994[];
-extern const u8 gUnk_0807C9A0[];
-extern const u8 gUnk_0807C9AC[];
-extern const u8 gUnk_0807C9B4[];
-extern const u8 gUnk_0807C9BC[];
-extern const u8 gUnk_0807C9C4[];
+extern const u8 gText_Rearright[];
+extern const u8 gText_Rearleft[];
+extern const u8 gText_Frontright[];
+extern const u8 gText_Frontleft[];
+extern const u8 gText_Right[];
+extern const u8 gText_Left[];
+extern const u8 gText_Front[];
+extern const u8 gText_Back[];
 extern const u8 gUnk_0807CA7C[];
 extern const u8 gUnk_0807CAC8[];
 extern const u8 gUnk_0807CB14[];
-extern const u8 gUnk_0829EAE0[];
-extern const u8 gUnk_0829EAFC[];
-extern const u8 gUnk_0829EB00[];
-extern const u8 gUnk_0829EB0C[];
-extern const u8 gUnk_0829EB2C[];
-extern const u8 gUnk_0829EB30[];
-extern const u8 gUnk_0829EB3C[];
-extern const u8 gUnk_0829EB4C[];
-extern const u8 gUnk_0829EB50[];
-extern const u8 gUnk_0829EB5C[];
-extern const u8 gUnk_0829EB70[];
-extern const u8 gUnk_0829EB74[];
-extern const u8 gUnk_0829EB7C[];
-extern const u8 gUnk_0829EB88[];
-extern const u8 gUnk_0829EB8C[];
-extern const u8 gUnk_0829EB98[];
-extern const u8 gUnk_0829EBAC[];
-extern const u8 gUnk_0829EBB0[];
-extern const u8 gUnk_0829EBBC[];
-extern const u8 gUnk_0829EBC8[];
-extern const u8 gUnk_0829EBD4[];
-extern const u8 gUnk_0829EBE4[];
-extern const u8 gUnk_0829EBE8[];
-extern const u8 gUnk_0829EBF4[];
-extern const u8 gUnk_0829EC18[];
-extern const u8 gUnk_0829EC1C[];
-extern const u8 gUnk_0829EC28[];
-extern const u8 gUnk_0829EC38[];
-extern const u8 gUnk_0829EC3C[];
-extern const u8 gUnk_0829EC44[];
-extern const u8 gUnk_0829EC58[];
-extern const u8 gUnk_0829EC5C[];
-extern const u8 gUnk_0829EC68[];
-extern const u8 gUnk_0829EC78[];
-extern const u8 gUnk_0829EC7C[];
-extern const u8 gUnk_0829ECA8[];
-extern const u8 gUnk_0829ECC4[];
-extern const u8 gUnk_0829ECF0[];
-extern const u8 gUnk_0829ED00[];
-extern const u8 gUnk_0829ED18[];
-extern const u8 gUnk_0829ED24[];
-extern const u8 gUnk_0829ED34[];
-extern const u8 gUnk_0829ED44[];
-extern const u8 gUnk_0829ED54[];
-extern const u8 gUnk_0829ED60[];
-extern const u8 gUnk_0829ED6C[];
-extern const u8 gUnk_0829ED88[];
-extern const u8 gUnk_0829ED94[];
-extern const u8 gUnk_0829EDA0[];
-extern const u8 gUnk_0829EDB0[];
-extern const u8 gUnk_0829EDC0[];
-extern const u8 gUnk_0829EDCC[];
-extern const u8 gUnk_0829EDD8[];
-extern const u8 gUnk_0829EDE4[];
-extern const u8 gUnk_0829EDF0[];
-extern const u8 gUnk_0829EE00[];
-extern const u8 gUnk_0829EE10[];
-extern const u8 gUnk_0829EE24[];
-extern const u8 gUnk_0829EE30[];
-extern const u8 gUnk_0829EE40[];
-extern const u8 gUnk_0829EE8C[];
-extern const u8 gUnk_0829EF78[];
-extern const u8 gUnk_0829EFD8[];
-extern const u8 gUnk_0829F038[];
-extern const u8 gUnk_0829F088[];
-extern const u8 gUnk_0829F0D8[];
-extern const u8 gUnk_0829F128[];
-extern const u8 gUnk_0829F138[];
-extern const u8 gUnk_0829F140[];
-extern const u8 gUnk_0829F15C[];
-extern const u8 gUnk_0829F174[];
-extern const u8 gUnk_0829F180[];
-extern const u8 gUnk_0829F190[];
-extern const u8 gUnk_0829F1A0[];
-extern const u8 gUnk_0829F1B8[];
-extern const u8 gUnk_0829F1C8[];
-extern const u8 gUnk_0829F1D0[];
-extern const u8 gUnk_0829F1E0[];
-extern const u8 gUnk_0829F1F4[];
-extern const u8 gUnk_0829F208[];
-extern const u8 gUnk_0829F220[];
-extern const u8 gUnk_0829F224[];
-extern const u8 gUnk_0829F228[];
-extern const u8 gUnk_0829F22C[];
+extern const u8 gText_InfogramesSuperSpeedway[];
+extern const u8 gText_TrackNum11[];
+extern const u8 gText_TrackLen1357[];
+extern const u8 gText_PhoenixInternationalRaceway[];
+extern const u8 gText_TrackNum9[];
+extern const u8 gText_TrackLen2555[];
+extern const u8 gText_AsphaltCity[];
+extern const u8 gText_TrackNum8[];
+extern const u8 gText_TrackLen1950[];
+extern const u8 gText_KansasSpeedway[];
+extern const u8 gText_TrackNum3[];
+extern const u8 gText_TrackLen066[];
+extern const u8 gText_PurleyPark[];
+extern const u8 gText_TrackNum10[];
+extern const u8 gText_TrackLen3723[];
+extern const u8 gText_CrawfishRaceway[];
+extern const u8 gText_TrackNum17[];
+extern const u8 gText_TrackLen2033[];
+extern const u8 gText_FujiPort[];
+extern const u8 gText_TrackLen1899[];
+extern const u8 gText_GreatCanyon[];
+extern const u8 gText_TrackNum19[];
+extern const u8 gText_TrackLen2231[];
+extern const u8 gText_MichiganInternationalSpeedway[];
+extern const u8 gText_TrackNum20[];
+extern const u8 gText_TrackLen1054[];
+extern const u8 gText_GreenValley[];
+extern const u8 gText_TrackNum14[];
+extern const u8 gText_TrackLen243[];
+extern const u8 gText_DarlingtonRaceway[];
+extern const u8 gText_TrackNum15[];
+extern const u8 gText_TrackLen3044[];
+extern const u8 gText_HooleyDowns[];
+extern const u8 gText_TrackNum22[];
+extern const u8 gText_TrackLen1567[];
+extern const u8 gText_DarrenJackson[];
+extern const u8 gText_JonnieShearn[];
+extern const u8 gText_AdamBouskill[];
+extern const u8 gText_JamesDaly[];
+extern const u8 gText_JakeMay[];
+extern const u8 gText_SeanKendrick[];
+extern const u8 gText_DanielEvans[];
+extern const u8 gText_AndrewBishop[];
+extern const u8 gText_TimMunson[];
+extern const u8 gText_NeilWilson[];
+extern const u8 gText_JamesBrown[];
+extern const u8 gText_JayMcgee[];
+extern const u8 gText_BrianLocke[];
+extern const u8 gText_SterlingMarlin[];
+extern const u8 gText_RustyWallace[];
+extern const u8 gText_JoeFried[];
+extern const u8 gText_JasonPope[];
+extern const u8 gText_JeffGordon[];
+extern const u8 gText_RickyRudd[];
+extern const u8 gText_DaleJarrett[];
+extern const u8 gText_KevinHarvick[];
+extern const u8 gText_DaleEarnhardtJR[];
+extern const u8 gText_StevePark[];
+extern const u8 gText_NotAvailable[];
+extern const u8 gText_NotAvailableYouNeedToFinishASeasonInTheTop10[];
+extern const u8 gText_NotAvailableYouNeedToFinishASeasonInTheTop5[];
+extern const u8 gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf37SecondsOnHooleyDowns[];
+extern const u8 gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns[];
+extern const u8 gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop20[];
+extern const u8 gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop10[];
+extern const u8 gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop5[];
+extern const u8 gText_TeamCrawfish[];
+extern const u8 gText_Darby[];
+extern const u8 gText_EricHayashiMotorsports[];
+extern const u8 gText_MikeMacconellRacing[];
+extern const u8 gText_TeamTino[];
+extern const u8 gText_TtMotorsports[];
+extern const u8 gText_AndylandRacing[];
+extern const u8 gText_JimFerrisMotorsports[];
+extern const u8 gText_ChipGanassi[];
+extern const u8 gText_Penske[];
+extern const u8 gText_KravitzRacing[];
+extern const u8 gText_MackneyMotorsports[];
+extern const u8 gText_DalyEnterprises[];
+extern const u8 gText_HendrickMotorsports[];
+extern const u8 gText_Ryr[];
+extern const u8 gText_Rcr[];
+extern const u8 gText_Dei[];
+extern const u8 gText_UnderscoreRow32[];
 extern const u8 gUnk_082CC5D8[];
 extern const u8 gUnk_082F98C0[];
 extern const u8 gUnk_082FB6AC[];
@@ -249,9 +249,9 @@ const u32 gUnk_083FD91C[] = {
     (u32)gUnk_083F4D42, (u32)gUnk_083F5F44, (u32)gUnk_083F64A4, 0xA9,
     (u32)gUnk_083F79C4, (u32)gUnk_083F80C4, (u32)gUnk_083F92C4,
     (u32)gUnk_083F9B14, 0x107, (u32)gUnk_083FBBF4, (u32)gUnk_083FC71C,
-    (u32)gUnk_0807C9A0, (u32)gUnk_0807C994, (u32)gUnk_0807C988,
-    (u32)gUnk_0807C97C, (u32)gUnk_0807C9C4, (u32)gUnk_0807C9BC,
-    (u32)gUnk_0807C9B4, (u32)gUnk_0807C9AC
+    (u32)gText_Frontleft, (u32)gText_Frontright, (u32)gText_Rearleft,
+    (u32)gText_Rearright, (u32)gText_Back, (u32)gText_Front,
+    (u32)gText_Left, (u32)gText_Right
 };
 // Its users declare it as struct Pt2 x[].
 const u32 gUnk_083FDA2C[] = INCBIN_U32("build/assets/unknown/data_083FDA2C.bin");
@@ -262,91 +262,91 @@ const u32 gUnk_083FDA50[] = {
 const u8 gUnk_083FDA60[] = INCBIN_U8("build/assets/unknown/data_083FDA60.bin");
 // Its users declare it as struct Big x[].
 const u32 gTrackSelectEntries[] = {
-    0x1, (u32)gUnk_0829EC7C, (u32)gUnk_0829EC78, (u32)gUnk_0829EC68,
-    (u32)gUnk_083FEE88, (u32)gUnk_08302E00, 0x1, (u32)gUnk_0829EC5C,
-    (u32)gUnk_0829EC58, (u32)gUnk_0829EC44, (u32)gUnk_083FEE68,
-    (u32)gUnk_082FF41C, 0x1, (u32)gUnk_0829EC3C, (u32)gUnk_0829EC38,
-    (u32)gUnk_0829EC28, (u32)gUnk_083FEE38, (u32)gUnk_082F98C0, 0x1,
-    (u32)gUnk_0829EC1C, (u32)gUnk_0829EC18, (u32)gUnk_0829EBF4,
-    (u32)gUnk_083FEE48, (u32)gUnk_082FB6AC, 0x1, (u32)gUnk_0829EBE8,
-    (u32)gUnk_0829EBE4, (u32)gUnk_0829EBD4, (u32)gUnk_083FEE78,
-    (u32)gUnk_08300BCC, 0x1, (u32)gUnk_0829EBC8, (u32)gUnk_0829EC38,
-    (u32)gUnk_0829EBBC, (u32)gUnk_083FEE58, (u32)gUnk_082FD0F8, 0x1,
-    (u32)gUnk_0829EBB0, (u32)gUnk_0829EBAC, (u32)gUnk_0829EB98,
-    (u32)gUnk_083FEE98, (u32)gUnk_083049FC, 0x1, (u32)gUnk_0829EB8C,
-    (u32)gUnk_0829EB88, (u32)gUnk_0829EB7C, (u32)gUnk_083FEEA8,
-    (u32)gUnk_08306238, 0, (u32)gUnk_0829EB74, (u32)gUnk_0829EB70,
-    (u32)gUnk_0829EB5C, (u32)gUnk_083FEEB8, (u32)gUnk_0830877C, 0,
-    (u32)gUnk_0829EB50, (u32)gUnk_0829EB4C, (u32)gUnk_0829EB3C,
-    (u32)gUnk_083FEEE8, (u32)gUnk_0830E418, 0, (u32)gUnk_0829EB30,
-    (u32)gUnk_0829EB2C, (u32)gUnk_0829EB0C, (u32)gUnk_083FEEC8,
-    (u32)gUnk_0830AB68, 0, (u32)gUnk_0829EB00, (u32)gUnk_0829EAFC,
-    (u32)gUnk_0829EAE0, (u32)gUnk_083FEED8, (u32)gUnk_0830CA10
+    0x1, (u32)gText_TrackLen1567, (u32)gText_TrackNum22, (u32)gText_HooleyDowns,
+    (u32)gUnk_083FEE88, (u32)gUnk_08302E00, 0x1, (u32)gText_TrackLen3044,
+    (u32)gText_TrackNum15, (u32)gText_DarlingtonRaceway, (u32)gUnk_083FEE68,
+    (u32)gUnk_082FF41C, 0x1, (u32)gText_TrackLen243, (u32)gText_TrackNum14,
+    (u32)gText_GreenValley, (u32)gUnk_083FEE38, (u32)gUnk_082F98C0, 0x1,
+    (u32)gText_TrackLen1054, (u32)gText_TrackNum20, (u32)gText_MichiganInternationalSpeedway,
+    (u32)gUnk_083FEE48, (u32)gUnk_082FB6AC, 0x1, (u32)gText_TrackLen2231,
+    (u32)gText_TrackNum19, (u32)gText_GreatCanyon, (u32)gUnk_083FEE78,
+    (u32)gUnk_08300BCC, 0x1, (u32)gText_TrackLen1899, (u32)gText_TrackNum14,
+    (u32)gText_FujiPort, (u32)gUnk_083FEE58, (u32)gUnk_082FD0F8, 0x1,
+    (u32)gText_TrackLen2033, (u32)gText_TrackNum17, (u32)gText_CrawfishRaceway,
+    (u32)gUnk_083FEE98, (u32)gUnk_083049FC, 0x1, (u32)gText_TrackLen3723,
+    (u32)gText_TrackNum10, (u32)gText_PurleyPark, (u32)gUnk_083FEEA8,
+    (u32)gUnk_08306238, 0, (u32)gText_TrackLen066, (u32)gText_TrackNum3,
+    (u32)gText_KansasSpeedway, (u32)gUnk_083FEEB8, (u32)gUnk_0830877C, 0,
+    (u32)gText_TrackLen1950, (u32)gText_TrackNum8, (u32)gText_AsphaltCity,
+    (u32)gUnk_083FEEE8, (u32)gUnk_0830E418, 0, (u32)gText_TrackLen2555,
+    (u32)gText_TrackNum9, (u32)gText_PhoenixInternationalRaceway, (u32)gUnk_083FEEC8,
+    (u32)gUnk_0830AB68, 0, (u32)gText_TrackLen1357, (u32)gText_TrackNum11,
+    (u32)gText_InfogramesSuperSpeedway, (u32)gUnk_083FEED8, (u32)gUnk_0830CA10
 };
 // Its users declare it as struct Tbl8 x[], struct Unk083FDB98 x[], struct Unk0B38 x[], u32 x[][2].
 const u32 gDriverRoster[][2] = {
-    (u32)gUnk_0829EE24, 0, (u32)gUnk_0829EE10, 0, (u32)gUnk_0829EE00, 0x1,
-    (u32)gUnk_0829EDF0, 0x2, (u32)gUnk_0829EDE4, 0x2, (u32)gUnk_0829EDD8, 0x3,
-    (u32)gUnk_0829EDCC, 0x4, (u32)gUnk_0829EDC0, 0x4, (u32)gUnk_0829EDB0, 0x7,
-    (u32)gUnk_0829EDA0, 0x8, (u32)gUnk_0829ED94, 0x5, (u32)gUnk_0829ED88, 0x5,
-    (u32)gUnk_0829ED78, 0x6, (u32)gUnk_0829ED6C, 0x6, (u32)gUnk_0829ED60, 0x9,
-    (u32)gUnk_0829ED54, 0x9, (u32)gUnk_0829ED44, 0xA, (u32)gUnk_0829ED34, 0xA,
-    (u32)gUnk_0829ED24, 0xB, (u32)gUnk_0829ED18, 0xB, (u32)gUnk_0829ED0C, 0xC,
-    (u32)gUnk_0829ED00, 0xC, (u32)gUnk_0829ECF0, 0xD, (u32)gUnk_0829ECE4, 0xD,
-    (u32)gUnk_0829ECD4, 0xE, (u32)gUnk_0829ECC4, 0xE, (u32)gUnk_0829ECB8, 0xF,
-    (u32)gUnk_0829ECA8, 0xF, (u32)gUnk_0829EC9C, 0x10, (u32)gUnk_0829EC88,
+    (u32)gText_StevePark, 0, (u32)gText_DaleEarnhardtJR, 0, (u32)gText_KevinHarvick, 0x1,
+    (u32)gText_DaleJarrett, 0x2, (u32)gText_RickyRudd, 0x2, (u32)gText_JeffGordon, 0x3,
+    (u32)gText_JasonPope, 0x4, (u32)gText_JoeFried, 0x4, (u32)gText_RustyWallace, 0x7,
+    (u32)gText_SterlingMarlin, 0x8, (u32)gText_BrianLocke, 0x5, (u32)gText_JayMcgee, 0x5,
+    (u32)gText_MitchellSlater, 0x6, (u32)gText_JamesBrown, 0x6, (u32)gText_NeilWilson, 0x9,
+    (u32)gText_TimMunson, 0x9, (u32)gText_AndrewBishop, 0xA, (u32)gText_DanielEvans, 0xA,
+    (u32)gText_SeanKendrick, 0xB, (u32)gText_JakeMay, 0xB, (u32)gText_ChrisWalsh, 0xC,
+    (u32)gText_JamesDaly, 0xC, (u32)gText_AdamBouskill, 0xD, (u32)gText_TimCoode, 0xD,
+    (u32)gText_WillGreenough, 0xE, (u32)gText_JonnieShearn, 0xE, (u32)gText_DaveMurphy, 0xF,
+    (u32)gText_DarrenJackson, 0xF, (u32)gText_MikeMerren, 0x10, (u32)gText_CameronSheppard,
     0x10
 };
 // Its users declare it as u8 *x[].
 const u32 gChampionshipLockedTexts[] = {
-    (u32)gUnk_0829EE8C, (u32)gUnk_0829EE8C, (u32)gUnk_0829EE8C,
-    (u32)gUnk_0829EE8C, (u32)gUnk_0829EE8C, (u32)gUnk_0829EE8C,
-    (u32)gUnk_0829EE8C, (u32)gUnk_0829EE40, (u32)gUnk_0829EE40,
-    (u32)gUnk_0829EE40, (u32)gUnk_0829EE40, (u32)gUnk_0829EE40,
-    (u32)gUnk_0829EE30, (u32)gUnk_0829EE30, (u32)gUnk_0829EE30,
-    (u32)gUnk_0829EE30, (u32)gUnk_0829EE30
+    (u32)gText_NotAvailableYouNeedToFinishASeasonInTheTop5, (u32)gText_NotAvailableYouNeedToFinishASeasonInTheTop5, (u32)gText_NotAvailableYouNeedToFinishASeasonInTheTop5,
+    (u32)gText_NotAvailableYouNeedToFinishASeasonInTheTop5, (u32)gText_NotAvailableYouNeedToFinishASeasonInTheTop5, (u32)gText_NotAvailableYouNeedToFinishASeasonInTheTop5,
+    (u32)gText_NotAvailableYouNeedToFinishASeasonInTheTop5, (u32)gText_NotAvailableYouNeedToFinishASeasonInTheTop10, (u32)gText_NotAvailableYouNeedToFinishASeasonInTheTop10,
+    (u32)gText_NotAvailableYouNeedToFinishASeasonInTheTop10, (u32)gText_NotAvailableYouNeedToFinishASeasonInTheTop10, (u32)gText_NotAvailableYouNeedToFinishASeasonInTheTop10,
+    (u32)gText_NotAvailable, (u32)gText_NotAvailable, (u32)gText_NotAvailable,
+    (u32)gText_NotAvailable, (u32)gText_NotAvailable
 };
 const u8 gChampionshipTeamTiers[] = INCBIN_U8("build/assets/unknown/data_083FDCCC.bin");
 // Its users declare it as u8 *x[].
 const u32 gChampionshipQualifyTexts[] = {
-    (u32)gUnk_0829EFD8, (u32)gUnk_0829EF78, (u32)gUnk_0829EFD8,
-    (u32)gUnk_0829EF78, (u32)gUnk_0829EFD8, (u32)gUnk_0829EF78,
-    (u32)gUnk_0829EFD8, (u32)gUnk_0829EF78, (u32)gUnk_0829EFD8,
-    (u32)gUnk_0829EF78, (u32)gUnk_0829EFD8, (u32)gUnk_0829EF78,
-    (u32)gUnk_0829EFD8, (u32)gUnk_0829EF78, (u32)gUnk_0829EFD8,
-    (u32)gUnk_0829EF78, (u32)gUnk_0829EFD8
+    (u32)gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns, (u32)gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf37SecondsOnHooleyDowns, (u32)gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns,
+    (u32)gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf37SecondsOnHooleyDowns, (u32)gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns, (u32)gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf37SecondsOnHooleyDowns,
+    (u32)gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns, (u32)gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf37SecondsOnHooleyDowns, (u32)gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns,
+    (u32)gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf37SecondsOnHooleyDowns, (u32)gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns, (u32)gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf37SecondsOnHooleyDowns,
+    (u32)gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns, (u32)gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf37SecondsOnHooleyDowns, (u32)gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns,
+    (u32)gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf37SecondsOnHooleyDowns, (u32)gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns
 };
 const u8 gUnk_083FDD34[] = INCBIN_U8("build/assets/unknown/data_083FDD34.bin");
 const u32 gUnk_083FDD48[] = INCBIN_U32("build/assets/unknown/data_083FDD48.bin");
 const u32 gChampionshipRetainTexts[] = {
-    (u32)gUnk_0829F0D8, (u32)gUnk_0829F0D8, (u32)gUnk_0829F0D8,
-    (u32)gUnk_0829F0D8, (u32)gUnk_0829F0D8, (u32)gUnk_0829F0D8,
-    (u32)gUnk_0829F0D8, (u32)gUnk_0829F088, (u32)gUnk_0829F088,
-    (u32)gUnk_0829F088, (u32)gUnk_0829F088, (u32)gUnk_0829F088,
-    (u32)gUnk_0829F038, (u32)gUnk_0829F038, (u32)gUnk_0829F038,
-    (u32)gUnk_0829F038, (u32)gUnk_0829F038
+    (u32)gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop5, (u32)gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop5, (u32)gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop5,
+    (u32)gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop5, (u32)gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop5, (u32)gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop5,
+    (u32)gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop5, (u32)gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop10, (u32)gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop10,
+    (u32)gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop10, (u32)gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop10, (u32)gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop10,
+    (u32)gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop20, (u32)gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop20, (u32)gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop20,
+    (u32)gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop20, (u32)gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop20
 };
 // Its users declare it as u8 *x[].
 const u32 gChampionshipTeamNames[] = {
-    (u32)gUnk_0829F228, (u32)gUnk_0829F224, (u32)gUnk_0829F220,
-    (u32)gUnk_0829F208, (u32)gUnk_0829F1F4, (u32)gUnk_0829F1E0,
-    (u32)gUnk_0829F1D0, (u32)gUnk_0829F1C8, (u32)gUnk_0829F1B8,
-    (u32)gUnk_0829F1A0, (u32)gUnk_0829F190, (u32)gUnk_0829F180,
-    (u32)gUnk_0829F174, (u32)gUnk_0829F15C, (u32)gUnk_0829F140,
-    (u32)gUnk_0829F138, (u32)gUnk_0829F128, 0x9080704
+    (u32)gText_Dei, (u32)gText_Rcr, (u32)gText_Ryr,
+    (u32)gText_HendrickMotorsports, (u32)gText_DalyEnterprises, (u32)gText_MackneyMotorsports,
+    (u32)gText_KravitzRacing, (u32)gText_Penske, (u32)gText_ChipGanassi,
+    (u32)gText_JimFerrisMotorsports, (u32)gText_AndylandRacing, (u32)gText_TtMotorsports,
+    (u32)gText_TeamTino, (u32)gText_MikeMacconellRacing, (u32)gText_EricHayashiMotorsports,
+    (u32)gText_Darby, (u32)gText_TeamCrawfish, 0x9080704
 };
 // Its users declare it as u32 x, u32 x[].
 const u32 gUnk_083FDE18[] = {
-    (u32)gUnk_0829F22C
+    (u32)gText_UnderscoreRow32
 };
 const u8 gChampionshipTrackOrder[] = INCBIN_U8("build/assets/unknown/data_083FDE1C.bin");
 const u32 gLinkTrackSelectTrackIds[] = {
     0x3020100, 0x7060504, 0xB0A0908, 0x50403, 0x50403, 0x40403, 0x50702,
     0x30603, 0x50203, 0x50403, 0x50503, 0x30403, 0x50803, 0x70404, 0x50403,
     0x50303, 0x60402, 0x50103, 0x10203, 0x50103, 0x10403, 0x50403, 0x50203,
-    (u32)gUnk_0829F2A0, (u32)gUnk_0829F294, (u32)gUnk_0829F288,
-    (u32)gUnk_0829F27C, (u32)gUnk_0829F270, (u32)gUnk_0829F264,
-    (u32)gUnk_0829F258, (u32)gUnk_0829F24C
+    (u32)gText_A, (u32)gText_Ab, (u32)gText_Abc,
+    (u32)gText_Abcd, (u32)gText_Abcde, (u32)gText_Abcdee,
+    (u32)gText_Abcdeee, (u32)gText_Abcdeeee
 };
 const u32 gDriverCarPalettes[] = {
     (u32)gUnk_082CC5D8, (u32)gUnk_082CC5D8, (u32)gUnk_082CC5D8,

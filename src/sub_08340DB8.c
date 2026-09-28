@@ -2,7 +2,7 @@
 #include "functions.h"
 #include "variables.h"
 
-extern u8 gUnk_0200D0C0[];
+extern u8 gModule_MPH[];
 
 
 void sub_08340DB8(u32 a1)
@@ -20,5 +20,5 @@ void sub_08340DB8(u32 a1)
     ((void (*)(u16 *, u32))sub_0833E36C)(p, sub_08344C50(sub_08344BB8(a1, 0x0A), 0x0A));
     p = base + 0x1CE;
     ((void (*)(u16 *, u32))sub_0833E36C)(p, sub_08344C50(a1, 0x0A));
-    sub_0833EF0C(gUnk_0200D0C0, 0x10, 0x0F);
+    sub_0833EF0C(gModule_MPH, 0x10, 0x0F);
 }

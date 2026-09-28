@@ -2,11 +2,11 @@
 /* no data.h: it declares gTextLayerMapPtr without const,
    which the users' bytes need; this file needs nothing else from it. */
 
-extern const u8 gUnk_0806C664[];
-extern const u8 gUnk_0806C668[];
-extern const u8 gUnk_0806C66C[];
-extern const u8 gUnk_0806C670[];
-extern const u8 gUnk_0806C674[];
+extern const u8 gText_5th[];
+extern const u8 gText_4th[];
+extern const u8 gText_3rd[];
+extern const u8 gText_2nd[];
+extern const u8 gText_1st[];
 extern const u8 gUnk_0807CE30[];
 extern const u8 gUnk_0807EDEC[];
 extern const u8 gUnk_08086D6C[];
@@ -115,8 +115,8 @@ extern const u8 gUnk_0829C7B4[];
 extern const u8 gUnk_0829DBB0[];
 
 const u32 gUnk_08364AC8[] = {
-    (u32)gUnk_0806C674, (u32)gUnk_0806C670, (u32)gUnk_0806C66C,
-    (u32)gUnk_0806C668, (u32)gUnk_0806C664
+    (u32)gText_1st, (u32)gText_2nd, (u32)gText_3rd,
+    (u32)gText_4th, (u32)gText_5th
 };
 // Its users declare it as u8 x.
 const u8 gUnk_08364ADC[] = INCBIN_U8("build/assets/unknown/data_08364ADC.bin");

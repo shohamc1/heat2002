@@ -2,7 +2,7 @@
 #include "functions.h"
 #include "variables.h"
 
-extern u8 gUnk_0200CF88[];
+extern u8 gModule_TimeLabel[];
 
 void *sub_0833FF44(void);
 void sub_0833FF94(u32 r0);
@@ -23,6 +23,6 @@ void sub_0833EDB8(void)
         sub_0833FF94((u32)p);
     }
     sub_0833ED10();
-    sub_0833EF0C((u8 *)((u32)gUnk_0200CF88), 0, 0x13);
+    sub_0833EF0C((u8 *)((u32)gModule_TimeLabel), 0, 0x13);
     sub_0833E0AC();
 }

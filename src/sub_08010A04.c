@@ -10,19 +10,19 @@ void sub_08010A04(u32 a0, u32 a1, u32 a2)
     u8 w = v;
 
     if (v == 1)
-        sub_080109C0(gUnk_0829F2A0, a1, a2);
+        sub_080109C0(gText_A, a1, a2);
     if (v == 2)
-        sub_080109C0(gUnk_0829F294, a1, a2);
+        sub_080109C0(gText_Ab, a1, a2);
     if (v == 3)
-        sub_080109C0(gUnk_0829F288, a1, a2);
+        sub_080109C0(gText_Abc, a1, a2);
     if (v == 4)
-        sub_080109C0(gUnk_0829F27C, a1, a2);
+        sub_080109C0(gText_Abcd, a1, a2);
     if (v == 5)
-        sub_080109C0(gUnk_0829F270, a1, a2);
+        sub_080109C0(gText_Abcde, a1, a2);
     if (v == 6)
-        sub_080109C0(gUnk_0829F264, a1, a2);
+        sub_080109C0(gText_Abcdee, a1, a2);
     if (v == 7)
-        sub_080109C0(gUnk_0829F258, a1, a2);
+        sub_080109C0(gText_Abcdeee, a1, a2);
     if (w == 8)
-        sub_080109C0(gUnk_0829F24C, a1, a2);
+        sub_080109C0(gText_Abcdeeee, a1, a2);
 }

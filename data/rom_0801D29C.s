@@ -404,18 +404,3 @@ sample_080694E0:
 	.include "build/assets/sound/songs/song_27.s"
 	.include "build/assets/sound/songs/song_28.s"
 	.include "build/assets/sound/songs/song_29.s"
-	.global gUnk_0806C664
-gUnk_0806C664:
-	.incbin "build/assets/unknown/data_0806C664.bin"
-	.global gUnk_0806C668
-gUnk_0806C668:
-	.incbin "build/assets/unknown/data_0806C668.bin"
-	.global gUnk_0806C66C
-gUnk_0806C66C:
-	.incbin "build/assets/unknown/data_0806C66C.bin"
-	.global gUnk_0806C670
-gUnk_0806C670:
-	.incbin "build/assets/unknown/data_0806C670.bin"
-	.global gUnk_0806C674
-gUnk_0806C674:
-	.incbin "build/assets/unknown/data_0806C674.bin"

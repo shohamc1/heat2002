@@ -1,10 +1,10 @@
 #include "global.h"
 
-extern const u8 gUnk_0829F4B4[];
+extern const u8 gText_MpTrackSelect[];
 
 u32 sub_08012384(u32 r0, u32 r1, u32 r2);
 
 u8 sub_080145CC(void)
 {
-    return sub_08012384((u32)gUnk_0829F4B4, 0x3C, 0x4C);
+    return sub_08012384((u32)gText_MpTrackSelect, 0x3C, 0x4C);
 }

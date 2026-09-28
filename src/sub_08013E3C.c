@@ -23,12 +23,12 @@ void sub_08013E3C(u8 a)
     walk = (u32 *)((u8 *)gCarOrder + off * 4);
     i = 0;
     do {
-        DrawText(gUnk_0829F44C, 1, i + 4, 1);
+        DrawText(gText_BlankRow36, 1, i + 4, 1);
         if (walk < gSeasonRaceIndex) {
             ptr = (u8 *)*walk;
             SplitMilliseconds(*(u32 *)(ptr + 0x16C), &m, &s, &f);
             if (ptr == (u8 *)gCars && (gMenuBlinkCounter & 0x10) != 0) {
-                DrawText(gUnk_0829F44C, 1, i + 4, 1);
+                DrawText(gText_BlankRow36, 1, i + 4, 1);
             } else {
                 DrawText((u8 *)GetDriverName(ptr[0x162]), 1, i + 4, 1);
                 buf[0] = (m / 10) % 10 + 0x30;

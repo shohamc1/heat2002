@@ -5,9 +5,9 @@
 #include "variables.h"
 #include "car.h"
 
-extern const u8 gUnk_0829F590[];
-extern const u8 gUnk_0829F59C[];
-extern const u8 gUnk_0829F5B4[];
+extern const u8 gText_YouLose[];
+extern const u8 gText_YourCareerIsOverAs[];
+extern const u8 gText_NoTeamsWillTakeYou[];
 
 extern u8 gUnk_0202A6B2;
 extern u8 gUnk_0202CD9C[];
@@ -645,7 +645,7 @@ state5_setup:
         for (i = 0; i != 0x18; i++)
             gCars[i].points = 0;
         if (sub_0800F190() == 0) {
-            MessageBox((u32)gUnk_0829F590, (u32)gUnk_0829F59C, (u32)gUnk_0829F5B4);
+            MessageBox((u32)gText_YouLose, (u32)gText_YourCareerIsOverAs, (u32)gText_NoTeamsWillTakeYou);
             goto state5_done;
         }
 

@@ -28,7 +28,7 @@ void sub_080150F4(void)
         ptr = (u8 *)*walk;
         SplitMilliseconds(*(u32 *)(ptr + 0x16C), pm, ps, pf);
         if (ptr == (u8 *)gCars && (gMenuBlinkCounter & 0x10) != 0) {
-            DrawText(gUnk_0829F44C, 1, i + 4, 1);
+            DrawText(gText_BlankRow36, 1, i + 4, 1);
         } else {
             DrawText((u8 *)GetDriverName(ptr[0x162]), 1, i + 4, 1);
             buf[0] = (m / 10) % 10 + 0x30;

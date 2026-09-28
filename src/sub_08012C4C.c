@@ -5,14 +5,14 @@
 #include "data.h"
 
 extern u32 gUnk_083FEF00;
-extern u8 gUnk_0829F374[];
-extern u8 gUnk_0829F388[];
+extern u8 gText_Congratulations_2[];
+extern u8 gText_YouCompletedTheSeason[];
 extern u8 gUnk_08310160[];
 extern u8 gUnk_0830EC58[];
 extern u8 gUnk_08310140[];
-extern u8 gUnk_0829F3A4[];
-extern u8 gUnk_0829F3AC[];
-extern u8 gUnk_0829F3B4[];
+extern u8 gText_Gold[];
+extern u8 gText_Silver[];
+extern u8 gText_Bronze[];
 
 
 void sub_08012C4C(u32 a)
@@ -27,8 +27,8 @@ void sub_08012C4C(u32 a)
     if (a <= 2) {
         DrawTextCenteredHighlight((u8 *)(GetString(0x91)), 4, 1);
     } else {
-        DrawTextCenteredHighlight((u8 *)((u32)gUnk_0829F374), 6, 1);
-        DrawTextCenteredHighlight((u8 *)((u32)gUnk_0829F388), 0xA, 1);
+        DrawTextCenteredHighlight((u8 *)((u32)gText_Congratulations_2), 6, 1);
+        DrawTextCenteredHighlight((u8 *)((u32)gText_YouCompletedTheSeason), 0xA, 1);
     }
     if (a <= 2)
         RLUnCompVram(gUnk_083FEF00, OBJ_VRAM0);
@@ -45,9 +45,9 @@ void sub_08012C4C(u32 a)
         sub_080100CC(0x58, 0x40, 0, t, 0);
     }
     if (a == 0)
-        DrawTextCenteredHighlight((u8 *)((u32)gUnk_0829F3A4), 0x12, 1);
+        DrawTextCenteredHighlight((u8 *)((u32)gText_Gold), 0x12, 1);
     if (a == 1)
-        DrawTextCenteredHighlight((u8 *)((u32)gUnk_0829F3AC), 0x12, 1);
+        DrawTextCenteredHighlight((u8 *)((u32)gText_Silver), 0x12, 1);
     if (a == 2)
-        DrawTextCenteredHighlight((u8 *)((u32)gUnk_0829F3B4), 0x12, 1);
+        DrawTextCenteredHighlight((u8 *)((u32)gText_Bronze), 0x12, 1);
 }

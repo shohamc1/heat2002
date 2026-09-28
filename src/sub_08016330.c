@@ -4,7 +4,7 @@
 #include "m4a.h"
 #include "variables.h"
 
-extern u8 gUnk_0829F94C[];
+extern u8 gText_Credits[];
 
 struct Tbl {
     s32 f00;
@@ -36,7 +36,7 @@ void sub_08016330(u8 x)
     sub_08011D2C(1, buf);
     for (i = 0; i != 0x380; i++)
         *p++ = 0;
-    sub_08006738(gUnk_0829F94C);
+    sub_08006738(gText_Credits);
     j = 0x14;
     for (i = 0; i <= 0x13; i++) {
         DrawTextCenteredHighlight(gText_BlankRowMenu, (i + j - 0x14) % 32, 1);

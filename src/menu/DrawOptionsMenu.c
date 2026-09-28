@@ -3,8 +3,8 @@
 #include "data.h"
 #include "variables.h"
 
-extern u8 gUnk_0829F354[];
-extern u8 gUnk_0829F368[];
+extern u8 gText_ViewLicensingInfo[];
+extern u8 gText_BlankRow12_4[];
 
 
 void DrawOptionsMenu(u32 a)
@@ -26,9 +26,9 @@ void DrawOptionsMenu(u32 a)
     DrawText((u8 *)(GetString(0x3B)), 3, 0xB, a == 3);
 
     DrawText((u8 *)(GetString(0xBF)), 3, 0xD, a == 4);
-    p = gUnk_0829F354;
+    p = gText_ViewLicensingInfo;
     DrawText(p, 3, 0xF, a == 5);
-    p = gUnk_0829F368;
+    p = gText_BlankRow12_4;
     DrawText(p, 0x15, 5, a == 0);
     DrawText((u8 *)(GetString(gOptions[0] + 0x3D)), 0x15, 5, a == 0);
     DrawText((u8 *)(GetString(gOptions[1] + 0xB6)), 0x15, 7, a == 1);

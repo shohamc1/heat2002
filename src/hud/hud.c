@@ -3,8 +3,8 @@
 #include "variables.h"
 #include "data.h"
 extern u8 gText_HudPosLabel[];
-extern u8 gUnk_0806C770[];
-extern u8 gUnk_0806C780[];
+extern u8 gText_BlankRow16_2[];
+extern u8 gText_Lap[];
 struct Car {
     u8 pad00[0x8C];
     s32 tireWear0;
@@ -68,14 +68,14 @@ void DrawLapCounter(s32 a, s32 b)
     u8 *p;
 
     if (a == 999) {
-        q = gUnk_0806C770;
+        q = gText_BlankRow16_2;
         sub_0800649C((u8 *)((u32)q), 0, 1);
         sub_0800649C((u8 *)((u32)q), 0, 0);
         return;
     }
     if (a > b)
         a = b;
-    sub_0800649C((u8 *)((u32)gUnk_0806C780), 0, 1);
+    sub_0800649C((u8 *)((u32)gText_Lap), 0, 1);
     base = (u8 *)gTextLayerMapPtr[0];
     p = base + 8;
     if (a > 99) {

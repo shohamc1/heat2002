@@ -6,7 +6,7 @@
 void MainVBlankCallback(void);
 
 extern u8 gUnk_0202CD90[];
-extern u8 gUnk_0806C688[];
+extern u8 gText_PressStartToExit[];
 u8 StartSinglePakLink(void)
 {
     s32 i;
@@ -50,7 +50,7 @@ loop:
         /* DrawTextCentered: the ROM callers pass a third argument the matched definition drops; call
            through a function pointer with the old prototype. */
         ((void (*)(u32, u32, u32))DrawTextCentered)(GetString(0x75), 0x0A, 1);
-        ((void (*)(u32, u32, u32))DrawTextCentered)((u32)gUnk_0806C688, 0x0C, 1);
+        ((void (*)(u32, u32, u32))DrawTextCentered)((u32)gText_PressStartToExit, 0x0C, 1);
         StopAllSongsAndVSyncOff();
 wait1:
         ReadKeys();

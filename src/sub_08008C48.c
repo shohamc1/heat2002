@@ -2,7 +2,7 @@
 #include "functions.h"
 #include "data.h"
 
-extern u8 gUnk_0806C8EC[];
+extern u8 gText_MPH[];
 
 
 void sub_08008C48(s32 x)
@@ -19,6 +19,6 @@ void sub_08008C48(s32 x)
     ((void (*)(u32 *, u32))DrawBigDigit)(p, x / 10 % 10);
     p = base + 0xE7;
     ((void (*)(u32 *, u32))DrawBigDigit)(p, x % 10);
-    s = (u32)gUnk_0806C8EC;
+    s = (u32)gText_MPH;
     sub_0800649C((u8 *)s, 0x10, 0x0F);
 }

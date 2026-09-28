@@ -10,18 +10,18 @@ void sub_0800DFC0(void);
 void SioTransferIntr(void);
 extern u32 gUnk_0807C9E8;
 extern const u8 *gUnk_083FDA50[];
-extern u32 gUnk_0807C9CC[];
-extern u8 gUnk_0807C9F0[];
-extern u8 gUnk_0807CA08[];
-extern u8 gUnk_0807CA20[];
-extern u8 gUnk_0807CA34[];
+extern u32 gHighModuleChunks[];
+extern u8 gText_BlankRow24_2[];
+extern u8 gText_DoNotRemoveGameBoy[];
+extern u8 gText_AdvanceGameLink[];
+extern u8 gText_CableOrTurnPowerOff[];
 extern u8 gUnk_0807CB58[];
 void SioTransferInit(u32 a1, u32 a2);
 void sub_0800DE9C(u16 x, u16 y);
 void sub_0800DE60(u32 id, u32 c);
 u32 SioTransferUpdate(u32 *frame);
 #include "gba/compat.h"
-extern u8 gUnk_0807CA60[];
+extern u8 gText_BlankRow28_2[];
 extern u8 gUnk_08363EE8[];
 extern u8 gUnk_08364AC8[];
 
@@ -48,16 +48,16 @@ u32 SendMultibootPayload(void)
     DmaFill32(3, 0xA0, (u8 *)gOamBuffer, 0x400);
     CpuFastSet((u8 *)gOamBuffer, (void *)OAM, 0x100);
     REG_DISPCNT |= DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP;
-    SioTransferInit(1, gUnk_0807C9CC[idx]);
+    SioTransferInit(1, gHighModuleChunks[idx]);
     for (i = 0; i < 4; i++)
-        DrawTextCenteredHighlight(gUnk_0807C9F0, i + 8, 1);
+        DrawTextCenteredHighlight(gText_BlankRow24_2, i + 8, 1);
     for (;;) {
         t = ((idx << 15) + frame * 4) >> 10;
         sub_0800DE9C(t, 100);
         sub_0800DE60(t, 100);
-        DrawTextCenteredHighlight(gUnk_0807CA08, 8, 1);
-        DrawTextCenteredHighlight(gUnk_0807CA20, 9, 1);
-        DrawTextCenteredHighlight(gUnk_0807CA34, 10, 1);
+        DrawTextCenteredHighlight(gText_DoNotRemoveGameBoy, 8, 1);
+        DrawTextCenteredHighlight(gText_AdvanceGameLink, 9, 1);
+        DrawTextCenteredHighlight(gText_CableOrTurnPowerOff, 10, 1);
         if (SioTransferUpdate(&frame)) {
             idx++;
             /* goto, not break: expand_end_loop rolls a loop that has a
@@ -65,7 +65,7 @@ u32 SendMultibootPayload(void)
                not rolled. */
             if (idx == 7)
                 goto done;
-            SioTransferInit(1, gUnk_0807C9CC[idx]);
+            SioTransferInit(1, gHighModuleChunks[idx]);
             frame = 0;
         }
         CpuFastSet((u8 *)gOamBuffer, (void *)OAM, 0x100);
@@ -182,7 +182,7 @@ show_icon:
         DrawTextCenteredHighlight((u8 *)((u32 (*)(u32))GetString)(icon), 0x0E, 1);
         goto shown;
 show_empty:
-        DrawTextCenteredHighlight(gUnk_0807CA60, 0x0E, 1);
+        DrawTextCenteredHighlight(gText_BlankRow28_2, 0x0E, 1);
 shown:
         ReadKeys();
         if (gKeysPressed & 8)

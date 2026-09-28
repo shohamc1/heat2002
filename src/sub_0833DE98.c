@@ -25,8 +25,8 @@ void sub_0833DE98(void)
         if (sub_0833C874() != 0)
         {
             sub_0833EE88(sub_0833BD94(0), 0xA, 1);
-            sub_0833EE88(gUnk_0200CF1C, 0xC, 1);
-            sub_0833EE88(gUnk_0200CF34, 0xD, 1);
+            sub_0833EE88(gModule_PleaseTurnOffYour_2, 0xC, 1);
+            sub_0833EE88(gModule_GameBoyAdvance_2, 0xD, 1);
             sub_0833B074((struct MusicPlayerInfo *)((u32)gUnk_02038F70));
             sub_0833B074((struct MusicPlayerInfo *)((u32)gUnk_02038FB0));
             sub_0833AE90();

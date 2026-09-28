@@ -2,7 +2,7 @@
 #include "functions.h"
 #include "data.h"
 
-extern u8 gUnk_0829F3BC[];
+extern u8 gText_Practice[];
 
 
 void sub_080134E8(u8 a)
@@ -15,7 +15,7 @@ void sub_080134E8(u8 a)
     ((void (*)(u32))sub_08006734)(gUnk_083FDE18[0]);
     GetString(0x00);
     ((void (*)(void))sub_080065A8)();
-    v = (u32)gUnk_0829F3BC;
+    v = (u32)gText_Practice;
     DrawTextCenteredHighlight((u8 *)v, 6, a == 0);
     v = GetString(0x02);
     DrawTextCenteredHighlight((u8 *)v, 8, a == 1);

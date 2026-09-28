@@ -53,27 +53,3 @@
 	.incbin "build/assets/unknown/data_08071880.bin"
 	.incbin "build/assets/unknown/data_08072AB0.bin"
 	.incbin "build/assets/unknown/data_08075C5C.bin"
-	.global gUnk_0807C97C
-gUnk_0807C97C:
-	.incbin "build/assets/unknown/data_0807C97C.bin"
-	.global gUnk_0807C988
-gUnk_0807C988:
-	.incbin "build/assets/unknown/data_0807C988.bin"
-	.global gUnk_0807C994
-gUnk_0807C994:
-	.incbin "build/assets/unknown/data_0807C994.bin"
-	.global gUnk_0807C9A0
-gUnk_0807C9A0:
-	.incbin "build/assets/unknown/data_0807C9A0.bin"
-	.global gUnk_0807C9AC
-gUnk_0807C9AC:
-	.incbin "build/assets/unknown/data_0807C9AC.bin"
-	.global gUnk_0807C9B4
-gUnk_0807C9B4:
-	.incbin "build/assets/unknown/data_0807C9B4.bin"
-	.global gUnk_0807C9BC
-gUnk_0807C9BC:
-	.incbin "build/assets/unknown/data_0807C9BC.bin"
-	.global gUnk_0807C9C4
-gUnk_0807C9C4:
-	.incbin "build/assets/unknown/data_0807C9C4.bin"

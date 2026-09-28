@@ -1,0 +1,28 @@
+#include "global.h"
+#include "data.h"
+
+/* Wheel names, the multiboot chunk table and link-cable warning text (0x0807C97C-0x0807CA7C). */
+
+const u8 gText_Rearright[12]   = "REARRIGHT";
+const u8 gText_Rearleft[12]   = "REARLEFT";
+const u8 gText_Frontright[12]   = "FRONTRIGHT";
+const u8 gText_Frontleft[12]   = "FRONTLEFT";
+const u8 gText_Right[8]    = "RIGHT";
+const u8 gText_Left[8]    = "LEFT";
+const u8 gText_Front[8]    = "FRONT";
+const u8 gText_Back[8]    = "BACK";
+extern const u8 gHighModuleRom[];
+
+// The high module's 32 KB chunks, as SendMultibootPayload sends them.
+const u32 gHighModuleChunks[] = {
+    (u32)gHighModuleRom, (u32)gHighModuleRom + 0x8000,
+    (u32)gHighModuleRom + 0x10000, (u32)gHighModuleRom + 0x18000,
+    (u32)gHighModuleRom + 0x20000, (u32)gHighModuleRom + 0x28000,
+    (u32)gHighModuleRom + 0x30000
+};
+const u32 gUnk_0807C9E8[] = INCBIN_U32("build/assets/unknown/data_0807C9E8.bin");
+const u8 gText_BlankRow24_2[] = "                       ";
+const u8 gText_DoNotRemoveGameBoy[] = "DO NOT REMOVE GAME BOY&";
+const u8 gText_AdvanceGameLink[20]   = "ADVANCE GAME LINK&";
+const u8 gText_CableOrTurnPowerOff[] = "CABLE OR TURN POWER OFF.\000\000\000\000               ";
+const u8 gText_BlankRow28_2[28]   = "                          ";

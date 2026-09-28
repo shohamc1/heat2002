@@ -2,8 +2,8 @@
 #include "functions.h"
 #include "variables.h"
 
-extern u8 gUnk_0200CF74[];
-extern u8 gUnk_0200CF84[];
+extern u8 gModule_BlankRow16[];
+extern u8 gModule_Lap[];
 
 
 void sub_0833E7FC(s32 a, s32 b)
@@ -13,14 +13,14 @@ void sub_0833E7FC(s32 a, s32 b)
     u8 *p;
 
     if (a == 999) {
-        q = gUnk_0200CF74;
+        q = gModule_BlankRow16;
         sub_0833EF0C((u8 *)((u32)q), 0, 1);
         sub_0833EF0C((u8 *)((u32)q), 0, 0);
         return;
     }
     if (a > b)
         a = b;
-    sub_0833EF0C((u8 *)((u32)gUnk_0200CF84), 0, 1);
+    sub_0833EF0C((u8 *)((u32)gModule_Lap), 0, 1);
     base = (u8 *)gModule_TextLayerMapPtr[0];
     p = base + 8;
     if (a > 99) {

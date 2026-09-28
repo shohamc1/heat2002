@@ -27,7 +27,7 @@ void sub_08014104(u8 a)
     p = buf;
     z = 0;
     do {
-        DrawText(gUnk_0829F44C, 1, i + 4, 1);
+        DrawText(gText_BlankRow36, 1, i + 4, 1);
         if (walk < gSeasonRaceIndex) {
             ptr = (u8 *)*walk;
             if (ptr == (u8 *)gCars && (gMenuBlinkCounter & 0x10) != 0) {

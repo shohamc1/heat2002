@@ -4,8 +4,8 @@
 
 extern u8 gUnk_02039190;
 void sub_0833C5B0(void);
-extern u8 gUnk_0200CEC0[];
-extern u8 gUnk_0200CED8[];
+extern u8 gModule_PleaseTurnOffYour[];
+extern u8 gModule_GameBoyAdvance[];
 
 void sub_08339A40(void);
 void sub_08339AB8(u32 r0);
@@ -75,8 +75,8 @@ void sub_0833BDB4(void)
         sub_0833D510(0, 0x0A);
         if (sub_0833BF80(0, 4, 0)) {
             sub_0833EE88(sub_0833BD94(0), 0x0A, 1);
-            sub_0833EE88((u32)gUnk_0200CEC0, 0x0C, 1);
-            sub_0833EE88((u32)gUnk_0200CED8, 0x0D, 1);
+            sub_0833EE88((u32)gModule_PleaseTurnOffYour, 0x0C, 1);
+            sub_0833EE88((u32)gModule_GameBoyAdvance, 0x0D, 1);
             sub_0833B074((struct MusicPlayerInfo *)((u32)gUnk_02038F70));
             sub_0833B074((struct MusicPlayerInfo *)((u32)gUnk_02038FB0));
             sub_0833AE90();

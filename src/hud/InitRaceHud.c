@@ -6,7 +6,7 @@
 extern const u8 gUnk_08331FC8[];
 
 void UpdateRaceHud(void);
-extern u8 gUnk_0806C784[];
+extern u8 gText_TimeLabel[];
 
 u32 AllocTask(void);
 void AddTask(u32 a);
@@ -27,7 +27,7 @@ void InitRaceHud(void)
         AddTask((u32)r);
     }
     sub_08006214();
-    sub_0800649C((u8 *)((u32)gUnk_0806C784), 0, 0x13);
+    sub_0800649C((u8 *)((u32)gText_TimeLabel), 0, 0x13);
     src = (u32)gUnk_08331FC8;
     dst = (u32)OBJ_VRAM1 + 0x2280;
     CpuCopy16(src, dst, 0x180);

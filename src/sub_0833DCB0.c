@@ -30,8 +30,8 @@ u8 sub_0833DCB0(void)
             gModule_VBlanksThisFrame = 0;
             if (sub_0833C874() != 0) {
                 sub_0833EE88(sub_0833BD94(0), 0xA, 1);
-                sub_0833EE88((u32 *)gUnk_0200CF1C, 0xC, 1);
-                sub_0833EE88((u32 *)gUnk_0200CF34, 0xD, 1);
+                sub_0833EE88((u32 *)gModule_PleaseTurnOffYour_2, 0xC, 1);
+                sub_0833EE88((u32 *)gModule_GameBoyAdvance_2, 0xD, 1);
                 sub_0833AE90();
                 done = 0;
                 do {

@@ -323,7 +323,7 @@ following facts support that:
   main program, the high module or the island points into the matching
   EWRAM range, `0x02000C00`-`0x02000CFF`.
 - The chunk table that the main program sends over the link cable
-  (`gUnk_0807C9CC`, read by `SendMultibootPayload`) starts at
+  (`gHighModuleChunks`, read by `SendMultibootPayload`) starts at
   `0x08339780`, so the gap never reaches the second GBA.
 
 The data doesn't show whether the original build reserved the space at the
@@ -352,9 +352,44 @@ pokeemerald's `src/graphics.c` does. The setup has these parts:
   the `data/*.s` fragments around it. Each object depends on the asset
   stamp, so `make` extracts the blobs first. Without a ROM the blobs are
   zero fill, as for `.incbin`, and `make check-code` still matches.
+  Text-heavy runs live in merged, domain-named files instead
+  (`race_text.c`, `link_text.c`, `game_text.c`, `strings.c`,
+  `high_module_text.c`, `career_text.c`; strings as literals, see
+  "ROM data defined in C" in `docs/learnings/parked.md`). Prefer such a
+  name for a new file when the run has one clear content; `rom_ADDR.c`
+  remains fine for mixed or unnamed runs. A file still covers exactly one
+  contiguous ROM range, in ROM order.
 - `include/data.h` declares, as `extern const`, the 21 tables that several
   files read with one type. Adding `const` to those files' view changed no
   byte.
+
+Since 2026-09-28 the game's text strings are decoded into string
+literals instead: all 29 `gText_*` blobs were printable ASCII + trailing
+zero padding, and `const u8 gText_P3Paused[] = "P3 PAUSED\0\0";` builds
+byte-identical under agbcc (the implicit terminator must land inside the
+blob's own trailing NULs, so a blob with no trailing zero cannot become a
+literal). Their `assets/unknown.json` entries were removed; commit
+`nascar-heat.code.sha1` together with such a change, since the string
+ranges stop being masked. `&` in `gText_TrackIntlSpeedway` is a literal
+font byte, not markup.
+
+A second pass the same day moved the remaining ~530 strings into six
+merged, domain-named files, absorbing 16 `rom_ADDR.c` files and 5
+fragments: `race_text.c` (0x0806C664-0x0806FFF4, pit/HUD/pause text,
+keeps the 13944-byte pit graphics as its last INCBIN), `link_text.c`
+(0x0807C97C-0x0807CA7C, wheel names + the multiboot chunk table + link
+warnings), `game_text.c` (0x0829EAE0-0x0829F954, track names, driver
+names, credits), `strings.c` (0x082B57B0-0x082B731C, the main string
+table: menus, messages, all 16 Beat-the-Heat challenge texts), and in
+`.high_module`: `high_module_text.c` (0x08345940-0x08345B98) and
+`career_text.c` (0x083534B0-0x083534D4); `data/rom_08344E68.s` split
+into `rom_08345B98.s` and `rom_083534D4.s` around them. New data files
+are named by content, not by address; a file must still cover one
+contiguous ROM range in ROM order, with every cut 4-byte aligned. One
+C-lexer trap found the hard way: a `\0` escape followed by a digit
+0-7 lexes as one octal escape (`\001234` = 0x01, `234`), so interior
+NULs are written `\000` (`gModule_PitLabelBlock` in `high_module_text.c` is
+the multi-string blob that needs it).
 
 The conversion covered every `symbols.ld` ROM line that starts an
 `assets/unknown.json` blob and that C reads, outside the sound range and
@@ -393,8 +428,8 @@ data stayed `.incbin`. "Pointers" below replaced every one of them:
 - `gUnk_08363EE8`, the multiboot island's first 224 bytes. The main program
   reads it by its ROM address to send the island, but a C definition inside
   `.island` would link at the run address `0x02000000`.
-- Blob starts that no C read by name: `gUnk_0806C904`, `gUnk_0829EED8`,
-  `gUnk_0829EEE4`, `gUnk_0829EEF8`, `gUnk_0829F470`, `gUnk_0829F954`,
+- Blob starts that no C read by name: `gText_BlankRow20_2`, `gText_BadLuck`,
+  `gText_YouVeBeenKicked`, `gText_OffTheTeam`, `gText_QualifyingResults`, `gUnk_0829F954`,
   `gUnk_0829FB54`, and `gUnk_082A0130`. Their lines were unused, because
   C wrote these addresses as numbers. The code pass (see "Pointers")
   defined them in C.
@@ -446,7 +481,7 @@ Targets got names this way:
   gets a `symbols.ld` alias such as `gUnk_083FDA67 = gUnk_083FDA60 + 0x7;`.
 - The chunk tables use `ldscript.ld` symbols: `gHighModuleRom` is the high
   module's ROM address and `gHighModule` its run address, so the main
-  program's `gUnk_0807C9CC` is `gHighModuleRom + 0x8000 * n` and the
+  program's `gHighModuleChunks` is `gHighModuleRom + 0x8000 * n` and the
   island's receive table is `gHighModule + 0x8000 * n`. `gUnk_08363EE8`
   is `LOADADDR(.island)`.
 

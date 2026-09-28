@@ -4,7 +4,7 @@
 #include "variables.h"
 #include "car.h"
 
-extern u8 gUnk_0829F2F0[];
+extern u8 gText_BlankRow28_3[];
 
 
 void sub_0801137C(void)
@@ -26,7 +26,7 @@ void sub_0801137C(void)
         car = *p;
         SplitMilliseconds(car->finishTime, &q1, &q2, &q3);
         if (car == &gCars[gLinkPlayerId[0]] && (gMenuBlinkCounter & 0x10)) {
-            DrawText(gUnk_0829F2F0, 4, 2 * i + 4, 1);
+            DrawText(gText_BlankRow28_3, 4, 2 * i + 4, 1);
         } else {
             DrawText((u8 *)(GetString(i + 0xC0)), 1, 2 * i + 4, 1);
             tile = 0x53 + (car - gCars);

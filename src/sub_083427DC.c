@@ -3,16 +3,16 @@
 #include "functions.h"
 #include "variables.h"
 
-extern u8 gUnk_0200D0F4[];
-extern u8 gUnk_0200D100[];
+extern u8 gModule_DemoMode[];
+extern u8 gModule_OutOfTime[];
 
 
 void sub_083427DC(u32 a)
 {
     if (*(u32 *)(a + 0x18) & 0x10)
-        sub_0833EF0C(gUnk_0200D0F4, 0xB, 0xA);
+        sub_0833EF0C(gModule_DemoMode, 0xB, 0xA);
     else
-        sub_0833EF0C(gUnk_0200D100, 0xB, 0xA);
+        sub_0833EF0C(gModule_OutOfTime, 0xB, 0xA);
     --*(u32 *)(a + 0x18);
     sub_08339B4C();
     if ((gUnk_02037618 & 0x3FF) != 0 || *(u32 *)(a + 0x18) == 0)
