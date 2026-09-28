@@ -511,7 +511,7 @@ SECTIONS
         build/src/dead/sub_0833BC7C.o(.text*);
         build/src/dead/sub_0833BCBC.o(.text*);
         build/src/link/ModuleSortLinkCarsByTime.o(.text*);
-        build/src/ModuleGetString.o(.text*);
+        build/src/hud/ModuleGetString.o(.text*);
         build/src/system/ModuleGameMain.o(.text*);
         build/src/track/ModuleSetTrackBgCnt.o(.text*);
         build/src/race/ModuleEnableRaceDisplay.o(.text*);
@@ -562,7 +562,7 @@ SECTIONS
         build/src/dead/sub_0833EE1C.o(.text*);
         build/src/hud/ModuleClearRaceTextLayer.o(.text*);
         build/src/dead/sub_0833EE2C.o(.text*);
-        build/src/ModuleText.o(.text*);
+        build/src/hud/ModuleText.o(.text*);
         build/src/dead/ModuleDrawTextHighlight.o(.text*);
         build/src/track/ModuleLoadTrackSegs.o(.text*);
         build/src/race/ModuleUpdateLapProgress.o(.text*);
