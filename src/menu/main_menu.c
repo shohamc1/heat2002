@@ -4,14 +4,16 @@
 
 extern u8 gUnk_0202EEFC;
 extern u16 gUnk_083FDE5E[];
+void LoadMainMenuBackdrop(void);
+void DrawMainMenuItems(u8 a);
 
 
-void sub_0801060C(u8 a)
+void DrawMainMenuItems(u8 selected)
 {
     u8 *d;
     u32 i;
-    u16 *p;
-    u32 j;
+    u16 *textIds;
+    u32 row;
 
     d = &gUnk_0202EEFC;
     /* DummyMainMenuHook: this file's old prototype returns u8; the matched
@@ -21,12 +23,20 @@ void sub_0801060C(u8 a)
     GetString(0x59);
     ((void (*)(void))DrawBigText)();
     i = 0;
-    j = 5;
-    p = gUnk_083FDE5E;
+    row = 5;
+    textIds = gUnk_083FDE5E;
     do {
-        DrawTextCenteredHighlight(GetString(*p), j, a == i);
-        j += 2;
-        p++;
+        DrawTextCenteredHighlight(GetString(*textIds), row, selected == i);
+        row += 2;
+        textIds++;
         i++;
     } while (i != 7);
 }
+
+
+void DrawMainMenu(u8 selected)
+{
+    LoadMainMenuBackdrop();
+    DrawMainMenuItems(selected);
+}
+

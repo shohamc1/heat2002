@@ -374,7 +374,7 @@ const u16 gUnk_083FDE3E[16] = {
     0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF,
     0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF
 };
-// GetString ids; sub_0801060C draws the first seven as its menu rows.
+// GetString ids; DrawMainMenuItems draws the first seven as its menu rows.
 const u16 gUnk_083FDE5E[10] = { 72, 73, 74, 75, 76, 77, 78, 79, 80, 106 };
 // No decompiled code reads these bytes yet.
 const u8 gUnk_083FDE72[6] = { 2, 1, 0, 3, 0, 0 };

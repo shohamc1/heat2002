@@ -12,9 +12,9 @@ void sub_08012874(s8 a)
     s8 sel;
 
     ZeroTextLayer();
-    sub_0800F498();
+    LoadResultsScreenBackdrop();
     p = gResultsScreenPalette;
-    sub_0800F328((u32)p, (u16 *)buf);
+    BuildScreenPalette((u32)p, (u16 *)buf);
     /* sub_080127E4: this file's old prototype took u8; the matched definition takes s8 */
     ((void (*)(u8))sub_080127E4)(a);
     FadeToBrightenedPalette((u32)buf, 0x0F);

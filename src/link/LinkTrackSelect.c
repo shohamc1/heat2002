@@ -29,8 +29,8 @@ u8 LinkTrackSelect(void)
     gVBlankWorkDone = 0;
     WaitForVBlank();
     ZeroTextLayer();
-    sub_0800F4FC();
-    sub_0800F328((u32)gMenuPalette, (u16 *)buf);
+    LoadMenuBackdrop();
+    BuildScreenPalette((u32)gMenuPalette, (u16 *)buf);
     DrawTrackSelect(0, 1);
     FadeToBrightenedPalette((u32)buf, 0x0F);
     REG_DISPCNT = 0xA8 << 3;

@@ -16,9 +16,9 @@ u8 StandingsScreen(void)
     SortCarsByPoints();
     v = 0;
     ZeroTextLayer();
-    sub_0800F498();
+    LoadResultsScreenBackdrop();
     p = gResultsScreenPalette;
-    sub_0800F328((u32)p, (u16 *)buf);
+    BuildScreenPalette((u32)p, (u16 *)buf);
     sub_08014104(0);
     FadeToBrightenedPalette((u32)buf, 0x0F);
     sel = 0x40;

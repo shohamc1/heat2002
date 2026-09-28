@@ -22,7 +22,7 @@ void sub_08010768(s32 a)
     sub_08016E10((u32)p, 0x05000000, 0x40);
 }
 
-void sub_080107A4(void)
+void CyclePaletteColor(void)
 {
     u32 idx;
     u16 color;

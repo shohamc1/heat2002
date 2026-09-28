@@ -40,7 +40,7 @@ void SaveSeason(void)
     *p = gSeasonNumLaps;
     WriteSaveBlocks(0x40, 0xF0);
     WriteSaveBlocks(8, 8);
-    sub_080100B0();
+    StartMenuMusic();
 }
 
 void LoadSeason(void)
@@ -73,7 +73,7 @@ void LoadSeason(void)
         i++;
     } while (i != 0x11);
     gSeasonNumLaps = *p;
-    sub_080100B0();
+    StartMenuMusic();
 }
 
 void LoadTrackRecords(void)
@@ -99,7 +99,7 @@ void LoadTrackRecords(void)
         d2++;
         i++;
     } while (i != 0x0C);
-    sub_080100B0();
+    StartMenuMusic();
 }
 
 void SaveTrackRecords(void)
@@ -125,7 +125,7 @@ void SaveTrackRecords(void)
         i++;
     } while (i != 0x0C);
     WriteSaveBlocks(0x130, 0x48);
-    sub_080100B0();
+    StartMenuMusic();
 }
 
 void LoadProgress(void)
@@ -147,7 +147,7 @@ void LoadProgress(void)
     do { gUnk_0202EDC8[i] = *p++; i++; } while (i != 0x04);
     i = 0;
     do { gUnk_0202ED80[i] = *p++; i++; } while (i != 0x04);
-    sub_080100B0();
+    StartMenuMusic();
 }
 
 void SaveProgress(void)
@@ -169,7 +169,7 @@ void SaveProgress(void)
     i = 0;
     do { *p++ = gUnk_0202ED80[i]; i++; } while (i != 0x04);
     WriteSaveBlocks(0x10, 0x30);
-    sub_080100B0();
+    StartMenuMusic();
 }
 
 void LoadOptions(void)
@@ -183,7 +183,7 @@ void LoadOptions(void)
     for (i = 0; i != 6; i++) {
         gOptions[i] = *src++;
     }
-    sub_080100B0();
+    StartMenuMusic();
 }
 
 void SaveOptions(void)
@@ -198,7 +198,7 @@ void SaveOptions(void)
         dst++;
     }
     WriteSaveBlocks(0xBC << 1, 8);
-    sub_080100B0();
+    StartMenuMusic();
 }
 
 void FormatSave(void)

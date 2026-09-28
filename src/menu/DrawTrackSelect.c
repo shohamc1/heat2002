@@ -13,7 +13,7 @@ extern const u8 gTrackSelectRightArrowGfx[];
 
 extern const struct TrackSelectEntry gTrackSelectEntries[];
 
-void sub_0801027C(u32 tile, u32 pal, u32 c);
+void Draw32x32Sprite(u32 tile, u32 pal, u32 c);
 
 u8 DrawTrackSelect(u8 a, u8 b)
 {
@@ -41,17 +41,17 @@ u8 DrawTrackSelect(u8 a, u8 b)
     RLUnCompVram(gTrackSelectEntries[a].previewGfx->unk4, OBJ_VRAM0 + 0x1000);
     RLUnCompVram(gTrackSelectEntries[a].previewGfx->unk8, OBJ_VRAM0 + 0x2000);
     RLUnCompVram(gTrackSelectEntries[a].previewGfx->unkC, OBJ_VRAM0 + 0x3000);
-    sub_08010194(0x38, 0x20, 0);
-    sub_08010194(0x78, 0x20, 0x80);
-    sub_08010194(0x38, 0x60, 0x80 << 1);
-    sub_08010194(0x78, 0x60, 0xC0 << 1);
+    Draw64x64Sprite(0x38, 0x20, 0);
+    Draw64x64Sprite(0x78, 0x20, 0x80);
+    Draw64x64Sprite(0x38, 0x60, 0x80 << 1);
+    Draw64x64Sprite(0x78, 0x60, 0xC0 << 1);
     if (b != 0 && (gTrackSelectFrameCount & 4) != 0) {
         RLUnCompVram((u32)gTrackSelectLeftArrowGfx, OBJ_VRAM1);
         RLUnCompVram((u32)gTrackSelectRightArrowGfx, OBJ_VRAM1 + 0x1000);
         if (a != 0)
-            sub_0801027C(0x10, 0x48, 0x80 << 2);
+            Draw32x32Sprite(0x10, 0x48, 0x80 << 2);
         if (a != 0xB)
-            sub_0801027C(0xD0, 0x48, 0xA0 << 2);
+            Draw32x32Sprite(0xD0, 0x48, 0xA0 << 2);
     }
     gTrackSelectFrameCount++;
 }

@@ -24,12 +24,12 @@ void FillFadePalette(u16 color);
 void InitTuneSettings(void);
 u8 FindDriverByTeam(u8 value);
 u8 IsAnyChampionshipTeamAvailable(void);
-u8 sub_0800F22C(void);
-u8 sub_0800F2BC(u8 a, u8 b);
-void sub_0800F560(void);
+u8 CareerDecisionMenu(void);
+u8 ResolveSeasonResult(u8 a, u8 b);
+void ShowBootSplash1(void);
 void SetupChallenge(u8 value, u8 *unused);
-void sub_080102F0(void);
-void sub_08010334(void);
+void ShowBootSplash3(void);
+void ShowBootSplash2(void);
 u8 TitleScreen(void);
 s8 LinkTrackSelect(void);
 u8 sub_08010EA0(void);
@@ -135,9 +135,9 @@ u32 MainMenuLoop(void)
     REG_BG3Y_L = 0;
     REG_BG3Y_H = 0;
 
-    sub_0800F560();
-    sub_08010334();
-    sub_080102F0();
+    ShowBootSplash1();
+    ShowBootSplash2();
+    ShowBootSplash3();
     m4aSoundInit();
     FillFadePalette(0x7FFF);
 
@@ -168,12 +168,12 @@ u32 MainMenuLoop(void)
         gCars[i].driverId = i % 0x0C;
 
     ZeroTextLayer();
-    sub_08010664(0);
+    DrawMainMenu(0);
     REG_DISPCNT = DISPCNT_OBJ_1D_MAP | DISPCNT_BG0_ON | DISPCNT_BG2_ON;
     sub_08011C9C(1, frame);
     if (gOptions[2] != 0)
         m4aSongNumStart(2);
-    sub_08010664(gMainMenuCursor);
+    DrawMainMenu(gMainMenuCursor);
     FadeToBrightenedPalette((u32)frame, 0x0F);
 
     redraw = 0;
@@ -185,7 +185,7 @@ u32 MainMenuLoop(void)
         REG_DISPCNT = DISPCNT_OBJ_1D_MAP | DISPCNT_BG0_ON | DISPCNT_BG2_ON;
         sub_08011C9C(1, frame);
         ZeroTextLayer();
-        sub_08010664(gMainMenuCursor);
+        DrawMainMenu(gMainMenuCursor);
         FadeToBrightenedPalette((u32)frame, 0x0F);
     }
 
@@ -197,14 +197,14 @@ u32 MainMenuLoop(void)
             gMainMenuCursor = 6;
         if (gOptions[3] != 0)
             m4aSongNumStart(8);
-        sub_08010664(gMainMenuCursor);
+        DrawMainMenu(gMainMenuCursor);
     }
     if ((keys & DPAD_DOWN) != 0) {
         if (++gMainMenuCursor > 6)
             gMainMenuCursor = 0;
         if (gOptions[3] != 0)
             m4aSongNumStart(8);
-        sub_08010664(gMainMenuCursor);
+        DrawMainMenu(gMainMenuCursor);
     }
 
     if ((*(u8 *)REG_ADDR_SIOCNT & 0x30) == 0) {
@@ -298,7 +298,7 @@ state3_menu_done:
             WaitForVBlank();
             if (StartSinglePakLink() != 0) {
                 FadeToColor(0, 0x0F);
-                sub_080100B0();
+                StartMenuMusic();
             }
         }
 
@@ -744,9 +744,9 @@ state5_menu:
             goto state5_menu;
         score = sub_08012C20();
         sub_08012D34(score);
-        if (sub_0800F2BC(gChampionshipIndex, score) != 0)
+        if (ResolveSeasonResult(gChampionshipIndex, score) != 0)
             goto state5_setup;
-        if (sub_0800F22C() != 0)
+        if (CareerDecisionMenu() != 0)
             goto state5_setup;
         goto state5_load;
 

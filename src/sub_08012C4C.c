@@ -32,15 +32,15 @@ void sub_08012C4C(u32 a)
         RLUnCompVram(gChampionshipTrophyGfx, OBJ_VRAM0);
     if (a == 0) {
         t = (u32)gGoldTrophyPalette;
-        sub_080100CC(0x58, 0x40, 0, t, a);
+        DrawCachedSprite(0x58, 0x40, 0, t, a);
     }
     if (a == 1) {
         t = (u32)gSilverTrophyPalette;
-        sub_080100CC(0x58, 0x40, 0, t, 0);
+        DrawCachedSprite(0x58, 0x40, 0, t, 0);
     }
     if (a == 2) {
         t = (u32)gBronzeTrophyPalette;
-        sub_080100CC(0x58, 0x40, 0, t, 0);
+        DrawCachedSprite(0x58, 0x40, 0, t, 0);
     }
     if (a == 0)
         DrawTextCenteredHighlight(gText_Gold, 0x12, 1);

@@ -2,6 +2,19 @@
 #include "data.h"
 
 #include "variables.h"
+#include "functions.h"
+extern const u8 gText_BadLuck[];
+extern const u8 gText_YouVeBeenKicked[];
+extern const u8 gText_OffTheTeam[];
+extern const u8 gText_Congratulations[];
+extern const u8 gText_YouAreAllowedTo[];
+extern const u8 gText_StayOnThisTeam[];
+extern const u8 gText_CareerDecision[];
+extern const u8 gText_StayOnThisTeam_2[];
+extern const u8 gText_ChooseANewTeam[];
+#include "m4a.h"
+extern u8 gChampionshipRequiredFinish[];
+extern u8 gChampionshipTeamTiers[];
 
 
 u8 FindDriverByTeam(u8 teamId)
@@ -57,6 +70,77 @@ u32 IsAnyChampionshipTeamAvailable(void)
         if (gChampionshipAvailable[teamIdx] != 0)
             return 1;
     }
+    return 0;
+}
+
+
+void ShowKickedFromTeamMessage(void)
+{
+    MessageBox(gText_BadLuck, gText_YouVeBeenKicked, gText_OffTheTeam);
+}
+
+
+void ShowStayOnTeamMessage(void)
+{
+    MessageBox(gText_Congratulations, gText_YouAreAllowedTo, gText_StayOnThisTeam);
+}
+
+
+void DrawCareerDecision(u8 selected)
+{
+    const u8 *text;
+
+    DrawBigText(gText_CareerDecision);
+    text = gText_StayOnThisTeam_2;
+    DrawTextCenteredHighlight(text, 8, selected == 0);
+    text = gText_ChooseANewTeam;
+    DrawTextCenteredHighlight(text, 0xA, selected == 1);
+}
+
+
+u8 CareerDecisionMenu(void)
+{
+    u8 palette[0x200];
+    s8 cursor;
+    s8 choice;
+    cursor = 0;
+    sub_08011C9C(6, (u16 *)palette);
+    DrawCareerDecision(0);
+    FadeToBrightenedPalette((u32)palette, 0x0F);
+    choice = 0x40;
+    do {
+        ReadKeys();
+        DrawCareerDecision(cursor);
+        if (gKeysPressed & 1)
+            choice = cursor;
+        if (gKeysPressed & 2)
+            choice = 0x0A;
+        cursor = MenuMoveVertical(gKeysPressed, cursor, 0, 1);
+        WaitForVBlank();
+    } while (choice == 0x40);
+    if (gOptions[3] != 0)
+        m4aSongNumStart(9);
+    FadeToColor(0, 0x0F);
+    return choice;
+}
+
+
+u8 ResolveSeasonResult(u8 championshipIndex, u8 finishPos)
+{
+    u8 team;
+    if (finishPos >= gChampionshipRequiredFinish[championshipIndex] - 1) {
+        ShowKickedFromTeamMessage();
+        gChampionshipAvailable[championshipIndex] = 0;
+        return 1;
+    }
+    team = 0;
+    do {
+        if (finishPos < gChampionshipRequiredFinish[team])
+            gChampionshipAvailable[team] = 1;
+        team++;
+    } while (team != 0x11);
+    ShowStayOnTeamMessage();
+    UnlockChampionshipTier(gChampionshipTeamTiers[championshipIndex]);
     return 0;
 }
 

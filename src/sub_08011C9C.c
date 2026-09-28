@@ -7,7 +7,7 @@ extern const u8 gMainMenuPalette[];
 
 void sub_08011C9C(u8 a, u16 *dst)
 {
-    sub_08010664(a);
+    DrawMainMenu(a);
     ZeroTextLayer();
     CpuCopy16((u32)gMainMenuPalette, dst, 0x200);
     CpuCopy16((u32)gFontPalette, &dst[0xF0], 0x20);

@@ -23,16 +23,16 @@ u32 sub_08010BA8(u8 param)
     if (buf[1] == 0xFF) {
         RLUnCompVram(*(u32 *)gDriverCarGfxLeftTiles[buf[0]], OBJ_VRAM0);
         RLUnCompVram(*(u32 *)gDriverCarGfxRightTiles[buf[0]], OBJ_VRAM0 + 0x1000);
-        sub_08010194(0x38, 0x30, 0);
-        sub_08010194(0x78, 0x30, 0x80);
+        Draw64x64Sprite(0x38, 0x30, 0);
+        Draw64x64Sprite(0x78, 0x30, 0x80);
     } else {
         RLUnCompVram(*(u32 *)gDriverCarGfxLeftTiles[buf[0]], OBJ_VRAM0);
         RLUnCompVram(*(u32 *)gDriverCarGfxRightTiles[buf[0]], OBJ_VRAM0 + 0x1000);
         RLUnCompVram(*(u32 *)gDriverCarGfxLeftTiles[buf[1]], OBJ_VRAM0 + 0x2000);
         RLUnCompVram(*(u32 *)gDriverCarGfxRightTiles[buf[1]], OBJ_VRAM0 + 0x3000);
-        sub_08010194(0x60, 0x30, 0x80 << 1);
-        sub_08010194(0xA0, 0x30, 0xC0 << 1);
-        sub_08010194(0x10, 0x30, 0);
-        sub_08010194(0x50, 0x30, 0x80);
+        Draw64x64Sprite(0x60, 0x30, 0x80 << 1);
+        Draw64x64Sprite(0xA0, 0x30, 0xC0 << 1);
+        Draw64x64Sprite(0x10, 0x30, 0);
+        Draw64x64Sprite(0x50, 0x30, 0x80);
     }
 }

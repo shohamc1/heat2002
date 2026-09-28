@@ -21,8 +21,8 @@ u8 sub_08010CD0(void)
     gVBlankWorkDone = 0;
     WaitForVBlank();
     ZeroTextLayer();
-    sub_0800F4FC();
-    sub_0800F328((u32)gMenuPalette, (u16 *)buf);
+    LoadMenuBackdrop();
+    BuildScreenPalette((u32)gMenuPalette, (u16 *)buf);
     sub_08010BA8(0x0C);
     FadeToBrightenedPalette((u32)buf, 0x0F);
     REG_DISPCNT = 0xA8 << 3;

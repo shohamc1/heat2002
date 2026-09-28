@@ -19,9 +19,9 @@ u8 OptionsMenu(void)
         DrawOptionsMenu(v);
         if (gKeysPressed & 1) {
             if (v == 5) {
-                sub_0800F600();
-                sub_0800F6A0();
-                sub_0800F740();
+                ShowCreditsPage1();
+                ShowCreditsPage2();
+                ShowCreditsPage3();
                 return sel;
             }
             sel = v;
@@ -33,7 +33,7 @@ u8 OptionsMenu(void)
                                         gOptionsMenuMinValues[v], gOptionsMenuMaxValues[v]);
         if (v == 2) {
             if ((gKeysPressed & 0x30) && gOptions[2] != 0)
-                sub_080100B0();
+                StartMenuMusic();
             if ((gKeysPressed & 0x30) && gOptions[2] == 0)
                 StopAllSongs();
         }

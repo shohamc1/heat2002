@@ -27,7 +27,7 @@ u8 TitleScreen(void)
     REG_DISPCNT = 0xA8 << 3;
     CpuCopy16((u32)gTitleScreenGfx, VRAM, 0xA280);
     CpuCopy16((u32)gTextLayerTiles, BG_SCREEN_ADDR(24), 0x2000);
-    sub_08010680((u16 *)((u32)gTitleScreenMetatileMap));
+    DrawBackdropMetatileMap((u16 *)((u32)gTitleScreenMetatileMap));
     i = 0;
     do {
         *(u16 *)(*(volatile u32 *)&gTextLayerMapPtr[0] + 2 * i) = 0;

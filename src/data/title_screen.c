@@ -4,7 +4,7 @@
 /* Title screen (0x0829F954-0x082A0820): 256-color palette, the 15x10
  * metatile map (150 u16 identity ramp), the shared 150x4 metatile
  * tile-index table, and 4bpp tiles. TitleScreen.c feeds the map and table
- * to sub_08010680, and copies 0xA280 bytes of gfx into VRAM (the copy runs
+ * to DrawBackdropMetatileMap, and copies 0xA280 bytes of gfx into VRAM (the copy runs
  * past the gfx blob into the following ROM data, as the original build did). */
 const u8 gTitleScreenPalette[] = INCBIN_U8("build/assets/unknown/data_0829F954.bin");
 const u16 gTitleScreenMetatileMap[150] =

@@ -18,8 +18,8 @@ u8 sub_080122B4(void)
     sel = 0x40;
     ResetLinkState();
     ZeroTextLayer();
-    sub_0800F4FC();
-    sub_0800F328((u32)gMenuPalette, (u16 *)buf);
+    LoadMenuBackdrop();
+    BuildScreenPalette((u32)gMenuPalette, (u16 *)buf);
     /* sub_08012228: this file's old local prototype differs from
        functions.h; call through the old signature (solved-walls 31). */
     ((void (*)(u8))sub_08012228)(0);

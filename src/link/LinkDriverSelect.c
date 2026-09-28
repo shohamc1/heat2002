@@ -52,8 +52,8 @@ s8 LinkDriverSelect(void)
     gVBlankWorkDone = 0;
     WaitForVBlank();
     ZeroTextLayer();
-    sub_0800F4FC();
-    sub_0800F328((u32)gMenuPalette, (u16 *)buf);
+    LoadMenuBackdrop();
+    BuildScreenPalette((u32)gMenuPalette, (u16 *)buf);
     sub_08010E04(a[(*(volatile u32 *)REG_ADDR_SIOCNT << 26) >> 30]);
     FadeToBrightenedPalette((u32)buf, 0x0F);
     REG_DISPCNT = 0xA8 << 3;

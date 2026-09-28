@@ -196,13 +196,13 @@ What the source shapes turned out to be:
   solved-walls entry 9, Variant.
 - Menu family F needed no volatile at all: a single non-CSE'd read of a
   plain `extern u16` already emits constant-first (`movs r0,#1; ldrh`);
-  `sub_0800F22C`'s memory-first order comes from CSE folding its two
+  `CareerDecisionMenu [sub_0800F22C]`'s memory-first order comes from CSE folding its two
   back-to-back tests into one load. `sub_080149A4`'s second test sits
   after the `v =` assignment, before `sub_08000458()`. `sub_08012F1C`'s
   two-arg draw callee re-reads scalar `extern u8 gUnk_0202ED70` as its
   second argument every iteration; right-to-left evaluation gives the
   asm's load order for free.
-- Sprite family G is `sub_080100CC` with a one-argument allocator
+- Sprite family G is `DrawCachedSprite [sub_080100CC]` with a one-argument allocator
   (`RequestObjTiles16 [sub_0800754C](a2)`/`RequestObjTiles4 [sub_08007630](a2)`), attr constant `0x80000000`/
   `0x40000000`, and no `| 0x800` in the oam build-up (`x = idx << 12`).
 
@@ -221,10 +221,10 @@ What the source shapes turned out to be:
 | 83 | `sub_08009C00` | 72 | from `sub_08009BB4` |
 | 84 | `sub_08341690` | 72 | from `sub_08009BB4`; port of `sub_08009C00` |
 | 85 | `sub_08012F1C` | 122 | from `sub_080144F4` |
-| 86 | `sub_08013114` | 110 | from `sub_0800F22C`; port of `sub_08012F1C` |
-| 87 | `sub_080149A4` | 122 | from `sub_0800F22C`; port of `sub_08012F1C` |
-| 88 | `sub_080101BC` | 88 | from `sub_080100CC` |
-| 89 | `sub_0801021C` | 88 | from `sub_080100CC`; port of `sub_080101BC` |
+| 86 | `sub_08013114` | 110 | from `CareerDecisionMenu`; port of `sub_08012F1C` |
+| 87 | `sub_080149A4` | 122 | from `CareerDecisionMenu`; port of `sub_08012F1C` |
+| 88 | `sub_080101BC` | 88 | from `DrawCachedSprite` |
+| 89 | `sub_0801021C` | 88 | from `DrawCachedSprite`; port of `sub_080101BC` |
 | 90 | `sub_08015244` | 92 | from `sub_08013878` |
 
 ## Tier 3: Sprite-callback family — finished 2026-09-24
@@ -415,7 +415,7 @@ What the source shapes turned out to be:
 | 199 | `sub_08012354` | 38 |  |
 | 200 | `sub_08016568` | 46 |  |
 | 201 | `sub_08010768` | 48 |  |
-| 202 | `sub_080107A4` | 48 |  |
+| 202 | `CyclePaletteColor [sub_080107A4]` | 48 |  |
 | 203 | `SetTrackBgCnt [sub_08002718]` | 56 | jump table or inline data |
 | 204 | `sub_0800BAFC` | 56 |  |
 | 205 | `sub_080069D8` | 58 |  |

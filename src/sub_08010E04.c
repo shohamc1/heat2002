@@ -18,6 +18,6 @@ u8 sub_08010E04(u8 a)
     CpuCopy16((u32)gDriverCarPalettes[a], OBJ_PLTT, OBJ_PLTT_SIZE);
     RLUnCompVram(*(u32 *)gDriverCarGfxLeftTiles[a], OBJ_VRAM0);
     RLUnCompVram(*(u32 *)gDriverCarGfxRightTiles[a], OBJ_VRAM0 + 0x1000);
-    sub_08010194(0x38, 0x40, 0);
-    sub_08010194(0x78, 0x40, 0x80);
+    Draw64x64Sprite(0x38, 0x40, 0);
+    Draw64x64Sprite(0x78, 0x40, 0x80);
 }

@@ -3,8 +3,8 @@
 
 /* Three full-screen data sets, each palette + 15x10 metatile map +
  * metatile tile-index table + 4bpp gfx, in the order their screens run:
- * credits page 2 (sub_0800F6A0, 0x0831377C), credits page 3 (sub_0800F740,
- * 0x08316B30), and the first boot splash (sub_0800F560, 0x08319EE4). */
+ * credits page 2 (ShowCreditsPage2, 0x0831377C), credits page 3 (ShowCreditsPage3,
+ * 0x08316B30), and the first boot splash (ShowBootSplash1, 0x08319EE4). */
 const u8 gCreditsPage2Palette[] = INCBIN_U8("build/assets/unknown/data_0831377C.bin");
 const u16 gCreditsPage2MetatileMap[150] =
     INCBIN_U16("build/assets/graphics/metatiles_0831397C.bin");
