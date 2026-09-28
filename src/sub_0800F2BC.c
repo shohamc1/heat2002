@@ -18,6 +18,6 @@ u8 sub_0800F2BC(u8 a, u8 b)
         i++;
     } while (i != 0x11);
     sub_0800F1D0();
-    sub_0800F14C(gChampionshipTeamTiers[a]);
+    UnlockChampionshipTier(gChampionshipTeamTiers[a]);
     return 0;
 }

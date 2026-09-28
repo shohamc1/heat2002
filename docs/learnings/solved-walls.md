@@ -131,7 +131,7 @@ HImode pseudo, and reload copies it into the SImode operand register.
 - Use a compound assignment on a `vu16` register:
   `REG_IE |= INTR_FLAG_GAMEPAK;`.
 
-**Seen in:** `sub_0800BEA4` (`ab803a6`), `sub_08011B08` (`2e66b02`),
+**Seen in:** `PlaceCarsAlongLane [sub_0800BEA4]` (`ab803a6`), `sub_08011B08` (`2e66b02`),
 `sub_0800E008` (`b3dc387`).
 
 **Variant:** plain `REG_*` macro stores also synthesise the *derived*
@@ -491,7 +491,7 @@ if (a4 != 0) {
 
 This replaced a `step` variable pinned to r10.
 
-**Seen in:** `sub_0800BEA4` (`ab803a6`).
+**Seen in:** `PlaceCarsAlongLane` (`ab803a6`).
 
 ### 11. Only a reload scratch register differs
 
@@ -511,10 +511,10 @@ that global allocation puts in the same register. Earlier notes called
 these picks a reload round-robin artefact that no source can move.
 
 **Fix.** Remove the pin and find the source shape that gives the value its
-register naturally (see entries 9 and 10). In `sub_0800BEA4`, the scratch
+register naturally (see entries 9 and 10). In `PlaceCarsAlongLane`, the scratch
 picks fixed themselves once the pin was gone.
 
-**Seen in:** `sub_0800BEA4` (`ab803a6`).
+**Seen in:** `PlaceCarsAlongLane` (`ab803a6`).
 
 ### 12. One change rotates every register
 
@@ -1098,7 +1098,7 @@ reloads**: a loop that read an extern POINTER variable (`gP[i] = 0`)
 reloads `gP`'s word every iteration; under an array canonical the
 equivalent load gets hoisted out of the loop. Write the read as
 `(*(volatile u32 *)&gP[0])` — one volatile word read inside the loop —
-and the reload returns (`sub_0800DFCC`, `ClearPausedPlayerText [sub_0800524C]`, `sub_0833DC7C`,
+and the reload returns (`InitSinglePakLinkScreen [sub_0800DFCC]`, `ClearPausedPlayerText [sub_0800524C]`, `sub_0833DC7C`,
 `TitleScreen`). (3) A struct-*array* extern in a header above the
 files' local struct definitions changes their codegen (the
 extern-headers-plan trap); complete the tag in a shared header first —

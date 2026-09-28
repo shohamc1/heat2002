@@ -6,7 +6,7 @@
 #include "functions.h"
 #include "data.h"
 #include "variables.h"
-void sub_0800DFC0(void);
+void MultibootVBlankIntr(void);
 void SioTransferIntr(void);
 extern u32 gGameCodeAgbj;
 extern const u8 *const gUnk_083FDA50[];
@@ -17,13 +17,95 @@ extern u8 gText_AdvanceGameLink[];
 extern u8 gText_CableOrTurnPowerOff[];
 extern u8 gMultibootSendObjPalette[];
 void SioTransferInit(u32 a1, const u8 *a2);
-void sub_0800DE9C(u16 x, u16 y);
-void sub_0800DE60(u32 id, u32 c);
+void DrawLinkProgressBar(u16 x, u16 y);
+void DrawMultibootProgressMarker(u32 id, u32 c);
 u32 SioTransferUpdate(u32 *frame);
 #include "gba/compat.h"
 extern u8 gText_BlankRow28_2[];
 extern u8 gUnk_08363EE8[];
 extern u8 gUnk_08364AC8[];
+
+
+void DrawMultibootProgressMarker(u32 x, u32 y)
+{
+    s16 *oam = gOamBuffer;
+    u32 spriteX = (x << 23) >> 23;
+
+    oam[9] = (oam[9] & ~0x1FF) | spriteX;
+    ((u8 *)oam)[0x10] = y;
+    ((u8 *)oam)[0x13] = (((u8 *)oam)[0x13] & 0x3F) | 0x80;
+    oam[10] &= ~0x3FF;
+}
+
+
+void DrawLinkProgressBar(u16 progress, u16 y)
+{
+    s16 *oam = gOamBuffer;
+    s16 *oamPtr;
+    u16 *capAttr1;
+    u16 *capAttr2;
+    s32 m1, m2, attr1Mask, attr2Mask;
+    u8 *obj;
+    u16 seg;
+    s32 segPos;
+    s32 tile;
+    u16 tileNum;
+
+    capAttr1 = &oam[0x25];
+    m1 = ~0x1FF;
+    *capAttr1 &= m1;
+    ((u8 *)oam)[0x48] = y;
+    ((u8 *)oam)[0x4B] = (((u8 *)oam)[0x4B] & 0x3F) | 0x80;
+    ((u8 *)oam)[0x4D] &= 0x0F;
+    capAttr2 = &oam[0x26];
+    m2 = ~0x3FF;
+    *capAttr2 = (*capAttr2 & m2) | 0x10;
+
+    for (seg = 0, oamPtr = oam, attr1Mask = m1, attr2Mask = m2; seg < 8; seg++) {
+        obj = (u8 *)((seg + 10) * 8 + (u32)oamPtr);
+        segPos = seg * 32 + 32;
+        tileNum = segPos & 0x1FF;
+        tile = tileNum;
+        *(u16 *)&obj[2] = (*(u16 *)&obj[2] & attr1Mask) | tile;
+        obj[0] = y;
+        obj[3] = (obj[3] & 0x3F) | 0x80;
+        obj[5] &= 0x0F;
+        if (progress < segPos)
+            *(u16 *)&obj[4] = (*(u16 *)&obj[4] & attr2Mask) | 0x20;
+        else
+            *(u16 *)&obj[4] = (*(u16 *)&obj[4] & attr2Mask) | 0x10;
+    }
+
+    oam[0x41] = (oam[0x41] & ~0x1FF) | 0xD0;
+    ((u8 *)oam)[0x80] = y;
+    ((u8 *)oam)[0x83] = (((u8 *)oam)[0x83] & 0x3F) | 0x80;
+    ((u8 *)oam)[0x85] &= 0x0F;
+    oam[0x42] = (oam[0x42] & ~0x3FF) | 0x20;
+}
+
+
+void MultibootVBlankIntr(void)
+{
+    gIntrCheck = 1;
+}
+
+
+void InitSinglePakLinkScreen(void)
+{
+    u32 entryIdx;
+    u32 *fontTable;
+
+    entryIdx = 0;
+    fontTable = gUiFontTable;
+    do {
+        *(u16 *)(*(volatile u32 *)&gTextLayerMapPtr[0] + 2 * entryIdx) = 0;  /* per-iteration reload, as the ROM loop */
+        entryIdx++;
+    } while (entryIdx != 0x380);
+    DummyUiFontLoad(fontTable[0]);
+    GetString(0x52);
+    ((void (*)(void))DrawBigText)();
+}
+
 
 u32 SendMultibootPayload(void)
 {
@@ -39,7 +121,7 @@ u32 SendMultibootPayload(void)
         REG_IE |= INTR_FLAG_GAMEPAK;
     REG_DISPSTAT = DISPSTAT_VBLANK_INTR;
     REG_IME = 1;
-    gIntrTable[1] = (u32)sub_0800DFC0;
+    gIntrTable[1] = (u32)MultibootVBlankIntr;
     gIntrTable[0] = (u32)SioTransferIntr;
     REG_DISPCNT &= ~DISPCNT_OBJ_ON;
     for (i = 0; i < 3; i++)
@@ -53,8 +135,8 @@ u32 SendMultibootPayload(void)
         DrawTextCenteredHighlight(gText_BlankRow24_2, i + 8, 1);
     for (;;) {
         t = ((idx << 15) + frame * 4) >> 10;
-        sub_0800DE9C(t, 100);
-        sub_0800DE60(t, 100);
+        DrawLinkProgressBar(t, 100);
+        DrawMultibootProgressMarker(t, 100);
         DrawTextCenteredHighlight(gText_DoNotRemoveGameBoy, 8, 1);
         DrawTextCenteredHighlight(gText_AdvanceGameLink, 9, 1);
         DrawTextCenteredHighlight(gText_CableOrTurnPowerOff, 10, 1);
@@ -74,9 +156,10 @@ u32 SendMultibootPayload(void)
 done:
     DmaFill32(3, 0xA0, (u8 *)gOamBuffer, 0x400);
     CpuFastSet((u8 *)gOamBuffer, (void *)OAM, 0x100);
-    sub_0800DFCC();
+    InitSinglePakLinkScreen();
     return 0;
 }
+
 
 u32 SendMultibootIsland(void)
 {
@@ -102,7 +185,7 @@ u32 SendMultibootIsland(void)
     {
         u8 *buf = work + 0x4C;
         sub_08011C9C(4, (u16 *)buf);
-        sub_0800DFCC();
+        InitSinglePakLinkScreen();
         FadeToBrightenedPalette((u32)buf, 0x0F);
     }
     start = gUnk_08363EE8;
@@ -216,7 +299,7 @@ shown:
         }
         else
         {
-            sub_0800DFCC();
+            InitSinglePakLinkScreen();
             SendMultibootPayload();
             return 0;
         }
@@ -224,3 +307,4 @@ shown:
     }
     return 1;
 }
+

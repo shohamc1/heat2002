@@ -14,9 +14,9 @@ void sub_0801060C(u8 a)
     u32 j;
 
     d = &gUnk_0202EEFC;
-    /* sub_0800E730: this file's old prototype returns u8; the matched
+    /* DummyMainMenuHook: this file's old prototype returns u8; the matched
        definition returns void; call through a function pointer. */
-    *d = ((u8 (*)(void))sub_0800E730)();
+    *d = ((u8 (*)(void))DummyMainMenuHook)();
     DummyUiFontLoad(gUiFontTable[0]);
     GetString(0x59);
     ((void (*)(void))DrawBigText)();

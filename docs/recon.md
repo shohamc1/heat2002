@@ -73,9 +73,9 @@ Ties are ordered by address. The caller column is included to distinguish merely
 | 1 | `DummyHudHook [sub_08005AEC]` | `0x08005AEC` | 1 | 0 |
 | 2 | `DummyUiFontLoad` | `0x08006734` | 1 | **38** |
 | 3 | `DummyWallHitHook [sub_0800B614]` | `0x0800B614` | 1 | 1 |
-| 4 | `sub_0800BA34` | `0x0800BA34` | 1 | 1 |
-| 5 | `sub_0800E708` | `0x0800E708` | 1 | 1 |
-| 6 | `sub_0800E730` | `0x0800E730` | 1 | 1 |
+| 4 | `DummyCarHitHook [sub_0800BA34]` | `0x0800BA34` | 1 | 1 |
+| 5 | `DummyCarDamageHook [sub_0800E708]` | `0x0800E708` | 1 | 1 |
+| 6 | `DummyMainMenuHook [sub_0800E730]` | `0x0800E730` | 1 | 1 |
 | 7 | `sub_08011D2C` | `0x08011D2C` | 1 | 1 |
 | 8 | `sub_08012384` | `0x08012384` | 1 | 1 |
 | 9 | `sub_08014BA0` | `0x08014BA0` | 1 | 0 |

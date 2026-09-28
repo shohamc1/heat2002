@@ -312,8 +312,8 @@ const u8 *const gChampionshipLockedTexts[] = {
     gText_NotAvailable, gText_NotAvailable, gText_NotAvailable,
     gText_NotAvailable, gText_NotAvailable
 };
-/* Team tier (0, 1 or 2) passed to sub_0800F14C when a championship is
- * started with team a; sub_0800F14C unlocks every team in tiers at or
+/* Team tier (0, 1 or 2) passed to UnlockChampionshipTier when a championship is
+ * started with team a; UnlockChampionshipTier unlocks every team in tiers at or
  * below it. */
 const u8 gChampionshipTeamTiers[17] = { 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2 };
 // The season finish (top 5, 10 or 20) team a requires, then 2 zero pad

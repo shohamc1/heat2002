@@ -106,7 +106,7 @@ struct Car {
     /* 0x175 */ u8 pitState;
     /* 0x176 */ u8 draftTimer;
     /* 0x177 */ u8 pad177[0x178 - 0x177];
-    /* 0x178 */ u32 prePitLane; /* sub_0800BE00 arg to warp back after pit */
+    /* 0x178 */ u32 prePitLane; /* SetCarLane arg to warp back after pit */
     /* 0x17C */ s32 trackCueCursor; /* gTrackCueList pointer walked by the 8-byte track-cue records (held as a pointer) */
     /* 0x180 */ u8 torqueDampTimer; /* nonzero: 16x torque while decrementing; armed outside the direct call graph */
     /* 0x181 */ u8 pitStall;

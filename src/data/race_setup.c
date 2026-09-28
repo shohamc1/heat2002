@@ -104,7 +104,7 @@ const u16 gObjTileCache1Tiles[32] = {
 };
 // Its users declare it as s32 x[], u32 x[].
 // Twelve tracks times eight pit stalls, one (x, y) pair each
-// (sub_0800C4E0, UpdateAiDriver).
+// (ComputePitStallDistance, UpdateAiDriver).
 const u32 gPitStallPositions[192] = {
     3015, 2209, 2855, 2049, 2703, 1897,
     2551, 1745, 2399, 1593, 2247, 1441,

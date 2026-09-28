@@ -9,7 +9,7 @@
  * relative position and next-frame position are rotated into the other
  * car's frame (and the reverse), and each of the four box edges is tested
  * for a crossing. The nearest crossing (smallest time) is kept by
- * sub_0800D64C in gCarCollContact; after the loop the impulse is applied.
+ * KeepNearestCarContact in gCarCollContact; after the loop the impulse is applied.
  *
  * Shapes the retail bytes depend on (see docs/learnings/parked.md):
  * - `d[2]` is written element-wise, never whole. Each partial store keeps the
@@ -42,11 +42,11 @@ extern struct Coll gCarCollContact;
 extern struct Pt2 gCarCollisionNormals[];
 extern u8 gUnk_0202A530;
 
-void sub_0800D5D4(struct Car *a, s32 *d);
-void sub_0800D64C(struct Car *a, s32 b, struct Car *c, s32 d, struct Coll *e,
+void BuildCarCollFrame(struct Car *a, s32 *d);
+void KeepNearestCarContact(struct Car *a, s32 b, struct Car *c, s32 d, struct Coll *e,
                   u8 *f, s32 g, s32 h);
-void sub_0800BA34(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g);
-void sub_0800E708(s32 a, u8 b);
+void DummyCarHitHook(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g);
+void DummyCarDamageHook(s32 a, u8 b);
 void ComputeForwardSpeed(struct Car *a);
 
 u8 CollideCars(struct Car *car)
@@ -83,7 +83,7 @@ u8 CollideCars(struct Car *car)
     hit = 0;
     other = gCars;
     pa = gCarCollFrameSelf;
-    sub_0800D5D4(car, pa);
+    BuildCarCollFrame(car, pa);
     for (i = 0; i != count; i++, other++) {
         if (other == car)
             continue;
@@ -107,7 +107,7 @@ u8 CollideCars(struct Car *car)
             pz = -pz;
         if (pz > 0x6400)
             continue;
-        sub_0800D5D4(other, gCarCollFrameOther);
+        BuildCarCollFrame(other, gCarCollFrameOther);
 
         d[0] = gCarCollFrameSelf[4];
         d[1] = gCarCollFrameSelf[5];
@@ -127,25 +127,25 @@ u8 CollideCars(struct Car *car)
             t = (w * e) / u;
             t += v[0];
             if (t >= -0xF00 && t <= 0xF00)
-                sub_0800D64C(car, a2, other, 0, &gCarCollContact, &hit, -u, (e << 16) / -u);
+                KeepNearestCarContact(car, a2, other, 0, &gCarCollContact, &hit, -u, (e << 16) / -u);
         }
         if (u > 0 && v[3] >= -0x1C00 && (e = -0x1C00 - v[1]) >= 0) {
             t = (w * e) / u;
             t += v[0];
             if (t >= -0xF00 && t <= 0xF00)
-                sub_0800D64C(car, a2, other, 1, &gCarCollContact, &hit, u, (e << 16) / u);
+                KeepNearestCarContact(car, a2, other, 1, &gCarCollContact, &hit, u, (e << 16) / u);
         }
         if (w > 0 && v[2] >= -0xF00 && (e = -0xF00 - v[0]) >= 0) {
             t = (e * u) / w;
             t += v[1];
             if (t >= -0x1C00 && t <= 0x1C00)
-                sub_0800D64C(car, a2, other, 2, &gCarCollContact, &hit, w, (e << 16) / w);
+                KeepNearestCarContact(car, a2, other, 2, &gCarCollContact, &hit, w, (e << 16) / w);
         }
         if (w < 0 && v[2] <= 0xF00 && (e = v[0] - 0xF00) >= 0) {
             t = (e * u) / w;
             t += v[1];
             if (t >= -0x1C00 && t <= 0x1C00)
-                sub_0800D64C(car, a2, other, 3, &gCarCollContact, &hit, -w, (e << 16) / -w);
+                KeepNearestCarContact(car, a2, other, 3, &gCarCollContact, &hit, -w, (e << 16) / -w);
         }
 
         d[0] = gCarCollFrameOther[4];
@@ -166,25 +166,25 @@ u8 CollideCars(struct Car *car)
             t = (w * e) / u;
             t += v[0];
             if (t >= -0xF00 && t <= 0xF00)
-                sub_0800D64C(other, a2, car, 0, &gCarCollContact, &hit, -u, (e << 16) / -u);
+                KeepNearestCarContact(other, a2, car, 0, &gCarCollContact, &hit, -u, (e << 16) / -u);
         }
         if (u > 0 && v[3] >= -0x1C00 && (e = -0x1C00 - v[1]) >= 0) {
             t = (w * e) / u;
             t += v[0];
             if (t >= -0xF00 && t <= 0xF00)
-                sub_0800D64C(other, a2, car, 1, &gCarCollContact, &hit, u, (e << 16) / u);
+                KeepNearestCarContact(other, a2, car, 1, &gCarCollContact, &hit, u, (e << 16) / u);
         }
         if (w > 0 && v[2] >= -0xF00 && (e = -0xF00 - v[0]) >= 0) {
             t = (e * u) / w;
             t += v[1];
             if (t >= -0x1C00 && t <= 0x1C00)
-                sub_0800D64C(other, a2, car, 2, &gCarCollContact, &hit, w, (e << 16) / w);
+                KeepNearestCarContact(other, a2, car, 2, &gCarCollContact, &hit, w, (e << 16) / w);
         }
         if (w < 0 && v[2] <= 0xF00 && (e = v[0] - 0xF00) >= 0) {
             t = (e * u) / w;
             t += v[1];
             if (t >= -0x1C00 && t <= 0x1C00)
-                sub_0800D64C(other, a2, car, 3, &gCarCollContact, &hit, -w, (e << 16) / -w);
+                KeepNearestCarContact(other, a2, car, 3, &gCarCollContact, &hit, -w, (e << 16) / -w);
         }
     }
 
@@ -213,7 +213,7 @@ u8 CollideCars(struct Car *car)
         b->torque = 0;
         f *= 1000;
         if (a->hitCooldown == 0)
-            sub_0800BA34(0, 0, -6, 0, 0, 0, 0x400);
+            DummyCarHitHook(0, 0, -6, 0, 0, 0, 0x400);
         if (a->carState < 5 || a->carState > 7) {
             if (gDamagePitsEnabled != 0)
                 a->damage -= f >> 12;
@@ -222,9 +222,9 @@ u8 CollideCars(struct Car *car)
                 if (sd < 0)
                     sd = 0;
                 if (sd > 50)
-                    sub_0800E708(a - gCars, gUnk_0202A530 % 3);
+                    DummyCarDamageHook(a - gCars, gUnk_0202A530 % 3);
                 else
-                    sub_0800E708(a - gCars, 4);
+                    DummyCarDamageHook(a - gCars, 4);
             }
             gUnk_0202A530++;
         }
@@ -241,9 +241,9 @@ u8 CollideCars(struct Car *car)
                 if (sd < 0)
                     sd = 0;
                 if (sd > 50)
-                    sub_0800E708(b - gCars, gUnk_0202A530 % 3);
+                    DummyCarDamageHook(b - gCars, gUnk_0202A530 % 3);
                 else
-                    sub_0800E708(b - gCars, 4);
+                    DummyCarDamageHook(b - gCars, 4);
             }
             gUnk_0202A530++;
         }

@@ -15,7 +15,17 @@ struct Unk0800D5D4 {
     s16 yawRate;
 };
 
-void sub_0800D5D4(struct Unk0800D5D4 *a, s32 *d)
+#include "variables.h"
+struct unk_D64C
+{
+    u32 a;
+    u32 c;
+    u8 b;
+    u8 d;
+    u32 g;
+};
+
+void BuildCarCollFrame(struct Unk0800D5D4 *a, s32 *d)
 {
     s32 x, z;
     s32 v;
@@ -33,4 +43,18 @@ void sub_0800D5D4(struct Unk0800D5D4 *a, s32 *d)
     d[3] = gSinTable[v + 0x40];
     d[6] = (x + a->velX) >> 8;
     d[7] = (z + a->velZ) >> 8;
+}
+
+void KeepNearestCarContact(s32 a, u8 b, s32 c, u8 d, struct unk_D64C *e, u8 *f, s32 g, s32 h)
+{
+    if (h < gUnk_0202CD24)
+    {
+        e->a = a;
+        e->c = c;
+        e->b = b;
+        e->d = d;
+        e->g = g;
+        *f = 1;
+        gUnk_0202CD24 = h;
+    }
 }

@@ -39,11 +39,11 @@
 
 
 void SetAiDriverGearTables(struct Car *car);
-void sub_0800C430(u32 a);
-s32 sub_0800C358(u32 a, u32 b);
-s32 sub_0800BBFC(u32 a, u32 b, u32 c, u32 d, u32 e);
-void sub_0800C28C(struct Car *a);
-s32 sub_0800C4E0(u32 a);
+void FindCarAhead(u32 a);
+s32 FindClosestLaneSegment(u32 a, u32 b);
+s32 WorldToLaneDistance(u32 a, u32 b, u32 c, u32 d, u32 e);
+void UpdateCarPredictedPos(struct Car *a);
+s32 ComputePitStallDistance(u32 a);
 s32 Atan2(s32 a, s32 b);
 
 void UpdateAiDriver(struct Car *ent, u8 param)
@@ -70,7 +70,7 @@ void UpdateAiDriver(struct Car *ent, u8 param)
     s32 t3;
 
     SetAiDriverGearTables((struct Car *)ent);
-    sub_0800C430((u32)ent);
+    FindCarAhead((u32)ent);
     zero = 0;
     if (gAiCarAheadSide == 0 || gGameMode[0] == 9 || gGameMode[0] == 0xD
         || gGameMode[0] == 0xE || gGameMode[0] == 0xF || gGameMode[0] == 0x11)
@@ -95,19 +95,19 @@ void UpdateAiDriver(struct Car *ent, u8 param)
                 ent->lanePosition = (ent->lanePosition - 0x20) & 0x7FF;
                 if (ent->lanePosition <= 0x100)
                     ent->lanePosition = 0x6FF;
-                sub_0800BE00(ent, ent->lanePosition);
+                SetCarLane(ent, ent->lanePosition);
             }
         }
     }
-    sub_0800C28C(ent);
-    result = sub_0800C358((u32)ent, param);
+    UpdateCarPredictedPos(ent);
+    result = FindClosestLaneSegment((u32)ent, param);
     if (result == -1)
         return;
-    diff = sub_0800BBFC((*(u32 *)&gClosestLanePointX), (*(u32 *)&gClosestLanePointZ), (*(u32 *)&ent->lanePoints), (*(u32 *)&gClosestLaneSegment), (*(u32 *)&gClosestLaneSegmentIndex));
+    diff = WorldToLaneDistance((*(u32 *)&gClosestLanePointX), (*(u32 *)&gClosestLanePointZ), (*(u32 *)&ent->lanePoints), (*(u32 *)&gClosestLaneSegment), (*(u32 *)&gClosestLaneSegmentIndex));
     diff = diff + 0x40;
     if (diff >= ent->laneLength)
         diff = diff - ent->laneLength;
-    sub_0800BD98(diff,(struct OutBD98 *)buf,(u16 *)(*(u32 *)&ent->lanePoints),(void *)(*(u32 *)&ent->laneSegments));
+    GetLanePositionAtDistance(diff,(struct OutBD98 *)buf,(u16 *)(*(u32 *)&ent->lanePoints),(void *)(*(u32 *)&ent->laneSegments));
     ps = &ent->pitState;
     stv = 0;
     stv = *ps;
@@ -116,13 +116,13 @@ void UpdateAiDriver(struct Car *ent, u8 param)
     {
         if (stv == 1)
         {
-            if (sub_0800C4E0((u32)ent) <= 0x63
-                || (gTrackId == 3 && sub_0800C4E0((u32)ent) <= 0xC7))
+            if (ComputePitStallDistance((u32)ent) <= 0x63
+                || (gTrackId == 3 && ComputePitStallDistance((u32)ent) <= 0xC7))
                 *ps = 2;
         }
         if (ent->pitState == 2)
         {
-            if (sub_0800C4E0((u32)ent) <= 0x13 || gDamagePitsEnabled == 0
+            if (ComputePitStallDistance((u32)ent) <= 0x13 || gDamagePitsEnabled == 0
                 || (ent == gCars && gPitMenuActive == 0 && gPitServiceEnabled == 0))
                 ent->pitState = 3;
             buf[0] = gPitStallPositions[(gTrackId * 8 + ent->pitStall) * 2];

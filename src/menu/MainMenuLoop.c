@@ -22,8 +22,8 @@ extern u8 gUnk_083FDE2D[];
 u8 StartSinglePakLink(void);
 void FillFadePalette(u16 color);
 void InitTuneSettings(void);
-u8 sub_0800F120(u8 value);
-u8 sub_0800F190(void);
+u8 FindDriverByTeam(u8 value);
+u8 IsAnyChampionshipTeamAvailable(void);
 u8 sub_0800F22C(void);
 u8 sub_0800F2BC(u8 a, u8 b);
 void sub_0800F560(void);
@@ -643,7 +643,7 @@ state2_done:
 state5_setup:
         for (i = 0; i != 0x18; i++)
             gCars[i].points = 0;
-        if (sub_0800F190() == 0) {
+        if (IsAnyChampionshipTeamAvailable() == 0) {
             MessageBox(gText_YouLose, gText_YourCareerIsOverAs, gText_NoTeamsWillTakeYou);
             goto state5_done;
         }
@@ -651,12 +651,12 @@ state5_setup:
         gChampionshipIndex = sub_08010CD0();
         if ((gKeysPressed & B_BUTTON) != 0)
             goto state5_done;
-        *(u8 *)a6b2 = sub_0800F120(gChampionshipIndex);
+        *(u8 *)a6b2 = FindDriverByTeam(gChampionshipIndex);
         if (sub_080128E0(*(u8 *)a6b2) == 0)
             goto state5_setup;
 
 state5_load:
-        *(u8 *)a6b2 = sub_0800F120(gChampionshipIndex);
+        *(u8 *)a6b2 = FindDriverByTeam(gChampionshipIndex);
         AssignRandomDrivers();
         FadeToColor(0, 0x0F);
         if ((gKeysPressed & B_BUTTON) != 0)

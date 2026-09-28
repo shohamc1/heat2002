@@ -93,7 +93,7 @@ void EnterPit(u8 *r4, u8 r5)
         r0 = (r1[0] = 1);
     }
     r4[0x175] = 1;
-    sub_0800BE00(r4, gPitLaneIndices[gTrackId] << 8);
+    SetCarLane(r4, gPitLaneIndices[gTrackId] << 8);
     if (r4 == (u8 *)gCars && gDamagePitsEnabled != 0)
         InitPitMenu();
     r4[0x181] = r5;
@@ -221,7 +221,7 @@ l_big:
         if (v == 0) {
             a1->pitState = v;
             if (a1 != gCars) {
-                sub_0800BE00(a1, a1->prePitLane);
+                SetCarLane(a1, a1->prePitLane);
                 a1->pitCollidable = 1;
             }
             gPitStallOccupied[a1->pitStall] = v;

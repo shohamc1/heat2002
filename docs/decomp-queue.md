@@ -53,14 +53,14 @@ What the source shapes turned out to be, for the next stub batch:
   of a linked-list entity (next 0x10, prev 0x14; see the tier 3 helpers).
   The high port calls `_08344B80(arg, arg->unkC)` — the module's renamed
   `_call_via_r1` — following `sub_0833ABF4`'s convention.
-- `sub_0800DFC0` family (2): `gUnk_03007FF8 = 1;`.
+- `MultibootVBlankIntr [sub_0800DFC0]` family (2): `gUnk_03007FF8 = 1;`.
 - `sub_08016CF8`: `return sub_080025FC() * 2;` with a u8-prototyped
   callee — the caller re-narrows and fuses with the `* 2` into
   `lsls #0x18; lsrs #0x17`.
 
 The queue's byte column undercounts four of them: BL is 4 bytes, not 2,
 and the pool is part of the function (`sub_0800020C` 8, `sub_080079A0`
-12, `sub_0800DFC0` 12, `sub_08016CF8` 14).
+12, `MultibootVBlankIntr` 12, `sub_08016CF8` 14).
 
 ## Tier 1: m4a driver, reference C in tmc — finished 2026-09-24
 

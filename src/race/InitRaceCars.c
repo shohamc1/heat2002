@@ -61,7 +61,7 @@ void InitRaceCars(u32 a1)
         || gGameMode[0] == 0x11) {
         car = ((struct Car **)gCarOrder)[0];
         d = *(u16 *)gLaneLengthPtrs[gTrackId * 12 + 5] * gTrackStartOffsetPercents[gTrackId] / 100;
-        sub_0800BD98(d, out, (u16 *)gLanePointTables[gTrackId * 12 + 5],
+        GetLanePositionAtDistance(d, out, (u16 *)gLanePointTables[gTrackId * 12 + 5],
                      (void *)gLaneSegmentTables[gTrackId * 12 + 5]);
         v0 = *(s32 *)&out[0];
         sh = v0 << 16;
@@ -72,14 +72,14 @@ void InitRaceCars(u32 a1)
         car->speed = 0;
         car->heading = 0;
         if (gTrackId == 1)
-            sub_0800BEA4((struct Car **)gCarOrder, garbage, car->unk04, 0x46, 1);
+            PlaceCarsAlongLane((struct Car **)gCarOrder, garbage, car->unk04, 0x46, 1);
         else
-            sub_0800BEA4((struct Car **)gCarOrder, garbage, car->unk04, 0x64, 1);
+            PlaceCarsAlongLane((struct Car **)gCarOrder, garbage, car->unk04, 0x64, 1);
     }
     if (gGameMode[0] == 0x0F) {
         car = ((struct Car **)gCarOrder)[0];
         d = *(u16 *)gLaneLengthPtrs[gTrackId * 12 + 5] * gChallengeStartOffsetPercents[gChallengeIndex] / 100;
-        sub_0800BD98(d, out, (u16 *)gLanePointTables[gTrackId * 12 + 5],
+        GetLanePositionAtDistance(d, out, (u16 *)gLanePointTables[gTrackId * 12 + 5],
                      (void *)gLaneSegmentTables[gTrackId * 12 + 5]);
         car->posX = *(s32 *)&out[0] << 16;
         car->posZ = *(s32 *)&out[2] << 16;
@@ -104,7 +104,7 @@ l_inner:
             goto l_50;
         if (gChallengeIndex == 6) {
             obj = (u32)gCarOrder;
-            sub_0800BEA4((struct Car **)obj, 0, 0, 0x28, 1);
+            PlaceCarsAlongLane((struct Car **)obj, 0, 0, 0x28, 1);
             goto l_1d0;
         }
         if (gChallengeIndex == 0xB)
@@ -113,26 +113,26 @@ l_inner:
             goto l_16c;
 l_50:
         obj = (u32)gCarOrder;
-        sub_0800BEA4((struct Car **)obj, 0, 0, 0x50, 1);
+        PlaceCarsAlongLane((struct Car **)obj, 0, 0, 0x50, 1);
         goto l_1d0;
 l_16c:
         ((struct Car **)gCarOrder)[0] = gCars;
-        sub_0800BEA4((struct Car **)gCarOrder, 0, 0, 0x32, 0);
+        PlaceCarsAlongLane((struct Car **)gCarOrder, 0, 0, 0x32, 0);
         goto l_1d0;
 l_180:
         if (gChallengeIndex == 3) {
-            sub_0800BEA4((struct Car **)gCarOrder, 0, 0, 0x14, 1);
+            PlaceCarsAlongLane((struct Car **)gCarOrder, 0, 0, 0x14, 1);
             goto l_1d0;
         }
         if (gChallengeIndex == 0xD) {
-            sub_0800BEA4((struct Car **)gCarOrder, 0, 0, 0x4B, 1);
+            PlaceCarsAlongLane((struct Car **)gCarOrder, 0, 0, 0x4B, 1);
             goto l_1d0;
         }
         if (gChallengeIndex == 2) {
-            sub_0800BEA4((struct Car **)gCarOrder, 0, 0, 0x32, 1);
+            PlaceCarsAlongLane((struct Car **)gCarOrder, 0, 0, 0x32, 1);
             goto l_1d0;
         }
-        sub_0800BEA4((struct Car **)gCarOrder, 0, 0, 0x32, 0);
+        PlaceCarsAlongLane((struct Car **)gCarOrder, 0, 0, 0x32, 0);
 l_1d0:
         gChallengePhase = 0;
         gUnk_0202CB14 = 0;
