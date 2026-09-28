@@ -96,7 +96,7 @@ extern s32 gUnk_0203DE90;
 u16 *sub_083434BC(s16 x, s16 y);
 void sub_0834355C(struct Corner *a1, struct Box *a2, struct Box *a3,
                   struct Res *a4, u16 *a5, s32 *a6);
-void sub_08342DE4(s32 a, s32 b);
+void ModuleDummyWallHitHook(s32 a, s32 b);
 
 s32 sub_08343A6C(struct Ent *a)
 {
@@ -156,7 +156,7 @@ s32 sub_08343A6C(struct Ent *a)
         gUnk_0203DE70[2] = res.unk08;
         a->unk0C -= d0;
         a->unk14 -= d1;
-        sub_08342DE4(a->cornerX[res.unk0C], a->cornerZ[res.unk0C]);
+        ModuleDummyWallHitHook(a->cornerX[res.unk0C], a->cornerZ[res.unk0C]);
         {
             s32 v1 = gModule_SinTable[res.unk0D];
             s32 v2 = gModule_SinTable[res.unk0D + 0x40];

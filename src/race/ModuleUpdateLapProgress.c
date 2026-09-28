@@ -126,9 +126,9 @@ u8 ModuleUpdateLapProgress(struct Car *p, u8 carIdx)
             if (gModule_GameMode[0] == 0 || gModule_GameMode[0] == 6 || gModule_GameMode[0] == 1)
                 p->finishTime = gModule_RaceMin[0] * 60000 + gModule_RaceSec[0] * 1000 + gModule_RaceMs[0];
             if (carIdx == v6C && p->lapStartedFlag != 0)
-                sub_08342BA4(gModule_LapMin[0], gModule_LapSec[0], gModule_LapMs[0]);
+                ModuleDrawLapTime(gModule_LapMin[0], gModule_LapSec[0], gModule_LapMs[0]);
             if (gModule_GameMode[0] != 2) {
-                sub_08341EC8((u16 *)p);
+                ModuleRecordFinishTime((u16 *)p);
                 gModule_FinishedCarOrder[gModule_NumFinishedCars] = carIdx;
                 gModule_NumFinishedCars = gModule_NumFinishedCars + 1;
                 if ((u8)(gModule_GameMode[0] - 3) <= 1)
@@ -138,7 +138,7 @@ u8 ModuleUpdateLapProgress(struct Car *p, u8 carIdx)
                         if (gModule_GameMode[0] != 0xF) {
                             if (gModule_GameMode[0] != 2) {
                                 if (gModule_GameMode[0] != 0xE)
-                                    sub_08342908();
+                                    ModuleEndRace();
                             }
                         }
                     }
@@ -146,7 +146,7 @@ u8 ModuleUpdateLapProgress(struct Car *p, u8 carIdx)
             }
         } else {
             if (carIdx == v6C && p->lapStartedFlag != 0)
-                sub_08342BA4(gModule_LapMin[0], gModule_LapSec[0], gModule_LapMs[0]);
+                ModuleDrawLapTime(gModule_LapMin[0], gModule_LapSec[0], gModule_LapMs[0]);
         }
         if (carIdx == v6C)
             ModuleResetLapTimer();
@@ -157,7 +157,7 @@ u8 ModuleUpdateLapProgress(struct Car *p, u8 carIdx)
         if (carIdx == v6C) {
             gUnk_0203DE40 = p->tickCount;
             if (e->unk10 != 1)
-                sub_08342D10();
+                ModuleSaveLapTime();
             if (carIdx == v6C && gModule_GameMode[0] != 0xA) {
                 s32 inner = v58 / 2 + 6;
                 ModuleSetCountdownSeconds((u8)(e->unk14 + inner));
@@ -167,7 +167,7 @@ u8 ModuleUpdateLapProgress(struct Car *p, u8 carIdx)
         s32 t2 = e->unk10;
         if (t2 == 1 && p->lapStartedFlag == 0) {
             if (p == gModule_Cars)
-                sub_08342A94();
+                ModuleStartRace();
             p->lapStartedFlag = t2;
         }
         }

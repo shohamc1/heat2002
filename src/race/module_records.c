@@ -2,7 +2,7 @@
 #include "variables.h"
 
 void ModuleSetTrackRecord(u32 a, u32 b, u32 c);
-void sub_08342D64(void);
+void ModuleAddTrackRecordTasks(void);
 
 
 void ModuleSetTrackRecord(u32 min, u32 sec, u32 ms)
@@ -32,6 +32,6 @@ void ModuleCheckTrackRecord(u16 min, u16 sec, u16 ms)
         return;
     ModuleSetTrackRecord(min, sec, ms);
     gUnk_02039100 = 1;
-    sub_08342D64();
+    ModuleAddTrackRecordTasks();
 }
 

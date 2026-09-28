@@ -3,7 +3,34 @@
 #include "car.h"
 
 s16 ModuleGetGearForSpeed(struct Car *a);
-void sub_08342008(struct Car *a);
+void ModuleStopCar(struct Car *a);
+struct Unk08341DA0 {
+    u32 unk0;
+    u32 unk4;
+    u32 unk8;
+    u32 unkC;
+    u32 unk10;
+    u32 unk14;
+    u32 unk18;
+    u32 unk1C;
+    u32 unk20;
+    u32 unk24;
+    u32 unk28;
+    u32 unk2C;
+    u32 unk30;
+    u16 unk34;
+    u16 respawnHeading;
+    u16 respawnWaypoint;
+    u16 unk3A;
+    s16 unk3C;
+    u8 pad3E[0xA4 - 0x3E];
+    s32 cornerX[4];
+    s32 cornerZ[4];
+    s32 nextCornerX[4];
+    s32 nextCornerZ[4];
+};
+extern s32 gUnk_020277B4[]; /* 0x020277B4 */
+extern s32 gUnk_020277C4[]; /* 0x020277C4 */
 
 
 void ModuleUpdateEngine(struct Car *car, s32 mode)
@@ -44,7 +71,7 @@ void ModuleUpdateEngine(struct Car *car, s32 mode)
         car->drag += 0x18000;
         if (car->speed > 0) {
             if (gModule_RaceEndState != 0 || (gModule_IsLinkRace != 0 && car->finished != 0))
-                sub_08342008(car);
+                ModuleStopCar(car);
             else if (car->speed > 0x3E800)
                 car->drag = 0x3E800 - car->speed;
         }
@@ -91,5 +118,40 @@ void ModuleComputeForwardSpeed(u8 *car)
     x = *(s32 *)(car + 0x0C);
     y = *(s32 *)(car + 0x14);
     *(s32 *)(car + 0x2C) = (x * dx + y * dy) >> 8;
+}
+
+
+void ModuleComputeCarCorners(struct Unk08341DA0 *car)
+{
+    s32 sin;
+    s32 cos;
+    s32 i;
+    u32 idx;
+    s32 offsetX;
+    s32 offsetZ;
+
+    idx = car->unk34 >> 8;
+    sin = gModule_SinTable[idx];
+    cos = gModule_SinTable[idx + 0x40];
+    for (i = 0; i != 4; i++) {
+        offsetX = gUnk_020277B4[i];
+        offsetZ = gUnk_020277C4[i];
+        car->cornerX[i] = (cos * offsetX - sin * offsetZ) >> 8;
+        car->cornerZ[i] = (sin * offsetX + cos * offsetZ) >> 8;
+        car->cornerX[i] += car->unk0;
+        car->cornerZ[i] += car->unk8;
+    }
+
+    idx = (car->unk34 + car->unk3C) >> 8 & 0xFF;
+    sin = gModule_SinTable[idx];
+    cos = gModule_SinTable[idx + 0x40];
+    for (i = 0; i != 4; i++) {
+        offsetX = gUnk_020277B4[i];
+        offsetZ = gUnk_020277C4[i];
+        car->nextCornerX[i] = (cos * offsetX - sin * offsetZ) >> 8;
+        car->nextCornerZ[i] = (sin * offsetX + cos * offsetZ) >> 8;
+        car->nextCornerX[i] += car->unk0 + car->unkC;
+        car->nextCornerZ[i] += car->unk8 + car->unk14;
+    }
 }
 

@@ -252,7 +252,7 @@ What the source shapes turned out to be:
   `sub_0800B1A4`'s runtime-built `0x80680040` attr (pieces hidden from
   cse across a block boundary, then reload rematerializes them at the
   use); `DraftStreakTask [sub_0800B658]`'s permuter-found rel/dy variable chaining; and
-  `sub_08342E28`'s ARRAY_REF member-array indexing to stop address-fold
+  `ModuleDraftStreakTask [sub_08342E28]`'s ARRAY_REF member-array indexing to stop address-fold
   CSE. The permuter masks `bl` targets — its score 0 can hide swapped
   calls; only match.py decides.
 
@@ -263,26 +263,26 @@ What the source shapes turned out to be:
 | 93 | `sub_08007950` | 26 | helper, 13 callers |
 | 94 | `ModuleRemoveTask` | 26 | port of `sub_08007950`; helper, 12 callers |
 | 95 | `DelayTask [sub_0800B5D4]` | 28 |  |
-| 96 | `sub_08342DA4` | 28 | port of `DelayTask` |
+| 96 | `ModuleDelayTask [sub_08342DA4]` | 28 | port of `DelayTask` |
 | 97 | `LapTimeTask [sub_0800B384]` | 62 |  |
-| 98 | `sub_08342B54` | 62 | port of `LapTimeTask` |
-| 99 | `sub_083429E8` | 36 |  |
-| 100 | `sub_083429B8` | 38 |  |
+| 98 | `ModuleLapTimeTask [sub_08342B54]` | 62 | port of `LapTimeTask` |
+| 99 | `ModuleLinkRaceStartSplashTask [sub_083429E8]` | 36 |  |
+| 100 | `ModuleRaceStartSplashTask [sub_083429B8]` | 38 |  |
 | 101 | `sub_0800B030` | 86 |  |
 | 102 | `sub_08342948` | 86 | port of `sub_0800B030` |
 | 103 | `DemoEndTask` | 110 |  |
-| 104 | `sub_083427DC` | 110 | port of `DemoEndTask` |
+| 104 | `ModuleDemoEndTask [sub_083427DC]` | 110 | port of `DemoEndTask` |
 | 105 | `LapSnapshotTask` | 178 |  |
-| 106 | `sub_08342C3C` | 178 | port of `LapSnapshotTask` |
+| 106 | `ModuleLapSnapshotTask [sub_08342C3C]` | 178 | port of `LapSnapshotTask` |
 | 107 | `sub_08342F4C` | 90 |  |
-| 108 | `sub_0834288C` | 100 |  |
+| 108 | `ModuleRaceEndTask [sub_0834288C]` | 100 |  |
 | 109 | `RaceStartSplashTask [sub_0800B0A0]` | 104 |  |
 | 110 | `LinkRaceStartSplashTask [sub_0800B120]` | 108 |  |
 | 111 | `sub_08342A14` | 116 |  |
 | 112 | `DamageSmokeTask [sub_0800B8EC]` | 256 |  |
 | 113 | `sub_08342FF0` | 256 | port of `DamageSmokeTask` |
 | 114 | `sub_0800AF44` | 140 |  |
-| 115 | `sub_08342E28` | 156 |  |
+| 115 | `ModuleDraftStreakTask` | 156 |  |
 | 116 | `SkidSmokeTask [sub_0800B7E0]` | 182 |  |
 | 117 | `sub_0800BA38` | 184 |  |
 | 118 | `DraftStreakTask` | 244 |  |

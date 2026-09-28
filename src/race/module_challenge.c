@@ -164,7 +164,7 @@ void ModuleUpdateChallenge(void)
                        the matched definition returns u32 */
                     if (((u8 (*)(u32))ModuleIsChallengeTimeWithin)(0x2328))
                         gUnk_0203E104 = phase;
-                    sub_08342908();
+                    ModuleEndRace();
                     gUnk_0203DD08 = 0;
                 }
                 ModuleDrawChallengeTimer();
@@ -198,7 +198,7 @@ void ModuleUpdateChallenge(void)
                 if (ModuleIsProgressPointCrossed(0x96)) {
                     if (((u8 (*)(u32))ModuleIsChallengeTimeWithin)(0xFA0))
                         gUnk_0203E104 = phase;
-                    sub_08342908();
+                    ModuleEndRace();
                     gUnk_0203DD08 = 0;
                 }
                 ModuleDrawChallengeTimer();
@@ -213,7 +213,7 @@ void ModuleUpdateChallenge(void)
                 gUnk_0203DDF8 = speed;
             if (gUnk_0203DDF8 > 0x76) {
                 gUnk_0203E104 = 1;
-                sub_08342908();
+                ModuleEndRace();
             }
             if (gUnk_0203DDF8 > 0x79) {
                 if (gUnk_0203DD30 & 8)
@@ -222,7 +222,7 @@ void ModuleUpdateChallenge(void)
                     ModuleClearChallengeSpeed();
                 gUnk_0203DD30++;
                 if (gUnk_0203DD30 > 0x40)
-                    sub_08342908();
+                    ModuleEndRace();
             } else if (gUnk_0203DDF8 != 0) {
                 ModuleDrawChallengeSpeed(speed);
             }

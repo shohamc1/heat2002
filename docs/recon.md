@@ -87,7 +87,7 @@ Ties are ordered by address. The caller column is included to distinguish merely
 | 15 | `ModuleLoadTrackCues [sub_0833D9E8]` | `0x0833D9E8` | 1 | 2 |
 | 16 | `ModuleDummyHudHook [sub_0833E5E8]` | `0x0833E5E8` | 1 | 0 |
 | 17 | `ModuleEnterPit [sub_08341280]` | `0x08341280` | 1 | 1 |
-| 18 | `sub_08342DE4` | `0x08342DE4` | 1 | 1 |
+| 18 | `ModuleDummyWallHitHook [sub_08342DE4]` | `0x08342DE4` | 1 | 1 |
 | 19 | `sub_08343138` | `0x08343138` | 1 | 1 |
 | 20 | `sub_08344680` | `0x08344680` | 1 | 1 |
 | 21 | `sub_08344C4C` | `0x08344C4C` | 1 | 3 |
