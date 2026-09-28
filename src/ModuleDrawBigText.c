@@ -1,11 +1,12 @@
-
 #include "global.h"
 #include "variables.h"
-void sub_0833F018(u8 *s)
+#include "data.h"
+
+void ModuleDrawBigText(const u8 *text)
 {
   u16 *dest;
-  u8 *p;
-  u8 *q;
+  const u8 *p;
+  const u8 *q;
   s32 len;
   u8 i;
   u16 color;
@@ -13,14 +14,14 @@ void sub_0833F018(u8 *s)
   u8 t;
   u16 *e;
   u32 c;
-  dest = (u16 *) (gModule_TextLayerMapPtr[0] + 0x40);
+  dest = (u16 *) (gModule_TextLayerMapPtr[0] + 2 * 32) /* text row 2 */;
   do
   {
-    color = 0xF0 << 8;
+    color = 0xF0 << 8; /* tilemap entry: palette bank 15 */
   }
   while (0);
   i = 0;
-  q = s;
+  q = text;
   len = 0;
   while ((*q) != 0)
   {
@@ -28,27 +29,27 @@ void sub_0833F018(u8 *s)
     len++;
   }
 
-  for (; i < ((0x1E - len) / 2); i++, dest++)
+  for (; i < ((30 - len) / 2); i++, dest++)
   {
-    c = (*gUnk_02025230) - 0x20;
+    c = (*gUnk_02025230) - ' ';
     t = c;
     idx = (((t >> 5) << 22) + 0x600000u) >> 16;
     e = &gUnk_0201F590[idx + (t & 0x1F)];
     dest[0] = color | gModule_TextGlyphTileIndices[e[0]];
-    dest[0x20] = color | gModule_TextGlyphTileIndices[e[0x20]];
+    dest[32] = color | gModule_TextGlyphTileIndices[e[0x20]];
   }
 
-  c = *s;
-  p = s + 1;
+  c = *text;
+  p = text + 1;
   if (c != 0)
   {
     do
     {
-      t = c - 0x20;
+      t = c - ' ';
       idx = (((t >> 5) << 22) + 0x600000u) >> 16;
       e = &gUnk_0201F590[idx + (t & 0x1F)];
       dest[0] = color | gModule_TextGlyphTileIndices[e[0]];
-      dest[0x20] = color | gModule_TextGlyphTileIndices[e[0x20]];
+      dest[32] = color | gModule_TextGlyphTileIndices[e[0x20]];
       dest++;
       i++;
       c = *p;
@@ -58,11 +59,11 @@ void sub_0833F018(u8 *s)
   }
   for (; i < 0x20; i++, dest++)
   {
-    t = (*gUnk_02025230) - 0x20;
+    t = (*gUnk_02025230) - ' ';
     idx = (((t >> 5) << 22) + 0x600000u) >> 16;
     e = &gUnk_0201F590[idx + (t & 0x1F)];
     dest[0] = color | gModule_TextGlyphTileIndices[e[0]];
-    dest[0x20] = color | gModule_TextGlyphTileIndices[e[0x20]];
+    dest[32] = color | gModule_TextGlyphTileIndices[e[0x20]];
   }
 
 }

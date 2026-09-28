@@ -10,13 +10,13 @@ void sub_0800DFC0(void);
 void SioTransferIntr(void);
 extern u32 gUnk_0807C9E8;
 extern const u8 *gUnk_083FDA50[];
-extern u32 gHighModuleChunks[];
+extern const u8 *const gHighModuleChunks[];
 extern u8 gText_BlankRow24_2[];
 extern u8 gText_DoNotRemoveGameBoy[];
 extern u8 gText_AdvanceGameLink[];
 extern u8 gText_CableOrTurnPowerOff[];
 extern u8 gUnk_0807CB58[];
-void SioTransferInit(u32 a1, u32 a2);
+void SioTransferInit(u32 a1, const u8 *a2);
 void sub_0800DE9C(u16 x, u16 y);
 void sub_0800DE60(u32 id, u32 c);
 u32 SioTransferUpdate(u32 *frame);
@@ -116,7 +116,7 @@ u32 SendMultibootIsland(void)
 loop:
     {
         VBlankIntrWait();
-        DrawTextCenteredHighlight((u8 *)GetString(0x53), 8, 1);
+        DrawTextCenteredHighlight(GetString(0x53), 8, 1);
         i = 1;
         a = work;
         one = i;

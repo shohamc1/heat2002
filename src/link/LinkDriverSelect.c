@@ -108,7 +108,7 @@ s8 LinkDriverSelect(void)
                 count++;
         }
         if ((s8)b[gLinkPlayerId[0]] != -1) {
-            DrawTextCenteredHighlight((u8 *)(GetString(0x58)), 0x11, 1);
+            DrawTextCenteredHighlight(GetString(0x58), 0x11, 1);
             if (count == *(volatile u8 *)&gNumLinkPlayers[0]) {
                 for (i = 0; i < gNumLinkPlayers[0]; i++) {
                     gCars[i].driverId = b[i];
@@ -116,7 +116,7 @@ s8 LinkDriverSelect(void)
                 }
             }
         } else {
-            DrawTextCenteredHighlight((u8 *)((u32)gText_BlankRowDriverSelect), 0x11, 1);
+            DrawTextCenteredHighlight(gText_BlankRowDriverSelect, 0x11, 1);
         }
         sub_080047DC();
         gVBlankWorkDone = 0;

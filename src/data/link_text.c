@@ -14,11 +14,11 @@ const u8 gText_Back[8]    = "BACK";
 extern const u8 gHighModuleRom[];
 
 // The high module's 32 KB chunks, as SendMultibootPayload sends them.
-const u32 gHighModuleChunks[] = {
-    (u32)gHighModuleRom, (u32)gHighModuleRom + 0x8000,
-    (u32)gHighModuleRom + 0x10000, (u32)gHighModuleRom + 0x18000,
-    (u32)gHighModuleRom + 0x20000, (u32)gHighModuleRom + 0x28000,
-    (u32)gHighModuleRom + 0x30000
+const u8 *const gHighModuleChunks[] = {
+    gHighModuleRom, gHighModuleRom + 0x8000,
+    gHighModuleRom + 0x10000, gHighModuleRom + 0x18000,
+    gHighModuleRom + 0x20000, gHighModuleRom + 0x28000,
+    gHighModuleRom + 0x30000
 };
 const u32 gUnk_0807C9E8[] = INCBIN_U32("build/assets/unknown/data_0807C9E8.bin");
 const u8 gText_BlankRow24_2[] = "                       ";

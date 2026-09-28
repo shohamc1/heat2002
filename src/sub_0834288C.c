@@ -9,9 +9,9 @@ void sub_0834288C(u32 a)
     if (gModule_PaletteFadeActive == 0)
     {
         if (gModule_IsLinkRace == 0)
-            /* sub_0833EF0C: this file's old local prototype differs from
+            /* ModuleDrawText: this file's old local prototype differs from
                functions.h; call through the old signature (solved-walls 31). */
-            ((void (*)(u32, u32, u32, u32))sub_0833EF0C)(sub_0833BD94(4), 0xA, 3, 1);
+            ((void (*)(u32, u32, u32, u32))ModuleDrawText)(ModuleGetString(MODULE_MSG_RACE_OVER), 0xA, 3, 1);
         if (--*(u32 *)(a + 0x18) == 0)
         {
             sub_0833FFA8(a);

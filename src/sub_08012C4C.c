@@ -19,16 +19,14 @@ void sub_08012C4C(u32 a)
 {
     u32 t;
 
-    /* sub_08006734: this file's old local prototype differs from
-       functions.h; call through the old signature (solved-walls 31). */
-    ((void (*)(u32))sub_08006734)(gUnk_083FDE18[0]);
+    sub_08006734(gUnk_083FDE18[0]);
     GetString(0x8F);
-    ((void (*)(void))sub_080065A8)();
+    ((void (*)(void))DrawBigText)();
     if (a <= 2) {
-        DrawTextCenteredHighlight((u8 *)(GetString(0x91)), 4, 1);
+        DrawTextCenteredHighlight(GetString(0x91), 4, 1);
     } else {
-        DrawTextCenteredHighlight((u8 *)((u32)gText_Congratulations_2), 6, 1);
-        DrawTextCenteredHighlight((u8 *)((u32)gText_YouCompletedTheSeason), 0xA, 1);
+        DrawTextCenteredHighlight(gText_Congratulations_2, 6, 1);
+        DrawTextCenteredHighlight(gText_YouCompletedTheSeason, 0xA, 1);
     }
     if (a <= 2)
         RLUnCompVram(gUnk_083FEF00, OBJ_VRAM0);
@@ -45,9 +43,9 @@ void sub_08012C4C(u32 a)
         sub_080100CC(0x58, 0x40, 0, t, 0);
     }
     if (a == 0)
-        DrawTextCenteredHighlight((u8 *)((u32)gText_Gold), 0x12, 1);
+        DrawTextCenteredHighlight(gText_Gold, 0x12, 1);
     if (a == 1)
-        DrawTextCenteredHighlight((u8 *)((u32)gText_Silver), 0x12, 1);
+        DrawTextCenteredHighlight(gText_Silver, 0x12, 1);
     if (a == 2)
-        DrawTextCenteredHighlight((u8 *)((u32)gText_Bronze), 0x12, 1);
+        DrawTextCenteredHighlight(gText_Bronze, 0x12, 1);
 }

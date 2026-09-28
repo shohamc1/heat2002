@@ -9,12 +9,12 @@ struct SoundSlot0833F *sub_0833FCE0(void *a);
 u32 sub_0833FD78(u32 a);
 void sub_0833D6A0(u32 a, u32 b);
 
-void sub_08343148(u8 *a, u32 b, u32 c)
+void sub_08343148(const u8 *a, u32 b, u32 c)
 {
     u16 t1;
     u16 t2;
     u8 idx;
-    u8 *p;
+    const u8 *p;
     u32 q;
     u32 m;
     u32 v;

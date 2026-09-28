@@ -1,12 +1,11 @@
 #include "global.h"
+#include "functions.h"
 
-extern u32 gText_Congratulations[];
-extern u32 gText_YouAreAllowedTo[];
-extern u32 gText_StayOnThisTeam[];
-
-void MessageBox(u32 a, u32 b, u32 c);
+extern const u8 gText_Congratulations[];
+extern const u8 gText_YouAreAllowedTo[];
+extern const u8 gText_StayOnThisTeam[];
 
 void sub_0800F1D0(void)
 {
-    MessageBox((u32)gText_Congratulations, (u32)gText_YouAreAllowedTo, (u32)gText_StayOnThisTeam);
+    MessageBox(gText_Congratulations, gText_YouAreAllowedTo, gText_StayOnThisTeam);
 }

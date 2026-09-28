@@ -6,13 +6,9 @@
 
 void sub_08012EE8(u32 unused, u8 v)
 {
-    u32 r;
-
-    /* sub_08006734: this file's old local prototype differs from
-       functions.h; call through the old signature (solved-walls 31). */
-    ((void (*)(u32))sub_08006734)(gUnk_083FDE18[0]);
+    const u8 *r; sub_08006734(gUnk_083FDE18[0]);
     GetString(0x1E);
-    ((void (*)(void))sub_080065A8)();
+    ((void (*)(void))DrawBigText)();
     r = GetString(v + 0x1F);
-    DrawTextCenteredHighlight((u8 *)r, 8, 1);
+    DrawTextCenteredHighlight(r, 8, 1);
 }

@@ -38,18 +38,18 @@ u8 DrawTrackSelect(u8 a, u8 b)
 
     if (b != 0) {
         GetString(0xA1);
-        /* sub_080065A8: this file's old local prototype differs from
+        /* DrawBigText: this file's old local prototype differs from
            functions.h; call through the old signature (solved-walls 31). */
-        ((void (*)(void))sub_080065A8)();
+        ((void (*)(void))DrawBigText)();
     }
     p = (u8 *)gText_BlankRowMenu;
     DrawText(p, 0, 4, 0);
     DrawText(p, 0, 5, 0);
     if (a != 3) {
-        DrawTextCenteredHighlight((u8 *)(gTrackSelectEntries[a].fieldC), 4, 1);
+        DrawTextCenteredHighlight(gTrackSelectEntries[a].fieldC, 4, 1);
     } else {
-        DrawTextCenteredHighlight((u8 *)((u32)gText_TrackMichigan), 4, 1);
-        DrawTextCenteredHighlight((u8 *)((u32)gText_TrackIntlSpeedway), 5, 1);
+        DrawTextCenteredHighlight(gText_TrackMichigan, 4, 1);
+        DrawTextCenteredHighlight(gText_TrackIntlSpeedway, 5, 1);
     }
     CpuCopy16(gTrackSelectEntries[a].field14, OBJ_PLTT, OBJ_PLTT_SIZE);
     CpuCopy16((u32)gTrackSelectArrowPalette, OBJ_PLTT + 0x1E0, 0x20);

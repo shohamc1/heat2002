@@ -4,64 +4,110 @@
 #include "functions.h"
 #include "variables.h"
 
-extern u8 gUnk_0203E110;
+extern u32 gUnk_0203DFF4;
+extern u8 gModule_DetectedPlayers;
 
-void sub_08344968(void);
+void sub_08339A30(void);
+void sub_08344878(void);
 void sub_08344B74(void);
 void sub_08344B68(u32 a, u32 b);
 void sub_083448B0(u16 a);
 
-void sub_08344A20(void)
+void sub_08344968(void)
 {
-    u8 *e004;
+    u32 *p1;
+    u16 *p2;
+    u8 *p3;
+    register u8 mask asm("r3");
+    u8 i;
+    u8 j;
+
+    *(volatile u16 *)0x04000134 = 0;
+    *(volatile u16 *)0x04000128 = 0;
+    i = 0;
+    p1 = &gUnk_0203DFF4;
+    p2 = &gUnk_0203917C;
+    p3 = gUnk_0203E1C0;
+    mask = 0xFF;
+    do
+    {
+        p3[i * 4 + 0] |= mask;
+        p3[i * 4 + 1] |= mask;
+        p3[i * 4 + 2] |= mask;
+        i++;
+    } while (i != 4);
+    *p1 = 0;
+    *p2 = 0;
+    sub_08339A30();
+    sub_08344878();
+    *(volatile u16 *)0x04000200 |= 0x80;
+    if ((*(u8 *)0x04000128 & 0x30) == 0)
+        *(volatile u16 *)0x04000200 |= 0x40;
+    i = 0;
+    do
+    {
+        gModule_LinkTxBuffer[i] = 0;
+        j = 0;
+        do
+        {
+            *(u16 *)((u8 *)gModule_LinkRecvWords + j * 2 + i * 8) = 0;
+            j++;
+        } while (j <= 3);
+        i++;
+    } while (i <= 3);
+}
+
+void ModuleLinkHandshake(void)
+{
+    u8 *lang;
     u8 i;
     u16 v;
-    vu16 *ed;
+    vu16 *tx;
 
     sub_08344968();
     i = 0;
     /* Through a pointer: a store to a volatile array element by name
        compiles to a read-modify-write. */
-    ed = gUnk_0203DFB8;
+    tx = gModule_LinkTxBuffer;
     do {
         if ((*(u8 *)REG_ADDR_SIOCNT & 0x30) == 0)
             sub_08344B74();
         else
             sub_08344B68(1, INTR_FLAG_SERIAL);
         sub_08339B4C();
-        /* e004 is a variable so its pseudo predates the SIOCNT address
+        /* lang is a variable so its pseudo predates the SIOCNT address
            temp: they tie on allocation priority, and the older one gets
            r6. */
-        ed[0] = ((u16)((((*(vu32 *)REG_ADDR_SIOCNT << 26) >> 30) + 1) << 12)
+        tx[0] = ((u16)((((*(vu32 *)REG_ADDR_SIOCNT << 26) >> 30) + 1) << 12)
                  | 0x100)
-              | ((*(e004 = &gUnk_0203E004) + 1) & 0xFF);
-        sub_083448B0(ed[0]);
+              | ((*(lang = &gModule_Language) + 1) & 0xFF);
+        sub_083448B0(tx[0]);
         gUnk_0203E1C0[2] |= 0xFF;
         gUnk_0203E1C0[6] |= 0xFF;
         gUnk_0203E1C0[10] |= 0xFF;
         gUnk_0203E1C0[14] |= 0xFF;
-        gUnk_0203E110 = 0;
+        gModule_DetectedPlayers = 0;
         v = gModule_LinkRecvWords[0];
         if ((v >> 12) == 1) {
             gUnk_0203E1C0[2] = 1;
-            gUnk_0203E110 = 1;
+            gModule_DetectedPlayers = 1;
             if (*(u8 *)REG_ADDR_SIOCNT & 0x30)
-                *e004 = v - 1;
+                *lang = v - 1;
             if ((gModule_LinkRecvWords[4] >> 12) == 2) {
                 gUnk_0203E1C0[6] = 1;
-                gUnk_0203E110 = 2;
+                gModule_DetectedPlayers = 2;
                 if ((gModule_LinkRecvWords[8] >> 12) == 3) {
                     gUnk_0203E1C0[10] = 1;
-                    gUnk_0203E110 = 3;
+                    gModule_DetectedPlayers = 3;
                     if ((gModule_LinkRecvWords[12] >> 12) == 4) {
                         gUnk_0203E1C0[14] = 1;
-                        gUnk_0203E110 = 4;
+                        gModule_DetectedPlayers = 4;
                     }
                 }
             }
         }
         gModule_LinkPlayerId = (*(vu32 *)REG_ADDR_SIOCNT << 26) >> 30;
-        *(u8 *)&gModule_NumLinkPlayers = gUnk_0203E110;
+        *(u8 *)&gModule_NumLinkPlayers = gModule_DetectedPlayers;
         if (*(u8 *)&gModule_NumLinkPlayers <= 1)
             i--;
         gModule_LinkRecvWords[0] = 0;

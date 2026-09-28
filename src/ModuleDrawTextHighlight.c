@@ -2,7 +2,7 @@
 #include "variables.h"
 
 
-void sub_0833EF68(u8 *p, u32 a2, u32 a3, u8 a4)
+void ModuleDrawTextHighlight(const u8 *text, u32 x, u32 y, u8 highlight)
 {
     u16 *out;
     u32 off;
@@ -12,13 +12,13 @@ void sub_0833EF68(u8 *p, u32 a2, u32 a3, u8 a4)
     u16 idx;
     u32 c;
 
-        out = &(*(u16 **)&gModule_TextLayerMapPtr)[a3 * 0x20 + a2];
-    color = 0xE0 << 8;
-    if (a4 != 0)
-        color = 0xF0 << 8;
-    c = *p++;
+        out = &(*(u16 **)&gModule_TextLayerMapPtr)[y * 0x20 + x];
+    color = 0xE0 << 8; /* tilemap entry: palette bank 14 */
+    if (highlight != 0)
+        color = 0xF0 << 8; /* tilemap entry: palette bank 15 */
+    c = *text++;
     while (c != 0) {
-        t = c - 0x20;
+        t = c - ' ';
         idx = (u16)(((((t >> 5) << 22) + 0x600000u) >> 16));
         idx = idx + (t & 0x1F);
         e = &gUnk_0201F590[idx];
@@ -27,6 +27,6 @@ void sub_0833EF68(u8 *p, u32 a2, u32 a3, u8 a4)
         out[0x20] = color | gModule_TextGlyphTileIndices[e[0x20]];
         out[0x21] = color | gModule_TextGlyphTileIndices[e[0x21]];
         out += 1;
-        c = *p++;
+        c = *text++;
     }
 }

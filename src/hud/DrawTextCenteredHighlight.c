@@ -2,11 +2,11 @@
 #include "data.h"
 
 
-void DrawTextCenteredHighlight(u8 *p, u32 a1, u8 a2)
+void DrawTextCenteredHighlight(const u8 *text, u32 y, u8 highlight)
 {
-    u8 *s = p;
+    const u8 *s = text;
     u8 len = 0;
-    u32 c = *p;
+    u32 c = *text;
     u16 **v = (u16 **)&gTextLayerMapPtr;
     u8 pad;
     u16 *out;
@@ -20,11 +20,11 @@ void DrawTextCenteredHighlight(u8 *p, u32 a1, u8 a2)
     }
     pad = (u8)((0x1E - len) / 2);
     out = *v;
-    out += a1 * 0x20 + pad;
+    out += y * 0x20 + pad;
     color = 0xE0 << 8;
-    if (a2 != 0)
+    if (highlight != 0)
         color = 0xF0 << 8;
-    while ((c = *p++) != 0)
+    while ((c = *text++) != 0)
     {
         u16 idx = gTextCharMap[(u8)(c - 0x20)];
         *out++ = color | gTextGlyphTileIndices[idx];

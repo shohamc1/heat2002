@@ -79,7 +79,7 @@ s32 sub_08012074(void)
     gLinkPlayerId[0] = (*(u32 *)REG_ADDR_SIOCNT << 26) >> 30;
     if ((*(u8 *)REG_ADDR_SIOCNT & 0x30) == 0) {
         if (gLinkPlayerCount > 1 && gLinkPlayerCount == count)
-            DrawTextCenteredHighlight((u8 *)GetString(0xF), 0xF, 1);
+            DrawTextCenteredHighlight(GetString(0xF), 0xF, 1);
         else
             DrawTextCenteredHighlight(gText_BlankRowLinkLobby, 0xF, 1);
     }

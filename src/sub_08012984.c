@@ -6,15 +6,13 @@
 
 void sub_08012984(u8 a)
 {
-    /* sub_08006734: this file's old local prototype differs from
-       functions.h; call through the old signature (solved-walls 31). */
-    ((void (*)(u32))sub_08006734)(gUnk_083FDE18[0]);
+    sub_08006734(gUnk_083FDE18[0]);
     GetString(0xA9);
-    ((void (*)(void))sub_080065A8)();
-    DrawTextCenteredHighlight((u8 *)(GetString(0xC5)), 6, 1);
-    DrawTextCenteredHighlight((u8 *)(GetString(a + 0xC5)), 7, 1);
+    ((void (*)(void))DrawBigText)();
+    DrawTextCenteredHighlight(GetString(0xC5), 6, 1);
+    DrawTextCenteredHighlight(GetString(a + 0xC5), 7, 1);
     if (a != 4)
-        DrawTextCenteredHighlight((u8 *)(GetString(a + 0xAA)), 0xA, 1);
+        DrawTextCenteredHighlight(GetString(a + 0xAA), 0xA, 1);
     else
-        DrawTextCenteredHighlight((u8 *)(GetString(0xB3)), 0xA, 1);
+        DrawTextCenteredHighlight(GetString(0xB3), 0xA, 1);
 }

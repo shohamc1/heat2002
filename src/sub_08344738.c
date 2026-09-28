@@ -4,14 +4,14 @@ extern u32 gModule_CareerDecision[];
 extern u32 gModule_StayOnThisTeam[];
 extern u32 gUnk_0201AA54[];
 
-void sub_0833F018(u32 a);
+void ModuleDrawBigText(u32 a);
 void sub_0833F3C0(u32 a, u32 b, u32 c);
 
 void sub_08344738(u8 a)
 {
     u32 p;
 
-    sub_0833F018((u32)gModule_CareerDecision);
+    ModuleDrawBigText(gModule_CareerDecision);
     p = (u32)gModule_StayOnThisTeam;
     sub_0833F3C0(p, 8, a == 0);
     p = (u32)gUnk_0201AA54;

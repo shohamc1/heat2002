@@ -2,7 +2,7 @@
 #include "data.h"
 
 
-u32 GetDriverName(u8 r0)
+const u8 *GetDriverName(u8 driverId)
 {
-    return gDriverRoster[r0][0];
+    return (const u8 *)gDriverRoster[driverId][0];
 }

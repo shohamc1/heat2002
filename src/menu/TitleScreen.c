@@ -50,7 +50,7 @@ u8 TitleScreen(void)
             i++;
         } while (i != 0x380);
         if ((j & 0x1F) <= 0x0E)
-            DrawTextCenteredHighlight((u8 *)(GetString(0x0F)), 0x10, 1);
+            DrawTextCenteredHighlight(GetString(0x0F), 0x10, 1);
         j++;
         if ((gKeysHeld & 8) && gOptions[3] != 0)
             m4aSongNumStart(9);

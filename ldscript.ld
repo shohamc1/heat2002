@@ -239,9 +239,8 @@ SECTIONS
         build/src/sub_080063AC.o(.text*);
         build/src/sub_080063B0.o(.text*);
         build/src/hud/text.o(.text*);
-        build/src/sub_0800649C.o(.text*);
         build/src/sub_080064F8.o(.text*);
-        build/src/sub_080065A8.o(.text*);
+        build/src/hud/DrawBigText.o(.text*);
         build/src/sub_08006734.o(.text*);
         build/src/sub_08006738.o(.text*);
         build/src/hud/DrawTextCenteredHighlight.o(.text*);
@@ -634,7 +633,6 @@ SECTIONS
         build/src/hud/GetString.o(.text*);
         build/src/sub_08016568.o(.text*);
         build/src/save/WriteSaveBlocks.o(.text*);
-        build/data/rom_080165DC.o(.text*);
         build/src/save/eeprom.o(.text*);
         build/src/sub_08016634.o(.text*);
         build/src/save/save.o(.text*);
@@ -868,7 +866,7 @@ SECTIONS
         build/src/sub_0833BCBC.o(.text*);
         build/src/sub_0833BCD8.o(.text*);
         build/src/sub_0833BCF8.o(.text*);
-        build/src/sub_0833BD94.o(.text*);
+        build/src/ModuleGetString.o(.text*);
         build/src/sub_0833BDB4.o(.text*);
         build/src/sub_0833BF20.o(.text*);
         build/src/sub_0833BF6C.o(.text*);
@@ -977,10 +975,9 @@ SECTIONS
         build/src/sub_0833EE1C.o(.text*);
         build/src/sub_0833EE20.o(.text*);
         build/src/sub_0833EE2C.o(.text*);
-        build/src/sub_0833EE88.o(.text*);
-        build/src/sub_0833EF0C.o(.text*);
-        build/src/sub_0833EF68.o(.text*);
-        build/src/sub_0833F018.o(.text*);
+        build/src/ModuleText.o(.text*);
+        build/src/ModuleDrawTextHighlight.o(.text*);
+        build/src/ModuleDrawBigText.o(.text*);
         build/src/sub_0833F1A4.o(.text*);
         build/src/sub_0833F1A8.o(.text*);
         build/src/sub_0833F3C0.o(.text*);
@@ -1144,8 +1141,7 @@ SECTIONS
         build/src/sub_083448B0.o(.text*);
         build/src/sub_083448F4.o(.text*);
         build/src/sub_08344964.o(.text*);
-        build/src/sub_08344968.o(.text*);
-        build/src/sub_08344A20.o(.text*);
+        build/src/ModuleLink.o(.text*);
         build/src/sub_08344B5C.o(.text*);
         /* the high module's libagbsyscall copy */
         build/lib/agbsyscall/sub_08344B60.o(.text);

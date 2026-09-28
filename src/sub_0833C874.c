@@ -55,10 +55,10 @@ timeout:
 
 send:
         if (phase == 0)
-            gUnk_0203DFB8[0] = (gModule_LinkTxSeqNum << 11) | ((keys & 0x7F) | ((keys & 0xF) << 7)) | 0x8000;
+            gModule_LinkTxBuffer[0] = (gModule_LinkTxSeqNum << 11) | ((keys & 0x7F) | ((keys & 0xF) << 7)) | 0x8000;
         else
-            gUnk_0203DFB8[0] = (gModule_LinkTxSeqNum << 11) | ((keys & 0x7F) | ((keys & 0xF) << 7)) | 0x4000;
-        sub_083448B0(gUnk_0203DFB8[0]);
+            gModule_LinkTxBuffer[0] = (gModule_LinkTxSeqNum << 11) | ((keys & 0x7F) | ((keys & 0xF) << 7)) | 0x4000;
+        sub_083448B0(gModule_LinkTxBuffer[0]);
         for (;;) {
             if (gIntrCheck & 0x80) {
                 *(volatile u16 *)&gIntrCheck &= 0xFF7F;

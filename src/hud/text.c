@@ -1,26 +1,26 @@
 #include "global.h"
 #include "data.h"
 
-void DrawText(u8 *p, u32 a1, u32 a2, u8 a3)
+void DrawText(const u8 *text, u32 x, u32 y, u8 highlight)
 {
     u16 *out = (u16 *)*(u32 *)&gTextLayerMapPtr;
     u16 color;
     u32 c;
 
-    out += a2 * 0x20 + a1;
-    color = 0xE0 << 8;
-    if (a3 != 0)
-        color = 0xF0 << 8;
-    while ((c = *p++) != 0)
+    out += y * 32 + x; /* 32 tilemap entries per text row */
+    color = 0xE0 << 8;   /* tilemap entry: palette bank 14 */
+    if (highlight != 0)
+        color = 0xF0 << 8; /* palette bank 15 */
+    while ((c = *text++) != 0)
     {
-        u16 idx = gTextCharMap[(u8)(c - 0x20)];
+        u16 idx = gTextCharMap[(u8)(c - ' ')];
         *out++ = color | gTextGlyphTileIndices[idx];
     }
 }
 
-void DrawTextCentered(u8 *str, u32 y)
+void DrawTextCentered(const u8 *str, u32 y)
 {
-    u8 *p;
+    const u8 *p;
     u8 len;
     u8 pad;
     u16 *dest;
@@ -37,16 +37,42 @@ void DrawTextCentered(u8 *str, u32 y)
         len++;
         c = *p;
     }
-    pad = (u8)((0x1E - len) / 2);
+    pad = (0x1E - len) / 2; /* center within the 30 visible columns */
     dest = (*(u16 **)&gTextLayerMapPtr);
-    dest += (y << 5) + pad;
+    dest += y * 32 + pad;
     color = 0xE0 << 8;
     w = 0x47;
     c = *str++;
     while (c != 0) {
-        if (c != 0x20) {
+        if (c != ' ') {
             v = color;
-            v |= gFontTileEntries[gFontCharToGlyphTable[(u8)(c - 0x21)]];
+            v |= gFontTileEntries[gFontCharToGlyphTable[(u8)(c - '!')]];
+            *dest++ = v;
+        } else {
+            w = 0x47;
+            *dest++ = w;
+        }
+        c = *str++;
+    }
+}
+
+void sub_0800649C(const u8 *str, u32 x, u32 y)
+{
+    u16 *dest;
+    u32 color;
+    u32 c;
+    u32 v;
+    u32 w;
+
+    dest = *(u16 **)&gTextLayerMapPtr;
+    dest += y * 32 + x;
+    color = 0xE0 << 8;
+    w = 0x47;
+    c = *str++;
+    while (c != 0) {
+        if (c != ' ') {
+            v = color;
+            v |= gFontTileEntries[gFontCharToGlyphTable[(u8)(c - '!')]];
             *dest++ = v;
         } else {
             w = 0x47;

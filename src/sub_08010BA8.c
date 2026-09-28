@@ -17,7 +17,7 @@ u32 sub_08010BA8(u8 param)
     buf[0] = ret;
     buf[1] = (ret & 0xFF00) >> 8;
     GetString(0x70);
-    ((void (*)(void))sub_080065A8)();
+    ((void (*)(void))DrawBigText)();
     sub_08010AA4(param);
     CpuCopy16(gDriverCarPalettes[0], OBJ_PLTT, OBJ_PLTT_SIZE);
     if (buf[1] == 0xFF) {

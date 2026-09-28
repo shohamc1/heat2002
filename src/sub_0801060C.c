@@ -17,14 +17,14 @@ void sub_0801060C(u8 a)
     /* sub_0800E730: this file's old prototype returns u8; the matched
        definition returns void; call through a function pointer. */
     *d = ((u8 (*)(void))sub_0800E730)();
-    ((void (*)(u32))sub_08006734)(gUnk_083FDE18[0]);
+    sub_08006734(gUnk_083FDE18[0]);
     GetString(0x59);
-    ((void (*)(void))sub_080065A8)();
+    ((void (*)(void))DrawBigText)();
     i = 0;
     j = 5;
     p = gUnk_083FDE5E;
     do {
-        DrawTextCenteredHighlight((u8 *)(GetString(*p)), j, a == i);
+        DrawTextCenteredHighlight(GetString(*p), j, a == i);
         j += 2;
         p++;
         i++;

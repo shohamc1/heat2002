@@ -23,6 +23,6 @@ void sub_0833EDB8(void)
         sub_0833FF94((u32)p);
     }
     sub_0833ED10();
-    sub_0833EF0C((u8 *)((u32)gModule_TimeLabel), 0, 0x13);
+    ModuleDrawText(gModule_TimeLabel, 0, 0x13);
     sub_0833E0AC();
 }

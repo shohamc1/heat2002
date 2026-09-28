@@ -7,7 +7,7 @@ extern u32 gUnk_02039040[];
 
 void sub_0833DA34(void);
 u32 sub_0833C874(void);
-void sub_0833EE88(u32 *a, u32 b, u32 c);
+void ModuleDrawTextCenteredHighlight(u32 *a, u32 b, u32 c);
 void sub_0833AE90(void);
 void sub_08344B74(void);
 void sub_0833DC7C(void);
@@ -29,9 +29,9 @@ u8 sub_0833DCB0(void)
         for (;;) {
             gModule_VBlanksThisFrame = 0;
             if (sub_0833C874() != 0) {
-                sub_0833EE88(sub_0833BD94(0), 0xA, 1);
-                sub_0833EE88((u32 *)gModule_PleaseTurnOffYour_2, 0xC, 1);
-                sub_0833EE88((u32 *)gModule_GameBoyAdvance_2, 0xD, 1);
+                ModuleDrawTextCenteredHighlight(ModuleGetString(MODULE_MSG_LINK_FAIL), 0xA, 1);
+                ModuleDrawTextCenteredHighlight((u32 *)gModule_PleaseTurnOffYour_2, 0xC, 1);
+                ModuleDrawTextCenteredHighlight((u32 *)gModule_GameBoyAdvance_2, 0xD, 1);
                 sub_0833AE90();
                 done = 0;
                 do {

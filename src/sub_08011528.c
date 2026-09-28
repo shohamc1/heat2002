@@ -34,9 +34,9 @@ u8 sub_08011528(void)
             keys = (keys ^ gPlayerKeys[0]) & gPlayerKeys[0];
             sub_0801137C();
             if (gLinkPlayerId[0] != 0)
-                DrawTextCenteredHighlight((u8 *)(GetString(0x58)), 0x0E, 1);
+                DrawTextCenteredHighlight(GetString(0x58), 0x0E, 1);
             else
-                DrawTextCenteredHighlight((u8 *)(GetString(0x0F)), 0x0E, 1);
+                DrawTextCenteredHighlight(GetString(0x0F), 0x0E, 1);
             if (keys & 9)
                 sel = v;
             WaitForVBlank();

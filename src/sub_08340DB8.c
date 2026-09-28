@@ -20,5 +20,5 @@ void sub_08340DB8(u32 a1)
     ((void (*)(u16 *, u32))sub_0833E36C)(p, sub_08344C50(sub_08344BB8(a1, 0x0A), 0x0A));
     p = base + 0x1CE;
     ((void (*)(u16 *, u32))sub_0833E36C)(p, sub_08344C50(a1, 0x0A));
-    sub_0833EF0C(gModule_MPH, 0x10, 0x0F);
+    ModuleDrawText(gModule_MPH, 0x10, 0x0F);
 }

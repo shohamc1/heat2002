@@ -15,11 +15,9 @@ void sub_08013E3C(u8 a)
     u8 i;
 
     off = a * 15;
-    /* sub_08006734: this file's old local prototype differs from
-       functions.h; call through the old signature (solved-walls 31). */
-    ((void (*)(u32))sub_08006734)(gUnk_083FDE18[0]);
+    sub_08006734(gUnk_083FDE18[0]);
     GetString(0x2F);
-    ((void (*)(void))sub_080065A8)();
+    ((void (*)(void))DrawBigText)();
     walk = (u32 *)((u8 *)gCarOrder + off * 4);
     i = 0;
     do {
@@ -30,7 +28,7 @@ void sub_08013E3C(u8 a)
             if (ptr == (u8 *)gCars && (gMenuBlinkCounter & 0x10) != 0) {
                 DrawText(gText_BlankRow36, 1, i + 4, 1);
             } else {
-                DrawText((u8 *)GetDriverName(ptr[0x162]), 1, i + 4, 1);
+                DrawText(GetDriverName(ptr[0x162]), 1, i + 4, 1);
                 buf[0] = (m / 10) % 10 + 0x30;
                 buf[1] = m % 10 + 0x30;
                 buf[2] = 0x3A;

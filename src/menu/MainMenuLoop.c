@@ -44,7 +44,6 @@ void InitNewSaveData(void);
 u8 OptionsMenu(void);
 u8 sub_080129E8(u8 value);
 u8 sub_080128E0(u8 value);
-u8 MessageBox(u32 a, u32 b, u32 c);
 u8 sub_08012B50(u8 a, u8 b);
 u8 sub_08012BBC(u8 value);
 u32 sub_08012C20(void);
@@ -645,7 +644,7 @@ state5_setup:
         for (i = 0; i != 0x18; i++)
             gCars[i].points = 0;
         if (sub_0800F190() == 0) {
-            MessageBox((u32)gText_YouLose, (u32)gText_YourCareerIsOverAs, (u32)gText_NoTeamsWillTakeYou);
+            MessageBox(gText_YouLose, gText_YourCareerIsOverAs, gText_NoTeamsWillTakeYou);
             goto state5_done;
         }
 

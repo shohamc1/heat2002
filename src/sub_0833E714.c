@@ -29,7 +29,7 @@ void sub_0833E714(s32 arg)
         *q = 0xE047;
         return;
     }
-    sub_0833EF0C((u8 *)((u32)gModule_Pos), 0x16, 0);
+    ModuleDrawText(gModule_Pos, 0x16, 0);
     if (arg <= 9) {
         register u16 *w asm("r0");
         p = (u16 *)gModule_TextLayerMapPtr[0];

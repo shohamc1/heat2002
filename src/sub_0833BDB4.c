@@ -12,9 +12,8 @@ void sub_08339AB8(u32 r0);
 void sub_0833D250(u16 color);
 void sub_0833D510(u32 r0, u32 r1);
 void sub_0833A830(void);
-void sub_08344A20(void);
 u8 sub_0833BF80(u32 r0, u32 r1, u32 r2);
-void sub_0833EE88(u32 r0, u32 r1, u32 r2);
+void ModuleDrawTextCenteredHighlight(u32 r0, u32 r1, u32 r2);
 void sub_0833AE90(void);
 void sub_0833D9D8(void);
 void sub_08344B74(void);
@@ -69,14 +68,14 @@ void sub_0833BDB4(void)
     gModule_VBlanksThisFrame = z2;
     for (;;) {
         gUnk_02039194 = 3;
-        sub_08344A20();
+        ModuleLinkHandshake();
         gModule_IsLinkRace = 1;
         gUnk_02039190 = 0;
         sub_0833D510(0, 0x0A);
         if (sub_0833BF80(0, 4, 0)) {
-            sub_0833EE88(sub_0833BD94(0), 0x0A, 1);
-            sub_0833EE88((u32)gModule_PleaseTurnOffYour, 0x0C, 1);
-            sub_0833EE88((u32)gModule_GameBoyAdvance, 0x0D, 1);
+            ModuleDrawTextCenteredHighlight(ModuleGetString(MODULE_MSG_LINK_FAIL), 0x0A, 1);
+            ModuleDrawTextCenteredHighlight((u32)gModule_PleaseTurnOffYour, 0x0C, 1);
+            ModuleDrawTextCenteredHighlight((u32)gModule_GameBoyAdvance, 0x0D, 1);
             sub_0833B074((struct MusicPlayerInfo *)((u32)gUnk_02038F70));
             sub_0833B074((struct MusicPlayerInfo *)((u32)gUnk_02038FB0));
             sub_0833AE90();

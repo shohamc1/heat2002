@@ -89,12 +89,12 @@ void DrawSmallDigit(u16 *dest, u8 idx);
 void InitRaceHud(void);
 void sub_08006388(void);
 void sub_080063B0(void);
-void DrawText(u8 *p, u32 a1, u32 a2, u8 a3);
-void DrawTextCentered(u8 *str, u32 y);
+void DrawText(const u8 *text, u32 x, u32 y, u8 highlight);
+void DrawTextCentered(const u8 *str, u32 y);
 void sub_0800649C(const u8 *str, u32 x, u32 y);
-void sub_080065A8(u8 *s);
-void sub_08006734(void);
-void DrawTextCenteredHighlight(u8 *p, u32 a1, u8 a2);
+void DrawBigText(const u8 *text);
+void sub_08006734(u32 unused);
+void DrawTextCenteredHighlight(const u8 *text, u32 y, u8 highlight);
 void sub_08006A14(u32 arg0);
 void InitGfxCaches(void);
 void AgeGfxCaches(void);
@@ -154,7 +154,7 @@ void sub_0800EA64(void *a1);
 u32 sub_0800EAA0(void *a1);
 void sub_0800EEFC(u8 *a1, u32 a2, void *a3, u32 a4, u32 a5);
 u32 sub_0800EFC0(u8 *ptr);
-u32 GetDriverName(u8 r0);
+const u8 *GetDriverName(u8 driverId);
 void sub_0800F14C(u8 param);
 void sub_0800F1B4(void);
 void sub_0800F1D0(void);
@@ -207,8 +207,9 @@ void sub_08012758(void);
 void sub_080127E4(s8 a);
 void sub_08012874(s8 a);
 void sub_08012984(u8 a);
-void DrawMessageBox(u32 a, u32 b, u32 c);
-void sub_08012AF8(void);
+void DrawMessageBox(const u8 *title, const u8 *line1, const u8 *line2);
+u8 MessageBox(const u8 *title, const u8 *line1, const u8 *line2);
+void sub_08012AF8(u8 unused1, u8 unused2);
 void sub_08012B24(void);
 void sub_08012C4C(u32 a);
 void sub_08012DEC(u8 a);
@@ -241,7 +242,7 @@ void sub_08015000(u8 a);
 void sub_080150F4(void);
 void ResetBgScroll(void);
 void sub_08016330(u8 x);
-u32 GetString(u16 idx);
+const u8 *GetString(u16 idx);
 void WriteSaveBlocks(u16 a, u16 b);
 void ReadSaveBlocks(u16 a, u16 b);
 u32 InitEeprom(void);
@@ -273,7 +274,18 @@ void sub_0833B074(struct MusicPlayerInfo *mplayInfo);
 void sub_0833B290(u8 chanNum);
 void sub_0833B2E0(struct Unk1C20 *s);
 u8 sub_0833BCBC(void);
-u32 sub_0833BD94(u16 a);
+/* Localized message ids: rows of gModule_LocalizedText[8][5] (EN/FR/DE/ES/IT). */
+#define MODULE_MSG_LINK_FAIL   0
+#define MODULE_MSG_WAITING     1
+#define MODULE_MSG_PRESS_START 2
+#define MODULE_MSG_PAUSE       3
+#define MODULE_MSG_RACE_OVER   4
+#define MODULE_MSG_OUT_OF_TIME 5
+#define MODULE_MSG_LAP_TIME    6
+#define MODULE_MSG_CHECKPOINT  7
+
+void ModuleLinkHandshake(void);
+const u8 *ModuleGetString(u16 messageId);
 void sub_0833D288(u32 a0, u32 a1);
 void sub_0833D848(void);
 void sub_0833DA2C(void);
@@ -282,7 +294,7 @@ void sub_0833E094(u8 value);
 void sub_0833E160(u16 a, u16 b, u16 c);
 void sub_0833E36C(u16 *dest, u8 idx);
 void sub_0833E3C8(u16 *a, s32 b);
-void sub_0833EF0C(u8 *str, u32 a2, u32 a3);
+void ModuleDrawText(const u8 *text, u32 x, u32 y);
 void sub_0833FF84(u32 p);
 void sub_0833FFA8(u32 p);
 void sub_0834047C(u16 *a, u16 *b);
@@ -301,7 +313,7 @@ void sub_08342908(void);
 void sub_08342A94(void);
 void sub_08342BA4(u32 a0, u32 a1, u32 a2);
 void sub_08342D10(void);
-void sub_08343148(u8 *a, u32 b, u32 c);
+void sub_08343148(const u8 *a, u32 b, u32 c);
 void sub_083446C8(u8 param);
 void sub_08344730(void);
 void sub_08344734(void);

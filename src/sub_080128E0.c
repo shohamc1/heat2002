@@ -29,7 +29,8 @@ u8 sub_080128E0(void)
     if (gOptions[2] != 0)
         m4aSongNumStart(3);
     ResetBgScroll();
-    /* sub_08012874: old prototype took u8; the matched definition takes s8 */
+    /* The cast is load-bearing: a direct u8 argument to the s8 parameter
+       makes agbcc emit a sign extension the ROM does not have. */
     ((void (*)(u8))sub_08012874)(gChallengeResult);
     return gChallengeResult;
 }

@@ -3,7 +3,7 @@
 #include "variables.h"
 
 
-void sub_0833EE88(u8 *str, u32 y, u32 z);
+void ModuleDrawTextCenteredHighlight(u8 *str, u32 y, u32 z);
 
 void sub_083429B8(u32 a)
 {
@@ -12,5 +12,5 @@ void sub_083429B8(u32 a)
         sub_0833FFA8(a);
         sub_0833FF84(a);
     }
-    sub_0833EE88(gUnk_0200D118, 8, 1);
+    ModuleDrawTextCenteredHighlight(gUnk_0200D118, 8, 1);
 }

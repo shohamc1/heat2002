@@ -97,8 +97,8 @@ gUnk_02024F70:
 	.global gUnk_020250EC
 gUnk_020250EC:
 	.incbin "build/assets/unknown/data_0835DB6C.bin"
-	.global gUnk_020250F0
-gUnk_020250F0:
+	.global gModule_LocalizedText
+gModule_LocalizedText:
 	.incbin "build/assets/unknown/data_0835DB70.bin"
 	.global gUnk_02025190
 gUnk_02025190:
