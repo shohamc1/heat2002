@@ -13,8 +13,8 @@ struct EntityB7E0 {
     /* 0x30 */ s32 unk30;
 };
 
-extern u32 gUnk_083FF60C[];        /* 0x083FF60C */
-extern u8 gUnk_08330D18[];         /* 0x08330D18 */
+extern const u8 *const gSkidSmokeFrames[];        /* 0x083FF60C */
+extern u8 gSkidSmokePalette[];         /* 0x08330D18 */
 
 u32 WorldToScreen(s32 x, s32 y, s32 *out);
 u32 *sub_080076C8(u32 a);
@@ -37,11 +37,11 @@ void sub_0800B7E0(struct EntityB7E0 *e)
         pos[1] = t1 + (e->unk04 >> 2);
         if ((u32)(old + 0x1B) <= 0x10E && pos[1] <= 0x9F && pos[1] > -0x20)
         {
-            spr = sub_080076C8(gUnk_083FF60C[((e->unk18 + 8) & 7) + 8]);
+            spr = sub_080076C8(gSkidSmokeFrames[((e->unk18 + 8) & 7) + 8]);
             if (spr != 0)
             {
                 attr = (pos[1] & 0xFF) | ((pos[0] & 0x1FF) << 0x10);
-                t = (RequestObjPalette((u32)gUnk_08330D18) << 12) | 0x800;
+                t = (RequestObjPalette((u32)gSkidSmokePalette) << 12) | 0x800;
                 arg1 = spr[4] | t;
                 AddOamEntry(attr, arg1);
             }

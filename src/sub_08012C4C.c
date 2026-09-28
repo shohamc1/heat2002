@@ -4,12 +4,12 @@
 #include "gba/syscall.h"
 #include "data.h"
 
-extern u32 gUnk_083FEF00;
+extern u32 gChampionshipTrophyGfx;
 extern u8 gText_Congratulations_2[];
 extern u8 gText_YouCompletedTheSeason[];
-extern u8 gUnk_08310160[];
-extern u8 gUnk_0830EC58[];
-extern u8 gUnk_08310140[];
+extern u8 gGoldTrophyPalette[];
+extern u8 gSilverTrophyPalette[];
+extern u8 gBronzeTrophyPalette[];
 extern u8 gText_Gold[];
 extern u8 gText_Silver[];
 extern u8 gText_Bronze[];
@@ -29,17 +29,17 @@ void sub_08012C4C(u32 a)
         DrawTextCenteredHighlight(gText_YouCompletedTheSeason, 0xA, 1);
     }
     if (a <= 2)
-        RLUnCompVram(gUnk_083FEF00, OBJ_VRAM0);
+        RLUnCompVram(gChampionshipTrophyGfx, OBJ_VRAM0);
     if (a == 0) {
-        t = (u32)gUnk_08310160;
+        t = (u32)gGoldTrophyPalette;
         sub_080100CC(0x58, 0x40, 0, t, a);
     }
     if (a == 1) {
-        t = (u32)gUnk_0830EC58;
+        t = (u32)gSilverTrophyPalette;
         sub_080100CC(0x58, 0x40, 0, t, 0);
     }
     if (a == 2) {
-        t = (u32)gUnk_08310140;
+        t = (u32)gBronzeTrophyPalette;
         sub_080100CC(0x58, 0x40, 0, t, 0);
     }
     if (a == 0)

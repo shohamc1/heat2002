@@ -837,7 +837,7 @@ fix this: the stack-arg scratch clobbers r3.
 inside the loop, so precompute sees a cheap REG:
 
 ```c
-pal = (u32)gUnk_08331360;
+pal = (u32)gTrackTileSpritePalette;
 QueueSprite(t, x, y, pal, 0);
 ```
 
@@ -1104,6 +1104,18 @@ files' local struct definitions changes their codegen (the
 extern-headers-plan trap); complete the tag in a shared header first —
 `include/structs.h` holds `struct Track` (0x64) and the m4a table
 structs, exactly as `car.h` holds `struct Car`.
+
+**Variant:** a *local* struct-array extern's `const` alone can swap the
+user's registers: `BuildStartingGrid` (`race/grid.c`) matched with
+`extern struct TrackGrid gTrackStartGrids[]` and, with `extern const`
+added and nothing else changed, the whole body diffed — old_agbcc gave
+the table base r3 and the destination pointer r2 where the ROM has them
+r2/r3. Dropping the `const` from the user's declaration (the definition
+in `src/data/race_setup.c` stays `const`) matched. The sibling
+conversions of the same batch (`gTireGripDefaults` in
+`src/car/tire_grip.c`, `gTrackAiFinishTimeRanges` in
+`sub_08016CB0.c`) matched *with* `const`, so spell the extern plain
+first and let `match.py` decide.
 
 ### 32. A memory load the target puts before a constant
 

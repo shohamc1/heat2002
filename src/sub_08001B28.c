@@ -1,11 +1,11 @@
 #include "global.h"
 
-/* MidiKeyToCgbFreq. Tables: gUnk_0801D114 = gCgbScaleTable (u8),
- * gUnk_0801D198 = gCgbFreqTable (s16), gUnk_0801D1B0 = gNoiseTable (u8). */
+/* MidiKeyToCgbFreq. Tables: gCgbScaleTable = gCgbScaleTable (u8),
+ * gCgbFreqTable = gCgbFreqTable (s16), gNoiseTable = gNoiseTable (u8). */
 
-extern const u8 gUnk_0801D114[];
-extern const s16 gUnk_0801D198[];
-extern const u8 gUnk_0801D1B0[];
+extern const u8 gCgbScaleTable[];
+extern const s16 gCgbFreqTable[];
+extern const u8 gNoiseTable[];
 
 u32 sub_08001B28(u8 chanNum, u8 key, u8 fineAdjust)
 {
@@ -22,7 +22,7 @@ u32 sub_08001B28(u8 chanNum, u8 key, u8 fineAdjust)
                 key = 59;
         }
 
-        return gUnk_0801D1B0[key];
+        return gNoiseTable[key];
     }
     else
     {
@@ -44,11 +44,11 @@ u32 sub_08001B28(u8 chanNum, u8 key, u8 fineAdjust)
             }
         }
 
-        val1 = gUnk_0801D114[key];
-        val1 = gUnk_0801D198[val1 & 0xF] >> (val1 >> 4);
+        val1 = gCgbScaleTable[key];
+        val1 = gCgbFreqTable[val1 & 0xF] >> (val1 >> 4);
 
-        val2 = gUnk_0801D114[key + 1];
-        val2 = gUnk_0801D198[val2 & 0xF] >> (val2 >> 4);
+        val2 = gCgbScaleTable[key + 1];
+        val2 = gCgbFreqTable[val2 & 0xF] >> (val2 >> 4);
 
         return val1 + ((fineAdjust * (val2 - val1)) >> 8) + 2048;
     }

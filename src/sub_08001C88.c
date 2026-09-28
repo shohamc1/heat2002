@@ -6,7 +6,7 @@
  * channel-status check, no pseudo-echo envelope write, and
  * envelopeStepTimeAndDir is a u8 kept across channels. */
 
-extern const u8 gUnk_0801D1EC[];
+extern const u8 gCgb3Vol[];
 
 
 void sub_08001C88(void)
@@ -282,7 +282,7 @@ void sub_08001C88(void)
             REG_NR51 = (REG_NR51 & ~channels->panMask) | channels->pan;
             if (ch == 3)
             {
-                *nrx2ptr = gUnk_0801D1EC[channels->envelopeVolume];
+                *nrx2ptr = gCgb3Vol[channels->envelopeVolume];
                 if (channels->n4 & 0x80)
                 {
                     *nrx0ptr = 0x80;

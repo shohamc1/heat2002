@@ -7,8 +7,8 @@ struct Unk10CC
     s32 unk4;
 };
 
-extern const u8 gUnk_0801D018[];
-extern const u32 gUnk_0801D0CC[];
+extern const u8 gMidiKeyToFreqTable[];
+extern const u32 gMidiKeyToFreqOctaveBases[];
 
 
 s32 MidiKeyToFreq(struct Unk10CC *arg0, u8 arg1, u32 arg2)
@@ -27,10 +27,10 @@ s32 MidiKeyToFreq(struct Unk10CC *arg0, u8 arg1, u32 arg2)
         idx = 0xB2;
         packed = 0xFF000000;
     }
-    t = gUnk_0801D018[idx];
-    t = gUnk_0801D0CC[t & 0xF] >> (t >> 4);
-    b = gUnk_0801D018[idx + 1];
-    diff = gUnk_0801D0CC[b & 0xF] >> (b >> 4);
+    t = gMidiKeyToFreqTable[idx];
+    t = gMidiKeyToFreqOctaveBases[t & 0xF] >> (t >> 4);
+    b = gMidiKeyToFreqTable[idx + 1];
+    diff = gMidiKeyToFreqOctaveBases[b & 0xF] >> (b >> 4);
     next = arg0->unk4;
     diff -= t;
     return umul3232H32(next, t + umul3232H32(diff, packed));

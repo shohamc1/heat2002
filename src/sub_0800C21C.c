@@ -2,7 +2,7 @@
 #include "functions.h"
 #include "variables.h"
 
-extern u32 gUnk_083FEF04[];
+extern const u8 *const gLineMarkerSpriteGfxTable[];
 
 u8 WorldToScreen(s32 x, s32 y, s32 *out);
 
@@ -17,7 +17,7 @@ void sub_0800C21C(s32 x, s32 y, u8 c)
         return;
     out[0] = out[0] - 0x10;
     out[1] = out[1] - 0x10;
-    p = sub_0800767C((u32)gUnk_083FEF04);
+    p = sub_0800767C((u32)gLineMarkerSpriteGfxTable);
     if (p == 0)
         return;
     if ((*(s32 *)&gUnk_02002148) > 0xFF) {

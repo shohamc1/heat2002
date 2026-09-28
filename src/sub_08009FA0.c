@@ -17,7 +17,7 @@ void sub_08009FA0(u32 a1, u32 a2, u32 a3)
     q = sub_08007630(*p);
     if (q != 0) {
         t = *(u32 *)((u32)q + 0x10);
-        t |= (u8)RequestObjPalette((u32)gUnk_08337C20) << 12;
+        t |= (u8)RequestObjPalette((u32)gLinkMarkerPalette) << 12;
         AddOamEntry(attr, t);
     }
 }

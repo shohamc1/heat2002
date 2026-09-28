@@ -6,14 +6,6 @@
 
 extern u8 gText_Credits[];
 
-struct Tbl {
-    s32 f00;
-    u8 f04;
-    u8 pad[3];
-};
-
-extern struct Tbl gCreditTexts[];
-
 void sub_08011D2C(u32 a, void *b);
 void sub_08006738(u8 *a);
 
@@ -40,8 +32,8 @@ void sub_08016330(u8 x)
     j = 0x14;
     for (i = 0; i <= 0x13; i++) {
         DrawTextCenteredHighlight(gText_BlankRowMenu, (i + j - 0x14) % 32, 1);
-        DrawTextCenteredHighlight(gCreditTexts[i + j - 0x14].f00, (i + j - 0x14) % 32,
-                     gCreditTexts[i + j - 0x14].f04);
+        DrawTextCenteredHighlight(gCreditTexts[i + j - 0x14].text, (i + j - 0x14) % 32,
+                     gCreditTexts[i + j - 0x14].highlight);
     }
     FadeToBrightenedPalette((u32)buf, 0xF);
     for (i = 0; i <= 0x13; i++)
@@ -59,8 +51,8 @@ void sub_08016330(u8 x)
                     break;
                 q = gText_BlankRowMenu;
                 DrawTextCenteredHighlight(q, (j - 1) % 32, 1);
-                DrawTextCenteredHighlight(gCreditTexts[j - 1].f00, (j - 1) % 32,
-                             gCreditTexts[j - 1].f04);
+                DrawTextCenteredHighlight(gCreditTexts[j - 1].text, (j - 1) % 32,
+                             gCreditTexts[j - 1].highlight);
             }
             *(volatile u16 *)0x04000012 = (j - 0x14) * 8 + sel;
         }

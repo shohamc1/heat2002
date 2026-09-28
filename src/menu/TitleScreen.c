@@ -6,7 +6,7 @@
 #include "variables.h"
 
 extern const u8 gTitleScreenGfx[];
-extern const u8 gTitleScreenMetatileMap[];
+extern const u16 gTitleScreenMetatileMap[];
 extern const u8 gTitleScreenPalette[];
 
 

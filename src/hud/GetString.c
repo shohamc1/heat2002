@@ -1,5 +1,5 @@
 #include "global.h"
 
-extern const u32 gUnk_083FE6C4[];
+extern const u8 *const gGameTexts[];
 
-const u8 *GetString(u16 idx) { return (const u8 *)gUnk_083FE6C4[idx]; }
+const u8 *GetString(u16 idx) { return gGameTexts[idx]; }

@@ -3,9 +3,9 @@
 #include "functions.h"
 #include "variables.h"
 
-extern u8 *gChampionshipTeamNames[];
-extern u8 *gChampionshipQualifyTexts[];
-extern u8 *gChampionshipLockedTexts[];
+extern const u8 *const gChampionshipTeamNames[];
+extern const u8 *const gChampionshipQualifyTexts[];
+extern const u8 *const gChampionshipLockedTexts[];
 
 
 void sub_08010AA4(u8 idx)

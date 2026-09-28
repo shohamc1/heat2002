@@ -2,9 +2,9 @@
 #include "functions.h"
 #include "variables.h"
 
-extern s32 gUnk_08365308[];
-extern s32 gUnk_083652B8[];
-extern s32 gUnk_083652E0[];
+extern s32 gTuneMenuSteps[];
+extern s32 gTuneMenuMinValues[];
+extern s32 gTuneMenuMaxValues[];
 
 
 void sub_08004B1C(u8 arg)
@@ -23,14 +23,14 @@ void sub_08004B1C(u8 arg)
         p = gUnk_0202CB20;
     }
     if (gKeysPressed & 0x20) {
-        val = val - gUnk_08365308[sel];
-        if (val < gUnk_083652B8[sel])
-            val = gUnk_083652B8[sel];
+        val = val - gTuneMenuSteps[sel];
+        if (val < gTuneMenuMinValues[sel])
+            val = gTuneMenuMinValues[sel];
     }
     if (gKeysPressed & 0x10) {
-        val = val + gUnk_08365308[sel];
-        if (val > gUnk_083652E0[sel])
-            val = gUnk_083652E0[sel];
+        val = val + gTuneMenuSteps[sel];
+        if (val > gTuneMenuMaxValues[sel])
+            val = gTuneMenuMaxValues[sel];
     }
     if (sel <= 4)
         gUnk_0202A540[idx] = val;

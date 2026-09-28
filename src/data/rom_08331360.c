@@ -1,4 +1,6 @@
 #include "global.h"
 #include "data.h"
 
-const u8 gUnk_08331360[] = INCBIN_U8("build/assets/unknown/data_08331360.bin");
+/* 0x08331360: 16-color OBJ palette for the minimap track-surface
+ * tiles drawn around the player (sub_08008160, with gTrackTileSpriteFrames). */
+const u8 gTrackTileSpritePalette[] = INCBIN_U8("build/assets/unknown/data_08331360.bin");

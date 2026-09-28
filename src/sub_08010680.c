@@ -1,7 +1,7 @@
 #include "global.h"
 #include "functions.h"
 
-extern u16 gUnk_0829FC80[][4];
+extern u16 gSharedMetatileTileTable[][4];
 extern u16 gUnk_0600F800[];
 
 void sub_08010680(u16 *data)
@@ -19,7 +19,7 @@ void sub_08010680(u16 *data)
         for (; j != 0xF; j++) {
             idx = *data;
             data++;
-            entry = gUnk_0829FC80[idx];
+            entry = gSharedMetatileTileTable[idx];
             vram[0] = *entry++;
             vram[1] = *entry++;
             vram[0x20] = entry[0];

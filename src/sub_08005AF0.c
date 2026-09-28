@@ -27,7 +27,7 @@ void sub_08005AF0(s32 arg)
         v = buf[1] & 0xFF;
         v |= (buf[0] & 0x1FF) << 16;
         v |= 0x40000000;
-        r1v = *(u32 *)(ptr + 0x10) | (((u32)RequestObjPalette((u32)gUnk_08338788) << 24) >> 12);
+        r1v = *(u32 *)(ptr + 0x10) | (((u32)RequestObjPalette((u32)gHudWarningIconPalette) << 24) >> 12);
         AddOamEntry(v | 0x02000100, r1v);
     }
     gUnk_02025398 = ((arg >> 16) + 0xBE) & 0xFF;

@@ -13,8 +13,8 @@ struct EntityB658
   u8 pad20[0x34 - 0x20];
   u8 unk34;
 };
-extern u32 gUnk_083FF64C[];
-extern u8 gUnk_08331188[];
+extern const u8 *const gDraftStreakFrames[];
+extern u8 gDraftStreakPalette[];
 u32 WorldToScreen(s32 x, s32 y, s32 *out);
 u32 *sub_080076C8(u32 a);
 void sub_0800B658(struct EntityB658 *e)
@@ -52,11 +52,11 @@ void sub_0800B658(struct EntityB658 *e)
     pos[1] = pos[1] - 6;
     if (((((u32) (old + 0x1B)) <= 0x10E) && (pos[1] <= 0x9F)) && (pos[1] > (-0x20)))
     {
-      spr = sub_080076C8(gUnk_083FF64C[e->unk18 & 0xF]);
+      spr = sub_080076C8(gDraftStreakFrames[e->unk18 & 0xF]);
       if (spr != 0)
       {
         attr = (pos[1] & 0xFF) | ((pos[0] & 0x1FF) << 0x10);
-        t = (RequestObjPalette((u32) gUnk_08331188) << 12) | 0x800;
+        t = (RequestObjPalette((u32) gDraftStreakPalette) << 12) | 0x800;
         arg1 = spr[4] | t;
         AddOamEntry(attr, arg1);
       }

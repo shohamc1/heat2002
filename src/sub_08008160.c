@@ -3,8 +3,8 @@
 #include "car.h"
 #include "variables.h"
 
-extern u32 gUnk_083FF68C[];
-extern u8 gUnk_08331360[];
+extern const u8 *const gTrackTileSpriteFrames[];
+extern u8 gTrackTileSpritePalette[];
 extern u8 gText_Gravel[];
 extern u8 gText_Grass[];
 extern u8 gText_Tarmac[];
@@ -57,8 +57,8 @@ void sub_08008160(void)
                 out[1] = u + gCamera[7];
                 out[0] += 0xA;
                 out[1] += 8;
-                pal = (u32)gUnk_08331360;
-                sub_08007A7C(out[0] << 16, out[1] << 16, gUnk_083FF68C[v], pal, 0);
+                pal = (u32)gTrackTileSpritePalette;
+                sub_08007A7C(out[0] << 16, out[1] << 16, gTrackTileSpriteFrames[v], pal, 0);
                 if (i > cx - 2 && i < cx + 2 && j > cy - 2 && j < cy + 2)
                 {
                     if (v & 1)

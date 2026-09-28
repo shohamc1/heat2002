@@ -8,14 +8,14 @@
 #include "variables.h"
 void sub_0800DFC0(void);
 void SioTransferIntr(void);
-extern u32 gUnk_0807C9E8;
+extern u32 gGameCodeAgbj;
 extern const u8 *gUnk_083FDA50[];
 extern const u8 *const gHighModuleChunks[];
 extern u8 gText_BlankRow24_2[];
 extern u8 gText_DoNotRemoveGameBoy[];
 extern u8 gText_AdvanceGameLink[];
 extern u8 gText_CableOrTurnPowerOff[];
-extern u8 gUnk_0807CB58[];
+extern u8 gMultibootSendObjPalette[];
 void SioTransferInit(u32 a1, const u8 *a2);
 void sub_0800DE9C(u16 x, u16 y);
 void sub_0800DE60(u32 id, u32 c);
@@ -35,7 +35,7 @@ u32 SendMultibootPayload(void)
     frame = 0;
     idx = 0;
     REG_IE = INTR_FLAG_VBLANK;
-    if (RomHeaderMagic == 0x96 && RomHeaderGameCode == gUnk_0807C9E8)
+    if (RomHeaderMagic == 0x96 && RomHeaderGameCode == gGameCodeAgbj)
         REG_IE |= INTR_FLAG_GAMEPAK;
     REG_DISPSTAT = DISPSTAT_VBLANK_INTR;
     REG_IME = 1;
@@ -44,7 +44,7 @@ u32 SendMultibootPayload(void)
     REG_DISPCNT &= ~DISPCNT_OBJ_ON;
     for (i = 0; i < 3; i++)
         LZ77UnCompVram(gUnk_083FDA50[i], (void *)(OBJ_VRAM0 + i * 0x200));
-    DmaCopy32(3, gUnk_0807CB58, OBJ_PLTT, 0xA0);
+    DmaCopy32(3, gMultibootSendObjPalette, OBJ_PLTT, 0xA0);
     DmaFill32(3, 0xA0, (u8 *)gOamBuffer, 0x400);
     CpuFastSet((u8 *)gOamBuffer, (void *)OAM, 0x100);
     REG_DISPCNT |= DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP;

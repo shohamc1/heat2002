@@ -3,11 +3,11 @@
 #include "data.h"
 #include "variables.h"
 
-extern u8 *gChallengeNameTexts[];
+extern const u8 *const gChallengeNameTexts[];
 extern u8 gText_ChallengeStatusBeat[];
 extern u8 gText_ChallengeStatusNA[];
 extern u8 gText_ChallengeStatusOpen[];
-extern u8 *gChallengeGoalTexts[];
+extern const u8 *const gChallengeGoalTexts[];
 
 void sub_08014708(u8 a, u8 b)
 {

@@ -241,7 +241,7 @@ maps closely onto the source:
   bytes are: a `NAME:` line before its `.incbin` in `data/*.s`, splitting
   the blob in `assets/unknown.json` if the address falls inside one. For an
   offset inside a C-defined blob, add an alias to `symbols.ld`, such as
-  `gUnk_083FDA67 = gUnk_083FDA60 + 0x7;`. `symbols.ld` holds no ROM
+  `gUnk_083FDE2D = gChampionshipTrackOrder + 0x11;`. `symbols.ld` holds no ROM
   address: never add one. No C writes a ROM address as a number, so keep
   it that way.
 - A table of pointers names its targets: `(u32)gUnk_X` or `(u32)sub_X` in
@@ -400,6 +400,14 @@ still hardcoded through `sub_08006734`'s first review pass -- fixed since).
 tooling changes.
 
 ## Define ROM data in C
+
+Asset data must come from `baserom.gba`, never from literals in git. That
+covers graphics (tiles, palettes, tilemaps, metatile maps and tables),
+music and samples. List a graphics blob in `assets/graphics.json` (as
+`graphics/metatiles_ADDR.bin` for a metatile map or table), not in
+`assets/unknown.json`, and read it with `INCBIN_*`. Write literal
+initialisers only for data the program logic reads: constants, lookup
+tables, VRAM slot lists, text and pointer tables.
 
 The Makefile runs every C file through `tools/bin/preproc`, which replaces
 each `INCBIN_U8`, `INCBIN_U16`, or `INCBIN_U32` call with an initialiser

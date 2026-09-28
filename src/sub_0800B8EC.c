@@ -1,8 +1,8 @@
 #include "global.h"
 #include "functions.h"
 
-extern u32 gUnk_083FF6A4[];
-extern u8 gUnk_08331F88[];
+extern const u8 *const gDamageSmokeFrames[];
+extern u8 gDamageSmokePalettes[];
 
 u32 WorldToScreen(s32 x, s32 y, s32 *out);
 u32 GetTrackTileType(s32 x, s32 y);
@@ -46,20 +46,20 @@ void sub_0800B8EC(struct Unk0800B8EC *e)
         out[1] = y + (e->f04 >> 1);
         if ((u32)(x0 + 0x17) <= 0x10E && out[1] <= 0x9F && out[1] > -0x10)
         {
-            oam = sub_0800754C(gUnk_083FF6A4[e->f18 & 0x1F]);
+            oam = sub_0800754C(gDamageSmokeFrames[e->f18 & 0x1F]);
             if (oam != 0)
             {
                 v = GetTrackTileType(e->f00 >> 19, e->f08 >> 19);
                 if (v & 1)
                 {
                     attr = (out[1] & 0xFF) | ((out[0] & 0x1FF) << 16) | 0x40000000;
-                    t = ((u8)RequestObjPalette((u32)gUnk_08331F88) << 12) | 0x800;
+                    t = ((u8)RequestObjPalette((u32)gDamageSmokePalettes) << 12) | 0x800;
                     AddOamEntry(attr, oam->f10 | t);
                 }
                 else
                 {
                     attr = (out[1] & 0xFF) | ((out[0] & 0x1FF) << 16) | 0x40000000;
-                    t = ((u8)RequestObjPalette((u32)gUnk_08331F88) << 12) | 0x400;
+                    t = ((u8)RequestObjPalette((u32)gDamageSmokePalettes) << 12) | 0x400;
                     AddOamEntry(attr, oam->f10 | t);
                 }
             }

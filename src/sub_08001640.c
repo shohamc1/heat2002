@@ -7,7 +7,7 @@
 
 /* SampleFreqSet */
 
-extern u16 gUnk_0801D0FC[];
+extern u16 gPcmSamplesPerVBlankTable[];
 void sub_08001640(u32 freq)
 {
     struct SoundInfo *soundInfo = SOUND_INFO_PTR;
@@ -18,7 +18,7 @@ void sub_08001640(u32 freq)
 
         soundInfo->freq = freq;
         {
-            u16 pcmSamplesPerVBlank = gUnk_0801D0FC[freq - 1];
+            u16 pcmSamplesPerVBlank = gPcmSamplesPerVBlankTable[freq - 1];
 
             soundInfo->pcmSamplesPerVBlank = pcmSamplesPerVBlank;
             soundInfo->pcmDmaPeriod = sub_08017230(0xC6 << 3, pcmSamplesPerVBlank);

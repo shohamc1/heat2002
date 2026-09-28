@@ -1,12 +1,12 @@
 #include "global.h"
 #include "variables.h"
 
-extern u8 *gCheatCodeTable[];
+extern const u8 *const gCheatCodeTable[];
 
 s8 sub_0801319C(void)
 {
     u8 i;
-    u8 *e;
+    const u8 *e;
 
     i = 0;
     do {

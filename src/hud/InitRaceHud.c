@@ -3,7 +3,7 @@
 #include "functions.h"
 #include "variables.h"
 
-extern const u8 gUnk_08331FC8[];
+extern const u8 gRaceHudObjTiles[];
 
 void UpdateRaceHud(void);
 extern u8 gText_TimeLabel[];
@@ -28,7 +28,7 @@ void InitRaceHud(void)
     }
     sub_08006214();
     sub_0800649C(gText_TimeLabel, 0, 0x13);
-    src = (u32)gUnk_08331FC8;
+    src = (u32)gRaceHudObjTiles;
     dst = (u32)OBJ_VRAM1 + 0x2280;
     CpuCopy16(src, dst, 0x180);
     src += 0xC0 << 1;

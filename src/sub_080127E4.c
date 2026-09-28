@@ -2,7 +2,7 @@
 #include "functions.h"
 #include "variables.h"
 
-extern u32 gChampionshipRetainTexts[];
+extern const u8 *const gChampionshipRetainTexts[];
 
 
 void sub_080127E4(s8 a)

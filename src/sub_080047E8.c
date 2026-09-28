@@ -30,8 +30,8 @@
 #include "functions.h"
 #include "variables.h"
 
-extern u32 gUnk_083FF79C[];
-extern u8 gUnk_083393C0[];
+extern const u8 *const gTrackCueIconGfxList[];
+extern u8 gTrackCueIconPalette[];
 
 void sub_080047E8(u8 a, u16 b)
 {
@@ -52,7 +52,7 @@ void sub_080047E8(u8 a, u16 b)
         w = 0;
         c[0] = 0x68;
         *(u16 *)((u8 *)cmd + 2) = w;
-        res = sub_0800754C(gUnk_083FF79C[a & 7]);
+        res = sub_0800754C(gTrackCueIconGfxList[a & 7]);
         x = (a & 8) >> 3;
         y = (a & 0x10) >> 4;
         if (res == 0)
@@ -61,7 +61,7 @@ void sub_080047E8(u8 a, u16 b)
         }
         gUnk_020251F0 = b;
         attr = ((cmd[1] & 0xFF) | ((cmd[0] & 0x1FF) << 16)) | 0x80000000;
-        arg1 = res[4] | (RequestObjPalette((u32) gUnk_083393C0) << 12);
+        arg1 = res[4] | (RequestObjPalette((u32) gTrackCueIconPalette) << 12);
         attr |= 0x04000100;
         gUnk_0202523C = z;
         gUnk_020253C8 = z;
@@ -79,7 +79,7 @@ void sub_080047E8(u8 a, u16 b)
     {
         cmd[0] = 0x68;
         cmd[1] = b;
-        res = sub_0800754C(gUnk_083FF79C[a & 7]);
+        res = sub_0800754C(gTrackCueIconGfxList[a & 7]);
         x = (a & 8) >> 3;
         y = (a & 0x10) >> 4;
         if (res == 0)
@@ -87,7 +87,7 @@ void sub_080047E8(u8 a, u16 b)
             return;
         }
         attr = ((cmd[1] & 0xFF) | ((cmd[0] & 0x1FF) << 16)) | 0x80000000;
-        arg1 = res[4] | (RequestObjPalette((u32) gUnk_083393C0) << 12);
+        arg1 = res[4] | (RequestObjPalette((u32) gTrackCueIconPalette) << 12);
         if (x != 0)
         {
             attr |= 0x10000000;

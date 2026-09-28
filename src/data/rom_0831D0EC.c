@@ -1,4 +1,6 @@
 #include "global.h"
 #include "data.h"
 
-const u8 gUnk_0831D0EC[] = INCBIN_U8("build/assets/unknown/data_0831D0EC.bin");
+/* 16-color OBJ palette DrawCar.c requests for the in-race car sprites
+ * (0x0831D0EC-0x0831D10C). */
+const u8 gDriverNumberPalette[] = INCBIN_U8("build/assets/unknown/data_0831D0EC.bin");

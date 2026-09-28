@@ -4,7 +4,7 @@
 #include "gba/syscall.h"
 
 extern u32 gUnk_082B370C[];
-extern u32 gUnk_082B350C[];
+extern u32 gBootSplash3Palette[];
 
 
 void sub_080102F0(void)
@@ -17,7 +17,7 @@ void sub_080102F0(void)
     *r = 0x444;
     p = (u32)gUnk_082B370C;
     RLUnCompVram(p, VRAM);
-    FadeToBrightenedPalette((u32)gUnk_082B350C, 0xF);
+    FadeToBrightenedPalette((u32)gBootSplash3Palette, 0xF);
     WaitFramesOrKey(0x78);
     FadeToColor(0, 0xF);
 }

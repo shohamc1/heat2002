@@ -13,8 +13,8 @@ extern u8 gUnk_020021EC[];         /* 0x020021EC */
 extern u8 gUnk_020021F0;           /* 0x020021F0 */
 extern u8 gEngineSoundPlayer[];         /* 0x02001F60 */
 extern u8 gUnk_08364ADC;           /* 0x08364ADC */
-extern u32 gUnk_08364AE0[];        /* 0x08364AE0 */
-extern u8 gUnk_08364AF4[];         /* 0x08364AF4 */
+extern u32 gEngineSoundFreqBases[];        /* 0x08364AE0 */
+extern u8 gEngineSoundRpmMultipliers[];         /* 0x08364AF4 */
 extern u8 gText_BlankRow16[];         /* 0x0806C678 */
 
 
@@ -150,8 +150,8 @@ camera_ready:
         /* sub_0800215C: this file's old prototype took (void *, u32, s32);
            the matched definition narrows to u16; call through the old one. */
         ((void (*)(void *, u32, s32))sub_0800215C)(gEngineSoundPlayer, 1,
-                     (s16)(gUnk_08364AE0[p->gear]
-                           + ((p->rpm * gUnk_08364AF4[p->gear]) >> 6)) >> 3);
+                     (s16)(gEngineSoundFreqBases[p->gear]
+                           + ((p->rpm * gEngineSoundRpmMultipliers[p->gear]) >> 6)) >> 3);
         if (gIsDemo != 0) {
             SetCameraTarget((struct UnkStruct080043F8 *)gUnk_0202A6E0);
             gUnk_08364ADC = t = gFrameCounter / 256;

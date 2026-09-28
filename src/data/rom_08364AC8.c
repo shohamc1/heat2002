@@ -119,11 +119,20 @@ const u32 gUnk_08364AC8[] = {
     (u32)gText_4th, (u32)gText_5th
 };
 // Its users declare it as u8 x.
-const u8 gUnk_08364ADC[] = INCBIN_U8("build/assets/unknown/data_08364ADC.bin");
-const u32 gUnk_08364AE0[] = INCBIN_U32("build/assets/unknown/data_08364AE0.bin");
-const u8 gUnk_08364AF4[] = INCBIN_U8("build/assets/unknown/data_08364AF4.bin");
+const u8 gUnk_08364ADC[4] = { 4, 0, 0, 0 };
+// The engine-sound base frequencies per gear; RunRace adds
+// rpm * gEngineSoundRpmMultipliers[gear] >> 6 before playing (src/race/RunRace.c).
+const u32 gEngineSoundFreqBases[5] = { 1200, 700, 550, 500, 300 };
+// The engine-sound rpm multipliers per gear (gears 0-4, like
+// gEngineSoundFreqBases).
+const u8 gEngineSoundRpmMultipliers[5] = { 200, 190, 180, 160, 150 };
+// No decompiled code reads these bytes yet.
+const u8 gUnk_08364AF9[15] = {
+    1, 1, 12, 2, 12, 12, 12, 2, 12, 12, 12, 12, 39, 0, 0
+};
 // Its users declare it as u16 *x, u32 *x, u32 x, u32 x[], vu32 x[].
-const u32 gTextLayerMapPtr[] = INCBIN_U32("build/assets/unknown/data_08364B08.bin");
+// The one word is the text layer's BG map base in VRAM.
+const u32 gTextLayerMapPtr[1] = { 0x600E000 };
 // Its users declare it as struct Track x[].
 const u32 gTrackData[] = {
     (u32)gUnk_08086D6C, (u32)gUnk_080954F8, 0, (u32)gUnk_0807EDEC,

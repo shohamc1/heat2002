@@ -4,8 +4,8 @@
 #include "variables.h"
 #include "car.h"
 
-extern u32 gUnk_083FDD48[];
-extern u8 gUnk_083FDD34[];
+extern u32 gChampionshipQualifyLapTimeTargets[];
+extern u8 gChampionshipTrackIds[];
 
 
 u8 sub_080128E0(void)
@@ -13,8 +13,8 @@ u8 sub_080128E0(void)
     u8 *p;
 
     gNumLaps = 2;
-    gUnk_0202ED84 = gUnk_083FDD48[gChampionshipIndex];
-    gTrackId = gUnk_083FDD34[gChampionshipIndex];
+    gUnk_0202ED84 = gChampionshipQualifyLapTimeTargets[gChampionshipIndex];
+    gTrackId = gChampionshipTrackIds[gChampionshipIndex];
     gChallengeResult = 0;
     gCars[0].finishTime = 0;
     gCars[0].finished = 1;

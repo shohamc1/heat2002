@@ -15,8 +15,8 @@ extern u16 gUnk_02015690[];
 extern u32 gUnk_02022DD8;
 extern u32 gUnk_02022DF0;
 extern u32 gUnk_0201567C;
-extern u16 gUnk_08335C60[];
-extern u16 gUnk_08334BCC[];
+extern u16 gTrackBgTilemap[];
+extern u16 gTrackBgPalette[];
 void LoadTrackTiles(u8 idx);
 void BeginFadeToBrightenedPalette(s32 arg0, u16 *src);
 void RleDecode16(u16 *src, u16 *dst, u16 count);
@@ -123,10 +123,10 @@ void LoadTrack(u32 idx)
     u16 *t;
 
     LoadTrackTiles(idx);
-    t = gUnk_08335C60;
+    t = gTrackBgTilemap;
     CpuCopy16(t, BG_SCREEN_ADDR(24), 0x2000);
     CpuCopy16(gTrackData[idx].unk18, (u32)a, 0x200);
-    CpuCopy16(t = gUnk_08334BCC, (u32)b, 0x20);
+    CpuCopy16(t = gTrackBgPalette, (u32)b, 0x20);
     BeginFadeToBrightenedPalette(0x1E, a);
     gBgMapWidth = gTrackData[idx].unk2C;
     gUnk_02022DD8 = gTrackData[idx].unk34;

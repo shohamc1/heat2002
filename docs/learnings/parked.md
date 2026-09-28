@@ -399,6 +399,61 @@ rpm-per-speed: 30 rows x 5 `u16`) is plain `u16` literals in
 indexes the tables and the roster with the same `car->driverId`, which
 is the alignment proof.
 
+A third pass on 2026-09-28 converted every remaining numeric and text
+blob to literals; only graphics stays INCBIN now (palettes, tiles,
+tilemaps, and one mixed blob, `gMultibootSendObjPalette`, whose OBJ
+palette colors embed the "Sio32MultiLoad010214" handshake string).
+Reproducible counts: `src/data` INCBIN definitions went from 102 to
+41, 18 `.incbin` lines left `data/*.s` with seven deleted fragments,
+and `unknown.json` went from 1288 to 1172 entries (116 fewer; 37 of
+those were already unreferenced at the previous commit, leftovers the
+earlier text passes should have dropped). The converts include the
+m4a frequency tables (`gMidiKeyToFreqTable` and friends, with
+`gCgb3Vol` under m4a's own name), `gSinTable`, the pit/race setup
+tables, the font text tables (`gTextCharMap` and friends), the
+championship and cheat tables, and every screen's metatile map and
+tile-index table (title screen, main menu, driver select, results,
+credits pages 1-3, boot splash 1; each is `u16[]` literals with the
+owning user's `extern` aligned to `u16` too, which is byte-neutral
+when the user only takes the array's address and casts it, as
+`sub_08010680`/`sub_080106CC` callers all do).
+
+`gCheatCodeTable`'s five pointer words name their targets now: the
+dial-code sequences at `0x083FE064`-`0x083FE080` moved from
+`data/rom_083FE064.s` into `rom_083FE064.c` as `u8
+gCheatCodeSequences[4][5]`, and the table points at each row with a C
+address constant, `(u32)gCheatCodeSequences[1]`, which agbcc builds
+byte-identical to a `symbols.ld` alias. Two file merges
+besides `race_setup.c` (which absorbed `rom_083671C0.c` and now
+covers `0x083671C0-0x083682BC`): `title_screen.c`
+(`0x0829F954-0x082A0820`, absorbing `rom_0829F954/FC80/A0130.c` and
+the duplicated ldscript line) and `trophy_credits.c`
+(`0x08310140-0x0831377C`, absorbing the six single-blob C files from
+`rom_08310140.c` through `rom_083107FC.c` and six fragments; its
+`assets/unknown.json` blobs were re-cut to the semantic units, trophy
+palettes 32 B, credits palette 512 B, credits gfx 12160 B, so
+re-cutting a blob is fine when every referenced path stays
+extractable). The six `gObjTileCache*Tiles` tables were retyped
+`u32[]` to `u16[]` (their words are OBJ VRAM tile-offset pairs;
+`gfx_cache.c` only takes their addresses, so the retype is
+byte-neutral). A `\0` before a digit is an octal escape; `\000` is
+still the rule. `nascar-heat.code.sha1` regenerated with the json
+change.
+
+Split tables at their real boundaries. A literal that mixes hex and
+decimal is the symptom: the generator writes hex for a negative stored
+unsigned and for `u16` or `u8` values packed into a `u32` word, so the
+mix marks a table with the wrong type or a second table inside it. On
+2026-09-28, 16 such arrays were split or retyped, with no byte changed.
+For example, `gTrackStartGrids` became `s32[84]` (12 records of 7
+words) followed by seven car setups of three `u16[5]` rows, and
+`gTrackAiDragDivisors` became the `u16[12]` that `car/update.c`
+indexes, followed by a separate pointer pair. Ten `symbols.ld` aliases
+went with them. agbcc aligns a `u8` array to 1 byte (`thumb.h` has no
+`DATA_ALIGNMENT`), so a `u8` split never adds padding. When no
+decompiled code reads the new piece, give it a `gUnk_ADDR` name and
+say so in a comment.
+
 The conversion covered every `symbols.ld` ROM line that starts an
 `assets/unknown.json` blob and that C reads, outside the sound range and
 the two EWRAM images: 232 symbols in 43 files. That left 58 ROM lines in
@@ -427,7 +482,7 @@ Types follow the users' `extern` declarations, with these exceptions:
   users read as `struct Track[]`, and the pointer tables such as
   `gUnk_083FDF74`.
 - If users declare a scalar but the blob holds more than one element, the
-  definition is an array: `gUnk_0807C9E8` (a `u32`, 8 bytes) and
+  definition is an array: `gGameCodeAgbj` (a `u32`, 8 bytes) and
   `gUnk_08364ADC` (a `u8`, 4 bytes).
 
 The following ROM symbols stayed in `symbols.ld` after that pass, and their
@@ -442,7 +497,7 @@ data stayed `.incbin`. "Pointers" below replaced every one of them:
   C wrote these addresses as numbers. The code pass (see "Pointers")
   defined them in C.
 - Addresses that don't start a blob: offsets inside a blob (for example
-  `gUnk_083FDA67` and `gUnk_08367BFA`), Thumb entry points
+  `gOptionsMenuMaxValues` and `gUnk_08367BFA`), Thumb entry points
   (`gCallback_*`), and code labels. The sound tables `gUnk_0801DA90` and
   `gUnk_0801DACC` were here too, until "Pointers" below labelled them.
 - The sound range `0x0801D29C`-`0x0806C664` and `assets/graphics.json` were
@@ -486,7 +541,11 @@ Targets got names this way:
   `0x083C9E74`, for example, point at 2-byte-aligned offsets in the track
   data, which now splits there.
 - An offset inside a C-defined blob, which can't split at an odd address,
-  gets a `symbols.ld` alias such as `gUnk_083FDA67 = gUnk_083FDA60 + 0x7;`.
+  gets a `symbols.ld` alias such as `gUnk_083FDE2D = gChampionshipTrackOrder + 0x11;`.
+  Use an alias only when the two tables really overlap. When the offset
+  is where one table ends and the next starts, split the C array there
+  instead; see "Split tables at their real boundaries" in "ROM data
+  defined in C".
 - The chunk tables use `ldscript.ld` symbols: `gHighModuleRom` is the high
   module's ROM address and `gHighModule` its run address, so the main
   program's `gHighModuleChunks` is `gHighModuleRom + 0x8000 * n` and the
@@ -2294,7 +2353,7 @@ This ROM's revision differs from tmc's in these ways:
 - The attack and release zero tests are `(u8)(x & mask)`, not `(s8)`.
 - `REG_SOUNDBIAS_H` needs no `asm("" ::: "r0")` barrier.
 
-`gUnk_0801D1EC` is m4a's `gCgb3Vol`.
+The table once `gUnk_0801D1EC` is now named `gCgb3Vol`, m4a's own name.
 
 ### Update 2026-09-24: the natural tmc-style base is the right start
 

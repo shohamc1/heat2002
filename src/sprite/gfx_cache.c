@@ -1,12 +1,12 @@
 #include "global.h"
 #include "gba/defines.h"
 #include "variables.h"
-extern u32 gObjTileCache64Tiles[];
-extern u32 gObjTileCache16Tiles[];
-extern u32 gObjTileCache2Tiles[];
-extern u32 gObjTileCache8Tiles[];
-extern u32 gObjTileCache4Tiles[];
-extern u32 gObjTileCache1Tiles[];
+extern u16 gObjTileCache64Tiles[];
+extern u16 gObjTileCache16Tiles[];
+extern u16 gObjTileCache2Tiles[];
+extern u16 gObjTileCache8Tiles[];
+extern u16 gObjTileCache4Tiles[];
+extern u16 gObjTileCache1Tiles[];
 void sub_08007304(u32 a, u16 *b, u32 *c);
 
 void InitGfxCaches(void)

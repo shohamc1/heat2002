@@ -26,7 +26,7 @@ struct Car {
 extern u32 *gDriverCarSpriteHalfATables[];
 extern u32 *gDriverCarSpriteHalfBTables[];
 extern const u32 *const gDriverNumberFrameLists[];
-extern u8 gUnk_0831D0EC[];
+extern u8 gDriverNumberPalette[];
 
 u32 AddDepthSortedSprite(u32 a, u32 b, u32 c);
 struct Thing *sub_08007598(u32 a);
@@ -106,7 +106,7 @@ void DrawCar(struct Car *car, u8 idx)
         if (t == NULL)
             return;
         t5 = t->unk10 | 0x400;
-        t5 |= (u32)(RequestObjPalette((u32)gUnk_08337C20) << 24) >> 12;
+        t5 |= (u32)(RequestObjPalette((u32)gLinkMarkerPalette) << 24) >> 12;
         AddDepthSortedSprite(k, t5, (u16)(y + 0x40));
     } else {
         row = (u32 *)gDriverNumberFrameLists[car->driverId];
@@ -117,7 +117,7 @@ void DrawCar(struct Car *car, u8 idx)
         if (t == NULL)
             return;
         t5 = t->unk10 | 0x400;
-        t5 |= (u32)(RequestObjPalette((u32)gUnk_0831D0EC) << 24) >> 12;
+        t5 |= (u32)(RequestObjPalette((u32)gDriverNumberPalette) << 24) >> 12;
         AddDepthSortedSprite(k, t5, (u16)(y + 0x40));
     }
 }

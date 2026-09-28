@@ -4,7 +4,7 @@
 #include "data.h"
 
 extern const u8 gUnk_082E4B04[];
-extern const u8 gUnk_082E4528[];
+extern const u16 gMenuBackdropMetatileMapAndTable[];
 void sub_0800F4FC(void)
 {
     REG_BG0CNT = BGCNT_PRIORITY(1) | BGCNT_CHARBASE(3) | BGCNT_SCREENBASE(28);
@@ -13,5 +13,5 @@ void sub_0800F4FC(void)
     CpuCopy16((u32)gTextLayerTiles, BG_SCREEN_ADDR(24), 0x2000);
     WaitForVBlank();
     REG_DISPCNT = 0xA8 << 3;
-    sub_08010680((u16 *)((u32)gUnk_082E4528));
+    sub_08010680((u16 *)((u32)gMenuBackdropMetatileMapAndTable));
 }

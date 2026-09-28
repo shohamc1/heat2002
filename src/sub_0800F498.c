@@ -4,7 +4,7 @@
 #include "data.h"
 
 extern u32 gUnk_082EE8E0[];
-extern u32 gUnk_082EE304[];
+extern const u16 gResultsScreenMetatileMapAndTable[];
 
 void sub_0800F498(void)
 {
@@ -24,5 +24,5 @@ void sub_0800F498(void)
     CpuCopy16(src, dest, ctrl * 2);
     WaitForVBlank();
     REG_DISPCNT = 0xA8 << 3;
-    sub_08010680((u16 *)gUnk_082EE304);
+    sub_08010680((u16 *)gResultsScreenMetatileMapAndTable);
 }

@@ -2,8 +2,8 @@
 #include "functions.h"
 #include "m4a.h"
 #include "variables.h"
-extern u8 gUnk_083FDA60[];
-extern u8 gUnk_083FDA67[];
+extern u8 gOptionsMenuMinValues[];
+extern u8 gOptionsMenuMaxValues[];
 u8 OptionsMenu(void)
 {
     u8 buf[0x200];
@@ -30,7 +30,7 @@ u8 OptionsMenu(void)
             sel = 1;
         v = MenuMoveVertical(gKeysPressed, v, 0, 5);
         gOptions[v] = MenuMoveHorizontal(gKeysPressed, gOptions[v],
-                                        gUnk_083FDA60[v], gUnk_083FDA67[v]);
+                                        gOptionsMenuMinValues[v], gOptionsMenuMaxValues[v]);
         if (v == 2) {
             if ((gKeysPressed & 0x30) && gOptions[2] != 0)
                 sub_080100B0();

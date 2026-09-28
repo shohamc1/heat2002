@@ -1,7 +1,7 @@
 #include "global.h"
 
-extern u16 gUnk_082B751C[]; /* 0x082B751C */
-extern u16 gUnk_082B7648[][4]; /* 0x082B7648 */
+extern u16 gDriverSelectMetatileMap[]; /* 0x082B751C */
+extern u16 gDriverSelectMetatileTable[][4]; /* 0x082B7648 */
 
 void sub_08010714(void)
 {
@@ -13,13 +13,13 @@ void sub_08010714(void)
     u16 *t;
 
     dst = (u16 *)0x06008000;
-    src = gUnk_082B751C;
+    src = gDriverSelectMetatileMap;
     for (i = 0; i != 10; i++)
     {
         j = 0;
         do {
             idx = *src++;
-            t = gUnk_082B7648[idx];
+            t = gDriverSelectMetatileTable[idx];
             dst[0] = *t++;
             dst[1] = *t++;
             dst[0x20] = *t++;

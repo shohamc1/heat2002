@@ -1,18 +1,13 @@
 #include "global.h"
 #include "data.h"
 
-struct Unk083FDB98 {
-    u32 a;
-    u8 b;
-};
-
 
 u8 sub_0800F120(u8 id)
 {
     u8 i;
 
     for (i = 0; i != 0x1E; i++) {
-        if (((struct Unk083FDB98 *)gDriverRoster)[i].b == id)
+        if (gDriverRoster[i].teamId == id)
             return i;
     }
     return 0;

@@ -18,7 +18,7 @@ void sub_08008480(struct Car *car, u8 b)
     s32 t, spd, v1, v2;
 
     gCurrentCarIndex = b;
-    sub_080083C0((u32)car, b);
+    SetTireGrip(car, b);
     if (car == gCars
         && (car->tireWear0 > 0x7D000 || car->tireWear1 > 0x7D000
             || car->tireWear2 > 0x7D000 || car->tireWear3 > 0x7D000)) {

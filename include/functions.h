@@ -113,7 +113,7 @@ void sub_08007EF8(void);
 void sub_08007F44(u8 a);
 void sub_080080B4(void);
 void sub_0800830C(u16 *a1, u16 *a2);
-void sub_080083C0(u32 a, u8 b);
+void SetTireGrip(struct Car *car, u8 carIndex);
 void sub_080087F4(u8 which, struct Unk080087F4 *obj);
 void AssignRandomDrivers(void);
 void FillUnassignedDrivers(void);

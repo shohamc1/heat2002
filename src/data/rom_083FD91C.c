@@ -232,34 +232,48 @@ extern const u8 gUnk_083FEED8[];
 extern const u8 gUnk_083FEEE8[];
 
 // Its users declare it as struct tbl_0800CCE0 x[].
-const u32 gUnk_083FD91C[] = {
-    (u32)gUnk_083CA0C4, (u32)gUnk_083CA9DC, 0x120, (u32)gUnk_083CCDDC,
-    (u32)gUnk_083CDA98, (u32)gUnk_083D44A8, (u32)gUnk_083D4A28, 0xAC,
-    (u32)gUnk_083D5FA8, (u32)gUnk_083D669E, (u32)gUnk_083CEC98,
-    (u32)gUnk_083CF7D0, 0x163, (u32)gUnk_083D2430, (u32)gUnk_083D32A8,
-    (u32)gUnk_083D78A0, (u32)gUnk_083D7FE0, 0xE5, (u32)gUnk_083D9C80,
-    (u32)gUnk_083DA5D0, (u32)gUnk_083DB7D0, (u32)gUnk_083DC1C0, 0x13B,
-    (u32)gUnk_083DE920, (u32)gUnk_083DF630, (u32)gUnk_083E0830,
-    (u32)gUnk_083E1290, 0x149, (u32)gUnk_083E3BB0, (u32)gUnk_083E4A40,
-    (u32)gUnk_083E5C40, (u32)gUnk_083E6218, 0xB8, (u32)gUnk_083E7918,
-    (u32)gUnk_083E81CA, (u32)gUnk_083E93CC, (u32)gUnk_083E996C, 0xB2,
-    (u32)gUnk_083EAFAC, (u32)gUnk_083EB890, (u32)gUnk_083ECA90,
-    (u32)gUnk_083ED040, 0xB3, (u32)gUnk_083EE6A0, (u32)gUnk_083EEE84,
-    (u32)gUnk_083F0084, (u32)gUnk_083F0CC4, 0x185, (u32)gUnk_083F3D64,
-    (u32)gUnk_083F4D42, (u32)gUnk_083F5F44, (u32)gUnk_083F64A4, 0xA9,
-    (u32)gUnk_083F79C4, (u32)gUnk_083F80C4, (u32)gUnk_083F92C4,
-    (u32)gUnk_083F9B14, 0x107, (u32)gUnk_083FBBF4, (u32)gUnk_083FC71C,
-    (u32)gText_Frontleft, (u32)gText_Frontright, (u32)gText_Rearleft,
-    (u32)gText_Rearright, (u32)gText_Back, (u32)gText_Front,
-    (u32)gText_Left, (u32)gText_Right
+const u32 gUnk_083FD91C[60] = {
+    (u32)gUnk_083CA0C4, (u32)gUnk_083CA9DC, 0x120, (u32)gUnk_083CCDDC, (u32)gUnk_083CDA98,
+    (u32)gUnk_083D44A8, (u32)gUnk_083D4A28, 0xAC, (u32)gUnk_083D5FA8, (u32)gUnk_083D669E,
+    (u32)gUnk_083CEC98, (u32)gUnk_083CF7D0, 0x163, (u32)gUnk_083D2430, (u32)gUnk_083D32A8,
+    (u32)gUnk_083D78A0, (u32)gUnk_083D7FE0, 0xE5, (u32)gUnk_083D9C80, (u32)gUnk_083DA5D0,
+    (u32)gUnk_083DB7D0, (u32)gUnk_083DC1C0, 0x13B, (u32)gUnk_083DE920, (u32)gUnk_083DF630,
+    (u32)gUnk_083E0830, (u32)gUnk_083E1290, 0x149, (u32)gUnk_083E3BB0, (u32)gUnk_083E4A40,
+    (u32)gUnk_083E5C40, (u32)gUnk_083E6218, 0xB8, (u32)gUnk_083E7918, (u32)gUnk_083E81CA,
+    (u32)gUnk_083E93CC, (u32)gUnk_083E996C, 0xB2, (u32)gUnk_083EAFAC, (u32)gUnk_083EB890,
+    (u32)gUnk_083ECA90, (u32)gUnk_083ED040, 0xB3, (u32)gUnk_083EE6A0, (u32)gUnk_083EEE84,
+    (u32)gUnk_083F0084, (u32)gUnk_083F0CC4, 0x185, (u32)gUnk_083F3D64, (u32)gUnk_083F4D42,
+    (u32)gUnk_083F5F44, (u32)gUnk_083F64A4, 0xA9, (u32)gUnk_083F79C4, (u32)gUnk_083F80C4,
+    (u32)gUnk_083F92C4, (u32)gUnk_083F9B14, 0x107, (u32)gUnk_083FBBF4, (u32)gUnk_083FC71C
+};
+// No decompiled code reads these labels yet.
+const u8 *const gUnk_083FDA0C[] = {
+    gText_Frontleft, gText_Frontright, gText_Rearleft, gText_Rearright,
+    gText_Back, gText_Front, gText_Left, gText_Right
 };
 // Its users declare it as struct Pt2 x[].
-const u32 gUnk_083FDA2C[] = INCBIN_U32("build/assets/unknown/data_083FDA2C.bin");
-// Its users declare it as const u8 *x[].
-const u32 gUnk_083FDA50[] = {
-    (u32)gUnk_0807CA7C, (u32)gUnk_0807CAC8, (u32)gUnk_0807CB14, 0x800F
+/* Collision response normals, one (x, z) pair per contact direction,
+ * in 20.12 fixed point (4096 = 1). */
+const s32 gCarCollisionNormals[8] = {
+    0, 4096,
+    0, -4096,
+    -4096, 0,
+    4096, 0
 };
-const u8 gUnk_083FDA60[] = INCBIN_U8("build/assets/unknown/data_083FDA60.bin");
+// No decompiled code reads this word yet.
+const s32 gUnk_083FDA4C[1] = { 10000 };
+// Its users declare it as const u8 *x[].
+const u32 gUnk_083FDA50[3] = {
+    (u32)gUnk_0807CA7C, (u32)gUnk_0807CAC8, (u32)gUnk_0807CB14
+};
+// No decompiled code reads this word yet.
+const u32 gUnk_083FDA5C[1] = { 0x800F };
+// Options-menu row v runs from gOptionsMenuMinValues[v] to
+// gOptionsMenuMaxValues[v]; gLapsPerOption maps the laps row to a lap
+// count and ends in 3 zero pad bytes.
+const u8 gOptionsMenuMinValues[7] = { 0, 0, 0, 0, 0, 0, 0 };
+const u8 gOptionsMenuMaxValues[7] = { 1, 6, 1, 1, 1, 1, 0 };
+const u8 gLapsPerOption[10] = { 5, 10, 15, 20, 30, 50, 100, 0, 0, 0 };
 // Its users declare it as struct Big x[].
 const u32 gTrackSelectEntries[] = {
     0x1, (u32)gText_TrackLen1567, (u32)gText_TrackNum22, (u32)gText_HooleyDowns,
@@ -283,70 +297,112 @@ const u32 gTrackSelectEntries[] = {
     (u32)gUnk_0830AB68, 0, (u32)gText_TrackLen1357, (u32)gText_TrackNum11,
     (u32)gText_InfogramesSuperSpeedway, (u32)gUnk_083FEED8, (u32)gUnk_0830CA10
 };
-// Its users declare it as struct Tbl8 x[], struct Unk083FDB98 x[], struct Unk0B38 x[], u32 x[][2].
-const u32 gDriverRoster[][2] = {
-    (u32)gText_StevePark, 0, (u32)gText_DaleEarnhardtJR, 0, (u32)gText_KevinHarvick, 0x1,
-    (u32)gText_DaleJarrett, 0x2, (u32)gText_RickyRudd, 0x2, (u32)gText_JeffGordon, 0x3,
-    (u32)gText_JasonPope, 0x4, (u32)gText_JoeFried, 0x4, (u32)gText_RustyWallace, 0x7,
-    (u32)gText_SterlingMarlin, 0x8, (u32)gText_BrianLocke, 0x5, (u32)gText_JayMcgee, 0x5,
-    (u32)gText_MitchellSlater, 0x6, (u32)gText_JamesBrown, 0x6, (u32)gText_NeilWilson, 0x9,
-    (u32)gText_TimMunson, 0x9, (u32)gText_AndrewBishop, 0xA, (u32)gText_DanielEvans, 0xA,
-    (u32)gText_SeanKendrick, 0xB, (u32)gText_JakeMay, 0xB, (u32)gText_ChrisWalsh, 0xC,
-    (u32)gText_JamesDaly, 0xC, (u32)gText_AdamBouskill, 0xD, (u32)gText_TimCoode, 0xD,
-    (u32)gText_WillGreenough, 0xE, (u32)gText_JonnieShearn, 0xE, (u32)gText_DaveMurphy, 0xF,
-    (u32)gText_DarrenJackson, 0xF, (u32)gText_MikeMerren, 0x10, (u32)gText_CameronSheppard,
-    0x10
+// The 30-driver roster (struct DriverRosterEntry, structs.h): name and
+// team id, rows in teammate pairs sharing the id.
+const struct DriverRosterEntry gDriverRoster[] = {
+    { gText_StevePark, 0 }, { gText_DaleEarnhardtJR, 0 }, { gText_KevinHarvick, 0x1 },
+    { gText_DaleJarrett, 0x2 }, { gText_RickyRudd, 0x2 }, { gText_JeffGordon, 0x3 },
+    { gText_JasonPope, 0x4 }, { gText_JoeFried, 0x4 }, { gText_RustyWallace, 0x7 },
+    { gText_SterlingMarlin, 0x8 }, { gText_BrianLocke, 0x5 }, { gText_JayMcgee, 0x5 },
+    { gText_MitchellSlater, 0x6 }, { gText_JamesBrown, 0x6 }, { gText_NeilWilson, 0x9 },
+    { gText_TimMunson, 0x9 }, { gText_AndrewBishop, 0xA }, { gText_DanielEvans, 0xA },
+    { gText_SeanKendrick, 0xB }, { gText_JakeMay, 0xB }, { gText_ChrisWalsh, 0xC },
+    { gText_JamesDaly, 0xC }, { gText_AdamBouskill, 0xD }, { gText_TimCoode, 0xD },
+    { gText_WillGreenough, 0xE }, { gText_JonnieShearn, 0xE }, { gText_DaveMurphy, 0xF },
+    { gText_DarrenJackson, 0xF }, { gText_MikeMerren, 0x10 }, { gText_CameronSheppard, 0x10 },
 };
 // Its users declare it as u8 *x[].
-const u32 gChampionshipLockedTexts[] = {
-    (u32)gText_NotAvailableYouNeedToFinishASeasonInTheTop5, (u32)gText_NotAvailableYouNeedToFinishASeasonInTheTop5, (u32)gText_NotAvailableYouNeedToFinishASeasonInTheTop5,
-    (u32)gText_NotAvailableYouNeedToFinishASeasonInTheTop5, (u32)gText_NotAvailableYouNeedToFinishASeasonInTheTop5, (u32)gText_NotAvailableYouNeedToFinishASeasonInTheTop5,
-    (u32)gText_NotAvailableYouNeedToFinishASeasonInTheTop5, (u32)gText_NotAvailableYouNeedToFinishASeasonInTheTop10, (u32)gText_NotAvailableYouNeedToFinishASeasonInTheTop10,
-    (u32)gText_NotAvailableYouNeedToFinishASeasonInTheTop10, (u32)gText_NotAvailableYouNeedToFinishASeasonInTheTop10, (u32)gText_NotAvailableYouNeedToFinishASeasonInTheTop10,
-    (u32)gText_NotAvailable, (u32)gText_NotAvailable, (u32)gText_NotAvailable,
-    (u32)gText_NotAvailable, (u32)gText_NotAvailable
+const u8 *const gChampionshipLockedTexts[] = {
+    gText_NotAvailableYouNeedToFinishASeasonInTheTop5, gText_NotAvailableYouNeedToFinishASeasonInTheTop5, gText_NotAvailableYouNeedToFinishASeasonInTheTop5,
+    gText_NotAvailableYouNeedToFinishASeasonInTheTop5, gText_NotAvailableYouNeedToFinishASeasonInTheTop5, gText_NotAvailableYouNeedToFinishASeasonInTheTop5,
+    gText_NotAvailableYouNeedToFinishASeasonInTheTop5, gText_NotAvailableYouNeedToFinishASeasonInTheTop10, gText_NotAvailableYouNeedToFinishASeasonInTheTop10,
+    gText_NotAvailableYouNeedToFinishASeasonInTheTop10, gText_NotAvailableYouNeedToFinishASeasonInTheTop10, gText_NotAvailableYouNeedToFinishASeasonInTheTop10,
+    gText_NotAvailable, gText_NotAvailable, gText_NotAvailable,
+    gText_NotAvailable, gText_NotAvailable
 };
-const u8 gChampionshipTeamTiers[] = INCBIN_U8("build/assets/unknown/data_083FDCCC.bin");
+/* Team tier (0, 1 or 2) passed to sub_0800F14C when a championship is
+ * started with team a; sub_0800F14C unlocks every team in tiers at or
+ * below it. */
+const u8 gChampionshipTeamTiers[17] = { 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2 };
+// The season finish (top 5, 10 or 20) team a requires, then 2 zero pad
+// bytes.
+const u8 gChampionshipRequiredFinish[19] = { 5, 5, 5, 5, 5, 5, 5, 10, 10, 10, 10, 10, 20, 20, 20, 20, 20, 0, 0 };
 // Its users declare it as u8 *x[].
-const u32 gChampionshipQualifyTexts[] = {
-    (u32)gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns, (u32)gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf37SecondsOnHooleyDowns, (u32)gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns,
-    (u32)gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf37SecondsOnHooleyDowns, (u32)gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns, (u32)gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf37SecondsOnHooleyDowns,
-    (u32)gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns, (u32)gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf37SecondsOnHooleyDowns, (u32)gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns,
-    (u32)gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf37SecondsOnHooleyDowns, (u32)gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns, (u32)gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf37SecondsOnHooleyDowns,
-    (u32)gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns, (u32)gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf37SecondsOnHooleyDowns, (u32)gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns,
-    (u32)gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf37SecondsOnHooleyDowns, (u32)gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns
+const u8 *const gChampionshipQualifyTexts[] = {
+    gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns, gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf37SecondsOnHooleyDowns, gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns,
+    gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf37SecondsOnHooleyDowns, gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns, gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf37SecondsOnHooleyDowns,
+    gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns, gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf37SecondsOnHooleyDowns, gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns,
+    gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf37SecondsOnHooleyDowns, gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns, gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf37SecondsOnHooleyDowns,
+    gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns, gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf37SecondsOnHooleyDowns, gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns,
+    gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf37SecondsOnHooleyDowns, gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns
 };
-const u8 gUnk_083FDD34[] = INCBIN_U8("build/assets/unknown/data_083FDD34.bin");
-const u32 gUnk_083FDD48[] = INCBIN_U32("build/assets/unknown/data_083FDD48.bin");
-const u32 gChampionshipRetainTexts[] = {
-    (u32)gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop5, (u32)gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop5, (u32)gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop5,
-    (u32)gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop5, (u32)gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop5, (u32)gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop5,
-    (u32)gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop5, (u32)gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop10, (u32)gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop10,
-    (u32)gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop10, (u32)gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop10, (u32)gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop10,
-    (u32)gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop20, (u32)gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop20, (u32)gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop20,
-    (u32)gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop20, (u32)gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop20
+/* Track id for each championship index; all zero in the shipped ROM. */
+const u8 gChampionshipTrackIds[20] = {0};
+/* Qualifying lap-time target in milliseconds (33 or 37 seconds) for
+ * each championship index, compared against the player's lap time. */
+const u32 gChampionshipQualifyLapTimeTargets[17] = {
+    33000, 37000, 33000, 37000, 33000, 37000,
+    33000, 37000, 33000, 37000, 33000, 37000,
+    33000, 37000, 33000, 37000, 33000
+};
+const u8 *const gChampionshipRetainTexts[] = {
+    gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop5, gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop5, gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop5,
+    gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop5, gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop5, gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop5,
+    gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop5, gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop10, gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop10,
+    gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop10, gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop10, gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop10,
+    gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop20, gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop20, gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop20,
+    gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop20, gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop20
 };
 // Its users declare it as u8 *x[].
-const u32 gChampionshipTeamNames[] = {
+const u32 gChampionshipTeamNames[17] = {
     (u32)gText_Dei, (u32)gText_Rcr, (u32)gText_Ryr,
     (u32)gText_HendrickMotorsports, (u32)gText_DalyEnterprises, (u32)gText_MackneyMotorsports,
     (u32)gText_KravitzRacing, (u32)gText_Penske, (u32)gText_ChipGanassi,
     (u32)gText_JimFerrisMotorsports, (u32)gText_AndylandRacing, (u32)gText_TtMotorsports,
     (u32)gText_TeamTino, (u32)gText_MikeMacconellRacing, (u32)gText_EricHayashiMotorsports,
-    (u32)gText_Darby, (u32)gText_TeamCrawfish, 0x9080704
+    (u32)gText_Darby, (u32)gText_TeamCrawfish
 };
+// No decompiled code reads these bytes yet.
+const u8 gUnk_083FDE14[4] = { 4, 7, 8, 9 };
 // Its users declare it as u32 x, u32 x[].
 const u32 gUnk_083FDE18[] = {
     (u32)gText_UnderscoreRow32
 };
-const u8 gChampionshipTrackOrder[] = INCBIN_U8("build/assets/unknown/data_083FDE1C.bin");
-const u32 gLinkTrackSelectTrackIds[] = {
-    0x3020100, 0x7060504, 0xB0A0908, 0x50403, 0x50403, 0x40403, 0x50702,
-    0x30603, 0x50203, 0x50403, 0x50503, 0x30403, 0x50803, 0x70404, 0x50403,
-    0x50303, 0x60402, 0x50103, 0x10203, 0x50103, 0x10403, 0x50403, 0x50203,
-    (u32)gText_A, (u32)gText_Ab, (u32)gText_Abc,
-    (u32)gText_Abcd, (u32)gText_Abcde, (u32)gText_Abcdee,
-    (u32)gText_Abcdeee, (u32)gText_Abcdeeee
+/* Season schedule: track id for each gSeasonRaceIndex (34 races; bytes
+ * 17-33 double as the gChallengeIndex track table via the gUnk_083FDE2D
+ * alias). */
+const u8 gChampionshipTrackOrder[34] = {
+    0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 0, 5, 1, 2, 6, 10,
+    3, 11, 8, 6, 0, 1, 8, 10, 1, 10, 3, 1, 4, 2, 9, 3, 0
+};
+// Sixteen 0x7FFF words. No decompiled code reads them yet.
+const u16 gUnk_083FDE3E[16] = {
+    0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF,
+    0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF
+};
+// GetString ids; sub_0801060C draws the first seven as its menu rows.
+const u16 gUnk_083FDE5E[10] = { 72, 73, 74, 75, 76, 77, 78, 79, 80, 106 };
+// No decompiled code reads these bytes yet.
+const u8 gUnk_083FDE72[6] = { 2, 1, 0, 3, 0, 0 };
+// LinkTrackSelect.c maps the cursor to a track id through this table.
+const u8 gLinkTrackSelectTrackIds[12] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+// Twenty 4-byte rows. No decompiled code reads them yet.
+const u8 gUnk_083FDE84[80] = {
+    3, 4, 5, 0, 3, 4, 5, 0,
+    3, 4, 4, 0, 2, 7, 5, 0,
+    3, 6, 3, 0, 3, 2, 5, 0,
+    3, 4, 5, 0, 3, 5, 5, 0,
+    3, 4, 3, 0, 3, 8, 5, 0,
+    4, 4, 7, 0, 3, 4, 5, 0,
+    3, 3, 5, 0, 2, 4, 6, 0,
+    3, 1, 5, 0, 3, 2, 1, 0,
+    3, 1, 5, 0, 3, 4, 1, 0,
+    3, 4, 5, 0, 3, 2, 5, 0
+};
+// No decompiled code reads these labels yet.
+const u8 *const gUnk_083FDED4[] = {
+    gText_A, gText_Ab, gText_Abc, gText_Abcd,
+    gText_Abcde, gText_Abcdee, gText_Abcdeee, gText_Abcdeeee
 };
 const u32 gDriverCarPalettes[] = {
     (u32)gUnk_082CC5D8, (u32)gUnk_082CC5D8, (u32)gUnk_082CC5D8,

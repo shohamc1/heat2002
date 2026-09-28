@@ -1,6 +1,12 @@
 #include "global.h"
 #include "data.h"
 
+/* 0x083FF5B0-0x083FF724: OBJ gfx frame lists. gSplashSpriteFrames is
+ * the 23-frame animation shared by the splash loop (sub_0800B0A0), the
+ * race intro (sub_0800B120) and the start countdown (sub_0800B1A4);
+ * the four tables after it feed the race particle effects and the
+ * minimap track tiles. */
+
 extern const u8 gUnk_0832FA68[];
 extern const u8 gUnk_0832FB20[];
 extern const u8 gUnk_0832FBD8[];
@@ -95,46 +101,46 @@ extern const u8 gUnk_08331EC4[];
 extern const u8 gUnk_08331F0C[];
 extern const u8 gUnk_08331F4C[];
 
-const u32 gSplashSpriteFrames[] = {
-    (u32)gUnk_0832FA68, (u32)gUnk_0832FB20, (u32)gUnk_0832FBD8,
-    (u32)gUnk_0832FC88, (u32)gUnk_0832FD24, (u32)gUnk_0832FDBC,
-    (u32)gUnk_0832FE58, (u32)gUnk_0832FF34, (u32)gUnk_0832FFFC,
-    (u32)gUnk_083300C8, (u32)gUnk_0833018C, (u32)gUnk_08330240,
-    (u32)gUnk_083302FC, (u32)gUnk_083303BC, (u32)gUnk_08330468,
-    (u32)gUnk_08330504, (u32)gUnk_0833059C, (u32)gUnk_08330628,
-    (u32)gUnk_083306FC, (u32)gUnk_083307BC, (u32)gUnk_08330880,
-    (u32)gUnk_0833095C, (u32)gUnk_08330A1C
+const u8 *const gSplashSpriteFrames[] = {
+    gUnk_0832FA68, gUnk_0832FB20, gUnk_0832FBD8,
+    gUnk_0832FC88, gUnk_0832FD24, gUnk_0832FDBC,
+    gUnk_0832FE58, gUnk_0832FF34, gUnk_0832FFFC,
+    gUnk_083300C8, gUnk_0833018C, gUnk_08330240,
+    gUnk_083302FC, gUnk_083303BC, gUnk_08330468,
+    gUnk_08330504, gUnk_0833059C, gUnk_08330628,
+    gUnk_083306FC, gUnk_083307BC, gUnk_08330880,
+    gUnk_0833095C, gUnk_08330A1C
 };
-const u32 gUnk_083FF60C[] = {
-    (u32)gUnk_08330AF4, (u32)gUnk_08330B0C, (u32)gUnk_08330B24,
-    (u32)gUnk_08330B40, (u32)gUnk_08330B5C, (u32)gUnk_08330B7C,
-    (u32)gUnk_08330BA4, (u32)gUnk_08330BCC, (u32)gUnk_08330BF4,
-    (u32)gUnk_08330C1C, (u32)gUnk_08330C40, (u32)gUnk_08330C68,
-    (u32)gUnk_08330C90, (u32)gUnk_08330CB8, (u32)gUnk_08330CDC,
-    (u32)gUnk_08330CFC
+const u8 *const gSkidSmokeFrames[] = {
+    gUnk_08330AF4, gUnk_08330B0C, gUnk_08330B24,
+    gUnk_08330B40, gUnk_08330B5C, gUnk_08330B7C,
+    gUnk_08330BA4, gUnk_08330BCC, gUnk_08330BF4,
+    gUnk_08330C1C, gUnk_08330C40, gUnk_08330C68,
+    gUnk_08330C90, gUnk_08330CB8, gUnk_08330CDC,
+    gUnk_08330CFC
 };
-const u32 gUnk_083FF64C[] = {
-    (u32)gUnk_08331098, (u32)gUnk_083310A8, (u32)gUnk_083310B8,
-    (u32)gUnk_083310C8, (u32)gUnk_083310D8, (u32)gUnk_083310E8,
-    (u32)gUnk_083310F8, (u32)gUnk_08331108, (u32)gUnk_08331118,
-    (u32)gUnk_08331128, (u32)gUnk_08331138, (u32)gUnk_08331148,
-    (u32)gUnk_08331158, (u32)gUnk_08331164, (u32)gUnk_08331170,
-    (u32)gUnk_0833117C
+const u8 *const gDraftStreakFrames[] = {
+    gUnk_08331098, gUnk_083310A8, gUnk_083310B8,
+    gUnk_083310C8, gUnk_083310D8, gUnk_083310E8,
+    gUnk_083310F8, gUnk_08331108, gUnk_08331118,
+    gUnk_08331128, gUnk_08331138, gUnk_08331148,
+    gUnk_08331158, gUnk_08331164, gUnk_08331170,
+    gUnk_0833117C
 };
-const u32 gUnk_083FF68C[] = {
-    (u32)gUnk_083311E8, (u32)gUnk_08331224, (u32)gUnk_08331260,
-    (u32)gUnk_083312A0, (u32)gUnk_083312E0, (u32)gUnk_08331320
+const u8 *const gTrackTileSpriteFrames[] = {
+    gUnk_083311E8, gUnk_08331224, gUnk_08331260,
+    gUnk_083312A0, gUnk_083312E0, gUnk_08331320
 };
-const u32 gUnk_083FF6A4[] = {
-    (u32)gUnk_08331380, (u32)gUnk_083313A0, (u32)gUnk_083313C8,
-    (u32)gUnk_083313F8, (u32)gUnk_08331438, (u32)gUnk_08331480,
-    (u32)gUnk_083314CC, (u32)gUnk_08331520, (u32)gUnk_08331574,
-    (u32)gUnk_083315D0, (u32)gUnk_08331638, (u32)gUnk_083316A8,
-    (u32)gUnk_0833171C, (u32)gUnk_08331798, (u32)gUnk_0833181C,
-    (u32)gUnk_083318A0, (u32)gUnk_08331924, (u32)gUnk_083319A8,
-    (u32)gUnk_08331A28, (u32)gUnk_08331AA8, (u32)gUnk_08331B20,
-    (u32)gUnk_08331B94, (u32)gUnk_08331C08, (u32)gUnk_08331C7C,
-    (u32)gUnk_08331CEC, (u32)gUnk_08331D54, (u32)gUnk_08331DBC,
-    (u32)gUnk_08331E1C, (u32)gUnk_08331E74, (u32)gUnk_08331EC4,
-    (u32)gUnk_08331F0C, (u32)gUnk_08331F4C
+const u8 *const gDamageSmokeFrames[] = {
+    gUnk_08331380, gUnk_083313A0, gUnk_083313C8,
+    gUnk_083313F8, gUnk_08331438, gUnk_08331480,
+    gUnk_083314CC, gUnk_08331520, gUnk_08331574,
+    gUnk_083315D0, gUnk_08331638, gUnk_083316A8,
+    gUnk_0833171C, gUnk_08331798, gUnk_0833181C,
+    gUnk_083318A0, gUnk_08331924, gUnk_083319A8,
+    gUnk_08331A28, gUnk_08331AA8, gUnk_08331B20,
+    gUnk_08331B94, gUnk_08331C08, gUnk_08331C7C,
+    gUnk_08331CEC, gUnk_08331D54, gUnk_08331DBC,
+    gUnk_08331E1C, gUnk_08331E74, gUnk_08331EC4,
+    gUnk_08331F0C, gUnk_08331F4C
 };

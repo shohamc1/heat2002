@@ -18,7 +18,7 @@ void sub_08005A2C(u32 a1)
     p = sub_0800754C((u32)gUnk_08338720);
     if (p != 0) {
         attr = (arr[1] & 0xFF) | ((arr[0] & 0x1FF) << 16) | 0x80000000;
-        t = *(u32 *)((u32)p + 0x10) | ((u8)RequestObjPalette((u32)gUnk_08338788) << 12);
+        t = *(u32 *)((u32)p + 0x10) | ((u8)RequestObjPalette((u32)gHudWarningIconPalette) << 12);
         attr |= 0x100;
         AddOamEntry(attr, t);
     }

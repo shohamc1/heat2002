@@ -20,7 +20,9 @@ const u8 *const gHighModuleChunks[] = {
     gHighModuleRom + 0x20000, gHighModuleRom + 0x28000,
     gHighModuleRom + 0x30000
 };
-const u32 gUnk_0807C9E8[] = INCBIN_U32("build/assets/unknown/data_0807C9E8.bin");
+// Its users declare it as u32 x (SendMultibootPayload compares the ROM
+// header's game code against it; "AGBJ" little-endian).
+const u32 gGameCodeAgbj[2] = { 0x4A424741, 0 };
 const u8 gText_BlankRow24_2[] = "                       ";
 const u8 gText_DoNotRemoveGameBoy[] = "DO NOT REMOVE GAME BOY&";
 const u8 gText_AdvanceGameLink[20]   = "ADVANCE GAME LINK&";

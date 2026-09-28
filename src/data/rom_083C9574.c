@@ -467,7 +467,10 @@ const u32 gLaneLengthPtrs[] = {
     (u32)gUnk_083C956A, (u32)gUnk_083C9570, (u32)gUnk_083C9562,
     (u32)gUnk_083C9562, (u32)gUnk_083C9562, (u32)gUnk_083C9562
 };
-const s32 gUnk_083CA0B4 = INCBIN_S32("build/assets/unknown/data_083CA0B4.bin");
-const s32 gUnk_083CA0B8 = INCBIN_S32("build/assets/unknown/data_083CA0B8.bin");
-const s32 gUnk_083CA0BC = INCBIN_S32("build/assets/unknown/data_083CA0BC.bin");
-const s32 gUnk_083CA0C0 = INCBIN_S32("build/assets/unknown/data_083CA0C0.bin");
+// Second-order approach constants: sub_0800C98C steps its value toward a
+// target with stiffness gUnk_083CA0B4 and damping gUnk_083CA0B8
+// (likewise sub_0800CA20 with gUnk_083CA0BC/gUnk_083CA0C0).
+const s32 gUnk_083CA0B4 = 0xF0;
+const s32 gUnk_083CA0B8 = 0x20;
+const s32 gUnk_083CA0BC = 0xF8;
+const s32 gUnk_083CA0C0 = 0x80;

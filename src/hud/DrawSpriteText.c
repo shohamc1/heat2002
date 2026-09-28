@@ -3,7 +3,7 @@
 #include "data.h"
 #include "functions.h"
 
-extern u16 gUnk_08332D88[];
+extern u16 gSpriteTextControlCharCodes[];
 
 
 void DrawSpriteText(u8 *a, u32 b, u32 c)
@@ -23,7 +23,7 @@ void DrawSpriteText(u8 *a, u32 b, u32 c)
     pal = c & 0xFF;
 loop:
     if (v != 0x20) {
-        q = v + gUnk_08332D88;
+        q = v + gSpriteTextControlCharCodes;
         p = sub_0800767C((u32)((u8 *)gTextLayerTiles + gTextGlyphTileIndices[*q] * TILE_SIZE_4BPP));
         if (p != 0) {
             x = ((b & 0x1FF) << 0x10) | pal;

@@ -39,7 +39,7 @@ struct Pt2 {
 extern s32 gCarCollFrameSelf[8];
 extern s32 gCarCollFrameOther[8];
 extern struct Coll gCarCollContact;
-extern struct Pt2 gUnk_083FDA2C[];
+extern struct Pt2 gCarCollisionNormals[];
 extern u8 gUnk_0202A530;
 
 void sub_0800D5D4(struct Car *a, s32 *d);
@@ -194,8 +194,8 @@ u8 CollideCars(struct Car *car)
         ang = b->heading >> 8;
         s = gSinTable[ang];
         c = gSinTable[ang + 0x40];
-        nx = gUnk_083FDA2C[gCarCollContact.d].f0;
-        nz = gUnk_083FDA2C[gCarCollContact.d].f1;
+        nx = gCarCollisionNormals[gCarCollContact.d].f0;
+        nz = gCarCollisionNormals[gCarCollContact.d].f1;
         m[0] = (nx * c - nz * s) >> 4;
         m[1] = (nx * s + nz * c) >> 4;
         f = -gCarCollContact.g;
