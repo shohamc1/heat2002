@@ -6,7 +6,7 @@
  * channel-status check, no pseudo-echo envelope write, and
  * envelopeStepTimeAndDir is a u8 kept across channels.
  *
- * This is the high 0x0833 module's copy: same code as sub_08001C88 with
+ * This is the high 0x0833 module's copy: same code as CgbSound with
  * the callees and the gCgb3Vol table relocated (the table is the module's
  * EWRAM image at 0x0200C8CC). */
 

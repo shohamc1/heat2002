@@ -1,13 +1,14 @@
 #include "global.h"
 #include "functions.h"
+#include "m4a.h"
 #include "data.h"
 #include "variables.h"
 void sub_080164A8(void)
 {
     u8 buf[0x200];
     u16 keys;
-    sub_080019B4((struct MusicPlayerInfo *)0x02001F60);
-    sub_080019B4((struct MusicPlayerInfo *)0x02001F20);
+    m4aMPlayStop((struct MusicPlayerInfo *)0x02001F60);
+    m4aMPlayStop((struct MusicPlayerInfo *)0x02001F20);
     sub_080045D8();
     InitGfxCaches();
     AgeGfxCaches();

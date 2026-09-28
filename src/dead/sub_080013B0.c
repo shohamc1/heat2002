@@ -4,7 +4,7 @@
 /* Track immediate-reinit (m4aMPlayImmInit, older revision: ClearChain(track),
    bendRange=2, volX=0x40, lfoSpeed=0x16, tone.type=1). */
 
-void sub_08001534(void *a);
+void Clear64byte(void *a);
 
 void sub_080013B0(struct MusicPlayerInfo *mplayInfo)
 {
@@ -17,7 +17,7 @@ void sub_080013B0(struct MusicPlayerInfo *mplayInfo)
         {
             if (track->flags & MPT_FLG_START)
             {
-                sub_08001534(track);
+                Clear64byte(track);
                 track->flags = MPT_FLG_EXIST;
                 track->bendRange = 2;
                 track->volX = 0x40;

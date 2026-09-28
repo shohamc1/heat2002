@@ -7,16 +7,16 @@
 
 /* MPlayExtender */
 
-void sub_08002340(void);
+void ply_memacc(void);
 void ply_lfos(void);
 void ply_mod(void);
-void sub_08002498(void);
+void ply_xcmd(void);
 void ply_endtie(void);
-void sub_08001C88(void);
-void sub_08001B28(void);
+void CgbSound(void);
+void MidiKeyToCgbFreq(void);
 
 
-void sub_080013F8(struct CgbChannel *cgbChans)
+void MPlayExtender(struct CgbChannel *cgbChans)
 {
     u32 ident;
     struct SoundInfo *soundInfo;
@@ -36,19 +36,19 @@ void sub_080013F8(struct CgbChannel *cgbChans)
     if (ident == ID_NUMBER)
     {
         soundInfo->ident = ident + 1;
-        gMPlayJumpTable[8] = (MPlayFunc)sub_08002340;
+        gMPlayJumpTable[8] = (MPlayFunc)ply_memacc;
         gMPlayJumpTable[0x11] = (MPlayFunc)ply_lfos;
         gMPlayJumpTable[0x13] = (MPlayFunc)ply_mod;
-        gMPlayJumpTable[0x1C] = (MPlayFunc)sub_08002498;
+        gMPlayJumpTable[0x1C] = (MPlayFunc)ply_xcmd;
         gMPlayJumpTable[0x1D] = (MPlayFunc)ply_endtie;
-        gMPlayJumpTable[0x1E] = (MPlayFunc)sub_08001640;
+        gMPlayJumpTable[0x1E] = (MPlayFunc)SampleFreqSet;
         gMPlayJumpTable[0x1F] = (MPlayFunc)TrackStop;
-        gMPlayJumpTable[0x20] = (MPlayFunc)sub_080019F4;
-        gMPlayJumpTable[0x21] = (MPlayFunc)sub_08001A74;
+        gMPlayJumpTable[0x20] = (MPlayFunc)FadeOutBody;
+        gMPlayJumpTable[0x21] = (MPlayFunc)TrkVolPitSet;
         soundInfo->cgbChans = cgbChans;
-        soundInfo->CgbSound = (CgbSoundFunc)sub_08001C88;
-        soundInfo->CgbOscOff = (CgbOscOffFunc)sub_08001BD0;
-        soundInfo->MidiKeyToCgbFreq = (MidiKeyToCgbFreqFunc)sub_08001B28;
+        soundInfo->CgbSound = (CgbSoundFunc)CgbSound;
+        soundInfo->CgbOscOff = (CgbOscOffFunc)CgbOscOff;
+        soundInfo->MidiKeyToCgbFreq = (MidiKeyToCgbFreqFunc)MidiKeyToCgbFreq;
         soundInfo->maxLines = (u8)(u32)&gMaxLines;
         CpuFill32(0, (u32)cgbChans, 0x100);
         cgbChans[0].type = 1;

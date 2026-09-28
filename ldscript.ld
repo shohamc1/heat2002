@@ -44,10 +44,6 @@ sub_08016E28 = RLUnCompVram;
 
 /* lib/m4a_1.s calls into m4a.c and reads the driver's tables. The high
    module's copy is bound to its own twins in the Makefile (M4A_HIGH_EXTERNS). */
-Clear64byte = sub_08001534;
-ClearChain = sub_08001520;
-FadeOutBody = sub_080019F4;
-TrkVolPitSet = sub_08001A74;
 SoundMainRAM_Buffer = 0x03007000;
 
 SECTIONS
@@ -90,41 +86,27 @@ SECTIONS
         build/src/sound/MidiKeyToFreq.o(.text*);
         build/src/dead/sub_08001130.o(.text*);
         build/src/sound/MPlayFadeOut.o(.text*);
-        build/src/sub_08001170.o(.text*);
+        build/src/sound/m4aSoundInit.o(.text*);
         build/src/sound/m4a_main.o(.text*);
         build/src/dead/sub_08001234.o(.text*);
         build/src/sound/m4a_song.o(.text*);
         build/src/dead/sub_0800133C.o(.text*);
         build/src/sound/m4aMPlayFadeOut.o(.text*);
         build/src/dead/sub_080013B0.o(.text*);
-        build/src/sub_080013F8.o(.text*);
+        build/src/sound/MPlayExtender.o(.text*);
         build/src/dead/sub_0800151C.o(.text*);
-        build/src/sub_08001520.o(.text*);
-        build/src/sub_08001534.o(.text*);
-        build/src/sub_08001548.o(.text*);
-        build/src/sub_08001640.o(.text*);
-        build/src/sub_080016E4.o(.text*);
+        build/src/sound/m4a_clear.o(.text*);
+        build/src/sound/m4a_init.o(.text*);
         build/src/dead/sub_0800177C.o(.text*);
-        build/src/sub_080017D0.o(.text*);
-        build/src/sub_0800184C.o(.text*);
-        build/src/sub_08001888.o(.text*);
-        build/src/sub_08001900.o(.text*);
-        build/src/sub_080019B4.o(.text*);
-        build/src/sub_080019F4.o(.text*);
-        build/src/sub_08001A74.o(.text*);
-        build/src/sub_08001B28.o(.text*);
-        build/src/sub_08001BD0.o(.text*);
-        build/src/sub_08001C20.o(.text*);
-        build/src/sub_08001C88.o(.text*);
+        build/src/sound/m4a_vsync.o(.text*);
+        build/src/sound/m4a_mplay.o(.text*);
+        build/src/sound/FadeOutBody.o(.text*);
+        build/src/sound/TrkVolPitSet.o(.text*);
+        build/src/sound/cgb_sound.o(.text*);
         build/src/dead/sub_080020CC.o(.text*);
-        build/src/sub_0800215C.o(.text*);
+        build/src/sound/m4aMPlayPitchControl.o(.text*);
         build/src/dead/sub_080021D0.o(.text*);
-        build/src/sub_08002340.o(.text*);
-        build/src/sub_08002498.o(.text*);
-        build/src/sub_080024B8.o(.text*);
-        build/src/sub_080024CC.o(.text*);
-        build/src/sub_08002514.o(.text*);
-        build/src/sub_08002528.o(.text*);
+        build/src/sound/ply_xcmd.o(.text*);
         build/src/sub_0800253C.o(.text*);
         build/src/sub_08002550.o(.text*);
         build/src/sub_08002564.o(.text*);

@@ -74,7 +74,7 @@ To start again, do the following:
 4. Fix the instruction sequence and sizes first. Look at register names only
    once the instructions line up.
 
-`sub_08001C88` (m4a `CgbSound`) was parked at 228 diff lines with a
+`CgbSound [sub_08001C88]` (m4a `CgbSound`) was parked at 228 diff lines with a
 register pin, a status local and pointer arithmetic fitted to the ROM.
 tmc's `CgbSound`, edited for the older revision, scored 82 on its first
 build and matched after two changes. For m4a code, start from
@@ -579,7 +579,7 @@ u8 envelopeStepTimeAndDir;
 *nrx2ptr = (envelopeStepTimeAndDir & 0xf) + (channels->envelopeVolume << 4);
 ```
 
-**Seen in:** `sub_08001C88` (CgbSound).
+**Seen in:** `CgbSound` (CgbSound).
 
 ## Other signs of source structure
 

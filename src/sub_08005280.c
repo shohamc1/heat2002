@@ -1,9 +1,10 @@
 #include "global.h"
 #include "functions.h"
+#include "m4a.h"
 #include "variables.h"
 
 
-void sub_080017D0(void);
+void m4aSoundVSyncOff(void);
 void sub_0800524C(void);
 void sub_080051E4(void);
 
@@ -24,7 +25,7 @@ u8 sub_08005280(void)
             while (1) {
                 gVBlankCounter = 0;
                 if (ExchangeLinkInput() != 0) {
-                    sub_080017D0();
+                    m4aSoundVSyncOff();
                     done = 0;
                     do {
                         v = gLinkPlayerId[0];

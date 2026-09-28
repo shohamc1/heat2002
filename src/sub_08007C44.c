@@ -74,9 +74,9 @@ void sub_08007C44(struct Car *car)
     }
     if (car == &gCars[p]) {
         if ((*(u32 *)&car->onApron & 0xFF00FF00) == 0x01000000) {
-            sub_080019B4((struct MusicPlayerInfo *)((s32)gUnk_02001FA0));
-            sub_080019B4((struct MusicPlayerInfo *)((s32)gUnk_02002030));
-            sub_080019B4((struct MusicPlayerInfo *)((s32)gUnk_02001FE0));
+            m4aMPlayStop((struct MusicPlayerInfo *)((s32)gUnk_02001FA0));
+            m4aMPlayStop((struct MusicPlayerInfo *)((s32)gUnk_02002030));
+            m4aMPlayStop((struct MusicPlayerInfo *)((s32)gUnk_02001FE0));
         }
     }
     if (gGameMode[0] == 0x10 && gChallengeIndex == 0xC)

@@ -1,14 +1,15 @@
 #include "global.h"
+#include "m4a.h"
 
 void m4aSongNumStop(u16 a);
-void sub_080017D0(void);
+void m4aSoundVSyncOff(void);
 
 void StopAllSongsAndVSyncOff(void)
 {
     u8 r4;
     for (r4 = 0; r4 != 0x64; r4 = (u8)(r4 + 1))
         m4aSongNumStop(r4);
-    sub_080017D0();
+    m4aSoundVSyncOff();
 }
 
 void StopAllSongs(void)

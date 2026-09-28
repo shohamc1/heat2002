@@ -15,7 +15,7 @@ void sub_0800133C(void)
         p = gUnk_0801DA90;
         n = cnt;
     loop:
-        sub_080019B4((struct MusicPlayerInfo *)(p->unk0));
+        m4aMPlayStop((struct MusicPlayerInfo *)(p->unk0));
         p++;
         n--;
         if (n != 0)

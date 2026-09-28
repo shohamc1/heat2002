@@ -1,5 +1,6 @@
 #include "global.h"
 #include "functions.h"
+#include "m4a.h"
 #include "data.h"
 
 struct Unk12A
@@ -22,7 +23,7 @@ void m4aSongNumStop(u16 a)
     struct Unk8B *pb = baseB + a;
 
     if (*(u32 *)pa[pb->idx].ptr == pb->field0)
-        sub_080019B4((struct MusicPlayerInfo *)((u32)pa[pb->idx].ptr));
+        m4aMPlayStop((struct MusicPlayerInfo *)((u32)pa[pb->idx].ptr));
 }
 
 void m4aSongNumContinue(u16 a)

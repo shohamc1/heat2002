@@ -44,7 +44,7 @@ const u16 gPcmSamplesPerVBlankTable[12] = {
     528, 608, 672, 704
 };
 // CGB channel scale table: octave (low nibble, index into gCgbFreqTable) and
-// right-shift (high nibble), for MidiKeyToCgbFreq (src/sub_08001B28.c).
+// right-shift (high nibble), for MidiKeyToCgbFreq (src/sound/cgb_sound.c).
 const u8 gCgbScaleTable[132] = {
     0, 1, 2, 3, 4, 5, 6, 7,
     8, 9, 10, 11, 16, 17, 18, 19,
@@ -80,7 +80,7 @@ const u8 gNoiseTable[60] = {
     23, 22, 21, 20, 7, 6, 5, 4,
     3, 2, 1, 0
 };
-// NR32 values per CGB channel 3 envelope volume (CgbSound, src/sub_08001C88.c).
+// NR32 values per CGB channel 3 envelope volume (CgbSound, src/sound/cgb_sound.c).
 const u8 gCgb3Vol[16] = {
     0, 0, 96, 96, 96, 96, 64, 64,
     64, 64, 128, 128, 128, 128, 32, 32

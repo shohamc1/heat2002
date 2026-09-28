@@ -530,7 +530,7 @@ and the declarations callers use, most common first:
 | `RequestObjPalette` | C | `u8 (u32)` (3); `u8 (u8 *)` (1) |
 | `RunRace` | C | `u8 (u8, u8, void *)` (1); `u8 (u32, u32, void *)` (1) |
 | `sub_08001134` | C | `void (u32)` (2); `void (void)` (1) |
-| `sub_080019B4` | C | `void (u32)` (2); `void (void *)` (1) |
+| `m4aMPlayStop [sub_080019B4]` | C | `void (u32)` (2); `void (void *)` (1) |
 | `sub_08004DB4` | C | `void (void)` (1); `u32 (void)` (1) |
 | `sub_0800649C` | C | `void (u32, u32, u32)` (3); `void (u8 *, u32, u32)` (1); `void (u8 *, u32, u32, u32)` (1) |
 | `sub_0800F328` | C | `void (u32, void *)` (11); `void (void *, void *)` (2) |

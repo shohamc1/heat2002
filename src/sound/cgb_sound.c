@@ -1,15 +1,145 @@
 #include "global.h"
-#include "gba/m4a_internal.h"
-#include "functions.h"
 
+/* MidiKeyToCgbFreq. Tables: gCgbScaleTable = gCgbScaleTable (u8),
+ * gCgbFreqTable = gCgbFreqTable (s16), gNoiseTable = gNoiseTable (u8). */
+extern const u8 gCgbScaleTable[];
+extern const s16 gCgbFreqTable[];
+extern const u8 gNoiseTable[];
+#include "gba/m4a_internal.h"
+/* CgbOscOff */
+struct Unk1C20
+{
+    u8 filler0[0x2];
+    u8 unk2;
+    u8 unk3;
+    u8 filler4[0x6 - 0x4];
+    u8 unk6;
+    u8 filler7[0xA - 0x7];
+    u8 unkA;
+    u8 filler0B[0x19 - 0x0B];
+    s8 unk19;
+    u8 filler1A[0x1B - 0x1A];
+    u8 unk1B;
+    u8 unk1C;
+};
+#include "functions.h"
 /* CgbSound, an older m4a revision than pokeemerald's and tmc's: no NR52
  * channel-status check, no pseudo-echo envelope write, and
  * envelopeStepTimeAndDir is a u8 kept across channels. */
-
 extern const u8 gCgb3Vol[];
 
 
-void sub_08001C88(void)
+u32 MidiKeyToCgbFreq(u8 chanNum, u8 key, u8 fineAdjust)
+{
+    if (chanNum == 4)
+    {
+        if (key <= 20)
+        {
+            key = 0;
+        }
+        else
+        {
+            key -= 21;
+            if (key > 59)
+                key = 59;
+        }
+
+        return gNoiseTable[key];
+    }
+    else
+    {
+        s32 val1;
+        s32 val2;
+
+        if (key <= 35)
+        {
+            fineAdjust = 0;
+            key = 0;
+        }
+        else
+        {
+            key -= 36;
+            if (key > 130)
+            {
+                key = 130;
+                fineAdjust = 255;
+            }
+        }
+
+        val1 = gCgbScaleTable[key];
+        val1 = gCgbFreqTable[val1 & 0xF] >> (val1 >> 4);
+
+        val2 = gCgbScaleTable[key + 1];
+        val2 = gCgbFreqTable[val2 & 0xF] >> (val2 >> 4);
+
+        return val1 + ((fineAdjust * (val2 - val1)) >> 8) + 2048;
+    }
+}
+
+
+void CgbOscOff(u8 chanNum)
+{
+    switch (chanNum)
+    {
+        case 1:
+            REG_NR12 = 8;
+            REG_NR14 = 0x80;
+            break;
+        case 2:
+            REG_NR22 = 8;
+            REG_NR24 = 0x80;
+            break;
+        case 3:
+            REG_NR30 = 0;
+            break;
+        default:
+            REG_NR42 = 8;
+            REG_NR44 = 0x80;
+            break;
+    }
+}
+
+
+void CgbModVol(struct CgbChannel *chan)
+{
+    u32 vol;
+
+    if (chan->rightVolume >= chan->leftVolume)
+    {
+        if ((chan->rightVolume >> 1) >= chan->leftVolume)
+        {
+            chan->pan = 0x0F;
+            goto clip;
+        }
+    }
+    else
+    {
+        if ((chan->leftVolume >> 1) >= chan->rightVolume)
+        {
+            chan->pan = 0xF0;
+            goto clip;
+        }
+    }
+    chan->pan = 0xFF;
+    vol = chan->rightVolume + chan->leftVolume;
+    vol >>= 4;
+    chan->envelopeGoal = vol;
+    goto tail;
+
+clip:
+    vol = chan->rightVolume + chan->leftVolume;
+    vol >>= 4;
+    chan->envelopeGoal = vol;
+    if (vol > 0xF)
+        chan->envelopeGoal = 0xF;
+
+tail:
+    chan->sustainGoal = (s8)(((chan->envelopeGoal * chan->sustain) + 0xF) >> 4);
+    chan->pan = chan->pan & chan->panMask;
+}
+
+
+void CgbSound(void)
 {
     s32 ch;
     struct CgbChannel *channels;
@@ -76,7 +206,7 @@ void sub_08001C88(void)
             {
                 channels->statusFlags = 3; // attack
                 channels->modify = CGB_CHANNEL_MO_PIT | CGB_CHANNEL_MO_VOL;
-                sub_08001C20((struct Unk1C20 *)channels);
+                CgbModVol(channels);
                 switch (ch)
                 {
                     case 1:
@@ -135,7 +265,7 @@ void sub_08001C88(void)
             if ((s8)(channels->pseudoEchoLength & mask) <= 0)
             {
             oscillator_off:
-                sub_08001BD0(ch);
+                CgbOscOff(ch);
                 channels->statusFlags = 0;
                 goto channel_complete;
             }
@@ -166,7 +296,7 @@ void sub_08001C88(void)
                 if (ch == 3)
                     channels->modify |= CGB_CHANNEL_MO_VOL;
 
-                sub_08001C20((struct Unk1C20 *)channels);
+                CgbModVol(channels);
                 if ((channels->statusFlags & SOUND_CHANNEL_SF_ENV) == 0) // release
                 {
                     channels->envelopeVolume--;
@@ -303,3 +433,4 @@ void sub_08001C88(void)
         channels->modify = 0;
     }
 }
+

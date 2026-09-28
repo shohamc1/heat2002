@@ -1,6 +1,7 @@
 #include "global.h"
 #include "gba/io_reg.h"
 #include "functions.h"
+#include "m4a.h"
 #include "variables.h"
 
 void MainVBlankCallback(void);
@@ -22,8 +23,8 @@ u8 StartSinglePakLink(void)
     SetVBlankCallback((u32)MainVBlankCallback);
     REG_IE = INTR_FLAG_GAMEPAK | INTR_FLAG_VBLANK;
     REG_DISPSTAT = DISPSTAT_VBLANK_INTR;
-    sub_08001170();
-    sub_0800184C();
+    m4aSoundInit();
+    m4aSoundVSyncOn();
     SetLinkSerialIntr();
     FadeToColor(0, 0x0A);
     i = 0;

@@ -2,8 +2,9 @@
 #include "gba/defines.h"
 #include "gba/io_reg.h"
 #include "functions.h"
+#include "m4a.h"
 
-void sub_080017D0(void);
+void m4aSoundVSyncOff(void);
 
 void sub_080053B8(void)
 {
@@ -18,9 +19,9 @@ void sub_080053B8(void)
             /* DrawTextCentered: this file's old local prototype differs from
                functions.h; call through the old signature (solved-walls 31). */
             ((void (*)(u32, u32, u32))DrawTextCentered)(GetString(0x75), 0x0A, 1);
-            sub_080019B4((struct MusicPlayerInfo *)0x02001F20);
-            sub_080019B4((struct MusicPlayerInfo *)0x02001F60);
-            sub_080017D0();
+            m4aMPlayStop((struct MusicPlayerInfo *)0x02001F20);
+            m4aMPlayStop((struct MusicPlayerInfo *)0x02001F60);
+            m4aSoundVSyncOff();
             while (1)
             {
                 u32 r0 = *(u8 *)(EWRAM_START + 0x2EF90);

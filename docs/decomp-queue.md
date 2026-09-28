@@ -19,7 +19,7 @@ The ranking uses four facts about each function:
 - **Reference source.** The block from `sub_08001134` to `sub_080025A4` is
   the m4a driver. `tools/tmc/src/gba/m4a.c` has C for every function in it.
   Start from that file, adjusted for this ROM's older revision (see the
-  `sub_08001C88` entry in `docs/learnings/parked.md`).
+  `CgbSound [sub_08001C88]` entry in `docs/learnings/parked.md`).
 - **Twins.** "port of" means the function is identical, or at least 90%
   similar, to an earlier row, so its C is that row's C with globals,
   callees, or field offsets renamed. "from" names an already-matched near
@@ -74,7 +74,7 @@ What the source shapes turned out to be, for the next m4a batch:
   byte-exact from tmc's two-statement shape
   `track->X = *track->cmdPtr; track->cmdPtr++;` — including the register
   split that differs between field offsets; it falls out of agbcc alone.
-  `ply_xxx` (`sub_080024B8`) is the revision difference: it tail-calls one
+  `ply_xxx` (`ply_xxx [sub_080024B8]`) is the revision difference: it tail-calls one
   function pointer from the RAM jump table (`gUnk_02001D90` /
   `gUnk_02038DE0`), not tmc's double indirection nor pokeemerald's
   `cmdPtr += 4`.
@@ -125,20 +125,20 @@ What the source shapes turned out to be, for the next m4a batch:
 | 28 | `sub_08002584` | 12 | `ply_xiecl`; port of `sub_08002578` |
 | 29 | `sub_0833BC38` | 12 | port of `sub_08002578` |
 | 30 | `sub_0833BC44` | 12 | port of `sub_08002578` |
-| 31 | `sub_08002514` | 18 | `ply_xtype` |
-| 32 | `sub_08002528` | 18 | `ply_xatta`; port of `sub_08002514` |
-| 33 | `sub_0833BBD4` | 18 | port of `sub_08002514` |
-| 34 | `sub_0833BBE8` | 18 | port of `sub_08002514` |
-| 35 | `sub_080024B8` | 14 | `ply_xxx` |
-| 36 | `sub_0833BB78` | 14 | port of `sub_080024B8` |
+| 31 | `ply_xtype [sub_08002514]` | 18 | `ply_xtype` |
+| 32 | `ply_xatta [sub_08002528]` | 18 | `ply_xatta`; port of `ply_xtype` |
+| 33 | `sub_0833BBD4` | 18 | port of `ply_xtype` |
+| 34 | `sub_0833BBE8` | 18 | port of `ply_xtype` |
+| 35 | `ply_xxx` | 14 | `ply_xxx` |
+| 36 | `sub_0833BB78` | 14 | port of `ply_xxx` |
 | 37 | `sub_0800133C` | 38 | `m4aSongNumStop` |
 | 38 | `sub_08001374` | 38 | `m4aSongNumContinue`; port of `sub_0800133C` |
 | 39 | `sub_0833A9FC` | 38 | port of `sub_0800133C` |
 | 40 | `sub_0833AA34` | 38 | port of `sub_0800133C` |
 | 41 | `sub_08001134` | 24 | `MPlayContinue` |
 | 42 | `sub_0833A7F4` | 24 | port of `sub_08001134` |
-| 43 | `sub_08002498` | 26 | `ply_xcmd` |
-| 44 | `sub_0833BB58` | 26 | port of `sub_08002498` |
+| 43 | `ply_xcmd [sub_08002498]` | 26 | `ply_xcmd` |
+| 44 | `sub_0833BB58` | 26 | port of `ply_xcmd` |
 | 45 | `sub_08002238` | 30 | `ClearModM` |
 | 46 | `sub_0833B8F8` | 30 | port of `sub_08002238` |
 | 47 | `sub_080020CC` | 36 | `m4aMPlayTempoControl` |
@@ -147,26 +147,26 @@ What the source shapes turned out to be, for the next m4a batch:
 | 50 | `sub_080021D0` | 104 | `m4aMPlayPanpotControl`; port of `sub_080020F4` |
 | 51 | `sub_0833B7B4` | 104 | port of `sub_080020F4` |
 | 52 | `sub_0833B890` | 104 | port of `sub_080020F4` |
-| 53 | `sub_08002340` | 54 | `ply_memacc`; jump table or inline data |
-| 54 | `sub_0833BA00` | 54 | port of `sub_08002340`; jump table or inline data |
+| 53 | `ply_memacc [sub_08002340]` | 54 | `ply_memacc`; jump table or inline data |
+| 54 | `sub_0833BA00` | 54 | port of `ply_memacc`; jump table or inline data |
 | 55 | `sub_08002258` | 112 | `m4aMPlayModDepthSet` |
 | 56 | `sub_080022CC` | 112 | `m4aMPlayLFOSpeedSet`; port of `sub_08002258` |
 | 57 | `sub_0833B918` | 112 | port of `sub_08002258` |
 | 58 | `sub_0833B98C` | 112 | port of `sub_08002258` |
-| 59 | `sub_080024CC` | 62 | `ply_xwave` |
-| 60 | `sub_0833BB8C` | 62 | port of `sub_080024CC` |
+| 59 | `ply_xwave [sub_080024CC]` | 62 | `ply_xwave` |
+| 60 | `sub_0833BB8C` | 62 | port of `ply_xwave` |
 | 61 | `sub_08001234` | 66 | `m4aSongNumStart` |
 | 62 | `sub_0833A8F4` | 66 | port of `sub_08001234` |
-| 63 | `sub_08001BD0` | 68 | `CgbOscOff` |
-| 64 | `sub_0833B290` | 68 | port of `sub_08001BD0` |
+| 63 | `CgbOscOff [sub_08001BD0]` | 68 | `CgbOscOff` |
+| 64 | `sub_0833B290` | 68 | port of `CgbOscOff` |
 | 65 | `sub_080013B0` | 70 | `m4aMPlayAllStop` |
 | 66 | `sub_0833AA70` | 70 | port of `sub_080013B0` |
 | 67 | `sub_08001280` | 72 | `m4aSongNumStartOrChange` |
 | 68 | `sub_0833A940` | 72 | port of `sub_08001280` |
 | 69 | `sub_0800177C` | 80 | `SoundClear` |
 | 70 | `sub_0833AE3C` | 80 | port of `sub_0800177C` |
-| 71 | `sub_08001B28` | 160 | `MidiKeyToCgbFreq` |
-| 72 | `sub_0833B1E8` | 160 | port of `sub_08001B28` |
+| 71 | `MidiKeyToCgbFreq [sub_08001B28]` | 160 | `MidiKeyToCgbFreq` |
+| 72 | `sub_0833B1E8` | 160 | port of `MidiKeyToCgbFreq` |
 
 ## Tier 2: Near copies of matched functions — finished 2026-09-24
 

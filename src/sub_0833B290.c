@@ -1,7 +1,7 @@
 #include "global.h"
 #include "gba/m4a_internal.h"
 
-/* CgbOscOff, high 0x0833 module copy: same code as sub_08001BD0. */
+/* CgbOscOff, high 0x0833 module copy: same code as CgbOscOff. */
 
 void sub_0833B290(u8 chanNum)
 {

@@ -6,15 +6,27 @@
  * luvdis left the jump table and every case body as .byte rows inside the
  * block, so its true extent runs to 0x08002496. This ROM's revision keeps
  * memAccArea at MusicPlayerInfo+0x18 (the header's gap[8] before it). */
-
-
 #define MEMACC_COND_JUMP(cond) \
     if (cond)                  \
         goto cond_true;        \
     else                       \
         goto cond_false;
+/* ply_xcmd */
+extern MPlayFunc gUnk_0801D230[];
+/* ply_xxx */
+/* ply_xwave */
+#define READ_XCMD_BYTE(var, n)         \
+    {                                  \
+        u32 byte = track->cmdPtr[(n)]; \
+        byte <<= n * 8;                \
+        (var) &= ~(0xFF << (n * 8));   \
+        (var) |= byte;                 \
+    }
+/* ply_xtype */
+/* ply_xatta */
 
-void sub_08002340(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
+
+void ply_memacc(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
 {
     u32 op;
     u8 *addr;
@@ -95,3 +107,47 @@ cond_true:
 cond_false:
     track->cmdPtr += 4;
 }
+
+
+void ply_xcmd(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
+{
+    u32 n = *track->cmdPtr;
+    track->cmdPtr++;
+
+    gUnk_0801D230[n](mplayInfo, track);
+}
+
+
+void ply_xxx(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
+{
+    gMPlayJumpTable[0](mplayInfo, track);
+}
+
+
+void ply_xwave(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
+{
+    u32 wav;
+
+    READ_XCMD_BYTE(wav, 0)
+    READ_XCMD_BYTE(wav, 1)
+    READ_XCMD_BYTE(wav, 2)
+    READ_XCMD_BYTE(wav, 3)
+
+    track->tone.wav = (struct WaveData *)wav;
+    track->cmdPtr += 4;
+}
+
+
+void ply_xtype(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
+{
+    track->tone.type = *track->cmdPtr;
+    track->cmdPtr++;
+}
+
+
+void ply_xatta(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
+{
+    track->tone.attack = *track->cmdPtr;
+    track->cmdPtr++;
+}
+

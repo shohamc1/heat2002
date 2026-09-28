@@ -4,6 +4,7 @@
 // Sound engine public API. The engine itself is in lib/m4a.
 #include "gba/m4a_internal.h"
 
+void m4aSoundInit(void);
 void m4aSongNumStart(u16 idx);
 void m4aMPlayFadeOut(u32 arg0, u32 arg1);
 

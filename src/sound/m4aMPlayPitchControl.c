@@ -3,7 +3,7 @@
 
 /* m4aMPlayPitchControl */
 
-void sub_0800215C(struct MusicPlayerInfo *mplayInfo, u16 trackBits, u16 pitch)
+void m4aMPlayPitchControl(struct MusicPlayerInfo *mplayInfo, u16 trackBits, s16 pitch)
 {
     struct MusicPlayerTrack *track;
     u32 bit;
@@ -14,7 +14,7 @@ void sub_0800215C(struct MusicPlayerInfo *mplayInfo, u16 trackBits, u16 pitch)
     mplayInfo->ident = mplayInfo->ident + 1;
     for (i = mplayInfo->trackCount, track = mplayInfo->tracks, bit = 1; i > 0; i--, track++, bit = bit << 1) {
         if ((trackBits & bit) != 0 && (track->flags & MPT_FLG_EXIST) != 0) {
-            track->keyShiftX = (s16)pitch >> 8;
+            track->keyShiftX = pitch >> 8;
             track->pitX = pitch;
             track->flags = track->flags | MPT_FLG_PITCHG;
         }

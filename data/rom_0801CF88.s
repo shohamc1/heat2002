@@ -67,7 +67,7 @@ gUnk_0801CF90:
 	.4byte ply_port
 	.4byte ply_fine
 	.4byte ply_endtie
-	.4byte sub_08001640
+	.4byte SampleFreqSet
 	.4byte TrackStop
 	.4byte FadeOutBody
 	.4byte TrkVolPitSet

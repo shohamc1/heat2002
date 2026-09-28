@@ -138,7 +138,7 @@ u32 MainMenuLoop(void)
     sub_0800F560();
     sub_08010334();
     sub_080102F0();
-    sub_08001170();
+    m4aSoundInit();
     FillFadePalette(0x7FFF);
 
     gLinkSyncByte = 0;

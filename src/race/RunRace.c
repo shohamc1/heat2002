@@ -147,9 +147,9 @@ camera_ready:
             p = &gCars[0];
         else
             p = &gCars[gLinkPlayerId[0]];
-        /* sub_0800215C: this file's old prototype took (void *, u32, s32);
+        /* m4aMPlayPitchControl: this file's old prototype took (void *, u32, s32);
            the matched definition narrows to u16; call through the old one. */
-        ((void (*)(void *, u32, s32))sub_0800215C)(gEngineSoundPlayer, 1,
+        ((void (*)(void *, u32, s32))m4aMPlayPitchControl)(gEngineSoundPlayer, 1,
                      (s16)(gEngineSoundFreqBases[p->gear]
                            + ((p->rpm * gEngineSoundRpmMultipliers[p->gear]) >> 6)) >> 3);
         if (gIsDemo != 0) {
@@ -238,9 +238,9 @@ camera_ready:
                     gRaceEndState = 2;
                     WaitForVBlank();
                     REG_DISPCNT &= ~DISPCNT_OBJ_ON;
-                    sub_080019B4((struct MusicPlayerInfo *)gUnk_02001FA0);
-                    sub_080019B4((struct MusicPlayerInfo *)gUnk_02002030);
-                    sub_080019B4((struct MusicPlayerInfo *)gUnk_02001FE0);
+                    m4aMPlayStop((struct MusicPlayerInfo *)gUnk_02001FA0);
+                    m4aMPlayStop((struct MusicPlayerInfo *)gUnk_02002030);
+                    m4aMPlayStop((struct MusicPlayerInfo *)gUnk_02001FE0);
                     BeginFadeToColor(0x19, 0);
                 }
                 break;
@@ -271,6 +271,6 @@ wait_link:
 success:
         return 1;
     }
-    sub_080019B4((struct MusicPlayerInfo *)gEngineSoundPlayer);
+    m4aMPlayStop((struct MusicPlayerInfo *)gEngineSoundPlayer);
     return 0;
 }

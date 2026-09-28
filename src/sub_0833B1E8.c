@@ -1,6 +1,6 @@
 #include "global.h"
 
-/* MidiKeyToCgbFreq, high 0x0833 module copy: same code as sub_08001B28
+/* MidiKeyToCgbFreq, high 0x0833 module copy: same code as MidiKeyToCgbFreq
  * with the tables read from the module's EWRAM image (delta 0x17FF6E0 from
  * the low copies): gUnk_0200C7F4 = gCgbScaleTable, gUnk_0200C878 =
  * gCgbFreqTable, gUnk_0200C890 = gNoiseTable. */
