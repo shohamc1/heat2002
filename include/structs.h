@@ -7,10 +7,10 @@
 // struct Track: the merged view of the 0x64-byte per-track record that
 // gTrackData (ROM) and gModule_TrackData (the high module's EWRAM copy of
 // it) are arrays of. Three src/ files declared it locally
-// (sub_08003890.c, sub_08003928.c, sub_0833CD2C.c); the two full views
+// (sub_08003890.c, sub_08003928.c, ModuleLoadTrack.c); the two full views
 // were identical and the third (unk00/unk04 only) is a prefix of them, so
 // this is their union with no conflicts. The 100-byte stride is the one
-// sub_0833CCD4.c's byte-pointer arithmetic uses (`off = idx * 100`).
+// ModuleLoadTrackTiles.c's byte-pointer arithmetic uses (`off = idx * 100`).
 // The 0x18-byte track segment record used to share the `struct Track`
 // tag name in four local definitions; it now lives below as
 // `struct TrackSeg`. Its stride differs from struct Track's, so the

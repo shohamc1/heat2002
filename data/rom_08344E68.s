@@ -106,12 +106,12 @@ gUnk_08345390:
 	.4byte ModulePlyXxx
 	.4byte ModulePlyXatta
 	.4byte ModulePlyXdeca
-	.4byte sub_0833BC10
-	.4byte sub_0833BC24
-	.4byte sub_0833BC38
-	.4byte sub_0833BC44
-	.4byte sub_0833BC50
-	.4byte sub_0833BC64
+	.4byte ModulePlyXsust
+	.4byte ModulePlyXrele
+	.4byte ModulePlyXiecv
+	.4byte ModulePlyXiecl
+	.4byte ModulePlyXleng
+	.4byte ModulePlyXswee
 	.4byte 0x3C0B
 	.4byte gUnk_083454D4
 	.4byte 0xD0000

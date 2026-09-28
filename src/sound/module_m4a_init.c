@@ -9,7 +9,7 @@
 void sub_0833A018(u32 a);
 void ModuleSampleFreqSet(u32 a);
 void sub_0833A4FC(void);
-void sub_0833BC78(void);
+void ModuleDummyCgbSound(void);
 #include "gba/defines.h"
 #include "gba/io_reg.h"
 #include "functions.h"
@@ -41,10 +41,10 @@ void ModuleSoundInit(struct SoundInfo *soundInfo)
     soundInfo->maxChans = 8;
     soundInfo->masterVolume = 0xF;
     soundInfo->plynote = (PlyNoteFunc)sub_0833A4FC;
-    soundInfo->CgbSound = (CgbSoundFunc)sub_0833BC78;
-    soundInfo->CgbOscOff = (CgbOscOffFunc)sub_0833BC78;
-    soundInfo->MidiKeyToCgbFreq = (MidiKeyToCgbFreqFunc)sub_0833BC78;
-    soundInfo->ExtVolPit = (ExtVolPitFunc)sub_0833BC78;
+    soundInfo->CgbSound = (CgbSoundFunc)ModuleDummyCgbSound;
+    soundInfo->CgbOscOff = (CgbOscOffFunc)ModuleDummyCgbSound;
+    soundInfo->MidiKeyToCgbFreq = (MidiKeyToCgbFreqFunc)ModuleDummyCgbSound;
+    soundInfo->ExtVolPit = (ExtVolPitFunc)ModuleDummyCgbSound;
     {
         MPlayFunc *jumpTable = gUnk_02038DE0;
 

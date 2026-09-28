@@ -1,5 +1,5 @@
 /*
- * sub_0833BF80: the main race loop. Levers that made it match:
+ * ModuleRunRace: the main race loop. Levers that made it match:
  * - dead `t++; t--;` pairs before each `(u8)t` site give gcse a kill on t,
  *   so PRE does not merge the two lsls/lsrs pairs; DCE removes the pair.
  * - `rrret` is placed out of line by jumping INTO the D5F4 then-arm, and
@@ -7,7 +7,7 @@
  *   ("if (foo) bar; else break;") does not reorder the final return.
  * - `rr` is s32: ARM promotes s8 locals zero-extended, which gives lsrs;
  *   an s32 home keeps the ROM's asrs and cmp on the extended value.
- * - the busy-wait after sub_0833C874 is a goto loop: an empty-body
+ * - the busy-wait after ModuleExchangeLinkInput is a goto loop: an empty-body
  *   do-while is rotated and duplicate_loop_exit_test adds a pre-test.
  * - the r dispatch is a goto net; see parked.md for the switch findings.
  */
@@ -29,10 +29,10 @@ extern s32 gUnk_02025190[];
 extern u8 gUnk_020251A4[];
 extern u8 gUnk_0203D6B0[];
 
-void sub_0833CD2C(u8);
+void ModuleLoadTrack(u8);
 void sub_0833D9E8(u8);
 void sub_0833EE20(void);
-void sub_0833BF20(void);
+void ModuleSetTrackBgCnt(void);
 void sub_0833D3E4(s32);
 void sub_08343504(u32);
 void sub_0833F448(u32);
@@ -41,7 +41,7 @@ void sub_0833FF1C(void);
 void sub_0833D7D4(void);
 void sub_0833D680(void);
 void sub_0833D9D8(void);
-void sub_0833BF6C(void);
+void ModuleEnableRaceDisplay(void);
 void sub_0833EDF8(void);
 void sub_0833EDB8(void);
 void ModuleM4aSongNumStart(u16);
@@ -57,36 +57,36 @@ void sub_0833D57C(void);
 void sub_0833FFC4(void);
 void sub_083419D8(void);
 void sub_0833DF58(void);
-void sub_0833CF10(u32, u32);
+void ModuleUpdateTrackScroll(u32, u32);
 void sub_08340EFC(void);
 void ModuleM4aMPlayFadeOut(u32, u16);
 u32 sub_0833DBC8(void);
 u32 sub_0833DCB0(void);
 u32 sub_0833DBF4(void);
-s8 sub_0833C874(void);
+s8 ModuleExchangeLinkInput(void);
 void sub_0833FA3C(void);
 
-s32 sub_0833BF80(u8 arg0, u8 arg1)
+s32 ModuleRunRace(u8 isDemo, u8 gameMode)
 {
     u8 pad[4];
-    register u8 *pf asm("r4");
+    register u8 *isDemoPtr asm("r4");
     u32 t;
     u32 r;
     s32 rt;
     s32 i;
     u32 flag;
-    struct Car *ent;
+    struct Car *car;
     s32 t2;
-    s32 rr;
+    s32 linkResult;
     u8 first;
 
-    t = arg1;
+    t = gameMode;
     gUnk_02039100 = 0;
     gUnk_020391CC = 0;
     gUnk_02039154 = 0;
     gModule_GameMode[0] = t;
-    pf = &gModule_IsDemo[0];
-    *pf = arg0;
+    isDemoPtr = &gModule_IsDemo[0];
+    *isDemoPtr = isDemo;
     if (t != 0xF)
         gModule_NumCars[0] = 5;
     if (gModule_GameMode[0] == 2)
@@ -97,7 +97,7 @@ s32 sub_0833BF80(u8 arg0, u8 arg1)
         gModule_NumCars[0] = 1;
     if (gModule_GameMode[0] == 0xE)
         gModule_NumCars[0] = 1;
-    if (*pf != 0)
+    if (*isDemoPtr != 0)
         gModule_NumCars[0] = 2;
     if (gModule_TrackId > 6 && gModule_TrackId != 8 && gModule_TrackId != 9
         && gModule_TrackId != 0xA && gModule_TrackId != 0xB)
@@ -108,11 +108,11 @@ s32 sub_0833BF80(u8 arg0, u8 arg1)
     gUnk_020391E0[1] = 0;
     gUnk_020391E0[2] = 0;
     gUnk_020391E0[3] = 0;
-    sub_0833CD2C(gModule_TrackId);
+    ModuleLoadTrack(gModule_TrackId);
     sub_0833F448(gModule_TrackId);
     sub_0833D9E8(gModule_TrackId);
     sub_0833EE20();
-    sub_0833BF20();
+    ModuleSetTrackBgCnt();
     gUnk_02039158 = 0x100;
     sub_0833D3E4(0x32);
     sub_08343504(gModule_TrackId);
@@ -132,7 +132,7 @@ s32 sub_0833BF80(u8 arg0, u8 arg1)
     }
     ModuleWaitForVBlank();
     gUnk_020390FC = 0;
-    sub_0833BF6C();
+    ModuleEnableRaceDisplay();
     if (gModule_GameMode[0] == 0xE) {
         sub_0833EDF8();
     } else {
@@ -198,12 +198,12 @@ after_d5f4: ;
             sub_08343148(gUnk_02039170, 0x4B, 0x5A);
         gModule_VBlanksThisFrame = 0;
         if ((u8)t > 1)
-            ent = gModule_Cars;
+            car = gModule_Cars;
         else
-            ent = &gModule_Cars[gModule_LinkPlayerId];
+            car = &gModule_Cars[gModule_LinkPlayerId];
         ModuleM4aMPlayPitchControl(gUnk_02038FB0, 1,
-                    ((s16)(gUnk_02025190[ent->gear]
-                         + ((ent->rpm * gUnk_020251A4[ent->gear]) >> 6))) >> 3);
+                    ((s16)(gUnk_02025190[car->gear]
+                         + ((car->rpm * gUnk_020251A4[car->gear]) >> 6))) >> 3);
         if (gModule_IsDemo[0] != 0) {
             sub_0833D5F4(gUnk_0203D6B0);
             gUnk_020250EC = t2 = gModule_FrameCounter / 256;
@@ -229,7 +229,7 @@ after_d5f4: ;
         if (gModule_RaceStarted != 0 || gModule_GameMode[0] == 9 || gModule_GameMode[0] == 0xD
             || gModule_GameMode[0] == 0xE || gModule_GameMode[0] == 0xF || gModule_GameMode[0] == 0x11)
             sub_083426C8();
-        sub_0833CF10(gModule_Camera[0], gModule_Camera[1]);
+        ModuleUpdateTrackScroll(gModule_Camera[0], gModule_Camera[1]);
         sub_0833D9D8();
         sub_08340EFC();
         gUnk_020391D4 = 1;
@@ -293,10 +293,10 @@ r_case27:
 r_end: ;
         }
         if (gModule_IsLinkRace != 0) {
-            rr = sub_0833C874();
-            if (rr != 0)
+            linkResult = ModuleExchangeLinkInput();
+            if (linkResult != 0)
                 goto rrret;
-            (*(volatile s8 *)&gModule_VBlankWorkDone) = rr;
+            (*(volatile s8 *)&gModule_VBlankWorkDone) = linkResult;
 wait_ec:
             if ((*(volatile s8 *)&gModule_VBlankWorkDone) == 0)
                 goto wait_ec;

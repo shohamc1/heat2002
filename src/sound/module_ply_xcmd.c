@@ -33,6 +33,12 @@ extern MPlayFunc gUnk_0200C910[];
 /* ply_xtype (high copy) */
 /* ply_xatta (high copy) */
 /* ply_xdeca (high copy) */
+/* ply_xsust (high copy) */
+/* ply_xrele (high copy) */
+/* ply_xiecv (high copy) */
+/* ply_xiecl (high copy) */
+/* ply_xleng (high copy) */
+/* ply_xswee (high copy) */
 
 
 void ModulePlyMemacc(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
@@ -164,6 +170,48 @@ void ModulePlyXatta(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *
 void ModulePlyXdeca(u32 mplayInfo, struct MusicPlayerTrack *track)
 {
     track->tone.decay = *track->cmdPtr;
+    track->cmdPtr++;
+}
+
+
+void ModulePlyXsust(u32 mplayInfo, struct MusicPlayerTrack *track)
+{
+    track->tone.sustain = *track->cmdPtr;
+    track->cmdPtr++;
+}
+
+
+void ModulePlyXrele(u32 mplayInfo, struct MusicPlayerTrack *track)
+{
+    track->tone.release = *track->cmdPtr;
+    track->cmdPtr++;
+}
+
+
+void ModulePlyXiecv(u32 mplayInfo, struct MusicPlayerTrack *track)
+{
+    track->pseudoEchoVolume = *track->cmdPtr;
+    track->cmdPtr++;
+}
+
+
+void ModulePlyXiecl(u32 mplayInfo, struct MusicPlayerTrack *track)
+{
+    track->pseudoEchoLength = *track->cmdPtr;
+    track->cmdPtr++;
+}
+
+
+void ModulePlyXleng(u32 mplayInfo, struct MusicPlayerTrack *track)
+{
+    track->tone.length = *track->cmdPtr;
+    track->cmdPtr++;
+}
+
+
+void ModulePlyXswee(u32 mplayInfo, struct MusicPlayerTrack *track)
+{
+    track->tone.pan_sweep = *track->cmdPtr;
     track->cmdPtr++;
 }
 

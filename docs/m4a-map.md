@@ -91,12 +91,12 @@ differs, the note in `docs/decomp-queue.md`'s Tier 1 section is the record.
 | `ply_xtype [sub_08002514]` | `ModulePlyXtype [sub_0833BBD4]` | `ply_xtype` |
 | `ply_xatta [sub_08002528]` | `ModulePlyXatta [sub_0833BBE8]` | `ply_xatta` |
 | `ply_xdeca [sub_0800253C]` | `ModulePlyXdeca [sub_0833BBFC]` | `ply_xdeca` |
-| `ply_xsust [sub_08002550]` | `sub_0833BC10` | `ply_xsust` |
-| `ply_xrele [sub_08002564]` | `sub_0833BC24` | `ply_xrele` |
-| `ply_xiecv [sub_08002578]` | `sub_0833BC38` | `ply_xiecv` |
-| `ply_xiecl [sub_08002584]` | `sub_0833BC44` | `ply_xiecl` |
-| `ply_xleng [sub_08002590]` | `sub_0833BC50` | `ply_xleng` |
-| `ply_xswee [sub_080025A4]` | `sub_0833BC64` | `ply_xswee` |
+| `ply_xsust [sub_08002550]` | `ModulePlyXsust [sub_0833BC10]` | `ply_xsust` |
+| `ply_xrele [sub_08002564]` | `ModulePlyXrele [sub_0833BC24]` | `ply_xrele` |
+| `ply_xiecv [sub_08002578]` | `ModulePlyXiecv [sub_0833BC38]` | `ply_xiecv` |
+| `ply_xiecl [sub_08002584]` | `ModulePlyXiecl [sub_0833BC44]` | `ply_xiecl` |
+| `ply_xleng [sub_08002590]` | `ModulePlyXleng [sub_0833BC50]` | `ply_xleng` |
+| `ply_xswee [sub_080025A4]` | `ModulePlyXswee [sub_0833BC64]` | `ply_xswee` |
 
 The high module's song-num family reads its own EWRAM copies of the song
 and player tables (`gUnk_0200CA74`, `gUnk_0200CAA4`), and its table data

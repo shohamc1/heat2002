@@ -5,7 +5,7 @@
 
 void sub_0833FA3C(void);
 void sub_0833D680(void);
-u32 sub_0833C874(void);
+u32 ModuleExchangeLinkInput(void);
 void ModuleDrawTextCenteredHighlight(u8 *str, u32 y, u32 shade);
 void ModuleM4aSoundVSyncOff(void);
 void sub_08344B74(u32 a);
@@ -22,7 +22,7 @@ void sub_0833DE98(void)
     for (;;)
     {
         gModule_VBlanksThisFrame = 0;
-        if (sub_0833C874() != 0)
+        if (ModuleExchangeLinkInput() != 0)
         {
             ModuleDrawTextCenteredHighlight(ModuleGetString(MODULE_MSG_LINK_FAIL), 0xA, 1);
             ModuleDrawTextCenteredHighlight(gModule_PleaseTurnOffYour_2, 0xC, 1);

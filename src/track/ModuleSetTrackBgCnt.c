@@ -1,7 +1,7 @@
 #include "global.h"
 #include "gba/io_reg.h"
 
-void sub_0833BF20(void)
+void ModuleSetTrackBgCnt(void)
 {
     REG_BG3CNT = BGCNT_PRIORITY(3) | BGCNT_CHARBASE(2) | BGCNT_SCREENBASE(61);
     REG_BG2CNT = BGCNT_PRIORITY(1) | BGCNT_SCREENBASE(30);

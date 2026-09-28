@@ -1,5 +1,5 @@
 /*
- * ExchangeLinkInput: SIO handshake with retry, the low twin of sub_0833C874
+ * ExchangeLinkInput: SIO handshake with retry, the low twin of ModuleExchangeLinkInput
  * (same source, renamed globals). Levers that made it match:
  * - the masks are literals and the packet expression sits inside the loop,
  *   so loop.c hoists 0x7F, 0xF and the packet into r9, r8 and r5.

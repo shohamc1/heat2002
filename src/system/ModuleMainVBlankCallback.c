@@ -8,12 +8,12 @@
 extern u8 gUnk_020391C8;
 
 void sub_0833A1DC(void);
-void sub_0833D094(void);
+void ModuleFlushTrackBgBuffers(void);
 void sub_0833FDC4(void);
 void sub_0833D4E4(void);
 void ModuleM4aSoundMain(void);
 
-void sub_0833C5B0(void)
+void ModuleMainVBlankCallback(void)
 {
     u8 v;
 
@@ -45,7 +45,7 @@ void sub_0833C5B0(void)
                 REG_BG1VOFS = gUnk_02039260;
                 REG_BG0HOFS = v;
                 REG_BG0VOFS = v;
-                sub_0833D094();
+                ModuleFlushTrackBgBuffers();
                 sub_0833FDC4();
             } else {
                 sub_0833FDC4();

@@ -1,5 +1,8 @@
+#include "global.h"
+#include "variables.h"
+
 /*
- * sub_0833C874: SIO handshake with retry. Levers that made it match:
+ * ModuleExchangeLinkInput: SIO handshake with retry. Levers that made it match:
  * - the masks are literals and the packet expression sits inside the loop,
  *   so loop.c hoists 0x7F, 0xF and the packet into r9, r8 and r5.
  * - separate counters per branch (n, n2) and a non-volatile send word keep
@@ -7,18 +10,18 @@
  * - only the flag clear and the timer read are volatile: the ROM re-reads
  *   them, but not the flag test.
  */
-#include "global.h"
-#include "variables.h"
-
 extern u16 gUnk_02039188[];
-
-u16 sub_0833C70C(u16 keys);
-u8 sub_0833C828(u16 seq, u8 next);
-u8 sub_0833C858(u16 id);
-u16 sub_0833C77C(u16 id);
+u16 ModulePackLinkKeys(u16 keys);
+u8 ModuleIsLinkSeqNumExpected(u16 seq, u8 next);
+u8 ModuleIsValidLinkKeys(u16 id);
+u16 ModuleUnpackLinkKeys(u16 id);
 void sub_083448B0(u16 data);
 
-s32 sub_0833C874(void)
+
+
+
+
+s32 ModuleExchangeLinkInput(void)
 {
     u16 recv[4];
     volatile s32 i;
@@ -31,7 +34,7 @@ s32 sub_0833C874(void)
     u8 n2;
 
     keys = ~*(u16 *)0x04000130;
-    keys = sub_0833C70C(keys);
+    keys = ModulePackLinkKeys(keys);
     for (i = 0; i < gModule_NumLinkPlayers[0]; i++) {
         *(u16 *)((u8 *)gModule_LinkRecvWords + i * 8) = 0;
         *(u16 *)((u8 *)gUnk_02039188 + i * 2) = 0;
@@ -80,8 +83,8 @@ send:
                     && recv[i] != 0xFFFF
                     && recv[i] != 0
                     && ((recv[i] >> 14) == 2 || (recv[i] >> 14) == 1)
-                    && sub_0833C828((recv[i] >> 11) & 7, 0)
-                    && sub_0833C858(recv[i] & 0x7F))
+                    && ModuleIsLinkSeqNumExpected((recv[i] >> 11) & 7, 0)
+                    && ModuleIsValidLinkKeys(recv[i] & 0x7F))
                     n++;
             }
             if (n == gModule_NumLinkPlayers[0]) {
@@ -95,10 +98,10 @@ send:
                 if ((recv[i] & 0xF) == ((recv[i] >> 7) & 0xF)
                     && recv[i] != 0xFFFF
                     && recv[i] != 0
-                    && sub_0833C858(recv[i] & 0x7F)) {
-                    if ((recv[i] >> 14) == 1 && sub_0833C828((recv[i] >> 11) & 7, 0))
+                    && ModuleIsValidLinkKeys(recv[i] & 0x7F)) {
+                    if ((recv[i] >> 14) == 1 && ModuleIsLinkSeqNumExpected((recv[i] >> 11) & 7, 0))
                         n2++;
-                    else if ((recv[i] >> 14) == 2 && sub_0833C828((recv[i] >> 11) & 7, 1)) {
+                    else if ((recv[i] >> 14) == 2 && ModuleIsLinkSeqNumExpected((recv[i] >> 11) & 7, 1)) {
                         n2++;
                         recv[i] = gUnk_02039188[i];
                     }
@@ -106,7 +109,7 @@ send:
             }
             if (n2 == gModule_NumLinkPlayers[0]) {
                 for (i = 0; i < gModule_NumLinkPlayers[0]; i++)
-                    gUnk_020390B0[i] = sub_0833C77C(recv[i] & 0x7F);
+                    gUnk_020390B0[i] = ModuleUnpackLinkKeys(recv[i] & 0x7F);
                 done = 1;
             }
         }
@@ -114,3 +117,4 @@ send:
     gModule_LinkTxSeqNum = (gModule_LinkTxSeqNum + 1) & 7;
     return 0;
 }
+

@@ -3,7 +3,7 @@
 #include "car.h"
 
 
-void sub_0833BCF8(void)
+void ModuleSortLinkCarsByTime(void)
 {
     u8 i;
     u32 swapped;
@@ -44,11 +44,11 @@ void sub_0833BCF8(void)
                 off = half << 1;
                 innerCount = count;
                 do {
-                    u32 a = p[0];
-                    u32 b = p[1];
-                    if (*(u32 *)(a + off) > *(u32 *)(b + off)) {
-                        p[0] = b;
-                        p[1] = a;
+                    u32 carA = p[0];
+                    u32 carB = p[1];
+                    if (*(u32 *)(carA + off) > *(u32 *)(carB + off)) {
+                        p[0] = carB;
+                        p[1] = carA;
                         swapped = 1;
                     }
                     p++;

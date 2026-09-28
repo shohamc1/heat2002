@@ -115,16 +115,16 @@ What the source shapes turned out to be, for the next m4a batch:
 | 18 | `ply_xleng [sub_08002590]` | 18 | `ply_xleng`; port of `ply_xdeca` |
 | 19 | `ply_xswee` | 18 | `ply_xswee`; port of `ply_xdeca` |
 | 20 | `ModulePlyXdeca [sub_0833BBFC]` | 18 | port of `ply_xdeca` |
-| 21 | `sub_0833BC10` | 18 | port of `ply_xdeca` |
-| 22 | `sub_0833BC24` | 18 | port of `ply_xdeca` |
-| 23 | `sub_0833BC50` | 18 | port of `ply_xdeca` |
-| 24 | `sub_0833BC64` | 18 | port of `ply_xdeca` |
+| 21 | `ModulePlyXsust [sub_0833BC10]` | 18 | port of `ply_xdeca` |
+| 22 | `ModulePlyXrele [sub_0833BC24]` | 18 | port of `ply_xdeca` |
+| 23 | `ModulePlyXleng [sub_0833BC50]` | 18 | port of `ply_xdeca` |
+| 24 | `ModulePlyXswee [sub_0833BC64]` | 18 | port of `ply_xdeca` |
 | 25 | `sub_0800151C` | 4 | `MusicPlayerJumpTableCopy` |
 | 26 | `sub_0833ABDC` | 4 | port of `sub_0800151C` |
 | 27 | `ply_xiecv [sub_08002578]` | 12 | `ply_xiecv` |
 | 28 | `ply_xiecl [sub_08002584]` | 12 | `ply_xiecl`; port of `ply_xiecv` |
-| 29 | `sub_0833BC38` | 12 | port of `ply_xiecv` |
-| 30 | `sub_0833BC44` | 12 | port of `ply_xiecv` |
+| 29 | `ModulePlyXiecv [sub_0833BC38]` | 12 | port of `ply_xiecv` |
+| 30 | `ModulePlyXiecl [sub_0833BC44]` | 12 | port of `ply_xiecv` |
 | 31 | `ply_xtype [sub_08002514]` | 18 | `ply_xtype` |
 | 32 | `ply_xatta [sub_08002528]` | 18 | `ply_xatta`; port of `ply_xtype` |
 | 33 | `ModulePlyXtype [sub_0833BBD4]` | 18 | port of `ply_xtype` |
@@ -397,7 +397,7 @@ What the source shapes turned out to be:
 | 188 | `sub_08005FA8` | 186 | jump table or inline data |
 | 189 | `sub_0833EAA4` | 186 | port of `sub_08005FA8`; jump table or inline data |
 | 190 | `sub_0800306C` | 258 | jump table or inline data |
-| 191 | `sub_0833C5B0` | 258 | port of `sub_0800306C`; jump table or inline data |
+| 191 | `ModuleMainVBlankCallback [sub_0833C5B0]` | 258 | port of `sub_0800306C`; jump table or inline data |
 | 192 | `sub_08006094` | 286 | jump table or inline data |
 | 193 | `sub_0833EB90` | 286 | port of `sub_08006094`; jump table or inline data |
 | 194 | `sub_0800E75C` | 286 | jump table or inline data |
@@ -446,7 +446,7 @@ that run from EWRAM" in `CLAUDE.md`.
 Module C used to refer to image code and data by fixed EWRAM numbers.
 Each number breaks if the image moves. A name that the linker resolves
 moves with the image. On 2026-09-24, the 13 raw function-pointer
-literals became function names (`(u32)sub_0833BC78`). Since 2026-09-25,
+literals became function names (`(u32)ModuleDummyCgbSound [sub_0833BC78]`). Since 2026-09-25,
 module C names everything inside the image.
 
 The same EWRAM address means a different variable on each GBA. The main
