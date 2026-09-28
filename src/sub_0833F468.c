@@ -18,17 +18,6 @@
    its layout or stride, so it keeps a local tag. The gModule_TrackSegs
    extern (variables.h) is typed struct Track *; the casts below are
    pointer casts only and emit nothing. */
-struct TrackSeg {
-    s32 f0;
-    s32 f4;
-    s32 f8;
-    s32 fC;
-    u16 unk10;
-    u8 pad12[2];
-    u8 unk14;
-    u8 pad15[3];
-};
-
 extern u32 gUnk_0203DFC4;
 extern u32 gUnk_0203DE40;
 

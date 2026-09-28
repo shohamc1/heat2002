@@ -11,11 +11,10 @@
 // were identical and the third (unk00/unk04 only) is a prefix of them, so
 // this is their union with no conflicts. The 100-byte stride is the one
 // sub_0833CCD4.c's byte-pointer arithmetic uses (`off = idx * 100`).
-// Another local `struct Track` tag shares the name but not the layout
-// and stays local: the 0x18-byte track segment record (`struct TrackSeg`
-// in sub_08006A34.c, sub_0833F468.c, sub_0800A4D4.c, sub_08341F64.c —
-// gTrackSegs/gModule_TrackSegs point at those). Its stride differs, so
-// it can never fold into this struct. This header defines the struct before declaring any array of
+// The 0x18-byte track segment record used to share the `struct Track`
+// tag name in four local definitions; it now lives below as
+// `struct TrackSeg`. Its stride differs from struct Track's, so the
+// two can never fold together. This header defines the struct before declaring any array of
 // it ("Declaration order matters for struct arrays",
 // docs/extern-headers-plan.md).
 struct Track {
@@ -48,7 +47,26 @@ struct Track {
 typedef char TrackSizeCheck[sizeof(struct Track) == 0x64 ? 1 : -1];
 
 // The ROM's track table at 0x08364B0C; every user agrees on this type.
-extern struct Track gTrackData[];
+extern const struct Track gTrackData[];
+
+
+// One waypoint quad of a track's segment list: the 0x18-byte record
+// gTrackSegs points at after sub_08006A14 loads the row from
+// gTrackSegTables (race_setup.c, one row per track). sub_0833F468 and
+// race/UpdateLapProgress.c read unk10 (the segment kind) against the
+// quad's corners; sub_0800BC4C crosses the quad with a vertex pair.
+// Its old local tags (this struct, plus the coarser `struct SegBC4C`
+// prefix view) were merged here unchanged.
+struct TrackSeg {
+    /* 0x00 */ s32 f0;
+    /* 0x04 */ s32 f4;
+    /* 0x08 */ s32 f8;
+    /* 0x0C */ s32 fC;
+    /* 0x10 */ u16 unk10;
+    /* 0x12 */ u8 pad12[2];
+    /* 0x14 */ u8 unk14;
+    /* 0x15 */ u8 pad15[3];
+};
 
 
 // The m4a song/player tables (defined identically in sub_08001208.c and
@@ -113,4 +131,25 @@ struct DriverRosterEntry {
     /* 0x05 */ u8 pad[3];
 };
 
+// The four RL-compressed graphic layers of one track's select-screen
+// preview map (OBJ banks 0-3), and one row of gTrackSelectEntries
+// (rom_083FD91C.c, 12 rows): the menu's length/number/name strings,
+// the preview graphic, and its palette. DrawTrackSelect reads a row.
+struct TrackPreviewGfx {
+    /* 0x00 */ const u8 *unk0;
+    /* 0x04 */ const u8 *unk4;
+    /* 0x08 */ const u8 *unk8;
+    /* 0x0C */ const u8 *unkC;
+};
+
+struct TrackSelectEntry {
+    /* 0x00 */ u32 unk00;
+    /* 0x04 */ const u8 *lenText;
+    /* 0x08 */ const u8 *numText;
+    /* 0x0C */ const u8 *nameText;
+    /* 0x10 */ const struct TrackPreviewGfx *previewGfx;
+    /* 0x14 */ const u8 *previewPalette;
+};
+
 #endif // GUARD_STRUCTS_H
+

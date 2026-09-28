@@ -15,7 +15,7 @@ void sub_08013E3C(u8 a)
     u8 i;
 
     off = a * 15;
-    sub_08006734(gUnk_083FDE18[0]);
+    sub_08006734(gUiFontTable[0]);
     GetString(0x2F);
     ((void (*)(void))DrawBigText)();
     walk = (u32 *)((u8 *)gCarOrder + off * 4);

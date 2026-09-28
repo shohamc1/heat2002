@@ -86,15 +86,6 @@ struct Car {
    stride, so it keeps a local tag. The gTrackSegs extern
    (variables.h) is typed struct Track *; the casts on it below are
    pointer casts only and emit nothing. */
-struct TrackSeg {
-    s32 f0;
-    s32 f4;
-    s32 f8;
-    s32 fC;
-    u16 unk10;
-    u8 pad12[0x18 - 0x12];
-};
-
 
 s32 Atan2(s32 a, s32 b);
 

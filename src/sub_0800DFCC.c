@@ -10,7 +10,7 @@ void sub_0800DFCC(void)
     u32 *p;
 
     i = 0;
-    p = gUnk_083FDE18;
+    p = gUiFontTable;
     do {
         *(u16 *)(*(volatile u32 *)&gTextLayerMapPtr[0] + 2 * i) = 0;  /* per-iteration reload, as the ROM loop */
         i++;

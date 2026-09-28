@@ -11,7 +11,7 @@ void DrawOptionsMenu(u32 a)
 {
     u8 *p;
 
-    sub_08006734(gUnk_083FDE18[0]);
+    sub_08006734(gUiFontTable[0]);
     GetString(0x34);
     ((void (*)(void))DrawBigText)();
 

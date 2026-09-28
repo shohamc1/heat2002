@@ -7,7 +7,7 @@
 void sub_080115D8(u8 a)
 {
     u8 b = a;
-    const u8 *v; sub_08006734(gUnk_083FDE18[0]);
+    const u8 *v; sub_08006734(gUiFontTable[0]);
     GetString(0x5A);
     ((void (*)(void))DrawBigText)();
     v = GetString(0x05);

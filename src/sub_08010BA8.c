@@ -19,7 +19,7 @@ u32 sub_08010BA8(u8 param)
     GetString(0x70);
     ((void (*)(void))DrawBigText)();
     sub_08010AA4(param);
-    CpuCopy16(gDriverCarPalettes[0], OBJ_PLTT, OBJ_PLTT_SIZE);
+    CpuCopy16((u32)gDriverCarPalettes[0], OBJ_PLTT, OBJ_PLTT_SIZE);
     if (buf[1] == 0xFF) {
         RLUnCompVram(*(u32 *)gDriverCarGfxLeftTiles[buf[0]], OBJ_VRAM0);
         RLUnCompVram(*(u32 *)gDriverCarGfxRightTiles[buf[0]], OBJ_VRAM0 + 0x1000);

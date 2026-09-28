@@ -9,7 +9,7 @@
 void sub_0800DFC0(void);
 void SioTransferIntr(void);
 extern u32 gGameCodeAgbj;
-extern const u8 *gUnk_083FDA50[];
+extern const u8 *const gUnk_083FDA50[];
 extern const u8 *const gHighModuleChunks[];
 extern u8 gText_BlankRow24_2[];
 extern u8 gText_DoNotRemoveGameBoy[];

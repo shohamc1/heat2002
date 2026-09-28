@@ -1117,6 +1117,29 @@ conversions of the same batch (`gTireGripDefaults` in
 `sub_08016CB0.c`) matched *with* `const`, so spell the extern plain
 first and let `match.py` decide.
 
+### 33. Struct initializer words shifted at each row tail
+
+**What your diff shows.** After converting a flat `const u32 tbl[]` to a
+`struct T[]` initializer, `make check` mismatches only at each row's tail:
+the last words are off by one member (the ROM's `unk5E` holds the value
+your build put in `unk60`, and the true tail word became zero).
+
+**Cause.** GCC 2.95 takes a braced sub-initializer for a *scalar* member
+and consumes only its first element, silently discarding the rest, then
+continues with the next member. Writing `{ a, b }, { c, d, e }` for the
+trailing `u16 unk5C, u16 unk5E, u16 unk60, u8 pad[2]` produced
+`unk5C = a`, `unk5E = c`, `unk60 = 0`. Braces belong only around real
+array members.
+
+**Fix.** Emit the scalars bare and brace only the arrays:
+
+```c
+{ ..., { pad0, ..., pad15 }, unk5C, unk5E, unk60, { p0, p1 } }
+```
+
+**Seen in:** `gTrackData` (`src/data/rom_08364AC8.c`, 2026-09-29); the
+12 row tails matched after unbracing the two u16 pairs.
+
 ### 32. A memory load the target puts before a constant
 
 You removed `volatile` from an `extern` (or moved the declaration to a

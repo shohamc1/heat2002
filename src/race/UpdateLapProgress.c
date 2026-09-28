@@ -26,22 +26,6 @@
 #include "variables.h"
 #include "car.h"
 
-/* The 0x18-byte track segment record gTrackSegs points at (waypoint
-   quads). It shares its old tag name with include/structs.h's 0x64-byte
-   struct Track but not its layout or stride, so it keeps a local tag.
-   The gTrackSegs extern (variables.h) is typed struct Track *; the
-   casts below are pointer casts only and emit nothing. */
-struct TrackSeg {
-    s32 f0;
-    s32 f4;
-    s32 f8;
-    s32 fC;
-    u16 unk10;
-    u8 pad12[2];
-    u8 unk14;
-    u8 pad15[3];
-};
-
 extern u32 gUnk_0202CC20;
 
 

@@ -19,6 +19,8 @@ void sub_08002590(void);
 void sub_080025A4(void);
 
 // Its users declare it as MPlayFunc x[].
+// Stays flat: the m4a sound driver owns this table (function
+// pointers, samples, timer words); it is driver data, not game data.
 const u32 gUnk_0801D230[] = {
     (u32)sub_080024B8, (u32)sub_080024CC, (u32)sub_08002514, (u32)sub_080024B8,
     (u32)sub_08002528, (u32)sub_0800253C, (u32)sub_08002550, (u32)sub_08002564,

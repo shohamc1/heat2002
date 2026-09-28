@@ -11,6 +11,8 @@ extern const u8 gUnk_08365114[];
 extern const u8 gUnk_08365174[];
 extern const u8 gUnk_083651C4[];
 
+// Stays flat: mixed pointer/config words with no decompiled reader
+// holding a struct view; a guessed layout would be wrong.
 const u32 gUnk_0836524C[] = {
     (u32)gUnk_08364FBC, 0, (u32)gUnk_0836500C, 0, (u32)gUnk_0836509C,
     (u32)gUnk_08365114, 0, 0, 0, (u32)gUnk_083651C4, 0, (u32)gUnk_08365174, 0,

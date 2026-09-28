@@ -11,23 +11,7 @@ extern const u8 gTrackSelectArrowPalette[];
 extern const u8 gTrackSelectLeftArrowGfx[];
 extern const u8 gTrackSelectRightArrowGfx[];
 
-struct Inner
-{
-    u32 f0;
-    u32 f4;
-    u32 f8;
-    u32 fC;
-};
-
-struct Big
-{
-    u8 pad[0xC];
-    u32 fieldC;
-    struct Inner *inner;
-    u32 field14;
-};
-
-extern struct Big gTrackSelectEntries[];
+extern const struct TrackSelectEntry gTrackSelectEntries[];
 
 void sub_0801027C(u32 tile, u32 pal, u32 c);
 
@@ -46,17 +30,17 @@ u8 DrawTrackSelect(u8 a, u8 b)
     DrawText(p, 0, 4, 0);
     DrawText(p, 0, 5, 0);
     if (a != 3) {
-        DrawTextCenteredHighlight(gTrackSelectEntries[a].fieldC, 4, 1);
+        DrawTextCenteredHighlight(gTrackSelectEntries[a].nameText, 4, 1);
     } else {
         DrawTextCenteredHighlight(gText_TrackMichigan, 4, 1);
         DrawTextCenteredHighlight(gText_TrackIntlSpeedway, 5, 1);
     }
-    CpuCopy16(gTrackSelectEntries[a].field14, OBJ_PLTT, OBJ_PLTT_SIZE);
+    CpuCopy16((u32)gTrackSelectEntries[a].previewPalette, OBJ_PLTT, OBJ_PLTT_SIZE);
     CpuCopy16((u32)gTrackSelectArrowPalette, OBJ_PLTT + 0x1E0, 0x20);
-    RLUnCompVram(gTrackSelectEntries[a].inner->f0, OBJ_VRAM0);
-    RLUnCompVram(gTrackSelectEntries[a].inner->f4, OBJ_VRAM0 + 0x1000);
-    RLUnCompVram(gTrackSelectEntries[a].inner->f8, OBJ_VRAM0 + 0x2000);
-    RLUnCompVram(gTrackSelectEntries[a].inner->fC, OBJ_VRAM0 + 0x3000);
+    RLUnCompVram(gTrackSelectEntries[a].previewGfx->unk0, OBJ_VRAM0);
+    RLUnCompVram(gTrackSelectEntries[a].previewGfx->unk4, OBJ_VRAM0 + 0x1000);
+    RLUnCompVram(gTrackSelectEntries[a].previewGfx->unk8, OBJ_VRAM0 + 0x2000);
+    RLUnCompVram(gTrackSelectEntries[a].previewGfx->unkC, OBJ_VRAM0 + 0x3000);
     sub_08010194(0x38, 0x20, 0);
     sub_08010194(0x78, 0x20, 0x80);
     sub_08010194(0x38, 0x60, 0x80 << 1);

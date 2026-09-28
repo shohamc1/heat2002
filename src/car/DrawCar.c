@@ -77,7 +77,7 @@ void DrawCar(struct Car *car, u8 idx)
         u8 *p162;
         register u32 a asm("r4");
         u32 b;
-        u32 **tbl;
+        const u32 *const *tbl;
 
         tbl = gDriverCarSpriteHalfBTables;
         p162 = &car->driverId;

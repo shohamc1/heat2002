@@ -15,7 +15,7 @@ u8 sub_08010E04(u8 a)
     ((void (*)(void))DrawBigText)();
     DrawText(gText_BlankRowMenu, 0, 6, 0);
     DrawTextCenteredHighlight(gDriverRoster[a].name, 6, 1);
-    CpuCopy16(gDriverCarPalettes[a], OBJ_PLTT, OBJ_PLTT_SIZE);
+    CpuCopy16((u32)gDriverCarPalettes[a], OBJ_PLTT, OBJ_PLTT_SIZE);
     RLUnCompVram(*(u32 *)gDriverCarGfxLeftTiles[a], OBJ_VRAM0);
     RLUnCompVram(*(u32 *)gDriverCarGfxRightTiles[a], OBJ_VRAM0 + 0x1000);
     sub_08010194(0x38, 0x40, 0);

@@ -158,80 +158,82 @@ extern const u8 gUnk_083F92C4[];
 extern const u8 gUnk_083F9B14[];
 extern const u8 gUnk_083FBBF4[];
 extern const u8 gUnk_083FC71C[];
-extern const u8 gUnk_083FED48[];
-extern const u8 gUnk_083FED4C[];
-extern const u8 gUnk_083FED50[];
-extern const u8 gUnk_083FED54[];
-extern const u8 gUnk_083FED58[];
-extern const u8 gUnk_083FED5C[];
-extern const u8 gUnk_083FED60[];
-extern const u8 gUnk_083FED64[];
-extern const u8 gUnk_083FED68[];
-extern const u8 gUnk_083FED6C[];
-extern const u8 gUnk_083FED70[];
-extern const u8 gUnk_083FED74[];
-extern const u8 gUnk_083FED78[];
-extern const u8 gUnk_083FED7C[];
-extern const u8 gUnk_083FED80[];
-extern const u8 gUnk_083FED84[];
-extern const u8 gUnk_083FED88[];
-extern const u8 gUnk_083FED8C[];
-extern const u8 gUnk_083FED90[];
-extern const u8 gUnk_083FED94[];
-extern const u8 gUnk_083FED98[];
-extern const u8 gUnk_083FED9C[];
-extern const u8 gUnk_083FEDA0[];
-extern const u8 gUnk_083FEDA4[];
-extern const u8 gUnk_083FEDA8[];
-extern const u8 gUnk_083FEDAC[];
-extern const u8 gUnk_083FEDB0[];
-extern const u8 gUnk_083FEDB4[];
-extern const u8 gUnk_083FEDB8[];
-extern const u8 gUnk_083FEDBC[];
-extern const u8 gUnk_083FEDC0[];
-extern const u8 gUnk_083FEDC4[];
-extern const u8 gUnk_083FEDC8[];
-extern const u8 gUnk_083FEDCC[];
-extern const u8 gUnk_083FEDD0[];
-extern const u8 gUnk_083FEDD4[];
-extern const u8 gUnk_083FEDD8[];
-extern const u8 gUnk_083FEDDC[];
-extern const u8 gUnk_083FEDE0[];
-extern const u8 gUnk_083FEDE4[];
-extern const u8 gUnk_083FEDE8[];
-extern const u8 gUnk_083FEDEC[];
-extern const u8 gUnk_083FEDF0[];
-extern const u8 gUnk_083FEDF4[];
-extern const u8 gUnk_083FEDF8[];
-extern const u8 gUnk_083FEDFC[];
-extern const u8 gUnk_083FEE00[];
-extern const u8 gUnk_083FEE04[];
-extern const u8 gUnk_083FEE08[];
-extern const u8 gUnk_083FEE0C[];
-extern const u8 gUnk_083FEE10[];
-extern const u8 gUnk_083FEE14[];
-extern const u8 gUnk_083FEE18[];
-extern const u8 gUnk_083FEE1C[];
-extern const u8 gUnk_083FEE20[];
-extern const u8 gUnk_083FEE24[];
-extern const u8 gUnk_083FEE28[];
-extern const u8 gUnk_083FEE2C[];
-extern const u8 gUnk_083FEE30[];
-extern const u8 gUnk_083FEE34[];
-extern const u8 gUnk_083FEE38[];
-extern const u8 gUnk_083FEE48[];
-extern const u8 gUnk_083FEE58[];
-extern const u8 gUnk_083FEE68[];
-extern const u8 gUnk_083FEE78[];
-extern const u8 gUnk_083FEE88[];
-extern const u8 gUnk_083FEE98[];
-extern const u8 gUnk_083FEEA8[];
-extern const u8 gUnk_083FEEB8[];
-extern const u8 gUnk_083FEEC8[];
-extern const u8 gUnk_083FEED8[];
-extern const u8 gUnk_083FEEE8[];
+extern const u32 gUnk_083FED48[];
+extern const u32 gUnk_083FED4C[];
+extern const u32 gUnk_083FED50[];
+extern const u32 gUnk_083FED54[];
+extern const u32 gUnk_083FED58[];
+extern const u32 gUnk_083FED5C[];
+extern const u32 gUnk_083FED60[];
+extern const u32 gUnk_083FED64[];
+extern const u32 gUnk_083FED68[];
+extern const u32 gUnk_083FED6C[];
+extern const u32 gUnk_083FED70[];
+extern const u32 gUnk_083FED74[];
+extern const u32 gUnk_083FED78[];
+extern const u32 gUnk_083FED7C[];
+extern const u32 gUnk_083FED80[];
+extern const u32 gUnk_083FED84[];
+extern const u32 gUnk_083FED88[];
+extern const u32 gUnk_083FED8C[];
+extern const u32 gUnk_083FED90[];
+extern const u32 gUnk_083FED94[];
+extern const u32 gUnk_083FED98[];
+extern const u32 gUnk_083FED9C[];
+extern const u32 gUnk_083FEDA0[];
+extern const u32 gUnk_083FEDA4[];
+extern const u32 gUnk_083FEDA8[];
+extern const u32 gUnk_083FEDAC[];
+extern const u32 gUnk_083FEDB0[];
+extern const u32 gUnk_083FEDB4[];
+extern const u32 gUnk_083FEDB8[];
+extern const u32 gUnk_083FEDBC[];
+extern const u32 gUnk_083FEDC0[];
+extern const u32 gUnk_083FEDC4[];
+extern const u32 gUnk_083FEDC8[];
+extern const u32 gUnk_083FEDCC[];
+extern const u32 gUnk_083FEDD0[];
+extern const u32 gUnk_083FEDD4[];
+extern const u32 gUnk_083FEDD8[];
+extern const u32 gUnk_083FEDDC[];
+extern const u32 gUnk_083FEDE0[];
+extern const u32 gUnk_083FEDE4[];
+extern const u32 gUnk_083FEDE8[];
+extern const u32 gUnk_083FEDEC[];
+extern const u32 gUnk_083FEDF0[];
+extern const u32 gUnk_083FEDF4[];
+extern const u32 gUnk_083FEDF8[];
+extern const u32 gUnk_083FEDFC[];
+extern const u32 gUnk_083FEE00[];
+extern const u32 gUnk_083FEE04[];
+extern const u32 gUnk_083FEE08[];
+extern const u32 gUnk_083FEE0C[];
+extern const u32 gUnk_083FEE10[];
+extern const u32 gUnk_083FEE14[];
+extern const u32 gUnk_083FEE18[];
+extern const u32 gUnk_083FEE1C[];
+extern const u32 gUnk_083FEE20[];
+extern const u32 gUnk_083FEE24[];
+extern const u32 gUnk_083FEE28[];
+extern const u32 gUnk_083FEE2C[];
+extern const u32 gUnk_083FEE30[];
+extern const u32 gUnk_083FEE34[];
+extern const struct TrackPreviewGfx gUnk_083FEE38[];
+extern const struct TrackPreviewGfx gUnk_083FEE48[];
+extern const struct TrackPreviewGfx gUnk_083FEE58[];
+extern const struct TrackPreviewGfx gUnk_083FEE68[];
+extern const struct TrackPreviewGfx gUnk_083FEE78[];
+extern const struct TrackPreviewGfx gUnk_083FEE88[];
+extern const struct TrackPreviewGfx gUnk_083FEE98[];
+extern const struct TrackPreviewGfx gUnk_083FEEA8[];
+extern const struct TrackPreviewGfx gUnk_083FEEB8[];
+extern const struct TrackPreviewGfx gUnk_083FEEC8[];
+extern const struct TrackPreviewGfx gUnk_083FEED8[];
+extern const struct TrackPreviewGfx gUnk_083FEEE8[];
 
 // Its users declare it as struct tbl_0800CCE0 x[].
+// Stays flat: twelve rows of (table, table, count, table, table) in
+// the lane-data region, but no decompiled code reads it yet.
 const u32 gUnk_083FD91C[60] = {
     (u32)gUnk_083CA0C4, (u32)gUnk_083CA9DC, 0x120, (u32)gUnk_083CCDDC, (u32)gUnk_083CDA98,
     (u32)gUnk_083D44A8, (u32)gUnk_083D4A28, 0xAC, (u32)gUnk_083D5FA8, (u32)gUnk_083D669E,
@@ -262,9 +264,8 @@ const s32 gCarCollisionNormals[8] = {
 };
 // No decompiled code reads this word yet.
 const s32 gUnk_083FDA4C[1] = { 10000 };
-// Its users declare it as const u8 *x[].
-const u32 gUnk_083FDA50[3] = {
-    (u32)gUnk_0807CA7C, (u32)gUnk_0807CAC8, (u32)gUnk_0807CB14
+const u8 *const gUnk_083FDA50[3] = {
+    gUnk_0807CA7C, gUnk_0807CAC8, gUnk_0807CB14
 };
 // No decompiled code reads this word yet.
 const u32 gUnk_083FDA5C[1] = { 0x800F };
@@ -274,28 +275,19 @@ const u32 gUnk_083FDA5C[1] = { 0x800F };
 const u8 gOptionsMenuMinValues[7] = { 0, 0, 0, 0, 0, 0, 0 };
 const u8 gOptionsMenuMaxValues[7] = { 1, 6, 1, 1, 1, 1, 0 };
 const u8 gLapsPerOption[10] = { 5, 10, 15, 20, 30, 50, 100, 0, 0, 0 };
-// Its users declare it as struct Big x[].
-const u32 gTrackSelectEntries[] = {
-    0x1, (u32)gText_TrackLen1567, (u32)gText_TrackNum22, (u32)gText_HooleyDowns,
-    (u32)gUnk_083FEE88, (u32)gUnk_08302E00, 0x1, (u32)gText_TrackLen3044,
-    (u32)gText_TrackNum15, (u32)gText_DarlingtonRaceway, (u32)gUnk_083FEE68,
-    (u32)gUnk_082FF41C, 0x1, (u32)gText_TrackLen243, (u32)gText_TrackNum14,
-    (u32)gText_GreenValley, (u32)gUnk_083FEE38, (u32)gUnk_082F98C0, 0x1,
-    (u32)gText_TrackLen1054, (u32)gText_TrackNum20, (u32)gText_MichiganInternationalSpeedway,
-    (u32)gUnk_083FEE48, (u32)gUnk_082FB6AC, 0x1, (u32)gText_TrackLen2231,
-    (u32)gText_TrackNum19, (u32)gText_GreatCanyon, (u32)gUnk_083FEE78,
-    (u32)gUnk_08300BCC, 0x1, (u32)gText_TrackLen1899, (u32)gText_TrackNum14,
-    (u32)gText_FujiPort, (u32)gUnk_083FEE58, (u32)gUnk_082FD0F8, 0x1,
-    (u32)gText_TrackLen2033, (u32)gText_TrackNum17, (u32)gText_CrawfishRaceway,
-    (u32)gUnk_083FEE98, (u32)gUnk_083049FC, 0x1, (u32)gText_TrackLen3723,
-    (u32)gText_TrackNum10, (u32)gText_PurleyPark, (u32)gUnk_083FEEA8,
-    (u32)gUnk_08306238, 0, (u32)gText_TrackLen066, (u32)gText_TrackNum3,
-    (u32)gText_KansasSpeedway, (u32)gUnk_083FEEB8, (u32)gUnk_0830877C, 0,
-    (u32)gText_TrackLen1950, (u32)gText_TrackNum8, (u32)gText_AsphaltCity,
-    (u32)gUnk_083FEEE8, (u32)gUnk_0830E418, 0, (u32)gText_TrackLen2555,
-    (u32)gText_TrackNum9, (u32)gText_PhoenixInternationalRaceway, (u32)gUnk_083FEEC8,
-    (u32)gUnk_0830AB68, 0, (u32)gText_TrackLen1357, (u32)gText_TrackNum11,
-    (u32)gText_InfogramesSuperSpeedway, (u32)gUnk_083FEED8, (u32)gUnk_0830CA10
+const struct TrackSelectEntry gTrackSelectEntries[12] = {
+    { 0x1, gText_TrackLen1567, gText_TrackNum22, gText_HooleyDowns, gUnk_083FEE88, gUnk_08302E00 },
+    { 0x1, gText_TrackLen3044, gText_TrackNum15, gText_DarlingtonRaceway, gUnk_083FEE68, gUnk_082FF41C },
+    { 0x1, gText_TrackLen243, gText_TrackNum14, gText_GreenValley, gUnk_083FEE38, gUnk_082F98C0 },
+    { 0x1, gText_TrackLen1054, gText_TrackNum20, gText_MichiganInternationalSpeedway, gUnk_083FEE48, gUnk_082FB6AC },
+    { 0x1, gText_TrackLen2231, gText_TrackNum19, gText_GreatCanyon, gUnk_083FEE78, gUnk_08300BCC },
+    { 0x1, gText_TrackLen1899, gText_TrackNum14, gText_FujiPort, gUnk_083FEE58, gUnk_082FD0F8 },
+    { 0x1, gText_TrackLen2033, gText_TrackNum17, gText_CrawfishRaceway, gUnk_083FEE98, gUnk_083049FC },
+    { 0x1, gText_TrackLen3723, gText_TrackNum10, gText_PurleyPark, gUnk_083FEEA8, gUnk_08306238 },
+    { 0, gText_TrackLen066, gText_TrackNum3, gText_KansasSpeedway, gUnk_083FEEB8, gUnk_0830877C },
+    { 0, gText_TrackLen1950, gText_TrackNum8, gText_AsphaltCity, gUnk_083FEEE8, gUnk_0830E418 },
+    { 0, gText_TrackLen2555, gText_TrackNum9, gText_PhoenixInternationalRaceway, gUnk_083FEEC8, gUnk_0830AB68 },
+    { 0, gText_TrackLen1357, gText_TrackNum11, gText_InfogramesSuperSpeedway, gUnk_083FEED8, gUnk_0830CA10 },
 };
 // The 30-driver roster (struct DriverRosterEntry, structs.h): name and
 // team id, rows in teammate pairs sharing the id.
@@ -365,8 +357,10 @@ const u32 gChampionshipTeamNames[17] = {
 // No decompiled code reads these bytes yet.
 const u8 gUnk_083FDE14[4] = { 4, 7, 8, 9 };
 // Its users declare it as u32 x, u32 x[].
-const u32 gUnk_083FDE18[] = {
-    (u32)gText_UnderscoreRow32
+// The font row every screen loads through sub_08006734 (a stub in the
+// retail build; sub_08006738 is the working twin).
+const u8 *const gUiFontTable[] = {
+    gText_UnderscoreRow32
 };
 /* Season schedule: track id for each gSeasonRaceIndex (34 races; bytes
  * 17-33 double as the gChallengeIndex track table via the gUnk_083FDE2D
@@ -404,42 +398,40 @@ const u8 *const gUnk_083FDED4[] = {
     gText_A, gText_Ab, gText_Abc, gText_Abcd,
     gText_Abcde, gText_Abcdee, gText_Abcdeee, gText_Abcdeeee
 };
-const u32 gDriverCarPalettes[] = {
-    (u32)gUnk_082CC5D8, (u32)gUnk_082CC5D8, (u32)gUnk_082CC5D8,
-    (u32)gUnk_082CC5D8, (u32)gUnk_082CC5D8, (u32)gUnk_082CC5D8,
-    (u32)gUnk_082CC5D8, (u32)gUnk_082CC5D8, (u32)gUnk_082CC5D8,
-    (u32)gUnk_082CC5D8, (u32)gUnk_082CC5D8, (u32)gUnk_082CC5D8,
-    (u32)gUnk_082CC5D8, (u32)gUnk_082CC5D8, (u32)gUnk_082CC5D8,
-    (u32)gUnk_082CC5D8, (u32)gUnk_082CC5D8, (u32)gUnk_082CC5D8,
-    (u32)gUnk_082CC5D8, (u32)gUnk_082CC5D8, (u32)gUnk_082CC5D8,
-    (u32)gUnk_082CC5D8, (u32)gUnk_082CC5D8, (u32)gUnk_082CC5D8,
-    (u32)gUnk_082CC5D8, (u32)gUnk_082CC5D8, (u32)gUnk_082CC5D8,
-    (u32)gUnk_082CC5D8, (u32)gUnk_082CC5D8, (u32)gUnk_082CC5D8,
-    (u32)gUnk_082CC5D8, (u32)gUnk_082CC5D8
+const u8 *const gDriverCarPalettes[] = {
+    gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8,
+    gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8,
+    gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8,
+    gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8,
+    gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8,
+    gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8,
+    gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8,
+    gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8,
+    gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8,
+    gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8,
+    gUnk_082CC5D8, gUnk_082CC5D8
 };
-// Its users declare it as u32 *x[].
-const u32 gDriverCarGfxLeftTiles[] = {
-    (u32)gUnk_083FED9C, (u32)gUnk_083FEDBC, (u32)gUnk_083FEDAC,
-    (u32)gUnk_083FEDB8, (u32)gUnk_083FEDA8, (u32)gUnk_083FEDA4,
-    (u32)gUnk_083FED98, (u32)gUnk_083FEDA0, (u32)gUnk_083FEDB0,
-    (u32)gUnk_083FEDB4, (u32)gUnk_083FED48, (u32)gUnk_083FED4C,
-    (u32)gUnk_083FED50, (u32)gUnk_083FED54, (u32)gUnk_083FED58,
-    (u32)gUnk_083FED5C, (u32)gUnk_083FED60, (u32)gUnk_083FED64,
-    (u32)gUnk_083FED68, (u32)gUnk_083FED6C, (u32)gUnk_083FED70,
-    (u32)gUnk_083FED74, (u32)gUnk_083FED78, (u32)gUnk_083FED7C,
-    (u32)gUnk_083FED80, (u32)gUnk_083FED84, (u32)gUnk_083FED88,
-    (u32)gUnk_083FED8C, (u32)gUnk_083FED90, (u32)gUnk_083FED94
+const u32 *const gDriverCarGfxLeftTiles[] = {
+    gUnk_083FED9C, gUnk_083FEDBC, gUnk_083FEDAC,
+    gUnk_083FEDB8, gUnk_083FEDA8, gUnk_083FEDA4,
+    gUnk_083FED98, gUnk_083FEDA0, gUnk_083FEDB0,
+    gUnk_083FEDB4, gUnk_083FED48, gUnk_083FED4C,
+    gUnk_083FED50, gUnk_083FED54, gUnk_083FED58,
+    gUnk_083FED5C, gUnk_083FED60, gUnk_083FED64,
+    gUnk_083FED68, gUnk_083FED6C, gUnk_083FED70,
+    gUnk_083FED74, gUnk_083FED78, gUnk_083FED7C,
+    gUnk_083FED80, gUnk_083FED84, gUnk_083FED88,
+    gUnk_083FED8C, gUnk_083FED90, gUnk_083FED94
 };
-// Its users declare it as u32 *x[].
-const u32 gDriverCarGfxRightTiles[] = {
-    (u32)gUnk_083FEE14, (u32)gUnk_083FEE34, (u32)gUnk_083FEE24,
-    (u32)gUnk_083FEE30, (u32)gUnk_083FEE20, (u32)gUnk_083FEE1C,
-    (u32)gUnk_083FEE10, (u32)gUnk_083FEE18, (u32)gUnk_083FEE28,
-    (u32)gUnk_083FEE2C, (u32)gUnk_083FEDC0, (u32)gUnk_083FEDC4,
-    (u32)gUnk_083FEDC8, (u32)gUnk_083FEDCC, (u32)gUnk_083FEDD0,
-    (u32)gUnk_083FEDD4, (u32)gUnk_083FEDD8, (u32)gUnk_083FEDDC,
-    (u32)gUnk_083FEDE0, (u32)gUnk_083FEDE4, (u32)gUnk_083FEDE8,
-    (u32)gUnk_083FEDEC, (u32)gUnk_083FEDF0, (u32)gUnk_083FEDF4,
-    (u32)gUnk_083FEDF8, (u32)gUnk_083FEDFC, (u32)gUnk_083FEE00,
-    (u32)gUnk_083FEE04, (u32)gUnk_083FEE08, (u32)gUnk_083FEE0C
+const u32 *const gDriverCarGfxRightTiles[] = {
+    gUnk_083FEE14, gUnk_083FEE34, gUnk_083FEE24,
+    gUnk_083FEE30, gUnk_083FEE20, gUnk_083FEE1C,
+    gUnk_083FEE10, gUnk_083FEE18, gUnk_083FEE28,
+    gUnk_083FEE2C, gUnk_083FEDC0, gUnk_083FEDC4,
+    gUnk_083FEDC8, gUnk_083FEDCC, gUnk_083FEDD0,
+    gUnk_083FEDD4, gUnk_083FEDD8, gUnk_083FEDDC,
+    gUnk_083FEDE0, gUnk_083FEDE4, gUnk_083FEDE8,
+    gUnk_083FEDEC, gUnk_083FEDF0, gUnk_083FEDF4,
+    gUnk_083FEDF8, gUnk_083FEDFC, gUnk_083FEE00,
+    gUnk_083FEE04, gUnk_083FEE08, gUnk_083FEE0C
 };

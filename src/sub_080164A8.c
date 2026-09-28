@@ -16,7 +16,7 @@ void sub_080164A8(void)
     ResetBgScroll();
     gIsLinkRace = 0;
     sub_08011C9C(1, (u16 *)buf);
-    sub_08006734(gUnk_083FDE18[0]);
+    sub_08006734(gUiFontTable[0]);
     GetString(0x75);
     ((void (*)(void))DrawBigText)();
     DrawTextCenteredHighlight(GetString(0x75), 0x0A, 1);

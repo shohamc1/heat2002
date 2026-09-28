@@ -8,7 +8,7 @@ void DrawMessageBox(const u8 *title, const u8 *line1, const u8 *line2)
     const u8 *x = title;
     const u8 *y = line1;
     const u8 *z = line2;
-    sub_08006734(gUnk_083FDE18[0]);
+    sub_08006734(gUiFontTable[0]);
     DrawBigText(x);
     DrawTextCenteredHighlight(y, 6, 1);
     DrawTextCenteredHighlight(z, 7, 1);

@@ -6,19 +6,9 @@ struct VtxBC4C {
     u16 x, y;
 };
 
-struct SegBC4C {
-    /* 0x00 */ s32 f00;
-    /* 0x04 */ s32 f04;
-    /* 0x08 */ s32 f08;
-    /* 0x0C */ s32 f0C;
-    /* 0x10 */ u16 f10;
-    /* 0x12 */ u8 pad[0x18 - 0x12];
-};
-
-
 s32 sub_0800BC4C(struct VtxBC4C *verts, u8 *idx)
 {
-    struct SegBC4C *s = gUnk_083671C0[gTrackId];
+    struct TrackSeg *s = gTrackSegTables[gTrackId];
     s32 t[6];
     s32 x1, y1, x2, y2;
     s32 flag;
@@ -36,11 +26,11 @@ s32 sub_0800BC4C(struct VtxBC4C *verts, u8 *idx)
     flag = 0;
     i = 0;
     do {
-        a = s->f00;
-        b = s->f04;
-        c = s->f08;
-        d = s->f0C;
-        if (s->f10 == 1)
+        a = s->f0;
+        b = s->f4;
+        c = s->f8;
+        d = s->fC;
+        if (s->unk10 == 1)
             flag = 1;
         cross = (x2 - x1) * (d - b) - (y2 - y1) * (c - a);
         if (cross == 0)

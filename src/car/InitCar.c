@@ -37,9 +37,9 @@ void InitCar(u8 a, struct Car *car, s32 b, s32 c, u32 d)
     car->waypoint = 0;
     car->firstStepCrossed = 0;
     if (gGameMode[0] == 4) {
-        car->driverPalette = gDriverPalettes[a * 3];
+        car->driverPalette = (u32)gDriverPalettes[a * 3];
     } else {
-        car->driverPalette = gDriverPalettes[car->driverId];
+        car->driverPalette = (u32)gDriverPalettes[car->driverId];
     }
     car->carState = 0;
     car->unk84 = 1;

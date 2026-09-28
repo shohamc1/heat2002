@@ -16,7 +16,7 @@ void sub_0801137C(void)
     u8 i;
     u16 tile;
 
-    sub_08006734(gUnk_083FDE18[0]);
+    sub_08006734(gUiFontTable[0]);
     GetString(0x5B);
     ((void (*)(void))DrawBigText)();
     p = (struct Car **)gCarOrder;
