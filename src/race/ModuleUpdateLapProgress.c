@@ -1,5 +1,5 @@
 /*
- * sub_0833F468 -- the high module's copy of sub_08006A34. The first ~230
+ * ModuleUpdateLapProgress -- the high module's copy of sub_08006A34. The first ~230
  * instructions (the gate-crossing test) are identical to the low copy; the
  * lap bookkeeping drops the low copy's mode-0x10 challenge checks. Ported
  * from that source, so its three levers apply here unchanged: the dx/dy
@@ -22,7 +22,7 @@ extern u32 gUnk_0203DFC4;
 extern u32 gUnk_0203DE40;
 
 
-u8 sub_0833F468(struct Car *p, u8 a1)
+u8 ModuleUpdateLapProgress(struct Car *p, u8 carIdx)
 {
     u8 unused1[40];
     s32 corners[4];
@@ -101,7 +101,7 @@ u8 sub_0833F468(struct Car *p, u8 a1)
             if ((time = gModule_LapMin[0] * 60000 + gModule_LapSec[0] * 1000 + gModule_LapMs[0]) < gUnk_0203DFC4)
                 gUnk_0203E104 = t;
         }
-        if (a1 == v6C && gModule_GameMode[0] != 0x0C && p->ledLapFlag != 0) {
+        if (carIdx == v6C && gModule_GameMode[0] != 0x0C && p->ledLapFlag != 0) {
             p->lapLedTimer = 0x1E;
             p->lapsLed = p->lapsLed + 1;
         }
@@ -113,7 +113,7 @@ u8 sub_0833F468(struct Car *p, u8 a1)
         }
         p->subStep = 0;
         p->progress = ((s8)p->lap << 16) + p->waypoint * 16;
-        if (a1 == v6C) {
+        if (carIdx == v6C) {
             if (gUnk_0203E1E0[0] != 0 && p->lapStartedFlag != 0)
                 ModuleCheckTrackRecord(gModule_LapMin[0], gModule_LapSec[0], gModule_LapMs[0]);
         }
@@ -125,11 +125,11 @@ u8 sub_0833F468(struct Car *p, u8 a1)
         if (*(s8 *)&p->lap == gUnk_02039194) {
             if (gModule_GameMode[0] == 0 || gModule_GameMode[0] == 6 || gModule_GameMode[0] == 1)
                 p->finishTime = gModule_RaceMin[0] * 60000 + gModule_RaceSec[0] * 1000 + gModule_RaceMs[0];
-            if (a1 == v6C && p->lapStartedFlag != 0)
+            if (carIdx == v6C && p->lapStartedFlag != 0)
                 sub_08342BA4(gModule_LapMin[0], gModule_LapSec[0], gModule_LapMs[0]);
             if (gModule_GameMode[0] != 2) {
                 sub_08341EC8((u16 *)p);
-                gModule_FinishedCarOrder[gModule_NumFinishedCars] = a1;
+                gModule_FinishedCarOrder[gModule_NumFinishedCars] = carIdx;
                 gModule_NumFinishedCars = gModule_NumFinishedCars + 1;
                 if ((u8)(gModule_GameMode[0] - 3) <= 1)
                     p->finishTime = gModule_RaceMin[0] * 60000 + gModule_RaceSec[0] * 1000 + gModule_RaceMs[0];
@@ -145,20 +145,20 @@ u8 sub_0833F468(struct Car *p, u8 a1)
                 }
             }
         } else {
-            if (a1 == v6C && p->lapStartedFlag != 0)
+            if (carIdx == v6C && p->lapStartedFlag != 0)
                 sub_08342BA4(gModule_LapMin[0], gModule_LapSec[0], gModule_LapMs[0]);
         }
-        if (a1 == v6C)
+        if (carIdx == v6C)
             ModuleResetLapTimer();
     }
     }
 
     if ((u16)(e->unk10 - 1) <= 1) {
-        if (a1 == v6C) {
+        if (carIdx == v6C) {
             gUnk_0203DE40 = p->tickCount;
             if (e->unk10 != 1)
                 sub_08342D10();
-            if (a1 == v6C && gModule_GameMode[0] != 0xA) {
+            if (carIdx == v6C && gModule_GameMode[0] != 0xA) {
                 s32 inner = v58 / 2 + 6;
                 ModuleSetCountdownSeconds((u8)(e->unk14 + inner));
             }

@@ -2,8 +2,8 @@
 
 extern u8 gUnk_020277F4[];
 
-void *sub_0833FF44(void);
-void sub_0833FF94(u32 r0);
+void *ModuleAllocTask(void);
+void ModuleAddTask(u32 r0);
 void sub_08342DA4(void);
 
 void sub_08342D64(void)
@@ -12,7 +12,7 @@ void sub_08342D64(void)
 
     i = 0;
     do {
-        u32 *p = sub_0833FF44();
+        u32 *p = ModuleAllocTask();
         if (p != 0)
         {
             p[6] = 0x60;
@@ -20,7 +20,7 @@ void sub_08342D64(void)
             p[0] = gUnk_020277F4[i];
             p[1] = 0x28;
             p[3] = (u32)sub_08342DA4;
-            sub_0833FF94((u32)p);
+            ModuleAddTask((u32)p);
         }
         i++;
     } while (i != 12);

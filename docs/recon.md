@@ -207,7 +207,7 @@ Repeated calls from one function count once in “callers” and separately in �
 | 19 | `sub_0800793C` | `0x0800793C` | **11** | 11 | 0 | 8 |
 | 20 | `sub_0800F3A4` | `0x0800F3A4` | **11** | 12 | 0 | 11 |
 
-The other in-degree-11 functions at the cutoff are `sub_080172C8`, `sub_0801B734`, `sub_0833FF44`, and `sub_0833FF94`.
+The other in-degree-11 functions at the cutoff are `sub_080172C8`, `sub_0801B734`, `ModuleAllocTask [sub_0833FF44]`, and `ModuleAddTask [sub_0833FF94]`.
 
 ### Runtime/library routines identifiable from shape
 

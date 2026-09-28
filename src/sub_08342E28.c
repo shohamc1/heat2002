@@ -47,7 +47,7 @@ void sub_08342E28(u32 a)
     *(s32 *)(a + 0x08) += 0x10000;
     if (t == 0x10)
     {
-        sub_0833FFA8(a);
-        sub_0833FF84(a);
+        ModuleRemoveTask(a);
+        ModuleFreeTask(a);
     }
 }

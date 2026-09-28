@@ -14,8 +14,8 @@ void sub_08342948(u32 a)
         sub_08343148((u8 *)(ModuleGetString(MODULE_MSG_OUT_OF_TIME)), 0x4C, 0x18);
         if (--*(u32 *)(a + 0x18) == 0)
         {
-            sub_0833FFA8(a);
-            sub_0833FF84(a);
+            ModuleRemoveTask(a);
+            ModuleFreeTask(a);
             ModuleBeginFadeToColor(0xA, 0);
             ModuleWaitForVBlank();
             REG_DISPCNT &= ~DISPCNT_OBJ_ON;

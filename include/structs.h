@@ -52,7 +52,7 @@ extern const struct Track gTrackData[];
 
 // One waypoint quad of a track's segment list: the 0x18-byte record
 // gTrackSegs points at after LoadTrackSegs loads the row from
-// gTrackSegTables (race_setup.c, one row per track). sub_0833F468 and
+// gTrackSegTables (race_setup.c, one row per track). ModuleUpdateLapProgress and
 // race/UpdateLapProgress.c read unk10 (the segment kind) against the
 // quad's corners; FindWaypointCrossing crosses the quad with a vertex pair.
 // Its old local tags (this struct, plus the coarser `struct SegBC4C`

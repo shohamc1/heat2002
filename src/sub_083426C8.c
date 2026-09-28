@@ -7,8 +7,8 @@ extern u16 gUnk_02026DC4[];
 extern u16 gUnk_02026DDC[];
 
 void sub_083425C4(struct Car *p, u8 idx);
-u8 sub_08340028(struct Car *p);
-u8 sub_08340004(u8 a);
+u8 ModuleCarNeedsPit(struct Car *p);
+u8 ModuleFindFreePitStall(u8 a);
 void sub_08341280(struct Car *p, u8 a);
 
 void sub_083426C8(void)
@@ -30,13 +30,13 @@ void sub_083426C8(void)
     for (i = 0; i != count; i++) {
         sub_083425C4(p, i);
         if (p->prevProgress <= gUnk_02026DC4[gModule_TrackId]
-            && (*(u32 *)&p->progress & 0xFFFF) >= gUnk_02026DC4[gModule_TrackId] && sub_08340028(p) != 0
+            && (*(u32 *)&p->progress & 0xFFFF) >= gUnk_02026DC4[gModule_TrackId] && ModuleCarNeedsPit(p) != 0
             && p != gModule_Cars) {
             v = gModule_DamagePitsEnabled;
             if (v != 0) {
-                v = sub_08340004(v);
+                v = ModuleFindFreePitStall(v);
                 if (v != 0x63)
-                    sub_08341280(p, sub_08340004(v));
+                    sub_08341280(p, ModuleFindFreePitStall(v));
             }
         }
         if (p != gModule_Cars && p->pitState != 0) {

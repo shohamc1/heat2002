@@ -7,7 +7,7 @@ extern s32 gUnk_0203C330;
 
 void sub_08344B70(u32 a, u32 b);
 
-void sub_0833FDC4(void)
+void ModuleUploadPendingGfx(void)
 {
     u8 buf[0x200];
     u8 *p;

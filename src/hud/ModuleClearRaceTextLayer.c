@@ -2,7 +2,7 @@
 
 u32 ModuleClearTextLayer(void);
 
-void sub_0833EE20(void)
+void ModuleClearRaceTextLayer(void)
 {
     ModuleClearTextLayer();
 }

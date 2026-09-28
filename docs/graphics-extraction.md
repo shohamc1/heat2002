@@ -72,7 +72,7 @@ A blob's destination tells you its format. Sprite tiles go to OBJ VRAM
   VRAM.
 - `src/sub_08007760.c` has six `RLUnCompVram` calls. `src/ShowBootSplash3 [sub_080102F0].c`
   and `src/ShowBootSplash2 [sub_08010334].c` each decompress one blob to VRAM.
-- `src/sub_0833FDC4.c` is the high module's loader, through `sub_08344B70`.
+- `src/ModuleUploadPendingGfx [sub_0833FDC4].c` is the high module's loader, through `sub_08344B70`.
 
 To tell BG tiles from tilemaps, read the BG control register the same code
 writes. To give an image its colours, find the copy that loads its palette.

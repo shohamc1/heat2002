@@ -12,8 +12,8 @@ struct Unk08342BA4
 
 void sub_08342B54(void);
 
-void *sub_0833FF44(void);
-void sub_0833FF94(struct Unk08342BA4 *a);
+void *ModuleAllocTask(void);
+void ModuleAddTask(struct Unk08342BA4 *a);
 
 void sub_08342BA4(u32 a0, u32 a1, u32 a2)
 {
@@ -32,11 +32,11 @@ void sub_08342BA4(u32 a0, u32 a1, u32 a2)
     p[6] = sub_08344BB8(a2, 0x64) + 0x30;
     p[7] = sub_08344BB8(sub_08344C50(a2, 0x64), 0x0A) + 0x30;
     p[8] = z;
-    ret = sub_0833FF44();
+    ret = ModuleAllocTask();
     if (ret != 0)
     {
         ret->field18 = 0x5A;
         ret->field0C = (u32)sub_08342B54;
-        sub_0833FF94(ret);
+        ModuleAddTask(ret);
     }
 }

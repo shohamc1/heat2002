@@ -39,7 +39,7 @@ s32 sub_08343A6C(struct Car *a);
 s32 sub_08343234(struct Car *a);
 void sub_08342DE8(u8 a, u8 b);
 u8 sub_08343EA8(struct Car *a);
-u8 sub_0833F468(struct Car *p, u8 a1);
+u8 ModuleUpdateLapProgress(struct Car *p, u8 a1);
 void ModuleM4aSongNumStart(u16 idx);
 
 void sub_08342258(struct Car *car, u32 b, u8 c)
@@ -103,7 +103,7 @@ void sub_08342258(struct Car *car, u32 b, u8 c)
         sub_08343EA8(car);
     car->prevProgress = car->progress;
 again:
-    gUnk_020390CC = sub_0833F468(car, c);
+    gUnk_020390CC = ModuleUpdateLapProgress(car, c);
     if (gUnk_020390CC != 0)
         goto again;
     car->posX += car->velX;

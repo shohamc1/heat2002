@@ -3,8 +3,8 @@
 
 void sub_08342F4C(void);
 
-void *sub_0833FF44(void);
-void sub_0833FF94(u32 a);
+void *ModuleAllocTask(void);
+void ModuleAddTask(u32 a);
 
 void sub_08342ED0(u8 a1, u8 a2)
 {
@@ -15,7 +15,7 @@ void sub_08342ED0(u8 a1, u8 a2)
     u32 v1;
     u32 v2;
 
-    p = (u32 *)sub_0833FF44();
+    p = (u32 *)ModuleAllocTask();
     if (p != 0) {
         e = (u32)gModule_Cars + a1 * 400;
         p[6] = 0;
@@ -39,6 +39,6 @@ void sub_08342ED0(u8 a1, u8 a2)
         q += t;
         p[12] = v2 - *(u32 *)q;
         p[3] = (u32)sub_08342F4C;
-        sub_0833FF94((u32)p);
+        ModuleAddTask((u32)p);
     }
 }

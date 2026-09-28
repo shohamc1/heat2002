@@ -19,8 +19,8 @@ u32 sub_0834009C(u32 a0, u32 a1, u32 count)
     return count;
 }
 
-u32 *sub_0833FC94(u32 p);
-s32 sub_0833FD78(u32 a);
+u32 *ModuleRequestObjTiles4(u32 p);
+s32 ModuleRequestObjPalette(u32 a);
 u32 ModuleAddOamEntry(u32 a, u32 b);
 
 void sub_083400D4(s32 a1, s32 a2, u32 a3, u32 a4, u8 a5)
@@ -37,9 +37,9 @@ void sub_083400D4(s32 a1, s32 a2, u32 a3, u32 a4, u8 a5)
     dy += 0x40;
     dx += 0x70;
     if (dx + 0x10 <= 0x100 && dy <= 0xA0 && dy >= -0x10) {
-        q = sub_0833FC94(a3);
+        q = ModuleRequestObjTiles4(a3);
         if (q != 0) {
-            v = sub_0833FD78(a4) << 24;
+            v = ModuleRequestObjPalette(a4) << 24;
             attr = (dy & 0xFF) | ((dx & 0x1FF) << 16) | 0x40000000;
             v = v >> 12;
             v = v | 0x800;

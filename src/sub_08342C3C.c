@@ -51,7 +51,7 @@ void sub_08342C3C(struct Unk08342C3C *e)
     e->f18 = e->f18 - 2;
     if (e->f18 == 0)
     {
-        sub_0833FFA8((u32)e);
-        sub_0833FF84((u32)e);
+        ModuleRemoveTask((u32)e);
+        ModuleFreeTask((u32)e);
     }
 }

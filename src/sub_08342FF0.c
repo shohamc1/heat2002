@@ -5,9 +5,9 @@ extern u32 gUnk_0202B370[];
 extern u8 gUnk_0201F370[];
 
 u32 sub_08341644(s32 x, s32 y, s32 *out);
-u32 *sub_0833FBB0(u32 a);
+u32 *ModuleRequestObjTiles16(u32 a);
 u32 sub_08343464(s32 x, s32 y);
-s32 sub_0833FD78(u32 a);
+s32 ModuleRequestObjPalette(u32 a);
 u32 ModuleAddOamEntry(u32 a, u32 b);
 
 struct Unk08342FF0
@@ -49,20 +49,20 @@ void sub_08342FF0(struct Unk08342FF0 *e)
         out[1] = y + (e->f04 >> 1);
         if ((u32)(x0 + 0x17) <= 0x10E && out[1] <= 0x9F && out[1] > -0x10)
         {
-            oam = sub_0833FBB0(gUnk_0202B370[e->f18 & 0x1F]);
+            oam = ModuleRequestObjTiles16(gUnk_0202B370[e->f18 & 0x1F]);
             if (oam != 0)
             {
                 v = sub_08343464(e->f00 >> 19, e->f08 >> 19);
                 if (v & 1)
                 {
                     attr = (out[1] & 0xFF) | ((out[0] & 0x1FF) << 16) | 0x40000000;
-                    t = ((u8)sub_0833FD78((u32)gUnk_0201F370) << 12) | 0x800;
+                    t = ((u8)ModuleRequestObjPalette((u32)gUnk_0201F370) << 12) | 0x800;
                     ModuleAddOamEntry(attr, oam->f10 | t);
                 }
                 else
                 {
                     attr = (out[1] & 0xFF) | ((out[0] & 0x1FF) << 16) | 0x40000000;
-                    t = ((u8)sub_0833FD78((u32)gUnk_0201F370) << 12) | 0x400;
+                    t = ((u8)ModuleRequestObjPalette((u32)gUnk_0201F370) << 12) | 0x400;
                     ModuleAddOamEntry(attr, oam->f10 | t);
                 }
             }
@@ -75,7 +75,7 @@ void sub_08342FF0(struct Unk08342FF0 *e)
     e->f08 = e->f08 + e->f30;
     if (t18 == 0x20)
     {
-        sub_0833FFA8((u32)e);
-        sub_0833FF84((u32)e);
+        ModuleRemoveTask((u32)e);
+        ModuleFreeTask((u32)e);
     }
 }

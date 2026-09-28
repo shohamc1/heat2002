@@ -2,14 +2,14 @@
 #include "variables.h"
 
 
-u8 sub_0833FD78(u32 a)
+u8 ModuleRequestObjPalette(u32 palette)
 {
     u32 *p;
     u32 i;
 
     p = gUnk_0203C270;
     for (i = 0; i != 0x10; i++, p += 3) {
-        if (p[1] == a) {
+        if (p[1] == palette) {
             *(u8 *)p = 1;
             *((u8 *)p + 1) = 1;
             return i;
@@ -20,7 +20,7 @@ u8 sub_0833FD78(u32 a)
         if (*(u8 *)p == 0) {
             *(u8 *)p = 1;
             *((u8 *)p + 1) = 1;
-            p[1] = a;
+            p[1] = palette;
             return i;
         }
     }

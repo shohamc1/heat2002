@@ -21,7 +21,7 @@ void sub_083427DC(u32 a)
         ModuleWaitForVBlank();
         REG_DISPCNT &= ~DISPCNT_OBJ_ON;
         gModule_RaceEndState = 2;
-        sub_0833FFA8(a);
-        sub_0833FF84(a);
+        ModuleRemoveTask(a);
+        ModuleFreeTask(a);
     }
 }

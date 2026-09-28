@@ -11,18 +11,18 @@ struct Unk0833E528Ent
     u32 field_10;
 };
 extern u32 gUnk_02024EE8[];
-struct Unk0833E528Ent *sub_0833FBB0(void *a, u16 *b);
-u32 sub_0833FD78(u32 a);
+struct Unk0833E528Ent *ModuleRequestObjTiles16(void *a, u16 *b);
+u32 ModuleRequestObjPalette(u32 a);
 void ModuleAddOamEntry(u32 a, u32 b);
 extern u8 gModule_PitStopNeeded[];
 extern u8 gModule_BlankRow20[];
 extern u8 gUnk_0203B6F8;
-u8 sub_08340028(void);
+u8 ModuleCarNeedsPit(void);
 void ModuleDrawTextCenteredHighlight(const u8 *a, u32 b, u32 c);
 extern u8 gUnk_0203B6D8;
 extern u8 gUnk_02024F70[];
-u32 sub_0833FC94(u32 r0);
-u32 sub_0833FD78(u32 r0);
+u32 ModuleRequestObjTiles4(u32 r0);
+u32 ModuleRequestObjPalette(u32 r0);
 void ModuleAddOamEntry(u32 r0, u32 r1);
 void ModuleM4aSongNumStart(u32 r0);
 #include "functions.h"
@@ -48,13 +48,13 @@ void ModuleDrawSpeedNeedle(u32 speed)
 
     pos[0] = 0xC8;
     pos[1] = 0x78;
-    entry = sub_0833FBB0(gUnk_02024EE8, pos);
+    entry = ModuleRequestObjTiles16(gUnk_02024EE8, pos);
     if (entry != 0)
     {
         attr = pos[1] & 0xFF;
         attr |= (pos[0] & 0x1FF) << 16;
         attr |= 0x80000000;
-        tileAttr = entry->field_10 | ((sub_0833FD78((u32 *)gUnk_02024F50) << 24) >> 12);
+        tileAttr = entry->field_10 | ((ModuleRequestObjPalette((u32 *)gUnk_02024F50) << 24) >> 12);
         attr |= 0x100;
         ModuleAddOamEntry(attr, tileAttr);
     }
@@ -66,7 +66,7 @@ void ModuleDrawPitStopWarning(void)
 {
     u32 text;
 
-    if (sub_08340028() != 0 && (gUnk_0203B6F8 & 8) != 0)
+    if (ModuleCarNeedsPit() != 0 && (gUnk_0203B6F8 & 8) != 0)
     {
         text = (u32)gModule_PitStopNeeded;
         ModuleDrawTextCenteredHighlight((u8 *)text, 6, 1);
@@ -99,12 +99,12 @@ void ModuleDrawLowFuelWarning(s32 fuel)
     gUnk_0203B6D8++;
     pos[0] = 0xAA;
     pos[1] = 0x89;
-    entry = sub_0833FC94((u32)gUnk_02024F70);
+    entry = ModuleRequestObjTiles4((u32)gUnk_02024F70);
     if (entry != 0) {
         attr = pos[1] & 0xFF;
         attr |= (pos[0] & 0x1FF) << 16;
         attr |= 0x40000000;
-        tileAttr = *(u32 *)(entry + 0x10) | (((u32)sub_0833FD78((u32)gUnk_02024F50) << 24) >> 12);
+        tileAttr = *(u32 *)(entry + 0x10) | (((u32)ModuleRequestObjPalette((u32)gUnk_02024F50) << 24) >> 12);
         ModuleAddOamEntry(attr | 0x02000100, tileAttr);
     }
     gUnk_0203B828 = ((fuel >> 16) + 0xBE) & 0xFF;

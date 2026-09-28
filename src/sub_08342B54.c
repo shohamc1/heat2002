@@ -13,7 +13,7 @@ void sub_08342B54(u32 a)
     if (--*(u32 *)(a + 0x18) == 0)
     {
         ModuleDrawText(gUnk_0200D118, 9, 5);
-        sub_0833FFA8(a);
-        sub_0833FF84(a);
+        ModuleRemoveTask(a);
+        ModuleFreeTask(a);
     }
 }

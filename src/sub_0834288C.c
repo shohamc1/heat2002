@@ -14,8 +14,8 @@ void sub_0834288C(u32 a)
             ((void (*)(u32, u32, u32, u32))ModuleDrawText)(ModuleGetString(MODULE_MSG_RACE_OVER), 0xA, 3, 1);
         if (--*(u32 *)(a + 0x18) == 0)
         {
-            sub_0833FFA8(a);
-            sub_0833FF84(a);
+            ModuleRemoveTask(a);
+            ModuleFreeTask(a);
             if (gModule_GameMode[0] != 4)
             {
                 ModuleBeginFadeToColor(0xA, 0);

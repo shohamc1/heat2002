@@ -28,8 +28,8 @@ void sub_08342A14(u32 a)
         *(s32 *)(a + 0x18) = t + 1;
         if (t + 1 == 0x7A)
         {
-            sub_0833FFA8(a);
-            sub_0833FF84(a);
+            ModuleRemoveTask(a);
+            ModuleFreeTask(a);
         }
         if (gModule_RaceStarted == 0)
             ModuleWaitForVBlank();

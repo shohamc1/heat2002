@@ -22,7 +22,7 @@ void sub_08342F4C(u32 a)
     *(s32 *)(a + 0x08) += *(s32 *)(a + 0x30) >> 1;
     if (t == 0x10)
     {
-        sub_0833FFA8(a);
-        sub_0833FF84(a);
+        ModuleRemoveTask(a);
+        ModuleFreeTask(a);
     }
 }

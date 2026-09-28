@@ -27,11 +27,11 @@ extern u32 *gUnk_0202773C[];
 extern u8 gUnk_0201B590[];
 
 u32 ModuleAddDepthSortedSprite(u32 a, u32 b, u32 c);
-struct Thing *sub_0833FBB0(u32 a);
-struct Thing *sub_0833FBFC(u32 a);
-struct Thing *sub_0833FC48(u32 a);
-struct Thing *sub_0833FC94(u32 a);
-u8 sub_0833FD78(u32 a);
+struct Thing *ModuleRequestObjTiles16(u32 a);
+struct Thing *ModuleRequestObjTiles2(u32 a);
+struct Thing *ModuleRequestObjTiles8(u32 a);
+struct Thing *ModuleRequestObjTiles4(u32 a);
+u8 ModuleRequestObjPalette(u32 a);
 u32 sub_08341644(s32 x, s32 y, s32 *out);
 
 void sub_083416DC(struct Car *car, u8 idx)
@@ -58,18 +58,18 @@ void sub_083416DC(struct Car *car, u8 idx)
     k &= 0x1F;
     if (flip != 0)
         k = 0x20 - k;
-    t5 = (u32)(sub_0833FD78(gUnk_02026E1C[car->unk162]) << 24) >> 12;
+    t5 = (u32)(ModuleRequestObjPalette(gUnk_02026E1C[car->unk162]) << 24) >> 12;
     if (car->behindBgFlag != 0)
         t5 |= 0x800;
     else
         t5 |= 0x400;
     if (flip == 0) {
-        t = sub_0833FC48(gUnk_02026E14[car->unk162][k]);
+        t = ModuleRequestObjTiles8(gUnk_02026E14[car->unk162][k]);
         if (t != NULL) {
             ModuleAddDepthSortedSprite((pos[1] & 0xFF) | ((pos[0] & 0x1FF) << 16) | 0x80008000,
                          t->unk10 | t5, (u16)(y + 0x40));
         }
-        t = sub_0833FBB0(gUnk_02026E18[car->unk162][k]);
+        t = ModuleRequestObjTiles16(gUnk_02026E18[car->unk162][k]);
         if (t != NULL) {
             ModuleAddDepthSortedSprite((pos[1] & 0xFF) | (((pos[0] + 0x10) & 0x1FF) << 16) | 0x80000000,
                          t->unk10 | t5, (u16)(y + 0x40));
@@ -82,14 +82,14 @@ void sub_083416DC(struct Car *car, u8 idx)
 
         tbl = gUnk_02026E18;
         p162 = &car->unk162;
-        t = sub_0833FBB0(tbl[*p162][k]);
+        t = ModuleRequestObjTiles16(tbl[*p162][k]);
         if (t != NULL) {
             a = (pos[1] & 0xFF) | ((pos[0] & 0x1FF) << 16) | 0x80000000;
             b = t->unk10 | t5;
             a |= 0x10000000;
             ModuleAddDepthSortedSprite(a, b, (u16)(y + 0x40));
         }
-        t = sub_0833FC48(gUnk_02026E14[*p162][k]);
+        t = ModuleRequestObjTiles8(gUnk_02026E14[*p162][k]);
         if (t != NULL) {
             a = (pos[1] & 0xFF) | (((pos[0] + 0x20) & 0x1FF) << 16) | 0x80008000;
             b = t->unk10 | t5;
@@ -103,22 +103,22 @@ void sub_083416DC(struct Car *car, u8 idx)
         pos[1] -= 0xC;
         pos[0] += 0x10;
         k = (pos[1] & 0xFF) | ((pos[0] & 0x1FF) << 16) | 0x40000000;
-        t = sub_0833FC94(*row);
+        t = ModuleRequestObjTiles4(*row);
         if (t == NULL)
             return;
         t5 = t->unk10 | 0x400;
-        t5 |= (u32)(sub_0833FD78(gUnk_020243E8) << 24) >> 12;
+        t5 |= (u32)(ModuleRequestObjPalette(gUnk_020243E8) << 24) >> 12;
         ModuleAddDepthSortedSprite(k, t5, (u16)(y + 0x40));
     } else {
         row = gUnk_0202773C[car->unk162];
         pos[1] -= 8;
         pos[0] += 0x10;
         k = (pos[1] & 0xFF) | ((pos[0] & 0x1FF) << 16) | 0x4000;
-        t = sub_0833FBFC(*row);
+        t = ModuleRequestObjTiles2(*row);
         if (t == NULL)
             return;
         t5 = t->unk10 | 0x400;
-        t5 |= (u32)(sub_0833FD78(gUnk_0201B590) << 24) >> 12;
+        t5 |= (u32)(ModuleRequestObjPalette(gUnk_0201B590) << 24) >> 12;
         ModuleAddDepthSortedSprite(k, t5, (u16)(y + 0x40));
     }
 }

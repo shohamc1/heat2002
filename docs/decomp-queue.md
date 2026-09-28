@@ -242,7 +242,7 @@ What the source shapes turned out to be:
   in `gUnk_0203C340`/`gUnk_0203C380`.
 - The callback family: `u32 a` param, `*(u32 *)(a + 0x18)` lifetime
   counter (`s32` where the ROM compares `ble`), the
-  `sub_0833FFA8(a)`/`sub_0833FF84(a)` unlink+flag pair on death, and the
+  `ModuleRemoveTask [sub_0833FFA8](a)`/`ModuleFreeTask [sub_0833FF84](a)` unlink+flag pair on death, and the
   `t = (sub_08007714(...) << 12) | CONST; arg1 = spr[4] | t;` OAM idiom
   as two statements. `DemoEndTask [sub_0800AE94]` reads `gKeysHeld` NON-volatile (the
   old_agbcc constant-hoist order).
@@ -259,9 +259,9 @@ What the source shapes turned out to be:
 | # | Function | Bytes | Notes |
 |---:|---|---:|---|
 | 91 | `sub_0800792C` | 14 | helper, 13 callers |
-| 92 | `sub_0833FF84` | 14 | port of `sub_0800792C`; helper, 12 callers |
+| 92 | `ModuleFreeTask` | 14 | port of `sub_0800792C`; helper, 12 callers |
 | 93 | `sub_08007950` | 26 | helper, 13 callers |
-| 94 | `sub_0833FFA8` | 26 | port of `sub_08007950`; helper, 12 callers |
+| 94 | `ModuleRemoveTask` | 26 | port of `sub_08007950`; helper, 12 callers |
 | 95 | `DelayTask [sub_0800B5D4]` | 28 |  |
 | 96 | `sub_08342DA4` | 28 | port of `DelayTask` |
 | 97 | `LapTimeTask [sub_0800B384]` | 62 |  |

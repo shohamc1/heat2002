@@ -1,6 +1,17 @@
 #include "global.h"
 #include "variables.h"
 
+#include "functions.h"
+extern u8 gModule_TimeLabel[];
+void *ModuleAllocTask(void);
+void ModuleAddTask(u32 r0);
+void ModuleDrawHudLabels(void);
+void ModuleInitCountdown(void);
+void ModuleUpdateRaceHud(void);
+void ModuleInitRaceHud(void);
+extern u8 gModule_PitLabelBlock[];
+
+
 void ModuleDrawHudLabels(void)
 {
   u16 *dst;
@@ -38,3 +49,30 @@ void ModuleDrawHudLabels(void)
 
   }
 }
+
+
+void ModuleInitRaceHud(void)
+{
+    void *task;
+
+    if (gModule_IsDemo[0] != 0)
+        return;
+    task = ModuleAllocTask();
+    if (task != 0)
+    {
+        *(u32 *)((u32)task + 0x0C) = (u32)ModuleUpdateRaceHud;
+        ModuleAddTask((u32)task);
+    }
+    ModuleDrawHudLabels();
+    ModuleDrawText(gModule_TimeLabel, 0, 0x13);
+    ModuleInitCountdown();
+}
+
+
+void ModuleInitTimeTrialHud(void)
+{
+    ModuleInitRaceHud();
+    if (gUnk_0203E1E0[0] != 0)
+        ModuleDrawText(gModule_PitLabelBlock, 0, 0x12);
+}
+

@@ -31,19 +31,19 @@ extern u8 gUnk_0203D6B0[];
 
 void ModuleLoadTrack(u8);
 void ModuleLoadTrackCues(u8);
-void sub_0833EE20(void);
+void ModuleClearRaceTextLayer(void);
 void ModuleSetTrackBgCnt(void);
 void ModuleSetFadeDeltasColors240To255(s32);
 void sub_08343504(u32);
-void sub_0833F448(u32);
-void sub_0833F9A8(void);
-void sub_0833FF1C(void);
+void ModuleLoadTrackSegs(u32);
+void ModuleInitGfxCaches(void);
+void ModuleInitTasks(void);
 void ModuleResetSpriteOrderTable(void);
 void ModuleClearOamBuffer(void);
 void ModuleUpdateSprites(void);
 void ModuleEnableRaceDisplay(void);
-void sub_0833EDF8(void);
-void sub_0833EDB8(void);
+void ModuleInitTimeTrialHud(void);
+void ModuleInitRaceHud(void);
 void ModuleM4aSongNumStart(u16);
 void sub_083426C8(void);
 void sub_08342868(void);
@@ -54,7 +54,7 @@ void ModuleM4aMPlayPitchControl(void *, u16, s16);
 void ModuleUpdatePaletteFade(void);
 void ModuleSmoothCamera(void);
 void ModuleUpdateCameraScroll(void);
-void sub_0833FFC4(void);
+void ModuleRunTasks(void);
 void sub_083419D8(void);
 void ModuleDrawLinkFinishTimes(void);
 void ModuleUpdateTrackScroll(u32, u32);
@@ -64,7 +64,7 @@ u32 ModulePauseMenu(void);
 u32 ModuleSinglePakPauseMenu(void);
 u32 ModuleLinkPauseMenu(void);
 s8 ModuleExchangeLinkInput(void);
-void sub_0833FA3C(void);
+void ModuleAgeGfxCaches(void);
 
 s32 ModuleRunRace(u8 isDemo, u8 gameMode)
 {
@@ -109,15 +109,15 @@ s32 ModuleRunRace(u8 isDemo, u8 gameMode)
     gUnk_020391E0[2] = 0;
     gUnk_020391E0[3] = 0;
     ModuleLoadTrack(gModule_TrackId);
-    sub_0833F448(gModule_TrackId);
+    ModuleLoadTrackSegs(gModule_TrackId);
     ModuleLoadTrackCues(gModule_TrackId);
-    sub_0833EE20();
+    ModuleClearRaceTextLayer();
     ModuleSetTrackBgCnt();
     gUnk_02039158 = 0x100;
     ModuleSetFadeDeltasColors240To255(0x32);
     sub_08343504(gModule_TrackId);
-    sub_0833F9A8();
-    sub_0833FF1C();
+    ModuleInitGfxCaches();
+    ModuleInitTasks();
     ModuleResetSpriteOrderTable();
     ModuleClearOamBuffer();
     ModuleUpdateSprites();
@@ -134,9 +134,9 @@ s32 ModuleRunRace(u8 isDemo, u8 gameMode)
     gUnk_020390FC = 0;
     ModuleEnableRaceDisplay();
     if (gModule_GameMode[0] == 0xE) {
-        sub_0833EDF8();
+        ModuleInitTimeTrialHud();
     } else {
-        sub_0833EDB8();
+        ModuleInitRaceHud();
     }
     if (gModule_IsDemo[0] != 0) {
         if (gModule_Options[2] != 0)
@@ -191,7 +191,7 @@ after_d5f4: ;
     gUnk_02039218[1] = 0;
     gUnk_02039218[0] = 0;
     while (gUnk_02039154 == 0) {
-        sub_0833FA3C();
+        ModuleAgeGfxCaches();
         ModuleClearOamBuffer();
         sub_08343148(gUnk_02039160, 0x4B, 0x3C);
         if (gUnk_0203921C != 0)
@@ -223,7 +223,7 @@ after_d5f4: ;
         ModuleUpdatePaletteFade();
         ModuleSmoothCamera();
         ModuleUpdateCameraScroll();
-        sub_0833FFC4();
+        ModuleRunTasks();
         sub_083419D8();
         ModuleDrawLinkFinishTimes();
         if (gModule_RaceStarted != 0 || gModule_GameMode[0] == 9 || gModule_GameMode[0] == 0xD

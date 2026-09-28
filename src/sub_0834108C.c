@@ -5,7 +5,7 @@
 extern u8 gUnk_0203E0F8;
 
 void ModuleLoadTrackCues(void);
-void sub_08340210(u8 a);
+void ModuleBuildStartingGrid(u8 a);
 void sub_08340EE0(void);
 void sub_08341288(u8 a, u32 b, u32 c, u32 d, u32 e, u32 f);
 
@@ -18,7 +18,7 @@ void sub_0834108C(u32 a1)
     u32 off;
 
     ModuleLoadTrackCues();
-    sub_08340210((u8)a1);
+    ModuleBuildStartingGrid((u8)a1);
     gUnk_0203DD10 = 0;
     v = gUnk_0203E0F8;
     sub_08340EE0();

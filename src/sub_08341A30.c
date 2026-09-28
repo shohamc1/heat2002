@@ -12,8 +12,8 @@ struct Unk08341A30Ent
 };
 
 
-struct Unk08341A30Ent *sub_0833FC94(u32 a);
-u32 sub_0833FD78(u32 a);
+struct Unk08341A30Ent *ModuleRequestObjTiles4(u32 a);
+u32 ModuleRequestObjPalette(u32 a);
 void ModuleAddOamEntry(u32 a, u32 b);
 
 void sub_08341A30(u32 a1, u32 a2, u32 a3)
@@ -27,10 +27,10 @@ void sub_08341A30(u32 a1, u32 a2, u32 a3)
     a2 &= 0xFF;
     a2 |= (a1 & 0x1FF) << 16;
     a2 |= 0x40000000;
-    ret = sub_0833FC94(*ptr);
+    ret = ModuleRequestObjTiles4(*ptr);
     if (ret == 0)
         return;
     bits = ret->field_10;
-    bits |= (sub_0833FD78((u32 *)gUnk_020243E8) << 24) >> 12;
+    bits |= (ModuleRequestObjPalette((u32 *)gUnk_020243E8) << 24) >> 12;
     ModuleAddOamEntry(a2, bits);
 }

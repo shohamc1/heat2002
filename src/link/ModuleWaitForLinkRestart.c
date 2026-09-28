@@ -3,7 +3,7 @@
 #include "variables.h"
 
 
-void sub_0833FA3C(void);
+void ModuleAgeGfxCaches(void);
 void ModuleClearOamBuffer(void);
 u32 ModuleExchangeLinkInput(void);
 void ModuleDrawTextCenteredHighlight(u8 *str, u32 y, u32 shade);
@@ -17,7 +17,7 @@ void ModuleWaitForLinkRestart(void)
     u32 playerId;
     u32 keys;
 
-    sub_0833FA3C();
+    ModuleAgeGfxCaches();
     ModuleClearOamBuffer();
     for (;;)
     {
