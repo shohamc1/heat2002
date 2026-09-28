@@ -187,7 +187,7 @@ What the source shapes turned out to be:
   (reference: `+0x18 > 0x120`, `> 0xD0`). The high copy swaps
   `gUnk_02002100` for `gUnk_02039110` and nothing else.
 - Menu families D+H: the draw callee takes NO argument (unlike the
-  reference's `sub_0801380C(v)`), called in the prologue and at loop top;
+  reference's `DrawCareerOverwriteConfirm [sub_0801380C](v)`), called in the prologue and at loop top;
   the loop tests only `gKeysPressed & 1`; `sub_08011D38`'s hi bound is 0.
   `sub_08015244` alone calls `sub_0800F3C0()` first, uses menu id 0, and
   omits the `gUnk_0202EF00[3]`/`sub_08001208(9)` tail. The one wall was
@@ -215,17 +215,17 @@ What the source shapes turned out to be:
 | 77 | `sub_08000214` | 10 | from `sub_08000260` |
 | 78 | `sub_083398D4` | 10 | from `sub_08000260`; port of `sub_08000214` |
 | 79 | `sub_0833DBE0` | 18 | from `sub_0833DBC8` |
-| 80 | `sub_0801303C` | 104 | from `sub_08013878` |
-| 81 | `sub_08013A7C` | 104 | from `sub_08013878`; port of `sub_0801303C` |
-| 82 | `sub_08014400` | 104 | from `sub_08013878`; port of `sub_0801303C` |
+| 80 | `sub_0801303C` | 104 | from `CareerOverwriteConfirm [sub_08013878]` |
+| 81 | `sub_08013A7C` | 104 | from `CareerOverwriteConfirm`; port of `sub_0801303C` |
+| 82 | `sub_08014400` | 104 | from `CareerOverwriteConfirm`; port of `sub_0801303C` |
 | 83 | `sub_08009C00` | 72 | from `sub_08009BB4` |
 | 84 | `sub_08341690` | 72 | from `sub_08009BB4`; port of `sub_08009C00` |
-| 85 | `sub_08012F1C` | 122 | from `sub_080144F4` |
+| 85 | `sub_08012F1C` | 122 | from `TimeTrialMenu [sub_080144F4]` |
 | 86 | `sub_08013114` | 110 | from `CareerDecisionMenu`; port of `sub_08012F1C` |
 | 87 | `sub_080149A4` | 122 | from `CareerDecisionMenu`; port of `sub_08012F1C` |
 | 88 | `sub_080101BC` | 88 | from `DrawCachedSprite` |
 | 89 | `sub_0801021C` | 88 | from `DrawCachedSprite`; port of `sub_080101BC` |
-| 90 | `sub_08015244` | 92 | from `sub_08013878` |
+| 90 | `sub_08015244` | 92 | from `CareerOverwriteConfirm` |
 
 ## Tier 3: Sprite-callback family — finished 2026-09-24
 

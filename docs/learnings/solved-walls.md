@@ -1035,7 +1035,7 @@ callers that look broken.
 (`FadeToBrightenedPalette`, `LoadMenuScreen [sub_08011C9C]`, `GetString`, `MenuMoveVertical`,
 ...) in 96 files: `SendMultibootIsland` and `sub_080132F8` (return-width
 pairs), `LinkTrackSelect` (the `ldrsb` of an `s8` parameter),
-`sub_0801465C` (an `s16` return rotating r5/r6), `sub_0833E7FC` (removed
+`ChallengeCategorySelect [sub_0801465C]` (an `s16` return rotating r5/r6), `sub_0833E7FC` (removed
 narrowing restored as `(u8)` argument casts), `RunRace` (an `s8` return
 cast).
 

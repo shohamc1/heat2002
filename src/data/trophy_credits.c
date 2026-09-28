@@ -2,7 +2,7 @@
 #include "data.h"
 
 /* Championship podium screen and credits page 1 (0x08310140-0x0831377C).
- * sub_08012C4C loads the trophy OBJ palettes by championship place
+ * DrawTrophyScreen loads the trophy OBJ palettes by championship place
  * (0 gold, 1 silver at gSilverTrophyPalette, 2 bronze); ShowCreditsPage1
  * draws credits page 1: 256-color palette, 15x10 metatile map, 106-row
  * metatile tile-index table (the map's max index is 0x69), then 4bpp gfx

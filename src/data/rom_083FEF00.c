@@ -3,7 +3,7 @@
 
 /* 0x083FEF00-0x083FEF08: two single-word gfx pointers. gChampionshipTrophyGfx
  * is RL-uncompressed into OBJ VRAM for the championship podium screen
- * (sub_08012C4C); gLineMarkerSpriteGfxTable is the 32x32 sprite sub_080069D8 stamps
+ * (DrawTrophyScreen); gLineMarkerSpriteGfxTable is the 32x32 sprite sub_080069D8 stamps
  * 16 times along a line (sub_0800C21C). */
 
 extern const u8 gUnk_0830E70C[];

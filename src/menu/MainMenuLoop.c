@@ -45,20 +45,20 @@ u8 OptionsMenu(void);
 u8 ShowChallengeCategoryComplete(u8 value);
 u8 RunChampionshipQualifyTest(u8 value);
 u8 ShowChallengePassed(u8 a, u8 b);
-u8 sub_08012BBC(u8 value);
-u32 sub_08012C20(void);
-u8 sub_08012D34(u8 value);
-u8 sub_080136F8(u8 a, u8 b);
-u8 sub_08013570(u8 a, u8 b);
-u8 sub_08013D5C(void);
-void sub_08013964(void);
-u8 sub_08014004(void);
+u8 ChallengeFailedScreen(u8 value);
+u32 GetPlayerStanding(void);
+u8 TrophyScreen(u8 value);
+u8 SeasonSessionMenu(u8 a, u8 b);
+u8 CareerSessionMenu(u8 a, u8 b);
+u8 QualifyResultsScreen(void);
+void SaveCareerScreen(void);
+u8 RaceResultsScreen(void);
 u32 AwardAllRacePoints(void);
 u8 StandingsScreen(void);
-u8 sub_080144F4(void);
-u8 sub_0801465C(void);
-u8 sub_08014874(u8 a, u8 b);
-u8 sub_08014A84(void);
+u8 TimeTrialMenu(void);
+u8 ChallengeCategorySelect(void);
+u8 ChallengeSelect(u8 a, u8 b);
+u8 NewGameLoadMenu(void);
 u8 sub_08014E28(void);
 u8 sub_08014F5C(void);
 void SaveTrackRecords(void);
@@ -330,7 +330,7 @@ state3_done:
         (*(u8 *)&gSeasonRaceIndex) = 0;
 
 state0_menu:
-        choice = sub_080136F8(
+        choice = SeasonSessionMenu(
             gQualifyingDone | gSeasonRaceIncomplete,
             gSeasonRaceIncomplete | gPracticeDone);
         if ((gKeysPressed & B_BUTTON) != 0 || choice == 3)
@@ -369,7 +369,7 @@ state0_menu:
             if (gNewTrackRecord != 0)
                 SaveTrackRecords();
             gQualifyingDone = 1;
-            sub_08013D5C();
+            QualifyResultsScreen();
             break;
         case 2:
             if (gQualifyingDone == 0 || gSeasonRaceIncomplete == 1) {
@@ -390,7 +390,7 @@ state0_menu:
                 gSeasonRaceIncomplete = 0;
                 if (gNewTrackRecord != 0)
                     SaveTrackRecords();
-                sub_08014004();
+                RaceResultsScreen();
                 AwardAllRacePoints();
                 StandingsScreen();
                 (*(u8 *)&gSeasonRaceIndex)++;
@@ -402,7 +402,7 @@ state0_menu:
 
         if ((*(u8 *)&gSeasonRaceIndex) != 0x0B)
             goto state0_menu;
-        sub_08012D34(sub_08012C20());
+        TrophyScreen(GetPlayerStanding());
 
 state0_done:
         redraw = 1;
@@ -501,7 +501,7 @@ state4_race:
         if (gNewTrackRecord != 0)
             SaveTrackRecords();
 
-        result = sub_080144F4();
+        result = TimeTrialMenu();
         if (result == 0)
             goto state4_race;
         if (result == 1)
@@ -519,7 +519,7 @@ state4_done:
         FadeToColor(0, 0x0F);
 
 state2_select:
-        track = sub_0801465C();
+        track = ChallengeCategorySelect();
         if ((gKeysPressed & B_BUTTON) != 0)
             goto state2_done;
         gChallengeIndex = track << 2;
@@ -529,7 +529,7 @@ state2_track:
             gChallengeStatus[gChallengeIndex] = 0;
             SaveProgress();
         }
-        gChallengeIndex = sub_08014874(track, gChallengeIndex);
+        gChallengeIndex = ChallengeSelect(track, gChallengeIndex);
         if ((gKeysPressed & B_BUTTON) != 0)
             goto state2_select;
 
@@ -601,7 +601,7 @@ state2_track:
         goto state2_after_unlock;
 
 state2_no_score:
-        sub_08012BBC(gChallengeIndex);
+        ChallengeFailedScreen(gChallengeIndex);
         goto state2_track;
 
 state2_after_unlock:
@@ -631,7 +631,7 @@ state2_done:
 
         /* sub_08016634: this file's old prototype returns u8; the matched definition returns u32 */
         if (((u8 (*)(void))sub_08016634)() != 0) {
-            result = sub_08014A84();
+            result = NewGameLoadMenu();
             if ((gKeysPressed & B_BUTTON) != 0)
                 goto state5_done;
             if (result == 1) {
@@ -668,7 +668,7 @@ state5_load:
         (*(u8 *)&gSeasonRaceIndex) = 0;
 
 state5_menu:
-        choice = sub_08013570(
+        choice = CareerSessionMenu(
             gQualifyingDone | gSeasonRaceIncomplete,
             gSeasonRaceIncomplete | gPracticeDone);
         if ((gKeysPressed & B_BUTTON) != 0 || choice == 4)
@@ -707,7 +707,7 @@ state5_menu:
             if (gNewTrackRecord != 0)
                 SaveTrackRecords();
             gQualifyingDone = 1;
-            sub_08013D5C();
+            QualifyResultsScreen();
             break;
         case 2:
             if (gQualifyingDone == 0 || gSeasonRaceIncomplete == 1) {
@@ -727,7 +727,7 @@ state5_menu:
                 gSeasonRaceIncomplete = 0;
                 if (gNewTrackRecord != 0)
                     SaveTrackRecords();
-                sub_08014004();
+                RaceResultsScreen();
                 AwardAllRacePoints();
                 StandingsScreen();
                 (*(u8 *)&gSeasonRaceIndex)++;
@@ -736,14 +736,14 @@ state5_menu:
             }
             break;
         case 3:
-            sub_08013964();
+            SaveCareerScreen();
             break;
         }
 
         if ((*(u8 *)&gSeasonRaceIndex) != 0x0B)
             goto state5_menu;
-        score = sub_08012C20();
-        sub_08012D34(score);
+        score = GetPlayerStanding();
+        TrophyScreen(score);
         if (ResolveSeasonResult(gChampionshipIndex, score) != 0)
             goto state5_setup;
         if (CareerDecisionMenu() != 0)

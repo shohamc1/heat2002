@@ -68,7 +68,7 @@ A blob's destination tells you its format. Sprite tiles go to OBJ VRAM
 - `src/DrawTeamSelect [sub_08010BA8].c` and `src/DrawDriverSelect [sub_08010E04].c` decompress RL blobs, such
   as `0x082C9000`, to OBJ VRAM. They reach the blobs through the tables
   `gUnk_083FDF74` and `gUnk_083FDFEC`, which hold pointers to pointers.
-- `src/sub_08010FE4.c` and `src/sub_08012C4C.c` decompress RL blobs to OBJ
+- `src/sub_08010FE4.c` and `src/DrawTrophyScreen [sub_08012C4C].c` decompress RL blobs to OBJ
   VRAM.
 - `src/sub_08007760.c` has six `RLUnCompVram` calls. `src/ShowBootSplash3 [sub_080102F0].c`
   and `src/ShowBootSplash2 [sub_08010334].c` each decompress one blob to VRAM.
