@@ -2,7 +2,7 @@
 #include "data.h"
 
 /* Results-screen data (0x082EE104-0x082F0000): palette, identity
- * metatile map + table (sub_0800F498), then the BG gfx copied to VRAM. */
+ * metatile map + table (LoadResultsScreenBackdrop), then the BG gfx copied to VRAM. */
 const u8 gResultsScreenPalette[] = INCBIN_U8("build/assets/unknown/data_082EE104.bin");
 // Its users declare it as u32 x[].
 const u16 gResultsScreenMetatileMapAndTable[750] =

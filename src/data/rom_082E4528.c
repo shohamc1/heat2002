@@ -1,7 +1,7 @@
 #include "global.h"
 #include "data.h"
 
-/* Screen data for the menu backdrop drawn by sub_0800F4FC
+/* Screen data for the menu backdrop drawn by LoadMenuBackdrop
  * (0x082E4528-0x082F0000): identity metatile map + table, then tiles. */
 // Its users declare it as u8 x[].
 const u16 gMenuBackdropMetatileMapAndTable[750] =
