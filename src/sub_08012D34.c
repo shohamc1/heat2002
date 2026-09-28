@@ -16,7 +16,7 @@ u8 sub_08012D34(u8 a)
     ResetSpriteOrderTable();
     InitGfxCaches();
     AgeGfxCaches();
-    sub_08011C9C(6, (u16 *)buf);
+    LoadMenuScreen(6, (u16 *)buf);
     ClearOamBuffer();
     sub_08012C4C(a);
     UpdateSprites();

@@ -535,7 +535,7 @@ and the declarations callers use, most common first:
 | `DrawTextAt [sub_0800649C]` | C | `void (u32, u32, u32)` (3); `void (u8 *, u32, u32)` (1); `void (u8 *, u32, u32, u32)` (1) |
 | `BuildScreenPalette [sub_0800F328]` | C | `void (u32, void *)` (11); `void (void *, void *)` (2) |
 | `DrawBackdropMetatileMap [sub_08010680]` | C | `void (u32)` (3); `void (u16 *)` (1) |
-| `sub_08011C9C` | C | `void (u32, void *)` (33); `void (u8, void *)` (3); `void (u8, u16 *)` (1) |
+| `LoadMenuScreen [sub_08011C9C]` | C | `void (u32, void *)` (33); `void (u8, void *)` (3); `void (u8, u16 *)` (1) |
 | `sub_08016D28` | C | `void (u8)` (2); `void (void)` (1) |
 | `sub_08017230` | asm | `s32 (s32, s32)` (5); `u32 (u32, s32)` (1); `u32 (u32, u32)` (1) |
 | `sub_0833A7F4` | C | `void (u32)` (2); `void (void)` (1) |

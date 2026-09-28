@@ -16,7 +16,7 @@ void sub_080164A8(void)
     UpdateSprites();
     ResetBgScroll();
     gIsLinkRace = 0;
-    sub_08011C9C(1, (u16 *)buf);
+    LoadMenuScreen(1, (u16 *)buf);
     DummyUiFontLoad(gUiFontTable[0]);
     GetString(0x75);
     ((void (*)(void))DrawBigText)();

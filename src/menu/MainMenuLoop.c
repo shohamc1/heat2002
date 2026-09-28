@@ -32,19 +32,19 @@ void ShowBootSplash3(void);
 void ShowBootSplash2(void);
 u8 TitleScreen(void);
 s8 LinkTrackSelect(void);
-u8 sub_08010EA0(void);
-u8 sub_08010CD0(void);
-u8 sub_08011FC4(void);
-u8 sub_08011528(void);
-s8 sub_0801164C(void);
+u8 DriverSelectMenu(void);
+u8 TeamSelectMenu(void);
+u8 MultiplayerMenu(void);
+u8 ShowLinkRaceSummary(void);
+s8 LinkPostRaceMenu(void);
 s16 LinkDriverSelect(void);
 /* This caller narrows the result to s8. */
-s8 sub_080122B4(void);
+s8 LinkLobby(void);
 void InitNewSaveData(void);
 u8 OptionsMenu(void);
-u8 sub_080129E8(u8 value);
-u8 sub_080128E0(u8 value);
-u8 sub_08012B50(u8 a, u8 b);
+u8 ShowChallengeCategoryComplete(u8 value);
+u8 RunChampionshipQualifyTest(u8 value);
+u8 ShowChallengePassed(u8 a, u8 b);
 u8 sub_08012BBC(u8 value);
 u32 sub_08012C20(void);
 u8 sub_08012D34(u8 value);
@@ -170,7 +170,7 @@ u32 MainMenuLoop(void)
     ZeroTextLayer();
     DrawMainMenu(0);
     REG_DISPCNT = DISPCNT_OBJ_1D_MAP | DISPCNT_BG0_ON | DISPCNT_BG2_ON;
-    sub_08011C9C(1, frame);
+    LoadMenuScreen(1, frame);
     if (gOptions[2] != 0)
         m4aSongNumStart(2);
     DrawMainMenu(gMainMenuCursor);
@@ -183,7 +183,7 @@ u32 MainMenuLoop(void)
     if (redraw != 0) {
         redraw = 0;
         REG_DISPCNT = DISPCNT_OBJ_1D_MAP | DISPCNT_BG0_ON | DISPCNT_BG2_ON;
-        sub_08011C9C(1, frame);
+        LoadMenuScreen(1, frame);
         ZeroTextLayer();
         DrawMainMenu(gMainMenuCursor);
         FadeToBrightenedPalette((u32)frame, 0x0F);
@@ -218,9 +218,9 @@ u32 MainMenuLoop(void)
             m4aSongNumStart(9);
         FadeToColor(0, 0x0F);
         gUnk_0202EED4 = 0;
-        state = sub_08011FC4();
+        state = MultiplayerMenu();
         if (state == 1) {
-            result = sub_080122B4();
+            result = LinkLobby();
             if (result == 0)
                 goto state3_cleanup;
 
@@ -264,10 +264,10 @@ state3_accept:
 
             m4aSongNumStart(2);
             ResetBgScroll();
-            if (gRaceAborted == 0 && sub_08011528() == 5)
+            if (gRaceAborted == 0 && ShowLinkRaceSummary() == 5)
                 goto state3_accept;
 
-            result = sub_0801164C();
+            result = LinkPostRaceMenu();
             if (result == 0)
                 goto state3_launch;
             if (result == 1)
@@ -318,7 +318,7 @@ state3_done:
         for (i = 0; i != 0x18; i++)
             gCars[i].points = 0;
 
-        *(u8 *)a6b2 = sub_08010EA0();
+        *(u8 *)a6b2 = DriverSelectMenu();
         AssignRandomDrivers();
         FadeToColor(0, 0x0F);
         if ((gKeysPressed & B_BUTTON) != 0)
@@ -421,7 +421,7 @@ state0_done:
         FadeToColor(0, 0x0F);
 
 state1_load:
-        *(u8 *)a6b2 = sub_08010EA0();
+        *(u8 *)a6b2 = DriverSelectMenu();
         AssignRandomDrivers();
         FadeToColor(0, 0x0F);
         if ((gKeysPressed & B_BUTTON) != 0)
@@ -471,7 +471,7 @@ state1_done:
         FadeToColor(0, 0x0F);
 
 state4_load:
-        *(u8 *)a6b2 = sub_08010EA0();
+        *(u8 *)a6b2 = DriverSelectMenu();
         AssignRandomDrivers();
         FadeToColor(0, 0x0F);
         if ((gKeysPressed & B_BUTTON) != 0)
@@ -557,7 +557,7 @@ state2_track:
         if (gChallengeScore == 0)
             goto state2_no_score;
 
-        sub_08012B50(
+        ShowChallengePassed(
             gChallengeIndex,
             (s8)gChallengeStatus[gChallengeIndex] >= gChallengeScore);
         if (gChallengeScore > (s8)gChallengeStatus[gChallengeIndex]) {
@@ -570,7 +570,7 @@ state2_track:
             if (gChallengeCategoryUnlocked[1] != 0)
                 goto state2_select;
             gChallengeCategoryUnlocked[1] = 1;
-            sub_080129E8(1);
+            ShowChallengeCategoryComplete(1);
             SaveProgress();
             goto state2_select;
         }
@@ -578,7 +578,7 @@ state2_track:
             if (gChallengeCategoryUnlocked[2] != 0)
                 goto state2_select;
             gChallengeCategoryUnlocked[2] = 1;
-            sub_080129E8(2);
+            ShowChallengeCategoryComplete(2);
             SaveProgress();
             goto state2_select;
         }
@@ -586,7 +586,7 @@ state2_track:
             if (gChallengeCategoryUnlocked[3] != 0)
                 goto state2_select;
             gChallengeCategoryUnlocked[3] = 1;
-            sub_080129E8(3);
+            ShowChallengeCategoryComplete(3);
             SaveProgress();
             goto state2_select;
         }
@@ -594,7 +594,7 @@ state2_track:
             if (gChallengeCategoryUnlocked[4] != 0)
                 goto state2_select;
             gChallengeCategoryUnlocked[4] = 1;
-            sub_080129E8(4);
+            ShowChallengeCategoryComplete(4);
             SaveProgress();
             goto state2_select;
         }
@@ -648,11 +648,11 @@ state5_setup:
             goto state5_done;
         }
 
-        gChampionshipIndex = sub_08010CD0();
+        gChampionshipIndex = TeamSelectMenu();
         if ((gKeysPressed & B_BUTTON) != 0)
             goto state5_done;
         *(u8 *)a6b2 = FindDriverByTeam(gChampionshipIndex);
-        if (sub_080128E0(*(u8 *)a6b2) == 0)
+        if (RunChampionshipQualifyTest(*(u8 *)a6b2) == 0)
             goto state5_setup;
 
 state5_load:

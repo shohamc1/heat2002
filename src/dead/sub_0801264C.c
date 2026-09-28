@@ -22,7 +22,7 @@ u8 sub_080126BC(void)
     s8 sel;
 
     v = 0;
-    sub_08011C9C(3, (u16 *)buf);
+    LoadMenuScreen(3, (u16 *)buf);
     sub_0801264C(0);
     FadeToBrightenedPalette((u32)buf, 0x0F);
     sel = 0x40;
@@ -57,7 +57,7 @@ u8 sub_08012784(void)
     s8 sel;
 
     v = 0;
-    sub_08011C9C(0, (u16 *)buf);
+    LoadMenuScreen(0, (u16 *)buf);
     /* sub_08012758: this file's old local prototype differs from
        functions.h; call through the old signature (solved-walls 31). */
     ((void (*)(s8))sub_08012758)(0);

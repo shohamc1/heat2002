@@ -6,11 +6,38 @@
 
 extern u8 gDriverSelectTiles[], gMenuPalette[], gText_BlankRowDriverSelect[];
 extern u8 gDriverSelectGfxDest[];
-
 /* MATCH. The ROM keeps &b[0] in r6 and recomputes &b[i] every iteration; the
    hard-register hint on p and the temps in the input loop select that
    allocation. The final gNumLinkPlayers[0] test is a volatile read so its value
    lands in r0 rather than being reused from r1. */
+#include "gba/io_reg.h"
+#include "m4a.h"
+
+
+s16 LinkMenuMoveHorizontal(u16 keys, s16 v, s16 lo, s16 hi, u8 unused, u8 playerId)
+{
+    if (keys & DPAD_LEFT)
+    {
+        gMenuValueChanged = 1;
+        if (gLinkPlayerId[0] == playerId && gOptions[3] != 0)
+            m4aSongNumStart(8);
+        v = v - 1;
+        if (v < lo)
+            v = hi;
+    }
+    if (keys & DPAD_RIGHT)
+    {
+        gMenuValueChanged = 1;
+        if (gLinkPlayerId[0] == playerId && gOptions[3] != 0)
+            m4aSongNumStart(8);
+        v = v + 1;
+        if (v > hi)
+            v = lo;
+    }
+    return v;
+}
+
+
 s8 LinkDriverSelect(void)
 {
     u8 buf[0x200];
@@ -54,7 +81,7 @@ s8 LinkDriverSelect(void)
     ZeroTextLayer();
     LoadMenuBackdrop();
     BuildScreenPalette((u32)gMenuPalette, (u16 *)buf);
-    sub_08010E04(a[(*(volatile u32 *)REG_ADDR_SIOCNT << 26) >> 30]);
+    DrawDriverSelect(a[(*(volatile u32 *)REG_ADDR_SIOCNT << 26) >> 30]);
     FadeToBrightenedPalette((u32)buf, 0x0F);
     REG_DISPCNT = 0xA8 << 3;
     WaitForVBlank();
@@ -64,7 +91,7 @@ s8 LinkDriverSelect(void)
         b[i] |= 0xFF;
     while (sel == 0x40) {
         ClearOamBuffer();
-        sub_08010E04(a[gLinkPlayerId[0]]);
+        DrawDriverSelect(a[gLinkPlayerId[0]]);
         n = gNumLinkPlayers[0];
         for (i = 0; i < n; i++)
             d[i] = gPlayerKeys[i];
@@ -77,10 +104,10 @@ s8 LinkDriverSelect(void)
             p = b;
             q = p + i;
             if ((s8)*q == -1)
-                /* sub_080116D4: this file's old prototype is
+                /* LinkMenuMoveHorizontal: this file's old prototype is
                    u8 (u16, u8, u32, u32, u8 *, u8); the matched definition
                    narrows differently; call through the old one. */
-                a[i] = ((u8 (*)(u16, u8, u32, u32, u8 *, u8))sub_080116D4)(c[i], a[i], 0, 0x1D, (u32)a, i);
+                a[i] = ((u8 (*)(u16, u8, u32, u32, u8 *, u8))LinkMenuMoveHorizontal)(c[i], a[i], 0, 0x1D, (u32)a, i);
             if (c[i] & 1) {
                 assign = a[i];
                 out = q;
@@ -132,3 +159,4 @@ spin:
         return 0;
     return e;
 }
+

@@ -8,7 +8,7 @@ s8 sub_08013570(u8 a, u8 b)
     s8 v;
     s8 sel;
     v = 0;
-    sub_08011C9C(6, (u16 *)buf);
+    LoadMenuScreen(6, (u16 *)buf);
     /* sub_080134E8: this file's old local prototype differs from
        functions.h; call through the old signature (solved-walls 31). */
     ((void (*)(u8, u8, u8))sub_080134E8)(0, a, b | a);

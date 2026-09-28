@@ -14,7 +14,7 @@ u8 sub_08014004(void)
     a = 0;
     v = a;
     SortCarsByTime();
-    sub_08011C9C(6, (u16 *)buf);
+    LoadMenuScreen(6, (u16 *)buf);
     /* sub_08013E3C: this file's old prototype differs from the matched definition; call through the old one */
     ((void (*)(s32))sub_08013E3C)(0);
     FadeToBrightenedPalette((u32)buf, 0x0F);

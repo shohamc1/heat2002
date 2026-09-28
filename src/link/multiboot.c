@@ -184,7 +184,7 @@ u32 SendMultibootIsland(void)
     }
     {
         u8 *buf = work + 0x4C;
-        sub_08011C9C(4, (u16 *)buf);
+        LoadMenuScreen(4, (u16 *)buf);
         InitSinglePakLinkScreen();
         FadeToBrightenedPalette((u32)buf, 0x0F);
     }

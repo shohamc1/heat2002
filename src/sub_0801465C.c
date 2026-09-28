@@ -9,7 +9,7 @@ u8 sub_0801465C(void)
     s8 v;
     s8 sel;
     v = 0;
-    sub_08011C9C(5, (u16 *)buf);
+    LoadMenuScreen(5, (u16 *)buf);
     sub_08014614(0);
     FadeToBrightenedPalette((u32)buf, 0x0F);
     sel = 0x40;

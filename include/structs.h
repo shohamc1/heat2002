@@ -123,7 +123,7 @@ struct AiFinishTimeRange {
 
 // One driver's row of gDriverRoster (rom_083FD91C.c, 30 entries): the
 // driver's name and the team id. Rows come in teammate pairs that share
-// the id; sub_08010B38 returns both rows matching one, and
+// the id; FindTeamDriverPair returns both rows matching one, and
 // FindDriverByTeam maps an id to its first row.
 struct DriverRosterEntry {
     /* 0x00 */ const u8 *name;

@@ -10,7 +10,7 @@ u8 OptionsMenu(void)
     s8 v;
     s8 sel;
     v = 0;
-    sub_08011C9C(7, (u16 *)buf);
+    LoadMenuScreen(7, (u16 *)buf);
     DrawOptionsMenu(0);
     FadeToBrightenedPalette((u32)buf, 0x0F);
     sel = 0x40;

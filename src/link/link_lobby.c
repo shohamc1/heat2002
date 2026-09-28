@@ -14,8 +14,24 @@ struct EFA0s4 {
     struct UnkEFA0 r[4];
 };
 extern u8 gText_BlankRowLinkLobby[];
+#include "data.h"
+struct EntEFA0 {
+    u8 f0;
+    u8 f1;
+    s8 f2;
+    u8 f3;
+};
+/* gLinkPlayerSlots is u8[] in variables.h; the wrapper keeps the array
+   subscript expansion for the order-sensitive uses below. */
+struct LinkLobbySlots {
+    struct EntEFA0 r[4];
+};
+extern u8 gText_EmptySlot[];
+#include "m4a.h"
+extern u16 gUnk_020020B8;
 
-s32 sub_08012074(void)
+
+s32 UpdateLinkLobby(void)
 {
     u8 unused[0x14];
     u16 buf[4];
@@ -86,4 +102,69 @@ s32 sub_08012074(void)
     if (*(u16 *)gLinkRecvWords == 0x1108 && gLinkPlayerCount > 1 && gLinkPlayerCount == count)
         return 1;
     return 0;
+}
+
+void DrawLinkLobby(void)
+{
+    u8 unused[0x28];
+    u8 i;
+    u8 flag;
+    s8 v;
+
+    DummyUiFontLoad(gUiFontTable[0]);
+    GetString(0xC4);
+    ((void (*)(void))DrawBigText)();
+    for (i = 0; i != 4; i++) {
+        flag = ((struct LinkLobbySlots *)gLinkPlayerSlots)->r[i].f2 != -1;
+        DrawText(GetString(i + 0x53), 1, 2 * i + 7, flag);
+        v = ((struct LinkLobbySlots *)gLinkPlayerSlots)->r[i].f2;
+        if (v == 0) {
+            DrawText(GetString(0x58), 0x14, 2 * i + 7, flag);
+        } else if (v == 1) {
+            DrawText(GetString(0x57), 0x14, 2 * i + 7, flag);
+        } else {
+            DrawText(gText_EmptySlot, 0x14, 2 * i + 7, flag);
+        }
+    }
+}
+
+u8 LinkLobby(void)
+{
+    u8 buf[0x200];
+    u8 v;
+    u8 sel;
+    s8 r;
+
+    v = 0;
+    sel = 0x40;
+    ResetLinkState();
+    ZeroTextLayer();
+    LoadMenuBackdrop();
+    BuildScreenPalette((u32)gMenuPalette, (u16 *)buf);
+    /* DrawLinkLobby: this file's old local prototype differs from
+       functions.h; call through the old signature (solved-walls 31). */
+    ((void (*)(u8))DrawLinkLobby)(0);
+    FadeToBrightenedPalette((u32)buf, 0x0F);
+    gUnk_020020B8 = v;
+    do
+    {
+        ReadKeys();
+        ((void (*)(u8))DrawLinkLobby)(v);
+        r = UpdateLinkLobby();
+        switch (r)
+        {
+        case 1:
+            sel = 1;
+            break;
+        case -1:
+            sel = 0;
+            break;
+        }
+        if (gKeysPressed & 2)
+            sel = 0;
+    } while (sel == 0x40);
+    if (gOptions[3] != 0)
+        m4aSongNumStart(9);
+    FadeToColor(0, 0x0F);
+    return sel;
 }

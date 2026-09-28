@@ -65,7 +65,7 @@ A blob's destination tells you its format. Sprite tiles go to OBJ VRAM
 - `src/sub_0800E008.c` copies the three LZ77 blobs from the table
   `gUnk_083FDA50` (`0x0807CA7C`, `0x0807CAC8`, and `0x0807CB14`) to
   `OBJ_VRAM0 + i * 0x200`.
-- `src/sub_08010BA8.c` and `src/sub_08010E04.c` decompress RL blobs, such
+- `src/DrawTeamSelect [sub_08010BA8].c` and `src/DrawDriverSelect [sub_08010E04].c` decompress RL blobs, such
   as `0x082C9000`, to OBJ VRAM. They reach the blobs through the tables
   `gUnk_083FDF74` and `gUnk_083FDFEC`, which hold pointers to pointers.
 - `src/sub_08010FE4.c` and `src/sub_08012C4C.c` decompress RL blobs to OBJ

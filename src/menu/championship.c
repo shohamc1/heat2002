@@ -104,7 +104,7 @@ u8 CareerDecisionMenu(void)
     s8 cursor;
     s8 choice;
     cursor = 0;
-    sub_08011C9C(6, (u16 *)palette);
+    LoadMenuScreen(6, (u16 *)palette);
     DrawCareerDecision(0);
     FadeToBrightenedPalette((u32)palette, 0x0F);
     choice = 0x40;

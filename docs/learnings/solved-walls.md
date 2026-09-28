@@ -1032,7 +1032,7 @@ function changed size and moved the labels — fix that one first (compare
 callers that look broken.
 
 **Seen in:** the phase-1 signature unification of 29 functions
-(`FadeToBrightenedPalette`, `sub_08011C9C`, `GetString`, `MenuMoveVertical`,
+(`FadeToBrightenedPalette`, `LoadMenuScreen [sub_08011C9C]`, `GetString`, `MenuMoveVertical`,
 ...) in 96 files: `SendMultibootIsland` and `sub_080132F8` (return-width
 pairs), `LinkTrackSelect` (the `ldrsb` of an `s8` parameter),
 `sub_0801465C` (an `s16` return rotating r5/r6), `sub_0833E7FC` (removed

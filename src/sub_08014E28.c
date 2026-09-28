@@ -13,7 +13,7 @@ u8 sub_08014E28(void)
     z = 0;
     v = 0;
     SortCarsByTime();
-    sub_08011C9C(1, (u16 *)buf);
+    LoadMenuScreen(1, (u16 *)buf);
     sub_08014C60(0);
     FadeToBrightenedPalette((u32)buf, 0x0F);
     sel = 0x40;

@@ -53,7 +53,7 @@ u8 sub_08014BA4(void)
     s8 w;
 
     v = 0;
-    sub_08011C9C(12, (u16 *)buf);
+    LoadMenuScreen(12, (u16 *)buf);
     REG_DISPCNT = 0x1341;
     sub_08014B14();
     ResetSpriteOrderTable();

@@ -20,7 +20,7 @@ u8 MessageBox(const u8 *title, const u8 *line1, const u8 *line2)
     s8 sel;
     /* Keep this signed-byte local: its allocation reproduces the saved registers. */
     s8 v = 0;
-    sub_08011C9C(3, (u16 *)buf);
+    LoadMenuScreen(3, (u16 *)buf);
     DrawMessageBox(title, line1, line2);
     FadeToBrightenedPalette((u32)buf, 0x0F);
     sel = 0x40;

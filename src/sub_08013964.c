@@ -13,7 +13,7 @@ s8 sub_08013964(void)
         if (((s8 (*)(void))sub_08013878)() == 0)
             return;
     }
-    sub_08011C9C(6, (u16 *)buf);
+    LoadMenuScreen(6, (u16 *)buf);
     sub_08013908(0);
     FadeToBrightenedPalette((u32)buf, 0x0F);
     SaveSeason();
