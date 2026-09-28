@@ -6,6 +6,19 @@ extern u16 gSeasonSaveFlag[];
 extern u16 gSeasonSaveData[];
 extern u16 gSaveFormatFillPattern[];
 
+
+u32 IsSeasonSaved(void)
+{
+    u32 saveOffset = 8;
+    u32 byteCount = 8;
+
+    ReadSaveBlocks(saveOffset, byteCount);
+    if (gUnk_0202F040[5] != 0)
+        return 1;
+    return 0;
+}
+
+
 void SaveSeason(void)
 {
     u16 *p;
@@ -43,6 +56,7 @@ void SaveSeason(void)
     StartMenuMusic();
 }
 
+
 void LoadSeason(void)
 {
     struct Car *q;
@@ -76,6 +90,7 @@ void LoadSeason(void)
     StartMenuMusic();
 }
 
+
 void LoadTrackRecords(void)
 {
     u16 *src;
@@ -101,6 +116,7 @@ void LoadTrackRecords(void)
     } while (i != 0x0C);
     StartMenuMusic();
 }
+
 
 void SaveTrackRecords(void)
 {
@@ -128,6 +144,7 @@ void SaveTrackRecords(void)
     StartMenuMusic();
 }
 
+
 void LoadProgress(void)
 {
     u8 *p;
@@ -149,6 +166,7 @@ void LoadProgress(void)
     do { gUnk_0202ED80[i] = *p++; i++; } while (i != 0x04);
     StartMenuMusic();
 }
+
 
 void SaveProgress(void)
 {
@@ -172,6 +190,7 @@ void SaveProgress(void)
     StartMenuMusic();
 }
 
+
 void LoadOptions(void)
 {
     u8 *src;
@@ -185,6 +204,7 @@ void LoadOptions(void)
     }
     StartMenuMusic();
 }
+
 
 void SaveOptions(void)
 {
@@ -200,6 +220,7 @@ void SaveOptions(void)
     WriteSaveBlocks(0xBC << 1, 8);
     StartMenuMusic();
 }
+
 
 void FormatSave(void)
 {
@@ -289,6 +310,7 @@ void FormatSave(void)
     WriteSaveBlocks(0, 8);
 }
 
+
 u32 IsSaveValid(void)
 {
     InitEeprom();
@@ -297,3 +319,4 @@ u32 IsSaveValid(void)
         return 1;
     return 0;
 }
+

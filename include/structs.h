@@ -70,7 +70,7 @@ struct TrackSeg {
 
 
 // The m4a song/player tables (defined identically in sub_08001208.c and
-// sub_0833A8C8.c before the merge; the arrays are in data.h/variables.h).
+// ModuleM4aSongNumStart.c before the merge; the arrays are in data.h/variables.h).
 struct Unk0801DA90 { u32 unk0; u32 unk4; u32 unk8; };
 struct Unk0801DACC { u32 unk0; u16 unk4; };
 
@@ -114,7 +114,7 @@ struct TrackGrid {
 };
 
 // The window gTrackAiFinishTimeRanges (0x083FECB8, 12 rows, one per
-// track) bounds sub_08016CB0's RandomInRange roll of each AI driver's
+// track) bounds RandomizeAiFinishTimes's RandomInRange roll of each AI driver's
 // finish time.
 struct AiFinishTimeRange {
     /* 0x00 */ u32 min;

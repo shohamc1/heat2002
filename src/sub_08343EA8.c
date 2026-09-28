@@ -40,7 +40,7 @@ void sub_08343E70(struct Car *a, s32 b, struct Car *c, s32 d, struct Coll *e,
 void sub_08343138(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g);
 void sub_08344680(s32 a, u8 b);
 void sub_08341D64(struct Car *a);
-void sub_0833A8C8(u16 idx);
+void ModuleM4aSongNumStart(u16 idx);
 
 u8 sub_08343EA8(struct Car *car)
 {
@@ -249,7 +249,7 @@ u8 sub_08343EA8(struct Car *car)
             if (gModule_RaceEndState == 0 && gModule_IsDemo[0] == 0 && gModule_Options[3] != 0
                 && (car == gModule_Cars || gModule_IsLinkRace != 0)
                 && a->hitCooldown == 0 && b->hitCooldown == 0)
-                sub_0833A8C8(0x12);
+                ModuleM4aSongNumStart(0x12);
         }
         a->hitCooldown = 0x10;
         b->hitCooldown = 0x10;

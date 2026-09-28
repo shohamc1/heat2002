@@ -254,9 +254,9 @@ u8 UpdateLapProgress(struct Car *p, u8 a1)
                 if (a1 == v6C) {
                     s32 v2 = *(volatile u8 *)&gGameMode[0];
                     if (v2 == 0 || v2 == 6 || v2 == 1) {
-                        /* sub_08016D28: the ROM call passes no argument; the matched definition takes one; call
+                        /* FinishAllCars: the ROM call passes no argument; the matched definition takes one; call
                            through a function pointer with the old prototype. */
-                        ((void (*)(void))sub_08016D28)();
+                        ((void (*)(void))FinishAllCars)();
                         EndRace();
                     }
                 }

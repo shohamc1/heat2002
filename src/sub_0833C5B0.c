@@ -11,7 +11,7 @@ void sub_0833A1DC(void);
 void sub_0833D094(void);
 void sub_0833FDC4(void);
 void sub_0833D4E4(void);
-void sub_0833A8BC(void);
+void ModuleM4aSoundMain(void);
 
 void sub_0833C5B0(void)
 {
@@ -54,7 +54,7 @@ void sub_0833C5B0(void)
         }
     }
     sub_0833D4E4();
-    sub_0833A8BC();
+    ModuleM4aSoundMain();
     REG_IME = 0;
     (*(vu16 *)&gIntrCheck) |= 1;
     REG_IME = 1;

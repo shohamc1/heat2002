@@ -7,7 +7,7 @@ extern u8 gUnk_02024F70[];
 u32 sub_0833FC94(u32 r0);
 u32 sub_0833FD78(u32 r0);
 void sub_0833D6A0(u32 r0, u32 r1);
-void sub_0833A8C8(u32 r0);
+void ModuleM4aSongNumStart(u32 r0);
 
 void sub_0833E5EC(s32 arg)
 {
@@ -38,7 +38,7 @@ void sub_0833E5EC(s32 arg)
         *dest = 0xE000 | gModule_FontTileEntries[*(u16 *)&gUnk_02021594[off]];
         if (gModule_Options[3] != 0) {
             if (gModule_IsDemo[0] == 0)
-                sub_0833A8C8(0x1B);
+                ModuleM4aSongNumStart(0x1B);
         }
     } else {
         off = 0x5B4;

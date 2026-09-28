@@ -222,8 +222,8 @@ void sub_08014944(u8 a);
 void DrawNewGameLoadMenu(u8 a);
 void sub_08014B14(void);
 void sub_08014BA0(void);
-void sub_08014C60(u8 a);
-void sub_08014EE8(u8 a);
+void DrawSingleRaceResultsPage(u8 a);
+void DrawSingleRaceRetryMenu(u8 a);
 void sub_08015000(u8 a);
 void sub_080150F4(void);
 void ResetBgScroll(void);
@@ -232,13 +232,13 @@ const u8 *GetString(u16 idx);
 void WriteSaveBlocks(u16 a, u16 b);
 void ReadSaveBlocks(u16 a, u16 b);
 u32 InitEeprom(void);
-u32 sub_08016634(void);
+u32 IsSeasonSaved(void);
 void SaveSeason(void);
 void SaveProgress(void);
 u32 RandomInRange(u32 a, u32 b);
 void SplitMilliseconds(s32 a, u16 *b, u16 *c, u16 *d);
-u32 sub_08016D08(s32 a, u8 b);
-void sub_08016D28(u8 a);
+u32 ComputeProgressDistance(s32 a, u8 b);
+void FinishAllCars(u8 a);
 void sub_08016E10(u32 src, u32 dst, u32 n);
 void VBlankIntrWait(void);
 s32 sub_08017230(s32 a, s32 b);
@@ -246,8 +246,8 @@ s32 sub_080172C8(s32 a, s32 b);
 
 // High module (links at its EWRAM run address)
 
-void sub_08339B18(void);
-void sub_08339B4C(void);
+void ModuleWaitForVBlank(void);
+void ModuleReadKeys(void);
 s32 sub_08339B78(s32 a, s32 b);
 void sub_0833A7F4(struct MusicPlayerInfo *mplayInfo);
 void sub_0833AAB8(struct CgbChannel *cgbChans);

@@ -19,7 +19,7 @@ void sub_0834288C(u32 a)
             if (gModule_GameMode[0] != 4)
             {
                 sub_0833D288(0xA, 0);
-                sub_08339B18();
+                ModuleWaitForVBlank();
                 *(volatile u16 *)0x04000000 &= 0xEFFF;
             }
             gModule_RaceEndState = 2;

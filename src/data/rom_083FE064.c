@@ -624,7 +624,7 @@ const u16 gSaveFormatFillPattern[4] = {
     1, 30, 0, 0
 };
 /* Random AI finish-time range per track (struct AiFinishTimeRange,
- * structs.h): sub_08016CB0 rolls each AI finish time inside it. */
+ * structs.h): RandomizeAiFinishTimes rolls each AI finish time inside it. */
 const struct AiFinishTimeRange gTrackAiFinishTimeRanges[12] = {
     { 26920, 28900 }, { 15280, 20200 }, { 37980, 39740 },
     { 27880, 29000 }, { 51140, 54200 }, { 38840, 41000 },

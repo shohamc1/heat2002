@@ -17,7 +17,7 @@ struct Unk08340964 {
 
 
 void sub_08342ED0(u8 a, u8 b);
-void sub_0833A8C8(u16 idx);
+void ModuleM4aSongNumStart(u16 idx);
 
 void sub_08340964(u8 which, struct Unk08340964 *obj)
 {
@@ -66,7 +66,7 @@ void sub_08340964(u8 which, struct Unk08340964 *obj)
         }
 e2check:
         if (gModule_Options[3] != 0 && gModule_IsDemo[0] == 0 && gModule_RaceEndState == 0)
-            sub_0833A8C8(0xB);
+            ModuleM4aSongNumStart(0xB);
     } else {
         if (gModule_DamagePitsEnabled != 0) {
             obj->unk94 += ((prod >> 17) < 0 ? -(prod >> 17) : (prod >> 17));

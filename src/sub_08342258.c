@@ -40,7 +40,7 @@ s32 sub_08343234(struct Car *a);
 void sub_08342DE8(u8 a, u8 b);
 u8 sub_08343EA8(struct Car *a);
 u8 sub_0833F468(struct Car *p, u8 a1);
-void sub_0833A8C8(u16 idx);
+void ModuleM4aSongNumStart(u16 idx);
 
 void sub_08342258(struct Car *car, u32 b, u8 c)
 {
@@ -113,7 +113,7 @@ again:
         if (gModule_IsDemo[0] == 0 && gModule_RaceEndState == 0 && gModule_Options[3] != 0) {
             if (gModule_IsLinkRace == 0 ? car == gModule_Cars
                                     : car == gModule_Cars + gModule_LinkPlayerId)
-                sub_0833A8C8(0x12);
+                ModuleM4aSongNumStart(0x12);
         }
         if ((u8)(car->carState - 5) > 2 && gModule_DamagePitsEnabled != 0)
             car->damage -= v >> 12;

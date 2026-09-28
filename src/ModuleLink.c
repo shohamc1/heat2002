@@ -7,7 +7,7 @@
 extern u32 gUnk_0203DFF4;
 extern u8 gModule_DetectedPlayers;
 
-void sub_08339A30(void);
+void ModuleSetLinkSerialIntr(void);
 void sub_08344878(void);
 void sub_08344B74(void);
 void sub_08344B68(u32 a, u32 b);
@@ -38,7 +38,7 @@ void sub_08344968(void)
     } while (i != 4);
     *p1 = 0;
     *p2 = 0;
-    sub_08339A30();
+    ModuleSetLinkSerialIntr();
     sub_08344878();
     *(volatile u16 *)0x04000200 |= 0x80;
     if ((*(u8 *)0x04000128 & 0x30) == 0)
@@ -74,7 +74,7 @@ void ModuleLinkHandshake(void)
             sub_08344B74();
         else
             sub_08344B68(1, INTR_FLAG_SERIAL);
-        sub_08339B4C();
+        ModuleReadKeys();
         /* lang is a variable so its pseudo predates the SIOCNT address
            temp: they tie on allocation priority, and the older one gets
            r6. */

@@ -189,8 +189,8 @@ s8 SaveCareerScreen(void)
     s8 sel;
     /* Keep this signed-byte local: its allocation reproduces the saved registers. */
     s8 done = 0;
-    /* sub_08016634: this file's old prototypes return s8; the matched definitions return wider types */
-    if (((s8 (*)(void))sub_08016634)() != 0) {
+    /* IsSeasonSaved: this file's old prototypes return s8; the matched definitions return wider types */
+    if (((s8 (*)(void))IsSeasonSaved)() != 0) {
         if (((s8 (*)(void))CareerOverwriteConfirm)() == 0)
             return;
     }

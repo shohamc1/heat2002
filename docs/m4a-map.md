@@ -32,8 +32,8 @@ addresses.
 | `MPlayStart [sub_08001900]` | `sub_0833AFC0` | `MPlayStart` | certain | yes | converted (kept the r4/r0 register pins) |
 | `m4aMPlayStop [sub_080019B4]` | `sub_0833B074` | `m4aMPlayStop` | certain | yes | converted |
 | `m4aMPlayPitchControl [sub_0800215C]` | `sub_0833B81C` | `m4aMPlayPitchControl` | certain | yes | converted |
-| `m4aSoundInit [sub_08001170]` | `sub_0833A830` | `m4aSoundInit` | certain | yes | n/a (no offset casts; see the build constants below) |
-| `sub_08001150` | `sub_0833A810` | fade-control setter (`m4aMPlayFadeIn`/`m4aMPlayFadeOutTemporarily` family) | likely | yes | not touched (confidence is only "likely", not certain) |
+| `m4aSoundInit [sub_08001170]` | `ModuleM4aSoundInit [sub_0833A830]` | `m4aSoundInit` | certain | yes | n/a (no offset casts; see the build constants below) |
+| `sub_08001150` | `ModuleMPlayFadeOut [sub_0833A810]` | fade-control setter (`m4aMPlayFadeIn`/`m4aMPlayFadeOutTemporarily` family) | likely | yes | not touched (confidence is only "likely", not certain) |
 | `sub_08000DC8` | `sub_0833A488` | `TrackStop` | certain | n/a (hand-written asm in `m4a_1.s`; built from `lib/m4a_1.s`) | n/a |
 | `FadeOutBody [sub_080019F4]` | `sub_0833B0B4` | `FadeOutBody` | certain | yes | not converted |
 | `TrkVolPitSet [sub_08001A74]` | `sub_0833B134` | `TrkVolPitSet` | certain | yes | not converted |
@@ -50,7 +50,7 @@ The "certain" confidence on the three asm-only rows comes from
 functions) plus the direct calls from `MPlayStart`/`m4aMPlayStop` to
 `sub_08000DC8`/`sub_0833A488` at the position `TrackStop` occupies.
 
-`sub_08001150`/`sub_0833A810` write the same two fields the reference
+`sub_08001150`/`ModuleMPlayFadeOut` write the same two fields the reference
 driver's `m4aMPlayFadeIn` and `m4aMPlayFadeOutTemporarily` both write
 (`fadeOI`, `fadeOC`, `fadeOV`), and the field offsets match exactly, but
 this ROM's revision writes a plain `0x100` to `fadeOV` and never touches

@@ -40,7 +40,7 @@ u8 sub_0833DB24(void)
     u16 v;
     u32 w;
     gUnk_0203B6F4 = 0;
-    sub_08339B4C();
+    ModuleReadKeys();
     while (1) {
 
     if (gUnk_0203761C & 0xC0)
@@ -66,8 +66,8 @@ u8 sub_0833DB24(void)
         return 1;
     }
     ((void (*)(u8))sub_0833DA2C)(gUnk_0203B6F4);
-    sub_08339B18();
+    ModuleWaitForVBlank();
         gUnk_0203B82C++;
-        sub_08339B4C();
+        ModuleReadKeys();
     }
 }

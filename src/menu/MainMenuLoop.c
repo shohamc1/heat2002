@@ -59,17 +59,17 @@ u8 TimeTrialMenu(void);
 u8 ChallengeCategorySelect(void);
 u8 ChallengeSelect(u8 a, u8 b);
 u8 NewGameLoadMenu(void);
-u8 sub_08014E28(void);
-u8 sub_08014F5C(void);
+u8 SingleRaceResultsScreen(void);
+u8 SingleRaceRetryMenu(void);
 void SaveTrackRecords(void);
 void LoadTrackRecords(void);
 void LoadProgress(void);
 void LoadOptions(void);
 void SaveOptions(void);
 void FormatSave(void);
-void sub_08016CB0(void);
+void RandomizeAiFinishTimes(void);
 u8 IsSaveValid(void);
-void sub_080164A8(void);
+void LinkFailScreen(void);
 void LoadSeason(void);
 
 u32 MainMenuLoop(void)
@@ -153,7 +153,7 @@ u32 MainMenuLoop(void)
     while (TitleScreen() == 1) {
         gCars[0].finishTime = 0;
         gCars[0].finished = 1;
-        sub_08016D28(1);
+        FinishAllCars(1);
         AssignRandomDrivers();
         SortCarsByTime();
         gNumLaps = 3;
@@ -258,7 +258,7 @@ state3_launch:
             if (((u8 (*)(u32, u8, void *))RunRace)(0, 3, gUnk_0202CDC0) != 0) {
                 FadeToColor(0, 0x0F);
 state3_accept:
-                sub_080164A8();
+                LinkFailScreen();
                 goto state3_done;
             }
 
@@ -343,7 +343,7 @@ state0_menu:
             gNumLaps = 10;
             gCars[0].finishTime = 0;
             gCars[0].finished = 1;
-            sub_08016D28(1);
+            FinishAllCars(1);
             SortCarsByTime();
             (*(u32 *)&gCarOrder) = (u32)gCars;
             gDamagePitsEnabled = 0;
@@ -365,7 +365,7 @@ state0_menu:
             if (gOptions[2] != 0)
                 m4aSongNumStart(3);
             ResetBgScroll();
-            sub_08016CB0();
+            RandomizeAiFinishTimes();
             if (gNewTrackRecord != 0)
                 SaveTrackRecords();
             gQualifyingDone = 1;
@@ -374,7 +374,7 @@ state0_menu:
         case 2:
             if (gQualifyingDone == 0 || gSeasonRaceIncomplete == 1) {
                 gCars[0].finishTime = 0x0002BF20;
-                sub_08016CB0();
+                RandomizeAiFinishTimes();
             }
             SortCarsByTime();
             gNumLaps = 3;
@@ -438,7 +438,7 @@ state1_config:
 state1_race:
         gCars[0].finishTime = 0;
         gCars[0].finished = 1;
-        sub_08016D28(1);
+        FinishAllCars(1);
         for (i = 0; i != 0x18; i++)
             gCars[i].finishTime = i;
         gCars[0].finishTime = 0x0002CAD8;
@@ -450,9 +450,9 @@ state1_race:
             m4aSongNumStart(2);
         ResetBgScroll();
         if (gRaceAborted == 0)
-            sub_08014E28();
+            SingleRaceResultsScreen();
 
-        result = sub_08014F5C();
+        result = SingleRaceRetryMenu();
         if (result == 0)
             goto state1_race;
         if (result == 1)
@@ -489,7 +489,7 @@ state4_config:
 state4_race:
         gCars[0].finishTime = 0;
         gCars[0].finished = 1;
-        sub_08016D28(1);
+        FinishAllCars(1);
         SortCarsByTime();
         (*(u32 *)&gCarOrder) = (u32)gCars;
         gIsTimeTrial = 1;
@@ -629,8 +629,8 @@ state2_done:
         for (i = 0; i != 0x18; i++)
             gCars[i].points = 0;
 
-        /* sub_08016634: this file's old prototype returns u8; the matched definition returns u32 */
-        if (((u8 (*)(void))sub_08016634)() != 0) {
+        /* IsSeasonSaved: this file's old prototype returns u8; the matched definition returns u32 */
+        if (((u8 (*)(void))IsSeasonSaved)() != 0) {
             result = NewGameLoadMenu();
             if ((gKeysPressed & B_BUTTON) != 0)
                 goto state5_done;
@@ -680,7 +680,7 @@ state5_menu:
         case 0:
             gCars[0].finishTime = 0;
             gCars[0].finished = 1;
-            sub_08016D28(1);
+            FinishAllCars(1);
             SortCarsByTime();
             (*(u32 *)&gCarOrder) = (u32)gCars;
             gDamagePitsEnabled = 0;
@@ -703,7 +703,7 @@ state5_menu:
             if (gOptions[2] != 0)
                 m4aSongNumStart(2);
             ResetBgScroll();
-            sub_08016CB0();
+            RandomizeAiFinishTimes();
             if (gNewTrackRecord != 0)
                 SaveTrackRecords();
             gQualifyingDone = 1;
@@ -712,7 +712,7 @@ state5_menu:
         case 2:
             if (gQualifyingDone == 0 || gSeasonRaceIncomplete == 1) {
                 gCars[0].finishTime = 0x0002BF20;
-                sub_08016CB0();
+                RandomizeAiFinishTimes();
             }
             SortCarsByTime();
             gNumLaps = gSeasonNumLaps;

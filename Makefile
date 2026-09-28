@@ -55,7 +55,7 @@ syscall_of = $(lastword $(subst :, ,$(filter $(1):%,$(AGBSYSCALL_COPIES))))
 M4A_OBJS := $(BUILD)/lib/m4a/m4a_1.o $(BUILD)/lib/m4a/m4a_1_high.o
 M4A_HIGH_BASE := 0x08339B78
 M4A_HIGH_EXTERNS := Clear64byte=sub_0833ABF4 ClearChain=sub_0833ABE0 \
-	FadeOutBody=sub_0833B0B4 MidiKeyToFreq=sub_0833A78C TrkVolPitSet=sub_0833B134 \
+	FadeOutBody=sub_0833B0B4 MidiKeyToFreq=ModuleMidiKeyToFreq TrkVolPitSet=sub_0833B134 \
 	gClockTable=gUnk_0200C8DC gMPlayJumpTableTemplate=gUnk_0200C668
 
 # libgcc, built from tools/agbcc/libgcc as its own Makefile builds it: the
@@ -86,7 +86,7 @@ LIBGCC_OBJS := $(LIBGCC1_OBJS) $(LIBGCC2_OBJS) $(LIBGCC_FP_OBJS) $(LIBGCC_HIGH_O
 CRT0_OBJS := $(BUILD)/lib/rom_header.o $(BUILD)/lib/crt0.o $(BUILD)/lib/crt0_high.o \
 	$(BUILD)/lib/crt0_island.o
 CRT0_HIGH_SYMS := Init=sub_08339780 IntrMain=sub_083397C4 \
-	AgbMain=sub_083398CC gIntrTable=gModule_IntrTable
+	AgbMain=ModuleAgbMain gIntrTable=gModule_IntrTable
 
 # Nintendo SDK libraries written in C: MultiBoot (lib/multiboot.c,
 # pokeemerald's) and the EEPROM_V120 save library (lib/eeprom.c). Each keeps

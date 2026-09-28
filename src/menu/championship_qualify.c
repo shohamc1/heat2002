@@ -64,7 +64,7 @@ u8 RunChampionshipQualifyTest(void)
     gCars[0].finishTime = 0;
     gCars[0].finished = 1;
     AssignRandomDrivers();
-    sub_08016D28(1);
+    FinishAllCars(1);
     SortCarsByTime();
     TrackSelectMenu(0, gTrackId);
     raceArg = gUnk_0202CDA8;

@@ -32,6 +32,6 @@ void sub_08342A14(u32 a)
             sub_0833FF84(a);
         }
         if (gModule_RaceStarted == 0)
-            sub_08339B18();
+            ModuleWaitForVBlank();
     }
 }

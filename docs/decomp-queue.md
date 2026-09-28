@@ -210,7 +210,7 @@ What the source shapes turned out to be:
 |---:|---|---:|---|
 | 73 | `sub_08000444` | 16 | from `sub_08005560` |
 | 74 | `sub_08000478` | 16 | from `sub_08005560`; port of `sub_08000444` |
-| 75 | `sub_08339B04` | 16 | from `sub_08005560`; port of `sub_08000444` |
+| 75 | `ModuleAckVBlank [sub_08339B04]` | 16 | from `sub_08005560`; port of `sub_08000444` |
 | 76 | `sub_08339B38` | 16 | from `sub_08005560`; port of `sub_08000444` |
 | 77 | `sub_08000214` | 10 | from `sub_08000260` |
 | 78 | `sub_083398D4` | 10 | from `sub_08000260`; port of `sub_08000214` |
@@ -331,7 +331,7 @@ What the source shapes turned out to be:
 | 122 | `sub_08000340` | 20 |  |
 | 123 | `sub_08339A00` | 20 | port of `sub_08000340` |
 | 124 | `sub_08000410` | 20 |  |
-| 125 | `sub_08339AD0` | 20 | port of `sub_08000410` |
+| 125 | `ModuleVBlankIntr [sub_08339AD0]` | 20 | port of `sub_08000410` |
 | 126 | `sub_080031B0` | 22 |  |
 | 127 | `sub_0833C6F4` | 22 | port of `sub_080031B0` |
 | 128 | `sub_08000328` | 24 |  |
@@ -483,9 +483,9 @@ missed:
   `data_08345B40` splits at `0x08345B44`, `0x08345B4C` and `0x08345B58`,
   and the strings are `gUnk_0200D0C4`, `gUnk_0200D0CC` and
   `gUnk_0200D0D8`. Two unused `symbols.ld` numbers for them went.
-- `sub_08339A40`, the module's `InitIntrHandlers`, wrote its three
+- `ModuleInitIntrHandlers [sub_08339A40]`, the module's `InitIntrHandlers`, wrote its three
   handlers as `EWRAM_START` plus an offset, 16 times. They're
-  `sub_083397C4`, `sub_08339AD0` and `sub_08339AEC` now.
+  `sub_083397C4`, `ModuleVBlankIntr` and `ModuleDummyIntr [sub_08339AEC]` now.
 - In the module, `0x02025220` and `0x0202522C` are initialised data in
   the image. `data_0835DC3C` splits at `0x0835DCA0` and `0x0835DCAC`,
   and `sub_0833E0AC` and `sub_0833F1A8` read the labels

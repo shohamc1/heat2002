@@ -22,7 +22,7 @@ void SetupChallenge(u8 a, u8 *unused)
         AssignRandomDrivers();
         gCars[0].finishTime = 0;
         gCars[0].finished = 1;
-        sub_08016D28(0);
+        FinishAllCars(0);
         SortCarsByTime();
         gNumLaps = 1;
         (*(struct Car **)&gCarOrder) = gCars;
@@ -33,7 +33,7 @@ void SetupChallenge(u8 a, u8 *unused)
         AssignRandomDrivers();
         gCars[0].finishTime = 0;
         gCars[0].finished = 1;
-        sub_08016D28(0);
+        FinishAllCars(0);
         SortCarsByTime();
         gNumLaps = 5;
         (*(struct Car **)&gCarOrder) = gCars;
@@ -70,7 +70,7 @@ void SetupChallenge(u8 a, u8 *unused)
         AssignRandomDrivers();
         gCars[0].finishTime = 0;
         gCars[0].finished = 1;
-        sub_08016D28(0);
+        FinishAllCars(0);
         SortCarsByTime();
         gNumLaps = 2;
         (*(u8 *)&gNumCars) = 1;
@@ -114,7 +114,7 @@ void SetupChallenge(u8 a, u8 *unused)
             gCars[i].finished = 0;
         gCars[0].finishTime = 0;
         gCars[0].finished = 1;
-        sub_08016D28(0);
+        FinishAllCars(0);
         SortCarsByTime();
         gNumLaps = 5;
         (*(struct Car **)&gCarOrder) = gCars;
@@ -127,7 +127,7 @@ void SetupChallenge(u8 a, u8 *unused)
             gCars[i].finished = 0;
         gCars[0].finishTime = 0;
         gCars[0].finished = 1;
-        sub_08016D28(0);
+        FinishAllCars(0);
         SortCarsByTime();
         gNumLaps = 3;
         (*(struct Car **)&gCarOrder) = gCars;
@@ -140,7 +140,7 @@ void SetupChallenge(u8 a, u8 *unused)
             gCars[i].finished = 0;
         gCars[0].finishTime = 0;
         gCars[0].finished = 1;
-        sub_08016D28(0);
+        FinishAllCars(0);
         SortCarsByTime();
         gNumLaps = 3;
         gChallengeBestValue = 0;

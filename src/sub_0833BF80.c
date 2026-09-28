@@ -44,7 +44,7 @@ void sub_0833D9D8(void);
 void sub_0833BF6C(void);
 void sub_0833EDF8(void);
 void sub_0833EDB8(void);
-void sub_0833A8C8(u16);
+void ModuleM4aSongNumStart(u16);
 void sub_083426C8(void);
 void sub_08342868(void);
 void sub_08342B04(void);
@@ -59,7 +59,7 @@ void sub_083419D8(void);
 void sub_0833DF58(void);
 void sub_0833CF10(u32, u32);
 void sub_08340EFC(void);
-void sub_0833AA60(u32, u16);
+void ModuleM4aMPlayFadeOut(u32, u16);
 u32 sub_0833DBC8(void);
 u32 sub_0833DCB0(void);
 u32 sub_0833DBF4(void);
@@ -130,7 +130,7 @@ s32 sub_0833BF80(u8 arg0, u8 arg1)
             ;
         while ((*(volatile s8 *)&gModule_VBlankWorkDone) == 0);
     }
-    sub_08339B18();
+    ModuleWaitForVBlank();
     gUnk_020390FC = 0;
     sub_0833BF6C();
     if (gModule_GameMode[0] == 0xE) {
@@ -140,7 +140,7 @@ s32 sub_0833BF80(u8 arg0, u8 arg1)
     }
     if (gModule_IsDemo[0] != 0) {
         if (gModule_Options[2] != 0)
-            sub_0833A8C8(1);
+            ModuleM4aSongNumStart(1);
         gModule_RaceStarted = 1;
         gUnk_020250EC = 2;
         if (gModule_IsDemo[0] != 0) {
@@ -180,7 +180,7 @@ after_d5f4: ;
     t--;
     if ((u8)t <= 1)
         sub_08344878();
-    sub_0833A8C8(0x38);
+    ModuleM4aSongNumStart(0x38);
     t++;
     t--;
     gUnk_0203921C = 0;
@@ -237,10 +237,10 @@ after_d5f4: ;
             if (gUnk_0203761C != 0) {
                 gUnk_020391CC = 1;
                 gModule_RaceEndState = 2;
-                sub_08339B18();
+                ModuleWaitForVBlank();
                 *(volatile u16 *)0x04000000 &= 0xEFFF;
                 if (gModule_Options[2] != 0)
-                    sub_0833AA60(gUnk_02038F70, 2);
+                    ModuleM4aMPlayFadeOut(gUnk_02038F70, 2);
                 sub_0833D288(0x19, 0);
             }
         } else {
@@ -272,7 +272,7 @@ r_tests:
                 goto r_case27;
             goto r_end;
 r_case1:
-            sub_0833A8C8(0x38);
+            ModuleM4aSongNumStart(0x38);
             goto r_end;
 r_case2:
             if (gModule_GameMode[0] == 2 || gModule_GameMode[0] == 0xE || gModule_GameMode[0] == 0
@@ -283,7 +283,7 @@ r_case2:
                 || gModule_GameMode[0] == 0x11) {
                 gUnk_020391CC = 1;
                 gModule_RaceEndState = 2;
-                sub_08339B18();
+                ModuleWaitForVBlank();
                 *(volatile u16 *)0x04000000 &= 0xEFFF;
                 sub_0833D288(0x19, 0);
             }

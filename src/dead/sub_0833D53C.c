@@ -11,7 +11,7 @@ void sub_0833D53C(u32 a, u32 b)
     sub_0833D31C(b, a);
     for (i = 0; i != b; i++)
     {
-        sub_08339B18();
+        ModuleWaitForVBlank();
         sub_0833D448();
     }
 }

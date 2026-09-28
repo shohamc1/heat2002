@@ -19,7 +19,7 @@ void sub_083426C8(void)
     u16 *t;
     u8 v;
 
-    sub_08339B4C();
+    ModuleReadKeys();
     p = gModule_Cars;
     count = gModule_NumCars[0];
     if (gModule_IsLinkRace != 0 || gModule_GameMode[0] == 4)
