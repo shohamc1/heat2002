@@ -113,7 +113,7 @@ def parse_reference():
 def nm_sizes():
     """{symbol: bytes} for every function object under build/."""
     objs = list((ROOT / "build" / "data").glob("*.o")) + list(
-        (ROOT / "build" / "src").glob("*.o")
+        (ROOT / "build" / "src").rglob("*.o")
     )
     sizes = {}
     for i in range(0, len(objs), 200):  # arg-length safety chunk

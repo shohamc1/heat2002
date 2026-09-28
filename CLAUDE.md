@@ -461,6 +461,19 @@ instruction-neutral). Functions still called
 `sub_XXXXXXXX` stay at the `src/` root until they are named; file one under
 its domain when it is.
 
+`src/dead/` holds every file whose functions nothing in the ROM reaches: no
+`bl`, no tail-call `b`, and no function pointer from a live function or from
+data. Most are the high module's copies of main-program code that the second
+GBA never calls, empty `bx lr` stubs, and cut features such as the cheat
+password screen (`sub_080132F8`). `scripts/dead_code.py` lists the dead
+functions, and `scripts/dead_code.py --check` exits 1 when a file sits on
+the wrong side of `src/dead/`. A file that mixes dead and live functions
+stays in its domain folder.
+
+Ignore everything in `src/dead/`. Don't read, name, refactor, or document
+its functions, and leave it out of searches and reviews. Its only upkeep is
+keeping `scripts/dead_code.py --check` passing.
+
 - A file can hold any number of functions, but `ldscript.ld` places the
   whole object, so they must be contiguous in the ROM and in ROM order.
 - Folders can nest to any depth under `src/`. The object lands at the same
@@ -585,6 +598,7 @@ Follow the same loop as for any other function. Only these points differ:
     python3 scripts/permute.py NAME DRAFT.c -j8          # permute a near-miss
     python3 scripts/progress.py         # progress summary
     python3 scripts/progress.py --json  # report.json for decomp.dev
+    python3 scripts/dead_code.py --check # src/dead/ matches the call graph
     make tools      # build agb2mid, mid2agb, aif2pcm, gbagfx from tools/tmc
     make convert    # extracted graphics -> .png, round-trip checked (needs libpng)
     make pointers   # count the ROM's raw pointers (scripts/pointers.py)
