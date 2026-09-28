@@ -286,7 +286,7 @@ state3_cleanup:
             ResetBgScroll();
             gIsLinkRace = 0;
             ClearOamBuffer();
-            sub_080047DC();
+            UpdateSprites();
             gVBlankWorkDone = 0;
             gBgScrollUpdateEnabled = 0;
 

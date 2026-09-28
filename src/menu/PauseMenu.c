@@ -18,7 +18,7 @@ u8 PauseMenu(void)
     gPauseMenuCursor = 0;
     if (gKeysPressed & 8) {
         sub_08007EF8();
-        sub_08004A18();
+        ClearPauseMenuBox();
         StopAllSongs();
         ReadKeys();
         kp = &gKeysPressed;
@@ -31,28 +31,28 @@ u8 PauseMenu(void)
             t = k & 8;
             if (t != 0) {
                 *p39c = 0;
-                sub_08004C44(3);
-                sub_08004A18();
+                DrawPauseMenu(3);
+                ClearPauseMenuBox();
                 return 1;
             }
             bit1 = k & 1;
             if (bit1 != 0) {
                 *p39c = t;
-                sub_08004C44(3);
+                DrawPauseMenu(3);
                 p248b = &gPauseMenuCursor;
                 if (*p248b != 0)
                     sub_08004EA4();
-                sub_08004A18();
+                ClearPauseMenuBox();
                 return (u8)(*p248b + 1);
             }
             if (k & 2) {
                 *p39c = bit1;
-                sub_08004C44(3);
+                DrawPauseMenu(3);
                 *p248 = bit1;
-                sub_08004A18();
+                ClearPauseMenuBox();
                 return (u8)(*p248 + 1);
             }
-            sub_08004C44(*p248);
+            DrawPauseMenu(*p248);
             WaitForVBlank();
             *p39c = (u8)(*p39c + 1);
             ReadKeys();

@@ -56,14 +56,14 @@ u8 sub_08014BA4(void)
     sub_08011C9C(12, (u16 *)buf);
     REG_DISPCNT = 0x1341;
     sub_08014B14();
-    sub_080045D8();
+    ResetSpriteOrderTable();
     InitGfxCaches();
     AgeGfxCaches();
     ClearOamBuffer();
     /* sub_08014BA0: this file's old local prototype differs from
        functions.h; call through the old signature (solved-walls 31). */
     ((void (*)(u8))sub_08014BA0)(0);
-    sub_080047DC();
+    UpdateSprites();
     gVBlankWorkDone = v;
     WaitForVBlank();
     FadeToBrightenedPalette((u32)buf, 0x0F);
@@ -73,7 +73,7 @@ u8 sub_08014BA4(void)
         AgeGfxCaches();
         ClearOamBuffer();
         ((void (*)(u8))sub_08014BA0)(w);
-        sub_080047DC();
+        UpdateSprites();
         ReadKeys();
         if (gKeysPressed & 1)
             sel = w;

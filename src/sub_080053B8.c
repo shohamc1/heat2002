@@ -34,7 +34,7 @@ void sub_080053B8(void)
             ((void (*)(u32, u32, u32))DrawTextCentered)(GetString(0x58), 0x0E, 1);
         else
             ((void (*)(u32, u32, u32))DrawTextCentered)(GetString(0x0F), 0x0E, 1);
-        r = sub_08004DB4();
+        r = ReadLinkMenuKeys();
         if (r & 8)
         {
             FadeToColor(0, 0x32);

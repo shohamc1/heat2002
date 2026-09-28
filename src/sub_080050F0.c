@@ -16,25 +16,25 @@ u8 sub_080050F0(void)
 
     gLinkMenuPlayerIndex = 0xFF;
     gPauseMenuCursor = 0;
-    sub_08004DB4();
+    ReadLinkMenuKeys();
     if ((gLinkMenuKeysPressed & 8) != 0) {
         StopAllSongs();
         sel = &gPauseMenuCursor;
         v = &gMenuBlinkCounter;
         while ((r = ExchangeLinkInput()) == 0) {
-            sub_08004DB4();
+            ReadLinkMenuKeys();
             if ((gLinkMenuKeysPressed & 0xC0) != 0)
                 *sel ^= 1;
             a = gLinkMenuKeysPressed & 8;
             if (a != 0) {
                 *v = r;
-                sub_08004C44(3);
+                DrawPauseMenu(3);
                 return 1;
             }
             b = gLinkMenuKeysPressed & 1;
             if (b != 0) {
                 *v = a;
-                sub_08004C44(3);
+                DrawPauseMenu(3);
                 if (gPauseMenuCursor != 0)
                     sub_08005024();
                 return (u8)(gPauseMenuCursor + 1);
@@ -42,11 +42,11 @@ u8 sub_080050F0(void)
             c = gLinkMenuKeysPressed & 2;
             if (c != 0) {
                 *v = b;
-                sub_08004C44(3);
+                DrawPauseMenu(3);
                 *sel = b;
                 return 1;
             }
-            sub_08004C44(*sel);
+            DrawPauseMenu(*sel);
             *v = *v + 1;
             gVBlankWorkDone = c;
 poll:

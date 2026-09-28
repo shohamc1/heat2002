@@ -18,22 +18,22 @@ u8 sub_08004EA4(void)
     v = gKeysPressed & 8;
     if (v != 0) {
         gMenuBlinkCounter = 0;
-        sub_08004D1C(3);
+        DrawPauseConfirmMenu(3);
         return 0;
     }
     w = gKeysPressed & 1;
     if (w != 0) {
         gMenuBlinkCounter = v;
-        sub_08004D1C(3);
+        DrawPauseConfirmMenu(3);
         return gPauseMenuCursor + 1;
     }
     if (gKeysPressed & 2) {
         gMenuBlinkCounter = w;
-        sub_08004D1C(3);
+        DrawPauseConfirmMenu(3);
         gPauseMenuCursor = w;
         return 1;
     }
-    sub_08004D1C(gPauseMenuCursor);
+    DrawPauseConfirmMenu(gPauseMenuCursor);
     WaitForVBlank();
         gMenuBlinkCounter++;
         ReadKeys();

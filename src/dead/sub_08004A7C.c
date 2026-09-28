@@ -78,7 +78,7 @@ void sub_08004BCC(void)
 
     if (gKeysPressed & 4) {
         v = 0;
-        sub_080047DC();
+        UpdateSprites();
 loop:
         ReadKeys();
         start = gKeysPressed & 4;
@@ -88,7 +88,7 @@ loop:
             AgeGfxCaches();
             ClearOamBuffer();
             sub_08004A7C(v);
-            sub_080047DC();
+            UpdateSprites();
             gVBlankWorkDone = start;
             gUnk_02025370++;
             WaitForVBlank();

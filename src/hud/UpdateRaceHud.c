@@ -13,7 +13,7 @@ void sub_08005AF0(s32 arg);
 void DrawTireWear(struct Car *p);
 void sub_08005AA0(struct Car *p);
 void sub_08005AEC(struct Car *p);
-void sub_08004980(struct Car *p);
+void UpdateTrackCues(struct Car *p);
 
 void UpdateRaceHud(void)
 {
@@ -52,5 +52,5 @@ void UpdateRaceHud(void)
         sub_08005AA0(car);
         sub_08005AEC(car);
     }
-    sub_08004980(car);
+    UpdateTrackCues(car);
 }

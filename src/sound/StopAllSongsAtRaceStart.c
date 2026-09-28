@@ -2,7 +2,7 @@
 #include "functions.h"
 
 
-void sub_08002950(void)
+void StopAllSongsAtRaceStart(void)
 {
     StopAllSongs();
 }

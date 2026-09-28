@@ -28,8 +28,8 @@ void InitRaceCars(u32 a1)
     s16 out[4];
     register u32 garbage asm("r1");
 
-    /* sub_08004944: this file's old prototype differs from the matched definition; call through the old one */
-    ((void (*)(u32))sub_08004944)(a1);
+    /* LoadTrackCues: this file's old prototype differs from the matched definition; call through the old one */
+    ((void (*)(u32))LoadTrackCues)(a1);
     a = a1;
     BuildStartingGrid(a);
     gStartedCarCount = 0;

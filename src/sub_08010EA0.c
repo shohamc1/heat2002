@@ -13,11 +13,11 @@ u8 sub_08010EA0(void)
     s8 sel;
     u8 t;
     v = 0;
-    sub_080045D8();
+    ResetSpriteOrderTable();
     InitGfxCaches();
     AgeGfxCaches();
     ClearOamBuffer();
-    sub_080047DC();
+    UpdateSprites();
     gVBlankWorkDone = 0;
     WaitForVBlank();
     ZeroTextLayer();
@@ -45,7 +45,7 @@ inner:
         }
         if (gKeysPressed & 2)
             sel = 0;
-        sub_080047DC();
+        UpdateSprites();
         gVBlankWorkDone = 0;
 wait:
         if (gVBlankWorkDone == 0)

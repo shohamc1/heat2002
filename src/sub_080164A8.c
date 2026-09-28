@@ -9,11 +9,11 @@ void sub_080164A8(void)
     u16 keys;
     m4aMPlayStop((struct MusicPlayerInfo *)0x02001F60);
     m4aMPlayStop((struct MusicPlayerInfo *)0x02001F20);
-    sub_080045D8();
+    ResetSpriteOrderTable();
     InitGfxCaches();
     AgeGfxCaches();
     ClearOamBuffer();
-    sub_080047DC();
+    UpdateSprites();
     ResetBgScroll();
     gIsLinkRace = 0;
     sub_08011C9C(1, (u16 *)buf);

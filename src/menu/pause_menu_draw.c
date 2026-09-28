@@ -3,17 +3,17 @@
 #include "functions.h"
 #include "variables.h"
 
-
 extern u8 gText_P1Paused[];
 extern u8 gText_P2Paused[];
 extern u8 gText_P3Paused[];
 extern u8 gText_P4Paused[];
 extern u8 gText_Paused[];
+extern u8 gText_BlankRowPauseConfirm[];
 
 
-void sub_08004C44(u8 arg)
+void DrawPauseMenu(u8 cursor)
 {
-    u8 r4 = arg;
+    u8 sel = cursor;
 
     if (gIsLinkRace != 0) {
         switch (gLinkMenuPlayerIndex) {
@@ -35,14 +35,39 @@ void sub_08004C44(u8 arg)
     } else {
         ((void (*)(u32, u32, u32))DrawTextCentered)((u32)gText_Paused, 6, 1);
     }
-    if (r4 == 1 || (gMenuBlinkCounter & 8)) {
+    if (sel == 1 || (gMenuBlinkCounter & 8)) {
         ((void (*)(u32, u32, u32))DrawTextCentered)(GetString(0x81), 8, 1);
     } else {
         ((void (*)(u32, u32, u32))DrawTextCentered)((u32)gText_BlankRowPauseMenu, 8, 1);
     }
-    if (r4 == 0 || (gMenuBlinkCounter & 8)) {
+    if (sel == 0 || (gMenuBlinkCounter & 8)) {
         ((void (*)(u32, u32, u32))DrawTextCentered)(GetString(0x80), 0xA, 1);
     } else {
         ((void (*)(u32, u32, u32))DrawTextCentered)((u32)gText_BlankRowPauseMenu, 0xA, 1);
     }
 }
+
+
+void DrawPauseConfirmMenu(u8 cursor)
+{
+    u8 sel = cursor;
+
+    if (sel != 3) {
+        /* DrawTextCentered: the ROM callers pass a third argument the matched definition drops; call
+           through a function pointer with the old prototype. */
+        ((void (*)(u32, u32, u32))DrawTextCentered)(GetString(0x66), 6, 1);
+    } else {
+        ((void (*)(u32, u32, u32))DrawTextCentered)((u32)gText_BlankRowPauseConfirm, 6, 1);
+    }
+    if (sel == 1 || (gMenuBlinkCounter & 8)) {
+        ((void (*)(u32, u32, u32))DrawTextCentered)(GetString(0x68), 8, 1);
+    } else {
+        ((void (*)(u32, u32, u32))DrawTextCentered)((u32)gText_BlankRowPauseMenu, 8, 1);
+    }
+    if (sel == 0 || (gMenuBlinkCounter & 8)) {
+        ((void (*)(u32, u32, u32))DrawTextCentered)(GetString(0x67), 0xA, 1);
+    } else {
+        ((void (*)(u32, u32, u32))DrawTextCentered)((u32)gText_BlankRowPauseMenu, 0xA, 1);
+    }
+}
+

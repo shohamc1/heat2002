@@ -17,11 +17,11 @@ u8 TrackSelectMenu(u8 a, u8 b)
     if (a == 0)
         v = b;
     gTrackSelectFrameCount = 0;
-    sub_080045D8();
+    ResetSpriteOrderTable();
     InitGfxCaches();
     AgeGfxCaches();
     ClearOamBuffer();
-    sub_080047DC();
+    UpdateSprites();
     gVBlankWorkDone = 0;
     WaitForVBlank();
     ZeroTextLayer();
@@ -51,7 +51,7 @@ u8 TrackSelectMenu(u8 a, u8 b)
         gTrackSelectCursor = v;
         if ((gKeysPressed & B_BUTTON) && a != 0)
             sel = 0;
-        sub_080047DC();
+        UpdateSprites();
         gVBlankWorkDone = 0;
     spin:
         if (gVBlankWorkDone == 0)

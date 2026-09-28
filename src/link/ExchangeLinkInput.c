@@ -13,11 +13,37 @@
 #include "variables.h"
 
 extern u16 gLinkPhase0RecvWords[];
-
 u16 PackLinkKeys(u16 keys);
-u8 sub_080032E4(u16 seq, u8 next);
-u8 sub_08003314(u16 id);
+u8 IsLinkSeqNumExpected(u16 seq, u8 next);
+u8 IsValidLinkKeys(u16 id);
 u16 UnpackLinkKeys(u16 id);
+
+
+u8 IsLinkSeqNumExpected(u16 seq, u8 next)
+{
+    if (next == 0)
+    {
+        if (seq != gLinkTxSeqNum)
+            return 0;
+    }
+    else
+    {
+        if (seq != ((gLinkTxSeqNum + 1) & 7))
+            return 0;
+    }
+    return 1;
+}
+
+
+u8 IsValidLinkKeys(u16 keys)
+{
+    if ((keys >> 5 & 3) == 3)
+        return 0;
+    if ((keys >> 3 & 3) == 3)
+        return 0;
+    return 1;
+}
+
 
 s32 ExchangeLinkInput(void)
 {
@@ -81,8 +107,8 @@ send:
                     && recv[i] != 0xFFFF
                     && recv[i] != 0
                     && ((recv[i] >> 14) == 2 || (recv[i] >> 14) == 1)
-                    && sub_080032E4((recv[i] >> 11) & 7, 0)
-                    && sub_08003314(recv[i] & 0x7F))
+                    && IsLinkSeqNumExpected((recv[i] >> 11) & 7, 0)
+                    && IsValidLinkKeys(recv[i] & 0x7F))
                     n++;
             }
             if (n == gNumLinkPlayers[0]) {
@@ -96,10 +122,10 @@ send:
                 if ((recv[i] & 0xF) == ((recv[i] >> 7) & 0xF)
                     && recv[i] != 0xFFFF
                     && recv[i] != 0
-                    && sub_08003314(recv[i] & 0x7F)) {
-                    if ((recv[i] >> 14) == 1 && sub_080032E4((recv[i] >> 11) & 7, 0))
+                    && IsValidLinkKeys(recv[i] & 0x7F)) {
+                    if ((recv[i] >> 14) == 1 && IsLinkSeqNumExpected((recv[i] >> 11) & 7, 0))
                         n2++;
-                    else if ((recv[i] >> 14) == 2 && sub_080032E4((recv[i] >> 11) & 7, 1)) {
+                    else if ((recv[i] >> 14) == 2 && IsLinkSeqNumExpected((recv[i] >> 11) & 7, 1)) {
                         n2++;
                         recv[i] = gLinkPhase0RecvWords[i];
                     }
@@ -115,3 +141,4 @@ send:
     gLinkTxSeqNum = (gLinkTxSeqNum + 1) & 7;
     return 0;
 }
+

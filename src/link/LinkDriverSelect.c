@@ -44,11 +44,11 @@ s8 LinkDriverSelect(void)
     src = (u32)gDriverSelectTiles;
     dst = (u32)gDriverSelectGfxDest;
     CpuCopy16(src, dst, 0x2000);
-    sub_080045D8();
+    ResetSpriteOrderTable();
     InitGfxCaches();
     AgeGfxCaches();
     ClearOamBuffer();
-    sub_080047DC();
+    UpdateSprites();
     gVBlankWorkDone = 0;
     WaitForVBlank();
     ZeroTextLayer();
@@ -118,7 +118,7 @@ s8 LinkDriverSelect(void)
         } else {
             DrawTextCenteredHighlight(gText_BlankRowDriverSelect, 0x11, 1);
         }
-        sub_080047DC();
+        UpdateSprites();
         gVBlankWorkDone = 0;
 spin:
         if (gVBlankWorkDone == 0)

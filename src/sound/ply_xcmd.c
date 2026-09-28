@@ -24,6 +24,13 @@ extern MPlayFunc gUnk_0801D230[];
     }
 /* ply_xtype */
 /* ply_xatta */
+/* ply_xdeca */
+/* ply_xsust */
+/* ply_xrele */
+/* ply_xiecv */
+/* ply_xiecl */
+/* ply_xleng */
+/* ply_xswee */
 
 
 void ply_memacc(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
@@ -148,6 +155,55 @@ void ply_xtype(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track
 void ply_xatta(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
 {
     track->tone.attack = *track->cmdPtr;
+    track->cmdPtr++;
+}
+
+
+void ply_xdeca(u32 mplayInfo, struct MusicPlayerTrack *track)
+{
+    track->tone.decay = *track->cmdPtr;
+    track->cmdPtr++;
+}
+
+
+void ply_xsust(u32 mplayInfo, struct MusicPlayerTrack *track)
+{
+    track->tone.sustain = *track->cmdPtr;
+    track->cmdPtr++;
+}
+
+
+void ply_xrele(u32 mplayInfo, struct MusicPlayerTrack *track)
+{
+    track->tone.release = *track->cmdPtr;
+    track->cmdPtr++;
+}
+
+
+void ply_xiecv(u32 mplayInfo, struct MusicPlayerTrack *track)
+{
+    track->pseudoEchoVolume = *track->cmdPtr;
+    track->cmdPtr++;
+}
+
+
+void ply_xiecl(u32 mplayInfo, struct MusicPlayerTrack *track)
+{
+    track->pseudoEchoLength = *track->cmdPtr;
+    track->cmdPtr++;
+}
+
+
+void ply_xleng(u32 mplayInfo, struct MusicPlayerTrack *track)
+{
+    track->tone.length = *track->cmdPtr;
+    track->cmdPtr++;
+}
+
+
+void ply_xswee(u32 mplayInfo, struct MusicPlayerTrack *track)
+{
+    track->tone.pan_sweep = *track->cmdPtr;
     track->cmdPtr++;
 }
 

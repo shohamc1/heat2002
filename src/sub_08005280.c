@@ -16,7 +16,7 @@ u8 sub_08005280(void)
     u32 v;
 
     gLinkMenuPlayerIndex = 0xFF;
-    sub_08004DB4();
+    ReadLinkMenuKeys();
     if (gLinkMenuKeysPressed & 8) {
         StopAllSongs();
         {
@@ -36,7 +36,7 @@ u8 sub_08005280(void)
                         ((void (*)(u32))VBlankIntrWait)(v);
                     } while (done == 0);
                 }
-                sub_08004DB4();
+                ReadLinkMenuKeys();
                 r = gLinkMenuKeysPressed & 8;
                 if (r != 0) {
                     sub_0800524C();

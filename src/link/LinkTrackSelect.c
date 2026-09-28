@@ -21,11 +21,11 @@ u8 LinkTrackSelect(void)
     gLinkRecvWords[8] = 0;
     gLinkRecvWords[12] = 0;
     WaitForVBlank();
-    sub_080045D8();
+    ResetSpriteOrderTable();
     InitGfxCaches();
     AgeGfxCaches();
     ClearOamBuffer();
-    sub_080047DC();
+    UpdateSprites();
     gVBlankWorkDone = 0;
     WaitForVBlank();
     ZeroTextLayer();
@@ -80,7 +80,7 @@ u8 LinkTrackSelect(void)
         }
         if (k & B_BUTTON)
             sel = 2;
-        sub_080047DC();
+        UpdateSprites();
         gVBlankWorkDone = 0;
     spin:
         if (gVBlankWorkDone == 0)

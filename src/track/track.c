@@ -163,10 +163,10 @@ void LoadTrack(u32 idx)
         gTrackMapWidth[0] = 0x5E;
     if (idx == 11)
         gTrackMapWidth[0] = 0x7D;
-    /* sub_08003BFC: this file's old local prototype differs from
+    /* DrawTrackMapWindow: this file's old local prototype differs from
        functions.h; call through the old signature (solved-walls 31). */
-    ((void (*)(u32, u32, u16 *, u32 *, u16 *, u16))sub_08003BFC)(0, 0, (u16 *)gUnk_02002208, (u32 *)TILEMAP_BUFFER(0), (u16 *)gUnk_0200221C, gUnk_02022DE4);
-    ((void (*)(u32, u32, u16 *, u32 *, u16 *, u16))sub_08003BFC)(0, 0, (u16 *)gUnk_0200BC54, (u32 *)TILEMAP_BUFFER(1), (u16 *)gUnk_02002210, gUnk_0200BC34);
+    ((void (*)(u32, u32, u16 *, u32 *, u16 *, u16))DrawTrackMapWindow)(0, 0, (u16 *)gUnk_02002208, (u32 *)TILEMAP_BUFFER(0), (u16 *)gUnk_0200221C, gUnk_02022DE4);
+    ((void (*)(u32, u32, u16 *, u32 *, u16 *, u16))DrawTrackMapWindow)(0, 0, (u16 *)gUnk_0200BC54, (u32 *)TILEMAP_BUFFER(1), (u16 *)gUnk_02002210, gUnk_0200BC34);
     FlushTrackBgBuffers();
     SetCameraPos(0, 0);
     InitRaceCars(idx);
@@ -191,8 +191,8 @@ void UpdateTrackScroll(void)
     gUnk_02002218 = x & 0x10;
     x >>= 5;
     y >>= 5;
-    /* sub_08003BFC: this file's old local prototype differs from
+    /* DrawTrackMapWindow: this file's old local prototype differs from
        functions.h; call through the old signature (solved-walls 31). */
-    ((void (*)(u32, u32, u8 *, u32 *, u8 *, u16))sub_08003BFC)(x, y, gUnk_02002208, (u32 *)TILEMAP_BUFFER(0), gUnk_0200221C, gUnk_02022DE4);
-    ((void (*)(u32, u32, u8 *, u32 *, u8 *, u16))sub_08003BFC)(x, y, gUnk_0200BC54, (u32 *)TILEMAP_BUFFER(1), gUnk_02002210, gUnk_0200BC34);
+    ((void (*)(u32, u32, u8 *, u32 *, u8 *, u16))DrawTrackMapWindow)(x, y, gUnk_02002208, (u32 *)TILEMAP_BUFFER(0), gUnk_0200221C, gUnk_02022DE4);
+    ((void (*)(u32, u32, u8 *, u32 *, u8 *, u16))DrawTrackMapWindow)(x, y, gUnk_0200BC54, (u32 *)TILEMAP_BUFFER(1), gUnk_02002210, gUnk_0200BC34);
 }

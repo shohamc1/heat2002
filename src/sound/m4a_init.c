@@ -6,7 +6,7 @@
 #include "variables.h"
 
 void ply_note(void);
-void sub_080025B8(void);
+void DummyCgbSound(void);
 /* SoundInit */
 #include "gba/defines.h"
 #include "gba/io_reg.h"
@@ -38,10 +38,10 @@ void SoundInit(struct SoundInfo *soundInfo)
     soundInfo->maxChans = 8;
     soundInfo->masterVolume = 0xF;
     soundInfo->plynote = (PlyNoteFunc)ply_note;
-    soundInfo->CgbSound = (CgbSoundFunc)sub_080025B8;
-    soundInfo->CgbOscOff = (CgbOscOffFunc)sub_080025B8;
-    soundInfo->MidiKeyToCgbFreq = (MidiKeyToCgbFreqFunc)sub_080025B8;
-    soundInfo->ExtVolPit = (ExtVolPitFunc)sub_080025B8;
+    soundInfo->CgbSound = (CgbSoundFunc)DummyCgbSound;
+    soundInfo->CgbOscOff = (CgbOscOffFunc)DummyCgbSound;
+    soundInfo->MidiKeyToCgbFreq = (MidiKeyToCgbFreqFunc)DummyCgbSound;
+    soundInfo->ExtVolPit = (ExtVolPitFunc)DummyCgbSound;
     {
         MPlayFunc *jumpTable = gMPlayJumpTable;
 

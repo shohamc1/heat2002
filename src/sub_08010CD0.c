@@ -13,11 +13,11 @@ u8 sub_08010CD0(void)
     s8 sel;
 
     v = 0x0C;
-    sub_080045D8();
+    ResetSpriteOrderTable();
     InitGfxCaches();
     AgeGfxCaches();
     ClearOamBuffer();
-    sub_080047DC();
+    UpdateSprites();
     gVBlankWorkDone = 0;
     WaitForVBlank();
     ZeroTextLayer();
@@ -38,7 +38,7 @@ u8 sub_08010CD0(void)
         v = MenuMoveHorizontal(gKeysPressed, v, 0, 0x10);
         if (gKeysPressed & 2)
             sel = 0;
-        sub_080047DC();
+        UpdateSprites();
         gVBlankWorkDone = 0;
     spin:
         if (gVBlankWorkDone == 0)

@@ -10,7 +10,7 @@ void sub_08005AF0(s32 a);
 void DrawTireWear(void *a);
 void sub_08005AA0(void *a);
 void sub_08005AEC(void *a);
-void sub_08004980(void *a);
+void UpdateTrackCues(void *a);
 
 void sub_08005FA8(void)
 {
@@ -39,7 +39,7 @@ void sub_08005FA8(void)
     DrawTireWear(car);
     sub_08005AA0(car);
     sub_08005AEC(car);
-    sub_08004980(car);
+    UpdateTrackCues(car);
 }
 
 void sub_08006090(void)

@@ -2,7 +2,7 @@
 #include "data.h"
 
 /* 0x083FF79C-0x083FF7BC: the eight track-cue icon gfx lists drawn by
- * the HUD corner callout (sub_080047E8, indexed by gTrackCueId). */
+ * the HUD corner callout (DrawTrackCueIcon, indexed by gTrackCueId). */
 
 extern const u8 gUnk_08338810[];
 extern const u8 gUnk_08338980[];

@@ -17,34 +17,34 @@ u8 sub_08005024(void)
 
     gPauseMenuCursor = 0;
     ReadKeys();
-    sub_08004DB4();
+    ReadLinkMenuKeys();
     p248 = &gPauseMenuCursor;
     p39c = &gMenuBlinkCounter;
     while ((v = ExchangeLinkInput()) == 0) {
-        sub_08004DB4();
+        ReadLinkMenuKeys();
         if (gLinkMenuKeysPressed & 0xC0)
             *p248 ^= 1;
         k = *(volatile u16 *)&gLinkMenuKeysPressed;
         t = k & 8;
         if (t != 0) {
             *p39c = v;
-            sub_08004D1C(3);
+            DrawPauseConfirmMenu(3);
             return 0;
         }
         bit1 = k & 1;
         if (bit1 != 0) {
             *p39c = t;
-            sub_08004D1C(3);
+            DrawPauseConfirmMenu(3);
             return (u8)(*p248 + 1);
         }
         t2 = k & 2;
         if (t2 != 0) {
             *p39c = bit1;
-            sub_08004D1C(3);
+            DrawPauseConfirmMenu(3);
             *p248 = bit1;
             return 1;
         }
-        sub_08004D1C(*p248);
+        DrawPauseConfirmMenu(*p248);
         gVBlankWorkDone = t2;
 spin:
         if (gVBlankWorkDone == 0)

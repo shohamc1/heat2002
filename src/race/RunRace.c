@@ -63,17 +63,17 @@ u8 RunRace(u32 a, u8 b)
     gUnk_020021D0[3] = 0;
     LoadTrack(gTrackId);
     LoadTrackSegs(gTrackId);
-    sub_08004944(gTrackId);
+    LoadTrackCues(gTrackId);
     sub_080063B0();
-    sub_08002718();
+    SetTrackBgCnt();
     gUnk_02002148 = 0x100;
-    sub_080040E0(0x32);
+    SetFadeDeltasColors240To255(0x32);
     LoadTrackWalls(gTrackId);
     InitGfxCaches();
     InitTasks();
-    sub_080045D8();
+    ResetSpriteOrderTable();
     ClearOamBuffer();
-    sub_080047DC();
+    UpdateSprites();
     gBgScrollUpdateEnabled = 1;
     (*(vu8 *)&gVBlankWorkDone) = 0;
     while ((*(vu8 *)&gVBlankWorkDone) == 0)
@@ -102,7 +102,7 @@ u8 RunRace(u32 a, u8 b)
         && gIsDemo == 0 && gOptions[3] != 0)
         m4aSongNumStart(0x1E);
     if (gIsDemo == 0)
-        sub_08002950();
+        StopAllSongsAtRaceStart();
     if (gGameMode[0] == 9 || gGameMode[0] == 0x0D || gGameMode[0] == 0x0E
         || gGameMode[0] == 0x0F || gGameMode[0] == 0x11) {
         gPreRaceSimActive = 1;
@@ -189,7 +189,7 @@ camera_ready:
             else
                 ((void (*)(u32, u32, u32))DrawTextCentered)((u32)gText_BlankRow16, 8, 1);
         }
-        sub_080047DC();
+        UpdateSprites();
         sub_08008D8C();
         gBgScrollUpdateEnabled = 1;
         if (gIsDemo != 0) {

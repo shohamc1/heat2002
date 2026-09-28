@@ -16,7 +16,7 @@ The ranking uses four facts about each function:
   Call order barely matters, because `match.py` links against the asm
   symbols, but a helper's prototype helps its callers. So the
   `sub_0800792C` and `sub_08007950` helpers (13 callers each) open tier 3.
-- **Reference source.** The block from `sub_08001134` to `sub_080025A4` is
+- **Reference source.** The block from `sub_08001134` to `ply_xswee [sub_080025A4]` is
   the m4a driver. `tools/tmc/src/gba/m4a.c` has C for every function in it.
   Start from that file, adjusted for this ROM's older revision (see the
   `CgbSound [sub_08001C88]` entry in `docs/learnings/parked.md`).
@@ -70,7 +70,7 @@ family's fresh member plus its ports); integration was serial.
 
 What the source shapes turned out to be, for the next m4a batch:
 
-- Every `ply_*` byte setter (`sub_0800253C` family, 20 functions) compiles
+- Every `ply_*` byte setter (`ply_xdeca [sub_0800253C]` family, 20 functions) compiles
   byte-exact from tmc's two-statement shape
   `track->X = *track->cmdPtr; track->cmdPtr++;` — including the register
   split that differs between field offsets; it falls out of agbcc alone.
@@ -109,22 +109,22 @@ What the source shapes turned out to be, for the next m4a batch:
 
 | # | Function | Bytes | Notes |
 |---:|---|---:|---|
-| 15 | `sub_0800253C` | 18 | `ply_xdeca` |
-| 16 | `sub_08002550` | 18 | `ply_xsust`; port of `sub_0800253C` |
-| 17 | `sub_08002564` | 18 | `ply_xrele`; port of `sub_0800253C` |
-| 18 | `sub_08002590` | 18 | `ply_xleng`; port of `sub_0800253C` |
-| 19 | `sub_080025A4` | 18 | `ply_xswee`; port of `sub_0800253C` |
-| 20 | `sub_0833BBFC` | 18 | port of `sub_0800253C` |
-| 21 | `sub_0833BC10` | 18 | port of `sub_0800253C` |
-| 22 | `sub_0833BC24` | 18 | port of `sub_0800253C` |
-| 23 | `sub_0833BC50` | 18 | port of `sub_0800253C` |
-| 24 | `sub_0833BC64` | 18 | port of `sub_0800253C` |
+| 15 | `ply_xdeca` | 18 | `ply_xdeca` |
+| 16 | `ply_xsust [sub_08002550]` | 18 | `ply_xsust`; port of `ply_xdeca` |
+| 17 | `ply_xrele [sub_08002564]` | 18 | `ply_xrele`; port of `ply_xdeca` |
+| 18 | `ply_xleng [sub_08002590]` | 18 | `ply_xleng`; port of `ply_xdeca` |
+| 19 | `ply_xswee` | 18 | `ply_xswee`; port of `ply_xdeca` |
+| 20 | `sub_0833BBFC` | 18 | port of `ply_xdeca` |
+| 21 | `sub_0833BC10` | 18 | port of `ply_xdeca` |
+| 22 | `sub_0833BC24` | 18 | port of `ply_xdeca` |
+| 23 | `sub_0833BC50` | 18 | port of `ply_xdeca` |
+| 24 | `sub_0833BC64` | 18 | port of `ply_xdeca` |
 | 25 | `sub_0800151C` | 4 | `MusicPlayerJumpTableCopy` |
 | 26 | `sub_0833ABDC` | 4 | port of `sub_0800151C` |
-| 27 | `sub_08002578` | 12 | `ply_xiecv` |
-| 28 | `sub_08002584` | 12 | `ply_xiecl`; port of `sub_08002578` |
-| 29 | `sub_0833BC38` | 12 | port of `sub_08002578` |
-| 30 | `sub_0833BC44` | 12 | port of `sub_08002578` |
+| 27 | `ply_xiecv [sub_08002578]` | 12 | `ply_xiecv` |
+| 28 | `ply_xiecl [sub_08002584]` | 12 | `ply_xiecl`; port of `ply_xiecv` |
+| 29 | `sub_0833BC38` | 12 | port of `ply_xiecv` |
+| 30 | `sub_0833BC44` | 12 | port of `ply_xiecv` |
 | 31 | `ply_xtype [sub_08002514]` | 18 | `ply_xtype` |
 | 32 | `ply_xatta [sub_08002528]` | 18 | `ply_xatta`; port of `ply_xtype` |
 | 33 | `sub_0833BBD4` | 18 | port of `ply_xtype` |
@@ -416,7 +416,7 @@ What the source shapes turned out to be:
 | 200 | `sub_08016568` | 46 |  |
 | 201 | `sub_08010768` | 48 |  |
 | 202 | `sub_080107A4` | 48 |  |
-| 203 | `sub_08002718` | 56 | jump table or inline data |
+| 203 | `SetTrackBgCnt [sub_08002718]` | 56 | jump table or inline data |
 | 204 | `sub_0800BAFC` | 56 |  |
 | 205 | `sub_080069D8` | 58 |  |
 | 206 | `sub_0800CC4C` | 66 |  |

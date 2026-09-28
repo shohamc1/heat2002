@@ -3,7 +3,7 @@
 #include "variables.h"
 
 
-void sub_08002718(void)
+void SetTrackBgCnt(void)
 {
     switch (gTrackId) {
     case 0:

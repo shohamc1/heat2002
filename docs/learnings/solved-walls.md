@@ -138,7 +138,7 @@ HImode pseudo, and reload copies it into the SImode operand register.
 constants and descending register addresses automatically — consecutive
 `REG_BG3CNT = 0x1D0B; REG_BG2CNT = 0x1E01; ...` produce `adds r2, #0xF6`
 (0x1E01 from 0x1D0B), `subs r2, #0xC8`, `subs r1, #2`, `adds r1, #0x4A`
-— no pointer walk or staging locals. Seen in `sub_08002718` (`a6b058e`).
+— no pointer walk or staging locals. Seen in `SetTrackBgCnt [sub_08002718]` (`a6b058e`).
 
 ### 2. An extra `ldrh` before a `strh`
 
@@ -960,7 +960,7 @@ do {
 ```
 
 **Seen in:** `sub_08003C78` (`d04f498`); same shape as the matched
-`sub_08003BFC`.
+`DrawTrackMapWindow [sub_08003BFC]`.
 
 ### 30. Zero-emission liveness keepers
 
