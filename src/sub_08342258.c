@@ -29,11 +29,11 @@
 
 extern u16 gUnk_020277D4[];
 
-void sub_0834029C(struct Car *a);
+void ModuleResetCarSurface(struct Car *a);
 void sub_08342154(struct Car *a, u16 keys);
-void sub_08341D64(struct Car *a);
-void sub_08341B14(struct Car *a, u32 b);
-void sub_083405F0(struct Car *a, u8 b);
+void ModuleComputeForwardSpeed(struct Car *a);
+void ModuleUpdateEngine(struct Car *a, u32 b);
+void ModuleUpdateTireForces(struct Car *a, u8 b);
 void sub_08341DA0(struct Car *a);
 s32 sub_08343A6C(struct Car *a);
 s32 sub_08343234(struct Car *a);
@@ -51,13 +51,13 @@ void sub_08342258(struct Car *car, u32 b, u8 c)
     car->forceX = 0;
     car->forceZ = 0;
     car->torque = 0;
-    sub_0834029C(car);
+    ModuleResetCarSurface(car);
     if (car->hitCooldown != 0)
         car->hitCooldown--;
     sub_08342154(car, b);
-    sub_08341D64(car);
-    sub_08341B14(car, b);
-    sub_083405F0(car, c);
+    ModuleComputeForwardSpeed(car);
+    ModuleUpdateEngine(car, b);
+    ModuleUpdateTireForces(car, c);
     v = 0;
     sub_08341DA0(car);
     if (gModule_GameMode[0] == 4 || gModule_TrackId <= 0xB) {
@@ -118,7 +118,7 @@ again:
         if ((u8)(car->carState - 5) > 2 && gModule_DamagePitsEnabled != 0)
             car->damage -= v >> 12;
         car->hitCooldown = 6;
-        sub_08341D64(car);
+        ModuleComputeForwardSpeed(car);
         car->impactSpeed = car->speed;
         if (car->speed > 0)
             car->impactSpeed = 0;

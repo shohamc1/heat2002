@@ -2,11 +2,11 @@
 #include "variables.h"
 #include "car.h"
 
-
-s16 sub_08341AC4(struct Car *a);
+s16 ModuleGetGearForSpeed(struct Car *a);
 void sub_08342008(struct Car *a);
 
-void sub_08341B14(struct Car *car, s32 mode)
+
+void ModuleUpdateEngine(struct Car *car, s32 mode)
 {
     u8 pad[0x28];
     s32 v;
@@ -61,7 +61,7 @@ void sub_08341B14(struct Car *car, s32 mode)
     }
     t3 = car->speed;
     if (t3 <= 0)
-        r = sub_08341AC4(car);
+        r = ModuleGetGearForSpeed(car);
     else
         r = 0;
     car->engineForce = -((-car->gearRatioTable[car->gear]) * v) >> 8;
@@ -73,3 +73,23 @@ void sub_08341B14(struct Car *car, s32 mode)
         car->rpm = 0;
     }
 }
+
+
+void ModuleComputeForwardSpeed(u8 *car)
+{
+    s32 i;
+    s32 dx;
+    s32 dy;
+    s32 x;
+    s32 y;
+
+    i = -(s32)(*(u16 *)(car + 0x34) >> 11) & 0x1F;
+    i = i << 3;
+    dx = gModule_SinTable[i];
+    i = i + 0x40;
+    dy = gModule_SinTable[i];
+    x = *(s32 *)(car + 0x0C);
+    y = *(s32 *)(car + 0x14);
+    *(s32 *)(car + 0x2C) = (x * dx + y * dy) >> 8;
+}
+

@@ -10,7 +10,7 @@ extern u32 gModule_DriverRpmPerSpeedTables[];
 
 void sub_083432EC(u32 *p, u32 v);
 
-void sub_08341288(u8 a, struct Car *car, s32 b, s32 c, u32 d)
+void ModuleInitCar(u8 carIdx, struct Car *car, s32 posX, s32 posZ, u32 heading)
 {
     u8 i;
 
@@ -25,9 +25,9 @@ void sub_08341288(u8 a, struct Car *car, s32 b, s32 c, u32 d)
     gUnk_0203D4E8 = 0;
     car->ledLapFlag = 1;
     car->lapLedTimer = 0;
-    car->posX = b;
-    car->posZ = c;
-    car->heading = d;
+    car->posX = posX;
+    car->posZ = posZ;
+    car->heading = heading;
     car->speed = 0;
     car->unk28 = 0;
     car->rpm = 0;
@@ -35,7 +35,7 @@ void sub_08341288(u8 a, struct Car *car, s32 b, s32 c, u32 d)
     car->hitCooldown = 0;
     car->waypoint = 0;
     car->firstStepCrossed = 0;
-    car->driverPalette = gUnk_02026E1C[a * 3];
+    car->driverPalette = gUnk_02026E1C[carIdx * 3];
     car->carState = 0;
     car->unk84 = 1;
     car->unk30 = 0;
@@ -53,7 +53,7 @@ void sub_08341288(u8 a, struct Car *car, s32 b, s32 c, u32 d)
     car->onApron = 0;
     car->onGrass = 0;
     car->behindBgFlag = 0;
-    sub_083432EC((u32 *)&car->unk128, d);
+    sub_083432EC((u32 *)&car->unk128, heading);
     car->unk134 = 0;
     car->unk138 = -1;
     car->wasOnGrass = 0;
@@ -124,7 +124,7 @@ void sub_08341288(u8 a, struct Car *car, s32 b, s32 c, u32 d)
     (*(s32 *)&car->gearPowerTable) = gModule_DriverGearPowerTables[car->driverId];
     (*(s32 *)&car->gearRatioTable) = gModule_DriverGearRatioTables[car->driverId];
     (*(s32 *)&car->rpmPerSpeedTable) = gModule_DriverRpmPerSpeedTables[car->driverId];
-    if (gModule_IsLinkRace == 0 && a != 0 && gModule_GameMode[0] != 2) {
+    if (gModule_IsLinkRace == 0 && carIdx != 0 && gModule_GameMode[0] != 2) {
         (*(s32 *)&car->gearPowerTable) = (s32)gUnk_0202713E;
         (*(s32 *)&car->gearRatioTable) = (s32)gUnk_0202714A;
         (*(s32 *)&car->rpmPerSpeedTable) = (s32)gUnk_02027154;
@@ -134,7 +134,7 @@ void sub_08341288(u8 a, struct Car *car, s32 b, s32 c, u32 d)
     }
     car->unk158 = 0;
     car->finished = 0;
-    car->respawnHeading = d;
+    car->respawnHeading = heading;
     car->respawnWaypoint = 0;
     car->zoneGripFlag = 0;
     car->subStep = 0;

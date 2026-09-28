@@ -3,7 +3,7 @@
 
 extern u32 gUnk_02026E20[];
 
-void sub_08340530(u32 a, u8 b)
+void ModuleSetTireGrip(u32 car, u8 carIndex)
 {
     if (gModule_IsLinkRace != 0) {
         gUnk_0203DCF4 = gUnk_02026E20[0];
@@ -13,7 +13,7 @@ void sub_08340530(u32 a, u8 b)
         gUnk_0203D4DC = gUnk_02026E20[4];
         return;
     }
-    if (b == 0) {
+    if (carIndex == 0) {
         gUnk_0203DCF4 = gUnk_02026E20[0];
         gUnk_0203D4E0 = gUnk_02026E20[1];
         gUnk_0203DDE4 = gUnk_02026E20[2];

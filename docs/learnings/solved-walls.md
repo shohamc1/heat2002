@@ -337,7 +337,7 @@ default:
 }
 ```
 
-**Seen in:** `sub_080097A4` (`eea3c92`), `sub_08341288` (`e82fcc7`).
+**Seen in:** `sub_080097A4` (`eea3c92`), `ModuleInitCar [sub_08341288]` (`e82fcc7`).
 
 ### 8. The wrong arm keeps its call
 

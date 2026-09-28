@@ -9,7 +9,7 @@ extern u16 gUnk_02026DDC[];
 void sub_083425C4(struct Car *p, u8 idx);
 u8 ModuleCarNeedsPit(struct Car *p);
 u8 ModuleFindFreePitStall(u8 a);
-void sub_08341280(struct Car *p, u8 a);
+void ModuleEnterPit(struct Car *p, u8 a);
 
 void sub_083426C8(void)
 {
@@ -36,7 +36,7 @@ void sub_083426C8(void)
             if (v != 0) {
                 v = ModuleFindFreePitStall(v);
                 if (v != 0x63)
-                    sub_08341280(p, ModuleFindFreePitStall(v));
+                    ModuleEnterPit(p, ModuleFindFreePitStall(v));
             }
         }
         if (p != gModule_Cars && p->pitState != 0) {

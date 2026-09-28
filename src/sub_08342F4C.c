@@ -1,7 +1,7 @@
 #include "global.h"
 #include "functions.h"
 
-u32 sub_08341644(s32 x, s32 y, s32 *out);
+u32 ModuleWorldToScreen(s32 x, s32 y, s32 *out);
 
 void sub_08342F4C(u32 a)
 {
@@ -9,7 +9,7 @@ void sub_08342F4C(u32 a)
     s32 t;
     s32 t2;
 
-    if ((u8)sub_08341644(*(s32 *)(a + 0x00), *(s32 *)(a + 0x08), out) != 0)
+    if ((u8)ModuleWorldToScreen(*(s32 *)(a + 0x00), *(s32 *)(a + 0x08), out) != 0)
     {
         out[0] -= 4;
         t2 = out[1] - 4;

@@ -4,7 +4,7 @@
 extern u32 gUnk_0202B370[];
 extern u8 gUnk_0201F370[];
 
-u32 sub_08341644(s32 x, s32 y, s32 *out);
+u32 ModuleWorldToScreen(s32 x, s32 y, s32 *out);
 u32 *ModuleRequestObjTiles16(u32 a);
 u32 sub_08343464(s32 x, s32 y);
 s32 ModuleRequestObjPalette(u32 a);
@@ -41,7 +41,7 @@ void sub_08342FF0(struct Unk08342FF0 *e)
     s32 y;
     s32 t18;
 
-    if (((u32)sub_08341644(e->f00, e->f08, out) << 24) != 0)
+    if (((u32)ModuleWorldToScreen(e->f00, e->f08, out) << 24) != 0)
     {
         x0 = out[0];
         out[0] = x0 - 8;

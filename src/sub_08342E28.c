@@ -3,7 +3,7 @@
 #include "variables.h"
 #include "car.h"
 
-u32 sub_08341644(s32 x, s32 y, s32 *out);
+u32 ModuleWorldToScreen(s32 x, s32 y, s32 *out);
 
 struct Tbl {
     u8 pad[0xC4];
@@ -36,7 +36,7 @@ void sub_08342E28(u32 a)
     ry = dy;
     dx = -(ry * s1) >> 8;
     dy = (s2 * ry) >> 8;
-    if ((u8)sub_08341644(v0 + dx, v1 + dy, out) != 0)
+    if ((u8)ModuleWorldToScreen(v0 + dx, v1 + dy, out) != 0)
     {
         out[0] -= 4;
         out[1] -= 6;

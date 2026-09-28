@@ -65,7 +65,7 @@ u32 sub_08340168(u32 ptr)
 
 extern u8 gUnk_02026DF4[];
 
-void sub_083415B0(u8 idx);
+void ModuleUpdateRacePosition(u8 idx);
 u32 sub_08340168(u32 ptr);
 
 void sub_0834018C(struct Car *a1, u32 a2)
@@ -74,7 +74,7 @@ void sub_0834018C(struct Car *a1, u32 a2)
     u8 flag;
     s32 t;
 
-    sub_083415B0((u8)a2);
+    ModuleUpdateRacePosition((u8)a2);
     t = sub_08340168((u32)a1);
     a1->points = a1->points + gUnk_02026DF4[(u8)t];
     if (a1->lapsLed != 0)

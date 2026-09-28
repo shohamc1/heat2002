@@ -6,7 +6,7 @@
 void sub_08342258(u8 *a, u16 b, u8 c);
 void sub_08342074(u8 *a);
 void sub_08342FAC(u8 *a);
-void sub_083415B0(u8 idx);
+void ModuleUpdateRacePosition(u8 idx);
 
 void sub_083425C4(u8 *a, u8 b)
 {
@@ -25,7 +25,7 @@ void sub_083425C4(u8 *a, u8 b)
         sub_08342FAC(a);
     if (gModule_IsLinkRace != 0) {
         if (b == gModule_LinkPlayerId) {
-            sub_083415B0(b);
+            ModuleUpdateRacePosition(b);
             q = (u8 *)gModule_Cars;
             off = b * 400;
             p = off + q;
@@ -33,7 +33,7 @@ void sub_083425C4(u8 *a, u8 b)
                 p[0x166] = 0;
         }
     } else if (b == 0) {
-        sub_083415B0(0);
+        ModuleUpdateRacePosition(0);
         p = (u8 *)gModule_Cars;
         off = 0x150;
         if (p[off] != 0 && p[off] != 0x63)

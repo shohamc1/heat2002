@@ -39,7 +39,7 @@ void sub_08343E70(struct Car *a, s32 b, struct Car *c, s32 d, struct Coll *e,
                   u8 *f, s32 g, s32 h);
 void sub_08343138(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g);
 void sub_08344680(s32 a, u8 b);
-void sub_08341D64(struct Car *a);
+void ModuleComputeForwardSpeed(struct Car *a);
 void ModuleM4aSongNumStart(u16 idx);
 
 u8 sub_08343EA8(struct Car *car)
@@ -221,7 +221,7 @@ u8 sub_08343EA8(struct Car *car)
             }
             gUnk_0203D4FC++;
         }
-        sub_08341D64(a);
+        ModuleComputeForwardSpeed(a);
         a->impactSpeed = a->speed;
         if (a->speed > 0)
             a->impactSpeed = 0;
@@ -240,7 +240,7 @@ u8 sub_08343EA8(struct Car *car)
             }
             gUnk_0203D4FC++;
         }
-        sub_08341D64(b);
+        ModuleComputeForwardSpeed(b);
         b->impactSpeed = b->speed;
         if (b->speed > 0)
             b->impactSpeed = 0;

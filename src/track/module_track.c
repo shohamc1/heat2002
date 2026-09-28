@@ -17,7 +17,7 @@ void ModuleLoadTrackTiles(u8 idx);
 void ModuleBeginFadeToBrightenedPalette(s32 arg0, u16 *src);
 void ModuleFlushTrackBgBuffers(void);
 void ModuleSetCameraPos(u32 x, u32 y);
-void sub_0834108C(u32 idx);
+void ModuleInitRaceCars(u32 idx);
 void ModuleResetRaceTimer(void);
 void sub_08344B60(u32 a, u32 b, u32 c);
 
@@ -87,7 +87,7 @@ void ModuleLoadTrack(u32 idx)
     ModuleDrawTrackMapWindow(0, 0, (u8 *)gUnk_02039268, (u32 *)TILEMAP_BUFFER(2), (u32 *)gUnk_0203922C, gUnk_02039248);
     ModuleFlushTrackBgBuffers();
     ModuleSetCameraPos(0, 0);
-    sub_0834108C(idx);
+    ModuleInitRaceCars(idx);
     ModuleResetLapTimer();
     ModuleResetRaceTimer();
     gModule_NumFinishedCars = 0;

@@ -5,7 +5,7 @@
 
 
 void ModuleDrawTime(u32 a, u16 b, u16 c, u16 d);
-void sub_08341A30(u8 a, u32 b, u8 c);
+void ModuleDrawLinkMarker(u8 a, u32 b, u8 c);
 
 void ModuleDrawLinkFinishTimes(void)
 {
@@ -41,7 +41,7 @@ void ModuleDrawLinkFinishTimes(void)
         ModuleDrawSmallDigit((u16 *)dest, place);
         ModuleDrawTime(dest, finishedCar->finishMin, finishedCar->finishSec, finishedCar->finishMs);
         if (gModule_IsLinkRace != 0)
-            sub_08341A30(0x40, row * 16, gModule_FinishedCarOrder[i]);
+            ModuleDrawLinkMarker(0x40, row * 16, gModule_FinishedCarOrder[i]);
         row++;
         place++;
     }

@@ -55,10 +55,10 @@ void ModuleUpdatePaletteFade(void);
 void ModuleSmoothCamera(void);
 void ModuleUpdateCameraScroll(void);
 void ModuleRunTasks(void);
-void sub_083419D8(void);
+void ModuleDrawAllCars(void);
 void ModuleDrawLinkFinishTimes(void);
 void ModuleUpdateTrackScroll(u32, u32);
-void sub_08340EFC(void);
+void ModuleUpdateChallenge(void);
 void ModuleM4aMPlayFadeOut(u32, u16);
 u32 ModulePauseMenu(void);
 u32 ModuleSinglePakPauseMenu(void);
@@ -224,14 +224,14 @@ after_d5f4: ;
         ModuleSmoothCamera();
         ModuleUpdateCameraScroll();
         ModuleRunTasks();
-        sub_083419D8();
+        ModuleDrawAllCars();
         ModuleDrawLinkFinishTimes();
         if (gModule_RaceStarted != 0 || gModule_GameMode[0] == 9 || gModule_GameMode[0] == 0xD
             || gModule_GameMode[0] == 0xE || gModule_GameMode[0] == 0xF || gModule_GameMode[0] == 0x11)
             sub_083426C8();
         ModuleUpdateTrackScroll(gModule_Camera[0], gModule_Camera[1]);
         ModuleUpdateSprites();
-        sub_08340EFC();
+        ModuleUpdateChallenge();
         gUnk_020391D4 = 1;
         if (gModule_IsDemo[0] != 0) {
             if (gUnk_0203761C != 0) {

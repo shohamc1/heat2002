@@ -345,9 +345,9 @@ What the source shapes turned out to be:
 | 136 | `sub_08003D6C` | 32 |  |
 | 137 | `sub_0833D070` | 32 | port of `sub_08003D6C` |
 | 138 | `IsProgressPointCrossed` | 36 |  |
-| 139 | `sub_08340CB0` | 36 | port of `IsProgressPointCrossed` |
+| 139 | `ModuleIsProgressPointCrossed [sub_08340CB0]` | 36 | port of `IsProgressPointCrossed` |
 | 140 | `IsChallengeTimeWithin` | 36 |  |
-| 141 | `sub_08340CDC` | 36 | port of `IsChallengeTimeWithin` |
+| 141 | `ModuleIsChallengeTimeWithin [sub_08340CDC]` | 36 | port of `IsChallengeTimeWithin` |
 | 142 | `sub_0800BA0C` | 36 |  |
 | 143 | `sub_08343110` | 36 | port of `sub_0800BA0C` |
 | 144 | `sub_080032AC` | 40 |  |
@@ -479,7 +479,7 @@ had taken the main-program twin's address from a comment.
 The code pass on 2026-09-25 named the rest, and one function the table
 missed:
 
-- `sub_08340E28` and `sub_0834116C` pass three strings as numbers.
+- `ModuleClearChallengeSpeed [sub_08340E28]` and `sub_0834116C` pass three strings as numbers.
   `data_08345B40` splits at `0x08345B44`, `0x08345B4C` and `0x08345B58`,
   and the strings are `gUnk_0200D0C4`, `gUnk_0200D0CC` and
   `gUnk_0200D0D8`. Two unused `symbols.ld` numbers for them went.
