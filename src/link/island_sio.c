@@ -1,7 +1,8 @@
 #include "global.h"
-#include "gba/io_reg.h"
 #include "variables.h"
 
+void sub_083647FC(u32 src, u32 dest, u32 control);
+#include "gba/io_reg.h"
 struct CommRegs
 {
     u8 mode;    /* +0 */
@@ -16,7 +17,43 @@ struct CommRegs
 };
 
 
-u32 sub_08364550(u32 *a1)
+void IslandSioTransferInit(u32 send, u32 chunk)
+{
+    register u32 one asm("r8");
+    register u32 *g asm("r4");
+    u32 sum;
+    u32 fill;
+    u32 *p;
+    u32 count;
+
+    sum = 0;
+    *(volatile u16 *)0x04000208 = 0;
+    *(volatile u16 *)0x04000200 &= 0xFF3F;
+    one = 1;
+    *(volatile u16 *)0x04000208 = 1;
+    fill = 0;
+    g = (u32 *)&gIsland_SioTransfer;
+    sub_083647FC((u32)&fill, (u32)g, 0x05000006);
+    *(volatile u32 *)0x04000128 = 0x2003;
+    g[1] = chunk;
+    g[2] = -1;
+    if (send != 0) {
+        *(volatile u32 *)0x0400010C = 0;
+        *(u8 *)g = one;
+        p = (u32 *)chunk;
+        count = 0x2000;
+        do {
+            sum += *p++;
+            count--;
+        } while (count != 0);
+        g[3] = ~sum;
+        *(volatile u16 *)0x04000128 = 0x1000;
+        *(volatile u16 *)0x04000128 = 0x1001;
+    }
+}
+
+
+u32 IslandSioTransferUpdate(u32 *chunkSize)
 {
     switch (gIsland_SioTransfer.state)
     {
@@ -67,8 +104,8 @@ u32 sub_08364550(u32 *a1)
                 chunk = 0x2000;
             else if (count < 0)
                 chunk = 0;
-            if (a1 != 0)
-                *a1 = chunk;
+            if (chunkSize != 0)
+                *chunkSize = chunk;
             if (gIsland_SioTransfer.mode != 1)
             {
                 if (gIsland_SioTransfer.index < chunk)
@@ -131,3 +168,4 @@ u32 sub_08364550(u32 *a1)
     gIsland_SioTransfer.retry = gIsland_SioTransfer.retry + 1;
     return 0;
 }
+

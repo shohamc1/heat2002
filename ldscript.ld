@@ -664,11 +664,9 @@ SECTIONS
         build/lib/crt0_island.o(.text);
         build/src/link/island_intr.o(.text*);
         build/src/link/IslandDrawMultibootProgressMarker.o(.text*);
-        build/src/sub_083641D8.o(.text*);
-        build/src/sub_083642FC.o(.text*);
-        build/src/sub_083644B4.o(.text*);
-        build/src/sub_08364550.o(.text*);
-        build/src/sub_08364730.o(.text*);
+        build/src/link/island_multiboot.o(.text*);
+        build/src/link/island_sio.o(.text*);
+        build/src/link/IslandSioTransferIntr.o(.text*);
         /* the multiboot island's libagbsyscall copy */
         build/lib/agbsyscall/sub_083647F8.o(.text);
         build/lib/agbsyscall/sub_083647FC.o(.text);

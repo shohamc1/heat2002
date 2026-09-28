@@ -93,7 +93,7 @@ sub_08363FF4:
 	ldr r1, =INTR_VECTOR
 	adr r0, sub_083640B0
 	str r0, [r1]
-	ldr r1, =sub_083642FC + 1
+	ldr r1, =IslandAgbMain + 1
 	mov lr, pc
 	bx r1
 	b .Linit

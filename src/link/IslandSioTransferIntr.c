@@ -5,7 +5,7 @@
 /* Serial IRQ handler for the comm state at 0x03000C00.
  *
  * STATUS: near-miss, 3 real byte diffs remain (one register choice), and
- * only when compiled at -O1 (see drafts/sub_08364730.notes.md):
+ * only when compiled at -O1 (see drafts/IslandSioTransferIntr.notes.md):
  * the ROM's shape (Lneg block after the mode-1 arm reached by a real
  * `b`, plus the surviving `ldr r5, =0x03000C00; adds r4, r5, #0` pointer
  * copy) is only producible when GCC's Cygnus merge_blocks pass does not
@@ -29,7 +29,7 @@ struct CommRegs
 };
 
 
-void sub_08364730(void)
+void IslandSioTransferIntr(void)
 {
     vu32 *sio = (vu32 *)0x04000120;
     u32 v = *sio;

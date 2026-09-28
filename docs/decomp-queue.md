@@ -314,7 +314,7 @@ What the source shapes turned out to be:
 - Jump-table rows were mostly mid-function literal pools, not
   switches (`sub_0800F85C`'s "table" was a pool after a `.byte` pad);
   the real sizes exceed the queue's counts by the pool bytes.
-- `sub_0800E640`/`sub_08364730`: the one -O1 pair — the ROM's block
+- `sub_0800E640`/`IslandSioTransferIntr [sub_08364730]`: the one -O1 pair — the ROM's block
   order is unproducible at -O2 (merge_blocks), and the surviving
   3-byte pointer-copy diff needed double register pins. Full story in
   solved-walls entry 21 and the resolved parked.md entry.
@@ -393,7 +393,7 @@ What the source shapes turned out to be:
 | 184 | `sub_0800592C` | 110 |  |
 | 185 | `sub_0833E428` | 110 | port of `sub_0800592C` |
 | 186 | `sub_0800E640` | 168 | jump table or inline data |
-| 187 | `sub_08364730` | 168 | port of `sub_0800E640`; jump table or inline data |
+| 187 | `IslandSioTransferIntr` | 168 | port of `sub_0800E640`; jump table or inline data |
 | 188 | `sub_08005FA8` | 186 | jump table or inline data |
 | 189 | `sub_0833EAA4` | 186 | port of `sub_08005FA8`; jump table or inline data |
 | 190 | `sub_0800306C` | 258 | jump table or inline data |
@@ -432,7 +432,7 @@ What the source shapes turned out to be:
 | 216 | `sub_08341F64` | 160 |  |
 | 217 | `sub_08003C78` | 192 |  |
 | 218 | `sub_0800A4D4` | 222 |  |
-| 219 | `sub_083642FC` | 372 | jump table or inline data |
+| 219 | `IslandAgbMain [sub_083642FC]` | 372 | jump table or inline data |
 | 220 | `sub_08008160` | 382 | jump table or inline data |
 | 221 | `sub_080132F8` | 434 | jump table or inline data |
 

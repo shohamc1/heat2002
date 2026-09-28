@@ -213,7 +213,7 @@ A `return` inside the loop also avoids the rotation.
 appears unrolled in one copy and rolled in its twin — the unrolled copy
 needs `goto done`, the rolled copy needs `break`. When a loop's layout
 argues for the "wrong" keyword, check for a same-shape twin in the other
-engine copy before assuming a different source. Seen in `sub_083642FC`
+engine copy before assuming a different source. Seen in `IslandAgbMain [sub_083642FC]`
 (`4cf7e72`, rolled, `break`) vs `sub_0800E008` (`b3dc387`, unrolled,
 `goto done`).
 
@@ -745,7 +745,7 @@ Watch also for a pinned variable's read-modify-write re-loading
 clumsily (`adds r0, r1, #0; adds r0, #1`) — route it through a plain
 local, one per distinct temp register the ROM uses.
 
-**Seen in:** `sub_0800E640` (`cc44719`), `sub_08364730` (`b7bc932`).
+**Seen in:** `sub_0800E640` (`cc44719`), `IslandSioTransferIntr [sub_08364730]` (`b7bc932`).
 
 ### 22. A store reads the copy instead of the call result
 

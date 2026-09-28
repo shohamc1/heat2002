@@ -96,7 +96,7 @@ CRT0_HIGH_SYMS := Init=sub_08339780 IntrMain=sub_083397C4 \
 LIB_C_OBJS := $(BUILD)/lib/multiboot.o $(BUILD)/lib/eeprom.o
 $(BUILD)/lib/eeprom.o: CFLAGS := $(subst -O2,-O1,$(CFLAGS))
 $(BUILD)/src/link/SioTransferIntr.o: CFLAGS := $(subst -O2,-O1,$(CFLAGS))
-$(BUILD)/src/sub_08364730.o: CFLAGS := $(subst -O2,-O1,$(CFLAGS))
+$(BUILD)/src/link/IslandSioTransferIntr.o: CFLAGS := $(subst -O2,-O1,$(CFLAGS))
 
 OBJS     := $(C_SRCS:%.c=$(BUILD)/%.o) $(DATA_SRCS:%.s=$(BUILD)/%.o) \
 	$(NEWLIB_OBJS) $(AGBSYSCALL_OBJS) $(AGBSYSCALL_COPY_OBJS) $(M4A_OBJS) $(LIB_C_OBJS) $(LIBGCC_OBJS) $(CRT0_OBJS)

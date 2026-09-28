@@ -48,8 +48,8 @@ gUnk_0836484C:
 	.4byte IslandDummyIntr
 	.4byte IslandDummyIntr
 	.4byte IslandDummyIntr
-	.4byte sub_08364730
-	.4byte sub_08364730
+	.4byte IslandSioTransferIntr
+	.4byte IslandSioTransferIntr
 	.4byte IslandDummyIntr
 	.4byte IslandDummyIntr
 	.4byte IslandDummyIntr
