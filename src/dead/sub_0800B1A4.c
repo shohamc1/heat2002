@@ -39,7 +39,7 @@ void sub_0800B1A4(struct EntityB1A4 *e)
     idx = (u8) (((u8) (e->unk18 - 0x3C)) % 0x17);
     if (e->unk18 > 0x3C)
     {
-      spr = sub_0800754C(gSplashSpriteFrames[idx]);
+      spr = RequestObjTiles16(gSplashSpriteFrames[idx]);
       if (spr != 0)
       {
         attr = x << 0x10;

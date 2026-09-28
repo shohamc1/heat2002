@@ -166,11 +166,11 @@ l_big:
             }
             gPitStallOccupied[a1->pitStall] = v;
             if (a1 == gCars)
-                sub_0800649C(gText_BlankRow16_3, 9, 10);
+                DrawTextAt(gText_BlankRow16_3, 9, 10);
         } else {
             UpdateAiDriver((struct Unk0800C534 *)a1, a2);
             if (a1 == gCars && gDamagePitsEnabled != 0)
-                sub_0800649C(gText_GetReady, 10, 10);
+                DrawTextAt(gText_GetReady, 10, 10);
         }
         break;
     }

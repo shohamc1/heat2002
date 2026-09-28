@@ -71,7 +71,7 @@ const struct TrackSeg *const gTrackSegTables[] = {
     gUnk_08366A58, gUnk_08366DE8, gUnk_08366F38
 };
 // The sprite caches' OBJ VRAM tile numbers. Each array holds u16 tile
-// indices that sub_08007304 reads one by one (turning each into an
+// indices that InitObjTileCache reads one by one (turning each into an
 // OBJ_VRAM0 offset with t << 5); the words below just pair them.
 const u16 gObjTileCache64Tiles[4] = {
     0x0, 0x40, 0x80, 0xC0

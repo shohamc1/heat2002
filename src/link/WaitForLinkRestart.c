@@ -6,13 +6,13 @@
 
 void m4aSoundVSyncOff(void);
 
-void sub_080053B8(void)
+void WaitForLinkRestart(void)
 {
     AgeGfxCaches();
     ClearOamBuffer();
     while (1)
     {
-        u16 r;
+        u16 keys;
         *(u16 *)0x02002124 = 0;
         if (ExchangeLinkInput() != 0)
         {
@@ -24,18 +24,18 @@ void sub_080053B8(void)
             m4aSoundVSyncOff();
             while (1)
             {
-                u32 r0 = *(u8 *)(EWRAM_START + 0x2EF90);
-                if (r0 == 0)
-                    r0 = REG_KEYINPUT;
-                ((void (*)(u32))VBlankIntrWait)(r0);
+                u32 playerId = *(u8 *)(EWRAM_START + 0x2EF90);
+                if (playerId == 0)
+                    playerId = REG_KEYINPUT;
+                ((void (*)(u32))VBlankIntrWait)(playerId);
             }
         }
         if (*(u8 *)(EWRAM_START + 0x2EF90) != 0)
             ((void (*)(u32, u32, u32))DrawTextCentered)(GetString(0x58), 0x0E, 1);
         else
             ((void (*)(u32, u32, u32))DrawTextCentered)(GetString(0x0F), 0x0E, 1);
-        r = ReadLinkMenuKeys();
-        if (r & 8)
+        keys = ReadLinkMenuKeys();
+        if (keys & 8)
         {
             FadeToColor(0, 0x32);
             return;

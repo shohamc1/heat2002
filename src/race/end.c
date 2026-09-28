@@ -20,13 +20,13 @@ void RaceEndTask(struct EntityAF44 *e)
             if (gGameMode[0] == 0x0A || gGameMode[0] == 0x0B)
             {
                 if (gChallengeScore != 0)
-                    /* sub_0800649C: the ROM callers pass a fourth argument the matched definition drops; call
+                    /* DrawTextAt: the ROM callers pass a fourth argument the matched definition drops; call
                        through a function pointer with the old prototype. */
-                    ((void (*)(u8 *, u32, u32, u32))sub_0800649C)((u8 *)GetString(0x8E), 0x0A, 3, 1);
+                    ((void (*)(u8 *, u32, u32, u32))DrawTextAt)((u8 *)GetString(0x8E), 0x0A, 3, 1);
             }
             else
             {
-                ((void (*)(u8 *, u32, u32, u32))sub_0800649C)((u8 *)GetString(0x97), 0x0A, 3, 1);
+                ((void (*)(u8 *, u32, u32, u32))DrawTextAt)((u8 *)GetString(0x97), 0x0A, 3, 1);
             }
         }
         e->unk18 = e->unk18 - 1;

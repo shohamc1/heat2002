@@ -13,7 +13,7 @@ void sub_0801380C(u8 a)
 {
     u32 v;
 
-    sub_08006734((u32)gText_Overwrite);
+    DummyUiFontLoad((u32)gText_Overwrite);
     DrawTextCenteredHighlight(gText_YouWillLoseThe, 7, 1);
     DrawTextCenteredHighlight(gText_PreviouslySavedCareer, 8, 1);
     DrawTextCenteredHighlight(gText_AreYouSure, 0xA, 1);

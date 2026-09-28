@@ -13,7 +13,7 @@ void sub_08008B94(void)
 
     base = *(u32 *)&gTextLayerMapPtr;
     p = base + 0x250;
-    sub_0800649C(gText_Timer, 8, 8);
+    DrawTextAt(gText_Timer, 8, 8);
     /* DrawBigDigit: this file's old prototype took (u32 *, u32); the matched definition takes (u16 *, u8); call through a function pointer with the old signature. */
     ((void (*)(u32 *, u32))DrawBigDigit)(p, 0);
     p = base + 0x254;

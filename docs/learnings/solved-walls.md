@@ -1098,7 +1098,7 @@ reloads**: a loop that read an extern POINTER variable (`gP[i] = 0`)
 reloads `gP`'s word every iteration; under an array canonical the
 equivalent load gets hoisted out of the loop. Write the read as
 `(*(volatile u32 *)&gP[0])` — one volatile word read inside the loop —
-and the reload returns (`sub_0800DFCC`, `sub_0800524C`, `sub_0833DC7C`,
+and the reload returns (`sub_0800DFCC`, `ClearPausedPlayerText [sub_0800524C]`, `sub_0833DC7C`,
 `TitleScreen`). (3) A struct-*array* extern in a header above the
 files' local struct definitions changes their codegen (the
 extern-headers-plan trap); complete the tag in a shared header first —

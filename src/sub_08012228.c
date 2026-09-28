@@ -27,7 +27,7 @@ void sub_08012228(void)
     u8 flag;
     s8 v;
 
-    sub_08006734(gUiFontTable[0]);
+    DummyUiFontLoad(gUiFontTable[0]);
     GetString(0xC4);
     ((void (*)(void))DrawBigText)();
     for (i = 0; i != 4; i++) {

@@ -14,6 +14,99 @@ struct Car {
 };
 extern u8 gTireWearBlinkCounter;
 
+extern u8 gUnk_08338720[];
+extern u8 gUnk_02025250;
+extern u8 gText_PitStopNeeded[];
+extern u8 gText_BlankRow20[];
+u8 CarNeedsPit(void);
+#include "m4a.h"
+extern u8 gUnk_02025228;
+extern u8 gUnk_083387A8[];
+
+
+void DrawSpeedNeedle(u32 speed)
+{
+    u16 pos[2];
+    u32 *entry;
+    u32 attr;
+    u32 tileAttr;
+
+    pos[0] = 0xC8;
+    pos[1] = 0x78;
+    entry = RequestObjTiles16((u32)gUnk_08338720);
+    if (entry != 0) {
+        attr = (pos[1] & 0xFF) | ((pos[0] & 0x1FF) << 16) | 0x80000000;
+        tileAttr = *(u32 *)((u32)entry + 0x10) | ((u8)RequestObjPalette((u32)gHudWarningIconPalette) << 12);
+        attr |= 0x100;
+        AddOamEntry(attr, tileAttr);
+    }
+    gUnk_0202522C = (speed + 0xA0) & 0xFF;
+}
+
+
+void DrawPitStopWarning(void)
+{
+    u32 text;
+
+    if (CarNeedsPit() != 0 && (gUnk_02025250 & 8) != 0)
+    {
+        text = (u32)gText_PitStopNeeded;
+        /* DrawTextCentered: this file's old local prototype differs from
+           functions.h; call through the old signature (solved-walls 31). */
+        ((void (*)(u32, u32, u32))DrawTextCentered)(text, 6, 1);
+    }
+    else
+    {
+        text = (u32)gText_BlankRow20;
+        ((void (*)(u32, u32, u32))DrawTextCentered)(text, 6, 1);
+    }
+    gUnk_02025250 = gUnk_02025250 + 1;
+}
+
+
+void DummyHudHook(void)
+{
+}
+
+
+void DrawLowFuelWarning(s32 fuel)
+{
+    u16 pos[2];
+    u32 entry;
+    u32 attr;
+    u32 tileAttr;
+    u16 *dest;
+    u32 glyphOff;
+
+    if (gDamagePitsEnabled == 0)
+        return;
+    gUnk_02025228++;
+    pos[0] = 0xAA;
+    pos[1] = 0x89;
+    entry = sub_08007630((u32)gUnk_083387A8);
+    if (entry != 0) {
+        attr = pos[1] & 0xFF;
+        attr |= (pos[0] & 0x1FF) << 16;
+        attr |= 0x40000000;
+        tileAttr = *(u32 *)(entry + 0x10) | (((u32)RequestObjPalette((u32)gHudWarningIconPalette) << 24) >> 12);
+        AddOamEntry(attr | 0x02000100, tileAttr);
+    }
+    gUnk_02025398 = ((fuel >> 16) + 0xBE) & 0xFF;
+    dest = (u16 *)(gTextLayerMapPtr[0] + 0x4EE);
+    if (fuel <= 0x31FF && (gFrameCounter & 0x10) != 0) {
+        glyphOff = 0x5B2;
+        *dest = 0xE000 | gFontTileEntries[*(u16 *)((u8 *)gFontGlyphGrid + glyphOff)];
+        if (gOptions[3] != 0) {
+            if (gIsDemo == 0)
+                m4aSongNumStart(0x1B);
+        }
+    } else {
+        glyphOff = 0x5B4;
+        *dest = 0xE000 | gFontTileEntries[*(u16 *)((u8 *)gFontGlyphGrid + glyphOff)];
+    }
+}
+
+
 void DrawRacePosition(s32 arg)
 {
     u16 *q;
@@ -41,7 +134,7 @@ void DrawRacePosition(s32 arg)
         *q = 0xE047;
         return;
     }
-    sub_0800649C(gText_HudPosLabel, 0x16, 0);
+    DrawTextAt(gText_HudPosLabel, 0x16, 0);
     if (arg <= 9) {
         register u16 *w asm("r0");
         p = (u16 *)gTextLayerMapPtr[0];
@@ -61,6 +154,7 @@ void DrawRacePosition(s32 arg)
     }
 }
 
+
 void DrawLapCounter(s32 a, s32 b)
 {
     u8 *q;
@@ -69,13 +163,13 @@ void DrawLapCounter(s32 a, s32 b)
 
     if (a == 999) {
         q = gText_BlankRow16_2;
-        sub_0800649C(q, 0, 1);
-        sub_0800649C(q, 0, 0);
+        DrawTextAt(q, 0, 1);
+        DrawTextAt(q, 0, 0);
         return;
     }
     if (a > b)
         a = b;
-    sub_0800649C(gText_Lap, 0, 1);
+    DrawTextAt(gText_Lap, 0, 1);
     base = (u8 *)gTextLayerMapPtr[0];
     p = base + 8;
     if (a > 99) {
@@ -111,6 +205,7 @@ void DrawLapCounter(s32 a, s32 b)
         DrawSmallDigit((u16 *)p, sub_080172C8(b, 10));
     }
 }
+
 
 void DrawTireWear(struct Car *p)
 {
@@ -150,3 +245,4 @@ void DrawTireWear(struct Car *p)
     }
     gTireWearBlinkCounter++;
 }
+

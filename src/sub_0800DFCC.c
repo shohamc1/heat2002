@@ -15,7 +15,7 @@ void sub_0800DFCC(void)
         *(u16 *)(*(volatile u32 *)&gTextLayerMapPtr[0] + 2 * i) = 0;  /* per-iteration reload, as the ROM loop */
         i++;
     } while (i != 0x380);
-    sub_08006734(p[0]);
+    DummyUiFontLoad(p[0]);
     GetString(0x52);
     ((void (*)(void))DrawBigText)();
 }

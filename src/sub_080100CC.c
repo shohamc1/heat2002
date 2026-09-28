@@ -10,7 +10,7 @@ void sub_080100CC(u32 a0, u32 a1, u32 a2, u32 a3, u8 a4)
     u32 x;
     u32 oam;
 
-    v = sub_080074F8(a2, 1);
+    v = RequestObjTiles64(a2, 1);
     if (v == 0)
         return;
     idx = RequestObjPalette(a3);

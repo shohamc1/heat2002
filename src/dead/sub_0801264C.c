@@ -6,7 +6,7 @@
 
 void sub_0801264C(u32 x)
 {
-    sub_08006734(gUiFontTable[0]);
+    DummyUiFontLoad(gUiFontTable[0]);
     GetString(0x14);
     ((void (*)(void))DrawBigText)();
     DrawTextCenteredHighlight(GetString(0x15), 8, x == 0);
@@ -44,7 +44,7 @@ u8 sub_080126BC(void)
 
 void sub_08012758(void)
 {
-    sub_08006734(gUiFontTable[0]);
+    DummyUiFontLoad(gUiFontTable[0]);
     GetString(0x8F);
     ((void (*)(void))DrawBigText)();
     DrawTextCenteredHighlight(GetString(0x90), 8, 1);

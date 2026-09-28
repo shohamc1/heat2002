@@ -21,7 +21,7 @@ void sub_0800B0A0(struct EntityB0A0 *e)
     counter = e->unk18;
     idx = (u8)e->unk18 % 0x17;
     e->unk18 = counter + 1;
-    spr = sub_0800754C(gSplashSpriteFrames[idx]);
+    spr = RequestObjTiles16(gSplashSpriteFrames[idx]);
     if (spr != 0)
     {
         register u32 attr asm("r6") = 0x80680040;

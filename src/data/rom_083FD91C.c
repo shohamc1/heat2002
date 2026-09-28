@@ -357,7 +357,7 @@ const u32 gChampionshipTeamNames[17] = {
 // No decompiled code reads these bytes yet.
 const u8 gUnk_083FDE14[4] = { 4, 7, 8, 9 };
 // Its users declare it as u32 x, u32 x[].
-// The font row every screen loads through sub_08006734 (a stub in the
+// The font row every screen loads through DummyUiFontLoad (a stub in the
 // retail build; sub_08006738 is the working twin).
 const u8 *const gUiFontTable[] = {
     gText_UnderscoreRow32

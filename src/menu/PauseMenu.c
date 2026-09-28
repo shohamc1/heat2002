@@ -3,6 +3,42 @@
 #include "variables.h"
 
 
+u8 PauseConfirmMenu(void)
+{
+    u8 unused[0x200];
+    u16 startMask;
+    u32 aMask;
+    gPauseMenuCursor = 0;
+    ReadKeys();
+    while (1) {
+
+    if (gKeysPressed & 0xC0)
+        gPauseMenuCursor ^= 1;
+    startMask = gKeysPressed & 8;
+    if (startMask != 0) {
+        gMenuBlinkCounter = 0;
+        DrawPauseConfirmMenu(3);
+        return 0;
+    }
+    aMask = gKeysPressed & 1;
+    if (aMask != 0) {
+        gMenuBlinkCounter = startMask;
+        DrawPauseConfirmMenu(3);
+        return gPauseMenuCursor + 1;
+    }
+    if (gKeysPressed & 2) {
+        gMenuBlinkCounter = aMask;
+        DrawPauseConfirmMenu(3);
+        gPauseMenuCursor = aMask;
+        return 1;
+    }
+    DrawPauseConfirmMenu(gPauseMenuCursor);
+    WaitForVBlank();
+        gMenuBlinkCounter++;
+        ReadKeys();
+    }
+}
+
 
 u8 PauseMenu(void)
 {
@@ -41,7 +77,7 @@ u8 PauseMenu(void)
                 DrawPauseMenu(3);
                 p248b = &gPauseMenuCursor;
                 if (*p248b != 0)
-                    sub_08004EA4();
+                    PauseConfirmMenu();
                 ClearPauseMenuBox();
                 return (u8)(*p248b + 1);
             }
@@ -60,3 +96,4 @@ u8 PauseMenu(void)
     }
     return 0;
 }
+

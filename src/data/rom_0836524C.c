@@ -37,7 +37,7 @@ const s32 gTuneMenuSteps[10] = {
     400, 400, 400, 400
 };
 // One byte per track: extra seconds added to the pre-race countdown
-// (sub_080055B0 reads it as u8 at gTrackId).
+// (InitCountdown reads it as u8 at gTrackId).
 const u8 gTrackCountdownExtraSeconds[12] = {
     6, 8, 6, 0, 0, 8, 8, 0,
     0, 0, 15, 0

@@ -56,7 +56,7 @@ void DrawTrackCueIcon(u8 cueId, u16 angle)
         zero2 = 0;
         cmdPtr[0] = 0x68;
         *(u16 *)((u8 *)cmd + 2) = zero2;
-        tileEntry = sub_0800754C(gTrackCueIconGfxList[cueId & 7]);
+        tileEntry = RequestObjTiles16(gTrackCueIconGfxList[cueId & 7]);
         hFlip = (cueId & 8) >> 3;
         vFlip = (cueId & 0x10) >> 4;
         if (tileEntry == 0)
@@ -83,7 +83,7 @@ void DrawTrackCueIcon(u8 cueId, u16 angle)
     {
         cmd[0] = 0x68;
         cmd[1] = angle;
-        tileEntry = sub_0800754C(gTrackCueIconGfxList[cueId & 7]);
+        tileEntry = RequestObjTiles16(gTrackCueIconGfxList[cueId & 7]);
         hFlip = (cueId & 8) >> 3;
         vFlip = (cueId & 0x10) >> 4;
         if (tileEntry == 0)

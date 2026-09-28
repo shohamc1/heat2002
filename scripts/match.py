@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """Compare a decompiled function's compiled bytes against the retail ROM.
 
-    python3 scripts/match.py sub_08006734
+    python3 scripts/match.py LoadTrack
 
 The target is read from `baserom.gba` at the function's own address, taken
 from `nascar-heat.elf`'s symbol table, so a function keeps its address when
-it's renamed. A `sub_08006734`-style name that the ELF doesn't hold falls
+it's renamed. A `sub_XXXXXXXX`-style name that the ELF doesn't hold falls
 back to the address in the name. That matters: an earlier
 version extracted the target from `asm/rom.s`, so the moment a function was
 decompiled -- and deleted from the asm -- the tool could no longer verify it.
@@ -51,7 +51,7 @@ def addr_of(name):
     """The ROM address of function `name`.
 
     Read from nascar-heat.elf, so any name works once the function is in
-    the build. `sub_08006734` -> 0x08006734 is the fallback for a name the
+    the build. `sub_XXXXXXXX`-style -> 0x08XXXXXXX is the fallback for a name the
     ELF doesn't hold: a fresh clone before `make`, or a luvdis block that
     left the build with the data it sat in.
     """
@@ -291,7 +291,7 @@ def main():
 
 
 def _selftest():
-    assert addr_of("sub_08006734") == 0x08006734
+    assert addr_of("DummyUiFontLoad") == 0x08006734
     assert addr_of("not_a_function") is None
 
     # Byte comparison must catch a moved label, which text comparison cannot.
@@ -304,7 +304,7 @@ def _selftest():
 
     if ROM.exists():
         rom = ROM.read_bytes()
-        # The known contents of sub_08006734: a bare `bx lr`.
+        # The known contents of DummyUiFontLoad: a bare `bx lr`.
         assert rom[0x6734:0x6736] == b"\x70\x47", rom[0x6734:0x6736].hex()
 
     # Module code links at its EWRAM run address, read from the ELF's
@@ -323,8 +323,8 @@ def _selftest():
     if (ROOT / "build" / "src").is_dir():
         _symbol_index.cache_clear()
         first = _symbol_index.cache_info()
-        find_symbol("sub_08006734")
-        find_symbol("sub_08006734")
+        find_symbol("DummyUiFontLoad")
+        find_symbol("DummyUiFontLoad")
         info = _symbol_index.cache_info()
         assert first.currsize == 0 and info.hits >= 1 and info.misses == 1, info
     print("selftest ok")

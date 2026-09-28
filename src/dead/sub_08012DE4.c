@@ -14,7 +14,7 @@ void sub_08012DE8(void)
 
 void sub_08012DEC(u8 a)
 {
-    const u8 *v; sub_08006734(gUiFontTable[0]);
+    const u8 *v; DummyUiFontLoad(gUiFontTable[0]);
     GetString(8);
     ((void (*)(void))DrawBigText)();
     v = GetString(0x66);
@@ -55,7 +55,7 @@ u8 sub_08012E48(void)
 
 void sub_08012EE8(u32 unused, u8 v)
 {
-    const u8 *r; sub_08006734(gUiFontTable[0]);
+    const u8 *r; DummyUiFontLoad(gUiFontTable[0]);
     GetString(0x1E);
     ((void (*)(void))DrawBigText)();
     r = GetString(v + 0x1F);
@@ -89,7 +89,7 @@ u8 sub_08012F1C(void)
 
 void sub_08012FB0(void)
 {
-    sub_08006734(gUiFontTable[0]);
+    DummyUiFontLoad(gUiFontTable[0]);
     GetString(0x23);
     ((void (*)(void))DrawBigText)();
     DrawTextCenteredHighlight(GetString(0x11), 7, 1);
@@ -141,7 +141,7 @@ void sub_080130C4(void)
 
 void sub_080130C8(u8 a)
 {
-    const u8 *p; sub_08006734(gUiFontTable[0]);
+    const u8 *p; DummyUiFontLoad(gUiFontTable[0]);
     p = GetString(0x0B);
     DrawBigText(p);
     p = GetString(0x05);
@@ -204,7 +204,7 @@ void sub_080131F8(u8 arg)
 
     p = &buf[0x10];
     p[1] = 0;
-    sub_08006734(gUiFontTable[0]);
+    DummyUiFontLoad(gUiFontTable[0]);
     GetString(0x6B);
     ((void (*)(void))DrawBigText)();
     p[0] = (gCheatCodeDials[0] << 1) - 0x80;

@@ -6,7 +6,7 @@
 
 void sub_08011F78(u8 a)
 {
-    const u8 *v; sub_08006734(gUiFontTable[0]);
+    const u8 *v; DummyUiFontLoad(gUiFontTable[0]);
     GetString(0x5A);
     ((void (*)(void))DrawBigText)();
     v = GetString(0x51);

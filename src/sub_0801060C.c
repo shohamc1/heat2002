@@ -17,7 +17,7 @@ void sub_0801060C(u8 a)
     /* sub_0800E730: this file's old prototype returns u8; the matched
        definition returns void; call through a function pointer. */
     *d = ((u8 (*)(void))sub_0800E730)();
-    sub_08006734(gUiFontTable[0]);
+    DummyUiFontLoad(gUiFontTable[0]);
     GetString(0x59);
     ((void (*)(void))DrawBigText)();
     i = 0;

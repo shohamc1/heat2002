@@ -532,7 +532,7 @@ and the declarations callers use, most common first:
 | `sub_08001134` | C | `void (u32)` (2); `void (void)` (1) |
 | `m4aMPlayStop [sub_080019B4]` | C | `void (u32)` (2); `void (void *)` (1) |
 | `ReadLinkMenuKeys [sub_08004DB4]` | C | `void (void)` (1); `u32 (void)` (1) |
-| `sub_0800649C` | C | `void (u32, u32, u32)` (3); `void (u8 *, u32, u32)` (1); `void (u8 *, u32, u32, u32)` (1) |
+| `DrawTextAt [sub_0800649C]` | C | `void (u32, u32, u32)` (3); `void (u8 *, u32, u32)` (1); `void (u8 *, u32, u32, u32)` (1) |
 | `sub_0800F328` | C | `void (u32, void *)` (11); `void (void *, void *)` (2) |
 | `sub_08010680` | C | `void (u32)` (3); `void (u16 *)` (1) |
 | `sub_08011C9C` | C | `void (u32, void *)` (33); `void (u8, void *)` (3); `void (u8, u16 *)` (1) |

@@ -6,13 +6,13 @@
 
 void UpdateRaceTimers(void);
 void DrawTime(u16 *dest, s32 a, s32 b, s32 c);
-void sub_08005A2C(u32 a1);
+void DrawSpeedNeedle(u32 a1);
 void DrawRacePosition(s32 arg);
 void DrawLapCounter(s32 a, s32 b);
-void sub_08005AF0(s32 arg);
+void DrawLowFuelWarning(s32 arg);
 void DrawTireWear(struct Car *p);
-void sub_08005AA0(struct Car *p);
-void sub_08005AEC(struct Car *p);
+void DrawPitStopWarning(struct Car *p);
+void DummyHudHook(struct Car *p);
 void UpdateTrackCues(struct Car *p);
 
 void UpdateRaceHud(void)
@@ -40,17 +40,17 @@ void UpdateRaceHud(void)
     v = v * 3 / 2;
     if (v < 0)
         v = 0;
-    sub_08005A2C(v);
+    DrawSpeedNeedle(v);
     if (gGameMode[0] != 2 && gGameMode[0] != 0x0E) {
         DrawRacePosition(car->racePosition + 1);
         if (car->lapStartedFlag != 0 || (u8)(gGameMode[0] - 3) <= 1)
             DrawLapCounter((*(s8 *)&car->lap) + 1, gNumLaps);
         else
             DrawLapCounter(999, gNumLaps);
-        sub_08005AF0((*(u32 *)&car->fuel) << 8);
+        DrawLowFuelWarning((*(u32 *)&car->fuel) << 8);
         DrawTireWear(car);
-        sub_08005AA0(car);
-        sub_08005AEC(car);
+        DrawPitStopWarning(car);
+        DummyHudHook(car);
     }
     UpdateTrackCues(car);
 }

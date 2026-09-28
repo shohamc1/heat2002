@@ -5,11 +5,11 @@
 
 void UpdateRaceTimers(void);
 void DrawTime(u32 a, u16 b, u16 c, u16 d);
-void sub_08005A2C(u32 a);
-void sub_08005AF0(s32 a);
+void DrawSpeedNeedle(u32 a);
+void DrawLowFuelWarning(s32 a);
 void DrawTireWear(void *a);
-void sub_08005AA0(void *a);
-void sub_08005AEC(void *a);
+void DrawPitStopWarning(void *a);
+void DummyHudHook(void *a);
 void UpdateTrackCues(void *a);
 
 void sub_08005FA8(void)
@@ -34,11 +34,11 @@ void sub_08005FA8(void)
     v = v * 3 / 2;
     if (v < 0)
         v = 0;
-    sub_08005A2C(v);
-    sub_08005AF0(car->fuel << 8);
+    DrawSpeedNeedle(v);
+    DrawLowFuelWarning(car->fuel << 8);
     DrawTireWear(car);
-    sub_08005AA0(car);
-    sub_08005AEC(car);
+    DrawPitStopWarning(car);
+    DummyHudHook(car);
     UpdateTrackCues(car);
 }
 

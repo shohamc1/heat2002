@@ -56,28 +56,28 @@ void DrawTextCentered(const u8 *str, u32 y)
     }
 }
 
-void sub_0800649C(const u8 *str, u32 x, u32 y)
+void DrawTextAt(const u8 *str, u32 x, u32 y)
 {
     u16 *dest;
     u32 color;
-    u32 c;
-    u32 v;
-    u32 w;
+    u32 ch;
+    u32 entry;
+    u32 blank;
 
     dest = *(u16 **)&gTextLayerMapPtr;
     dest += y * 32 + x;
     color = 0xE0 << 8;
-    w = 0x47;
-    c = *str++;
-    while (c != 0) {
-        if (c != ' ') {
-            v = color;
-            v |= gFontTileEntries[gFontCharToGlyphTable[(u8)(c - '!')]];
-            *dest++ = v;
+    blank = 0x47;
+    ch = *str++;
+    while (ch != 0) {
+        if (ch != ' ') {
+            entry = color;
+            entry |= gFontTileEntries[gFontCharToGlyphTable[(u8)(ch - '!')]];
+            *dest++ = entry;
         } else {
-            w = 0x47;
-            *dest++ = w;
+            blank = 0x47;
+            *dest++ = blank;
         }
-        c = *str++;
+        ch = *str++;
     }
 }

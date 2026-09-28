@@ -19,7 +19,7 @@ void sub_08012C4C(u32 a)
 {
     u32 t;
 
-    sub_08006734(gUiFontTable[0]);
+    DummyUiFontLoad(gUiFontTable[0]);
     GetString(0x8F);
     ((void (*)(void))DrawBigText)();
     if (a <= 2) {

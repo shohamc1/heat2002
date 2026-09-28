@@ -10,7 +10,7 @@ void sub_08014944(u8 a)
     u8 b;
 
     b = a;
-    sub_08006734(gUiFontTable[0]);
+    DummyUiFontLoad(gUiFontTable[0]);
     GetString(0x0D);
     ((void (*)(void))DrawBigText)();
     v = GetString(0x05);

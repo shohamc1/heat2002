@@ -6,7 +6,7 @@
 
 void sub_08012984(u8 a)
 {
-    sub_08006734(gUiFontTable[0]);
+    DummyUiFontLoad(gUiFontTable[0]);
     GetString(0xA9);
     ((void (*)(void))DrawBigText)();
     DrawTextCenteredHighlight(GetString(0xC5), 6, 1);

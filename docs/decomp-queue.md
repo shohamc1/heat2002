@@ -203,7 +203,7 @@ What the source shapes turned out to be:
   second argument every iteration; right-to-left evaluation gives the
   asm's load order for free.
 - Sprite family G is `sub_080100CC` with a one-argument allocator
-  (`sub_0800754C(a2)`/`sub_08007630(a2)`), attr constant `0x80000000`/
+  (`RequestObjTiles16 [sub_0800754C](a2)`/`sub_08007630(a2)`), attr constant `0x80000000`/
   `0x40000000`, and no `| 0x800` in the oam build-up (`x = idx << 12`).
 
 | # | Function | Bytes | Notes |

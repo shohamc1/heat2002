@@ -64,7 +64,7 @@ u8 RunRace(u32 a, u8 b)
     LoadTrack(gTrackId);
     LoadTrackSegs(gTrackId);
     LoadTrackCues(gTrackId);
-    sub_080063B0();
+    ClearRaceTextLayer();
     SetTrackBgCnt();
     gUnk_02002148 = 0x100;
     SetFadeDeltasColors240To255(0x32);
@@ -82,7 +82,7 @@ u8 RunRace(u32 a, u8 b)
     gUnk_020020EC = 0;
     EnableRaceDisplay();
     if (gGameMode[0] == 0x0E)
-        sub_08006388();
+        InitTimeTrialHud();
     else
         InitRaceHud();
     if (gIsDemo != 0) {
@@ -174,7 +174,7 @@ camera_ready:
         RunTasks();
         DrawAllCars();
         if (gGameMode[0] == 4)
-            sub_0800545C();
+            DrawLinkFinishTimes();
         if (gRaceStarted != 0 || gGameMode[0] == 9 || gGameMode[0] == 0x0D
             || gGameMode[0] == 0x0E || gGameMode[0] == 0x0F
             || gGameMode[0] == 0x11)
@@ -211,9 +211,9 @@ camera_ready:
             } else {
                 if (gFadeActive == 0 && gRaceEndState == 0) {
                     if (gGameMode[0] == 4)
-                        res = sub_08005280();
+                        res = SinglePakPauseMenu();
                     else
-                        res = sub_080050F0();
+                        res = LinkPauseMenu();
                 } else {
                     res = 0;
                 }

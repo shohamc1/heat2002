@@ -64,7 +64,7 @@ wait2:
         FadeToColor(0, 0x32);
     } else {
         SortLinkCarsByTime();
-        sub_080053B8();
+        WaitForLinkRestart();
         goto loop;
     }
     }

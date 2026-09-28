@@ -16,7 +16,7 @@ void sub_08014708(u8 a, u8 b)
     u8 base;
     s8 sv;
 
-    sub_08006734(gUiFontTable[0]);
+    DummyUiFontLoad(gUiFontTable[0]);
     GetString(a + 0xAE);
     ((void (*)(void))DrawBigText)();
     base = (u8)(a * 4);

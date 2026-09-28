@@ -289,7 +289,7 @@ u8 UpdateLapProgress(struct Car *p, u8 a1)
                 m4aSongNumStart(0x33);
             if (a1 == v6C && gGameMode[0] != 0xA) {
                 s32 inner = v58 / 2 + 6;
-                sub_08005598((u8)(e->unk14 + inner));
+                SetCountdownSeconds((u8)(e->unk14 + inner));
             }
         }
         {

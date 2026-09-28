@@ -444,7 +444,7 @@ def _selftest():
     lost = set(BLOCKS) - blocks - LIBRARY_BLOCKS - LUVDIS_FALSE_POSITIVES
     assert not lost, f"blocks in neither asm/ nor src/: {sorted(map(hex, lost))}"
     total = len(set(BLOCKS))
-    assert 0x08006734 not in in_asm, "sub_08006734 should be decompiled, not in asm"
+    assert 0x08006734 not in in_asm, "DummyUiFontLoad should be decompiled, not in asm"
     # All 92 runtime-library functions once flagged in asm now build from
     # source. The 7 luvdis false positives, the 7 ARM blocks and the 144
     # library blocks (73 newlib, 14 libagbsyscall, 6 m4a_1, 8 EEPROM, 9

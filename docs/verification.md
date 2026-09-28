@@ -40,7 +40,7 @@ callers are decompiled and the real call sites become readable.
 
 ### Names are placeholders
 
-`sub_08006734` is an address, not a name. The recon report labels things like
+`DummyUiFontLoad [sub_08006734]` is an address, not a name. The recon report labels things like
 `__divsi3` and `memcpy` by **behavioral shape** — a shift/subtract division
 core, a word-copy fast path with a byte tail. That is inference, and the report
 says so. No symbol table survived in the ROM.

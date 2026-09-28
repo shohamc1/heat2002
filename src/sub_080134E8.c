@@ -8,7 +8,7 @@ extern u8 gText_Practice[];
 void sub_080134E8(u8 a)
 {
     u8 b = a;
-    const u8 *v; sub_08006734(gUiFontTable[0]);
+    const u8 *v; DummyUiFontLoad(gUiFontTable[0]);
     GetString(0x00);
     ((void (*)(void))DrawBigText)();
     v = (u32)gText_Practice;

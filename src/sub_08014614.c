@@ -7,7 +7,7 @@ void sub_08014614(u32 a)
 {
     u8 i;
 
-    sub_08006734(gUiFontTable[0]);
+    DummyUiFontLoad(gUiFontTable[0]);
     GetString(0xA4);
     ((void (*)(void))DrawBigText)();
     i = 0;

@@ -28,7 +28,7 @@ void sub_08015000(u8 a)
     u8 b;
 
     b = a;
-    sub_08006734(gUiFontTable[0]);
+    DummyUiFontLoad(gUiFontTable[0]);
     GetString(0x0A);
     ((void (*)(void))DrawBigText)();
     v = GetString(0x05);
@@ -76,7 +76,7 @@ void sub_080150F4(void)
     u16 *pm, *ps, *pf;
     u8 i;
 
-    sub_08006734(gUiFontTable[0]);
+    DummyUiFontLoad(gUiFontTable[0]);
     GetString(0x10);
     ((void (*)(void))DrawBigText)();
     walk = gCarOrder;

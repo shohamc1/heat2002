@@ -29,8 +29,8 @@ extern const u32 *const gDriverNumberFrameLists[];
 extern u8 gDriverNumberPalette[];
 
 u32 AddDepthSortedSprite(u32 a, u32 b, u32 c);
-struct Thing *sub_08007598(u32 a);
-struct Thing *sub_080075E4(u32 a);
+struct Thing *RequestObjTiles2(u32 a);
+struct Thing *RequestObjTiles8(u32 a);
 u32 WorldToScreen(s32 x, s32 y, s32 *out);
 
 void DrawCar(struct Car *car, u8 idx)
@@ -63,12 +63,12 @@ void DrawCar(struct Car *car, u8 idx)
     else
         t5 |= 0x400;
     if (flip == 0) {
-        t = sub_080075E4(gDriverCarSpriteHalfATables[car->driverId][k]);
+        t = RequestObjTiles8(gDriverCarSpriteHalfATables[car->driverId][k]);
         if (t != NULL) {
             AddDepthSortedSprite((pos[1] & 0xFF) | ((pos[0] & 0x1FF) << 16) | 0x80008000,
                          t->unk10 | t5, (u16)(y + 0x40));
         }
-        t = sub_0800754C(gDriverCarSpriteHalfBTables[car->driverId][k]);
+        t = RequestObjTiles16(gDriverCarSpriteHalfBTables[car->driverId][k]);
         if (t != NULL) {
             AddDepthSortedSprite((pos[1] & 0xFF) | (((pos[0] + 0x10) & 0x1FF) << 16) | 0x80000000,
                          t->unk10 | t5, (u16)(y + 0x40));
@@ -81,14 +81,14 @@ void DrawCar(struct Car *car, u8 idx)
 
         tbl = gDriverCarSpriteHalfBTables;
         p162 = &car->driverId;
-        t = sub_0800754C(tbl[*p162][k]);
+        t = RequestObjTiles16(tbl[*p162][k]);
         if (t != NULL) {
             a = (pos[1] & 0xFF) | ((pos[0] & 0x1FF) << 16) | 0x80000000;
             b = t->unk10 | t5;
             a |= 0x10000000;
             AddDepthSortedSprite(a, b, (u16)(y + 0x40));
         }
-        t = sub_080075E4(gDriverCarSpriteHalfATables[*p162][k]);
+        t = RequestObjTiles8(gDriverCarSpriteHalfATables[*p162][k]);
         if (t != NULL) {
             a = (pos[1] & 0xFF) | (((pos[0] + 0x20) & 0x1FF) << 16) | 0x80008000;
             b = t->unk10 | t5;
@@ -113,7 +113,7 @@ void DrawCar(struct Car *car, u8 idx)
         pos[1] -= 8;
         pos[0] += 0x10;
         k = (pos[1] & 0xFF) | ((pos[0] & 0x1FF) << 16) | 0x4000;
-        t = sub_08007598(*row);
+        t = RequestObjTiles2(*row);
         if (t == NULL)
             return;
         t5 = t->unk10 | 0x400;

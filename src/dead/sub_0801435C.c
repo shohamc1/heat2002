@@ -15,7 +15,7 @@ u8 sub_0801435C(void)
 
 void sub_08014374(void)
 {
-    sub_08006734(gUiFontTable[0]);
+    DummyUiFontLoad(gUiFontTable[0]);
     DrawBigText(GetString(0x12));
     DrawTextCenteredHighlight(GetString(0x11), 7, 1);
     DrawTextCenteredHighlight(GetString(0x11), 8, 1);

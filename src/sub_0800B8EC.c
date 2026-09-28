@@ -46,7 +46,7 @@ void sub_0800B8EC(struct Unk0800B8EC *e)
         out[1] = y + (e->f04 >> 1);
         if ((u32)(x0 + 0x17) <= 0x10E && out[1] <= 0x9F && out[1] > -0x10)
         {
-            oam = sub_0800754C(gDamageSmokeFrames[e->f18 & 0x1F]);
+            oam = RequestObjTiles16(gDamageSmokeFrames[e->f18 & 0x1F]);
             if (oam != 0)
             {
                 v = GetTrackTileType(e->f00 >> 19, e->f08 >> 19);

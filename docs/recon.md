@@ -11,7 +11,7 @@
 | Explicitly rendered instructions in those functions | **51,034** |
 | `bl`-leaf / non-leaf functions | **304 / 439** |
 | Header branch target | **`0x080000C0`** |
-| Strongest first decompilation candidate | **`sub_08006734`**: 1 instruction, leaf, 38 distinct callers |
+| Strongest first decompilation candidate | **`DummyUiFontLoad [sub_08006734]`**: 1 instruction, leaf, 38 distinct callers |
 
 `baserom.gba` and the current `nascar-heat.gba` are both 4,194,304 bytes, have the stated SHA-1, and compare byte-for-byte equal.
 
@@ -70,8 +70,8 @@ Ties are ordered by address. The caller column is included to distinguish merely
 
 | # | Function | Address | Instructions | Distinct marked callers |
 |---:|---|---:|---:|---:|
-| 1 | `sub_08005AEC` | `0x08005AEC` | 1 | 0 |
-| 2 | `sub_08006734` | `0x08006734` | 1 | **38** |
+| 1 | `DummyHudHook [sub_08005AEC]` | `0x08005AEC` | 1 | 0 |
+| 2 | `DummyUiFontLoad` | `0x08006734` | 1 | **38** |
 | 3 | `sub_0800B614` | `0x0800B614` | 1 | 1 |
 | 4 | `sub_0800BA34` | `0x0800BA34` | 1 | 1 |
 | 5 | `sub_0800E708` | `0x0800E708` | 1 | 1 |
@@ -193,7 +193,7 @@ Repeated calls from one function count once in “callers” and separately in �
 | 5 | `sub_08004238` | `0x08004238` | **41** | 42 | 3 | 17 |
 | 6 | `sub_0800048C` | `0x0800048C` | **40** | 46 | 0 | 16 |
 | 7 | `sub_08006950` | `0x08006950` | **39** | 120 | 0 | 61 |
-| 8 | `sub_08006734` | `0x08006734` | **38** | 38 | 0 | 1 |
+| 8 | `DummyUiFontLoad` | `0x08006734` | **38** | 38 | 0 | 1 |
 | 9 | `sub_08001208` | `0x08001208` | **36** | 77 | 1 | 17 |
 | 10 | `sub_08017230` | `0x08017230` | **26** | 78 | 1 | 72 |
 | 11 | `sub_08011C9C` | `0x08011C9C` | **24** | 25 | 4 | 59 |
@@ -301,9 +301,9 @@ Those byte-level facts establish that the two late islands are executable code; 
 
 ## 5. Decompilation recommendation
 
-### First choice: `sub_08006734`
+### First choice: `DummyUiFontLoad`
 
-Decompile **`sub_08006734` first**.
+Decompile **`DummyUiFontLoad` first**.
 
 - **1 instruction:** `bx lr`.
 - **Leaf:** no `bl`, no dependencies, no state access.
@@ -327,4 +327,4 @@ The ranking deliberately balances, rather than conflates, two goals:
 - **Easiest:** return-only and two-instruction SWI wrappers minimize code-generation uncertainty. The SWI wrappers may still require inline assembly or an established BIOS-call idiom in C.
 - **Highest leverage:** `sub_08016558` and `sub_0800048C` touch 51 and 40 distinct callers respectively, but have more register/type/literal-pool choices to match.
 
-This is why `sub_08006734` is the clear first function, while `sub_08016558` is the clear next target once the extraction pipeline is proven.
+This is why `DummyUiFontLoad` is the clear first function, while `sub_08016558` is the clear next target once the extraction pipeline is proven.
