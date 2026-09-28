@@ -438,6 +438,21 @@ translation unit, not a function. The scripts key every function by its ROM
 address, which `match.py` reads from `nascar-heat.elf`, so neither the
 function's name nor its file's name or folder matters to them.
 
+Named functions are filed by domain under `src/`: `system`, `sound`, `task`,
+`track`, `car`, `race`, `hud`, `menu`, `link`, `save`, `camera`, `sprite`,
+`palette`. A lone named function keeps a file named after it. ROM-neighbouring
+functions of one domain share a module file (`src/task/task.c`,
+`src/save/save.c`, `src/car/engine.c`): `ldscript.ld` places the whole
+object, so only contiguous blocks can share one. Two things stop a merge:
+a per-object CFLAGS override (`src/link/SioTransferIntr.c` builds at `-O1`)
+and struct-layout views — two definitions of one tag cannot share a TU.
+Prototype disagreements do not block: compile each caller under both views
+and drop the stale declaration when the assembly comes out identical
+(`car/update.c` merged after its `u16`/`u32` parameter proved
+instruction-neutral). Functions still called
+`sub_XXXXXXXX` stay at the `src/` root until they are named; file one under
+its domain when it is.
+
 - A file can hold any number of functions, but `ldscript.ld` places the
   whole object, so they must be contiguous in the ROM and in ROM order.
 - Folders can nest to any depth under `src/`. The object lands at the same

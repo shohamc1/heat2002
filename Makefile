@@ -95,7 +95,7 @@ CRT0_HIGH_SYMS := Init=sub_08339780 IntrMain=sub_083397C4 \
 # library's nine functions differ.
 LIB_C_OBJS := $(BUILD)/lib/multiboot.o $(BUILD)/lib/eeprom.o
 $(BUILD)/lib/eeprom.o: CFLAGS := $(subst -O2,-O1,$(CFLAGS))
-$(BUILD)/src/sub_0800E640.o: CFLAGS := $(subst -O2,-O1,$(CFLAGS))
+$(BUILD)/src/link/SioTransferIntr.o: CFLAGS := $(subst -O2,-O1,$(CFLAGS))
 $(BUILD)/src/sub_08364730.o: CFLAGS := $(subst -O2,-O1,$(CFLAGS))
 
 OBJS     := $(C_SRCS:%.c=$(BUILD)/%.o) $(DATA_SRCS:%.s=$(BUILD)/%.o) \
