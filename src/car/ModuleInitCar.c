@@ -8,7 +8,7 @@ extern u32 gModule_DriverGearPowerTables[];
 extern u32 gModule_DriverGearRatioTables[];
 extern u32 gModule_DriverRpmPerSpeedTables[];
 
-void sub_083432EC(u32 *p, u32 v);
+void ModuleInitCarSteering(u32 *p, u32 v);
 
 void ModuleInitCar(u8 carIdx, struct Car *car, s32 posX, s32 posZ, u32 heading)
 {
@@ -53,7 +53,7 @@ void ModuleInitCar(u8 carIdx, struct Car *car, s32 posX, s32 posZ, u32 heading)
     car->onApron = 0;
     car->onGrass = 0;
     car->behindBgFlag = 0;
-    sub_083432EC((u32 *)&car->unk128, heading);
+    ModuleInitCarSteering((u32 *)&car->unk128, heading);
     car->unk134 = 0;
     car->unk138 = -1;
     car->wasOnGrass = 0;

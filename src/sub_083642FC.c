@@ -19,7 +19,7 @@ void sub_083647F8(const void *src, void *dest, u32 control);
 void sub_08364808(void);
 void sub_083644B4(u32 a1, u32 a2);
 void sub_083641D8(u16 x, u16 y);
-void sub_0836419C(s16 a, u8 b);
+void IslandDrawMultibootProgressMarker(s16 a, u8 b);
 u32 sub_08364550(u32 *a1);
 void _08364810(u32 target);
 
@@ -53,7 +53,7 @@ void sub_083642FC(void)
     for (;;) {
         t = ((idx << 15) + frame * 4) >> 10;
         sub_083641D8(t, 100);
-        sub_0836419C(t, 100);
+        IslandDrawMultibootProgressMarker(t, 100);
         if (sub_08364550(&frame)) {
             idx++;
             if (idx == 7)

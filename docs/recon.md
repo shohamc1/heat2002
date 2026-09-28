@@ -88,8 +88,8 @@ Ties are ordered by address. The caller column is included to distinguish merely
 | 16 | `ModuleDummyHudHook [sub_0833E5E8]` | `0x0833E5E8` | 1 | 0 |
 | 17 | `ModuleEnterPit [sub_08341280]` | `0x08341280` | 1 | 1 |
 | 18 | `ModuleDummyWallHitHook [sub_08342DE4]` | `0x08342DE4` | 1 | 1 |
-| 19 | `sub_08343138` | `0x08343138` | 1 | 1 |
-| 20 | `sub_08344680` | `0x08344680` | 1 | 1 |
+| 19 | `ModuleDummyCarHitHook [sub_08343138]` | `0x08343138` | 1 | 1 |
+| 20 | `ModuleDummyCarDamageHook [sub_08344680]` | `0x08344680` | 1 | 1 |
 | 21 | `sub_08344C4C` | `0x08344C4C` | 1 | 3 |
 | 22 | `sub_08016E0C` | `0x08016E0C` | 2 | 2 |
 | 23 | `sub_08016E10` | `0x08016E10` | 2 | **24** |

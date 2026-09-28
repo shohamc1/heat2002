@@ -274,13 +274,13 @@ What the source shapes turned out to be:
 | 104 | `ModuleDemoEndTask [sub_083427DC]` | 110 | port of `DemoEndTask` |
 | 105 | `LapSnapshotTask` | 178 |  |
 | 106 | `ModuleLapSnapshotTask [sub_08342C3C]` | 178 | port of `LapSnapshotTask` |
-| 107 | `sub_08342F4C` | 90 |  |
+| 107 | `ModuleSkidSmokeTask [sub_08342F4C]` | 90 |  |
 | 108 | `ModuleRaceEndTask [sub_0834288C]` | 100 |  |
 | 109 | `RaceStartSplashTask [sub_0800B0A0]` | 104 |  |
 | 110 | `LinkRaceStartSplashTask [sub_0800B120]` | 108 |  |
 | 111 | `sub_08342A14` | 116 |  |
 | 112 | `DamageSmokeTask [sub_0800B8EC]` | 256 |  |
-| 113 | `sub_08342FF0` | 256 | port of `DamageSmokeTask` |
+| 113 | `ModuleDamageSmokeTask [sub_08342FF0]` | 256 | port of `DamageSmokeTask` |
 | 114 | `sub_0800AF44` | 140 |  |
 | 115 | `ModuleDraftStreakTask` | 156 |  |
 | 116 | `SkidSmokeTask [sub_0800B7E0]` | 182 |  |
@@ -381,7 +381,7 @@ What the source shapes turned out to be:
 | 172 | `sub_08005808` | 90 |  |
 | 173 | `sub_0833E304` | 90 | port of `sub_08005808` |
 | 174 | `sub_0800F85C` | 90 | jump table or inline data |
-| 175 | `sub_083448F4` | 90 | port of `sub_0800F85C`; jump table or inline data |
+| 175 | `ModuleSerialIntr [sub_083448F4]` | 90 | port of `sub_0800F85C`; jump table or inline data |
 | 176 | `sub_08004504` | 94 |  |
 | 177 | `sub_0833D700` | 94 | port of `sub_08004504` |
 | 178 | `sub_08004568` | 98 |  |

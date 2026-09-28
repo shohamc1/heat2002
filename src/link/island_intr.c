@@ -1,8 +1,15 @@
 #include "global.h"
+
 #include "variables.h"
 
 
-void sub_08364190(void)
+void IslandDummyIntr(void)
+{
+}
+
+
+void IslandVBlankIntr(void)
 {
     gIntrCheck = 1;
 }
+

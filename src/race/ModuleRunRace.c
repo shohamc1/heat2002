@@ -34,7 +34,7 @@ void ModuleLoadTrackCues(u8);
 void ModuleClearRaceTextLayer(void);
 void ModuleSetTrackBgCnt(void);
 void ModuleSetFadeDeltasColors240To255(s32);
-void sub_08343504(u32);
+void ModuleLoadTrackWalls(u32);
 void ModuleLoadTrackSegs(u32);
 void ModuleInitGfxCaches(void);
 void ModuleInitTasks(void);
@@ -49,7 +49,7 @@ void ModuleUpdateAllCars(void);
 void ModuleAddDemoEndTask(void);
 void ModuleInitLinkRaceStart(void);
 void ModuleSetCameraTarget(void *);
-void sub_08344878(void);
+void ModuleInitMultiplayerSio(void);
 void ModuleM4aMPlayPitchControl(void *, u16, s16);
 void ModuleUpdatePaletteFade(void);
 void ModuleSmoothCamera(void);
@@ -115,7 +115,7 @@ s32 ModuleRunRace(u8 isDemo, u8 gameMode)
     ModuleSetTrackBgCnt();
     gUnk_02039158 = 0x100;
     ModuleSetFadeDeltasColors240To255(0x32);
-    sub_08343504(gModule_TrackId);
+    ModuleLoadTrackWalls(gModule_TrackId);
     ModuleInitGfxCaches();
     ModuleInitTasks();
     ModuleResetSpriteOrderTable();
@@ -179,7 +179,7 @@ after_d5f4: ;
     t++;
     t--;
     if ((u8)t <= 1)
-        sub_08344878();
+        ModuleInitMultiplayerSio();
     ModuleM4aSongNumStart(0x38);
     t++;
     t--;
@@ -193,9 +193,9 @@ after_d5f4: ;
     while (gUnk_02039154 == 0) {
         ModuleAgeGfxCaches();
         ModuleClearOamBuffer();
-        sub_08343148(gUnk_02039160, 0x4B, 0x3C);
+        ModuleDrawSpriteText(gUnk_02039160, 0x4B, 0x3C);
         if (gUnk_0203921C != 0)
-            sub_08343148(gUnk_02039170, 0x4B, 0x5A);
+            ModuleDrawSpriteText(gUnk_02039170, 0x4B, 0x5A);
         gModule_VBlanksThisFrame = 0;
         if ((u8)t > 1)
             car = gModule_Cars;

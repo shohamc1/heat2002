@@ -9,7 +9,7 @@ extern s32 gUnk_0203DE04;
 extern s32 gUnk_0203DCF8;
 extern s32 gUnk_0203DE08;
 extern s32 gUnk_0203DE0C;
-void sub_08342ED0(u8 a, u8 b);
+void ModuleAddSkidSmokeTask(u8 a, u8 b);
 void ModuleM4aSongNumStart(u16 idx);
 
 
@@ -114,7 +114,7 @@ void ModuleComputeAxleTireForce(u8 axle, struct Car *car)
         }
         if (slipSpeed < -gUnk_0203D4E4) {
             slipSpeed = -gUnk_0203D4E4 / 2;
-            sub_08342ED0(gUnk_0203DD38, 2);
+            ModuleAddSkidSmokeTask(gUnk_0203DD38, 2);
             if (gModule_IsLinkRace == 0) {
                 if (gUnk_0203DD38 == 0)
                     goto e2check;
@@ -124,7 +124,7 @@ void ModuleComputeAxleTireForce(u8 axle, struct Car *car)
                 goto tail;
         } else if (slipSpeed > gUnk_0203D4E4) {
             slipSpeed = gUnk_0203D4E4 / 2;
-            sub_08342ED0(gUnk_0203DD38, 3);
+            ModuleAddSkidSmokeTask(gUnk_0203DD38, 3);
             if (gModule_IsLinkRace == 0) {
                 if (gUnk_0203DD38 == 0)
                     goto e2check;

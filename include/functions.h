@@ -298,7 +298,7 @@ void ModuleEndRace(void);
 void ModuleStartRace(void);
 void ModuleDrawLapTime(u32 a0, u32 a1, u32 a2);
 void ModuleSaveLapTime(void);
-void sub_08343148(const u8 *a, u32 b, u32 c);
+void ModuleDrawSpriteText(const u8 *a, u32 b, u32 c);
 void sub_083446C8(u8 param);
 void sub_08344730(void);
 void sub_08344734(void);

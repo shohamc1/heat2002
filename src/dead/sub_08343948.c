@@ -48,7 +48,7 @@ struct Ent
   s32 f30;
 };
 long long sub_08344D20(long long a, long long b);
-u16 *sub_083434BC(s32 a, s32 b);
+u16 *ModuleGetWallListAt(s32 a, s32 b);
 u8 sub_083437A0(struct Seg *a, struct Box *b, struct Box *c, struct Hit *d, u16 *e);
 s32 sub_08343948(struct Ent *ent)
 {
@@ -106,7 +106,7 @@ s32 sub_08343948(struct Ent *ent)
  do { mz3 = mz2; } while (0);
   }
   bounds.f0C = mz3;
-  walls = sub_083434BC(seg.f00, seg.f04);
+  walls = ModuleGetWallListAt(seg.f00, seg.f04);
   if (sub_083437A0(&seg, &bounds, &bounds, &out, walls) == 0)
   {
     miss:

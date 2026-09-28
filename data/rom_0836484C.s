@@ -42,20 +42,20 @@ gUnk_0836484C:
 	.4byte gHighModule + 0x20000
 	.4byte gHighModule + 0x28000
 	.4byte gHighModule + 0x30000
-	.4byte sub_08364190
-	.4byte sub_0836418C
-	.4byte sub_0836418C
-	.4byte sub_0836418C
-	.4byte sub_0836418C
-	.4byte sub_0836418C
+	.4byte IslandVBlankIntr
+	.4byte IslandDummyIntr
+	.4byte IslandDummyIntr
+	.4byte IslandDummyIntr
+	.4byte IslandDummyIntr
+	.4byte IslandDummyIntr
 	.4byte sub_08364730
 	.4byte sub_08364730
-	.4byte sub_0836418C
-	.4byte sub_0836418C
-	.4byte sub_0836418C
-	.4byte sub_0836418C
-	.4byte sub_0836418C
-	.4byte sub_0836418C
+	.4byte IslandDummyIntr
+	.4byte IslandDummyIntr
+	.4byte IslandDummyIntr
+	.4byte IslandDummyIntr
+	.4byte IslandDummyIntr
+	.4byte IslandDummyIntr
 	.4byte 0x4A424741
 	.4byte 0
 	.global gUnk_083648A8

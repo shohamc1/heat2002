@@ -54,7 +54,7 @@ struct Pt {
 
 
 
-s32 sub_0834355C(struct Corner *corn, struct Box *box, struct Box *cbox,
+s32 ModuleTestCornersVsWalls(struct Corner *corn, struct Box *box, struct Box *cbox,
                  struct Hit *out, u16 *wallList, s32 *best)
 {
     s32 tmp[4];

@@ -15,7 +15,7 @@ u16 ModulePackLinkKeys(u16 keys);
 u8 ModuleIsLinkSeqNumExpected(u16 seq, u8 next);
 u8 ModuleIsValidLinkKeys(u16 id);
 u16 ModuleUnpackLinkKeys(u16 id);
-void sub_083448B0(u16 data);
+void ModuleSioSendWord(u16 data);
 
 
 
@@ -61,7 +61,7 @@ send:
             gModule_LinkTxBuffer[0] = (gModule_LinkTxSeqNum << 11) | ((keys & 0x7F) | ((keys & 0xF) << 7)) | 0x8000;
         else
             gModule_LinkTxBuffer[0] = (gModule_LinkTxSeqNum << 11) | ((keys & 0x7F) | ((keys & 0xF) << 7)) | 0x4000;
-        sub_083448B0(gModule_LinkTxBuffer[0]);
+        ModuleSioSendWord(gModule_LinkTxBuffer[0]);
         for (;;) {
             if (gIntrCheck & 0x80) {
                 *(volatile u16 *)&gIntrCheck &= 0xFF7F;

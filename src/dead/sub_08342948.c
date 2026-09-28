@@ -11,7 +11,7 @@ void sub_08342948(u32 a)
     gUnk_0203E000 = 1;
     if (gModule_PaletteFadeActive == 0)
     {
-        sub_08343148((u8 *)(ModuleGetString(MODULE_MSG_OUT_OF_TIME)), 0x4C, 0x18);
+        ModuleDrawSpriteText((u8 *)(ModuleGetString(MODULE_MSG_OUT_OF_TIME)), 0x4C, 0x18);
         if (--*(u32 *)(a + 0x18) == 0)
         {
             ModuleRemoveTask(a);

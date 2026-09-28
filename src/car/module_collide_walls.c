@@ -24,7 +24,7 @@
  *   order, and the table size is (real insns / 2) | 1. The spill-slot order
  *   therefore depends on the pre-gcse insn count: 358 or 359 here. The
  *   early `return 0`, the `u8 ang`, and the `s16` parameters on
- *   sub_083434BC each add two insns that vanish later; without them the
+ *   ModuleGetWallListAt each add two insns that vanish later; without them the
  *   slots come out permuted.
  */
 
@@ -93,12 +93,12 @@ extern s32 gUnk_0203DE70[];
 extern s32 gUnk_0203DE84;
 extern s32 gUnk_0203DE90;
 
-u16 *sub_083434BC(s16 x, s16 y);
-void sub_0834355C(struct Corner *a1, struct Box *a2, struct Box *a3,
+u16 *ModuleGetWallListAt(s16 x, s16 y);
+void ModuleTestCornersVsWalls(struct Corner *a1, struct Box *a2, struct Box *a3,
                   struct Res *a4, u16 *a5, s32 *a6);
 void ModuleDummyWallHitHook(s32 a, s32 b);
 
-s32 sub_08343A6C(struct Ent *a)
+s32 ModuleCollideCarWithWalls(struct Ent *a)
 {
     struct Corner corner[4];
     struct Box boxes[4];
@@ -139,9 +139,9 @@ s32 sub_08343A6C(struct Ent *a)
         total.unk0C = max_08343DEC(boxes[0].unk0C, boxes[1].unk0C);
         total.unk0C = max_08343DEC(total.unk0C, boxes[2].unk0C);
         total.unk0C = max_08343DEC(total.unk0C, boxes[3].unk0C);
-        tile = sub_083434BC(corner[0].f[0] >> 16, corner[0].f[1] >> 16);
+        tile = ModuleGetWallListAt(corner[0].f[0] >> 16, corner[0].f[1] >> 16);
         best = 99999;
-        sub_0834355C(corner, &total, boxes, &res, tile, &best);
+        ModuleTestCornersVsWalls(corner, &total, boxes, &res, tile, &best);
         if (best != 99999) {
         t = (long long)corner[res.unk0C].f[4] * res.unk04 + (long long)corner[res.unk0C].f[5] * res.unk08;
         t = t * 192 >> 8;

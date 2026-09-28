@@ -55,13 +55,13 @@ void sub_08343388(struct Unk08343388 *v)
     v->unk00 = (*xp) + v->unk08;
 }
 
-u8 sub_08343464(s32 x, s32 y);
+u8 ModuleGetTrackTileType(s32 x, s32 y);
 
 u8 sub_0834341C(u8 *a1, s32 a2, s32 a3)
 {
     if ((*(u32 *)&gModule_FrameCounter) == *(u32 *)(a1 + 0x138))
         return *(u8 *)(a1 + 0x134);
-    *(u32 *)(a1 + 0x134) = sub_08343464(a2, a3);
+    *(u32 *)(a1 + 0x134) = ModuleGetTrackTileType(a2, a3);
     *(u32 *)(a1 + 0x138) = (*(u32 *)&gModule_FrameCounter);
     return *(u8 *)(a1 + 0x134);
 }
