@@ -5,34 +5,34 @@
 #include "functions.h"
 #include "m4a.h"
 
-struct unk_D64C
+struct CarContactWords
 {
-    u32 a;
-    u32 c;
-    u8 b;
-    u8 d;
-    u32 g;
+    u32 carA;        /* 0x00: word-typed for KeepNearestCarContact's signature */
+    u32 carB;        /* 0x04 */
+    u8 unk08;        /* 0x08 */
+    u8 normalIndex;  /* 0x09 */
+    u32 closingSpeed;/* 0x0C */
 };
-struct Coll
+struct CarContact
 {
-    struct Car *a;
-    struct Car *c;
-    u8 b;
-    u8 d;
-    s32 g;
+    struct Car *carA;   /* 0x00 */
+    struct Car *carB;   /* 0x04 */
+    u8 unk08;           /* 0x08 */
+    u8 normalIndex;     /* 0x09 */
+    s32 closingSpeed;   /* 0x0C */
 };
-struct Pt2
+struct CollisionNormal
 {
-    s32 f0;
-    s32 f1;
+    s32 normalX; /* 0x00: 20.12 fixed point */
+    s32 normalZ; /* 0x04 */
 };
 
 extern s32 gCarCollFrameSelf[8];
 extern s32 gCarCollFrameOther[8];
-extern struct Coll gCarCollContact;
-extern struct Pt2 gCarCollisionNormals[];
+extern struct CarContact gCarCollContact;
+extern struct CollisionNormal gCarCollisionNormals[];
 extern u8 gUnk_0202A530;
-void KeepNearestCarContact(s32 a, u8 b, s32 c, u8 d, struct unk_D64C *e, u8 *f, s32 g, s32 h);
+void KeepNearestCarContact(s32 a, u8 b, s32 c, u8 d, struct CarContactWords *e, u8 *f, s32 g, s32 h);
 void DummyCarHitHook(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g);
 void DummyCarDamageHook(s32 a, u8 b);
 void ComputeForwardSpeed(struct Car *a);
@@ -57,14 +57,14 @@ void BuildCarCollFrame(struct Car *car, s32 *frame)
     frame[7] = (z + car->velZ) >> 8;
 }
 
-void KeepNearestCarContact(s32 a, u8 b, s32 c, u8 d, struct unk_D64C *e, u8 *f, s32 g, s32 h)
+void KeepNearestCarContact(s32 a, u8 b, s32 c, u8 d, struct CarContactWords *e, u8 *f, s32 g, s32 h)
 {
     if (h < gUnk_0202CD24) {
-        e->a = a;
-        e->c = c;
-        e->b = b;
-        e->d = d;
-        e->g = g;
+        e->carA = a;
+        e->carB = c;
+        e->unk08 = b;
+        e->normalIndex = d;
+        e->closingSpeed = g;
         *f = 1;
         gUnk_0202CD24 = h;
     }
@@ -166,28 +166,28 @@ u8 CollideCars(struct Car *car)
             t = (w * e) / u;
             t += v[0];
             if (t >= -0xF00 && t <= 0xF00)
-                ((void (*)(struct Car *, s32, struct Car *, s32, struct Coll *, u8 *, s32, s32))KeepNearestCarContact)(
+                ((void (*)(struct Car *, s32, struct Car *, s32, struct CarContact *, u8 *, s32, s32))KeepNearestCarContact)(
                     car, a2, other, 0, &gCarCollContact, &hit, -u, (e << 16) / -u);
         }
         if (u > 0 && v[3] >= -0x1C00 && (e = -0x1C00 - v[1]) >= 0) {
             t = (w * e) / u;
             t += v[0];
             if (t >= -0xF00 && t <= 0xF00)
-                ((void (*)(struct Car *, s32, struct Car *, s32, struct Coll *, u8 *, s32, s32))KeepNearestCarContact)(
+                ((void (*)(struct Car *, s32, struct Car *, s32, struct CarContact *, u8 *, s32, s32))KeepNearestCarContact)(
                     car, a2, other, 1, &gCarCollContact, &hit, u, (e << 16) / u);
         }
         if (w > 0 && v[2] >= -0xF00 && (e = -0xF00 - v[0]) >= 0) {
             t = (e * u) / w;
             t += v[1];
             if (t >= -0x1C00 && t <= 0x1C00)
-                ((void (*)(struct Car *, s32, struct Car *, s32, struct Coll *, u8 *, s32, s32))KeepNearestCarContact)(
+                ((void (*)(struct Car *, s32, struct Car *, s32, struct CarContact *, u8 *, s32, s32))KeepNearestCarContact)(
                     car, a2, other, 2, &gCarCollContact, &hit, w, (e << 16) / w);
         }
         if (w < 0 && v[2] <= 0xF00 && (e = v[0] - 0xF00) >= 0) {
             t = (e * u) / w;
             t += v[1];
             if (t >= -0x1C00 && t <= 0x1C00)
-                ((void (*)(struct Car *, s32, struct Car *, s32, struct Coll *, u8 *, s32, s32))KeepNearestCarContact)(
+                ((void (*)(struct Car *, s32, struct Car *, s32, struct CarContact *, u8 *, s32, s32))KeepNearestCarContact)(
                     car, a2, other, 3, &gCarCollContact, &hit, -w, (e << 16) / -w);
         }
 
@@ -209,43 +209,43 @@ u8 CollideCars(struct Car *car)
             t = (w * e) / u;
             t += v[0];
             if (t >= -0xF00 && t <= 0xF00)
-                ((void (*)(struct Car *, s32, struct Car *, s32, struct Coll *, u8 *, s32, s32))KeepNearestCarContact)(
+                ((void (*)(struct Car *, s32, struct Car *, s32, struct CarContact *, u8 *, s32, s32))KeepNearestCarContact)(
                     other, a2, car, 0, &gCarCollContact, &hit, -u, (e << 16) / -u);
         }
         if (u > 0 && v[3] >= -0x1C00 && (e = -0x1C00 - v[1]) >= 0) {
             t = (w * e) / u;
             t += v[0];
             if (t >= -0xF00 && t <= 0xF00)
-                ((void (*)(struct Car *, s32, struct Car *, s32, struct Coll *, u8 *, s32, s32))KeepNearestCarContact)(
+                ((void (*)(struct Car *, s32, struct Car *, s32, struct CarContact *, u8 *, s32, s32))KeepNearestCarContact)(
                     other, a2, car, 1, &gCarCollContact, &hit, u, (e << 16) / u);
         }
         if (w > 0 && v[2] >= -0xF00 && (e = -0xF00 - v[0]) >= 0) {
             t = (e * u) / w;
             t += v[1];
             if (t >= -0x1C00 && t <= 0x1C00)
-                ((void (*)(struct Car *, s32, struct Car *, s32, struct Coll *, u8 *, s32, s32))KeepNearestCarContact)(
+                ((void (*)(struct Car *, s32, struct Car *, s32, struct CarContact *, u8 *, s32, s32))KeepNearestCarContact)(
                     other, a2, car, 2, &gCarCollContact, &hit, w, (e << 16) / w);
         }
         if (w < 0 && v[2] <= 0xF00 && (e = v[0] - 0xF00) >= 0) {
             t = (e * u) / w;
             t += v[1];
             if (t >= -0x1C00 && t <= 0x1C00)
-                ((void (*)(struct Car *, s32, struct Car *, s32, struct Coll *, u8 *, s32, s32))KeepNearestCarContact)(
+                ((void (*)(struct Car *, s32, struct Car *, s32, struct CarContact *, u8 *, s32, s32))KeepNearestCarContact)(
                     other, a2, car, 3, &gCarCollContact, &hit, -w, (e << 16) / -w);
         }
     }
 
     if (hit != 0) {
-        a = gCarCollContact.a;
-        b = gCarCollContact.c;
+        a = gCarCollContact.carA;
+        b = gCarCollContact.carB;
         ang = b->heading >> 8;
         s = gSinTable[ang];
         c = gSinTable[ang + 0x40];
-        nx = gCarCollisionNormals[gCarCollContact.d].f0;
-        nz = gCarCollisionNormals[gCarCollContact.d].f1;
+        nx = gCarCollisionNormals[gCarCollContact.normalIndex].normalX;
+        nz = gCarCollisionNormals[gCarCollContact.normalIndex].normalZ;
         m[0] = (nx * c - nz * s) >> 4;
         m[1] = (nx * s + nz * c) >> 4;
-        f = -gCarCollContact.g;
+        f = -gCarCollContact.closingSpeed;
         q[0] = -(f * m[0]) / 256;
         q[1] = -(f * m[1]) / 256;
         a->velX += q[0];

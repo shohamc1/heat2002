@@ -49,26 +49,33 @@ struct Car
 };
 
 struct Corner
-{ s32 f[6]; };
+{
+    s32 x;      /* 0x00: cornerX, 16.16 */
+    s32 z;      /* 0x04: cornerZ */
+    s32 nextX;  /* 0x08: nextCornerX */
+    s32 nextZ;  /* 0x0C: nextCornerZ */
+    s32 deltaX; /* 0x10: nextX - x */
+    s32 deltaZ; /* 0x14 */
+};
 
 struct Box
 {
-    s32 unk00;
-    s32 unk04;
-    s32 unk08;
-    s32 unk0C;
+    s32 minX; /* 0x00: corner-sweep AABB, world units */
+    s32 maxX; /* 0x04 */
+    s32 minZ; /* 0x08 */
+    s32 maxZ; /* 0x0C */
 };
 
-struct Res
+struct Hit
 {
-    u8 pad00[4];
-    s32 unk04;
-    s32 unk08;
-    u8 unk0C;
-    u8 unk0D;
-    u8 unk0E;
-    u8 unk0F;
-    s32 unk10;
+    u8 pad00[4];   /* 0x00 */
+    s32 normalX;   /* 0x04 */
+    s32 normalZ;   /* 0x08 */
+    u8 cornerIndex;    /* 0x0C */
+    u8 steerAngle;     /* 0x0D */
+    u8 steerAngleOpp;  /* 0x0E */
+    u8 unk0F;          /* 0x0F */
+    s32 unk10;         /* 0x10 */
 };
 
 extern s32 gUnk_0202CC4C;
@@ -77,7 +84,7 @@ extern s32 gUnk_0202CC64;
 extern s32 gUnk_0202CC70;
 
 u16 *GetWallListAt(s16 x, s16 y);
-void TestCornersVsWalls(struct Corner *a1, struct Box *a2, struct Box *a3, struct Res *a4, u16 *a5, s32 *a6);
+void TestCornersVsWalls(struct Corner *a1, struct Box *a2, struct Box *a3, struct Hit *a4, u16 *a5, s32 *a6);
 void DummyWallHitHook(s32 a, s32 b);
 
 inline s32 Min(s32 a, s32 b)
@@ -101,7 +108,7 @@ s32 CollideCarWithWalls(struct Car *a)
     struct Corner corner[4];
     struct Box boxes[4];
     struct Box total;
-    struct Res res;
+    struct Hit res;
     s32 best;
     long long t;
     u16 *tile;
@@ -114,57 +121,57 @@ s32 CollideCarWithWalls(struct Car *a)
         return 0;
     {
         for (i = 0; i != 4; i++) {
-            corner[i].f[0] = a->cornerX[i];
-            corner[i].f[1] = a->cornerZ[i];
-            corner[i].f[2] = a->nextCornerX[i];
-            corner[i].f[3] = a->nextCornerZ[i];
-            corner[i].f[4] = a->nextCornerX[i] - a->cornerX[i];
-            corner[i].f[5] = a->nextCornerZ[i] - a->cornerZ[i];
-            boxes[i].unk00 = Min(corner[i].f[0], corner[i].f[2]) >> 16;
-            boxes[i].unk08 = Min(corner[i].f[1], corner[i].f[3]) >> 16;
-            boxes[i].unk04 = Max(corner[i].f[0], corner[i].f[2]) >> 16;
-            boxes[i].unk0C = Max(corner[i].f[1], corner[i].f[3]) >> 16;
+            corner[i].x = a->cornerX[i];
+            corner[i].z = a->cornerZ[i];
+            corner[i].nextX = a->nextCornerX[i];
+            corner[i].nextZ = a->nextCornerZ[i];
+            corner[i].deltaX = a->nextCornerX[i] - a->cornerX[i];
+            corner[i].deltaZ = a->nextCornerZ[i] - a->cornerZ[i];
+            boxes[i].minX = Min(corner[i].x, corner[i].nextX) >> 16;
+            boxes[i].minZ = Min(corner[i].z, corner[i].nextZ) >> 16;
+            boxes[i].maxX = Max(corner[i].x, corner[i].nextX) >> 16;
+            boxes[i].maxZ = Max(corner[i].z, corner[i].nextZ) >> 16;
         }
-        total.unk00 = Min(boxes[0].unk00, boxes[1].unk00);
-        total.unk00 = Min(total.unk00, boxes[2].unk00);
-        total.unk00 = Min(total.unk00, boxes[3].unk00);
-        total.unk08 = Min(boxes[0].unk08, boxes[1].unk08);
-        total.unk08 = Min(total.unk08, boxes[2].unk08);
-        total.unk08 = Min(total.unk08, boxes[3].unk08);
-        total.unk04 = Max(boxes[0].unk04, boxes[1].unk04);
-        total.unk04 = Max(total.unk04, boxes[2].unk04);
-        total.unk04 = Max(total.unk04, boxes[3].unk04);
-        total.unk0C = Max(boxes[0].unk0C, boxes[1].unk0C);
-        total.unk0C = Max(total.unk0C, boxes[2].unk0C);
-        total.unk0C = Max(total.unk0C, boxes[3].unk0C);
-        tile = GetWallListAt(corner[0].f[0] >> 16, corner[0].f[1] >> 16);
+        total.minX = Min(boxes[0].minX, boxes[1].minX);
+        total.minX = Min(total.minX, boxes[2].minX);
+        total.minX = Min(total.minX, boxes[3].minX);
+        total.minZ = Min(boxes[0].minZ, boxes[1].minZ);
+        total.minZ = Min(total.minZ, boxes[2].minZ);
+        total.minZ = Min(total.minZ, boxes[3].minZ);
+        total.maxX = Max(boxes[0].maxX, boxes[1].maxX);
+        total.maxX = Max(total.maxX, boxes[2].maxX);
+        total.maxX = Max(total.maxX, boxes[3].maxX);
+        total.maxZ = Max(boxes[0].maxZ, boxes[1].maxZ);
+        total.maxZ = Max(total.maxZ, boxes[2].maxZ);
+        total.maxZ = Max(total.maxZ, boxes[3].maxZ);
+        tile = GetWallListAt(corner[0].x >> 16, corner[0].z >> 16);
         best = 99999;
         TestCornersVsWalls(corner, &total, boxes, &res, tile, &best);
         if (best != 99999) {
-            t = (long long)corner[res.unk0C].f[4] * res.unk04 + (long long)corner[res.unk0C].f[5] * res.unk08;
+            t = (long long)corner[res.cornerIndex].deltaX * res.normalX + (long long)corner[res.cornerIndex].deltaZ * res.normalZ;
             t = t * 192 >> 8;
             if (t > -0x80000000LL)
                 t = -0x80000000LL;
-            d0 = ((long long)res.unk04 * t) >> 29;
-            d1 = ((long long)res.unk08 * t) >> 29;
+            d0 = ((long long)res.normalX * t) >> 29;
+            d1 = ((long long)res.normalZ * t) >> 29;
             gUnk_0202CC70 = a->velX;
             gUnk_0202CC64 = a->velZ;
             gUnk_0202CC4C = t;
-            gWallCollisionNormal[1] = res.unk04;
-            gWallCollisionNormal[2] = res.unk08;
+            gWallCollisionNormal[1] = res.normalX;
+            gWallCollisionNormal[2] = res.normalZ;
             a->velX -= d0;
             a->velZ -= d1;
-            DummyWallHitHook(a->cornerX[res.unk0C], a->cornerZ[res.unk0C]);
+            DummyWallHitHook(a->cornerX[res.cornerIndex], a->cornerZ[res.cornerIndex]);
             {
-                s32 v1 = gSinTable[res.unk0D];
-                s32 v2 = gSinTable[res.unk0D + 0x40];
+                s32 v1 = gSinTable[res.steerAngle];
+                s32 v2 = gSinTable[res.steerAngle + 0x40];
                 u8 ang = a->heading >> 8;
                 s32 v3 = gSinTable[ang];
                 s32 v4 = gSinTable[ang + 0x40];
 
-                v = res.unk0D;
+                v = res.steerAngle;
                 if (v3 * v1 + v4 * v2 <= 0)
-                    v = res.unk0E;
+                    v = res.steerAngleOpp;
                 a->steerHeading = v << 8;
                 v = ((v << 8) - a->heading) << 16;
                 v >>= 20;

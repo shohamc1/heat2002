@@ -4,51 +4,51 @@
 
 struct WallRec
 {
-    u16 f00;
-    u16 f02;
-    s32 f04;
-    s32 f08;
-    s32 f0C;
-    s32 f10;
-    s32 f14;
-    s32 f18;
-    u8 f1C;
-    u8 f1D;
-    u8 f1E;
+    u16 vertex0;   /* index into gWallVertices */
+    u16 vertex1;   /* 0x02 */
+    s32 normalX;   /* 0x04: 1.15 unit normal of the wall segment */
+    s32 normalZ;   /* 0x08 */
+    s32 minX;      /* 0x0C: segment AABB */
+    s32 maxX;      /* 0x10 */
+    s32 minZ;      /* 0x14 */
+    s32 maxZ;      /* 0x18 */
+    u8 steerAngle;    /* 0x1C: post-hit steer heading, gSinTable index */
+    u8 steerAngleOpp; /* 0x1D: +0x80, used when heading opposes it */
+    u8 unk1E;         /* 0x1E */
 };
 
 struct Box
 {
-    s32 f00;
-    s32 f04;
-    s32 f08;
-    s32 f0C;
+    s32 minX; /* 0x00: corner-sweep AABB, world units */
+    s32 maxX; /* 0x04 */
+    s32 minZ; /* 0x08 */
+    s32 maxZ; /* 0x0C */
 };
 
 struct Corner
 {
-    u16 f00;
-    s16 f02;
-    u16 f04;
-    s16 f06;
-    u16 f08;
-    s16 f0A;
-    u16 f0C;
-    s16 f0E;
-    s32 f10;
-    s32 f14;
+    u16 unk00;   /* low half of x */
+    s16 xHi;     /* 0x02: current X, world units */
+    u16 unk04;   /* 0x04 */
+    s16 zHi;     /* 0x06: current Z */
+    u16 unk08;   /* 0x08 */
+    s16 nextXHi; /* 0x0A: next-frame X */
+    u16 unk0C;   /* 0x0C */
+    s16 nextZHi; /* 0x0E: next-frame Z */
+    s32 deltaX;  /* 0x10: nextCornerX - cornerX */
+    s32 deltaZ;  /* 0x14 */
 };
 
 struct Hit
 {
-    s32 f00;
-    s32 f04;
-    s32 f08;
-    u8 f0C;
-    u8 f0D;
-    u8 f0E;
-    u8 f0F;
-    s32 f10;
+    u8 pad00[4];   /* 0x00 */
+    s32 normalX;   /* 0x04: wall normal, slightly amplified */
+    s32 normalZ;   /* 0x08 */
+    u8 cornerIndex;    /* 0x0C: which car corner hit */
+    u8 steerAngle;     /* 0x0D */
+    u8 steerAngleOpp;  /* 0x0E */
+    u8 unk0F;          /* 0x0F */
+    s32 unk10;         /* 0x10: winning wall index (write-only) */
 };
 
 struct Pt
@@ -74,43 +74,43 @@ s32 TestCornersVsWalls(struct Corner *corn, struct Box *box, struct Box *cbox, s
     s32 x1, y1, x2, y2;
 
     for (w = wallList; *w != 0xFFFF; w = wnext) {
-        wall = &gUnk_0202CC40[*w];
-        x = box->f00;
-        y = wall->f10;
+        wall = &gWalls[*w];
+        x = box->minX;
+        y = wall->maxX;
         wnext = w + 1;
         if (x > y)
             continue;
-        if (box->f08 > wall->f18)
+        if (box->minZ > wall->maxZ)
             continue;
-        if (box->f04 < wall->f0C)
+        if (box->maxX < wall->minX)
             continue;
-        if (box->f0C < wall->f14)
+        if (box->maxZ < wall->minZ)
             continue;
-        pax = gWallVertices[wall->f00].x;
-        pay = gWallVertices[wall->f00].y;
-        pbx = gWallVertices[wall->f02].x;
-        pby = gWallVertices[wall->f02].y;
+        pax = gWallVertices[wall->vertex0].x;
+        pay = gWallVertices[wall->vertex0].y;
+        pbx = gWallVertices[wall->vertex1].x;
+        pby = gWallVertices[wall->vertex1].y;
         pc = corn;
         pq = cbox;
         for (i = 0; i != 4; i++, pc++, pq++) {
-            if (pq->f00 > wall->f10 + 1)
+            if (pq->minX > wall->maxX + 1)
                 continue;
-            if (pq->f08 > wall->f18 + 1)
+            if (pq->minZ > wall->maxZ + 1)
                 continue;
-            if (pq->f04 < wall->f0C - 1)
+            if (pq->maxX < wall->minX - 1)
                 continue;
-            if (pq->f0C < wall->f14 - 1)
+            if (pq->maxZ < wall->minZ - 1)
                 continue;
-            if ((pc->f10 >> 8) * wall->f04 + (pc->f14 >> 8) * wall->f08 > 0)
+            if ((pc->deltaX >> 8) * wall->normalX + (pc->deltaZ >> 8) * wall->normalZ > 0)
                 continue;
             gUnk_02000470 = pax;
             gUnk_02000474 = pay;
             gUnk_02000478 = pbx;
             gUnk_0200047C = pby;
-            gUnk_02000460 = x1 = pc->f02;
-            gUnk_02000464 = y1 = pc->f06;
-            gUnk_02000468 = x2 = pc->f0A;
-            gUnk_0200046C = y2 = pc->f0E;
+            gUnk_02000460 = x1 = pc->xHi;
+            gUnk_02000464 = y1 = pc->zHi;
+            gUnk_02000468 = x2 = pc->nextXHi;
+            gUnk_0200046C = y2 = pc->nextZHi;
             gUnk_02000480 = (x2 - x1) * (pby - pay) - (y2 - y1) * (pbx - pax);
             if (gUnk_02000480 == 0)
                 continue;
@@ -127,13 +127,13 @@ s32 TestCornersVsWalls(struct Corner *corn, struct Box *box, struct Box *cbox, s
                 continue;
             if (t1 < *best) {
                 *best = t2;
-                out->f04 = (wall->f04 * 0x104) >> 8;
-                out->f08 = (wall->f08 * 0x104) >> 8;
-                out->f0D = wall->f1C;
-                out->f0E = wall->f1D;
-                out->f0F = wall->f1E;
-                out->f10 = *w;
-                out->f0C = (u8)i;
+                out->normalX = (wall->normalX * 0x104) >> 8;
+                out->normalZ = (wall->normalZ * 0x104) >> 8;
+                out->steerAngle = wall->steerAngle;
+                out->steerAngleOpp = wall->steerAngleOpp;
+                out->unk0F = wall->unk1E;
+                out->unk10 = *w;
+                out->cornerIndex = (u8)i;
             }
         }
     }

@@ -3,17 +3,17 @@
 
 struct WallRec;
 struct Pt;
-struct tbl_0800CCE0
+struct TrackWalls
 {
-    u32 f0;
-    u32 f4;
-    u32 f8;
-    u32 fC;
-    u32 f10;
+    u32 vertices;  /* 0x00: struct Pt[] wall vertices */
+    u32 walls;     /* 0x04: struct WallRec[] records */
+    u32 wallCount; /* 0x08 */
+    u32 cellLists; /* 0x0C: 0xFFFF-terminated wall-index lists */
+    u32 cellGrid;  /* 0x10: u16[48*48] grid of list offsets */
 };
 
 extern u32 gUnk_0202CC48;
-extern struct tbl_0800CCE0 gUnk_083FD91C[];
+extern struct TrackWalls gTrackWallTables[];
 
 u16 *GetWallListAt(s32 x, s32 y)
 {
@@ -27,9 +27,9 @@ u16 *GetWallListAt(s32 x, s32 y)
 
 void LoadTrackWalls(u32 idx)
 {
-    gUnk_0202CC40 = (struct WallRec *)gUnk_083FD91C[idx].f4;
-    gWallVertices = (struct Pt *)gUnk_083FD91C[idx].f0;
-    gUnk_0202CC48 = gUnk_083FD91C[idx].f8;
-    gUnk_0202CC6C = (u16 *)gUnk_083FD91C[idx].fC;
-    gUnk_0202CC68 = (u16 *)gUnk_083FD91C[idx].f10;
+    gWalls = (struct WallRec *)gTrackWallTables[idx].walls;
+    gWallVertices = (struct Pt *)gTrackWallTables[idx].vertices;
+    gUnk_0202CC48 = gTrackWallTables[idx].wallCount;
+    gUnk_0202CC6C = (u16 *)gTrackWallTables[idx].cellLists;
+    gUnk_0202CC68 = (u16 *)gTrackWallTables[idx].cellGrid;
 }

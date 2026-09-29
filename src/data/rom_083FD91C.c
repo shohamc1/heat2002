@@ -230,10 +230,10 @@ extern const struct TrackPreviewGfx gUnk_083FEEC8[];
 extern const struct TrackPreviewGfx gUnk_083FEED8[];
 extern const struct TrackPreviewGfx gUnk_083FEEE8[];
 
-// Its users declare it as struct tbl_0800CCE0 x[].
+// Its users declare it as struct TrackWalls x[].
 // Stays flat: twelve rows of (table, table, count, table, table) in
 // the lane-data region, but no decompiled code reads it yet.
-const u32 gUnk_083FD91C[60] = { (u32)gUnk_083CA0C4, (u32)gUnk_083CA9DC, 0x120, (u32)gUnk_083CCDDC, (u32)gUnk_083CDA98,
+const u32 gTrackWallTables[60] = { (u32)gUnk_083CA0C4, (u32)gUnk_083CA9DC, 0x120, (u32)gUnk_083CCDDC, (u32)gUnk_083CDA98,
                                 (u32)gUnk_083D44A8, (u32)gUnk_083D4A28, 0xAC,  (u32)gUnk_083D5FA8, (u32)gUnk_083D669E,
                                 (u32)gUnk_083CEC98, (u32)gUnk_083CF7D0, 0x163, (u32)gUnk_083D2430, (u32)gUnk_083D32A8,
                                 (u32)gUnk_083D78A0, (u32)gUnk_083D7FE0, 0xE5,  (u32)gUnk_083D9C80, (u32)gUnk_083DA5D0,
@@ -248,7 +248,7 @@ const u32 gUnk_083FD91C[60] = { (u32)gUnk_083CA0C4, (u32)gUnk_083CA9DC, 0x120, (
 // No decompiled code reads these labels yet.
 const u8 *const gUnk_083FDA0C[] = { gText_Frontleft, gText_Frontright, gText_Rearleft, gText_Rearright,
                                     gText_Back,      gText_Front,      gText_Left,     gText_Right };
-// Its users declare it as struct Pt2 x[].
+// Its users declare it as struct CollisionNormal x[].
 /* Collision response normals, one (x, z) pair per contact direction,
  * in 20.12 fixed point (4096 = 1). */
 const s32 gCarCollisionNormals[8] = { 0, 4096, 0, -4096, -4096, 0, 4096, 0 };

@@ -69,11 +69,11 @@ s32 sub_083437A0(struct Seg *seg, struct Box *box2, struct Box *box,
     po = out;
     pbox = box;
     for (w = wallList; *w != 0xFFFF; w++) {
-        wall = &gUnk_0203DE60[*w];
-        pax = gUnk_0203DE64[wall->f00].x;
-        pay = gUnk_0203DE64[wall->f00].y;
-        pbx = gUnk_0203DE64[wall->f02].x;
-        pby = gUnk_0203DE64[wall->f02].y;
+        wall = &gModule_Walls[*w];
+        pax = gModule_WallVertices[wall->f00].x;
+        pay = gModule_WallVertices[wall->f00].y;
+        pbx = gModule_WallVertices[wall->f02].x;
+        pby = gModule_WallVertices[wall->f02].y;
         dx0 = seg->f10;
         wf04 = wall->f04;
         if (dx0 * wf04 + seg->f14 * wall->f08 > 0)

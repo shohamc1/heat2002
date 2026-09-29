@@ -2,26 +2,6 @@
 #include "variables.h"
 #include "car.h"
 
-struct Corner
-{ s32 f[6]; };
-struct Box
-{
-    s32 unk00;
-    s32 unk04;
-    s32 unk08;
-    s32 unk0C;
-};
-struct Res
-{
-    u8 pad00[4];
-    s32 unk04;
-    s32 unk08;
-    u8 unk0C;
-    u8 unk0D;
-    u8 unk0E;
-    u8 unk0F;
-    s32 unk10;
-};
 /*
  * Car-vs-car box collision test: the high-region (0x0834 module) copy of
  * sub_0800D684, byte-identical in instruction stream and ported from that
@@ -33,29 +13,28 @@ struct Res
  * libcall symbols for src/sub_083[3-9]*.c objects. Calling sub_08344BB8
  * directly loses the libcall's hard-r0 return and flips the allocation.
  */
-struct Coll
+struct CarContact
 {
-    struct Car *a;
-    struct Car *c;
-    u8 b;
-    u8 d;
-    s32 g;
+    struct Car *carA;   /* 0x00 */
+    struct Car *carB;   /* 0x04 */
+    u8 unk08;           /* 0x08 */
+    u8 normalIndex;     /* 0x09 */
+    s32 closingSpeed;   /* 0x0C */
 };
-struct Pt2
+struct CollisionNormal
 {
-    s32 f0;
-    s32 f1;
+    s32 normalX; /* 0x00: 20.12 fixed point */
+    s32 normalZ; /* 0x04 */
 };
 
 u16 *ModuleGetWallListAt(s16 x, s16 y);
-void ModuleTestCornersVsWalls(struct Corner *a1, struct Box *a2, struct Box *a3, struct Res *a4, u16 *a5, s32 *a6);
 void ModuleDummyWallHitHook(s32 a, s32 b);
 extern s32 gModule_CarCollFrameSelf[8];
 extern s32 gModule_CarCollFrameOther[8];
-extern struct Coll gUnk_0203DEB0;
-extern struct Pt2 gUnk_0202AF08[];
+extern struct CarContact gModule_CarCollContact;
+extern struct CollisionNormal gModule_CarCollisionNormals[];
 extern u8 gUnk_0203D4FC;
-void ModuleKeepNearestCarContact(struct Car *a, s32 b, struct Car *c, s32 d, struct Coll *e, u8 *f, s32 g, s32 h);
+void ModuleKeepNearestCarContact(struct Car *a, s32 b, struct Car *c, s32 d, struct CarContact *e, u8 *f, s32 g, s32 h);
 void ModuleDummyCarHitHook(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g);
 void ModuleDummyCarDamageHook(s32 carIdx, u8 damageStage);
 void ModuleComputeForwardSpeed(struct Car *a);
@@ -139,25 +118,25 @@ u8 ModuleCollideCars(struct Car *car)
             t = (w * e) / u;
             t += v[0];
             if (t >= -0xF00 && t <= 0xF00)
-                ModuleKeepNearestCarContact(car, a2, other, 0, &gUnk_0203DEB0, &hit, -u, (e << 16) / -u);
+                ModuleKeepNearestCarContact(car, a2, other, 0, &gModule_CarCollContact, &hit, -u, (e << 16) / -u);
         }
         if (u > 0 && v[3] >= -0x1C00 && (e = -0x1C00 - v[1]) >= 0) {
             t = (w * e) / u;
             t += v[0];
             if (t >= -0xF00 && t <= 0xF00)
-                ModuleKeepNearestCarContact(car, a2, other, 1, &gUnk_0203DEB0, &hit, u, (e << 16) / u);
+                ModuleKeepNearestCarContact(car, a2, other, 1, &gModule_CarCollContact, &hit, u, (e << 16) / u);
         }
         if (w > 0 && v[2] >= -0xF00 && (e = -0xF00 - v[0]) >= 0) {
             t = (e * u) / w;
             t += v[1];
             if (t >= -0x1C00 && t <= 0x1C00)
-                ModuleKeepNearestCarContact(car, a2, other, 2, &gUnk_0203DEB0, &hit, w, (e << 16) / w);
+                ModuleKeepNearestCarContact(car, a2, other, 2, &gModule_CarCollContact, &hit, w, (e << 16) / w);
         }
         if (w < 0 && v[2] <= 0xF00 && (e = v[0] - 0xF00) >= 0) {
             t = (e * u) / w;
             t += v[1];
             if (t >= -0x1C00 && t <= 0x1C00)
-                ModuleKeepNearestCarContact(car, a2, other, 3, &gUnk_0203DEB0, &hit, -w, (e << 16) / -w);
+                ModuleKeepNearestCarContact(car, a2, other, 3, &gModule_CarCollContact, &hit, -w, (e << 16) / -w);
         }
 
         d[0] = gModule_CarCollFrameOther[4];
@@ -178,39 +157,39 @@ u8 ModuleCollideCars(struct Car *car)
             t = (w * e) / u;
             t += v[0];
             if (t >= -0xF00 && t <= 0xF00)
-                ModuleKeepNearestCarContact(other, a2, car, 0, &gUnk_0203DEB0, &hit, -u, (e << 16) / -u);
+                ModuleKeepNearestCarContact(other, a2, car, 0, &gModule_CarCollContact, &hit, -u, (e << 16) / -u);
         }
         if (u > 0 && v[3] >= -0x1C00 && (e = -0x1C00 - v[1]) >= 0) {
             t = (w * e) / u;
             t += v[0];
             if (t >= -0xF00 && t <= 0xF00)
-                ModuleKeepNearestCarContact(other, a2, car, 1, &gUnk_0203DEB0, &hit, u, (e << 16) / u);
+                ModuleKeepNearestCarContact(other, a2, car, 1, &gModule_CarCollContact, &hit, u, (e << 16) / u);
         }
         if (w > 0 && v[2] >= -0xF00 && (e = -0xF00 - v[0]) >= 0) {
             t = (e * u) / w;
             t += v[1];
             if (t >= -0x1C00 && t <= 0x1C00)
-                ModuleKeepNearestCarContact(other, a2, car, 2, &gUnk_0203DEB0, &hit, w, (e << 16) / w);
+                ModuleKeepNearestCarContact(other, a2, car, 2, &gModule_CarCollContact, &hit, w, (e << 16) / w);
         }
         if (w < 0 && v[2] <= 0xF00 && (e = v[0] - 0xF00) >= 0) {
             t = (e * u) / w;
             t += v[1];
             if (t >= -0x1C00 && t <= 0x1C00)
-                ModuleKeepNearestCarContact(other, a2, car, 3, &gUnk_0203DEB0, &hit, -w, (e << 16) / -w);
+                ModuleKeepNearestCarContact(other, a2, car, 3, &gModule_CarCollContact, &hit, -w, (e << 16) / -w);
         }
     }
 
     if (hit != 0) {
-        a = gUnk_0203DEB0.a;
-        b = gUnk_0203DEB0.c;
+        a = gModule_CarCollContact.carA;
+        b = gModule_CarCollContact.carB;
         ang = b->heading >> 8;
         s = gModule_SinTable[ang];
         c = gModule_SinTable[ang + 0x40];
-        nx = gUnk_0202AF08[gUnk_0203DEB0.d].f0;
-        nz = gUnk_0202AF08[gUnk_0203DEB0.d].f1;
+        nx = gModule_CarCollisionNormals[gModule_CarCollContact.normalIndex].normalX;
+        nz = gModule_CarCollisionNormals[gModule_CarCollContact.normalIndex].normalZ;
         m[0] = (nx * c - nz * s) >> 4;
         m[1] = (nx * s + nz * c) >> 4;
-        f = -gUnk_0203DEB0.g;
+        f = -gModule_CarCollContact.closingSpeed;
         q[0] = -(f * m[0]) / 256;
         q[1] = -(f * m[1]) / 256;
         a->velX += q[0];

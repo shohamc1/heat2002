@@ -68,7 +68,7 @@ s32 TestSegmentVsWalls(struct Seg *seg, struct Box *box2, struct Box *box,
     po = out;
     pbox = box;
     for (w = wallList; *w != 0xFFFF; w++) {
-        wall = &gUnk_0202CC40[*w];
+        wall = &gWalls[*w];
         pax = gWallVertices[wall->f00].x;
         pay = gWallVertices[wall->f00].y;
         pbx = gWallVertices[wall->f02].x;

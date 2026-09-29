@@ -33,9 +33,9 @@ void ModuleLoadTrackWalls(u32 idx)
         eight = 8;
         twelve = 0xC;
         sixteen = 0x10;
-        gUnk_0203DE60 = (struct WallRec *)*((u32 *)((idx * 20) + ((wallTable = gUnk_0202AED4) + four)));
+        gModule_Walls = (struct WallRec *)*((u32 *)((idx * 20) + ((wallTable = gUnk_0202AED4) + four)));
         wallTableCopy = wallTable;
-        gUnk_0203DE64 = (struct Pt *)*((u32 *)((*wallTablePtr) + ((idx * 2) * 10)));
+        gModule_WallVertices = (struct Pt *)*((u32 *)((*wallTablePtr) + ((idx * 2) * 10)));
         gUnk_0203DE68 = *((u32 *)((idx * 20) + (wallTable + eight)));
     }
     gUnk_0203DE8C = (u16 *)*((u32 *)((idx * 20) + ((*wallTablePtr) + twelve)));
