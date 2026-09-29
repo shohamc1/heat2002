@@ -29,7 +29,7 @@ void SaveSeason(void)
     p = gSeasonSaveFlag;
     *p = 1;
     p += 27;
-    *p++ = (*(u8 *)&gSeasonRaceIndex);
+    *p++ = gSeasonRaceIndex[0];
     *p++ = (gQualifyingDone << 8) | gPracticeDone;
     *p++ = gSeasonRaceIncomplete;
     *p++ = gChampionshipIndex;
@@ -64,7 +64,7 @@ void LoadSeason(void)
     StopAllSongsAndVSyncOff();
     ReadSaveBlocks(0x40, 0xF0);
     p = gSeasonSaveData;
-    (*(u8 *)&gSeasonRaceIndex) = *p++;
+    gSeasonRaceIndex[0] = *p++;
     gQualifyingDone = *p >> 8;
     gPracticeDone = *p++;
     gSeasonRaceIncomplete = *p++;

@@ -181,7 +181,7 @@ s8 SaveCareerScreen(void)
     s8 done = 0;
     /* IsSeasonSaved: this file's old prototypes return s8; the matched definitions return wider types */
     if (((s8 (*)(void))IsSeasonSaved)() != 0) {
-        if (((s8 (*)(void))CareerOverwriteConfirm)() == 0)
+        if (CareerOverwriteConfirm() == 0)
             return;
     }
     LoadMenuScreen(6, (u16 *)buf);

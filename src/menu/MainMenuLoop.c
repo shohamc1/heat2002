@@ -325,7 +325,7 @@ u32 MainMenuLoop(void)
             gQualifyingDone = 0;
             gPracticeDone = 0;
             gSeasonRaceIncomplete = 0;
-            (*(u8 *)&gSeasonRaceIndex) = 0;
+            gSeasonRaceIndex[0] = 0;
 
         state0_menu:
             choice = SeasonSessionMenu(gQualifyingDone | gSeasonRaceIncomplete, gSeasonRaceIncomplete | gPracticeDone);
@@ -333,7 +333,7 @@ u32 MainMenuLoop(void)
                 goto state0_done;
 
             gSeasonSession = choice;
-            gTrackId = gChampionshipTrackOrder[(*(u8 *)&gSeasonRaceIndex)];
+            gTrackId = gChampionshipTrackOrder[gSeasonRaceIndex[0]];
             switch (gSeasonSession) {
                 case 0:
                     gNumLaps = 10;
@@ -389,14 +389,14 @@ u32 MainMenuLoop(void)
                         RaceResultsScreen();
                         AwardAllRacePoints();
                         StandingsScreen();
-                        (*(u8 *)&gSeasonRaceIndex)++;
+                        gSeasonRaceIndex[0]++;
                     } else {
                         gSeasonRaceIncomplete = 1;
                     }
                     break;
             }
 
-            if ((*(u8 *)&gSeasonRaceIndex) != 0x0B)
+            if (gSeasonRaceIndex[0] != 0x0B)
                 goto state0_menu;
             TrophyScreen(GetPlayerStanding());
 
@@ -658,7 +658,7 @@ u32 MainMenuLoop(void)
             gQualifyingDone = 0;
             gPracticeDone = 0;
             gSeasonRaceIncomplete = 0;
-            (*(u8 *)&gSeasonRaceIndex) = 0;
+            gSeasonRaceIndex[0] = 0;
 
         state5_menu:
             choice = CareerSessionMenu(gQualifyingDone | gSeasonRaceIncomplete, gSeasonRaceIncomplete | gPracticeDone);
@@ -666,7 +666,7 @@ u32 MainMenuLoop(void)
                 goto state5_done;
 
             gSeasonSession = choice;
-            gTrackId = gChampionshipTrackOrder[(*(u8 *)&gSeasonRaceIndex)];
+            gTrackId = gChampionshipTrackOrder[gSeasonRaceIndex[0]];
             switch (gSeasonSession) {
                 case 0:
                     gCars[0].finishTime = 0;
@@ -721,7 +721,7 @@ u32 MainMenuLoop(void)
                         RaceResultsScreen();
                         AwardAllRacePoints();
                         StandingsScreen();
-                        (*(u8 *)&gSeasonRaceIndex)++;
+                        gSeasonRaceIndex[0]++;
                     } else {
                         gSeasonRaceIncomplete = 1;
                     }
@@ -731,7 +731,7 @@ u32 MainMenuLoop(void)
                     break;
             }
 
-            if ((*(u8 *)&gSeasonRaceIndex) != 0x0B)
+            if (gSeasonRaceIndex[0] != 0x0B)
                 goto state5_menu;
             score = GetPlayerStanding();
             TrophyScreen(score);

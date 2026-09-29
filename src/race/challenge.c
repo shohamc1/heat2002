@@ -23,7 +23,7 @@ u8 IsProgressPointCrossed(s32 point)
 
 u8 IsChallengeTimeWithin(s32 limitMs)
 {
-    if ((*(s32 *)&gChallengeTimerSec) * 1000 + gChallengeTimerMs <= limitMs)
+    if (gChallengeTimerSec * 1000 + gChallengeTimerMs <= limitMs)
         return 1;
     return 0;
 }
@@ -42,9 +42,9 @@ void DrawChallengeTimer(void)
     dest = tilemap + 0x254;
     ((void (*)(u32 *, u32))DrawBigDigit)(dest, gUnk_0202CAE4);
     dest = tilemap + 0x25A;
-    ((void (*)(u32 *, u32))DrawBigDigit)(dest, (*(s32 *)&gChallengeTimerSec) / 10);
+    ((void (*)(u32 *, u32))DrawBigDigit)(dest, gChallengeTimerSec / 10);
     dest = tilemap + 0x25E;
-    ((void (*)(u32 *, u32))DrawBigDigit)(dest, (*(s32 *)&gChallengeTimerSec) % 10);
+    ((void (*)(u32 *, u32))DrawBigDigit)(dest, gChallengeTimerSec % 10);
     dest = tilemap + 0x264;
     ((void (*)(u32 *, u32))DrawBigDigit)(dest, gChallengeTimerMs / 100 % 10);
     dest = tilemap + 0x268;
