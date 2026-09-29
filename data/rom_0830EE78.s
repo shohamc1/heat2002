@@ -33,6 +33,6 @@
 	.endm
 @ End embedded Luvdis macros
 	.thumb
-	.global gUnk_0830EE78
-gUnk_0830EE78:
-	.incbin "build/assets/graphics/rl_0830EE78.bin"
+	.global gBootSplash2Gfx
+gBootSplash2Gfx:
+	.incbin "build/assets/graphics/screens/boot_splash2.gfx.bin"

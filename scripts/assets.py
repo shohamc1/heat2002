@@ -56,6 +56,17 @@ padded with copies of tile 0, and the padding cells must stay that way.
 The tile count is the blob's, so painting new tiles into the padding
 fails the build.
 
+A "bitmap" asset is a full-screen mode-4 background (240x160, 8bpp
+linear pixels, 256 colours) whose gfx the ROM stores as one RL stream:
+ShowBootSplash2 and ShowBootSplash3 draw the two there are. `unpack`
+decompresses the stream into the editable .png; `extract` recompresses
+the picture with the original tool's RL algorithm. The stream's slot is
+a fixed size, so a picture that recompresses bigger fails the build;
+the padding after a shorter stream is zero, as the BIOS never reads it.
+The picture's palette is the 512 bytes before the stream and stays a
+separate asset (a "pal", or raw when it uses bit 15): the .png's
+colours are a preview.
+
 `convert` writes an editable .png next to each "rl"/"lz" graphics .bin
 (gbagfx), then converts it back and checks that the result matches the
 .bin byte for byte. It needs the tools from `make tools`; `make convert`
@@ -107,7 +118,7 @@ EDIT = ROOT / "assets"
 TOOLS = ROOT / "tools" / "bin"
 # Asset types the build makes from an editable file, and that file's suffix.
 EDITABLE = {"midi": ".mid", "aif": ".aif", "screen": ".png", "pal": ".pal",
-            "tiles": ".png"}
+            "tiles": ".png", "bitmap": ".png"}
 # Every "screen" is a 240x160 background: 15x10 metatiles of 2x2 8x8 tiles.
 SCREEN_W, SCREEN_H = 240, 160
 
@@ -349,6 +360,92 @@ def read_screen_png(path):
     return read_indexed_png(path, SCREEN_W, SCREEN_H, 256)
 
 
+def rl_decompress(data):
+    """A BIOS RLUnCompVram stream: 0x30, the size, then packets. A flag
+    with the high bit set repeats the next byte (flag&0x7F)+3 times; a
+    clear flag copies that many literals plus one."""
+    size = data[1] | data[2] << 8 | data[3] << 16
+    out, pos = bytearray(), 4
+    try:
+        while len(out) < size:
+            flag = data[pos]
+            pos += 1
+            if flag & 0x80:
+                out += data[pos:pos + 1] * ((flag & 0x7F) + 3)
+                pos += 1
+            else:
+                out += data[pos:pos + (flag & 0x7F) + 1]
+                pos += (flag & 0x7F) + 1
+    except IndexError:
+        sys.exit("bad RL stream: packet runs past the end")
+    return bytes(out[:size])
+
+
+def rl_compress(src):
+    """The original tool's RL compressor: literals until three equal
+    bytes, then one run. 653 of the ROM's 672 streams are exactly this;
+    the rest are the documented "overrun" and "raw" ones. No padding: the
+    ROM's streams end where their last packet ends."""
+    out = bytearray([0x30, len(src) & 0xFF, len(src) >> 8 & 0xFF,
+                     len(src) >> 16])
+    pos = 0
+    while True:
+        compress = False
+        start, length = pos, 0
+        while pos < len(src) and length < 0x80:
+            compress = pos + 2 < len(src) \
+                and src[pos] == src[pos + 1] == src[pos + 2]
+            if compress:
+                break
+            pos += 1
+            length += 1
+        if length:
+            out.append(length - 1)
+            out += src[start:start + length]
+        if compress:
+            data, run = src[pos], 0
+            while run < 0x82 and pos + run < len(src) and src[pos + run] == data:
+                run += 1
+            out.append(0x80 | (run - 3))
+            out.append(data)
+            pos += run
+        if pos == len(src):
+            return bytes(out)
+
+
+def bitmap_part(asset):
+    """A bitmap screen's blob: the RL stream of its 240x160 8bpp picture.
+    Its palette is a separate asset, which the .png only previews."""
+    return (OUT / asset["path"]).with_suffix(".gfx.bin")
+
+
+def build_bitmap(asset):
+    """Build a bitmap screen's stream from its editable .png alone. The
+    stream's slot is a fixed size, so a picture that recompresses bigger
+    no longer fits and fails the build."""
+    png = editable(asset)
+    pixels, _ = read_indexed_png(png, SCREEN_W, SCREEN_H, 256)
+    stream = rl_compress(pixels)
+    room = asset["size"]
+    if len(stream) > room:
+        sys.exit(f"{png}: recompresses to {len(stream)} bytes, the ROM has "
+                 f"room for {room}: a bitmap screen's blob is a fixed size")
+    path = bitmap_part(asset)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(stream + bytes(room - len(stream)))
+
+
+def unpack_bitmap(asset, rom, out):
+    """Write a bitmap screen's editable .png: the RL stream decompressed
+    to linear mode-4 pixels. The picture's palette is the 512 bytes
+    before the stream, and only previews: a palette that uses the GBA's
+    unused bit 15 has no editable form, so palettes stay separate
+    assets."""
+    start = int(asset["start"], 16) - ROM_BASE
+    pixels = rl_decompress(rom[start:start + asset["size"]])
+    write_indexed_png(out, pixels, SCREEN_W, SCREEN_H, rom[start - 512:start])
+
+
 def tiles_layout(asset):
     """(depth, tiles per row, tile count) of a tiles sheet. The blob is
     8*depth bytes per tile: 32 at 4bpp, 64 at 8bpp."""
@@ -477,6 +574,10 @@ def extract():
             unpack_asset(asset, rom)
             build_tiles(asset)
             continue
+        if kind == "bitmap":
+            unpack_asset(asset, rom)
+            build_bitmap(asset)
+            continue
         start = int(asset["start"], 16) - ROM_BASE
         path = OUT / asset["path"]
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -515,6 +616,8 @@ def unpack_asset(asset, rom=None):
             write_jasc_pal(tmp, rom[start:start + asset["size"]])
         elif asset["type"] == "tiles":
             unpack_tiles(asset, rom, tmp)
+        elif asset["type"] == "bitmap":
+            unpack_bitmap(asset, rom, tmp)
         else:
             raw = Path(t) / "sample.bin"
             raw.write_bytes(rom[start:start + asset["size"]])
@@ -559,6 +662,11 @@ def blank():
                 path = screen_part(asset, part)
                 path.parent.mkdir(parents=True, exist_ok=True)
                 path.write_bytes(bytes(size))
+            continue
+        if asset.get("type") == "bitmap":
+            path = bitmap_part(asset)
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(bytes(asset["size"]))
             continue
         path = built(asset)
         path.parent.mkdir(parents=True, exist_ok=True)

@@ -33,7 +33,7 @@
 	.endm
 @ End embedded Luvdis macros
 	.thumb
-	.global gUnk_082B370C
-gUnk_082B370C:
-	.incbin "build/assets/graphics/rl_082B370C.bin"
+	.global gBootSplash3Gfx
+gBootSplash3Gfx:
+	.incbin "build/assets/graphics/screens/boot_splash3.gfx.bin"
 	.align 2, 0

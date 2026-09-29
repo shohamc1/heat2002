@@ -2845,11 +2845,6 @@
   "size": 3888
  },
  {
-  "path": "unknown/data_082B350C.bin",
-  "start": "0x082B350C",
-  "size": 512
- },
- {
   "path": "unknown/data_082B86F0.bin",
   "start": "0x082B86F0",
   "size": 32

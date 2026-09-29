@@ -3,9 +3,9 @@
 #include "functions.h"
 #include "gba/syscall.h"
 
-extern u32 gUnk_082B370C[];
+extern u32 gBootSplash3Gfx[];
 extern u32 gBootSplash3Palette[];
-extern u32 gUnk_0830EE78[];
+extern u32 gBootSplash2Gfx[];
 extern u32 gBootSplash2Palette[];
 
 void ShowBootSplash3(void)
@@ -16,7 +16,7 @@ void ShowBootSplash3(void)
     *reg = 0x81;
     reg = &REG_DISPCNT;
     *reg = 0x444;
-    src = (u32)gUnk_082B370C;
+    src = (u32)gBootSplash3Gfx;
     RLUnCompVram(src, VRAM);
     FadeToBrightenedPalette(gBootSplash3Palette, 0xF);
     WaitFramesOrKey(0x78);
@@ -34,7 +34,7 @@ void ShowBootSplash2(void)
     *reg = 0x81;
     reg = &REG_DISPCNT;
     *reg = 0x444;
-    src = (u32)gUnk_0830EE78;
+    src = (u32)gBootSplash2Gfx;
     RLUnCompVram(src, VRAM);
     FadeToBrightenedPalette(gBootSplash2Palette, 0xF);
     WaitFramesOrKey(0x78);
