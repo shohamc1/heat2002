@@ -50,7 +50,7 @@ gUnk_082F9360:
 	.align 2, 0
 	.global gUnk_082F98C0
 gUnk_082F98C0:
-	.incbin "build/assets/unknown/data_082F98C0.bin"
+	.incbin "build/assets/graphics/palettes/pal_082F98C0.pal.bin"
 	.global gUnk_082F9AC0
 gUnk_082F9AC0:
 	.incbin "build/assets/graphics/rl_082F9AC0.bin"
@@ -69,7 +69,7 @@ gUnk_082FB3FC:
 	.align 2, 0
 	.global gUnk_082FB6AC
 gUnk_082FB6AC:
-	.incbin "build/assets/unknown/data_082FB6AC.bin"
+	.incbin "build/assets/graphics/palettes/pal_082FB6AC.pal.bin"
 	.global gUnk_082FB8AC
 gUnk_082FB8AC:
 	.incbin "build/assets/graphics/rl_082FB8AC.bin"
@@ -86,7 +86,7 @@ gUnk_082FCAD8:
 	.align 2, 0
 	.global gUnk_082FD0F8
 gUnk_082FD0F8:
-	.incbin "build/assets/unknown/data_082FD0F8.bin"
+	.incbin "build/assets/graphics/palettes/pal_082FD0F8.pal.bin"
 	.global gUnk_082FD2F8
 gUnk_082FD2F8:
 	.incbin "build/assets/graphics/rl_082FD2F8.bin"
@@ -103,7 +103,7 @@ gUnk_082FEDC4:
 	.align 2, 0
 	.global gUnk_082FF41C
 gUnk_082FF41C:
-	.incbin "build/assets/unknown/data_082FF41C.bin"
+	.incbin "build/assets/graphics/palettes/pal_082FF41C.pal.bin"
 	.global gUnk_082FF61C
 gUnk_082FF61C:
 	.incbin "build/assets/graphics/rl_082FF61C.bin"
@@ -121,7 +121,7 @@ gUnk_0830076C:
 	.align 2, 0
 	.global gUnk_08300BCC
 gUnk_08300BCC:
-	.incbin "build/assets/unknown/data_08300BCC.bin"
+	.incbin "build/assets/graphics/palettes/pal_08300BCC.pal.bin"
 	.global gUnk_08300DCC
 gUnk_08300DCC:
 	.incbin "build/assets/graphics/rl_08300DCC.bin"
@@ -139,7 +139,7 @@ gUnk_08302764:
 	.align 2, 0
 	.global gUnk_08302E00
 gUnk_08302E00:
-	.incbin "build/assets/unknown/data_08302E00.bin"
+	.incbin "build/assets/graphics/palettes/pal_08302E00.pal.bin"
 	.global gUnk_08303000
 gUnk_08303000:
 	.incbin "build/assets/graphics/rl_08303000.bin"
@@ -157,7 +157,7 @@ gUnk_08304558:
 	.incbin "build/assets/graphics/rl_08304558.bin"
 	.global gUnk_083049FC
 gUnk_083049FC:
-	.incbin "build/assets/unknown/data_083049FC.bin"
+	.incbin "build/assets/graphics/palettes/pal_083049FC.pal.bin"
 	.global gUnk_08304BFC
 gUnk_08304BFC:
 	.incbin "build/assets/graphics/rl_08304BFC.bin"
@@ -176,7 +176,7 @@ gUnk_08305D8C:
 	.align 2, 0
 	.global gUnk_08306238
 gUnk_08306238:
-	.incbin "build/assets/unknown/data_08306238.bin"
+	.incbin "build/assets/graphics/palettes/pal_08306238.pal.bin"
 	.global gUnk_08306438
 gUnk_08306438:
 	.incbin "build/assets/graphics/rl_08306438.bin"
@@ -195,7 +195,7 @@ gUnk_08308110:
 	.align 2, 0
 	.global gUnk_0830877C
 gUnk_0830877C:
-	.incbin "build/assets/unknown/data_0830877C.bin"
+	.incbin "build/assets/graphics/palettes/pal_0830877C.pal.bin"
 	.global gUnk_0830897C
 gUnk_0830897C:
 	.incbin "build/assets/graphics/rl_0830897C.bin"
@@ -212,7 +212,7 @@ gUnk_0830A550:
 	.align 2, 0
 	.global gUnk_0830AB68
 gUnk_0830AB68:
-	.incbin "build/assets/unknown/data_0830AB68.bin"
+	.incbin "build/assets/graphics/palettes/pal_0830AB68.pal.bin"
 	.global gUnk_0830AD68
 gUnk_0830AD68:
 	.incbin "build/assets/graphics/rl_0830AD68.bin"
@@ -229,7 +229,7 @@ gUnk_0830C23C:
 	.align 2, 0
 	.global gUnk_0830CA10
 gUnk_0830CA10:
-	.incbin "build/assets/unknown/data_0830CA10.bin"
+	.incbin "build/assets/graphics/palettes/pal_0830CA10.pal.bin"
 	.global gUnk_0830CC10
 gUnk_0830CC10:
 	.incbin "build/assets/graphics/rl_0830CC10.bin"
@@ -248,7 +248,7 @@ gUnk_0830E358:
 	.align 2, 0
 	.global gUnk_0830E418
 gUnk_0830E418:
-	.incbin "build/assets/unknown/data_0830E418.bin"
+	.incbin "build/assets/graphics/palettes/pal_0830E418.pal.bin"
 	.global gTrackSelectLeftArrowGfx
 gTrackSelectLeftArrowGfx:
 	.incbin "build/assets/graphics/rl_0830E618.bin"

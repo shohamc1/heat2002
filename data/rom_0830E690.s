@@ -37,7 +37,7 @@
 gTrackSelectRightArrowGfx:
 	.incbin "build/assets/graphics/rl_0830E690.bin"
 	.align 2, 0
-	.incbin "build/assets/unknown/data_0830E6EC.bin"
+	.incbin "build/assets/graphics/palettes/pal_0830E6EC.pal.bin"
 	.global gUnk_0830E70C
 gUnk_0830E70C:
 	.incbin "build/assets/graphics/rl_0830E70C.bin"

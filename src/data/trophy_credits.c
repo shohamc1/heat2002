@@ -8,8 +8,8 @@
  * editable assets/graphics/screens/credits_pageN.png: 256-color palette,
  * 15x10 metatile map, the metatile tile-index table (106 rows for page 1,
  * whose map's max index is 0x69; 105 for pages 2 and 3), then 8bpp gfx. */
-const u8 gBronzeTrophyPalette[32] = INCBIN_U8("build/assets/unknown/data_08310140.bin");
-const u8 gGoldTrophyPalette[32] = INCBIN_U8("build/assets/unknown/data_08310160.bin");
+const u8 gBronzeTrophyPalette[32] = INCBIN_U8("build/assets/graphics/palettes/bronze_trophy.pal.bin");
+const u8 gGoldTrophyPalette[32] = INCBIN_U8("build/assets/graphics/palettes/gold_trophy.pal.bin");
 const u8 gCreditsPage1Palette[512] = INCBIN_U8("build/assets/graphics/screens/credits_page1.pal.bin");
 
 // Its users declare it as u8 x[].

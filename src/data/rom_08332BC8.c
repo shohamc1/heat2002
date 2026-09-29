@@ -6,7 +6,7 @@
  * the 4bpp glyph tiles, and the two graphics blobs LoadTrack copies
  * (a 256-color BG palette and a BG tilemap). */
 
-const u8 gFontPalette[] = INCBIN_U8("build/assets/unknown/data_08332BC8.bin");
+const u8 gFontPalette[] = INCBIN_U8("build/assets/graphics/palettes/font.pal.bin");
 /* Control-character pad in front of gTextCharMap: DrawSpriteText
  * indexes this table by the raw character byte, so printable
  * characters run on into gTextCharMap below; 0x3E0 (992) is a
@@ -58,7 +58,7 @@ const u16 gTextGlyphTileIndices[] = {
 const u32 gTextLayerTiles[] = INCBIN_U32("build/assets/unknown/data_0833338C.bin");
 /* Full 256-color BG palette; LoadTrack copies only its first 16
  * colors into a scratch buffer. Graphics, kept as INCBIN. */
-const u16 gTrackBgPalette[] = INCBIN_U16("build/assets/unknown/data_08334BCC.bin");
+const u16 gTrackBgPalette[] = INCBIN_U16("build/assets/graphics/palettes/race_hud_bg.pal.bin");
 // Its users declare it as u16 x[], u8 x[].
 /* HUD label layout grid: byte offsets into this table give the
  * gFontTileEntries index of each fixed label cell. */

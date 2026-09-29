@@ -35,85 +35,85 @@
 	.thumb
 	.global gUnk_08330D38
 gUnk_08330D38:
-	.incbin "build/assets/unknown/data_08330D38.bin"
+	.incbin "build/assets/graphics/palettes/pal_08330D38.pal.bin"
 	.global gUnk_08330D58
 gUnk_08330D58:
-	.incbin "build/assets/unknown/data_08330D58.bin"
+	.incbin "build/assets/graphics/palettes/pal_08330D58.pal.bin"
 	.global gUnk_08330D78
 gUnk_08330D78:
-	.incbin "build/assets/unknown/data_08330D78.bin"
+	.incbin "build/assets/graphics/palettes/pal_08330D78.pal.bin"
 	.global gUnk_08330D98
 gUnk_08330D98:
-	.incbin "build/assets/unknown/data_08330D98.bin"
+	.incbin "build/assets/graphics/palettes/pal_08330D98.pal.bin"
 	.global gUnk_08330DB8
 gUnk_08330DB8:
-	.incbin "build/assets/unknown/data_08330DB8.bin"
+	.incbin "build/assets/graphics/palettes/pal_08330DB8.pal.bin"
 	.global gUnk_08330DD8
 gUnk_08330DD8:
-	.incbin "build/assets/unknown/data_08330DD8.bin"
+	.incbin "build/assets/graphics/palettes/pal_08330DD8.pal.bin"
 	.global gUnk_08330DF8
 gUnk_08330DF8:
-	.incbin "build/assets/unknown/data_08330DF8.bin"
+	.incbin "build/assets/graphics/palettes/pal_08330DF8.pal.bin"
 	.global gUnk_08330E18
 gUnk_08330E18:
-	.incbin "build/assets/unknown/data_08330E18.bin"
+	.incbin "build/assets/graphics/palettes/pal_08330E18.pal.bin"
 	.global gUnk_08330E38
 gUnk_08330E38:
-	.incbin "build/assets/unknown/data_08330E38.bin"
+	.incbin "build/assets/graphics/palettes/pal_08330E38.pal.bin"
 	.global gUnk_08330E58
 gUnk_08330E58:
-	.incbin "build/assets/unknown/data_08330E58.bin"
+	.incbin "build/assets/graphics/palettes/pal_08330E58.pal.bin"
 	.global gUnk_08330E78
 gUnk_08330E78:
-	.incbin "build/assets/unknown/data_08330E78.bin"
+	.incbin "build/assets/graphics/palettes/pal_08330E78.pal.bin"
 	.global gUnk_08330E98
 gUnk_08330E98:
-	.incbin "build/assets/unknown/data_08330E98.bin"
+	.incbin "build/assets/graphics/palettes/pal_08330E98.pal.bin"
 	.global gUnk_08330EB8
 gUnk_08330EB8:
-	.incbin "build/assets/unknown/data_08330EB8.bin"
+	.incbin "build/assets/graphics/palettes/pal_08330EB8.pal.bin"
 	.global gUnk_08330ED8
 gUnk_08330ED8:
-	.incbin "build/assets/unknown/data_08330ED8.bin"
+	.incbin "build/assets/graphics/palettes/pal_08330ED8.pal.bin"
 	.global gUnk_08330EF8
 gUnk_08330EF8:
-	.incbin "build/assets/unknown/data_08330EF8.bin"
+	.incbin "build/assets/graphics/palettes/pal_08330EF8.pal.bin"
 	.global gUnk_08330F18
 gUnk_08330F18:
-	.incbin "build/assets/unknown/data_08330F18.bin"
+	.incbin "build/assets/graphics/palettes/pal_08330F18.pal.bin"
 	.global gUnk_08330F38
 gUnk_08330F38:
-	.incbin "build/assets/unknown/data_08330F38.bin"
+	.incbin "build/assets/graphics/palettes/pal_08330F38.pal.bin"
 	.global gUnk_08330F58
 gUnk_08330F58:
-	.incbin "build/assets/unknown/data_08330F58.bin"
+	.incbin "build/assets/graphics/palettes/pal_08330F58.pal.bin"
 	.global gUnk_08330F78
 gUnk_08330F78:
-	.incbin "build/assets/unknown/data_08330F78.bin"
+	.incbin "build/assets/graphics/palettes/pal_08330F78.pal.bin"
 	.global gUnk_08330F98
 gUnk_08330F98:
-	.incbin "build/assets/unknown/data_08330F98.bin"
+	.incbin "build/assets/graphics/palettes/pal_08330F98.pal.bin"
 	.global gUnk_08330FB8
 gUnk_08330FB8:
-	.incbin "build/assets/unknown/data_08330FB8.bin"
+	.incbin "build/assets/graphics/palettes/pal_08330FB8.pal.bin"
 	.global gUnk_08330FD8
 gUnk_08330FD8:
-	.incbin "build/assets/unknown/data_08330FD8.bin"
+	.incbin "build/assets/graphics/palettes/pal_08330FD8.pal.bin"
 	.global gUnk_08330FF8
 gUnk_08330FF8:
-	.incbin "build/assets/unknown/data_08330FF8.bin"
+	.incbin "build/assets/graphics/palettes/pal_08330FF8.pal.bin"
 	.global gUnk_08331018
 gUnk_08331018:
-	.incbin "build/assets/unknown/data_08331018.bin"
+	.incbin "build/assets/graphics/palettes/pal_08331018.pal.bin"
 	.global gUnk_08331038
 gUnk_08331038:
-	.incbin "build/assets/unknown/data_08331038.bin"
+	.incbin "build/assets/graphics/palettes/pal_08331038.pal.bin"
 	.global gUnk_08331058
 gUnk_08331058:
-	.incbin "build/assets/unknown/data_08331058.bin"
+	.incbin "build/assets/graphics/palettes/pal_08331058.pal.bin"
 	.global gUnk_08331078
 gUnk_08331078:
-	.incbin "build/assets/unknown/data_08331078.bin"
+	.incbin "build/assets/graphics/palettes/pal_08331078.pal.bin"
 	.global gUnk_08331098
 gUnk_08331098:
 	.incbin "build/assets/graphics/rl_08331098.bin"

@@ -37,7 +37,7 @@
 gUnk_083387A8:
 	.incbin "build/assets/graphics/rl_083387A8.bin"
 	.align 2, 0
-	.incbin "build/assets/unknown/data_083387F0.bin"
+	.incbin "build/assets/graphics/palettes/pal_083387F0.pal.bin"
 	.global gUnk_08338810
 gUnk_08338810:
 	.incbin "build/assets/graphics/rl_08338810.bin"

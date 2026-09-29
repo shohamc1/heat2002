@@ -40,6 +40,13 @@ order is the ROM's. `options` carries the screen's metatile and tile
 counts, which fix the blob sizes, so an edit that adds unique metatiles
 or tiles no longer fits and fails the build.
 
+A "pal" asset is one palette blob as an editable JASC .pal text file
+(assets/graphics/palettes/NAME.pal, the format graphics editors call
+"Microsoft Palette"): one `R G B` line per colour, in the ROM's order.
+`unpack` writes it from the ROM only when it's missing; `extract` reads
+it back into the BGR555 halfwords the ROM holds. The colour count is
+the blob's, so adding or removing a line fails the build.
+
 `convert` writes an editable .png next to each "rl"/"lz" graphics .bin
 (gbagfx), then converts it back and checks that the result matches the
 .bin byte for byte. It needs the tools from `make tools`; `make convert`
@@ -90,7 +97,7 @@ OUT = ROOT / "build" / "assets"
 EDIT = ROOT / "assets"
 TOOLS = ROOT / "tools" / "bin"
 # Asset types the build makes from an editable file, and that file's suffix.
-EDITABLE = {"midi": ".mid", "aif": ".aif", "screen": ".png"}
+EDITABLE = {"midi": ".mid", "aif": ".aif", "screen": ".png", "pal": ".pal"}
 # Every "screen" is a 240x160 background: 15x10 metatiles of 2x2 8x8 tiles.
 SCREEN_W, SCREEN_H = 240, 160
 
@@ -113,7 +120,9 @@ def editable(asset):
 def built(asset):
     """The file under build/assets/ that data/*.s includes for the asset."""
     path = OUT / asset["path"]
-    return path.with_suffix(".s") if asset.get("type") == "midi" else path
+    if asset.get("type") == "midi":
+        return path.with_suffix(".s")
+    return path.with_suffix(".pal.bin") if asset.get("type") == "pal" else path
 
 
 def find(path):
@@ -204,6 +213,39 @@ def bgr555_to_rgb8(color):
     def up(v):
         return v << 3 | v >> 2
     return up(color & 31), up(color >> 5 & 31), up(color >> 10 & 31)
+
+
+def write_jasc_pal(path, palette):
+    """Write a palette blob (BGR555 u16s) as a JASC .pal text file, the
+    format every graphics editor's colour picker reads and writes."""
+    colors = struct.unpack(f"<{len(palette) // 2}H", palette)
+    lines = ["JASC-PAL", "0100", str(len(colors))]
+    lines += [f"{r} {g} {b}" for r, g, b in map(bgr555_to_rgb8, colors)]
+    path.write_text("\r\n".join(lines) + "\r\n")
+
+
+def read_jasc_pal(path, size):
+    """Read a JASC .pal back into BGR555 u16s, exactly `size` bytes."""
+    lines = path.read_text().splitlines()
+    try:
+        count = int(lines[2].split()[0])
+    except (IndexError, ValueError):
+        sys.exit(f"{path}: not a JASC-PAL file (want JASC-PAL / 0100 / N)")
+    colors, out = lines[3:], bytearray()
+    if lines[0].strip() != "JASC-PAL" or lines[1].strip() != "0100" \
+            or len(colors) != count:
+        sys.exit(f"{path}: says {count} colors but has {len(colors)} lines")
+    for line in colors:
+        rgb = line.split()
+        if len(rgb) != 3:
+            sys.exit(f"{path}: '{line.strip()}' is not an R G B colour")
+        r, g, b = (int(v) for v in rgb)
+        if max(r, g, b) > 255:
+            sys.exit(f"{path}: '{line.strip()}' is out of range")
+        out += struct.pack("<H", r >> 3 | (g >> 3) << 5 | (b >> 3) << 10)
+    if len(out) != size:
+        sys.exit(f"{path}: {count} colors, the ROM holds {size // 2}")
+    return bytes(out)
 
 
 def write_screen_png(path, pixels, palette):
@@ -324,6 +366,13 @@ def extract():
             unpack_asset(asset, rom)
             build_screen(asset)
             continue
+        if kind == "pal":
+            # The .pal text file is the source, same rule as a screen.
+            unpack_asset(asset, rom)
+            path = built(asset)
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(read_jasc_pal(editable(asset), asset["size"]))
+            continue
         start = int(asset["start"], 16) - ROM_BASE
         path = OUT / asset["path"]
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -358,6 +407,8 @@ def unpack_asset(asset, rom=None):
         elif asset["type"] == "screen":
             blobs = screen_blobs(asset, rom)
             write_screen_png(tmp, compose_screen(blobs), blobs["pal"])
+        elif asset["type"] == "pal":
+            write_jasc_pal(tmp, rom[start:start + asset["size"]])
         else:
             raw = Path(t) / "sample.bin"
             raw.write_bytes(rom[start:start + asset["size"]])

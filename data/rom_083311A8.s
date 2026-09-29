@@ -35,10 +35,10 @@
 	.thumb
 	.global gUnk_083311A8
 gUnk_083311A8:
-	.incbin "build/assets/unknown/data_083311A8.bin"
+	.incbin "build/assets/graphics/palettes/pal_083311A8.pal.bin"
 	.global gUnk_083311C8
 gUnk_083311C8:
-	.incbin "build/assets/unknown/data_083311C8.bin"
+	.incbin "build/assets/graphics/palettes/pal_083311C8.pal.bin"
 	.global gUnk_083311E8
 gUnk_083311E8:
 	.incbin "build/assets/graphics/rl_083311E8.bin"
