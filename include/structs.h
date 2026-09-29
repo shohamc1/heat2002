@@ -86,19 +86,23 @@ struct LaneSeg
 
 // The m4a song/player tables (defined identically in sub_08001208.c and
 // ModuleM4aSongNumStart.c before the merge; the arrays are in data.h/variables.h).
+// Tags and member names are pret/pokeemerald's (include/gba/m4a_internal.h):
+// struct MusicPlayer and struct Song, which this revision of the header
+// predates — that is why they live here.
 struct MusicPlayerInfo;
 struct MusicPlayerTrack;
 struct SongHeader;
-struct Unk0801DA90
+struct MusicPlayer
 {
-    struct MusicPlayerInfo *unk0;
-    struct MusicPlayerTrack *unk4;
-    u32 unk8;
+    struct MusicPlayerInfo *info;
+    struct MusicPlayerTrack *track;
+    u8 numTracks; /* 0x08 */
+    u16 unk_A;    /* 0x0A */
 };
-struct Unk0801DACC
+struct Song
 {
-    struct SongHeader *unk0;
-    u16 unk4;
+    struct SongHeader *header; /* 0x00 */
+    u16 ms;                    /* 0x04: music-player index */
 };
 
 // One row of the credits scroller's script table, gCreditTexts

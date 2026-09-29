@@ -40,15 +40,15 @@ void ModuleMPlayExtender(struct CgbChannel *cgbChans)
     ident = soundInfo->ident;
     if (ident == ID_NUMBER) {
         soundInfo->ident = ident + 1;
-        gUnk_02038DE0[8] = (MPlayFunc)ModulePlyMemacc;
-        gUnk_02038DE0[0x11] = (MPlayFunc)sub_0833A764;
-        gUnk_02038DE0[0x13] = (MPlayFunc)sub_0833A778;
-        gUnk_02038DE0[0x1C] = (MPlayFunc)ModulePlyXcmd;
-        gUnk_02038DE0[0x1D] = (MPlayFunc)sub_0833A6FC;
-        gUnk_02038DE0[0x1E] = (MPlayFunc)ModuleSampleFreqSet;
-        gUnk_02038DE0[0x1F] = (MPlayFunc)sub_0833A488;
-        gUnk_02038DE0[0x20] = (MPlayFunc)ModuleFadeOutBody;
-        gUnk_02038DE0[0x21] = (MPlayFunc)ModuleTrkVolPitSet;
+        gModule_MPlayJumpTable[8] = (MPlayFunc)ModulePlyMemacc;
+        gModule_MPlayJumpTable[0x11] = (MPlayFunc)sub_0833A764;
+        gModule_MPlayJumpTable[0x13] = (MPlayFunc)sub_0833A778;
+        gModule_MPlayJumpTable[0x1C] = (MPlayFunc)ModulePlyXcmd;
+        gModule_MPlayJumpTable[0x1D] = (MPlayFunc)sub_0833A6FC;
+        gModule_MPlayJumpTable[0x1E] = (MPlayFunc)ModuleSampleFreqSet;
+        gModule_MPlayJumpTable[0x1F] = (MPlayFunc)sub_0833A488;
+        gModule_MPlayJumpTable[0x20] = (MPlayFunc)ModuleFadeOutBody;
+        gModule_MPlayJumpTable[0x21] = (MPlayFunc)ModuleTrkVolPitSet;
         soundInfo->cgbChans = cgbChans;
         soundInfo->CgbSound = (CgbSoundFunc)ModuleCgbSound;
         soundInfo->CgbOscOff = (CgbOscOffFunc)ModuleCgbOscOff;

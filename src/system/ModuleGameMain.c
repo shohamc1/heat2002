@@ -76,8 +76,8 @@ void ModuleGameMain(void)
             ModuleDrawTextCenteredHighlight(ModuleGetString(MODULE_MSG_LINK_FAIL), 0x0A, 1);
             ModuleDrawTextCenteredHighlight((u32)gModule_PleaseTurnOffYour, 0x0C, 1);
             ModuleDrawTextCenteredHighlight((u32)gModule_GameBoyAdvance, 0x0D, 1);
-            ModuleM4aMPlayStop(&gUnk_02038F70);
-            ModuleM4aMPlayStop(&gUnk_02038FB0);
+            ModuleM4aMPlayStop(&gModule_BgMusicPlayer);
+            ModuleM4aMPlayStop(&gModule_EngineSoundPlayer);
             ModuleM4aSoundVSyncOff();
             for (;;) {
                 ModuleUpdateSprites();

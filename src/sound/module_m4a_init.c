@@ -47,7 +47,7 @@ void ModuleSoundInit(struct SoundInfo *soundInfo)
     soundInfo->MidiKeyToCgbFreq = (MidiKeyToCgbFreqFunc)ModuleDummyCgbSound;
     soundInfo->ExtVolPit = (ExtVolPitFunc)ModuleDummyCgbSound;
     {
-        MPlayFunc *jumpTable = gUnk_02038DE0;
+        MPlayFunc *jumpTable = gModule_MPlayJumpTable;
 
         sub_0833A018(jumpTable);
         soundInfo->MPlayJumpTable = jumpTable;

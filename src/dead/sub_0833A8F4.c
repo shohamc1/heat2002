@@ -11,10 +11,10 @@
 
 void sub_0833A8F4(u16 n)
 {
-    struct MusicPlayerInfo *info = (struct MusicPlayerInfo *)gModule_MPlayTable[gModule_SongTable[n].unk4].unk0;
+    struct MusicPlayerInfo *info = (struct MusicPlayerInfo *)gModule_MPlayTable[gModule_SongTable[n].ms].info;
 
-    if (info->songHeader != gModule_SongTable[n].unk0)
-        ModuleMPlayStart((struct MusicPlayerInfo *)((u32)info),(struct SongHeader *)(gModule_SongTable[n].unk0));
+    if (info->songHeader != gModule_SongTable[n].header)
+        ModuleMPlayStart((struct MusicPlayerInfo *)((u32)info),(struct SongHeader *)(gModule_SongTable[n].header));
     else if ((info->status & MUSICPLAYER_STATUS_TRACK) == 0 || info->status & MUSICPLAYER_STATUS_PAUSE)
         ModuleMPlayStart((struct MusicPlayerInfo *)((u32)info),(struct SongHeader *)((u32)info->songHeader));
 }
@@ -27,10 +27,10 @@ void sub_0833A8F4(u16 n)
 
 void sub_0833A940(u16 n)
 {
-    struct MusicPlayerInfo *info = (struct MusicPlayerInfo *)gModule_MPlayTable[gModule_SongTable[n].unk4].unk0;
+    struct MusicPlayerInfo *info = (struct MusicPlayerInfo *)gModule_MPlayTable[gModule_SongTable[n].ms].info;
 
-    if (info->songHeader != gModule_SongTable[n].unk0)
-        ModuleMPlayStart((struct MusicPlayerInfo *)((u32)info),(struct SongHeader *)(gModule_SongTable[n].unk0));
+    if (info->songHeader != gModule_SongTable[n].header)
+        ModuleMPlayStart((struct MusicPlayerInfo *)((u32)info),(struct SongHeader *)(gModule_SongTable[n].header));
     else if ((info->status & MUSICPLAYER_STATUS_TRACK) == 0)
         ModuleMPlayStart((struct MusicPlayerInfo *)((u32)info),(struct SongHeader *)((u32)info->songHeader));
     else if (info->status & MUSICPLAYER_STATUS_PAUSE)

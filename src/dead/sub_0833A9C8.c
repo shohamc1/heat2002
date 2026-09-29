@@ -32,7 +32,7 @@ void sub_0833A9FC(void)
 {
     u16 cnt;
     u32 n;
-    struct Unk0801DA90 *p;
+    struct MusicPlayer *p;
 
     cnt = (u16)(u32)gNumMusicPlayersHigh;
     if (cnt != 0)
@@ -40,7 +40,7 @@ void sub_0833A9FC(void)
         p = gModule_MPlayTable;
         n = cnt;
     loop:
-        ModuleM4aMPlayStop((struct MusicPlayerInfo *)(p->unk0));
+        ModuleM4aMPlayStop((struct MusicPlayerInfo *)(p->info));
         p++;
         n--;
         if (n != 0)
@@ -59,7 +59,7 @@ void sub_0833AA34(void)
 {
     u16 cnt;
     u32 n;
-    struct Unk0801DA90 *p;
+    struct MusicPlayer *p;
 
     cnt = (u16)(u32)gNumMusicPlayersHigh;
     if (cnt != 0)
@@ -67,7 +67,7 @@ void sub_0833AA34(void)
         p = gModule_MPlayTable;
         n = cnt;
     loop:
-        sub_0833A7F4((struct MusicPlayerInfo *)(p->unk0));
+        sub_0833A7F4((struct MusicPlayerInfo *)(p->info));
         p++;
         n--;
         if (n != 0)

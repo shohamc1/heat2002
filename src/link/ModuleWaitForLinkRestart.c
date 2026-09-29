@@ -24,8 +24,8 @@ void ModuleWaitForLinkRestart(void)
             ModuleDrawTextCenteredHighlight(ModuleGetString(MODULE_MSG_LINK_FAIL), 0xA, 1);
             ModuleDrawTextCenteredHighlight(gModule_PleaseTurnOffYour_2, 0xC, 1);
             ModuleDrawTextCenteredHighlight(gModule_GameBoyAdvance_2, 0xD, 1);
-            ModuleM4aMPlayStop(&gUnk_02038F70);
-            ModuleM4aMPlayStop(&gUnk_02038FB0);
+            ModuleM4aMPlayStop(&gModule_BgMusicPlayer);
+            ModuleM4aMPlayStop(&gModule_EngineSoundPlayer);
             ModuleM4aSoundVSyncOff();
             do {
                 playerId = gModule_LinkPlayerId;

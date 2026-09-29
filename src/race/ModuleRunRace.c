@@ -202,7 +202,7 @@ skip42B04:
         else
             car = &gModule_Cars[gModule_LinkPlayerId];
         ModuleM4aMPlayPitchControl(
-            &gUnk_02038FB0, 1, ((s16)(gUnk_02025190[car->gear] + ((car->rpm * gUnk_020251A4[car->gear]) >> 6))) >> 3);
+            &gModule_EngineSoundPlayer, 1, ((s16)(gUnk_02025190[car->gear] + ((car->rpm * gUnk_020251A4[car->gear]) >> 6))) >> 3);
         if (gModule_IsDemo[0] != 0) {
             ModuleSetCameraTarget((struct Car *)gUnk_0203D6B0);
             gUnk_020250EC = t2 = gModule_FrameCounter / 256;
@@ -239,7 +239,7 @@ skip42B04:
                 ModuleWaitForVBlank();
                 *(volatile u16 *)0x04000000 &= 0xEFFF;
                 if (gModule_Options[2] != 0)
-                    ModuleM4aMPlayFadeOut((u32)&gUnk_02038F70, 2);
+                    ModuleM4aMPlayFadeOut((u32)&gModule_BgMusicPlayer, 2);
                 ModuleBeginFadeToColor(0x19, 0);
             }
         } else {
@@ -311,6 +311,6 @@ skip42B04:
     ret1:
         return 1;
     }
-    ModuleM4aMPlayStop(&gUnk_02038FB0);
+    ModuleM4aMPlayStop(&gModule_EngineSoundPlayer);
     return 0;
 }

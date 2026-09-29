@@ -22,7 +22,7 @@ struct WallRec;
 extern u16 gUnk_02021D04[];
 extern s32 gUnk_02000478;
 extern u8 gLinkPlayerSlots[];
-extern struct Unk0801DA90 gModule_MPlayTable[];
+extern struct MusicPlayer gModule_MPlayTable[];
 extern struct Track gModule_TrackData[];
 extern u16 gLinkMenuKeysPrev;
 extern u8 gUnk_02024F50[];
@@ -79,7 +79,7 @@ extern u16 gUnk_02022DE4;
 extern u16 gUnk_0202F040[];
 extern u32 gClosestLanePointZ[];
 extern u8 *gUnk_0200BC54;
-extern struct Unk0801DACC gModule_SongTable[];
+extern struct Song gModule_SongTable[];
 extern u8 gChallengePhase;
 extern s32 gUnk_02023A20[];
 extern u16 gUnk_0202A540[];
@@ -224,9 +224,9 @@ extern u32 gIntrTable[];
 extern u16 gKeysPressed;                     /* 0x020005CC */
 extern u16 gUnk_02000DD0;                    /* 0x02000DD0 */
 extern u8 gBgMusicPlayer[];                  /* 0x02001F20 */
-extern struct MusicPlayerInfo gUnk_02001FA0; /* 0x02001FA0 */
-extern struct MusicPlayerInfo gUnk_02001FE0; /* 0x02001FE0 */
-extern struct MusicPlayerInfo gUnk_02002030; /* 0x02002030 */
+extern struct MusicPlayerInfo gMPlayInfo_SE2; /* 0x02001FA0 */
+extern struct MusicPlayerInfo gMPlayInfo_SE4; /* 0x02001FE0 */
+extern struct MusicPlayerInfo gMPlayInfo_SE3; /* 0x02002030 */
 extern u8 gNumCars[];                        /* 0x02002090 */
 extern u8 gChallengeScore;                   /* 0x02002098 */
 extern u8 gPreRaceSimActive;                 /* 0x020020A8 */
@@ -363,7 +363,7 @@ extern u16 gUnk_02039248;
 extern s32 gUnk_0203DF44;
 extern u16 gModule_TrackRecordSec[];
 extern u16 gUnk_0203B610[];
-extern struct MusicPlayerInfo gUnk_02038FB0;
+extern struct MusicPlayerInfo gModule_EngineSoundPlayer;
 extern u8 gModule_ObjTileCache1[];
 extern u32 gUnk_02039200[];
 extern u32 gUnk_0203DD34;
@@ -384,7 +384,7 @@ extern u8 gUnk_0203E1C0[];
 extern u8 gUnk_0203E1E0[];
 extern u32 gUnk_02039244;
 extern struct WallRec *gUnk_0203DE60;
-extern struct MusicPlayerInfo gUnk_02038F70;
+extern struct MusicPlayerInfo gModule_BgMusicPlayer;
 extern u16 gUnk_0203917C;
 extern u32 gModule_Camera[];
 extern u16 gUnk_02037618;     /* 0x02037618 */

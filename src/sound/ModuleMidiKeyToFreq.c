@@ -1,16 +1,11 @@
 #include "global.h"
 #include "functions.h"
-
-struct Unk10CC
-{
-    u8 filler0[0x4];
-    s32 unk4;
-};
+#include "gba/m4a_internal.h"
 
 extern const u8 gUnk_0200C6F8[];
 extern const u32 gUnk_0200C7AC[];
 
-s32 ModuleMidiKeyToFreq(struct Unk10CC *track, u8 key, u32 fineTune)
+s32 ModuleMidiKeyToFreq(struct WaveData *track, u8 key, u32 fineTune)
 {
     u8 idx;
     u32 fineTunePacked;
@@ -29,7 +24,7 @@ s32 ModuleMidiKeyToFreq(struct Unk10CC *track, u8 key, u32 fineTune)
     freq = gUnk_0200C7AC[freq & 0xF] >> (freq >> 4);
     nextKeyByte = gUnk_0200C6F8[idx + 1];
     freqStep = gUnk_0200C7AC[nextKeyByte & 0xF] >> (nextKeyByte >> 4);
-    scale = track->unk4;
+    scale = track->freq;
     freqStep -= freq;
     return sub_08339B78(scale, freq + sub_08339B78(freqStep, fineTunePacked));
 }

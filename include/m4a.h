@@ -15,6 +15,6 @@ extern u8 gMaxLines;
 extern u8 gNumMusicPlayersLow[];
 extern u8 gNumMusicPlayersHigh[];
 extern MPlayFunc gMPlayJumpTable[];
-extern MPlayFunc gUnk_02038DE0[];
+extern MPlayFunc gModule_MPlayJumpTable[];
 
 #endif

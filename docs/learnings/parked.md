@@ -48,8 +48,8 @@ MATCH.
 Sound, `0x0801D29C`-`0x0806C664` (324 KB), established 2026-09-23:
 
 - `m4aSongNumStart` (`sub_08001208`) reads the song table
-  (`gUnk_0801DACC`, pret's `gSongTable`, 30 entries of 8 bytes) and the
-  music player table (`gUnk_0801DA90`, pret's `gMPlayTable`). The song table
+  (`gSongTable` [gUnk_0801DACC], 30 entries of 8 bytes) and the
+  music player table (`gMPlayTable` [gUnk_0801DA90]). The song table
   holds 3 music songs of 10 tracks, 22 one-track sound effects, and 5 empty
   slots that all point at a 4-byte dummy header at `0x0801DBBC`.
 - Two voicegroups, at `0x0801D29C` (128 voices) and `0x0801D89C` (31),
@@ -498,8 +498,9 @@ data stayed `.incbin`. "Pointers" below replaced every one of them:
   defined them in C.
 - Addresses that don't start a blob: offsets inside a blob (for example
   `gOptionsMenuMaxValues` and `gUnk_08367BFA`), Thumb entry points
-  (`gCallback_*`), and code labels. The sound tables `gUnk_0801DA90` and
-  `gUnk_0801DACC` were here too, until "Pointers" below labelled them.
+  (`gCallback_*`), and code labels. The sound tables `gMPlayTable`
+  [gUnk_0801DA90] and `gSongTable` [gUnk_0801DACC] were here too, until
+  "Pointers" below labelled them.
 - The sound range `0x0801D29C`-`0x0806C664` and `assets/graphics.json` were
   out of scope. Apart from `gUnk_08363EE8`, C reads no blob start in the
   two EWRAM images.
@@ -515,8 +516,9 @@ measure what's left, and what's left.
 
 The pass rewrote 181 tables, in this order:
 
-1. Sound, in `data/rom_0801D29C.s`: the song table (`gUnk_0801DACC`), the
-   music player table (`gUnk_0801DA90`) and both voicegroups, written with
+1. Sound, in `data/rom_0801D29C.s`: the song table (`gSongTable`
+   [gUnk_0801DACC]), the music player table (`gMPlayTable` [gUnk_0801DA90])
+   and both voicegroups, written with
    tmc's `song`, `music_player` and `voice_*` macros
    (`tools/tmc/asm/macros/`). Each sample has a global label, and a
    no-ROM build keeps each song's header label, so CI still links. The last

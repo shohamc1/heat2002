@@ -1,8 +1,9 @@
 #include "global.h"
+#include "gba/m4a_internal.h"
 
-void TrkVolPitSet(u32 mplayInfo, u32 track)
+void TrkVolPitSet(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
 {
-    u32 trackPtr = track;
+    u32 trackPtr = (u32)track;
     u32 isPitchSet;
     u32 flags;
     u32 envFactor;
@@ -10,39 +11,39 @@ void TrkVolPitSet(u32 mplayInfo, u32 track)
     s32 pan;
     u8 flagsAfter;
 
-    flags = *(u8 *)(trackPtr + 0x00);
+    flags = ((struct MusicPlayerTrack *)trackPtr)->flags;
     if (flags & 1) {
-        envFactor = (u32)(*(u8 *)(trackPtr + 0x12) * *(u8 *)(trackPtr + 0x13)) >> 5;
-        type = *(u8 *)(trackPtr + 0x18);
+        envFactor = (u32)(((struct MusicPlayerTrack *)trackPtr)->vol * ((struct MusicPlayerTrack *)trackPtr)->volX) >> 5;
+        type = ((struct MusicPlayerTrack *)trackPtr)->modT;
         if (type == 1) {
-            envFactor = (u32)((*(s8 *)(trackPtr + 0x16) + 0x80) * envFactor) >> 7;
+            envFactor = (u32)((((struct MusicPlayerTrack *)trackPtr)->modM + 0x80) * envFactor) >> 7;
         }
-        pan = (*(s8 *)(trackPtr + 0x14) << 1) + *(s8 *)(trackPtr + 0x15);
+        pan = (((struct MusicPlayerTrack *)trackPtr)->pan << 1) + ((struct MusicPlayerTrack *)trackPtr)->panX;
         if (type == 2) {
-            pan += *(s8 *)(trackPtr + 0x16);
+            pan += ((struct MusicPlayerTrack *)trackPtr)->modM;
         }
         if (pan < -0x80) {
             pan = -0x80;
         } else if (pan > 0x7F) {
             pan = 0x7F;
         }
-        *(u8 *)(trackPtr + 0x10) = (u8)(((pan + 0x80) * envFactor) >> 8);
-        *(u8 *)(trackPtr + 0x11) = (u8)(((0x7F - pan) * envFactor) >> 3 >> 5);
+        ((struct MusicPlayerTrack *)trackPtr)->volMR = (u8)(((pan + 0x80) * envFactor) >> 8);
+        ((struct MusicPlayerTrack *)trackPtr)->volML = (u8)(((0x7F - pan) * envFactor) >> 3 >> 5);
     }
 
-    flags = *(u8 *)(trackPtr + 0x00);
+    flags = ((struct MusicPlayerTrack *)trackPtr)->flags;
     isPitchSet = flags & 4;
     flagsAfter = flags;
     if (isPitchSet) {
-        s32 bend = *(s8 *)(trackPtr + 0xE) * *(u8 *)(trackPtr + 0xF);
-        s32 x = (*(s8 *)(trackPtr + 0xC) + bend) * 4 + (*(s8 *)(trackPtr + 0xA) << 8) + (*(s8 *)(trackPtr + 0xB) << 8) +
-                *(u8 *)(trackPtr + 0xD);
-        if (*(u8 *)(trackPtr + 0x18) == 0) {
-            x += *(s8 *)(trackPtr + 0x16) << 4;
+        s32 bend = ((struct MusicPlayerTrack *)trackPtr)->bend * ((struct MusicPlayerTrack *)trackPtr)->bendRange;
+        s32 x = ((((struct MusicPlayerTrack *)trackPtr)->tune + bend) * 4) + (((struct MusicPlayerTrack *)trackPtr)->keyShift << 8) +
+                (((struct MusicPlayerTrack *)trackPtr)->keyShiftX << 8) + ((struct MusicPlayerTrack *)trackPtr)->pitX;
+        if (((struct MusicPlayerTrack *)trackPtr)->modT == 0) {
+            x += ((struct MusicPlayerTrack *)trackPtr)->modM << 4;
         }
-        *(u8 *)(trackPtr + 0x8) = (u8)(x >> 8);
-        *(u8 *)(trackPtr + 0x9) = (u8)x;
+        ((struct MusicPlayerTrack *)trackPtr)->keyM = (u8)(x >> 8);
+        ((struct MusicPlayerTrack *)trackPtr)->pitM = (u8)x;
     }
 
-    *(u8 *)(trackPtr + 0x00) = flagsAfter & 0xFA;
+    ((struct MusicPlayerTrack *)trackPtr)->flags = flagsAfter & 0xFA;
 }

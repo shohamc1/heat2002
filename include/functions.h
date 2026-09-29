@@ -12,7 +12,6 @@ struct MusicPlayerTrack;
 struct OutBD98;
 struct SongHeader;
 struct SoundInfo;
-struct Unk1C20;
 
 // Main program
 

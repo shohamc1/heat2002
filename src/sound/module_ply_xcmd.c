@@ -116,7 +116,7 @@ void ModulePlyMemacc(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack 
     }
 
 cond_true:
-    _08344B84(mplayInfo, track, *&gUnk_02038DE0[1]);
+    _08344B84(mplayInfo, track, *&gModule_MPlayJumpTable[1]);
     return;
 
 cond_false:
@@ -132,7 +132,7 @@ void ModulePlyXcmd(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *t
 }
 
 void ModulePlyXxx(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
-{ _08344B84(mplayInfo, track, (u32)gUnk_02038DE0[0]); }
+{ _08344B84(mplayInfo, track, (u32)gModule_MPlayJumpTable[0]); }
 
 void ModulePlyXwave(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
 {

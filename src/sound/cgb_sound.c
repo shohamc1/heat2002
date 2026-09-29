@@ -2,23 +2,6 @@
 #include "gba/m4a_internal.h"
 #include "functions.h"
 
-/* CgbOscOff */
-struct Unk1C20
-{
-    u8 filler0[0x2];
-    u8 unk2;
-    u8 unk3;
-    u8 filler4[0x6 - 0x4];
-    u8 unk6;
-    u8 filler7[0xA - 0x7];
-    u8 unkA;
-    u8 filler0B[0x19 - 0x0B];
-    s8 unk19;
-    u8 filler1A[0x1B - 0x1A];
-    u8 unk1B;
-    u8 unk1C;
-};
-
 /* MidiKeyToCgbFreq. Tables: gCgbScaleTable = gCgbScaleTable (u8),
  * gCgbFreqTable = gCgbFreqTable (s16), gNoiseTable = gNoiseTable (u8). */
 extern const u8 gCgbScaleTable[];

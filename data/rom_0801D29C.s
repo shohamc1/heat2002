@@ -194,15 +194,15 @@ voicegroup_0801D89C:
 	.fill 36, 1, 0
 	.fill 36, 1, 1
 	.incbin "build/assets/sound/cgb_waves.bin"
-	.global gUnk_0801DA90
-gUnk_0801DA90:
+	.global gMPlayTable
+gMPlayTable:
 	music_player gBgMusicPlayer, gUnk_02000000, 10, 0
 	music_player gEngineSoundPlayer, gUnk_02000320, 1, 0
-	music_player gUnk_02001FA0, gUnk_02000370, 1, 0
-	music_player gUnk_02002030, gUnk_020003C0, 1, 0
-	music_player gUnk_02001FE0, gUnk_02000410, 1, 0
-	.global gUnk_0801DACC
-gUnk_0801DACC:
+	music_player gMPlayInfo_SE2, gUnk_02000370, 1, 0
+	music_player gMPlayInfo_SE3, gUnk_020003C0, 1, 0
+	music_player gMPlayInfo_SE4, gUnk_02000410, 1, 0
+	.global gSongTable
+gSongTable:
 	song song_dummy, 0, 0
 	song song_01, 0, 0
 	song song_02, 0, 0

@@ -14,24 +14,24 @@ void sub_08339B88(void);
 void ModuleMPlayFadeOut(u32 mplayInfo, u16 fadeOutDelay)
 {
     u32 info = mplayInfo;
-    u32 ident = *(u32 *)(info + 0x34);
+    u32 ident = ((struct MusicPlayerInfo *)info)->ident;
     u32 initialFadeVol = 0x80 << 1;
 
     if (ident == 0x68736D53) {
-        *(u16 *)(info + 0x26) = fadeOutDelay;
-        *(u16 *)(info + 0x24) = fadeOutDelay;
-        *(u16 *)(info + 0x28) = initialFadeVol;
+        ((struct MusicPlayerInfo *)info)->fadeOC = fadeOutDelay;
+        ((struct MusicPlayerInfo *)info)->fadeOI = fadeOutDelay;
+        ((struct MusicPlayerInfo *)info)->fadeOV = initialFadeVol;
         /* Load-bearing: the dead store is eliminated but its use keeps t
          * alive across the branch, moving the tag pseudo from local-alloc
          * into global-alloc (v->r1, tag->r3, ptr->r2). */
-        *(u32 *)(info + 0x34) = ident;
+        ((struct MusicPlayerInfo *)info)->ident = ident;
     }
 }
 
 void ModuleM4aSoundInit(void)
 {
     u32 mplayInfo;
-    struct Unk0801DA90 *playerEntry;
+    struct MusicPlayer *playerEntry;
     u32 count;
     u32 entryOffset;
     u32 tableBase;
@@ -46,16 +46,16 @@ void ModuleM4aSoundInit(void)
     if (playerCount != 0) {
         tableBase = (u32)gModule_MPlayTable;
         tracksOffset = playerCount;
-        playerEntry = (struct Unk0801DA90 *)(tableBase + tracksOffset - playerCount);
+        playerEntry = (struct MusicPlayer *)(tableBase + tracksOffset - playerCount);
         entryOffset = 0;
         count = playerCount;
     loop:
         tracksOffset = 4;
-        mplayInfo = (u32)playerEntry->unk0;
+        mplayInfo = (u32)playerEntry->info;
         ModuleMPlayOpen((struct MusicPlayerInfo *)mplayInfo,
                         (struct MusicPlayerTrack *)(*(u32 *)(entryOffset + (tableBase + tracksOffset))),
-                        (*(u8 *)&playerEntry->unk8));
-        *(u32 *)(mplayInfo + 0x18) = EWRAM_START + 0x39030;
+                        playerEntry->numTracks);
+        ((struct MusicPlayerInfo *)mplayInfo)->memAccArea = (u8 *)(EWRAM_START + 0x39030);
         playerEntry++;
         entryOffset += 12;
         count--;
@@ -69,6 +69,6 @@ void ModuleM4aSoundMain(void)
 
 void ModuleM4aSongNumStart(u16 idx)
 {
-    struct MusicPlayerInfo *mplayInfo = gModule_MPlayTable[gModule_SongTable[idx].unk4].unk0;
-    ModuleMPlayStart(mplayInfo, gModule_SongTable[idx].unk0);
+    struct MusicPlayerInfo *mplayInfo = gModule_MPlayTable[gModule_SongTable[idx].ms].info;
+    ModuleMPlayStart(mplayInfo, gModule_SongTable[idx].header);
 }

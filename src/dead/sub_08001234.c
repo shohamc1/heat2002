@@ -12,10 +12,10 @@
 
 void sub_08001234(u16 n)
 {
-    struct MusicPlayerInfo *info = (struct MusicPlayerInfo *)gUnk_0801DA90[gUnk_0801DACC[n].unk4].unk0;
+    struct MusicPlayerInfo *info = (struct MusicPlayerInfo *)gMPlayTable[gSongTable[n].ms].info;
 
-    if (info->songHeader != gUnk_0801DACC[n].unk0)
-        MPlayStart((struct MusicPlayerInfo *)((u32)info),(struct SongHeader *)(gUnk_0801DACC[n].unk0));
+    if (info->songHeader != gSongTable[n].header)
+        MPlayStart((struct MusicPlayerInfo *)((u32)info),(struct SongHeader *)(gSongTable[n].header));
     else if ((info->status & MUSICPLAYER_STATUS_TRACK) == 0 || info->status & MUSICPLAYER_STATUS_PAUSE)
         MPlayStart((struct MusicPlayerInfo *)((u32)info),(struct SongHeader *)((u32)info->songHeader));
 }
@@ -29,10 +29,10 @@ void sub_08001234(u16 n)
 
 void sub_08001280(u16 n)
 {
-    struct MusicPlayerInfo *info = (struct MusicPlayerInfo *)gUnk_0801DA90[gUnk_0801DACC[n].unk4].unk0;
+    struct MusicPlayerInfo *info = (struct MusicPlayerInfo *)gMPlayTable[gSongTable[n].ms].info;
 
-    if (info->songHeader != gUnk_0801DACC[n].unk0)
-        MPlayStart((struct MusicPlayerInfo *)((u32)info),(struct SongHeader *)(gUnk_0801DACC[n].unk0));
+    if (info->songHeader != gSongTable[n].header)
+        MPlayStart((struct MusicPlayerInfo *)((u32)info),(struct SongHeader *)(gSongTable[n].header));
     else if ((info->status & MUSICPLAYER_STATUS_TRACK) == 0)
         MPlayStart((struct MusicPlayerInfo *)((u32)info),(struct SongHeader *)((u32)info->songHeader));
     else if (info->status & MUSICPLAYER_STATUS_PAUSE)

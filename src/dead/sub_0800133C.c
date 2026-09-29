@@ -7,15 +7,15 @@ void sub_0800133C(void)
 {
     u16 cnt;
     u32 n;
-    struct Unk0801DA90 *p;
+    struct MusicPlayer *p;
 
     cnt = (u16)(u32)gNumMusicPlayersLow;
     if (cnt != 0)
     {
-        p = gUnk_0801DA90;
+        p = gMPlayTable;
         n = cnt;
     loop:
-        m4aMPlayStop((struct MusicPlayerInfo *)(p->unk0));
+        m4aMPlayStop((struct MusicPlayerInfo *)(p->info));
         p++;
         n--;
         if (n != 0)
@@ -34,15 +34,15 @@ void sub_08001374(void)
 {
     u16 cnt;
     u32 n;
-    struct Unk0801DA90 *p;
+    struct MusicPlayer *p;
 
     cnt = (u16)(u32)gNumMusicPlayersLow;
     if (cnt != 0)
     {
-        p = gUnk_0801DA90;
+        p = gMPlayTable;
         n = cnt;
     loop:
-        sub_08001134((struct MusicPlayerInfo *)(p->unk0));
+        sub_08001134((struct MusicPlayerInfo *)(p->info));
         p++;
         n--;
         if (n != 0)

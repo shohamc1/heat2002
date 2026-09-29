@@ -66,8 +66,8 @@ u8 ModuleSinglePakPauseMenu(void)
     gUnk_0203B850[0] = 0xFF;
     ModuleReadLinkMenuKeys();
     if (gUnk_0203B6FC & 8) {
-        ModuleM4aMPlayStop(&gUnk_02038F70);
-        ModuleM4aMPlayStop(&gUnk_02038FB0);
+        ModuleM4aMPlayStop(&gModule_BgMusicPlayer);
+        ModuleM4aMPlayStop(&gModule_EngineSoundPlayer);
         ModuleM4aMPlayStop(&gUnk_02038FF0);
         ModuleM4aMPlayStop(&gUnk_02039040);
         for (;;) {

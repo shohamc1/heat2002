@@ -228,9 +228,9 @@ camera_ready:
                         gRaceEndState = 2;
                         WaitForVBlank();
                         REG_DISPCNT &= ~DISPCNT_OBJ_ON;
-                        m4aMPlayStop(&gUnk_02001FA0);
-                        m4aMPlayStop(&gUnk_02002030);
-                        m4aMPlayStop(&gUnk_02001FE0);
+                        m4aMPlayStop(&gMPlayInfo_SE2);
+                        m4aMPlayStop(&gMPlayInfo_SE3);
+                        m4aMPlayStop(&gMPlayInfo_SE4);
                         BeginFadeToColor(0x19, 0);
                     }
                     break;
