@@ -1,8 +1,9 @@
 #include "global.h"
 #include "variables.h"
-
 #include "gba/io_reg.h"
 #include "car.h"
+#include "functions.h"
+
 /*
  * Per-frame car update: the high-region (0x0834 module) copy of
  * sub_0800A80C, instruction-identical, ported from that matched source.
@@ -41,14 +42,13 @@ u8 ModuleUpdateLapProgress(struct Car *p, u8 a1);
 void ModuleM4aSongNumStart(u16 idx);
 void ModuleAddDamageSmokeTask(u8 *a);
 void ModuleUpdateRacePosition(u8 idx);
-#include "functions.h"
 extern u16 gUnk_02026DC4[];
 extern u16 gUnk_02026DDC[];
 u8 ModuleCarNeedsPit(struct Car *p);
 u8 ModuleFindFreePitStall(u8 a);
 void ModuleEnterPit(struct Car *p, u8 a);
 
-void ModuleClampSteerHeading(s32 *car)
+void ModuleClampSteerHeading(struct Car *car)
 {
     register u32 rot asm("r9");
     u32 tableIdx;
@@ -70,7 +70,7 @@ void ModuleClampSteerHeading(s32 *car)
     s32 tmp;
     register s32 idx asm("r0");
 
-    rot = (((u16 *)car)[0x1A] >> 10) << 16;
+    rot = (car->heading >> 10) << 16;
     tableIdx = rot >> 14;
     sinHeading = gModule_SinTable[tableIdx];
     cosHeading = gModule_SinTable[tableIdx + 0x40];
@@ -79,7 +79,7 @@ void ModuleClampSteerHeading(s32 *car)
     sin1 = tmp >> 8;
     tmp = cosHeading * scale;
     cos1 = tmp >> 8;
-    steerPtr = &car[0x4B];
+    steerPtr = &car->steerHeading;
     steerVal = *steerPtr;
     steerIdx = (steerVal >> 10) & 0x3F;
     steerIdx = steerIdx << 2;
@@ -98,51 +98,51 @@ void ModuleClampSteerHeading(s32 *car)
     sin1 = gModule_SinTable[tableIdx + 0x40];
     cos1 = *p;
     if (sin2 * sin1 + cos1 * cos2 < 0)
-        newSteer = ((u16 *)car)[0x1A] - 0x2800;
+        newSteer = car->heading - 0x2800;
     else
-        newSteer = ((u16 *)car)[0x1A] + 0x2800;
+        newSteer = car->heading + 0x2800;
     *steerPtr = newSteer;
-    car[0x4B] = *(u16 *)&car[0x4B];
+    car->steerHeading = *(u16 *)&car->steerHeading;
 }
 
-void ModuleUpdateSteering(s32 *car, u16 keys)
+void ModuleUpdateSteering(struct Car *car, u16 keys)
 {
     s32 steerRate;
     u32 steerRamp;
     s32 speedTerm;
 
-    ((u8 *)car)[0x84] = 1;
-    if (car == (s32 *)gModule_Cars && car[0xB] > 0) {
+    car->unk84 = 1;
+    if (car == gModule_Cars && car->speed > 0) {
         if (!(keys & (DPAD_RIGHT | DPAD_LEFT)))
-            car[75] = (car[75] + ((u16 *)car)[0x1A]) / 2;
+            car->steerHeading = (car->steerHeading + car->heading) / 2;
         if (keys & DPAD_LEFT)
-            car[75] = ((u16 *)car)[0x1A] - 0x1400;
+            car->steerHeading = car->heading - 0x1400;
         if (keys & DPAD_RIGHT) {
-            car[75] = ((u16 *)car)[0x1A] + 0x1400;
+            car->steerHeading = car->heading + 0x1400;
         }
         return;
     }
     if (keys & (DPAD_RIGHT | DPAD_LEFT)) {
-        u8 cur = ((u8 *)car)[0x110];
-        if ((s8)((u8 *)car)[0x110] >= 0)
-            ((u8 *)car)[0x110] = cur + 1;
+        u8 cur = car->unk110;
+        if ((s8)car->unk110 >= 0)
+            car->unk110 = cur + 1;
     } else {
-        if (((u8 *)car)[0x110] != 0)
-            ((u8 *)car)[0x110] = ((u8 *)car)[0x110] - 1;
+        if (car->unk110 != 0)
+            car->unk110 = car->unk110 - 1;
     }
-    steerRamp = ((u8 *)car)[0x110];
+    steerRamp = car->unk110;
     steerRate = (steerRamp * 3 >> 2) + 0x100;
-    speedTerm = -(car[0xB]) >> 12;
+    speedTerm = -(car->speed) >> 12;
     if (speedTerm < 0)
         speedTerm = 0;
     speedTerm = 0xFF - speedTerm;
     steerRate += speedTerm * 2;
     if (keys & DPAD_LEFT) {
-        car[75] -= steerRate;
-        ((u8 *)car)[0x84] = 0;
+        car->steerHeading -= steerRate;
+        car->unk84 = 0;
     } else if (keys & DPAD_RIGHT) {
-        car[75] += steerRate;
-        ((u8 *)car)[0x84] = 2;
+        car->steerHeading += steerRate;
+        car->unk84 = 2;
     }
 }
 
@@ -158,7 +158,7 @@ void ModuleUpdateCarPhysics(struct Car *car, u32 keys, u8 idx)
     ModuleResetCarSurface(car);
     if (car->hitCooldown != 0)
         car->hitCooldown--;
-    ModuleUpdateSteering((s32 *)car, keys);
+    ModuleUpdateSteering(car, keys);
     ModuleComputeForwardSpeed(car);
     ModuleUpdateEngine(car, keys);
     ModuleUpdateTireForces(car, idx);
@@ -244,7 +244,7 @@ void ModuleUpdateCar(u8 *car, u8 idx)
             ModuleUpdateCarPhysics(car, gUnk_020390B0[idx], idx);
         else
             ModuleUpdateCarPhysics(car, 2, idx);
-        ModuleClampSteerHeading((s32 *)car);
+        ModuleClampSteerHeading((struct Car *)car);
     }
     if (*(s32 *)(car + 0x88) > 0x11940 && car[0x7C] != 1 && (gModule_FrameCounter & 0x3F) == 0)
         ModuleAddDamageSmokeTask(car);

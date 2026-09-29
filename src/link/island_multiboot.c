@@ -1,10 +1,10 @@
 #include "global.h"
 #include "variables.h"
-
 #include "gba/defines.h"
 #include "gba/io_reg.h"
 #include "gba/macro.h"
 #include "data.h"
+
 extern u32 gUnk_020009B8;
 void sub_083640B0(void);
 extern u8 *gUnk_02000BD4[];

@@ -1,18 +1,11 @@
 #include "global.h"
 #include "variables.h"
+#include "car.h"
 
-void ModuleRecordFinishTime(u16 *car)
+void ModuleRecordFinishTime(struct Car *car)
 {
-    u16 *finishWords = car;
-    u16 time = gModule_RaceMin[0];
-    u32 idx = 0x82;
-
-    finishWords[idx] = time;
-    time = gModule_RaceSec[0];
-    idx += 1;
-    finishWords[idx] = time;
-    time = gModule_RaceMs[0];
-    idx += 1;
-    finishWords[idx] = time;
-    *(u8 *)((u32)car + 0x7D) = 1;
+    car->finishMin = gModule_RaceMin[0];
+    car->finishSec = gModule_RaceSec[0];
+    car->finishMs = gModule_RaceMs[0];
+    car->finished = 1;
 }

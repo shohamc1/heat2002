@@ -1,14 +1,14 @@
 #include "global.h"
+#include "functions.h"
+#include "variables.h"
+#include "car.h"
 
 struct Unk08342FF0;
 
 void *ModuleAllocTask(void);
 void ModuleAddTask(u32);
 void ModuleDraftStreakTask(u32 task);
-#include "functions.h"
-#include "variables.h"
-#include "car.h"
-u32 ModuleWorldToScreen(s32 x, s32 y, s32 *out);
+u8 ModuleWorldToScreen(s32 x, s32 y, s32 *out);
 struct Tbl
 {
     u8 pad[0xC4];
@@ -89,7 +89,7 @@ void ModuleDraftStreakTask(u32 task)
     rel = dy;
     dx = -(rel * sin) >> 8;
     dy = (cos * rel) >> 8;
-    if ((u8)ModuleWorldToScreen(cornerX + dx, cornerZ + dy, pos) != 0) {
+    if (ModuleWorldToScreen(cornerX + dx, cornerZ + dy, pos) != 0) {
         pos[0] -= 4;
         pos[1] -= 6;
     }
@@ -146,7 +146,7 @@ void ModuleSkidSmokeTask(u32 e)
     s32 frame;
     s32 riseY;
 
-    if ((u8)ModuleWorldToScreen(*(s32 *)(e + 0x00), *(s32 *)(e + 0x08), pos) != 0) {
+    if (ModuleWorldToScreen(*(s32 *)(e + 0x00), *(s32 *)(e + 0x08), pos) != 0) {
         pos[0] -= 4;
         riseY = pos[1] - 4;
         pos[1] = riseY + (*(s32 *)(e + 0x04) >> 2);
@@ -191,7 +191,7 @@ void ModuleDamageSmokeTask(struct Unk08342FF0 *e)
     s32 screenY;
     s32 frame;
 
-    if (((u32)ModuleWorldToScreen(e->f00, e->f08, out) << 24) != 0) {
+    if ((ModuleWorldToScreen(e->f00, e->f08, out) << 24) != 0) {
         screenX = out[0];
         out[0] = screenX - 8;
         screenY = out[1] - 8;

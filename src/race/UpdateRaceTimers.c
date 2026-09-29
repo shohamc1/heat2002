@@ -1,5 +1,6 @@
 #include "global.h"
 #include "variables.h"
+
 extern u32 gUnk_0202A6BC[];
 void UpdateRaceTimers(void)
 {

@@ -2,6 +2,7 @@
 #include "functions.h"
 #include "variables.h"
 #include "car.h"
+
 extern u16 gSeasonSaveFlag[];
 extern u16 gSeasonSaveData[];
 extern u16 gSaveFormatFillPattern[];

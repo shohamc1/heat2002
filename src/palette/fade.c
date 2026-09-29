@@ -1,11 +1,11 @@
 #include "global.h"
 #include "gba/defines.h"
-void PackFadePalette(void);
 #include "gba/compat.h"
+#include "functions.h"
+
+void PackFadePalette(void);
 extern u8 gUnk_02022E10;    /* 0x02022E10 */
 extern u32 gUnk_02024620[]; /* 0x02024620 */
-#include "functions.h"
-void BeginFadeToBrightenedPalette(u32 a, u32 b);
 
 void UpdatePaletteFade(void)
 {
@@ -78,7 +78,7 @@ void FadeToColor(u32 r0, u32 r1)
     }
 }
 
-void FadeToBrightenedPalette(u32 a, u32 b)
+void FadeToBrightenedPalette(void *a, u32 b)
 {
     u32 i;
 

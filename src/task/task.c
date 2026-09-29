@@ -1,14 +1,14 @@
 #include "global.h"
 #include "variables.h"
 
-extern u32 gUnk_02025FE0[];
-
 struct Slot78E4
 {
     u32 a[15];
     u32 b;
     u32 c;
 };
+
+extern struct Slot78E4 gUnk_02025FE0;
 
 struct Node0800796C
 {
@@ -35,7 +35,7 @@ void *AllocTask(void)
     u32 i = 0;
     u32 flagsAddr = (u32)gUnk_02025ED0;
     u32 one = 1;
-    struct Slot78E4 *p = (struct Slot78E4 *)gUnk_02025FE0;
+    struct Slot78E4 *p = &gUnk_02025FE0;
     u32 off = 0;
     u32 q = (u32)&p[0].b;
 

@@ -1,7 +1,6 @@
 #include "global.h"
 #include "functions.h"
 #include "data.h"
-
 #include "m4a.h"
 #include "variables.h"
 
@@ -25,7 +24,7 @@ u8 NewGameLoadMenu(void)
     cursor = 0;
     LoadMenuScreen(6, (u16 *)buf);
     DrawNewGameLoadMenu(0);
-    FadeToBrightenedPalette((u32)buf, 0x0F);
+    FadeToBrightenedPalette(buf, 0x0F);
     sel = 0x40;
     do {
         ReadKeys();

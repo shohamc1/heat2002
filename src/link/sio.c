@@ -2,6 +2,7 @@
 #include "gba/compat.h"
 #include "variables.h"
 #include "gba/io_reg.h"
+
 struct CommRegs
 {
     u8 mode;   /* +0 */

@@ -1,5 +1,6 @@
 #include "global.h"
 #include "variables.h"
+
 void InitNewSaveData(void)
 {
     u8 i;

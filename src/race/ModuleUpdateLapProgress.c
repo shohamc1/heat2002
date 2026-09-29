@@ -126,7 +126,7 @@ u8 ModuleUpdateLapProgress(struct Car *p, u8 carIdx)
                 if (carIdx == v6C && p->lapStartedFlag != 0)
                     ModuleDrawLapTime(gModule_LapMin[0], gModule_LapSec[0], gModule_LapMs[0]);
                 if (gModule_GameMode[0] != 2) {
-                    ModuleRecordFinishTime((u16 *)p);
+                    ModuleRecordFinishTime(p);
                     gModule_FinishedCarOrder[gModule_NumFinishedCars] = carIdx;
                     gModule_NumFinishedCars = gModule_NumFinishedCars + 1;
                     if ((u8)(gModule_GameMode[0] - 3) <= 1)
@@ -158,7 +158,7 @@ u8 ModuleUpdateLapProgress(struct Car *p, u8 carIdx)
                 ModuleSaveLapTime();
             if (carIdx == v6C && gModule_GameMode[0] != 0xA) {
                 s32 inner = v58 / 2 + 6;
-                ModuleSetCountdownSeconds((u8)(e->unk14 + inner));
+                ModuleSetCountdownSeconds(e->unk14 + inner);
             }
         }
         {

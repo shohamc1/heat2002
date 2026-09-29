@@ -1,14 +1,16 @@
 #include "global.h"
 #include "gba/compat.h"
 #include "variables.h"
+#include "tilemap.h"
+#include "functions.h"
+#include "gba/defines.h"
+
 extern u16 gUnk_02022DF4;
 /* struct Track and gTrackData come from include/structs.h via
    variables.h. */
 /* Each case carries its own copy of the body so expand_case counts 12
    distinct labels and emits a jump table; cross-jumping then merges the
    twelve identical bodies, leaving every table entry at one address. */
-#include "tilemap.h"
-#include "functions.h"
 extern u16 gUnk_02002220[];
 extern u16 gUnk_0200BC70[];
 extern u16 gUnk_02015690[];
@@ -18,13 +20,11 @@ extern u32 gUnk_0201567C;
 extern u16 gTrackBgTilemap[];
 extern u16 gTrackBgPalette[];
 void LoadTrackTiles(u8 idx);
-void BeginFadeToBrightenedPalette(s32 arg0, u16 *src);
 void RleDecode16(u16 *src, u16 *dst, u16 count);
 void FlushTrackBgBuffers(void);
 void SetCameraPos(u32 x, u32 y);
 void InitRaceCars(u32 idx);
 void ResetRaceTimer(void);
-#include "gba/defines.h"
 
 void LoadTrackTiles(u8 idx)
 {
@@ -163,12 +163,8 @@ void LoadTrack(u32 idx)
         gTrackMapWidth[0] = 0x5E;
     if (idx == 11)
         gTrackMapWidth[0] = 0x7D;
-    /* DrawTrackMapWindow: this file's old local prototype differs from
-       functions.h; call through the old signature (solved-walls 31). */
-    ((void (*)(u32, u32, u16 *, u32 *, u16 *, u16))DrawTrackMapWindow)(
-        0, 0, (u16 *)gUnk_02002208, (u32 *)TILEMAP_BUFFER(0), (u16 *)gUnk_0200221C, gUnk_02022DE4);
-    ((void (*)(u32, u32, u16 *, u32 *, u16 *, u16))DrawTrackMapWindow)(
-        0, 0, (u16 *)gUnk_0200BC54, (u32 *)TILEMAP_BUFFER(1), (u16 *)gUnk_02002210, gUnk_0200BC34);
+    DrawTrackMapWindow(0, 0, gUnk_02002208, (u32 *)TILEMAP_BUFFER(0), gUnk_0200221C, gUnk_02022DE4);
+    DrawTrackMapWindow(0, 0, gUnk_0200BC54, (u32 *)TILEMAP_BUFFER(1), gUnk_02002210, gUnk_0200BC34);
     FlushTrackBgBuffers();
     SetCameraPos(0, 0);
     InitRaceCars(idx);
@@ -177,7 +173,7 @@ void LoadTrack(u32 idx)
     gNumFinishedCars = 0;
 }
 
-void UpdateTrackScroll(void)
+void UpdateTrackScroll(u32 unused0, u32 unused1)
 {
     s32 x;
     s32 y;
@@ -193,10 +189,6 @@ void UpdateTrackScroll(void)
     gUnk_02002218 = x & 0x10;
     x >>= 5;
     y >>= 5;
-    /* DrawTrackMapWindow: this file's old local prototype differs from
-       functions.h; call through the old signature (solved-walls 31). */
-    ((void (*)(u32, u32, u8 *, u32 *, u8 *, u16))DrawTrackMapWindow)(x, y, gUnk_02002208, (u32 *)TILEMAP_BUFFER(0),
-                                                                     gUnk_0200221C, gUnk_02022DE4);
-    ((void (*)(u32, u32, u8 *, u32 *, u8 *, u16))DrawTrackMapWindow)(x, y, gUnk_0200BC54, (u32 *)TILEMAP_BUFFER(1),
-                                                                     gUnk_02002210, gUnk_0200BC34);
+    DrawTrackMapWindow(x, y, gUnk_02002208, (u32 *)TILEMAP_BUFFER(0), gUnk_0200221C, gUnk_02022DE4);
+    DrawTrackMapWindow(x, y, gUnk_0200BC54, (u32 *)TILEMAP_BUFFER(1), gUnk_02002210, gUnk_0200BC34);
 }

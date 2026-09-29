@@ -1,7 +1,6 @@
 #include "global.h"
 #include "functions.h"
 #include "data.h"
-
 #include "variables.h"
 
 void DrawLinkPostRaceMenu(u8 selected)
@@ -33,7 +32,7 @@ u8 LinkPostRaceMenu(void)
     cursor = 0;
     LoadMenuScreen(1, (u16 *)palette);
     DrawLinkPostRaceMenu(0);
-    FadeToBrightenedPalette((u32)palette, 0x0F);
+    FadeToBrightenedPalette(palette, 0x0F);
     choice = 0x40;
     do {
         old = gPlayerKeys[0];

@@ -3,6 +3,8 @@
 #include "gba/io_reg.h"
 #include "functions.h"
 #include "variables.h"
+#include "data.h"
+#include "m4a.h"
 
 struct UnkEFA0
 {
@@ -14,7 +16,6 @@ struct UnkEFA0
 struct EFA0s4
 { struct UnkEFA0 r[4]; };
 extern u8 gText_BlankRowLinkLobby[];
-#include "data.h"
 struct EntEFA0
 {
     u8 f0;
@@ -27,7 +28,6 @@ struct EntEFA0
 struct LinkLobbySlots
 { struct EntEFA0 r[4]; };
 extern u8 gText_EmptySlot[];
-#include "m4a.h"
 extern u16 gUnk_020020B8;
 
 s32 UpdateLinkLobby(void)
@@ -103,9 +103,9 @@ s32 UpdateLinkLobby(void)
     return 0;
 }
 
-void DrawLinkLobby(void)
+void DrawLinkLobby(u8 unused)
 {
-    u8 unused[0x28];
+    u8 pad[0x28];
     u8 i;
     u8 flag;
     s8 v;
@@ -139,15 +139,13 @@ u8 LinkLobby(void)
     ResetLinkState();
     ZeroTextLayer();
     LoadMenuBackdrop();
-    BuildScreenPalette((u32)gMenuPalette, (u16 *)buf);
-    /* DrawLinkLobby: this file's old local prototype differs from
-       functions.h; call through the old signature (solved-walls 31). */
-    ((void (*)(u8))DrawLinkLobby)(0);
-    FadeToBrightenedPalette((u32)buf, 0x0F);
+    BuildScreenPalette(gMenuPalette, (u16 *)buf);
+    DrawLinkLobby(0);
+    FadeToBrightenedPalette(buf, 0x0F);
     gUnk_020020B8 = v;
     do {
         ReadKeys();
-        ((void (*)(u8))DrawLinkLobby)(v);
+        DrawLinkLobby(v);
         r = UpdateLinkLobby();
         switch (r) {
             case 1:

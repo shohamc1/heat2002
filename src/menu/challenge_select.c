@@ -1,9 +1,9 @@
 #include "global.h"
 #include "functions.h"
 #include "data.h"
-
 #include "m4a.h"
 #include "variables.h"
+
 extern u8 gChallengeCategorySelected;
 extern const u8 *const gChallengeNameTexts[];
 extern u8 gText_ChallengeStatusBeat[];
@@ -33,7 +33,7 @@ u8 ChallengeCategorySelect(void)
     cursor = 0;
     LoadMenuScreen(5, (u16 *)buf);
     DrawChallengeCategorySelect(0);
-    FadeToBrightenedPalette((u32)buf, 0x0F);
+    FadeToBrightenedPalette(buf, 0x0F);
     sel = 0x40;
     do {
         ReadKeys();
@@ -115,7 +115,7 @@ u8 ChallengeSelect(u8 category, u8 challengeIdx)
     cursor = challengeIdx;
     LoadMenuScreen(5, (u16 *)buf);
     DrawChallengeSelect(category, cursor);
-    FadeToBrightenedPalette((u32)buf, 0x0F);
+    FadeToBrightenedPalette(buf, 0x0F);
     sel = 0x40;
     do {
         ReadKeys();

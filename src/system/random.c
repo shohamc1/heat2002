@@ -1,5 +1,6 @@
 #include "global.h"
 #include "variables.h"
+
 u32 ParkMillerNext(u32 a);
 
 u32 ParkMillerNext(u32 a)

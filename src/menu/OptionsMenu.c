@@ -2,6 +2,7 @@
 #include "functions.h"
 #include "m4a.h"
 #include "variables.h"
+
 extern u8 gOptionsMenuMinValues[];
 extern u8 gOptionsMenuMaxValues[];
 u8 OptionsMenu(void)
@@ -12,7 +13,7 @@ u8 OptionsMenu(void)
     v = 0;
     LoadMenuScreen(7, (u16 *)buf);
     DrawOptionsMenu(0);
-    FadeToBrightenedPalette((u32)buf, 0x0F);
+    FadeToBrightenedPalette(buf, 0x0F);
     sel = 0x40;
     do {
         ReadKeys();

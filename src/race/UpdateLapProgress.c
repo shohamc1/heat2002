@@ -244,7 +244,7 @@ u8 UpdateLapProgress(struct Car *p, u8 a1)
                 if (a1 == v6C && p->lapStartedFlag != 0)
                     DrawLapTime(gLapMin[0], gLapSec[0], gLapMs[0]);
                 if (gGameMode[0] != 2) {
-                    RecordFinishTime((struct Unk0800A438 *)p);
+                    RecordFinishTime(p);
                     gFinishedCarOrder[gNumFinishedCars] = a1;
                     gNumFinishedCars = gNumFinishedCars + 1;
                     if ((u8)(gGameMode[0] - 3) <= 1)

@@ -17,7 +17,7 @@ void DrawText(const u8 *text, u32 x, u32 y, u8 highlight)
     }
 }
 
-void DrawTextCentered(const u8 *str, u32 y)
+void DrawTextCentered(const u8 *str, u32 y, u32 unused)
 {
     const u8 *p;
     u8 len;

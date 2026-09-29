@@ -1,11 +1,11 @@
 #include "global.h"
 #include "gba/m4a_internal.h"
 #include "variables.h"
+#include "functions.h"
 
 /* MPlayOpen (high copy) */
-void ModuleClear64byte(u32 r0);
+void ModuleClear64byte(void *r0);
 void sub_0833A228(void);
-#include "functions.h"
 /* MPlayStart (high copy) */
 void sub_0833A488(struct MusicPlayerInfo *, struct MusicPlayerTrack *);
 /* m4aMPlayStop (high copy) */
@@ -21,11 +21,11 @@ void ModuleMPlayOpen(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack 
         return;
     if (count > 0x10)
         count = 0x10;
-    soundInfo = (struct SoundInfo *)gSoundInfoPtr[0];
+    soundInfo = gSoundInfoPtr[0];
     if (soundInfo->ident != ID_NUMBER)
         return;
     soundInfo->ident = soundInfo->ident + 1;
-    ModuleClear64byte((u32)playerInfo);
+    ModuleClear64byte(playerInfo);
     playerInfo->tracks = track;
     playerInfo->trackCount = count;
     playerInfo->status = MUSICPLAYER_STATUS_PAUSE;

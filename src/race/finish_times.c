@@ -1,9 +1,9 @@
 #include "global.h"
 #include "data.h"
-
 #include "functions.h"
 #include "variables.h"
 #include "car.h"
+
 /* car.h types 0x4C as u8 lap, but this function's load is a signed ldrsb
    (its old local view typed the field s8). Reach it through this view so
    the offset stays inside the MEM like a plain component access. */

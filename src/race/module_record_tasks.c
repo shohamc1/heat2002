@@ -1,10 +1,10 @@
 #include "global.h"
+#include "functions.h"
 
 extern u8 gUnk_020277F4[];
 void *ModuleAllocTask(void);
 void ModuleAddTask(u32 r0);
 void ModuleDelayTask(u32 task);
-#include "functions.h"
 
 void ModuleAddTrackRecordTasks(void)
 {

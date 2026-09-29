@@ -74,9 +74,9 @@ void UpdateCarSurface(struct Car *car)
     }
     if (car == &gCars[playerIdx]) {
         if ((*(u32 *)&car->onApron & 0xFF00FF00) == 0x01000000) {
-            m4aMPlayStop((struct MusicPlayerInfo *)((s32)gUnk_02001FA0));
-            m4aMPlayStop((struct MusicPlayerInfo *)((s32)gUnk_02002030));
-            m4aMPlayStop((struct MusicPlayerInfo *)((s32)gUnk_02001FE0));
+            m4aMPlayStop(&gUnk_02001FA0);
+            m4aMPlayStop(&gUnk_02002030);
+            m4aMPlayStop(&gUnk_02001FE0);
         }
     }
     if (gGameMode[0] == 0x10 && gChallengeIndex == 0xC)

@@ -7,7 +7,7 @@ extern u32 gModule_DriverGearPowerTables[];
 extern u32 gModule_DriverGearRatioTables[];
 extern u32 gModule_DriverRpmPerSpeedTables[];
 
-void ModuleInitCarSteering(u32 *p, u32 v);
+void ModuleInitCarSteering(s32 *p, u32 v);
 
 void ModuleInitCar(u8 carIdx, struct Car *car, s32 posX, s32 posZ, u32 heading)
 {
@@ -52,7 +52,7 @@ void ModuleInitCar(u8 carIdx, struct Car *car, s32 posX, s32 posZ, u32 heading)
     car->onApron = 0;
     car->onGrass = 0;
     car->behindBgFlag = 0;
-    ModuleInitCarSteering((u32 *)&car->unk128, heading);
+    ModuleInitCarSteering(&car->unk128, heading);
     car->unk134 = 0;
     car->unk138 = -1;
     car->wasOnGrass = 0;
@@ -124,9 +124,9 @@ void ModuleInitCar(u8 carIdx, struct Car *car, s32 posX, s32 posZ, u32 heading)
     (*(s32 *)&car->gearRatioTable) = gModule_DriverGearRatioTables[car->driverId];
     (*(s32 *)&car->rpmPerSpeedTable) = gModule_DriverRpmPerSpeedTables[car->driverId];
     if (gModule_IsLinkRace == 0 && carIdx != 0 && gModule_GameMode[0] != 2) {
-        (*(s32 *)&car->gearPowerTable) = (s32)gUnk_0202713E;
-        (*(s32 *)&car->gearRatioTable) = (s32)gUnk_0202714A;
-        (*(s32 *)&car->rpmPerSpeedTable) = (s32)gUnk_02027154;
+        car->gearPowerTable = gUnk_0202713E;
+        car->gearRatioTable = gUnk_0202714A;
+        car->rpmPerSpeedTable = gUnk_02027154;
         (*(s32 *)&car->gearPowerTable) = gModule_DriverGearPowerTables[0];
         (*(s32 *)&car->gearRatioTable) = gModule_DriverGearRatioTables[0];
         (*(s32 *)&car->rpmPerSpeedTable) = gModule_DriverRpmPerSpeedTables[0];

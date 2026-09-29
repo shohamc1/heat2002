@@ -4,12 +4,12 @@
 #include "functions.h"
 #include "m4a.h"
 #include "variables.h"
+#include "gba/defines.h"
+#include "gba/io_reg.h"
 
 void ply_note(void);
 void DummyCgbSound(void);
 /* SoundInit */
-#include "gba/defines.h"
-#include "gba/io_reg.h"
 /* SampleFreqSet */
 extern u16 gPcmSamplesPerVBlankTable[];
 /* m4aSoundMode */

@@ -7,10 +7,9 @@ extern const u16 *const gDriverGearPowerTables[];
 extern const u16 *const gDriverGearRatioTables[];
 extern const u16 *const gDriverRpmPerSpeedTables[];
 
-void SetCarLaneByIndex(u32 a, u8 b);
-void InitCarSteering(u32 *p, u32 v);
+void InitCarSteering(s32 *p, u32 v);
 
-void InitCar(u8 a, struct Car *car, s32 b, s32 c, u32 d)
+void InitCar(u8 a, struct Car *car, s32 b, s32 c, u32 d, u32 unused)
 {
     u8 i;
 
@@ -54,13 +53,13 @@ void InitCar(u8 a, struct Car *car, s32 b, s32 c, u32 d)
     if (gGameMode[0] == 0xF && gChallengeIndex == 3 && car == gCars)
         car->fuel = 0x5000;
     if (gGameMode[0] != 4)
-        SetCarLaneByIndex((u32)car, a);
+        SetCarLaneByIndex(car, a);
     if (gGameMode[0] != 5 && gGameMode[0] != 0x11)
         car->finishTime = 0;
     car->onApron = 0;
     car->onGrass = 0;
     car->behindBgFlag = 0;
-    InitCarSteering((u32 *)&car->unk128, d);
+    InitCarSteering(&car->unk128, d);
     car->unk134 = 0;
     car->unk138 = -1;
     car->wasOnGrass = 0;

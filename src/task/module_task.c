@@ -1,13 +1,13 @@
 #include "global.h"
 #include "variables.h"
 
-extern u32 gUnk_0203C390[];
 struct SlotFF44
 {
     u32 a[15];
     u32 b;
     u32 c;
 };
+extern struct SlotFF44 gUnk_0203C390;
 extern u32 gUnk_0203D490;
 void _08344B80(u32 arg0, u32 arg1);
 
@@ -24,7 +24,7 @@ void *ModuleAllocTask(void)
     u32 i = 0;
     u32 flagsAddr = (u32)gUnk_0203C340;
     u32 one = 1;
-    struct SlotFF44 *p = (struct SlotFF44 *)gUnk_0203C390;
+    struct SlotFF44 *p = &gUnk_0203C390;
     u32 off = 0;
     u32 q = (u32)&p[0].b;
 

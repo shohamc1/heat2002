@@ -3,6 +3,9 @@
 #include "functions.h"
 #include "gba/syscall.h"
 #include "data.h"
+#include "gba/io_reg.h"
+#include "gba/defines.h"
+#include "variables.h"
 
 extern u32 gChampionshipTrophyGfx;
 extern u8 gText_Congratulations_2[];
@@ -13,9 +16,6 @@ extern u8 gBronzeTrophyPalette[];
 extern u8 gText_Gold[];
 extern u8 gText_Silver[];
 extern u8 gText_Bronze[];
-#include "gba/io_reg.h"
-#include "gba/defines.h"
-#include "variables.h"
 
 void DrawTrophyScreen(u32 place)
 {
@@ -68,7 +68,7 @@ u8 TrophyScreen(u8 place)
     UpdateSprites();
     gVBlankWorkDone = done;
     WaitForVBlank();
-    FadeToBrightenedPalette((u32)buf, 0x0F);
+    FadeToBrightenedPalette(buf, 0x0F);
     WaitForVBlank();
     REG_DISPCNT = 0xAA << 5;
     sel = 0x40;

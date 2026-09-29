@@ -8,7 +8,7 @@ void SortLinkCarsByTime(void)
     u32 swapped;
     register u8 *countTemp asm("r2");
     register u8 *count asm("r10");
-    register u32 *base asm("r9");
+    register struct Car **base asm("r9");
 
     i = 0;
     countTemp = &gNumLinkPlayers[0];
@@ -17,11 +17,11 @@ void SortLinkCarsByTime(void)
     {
         register u8 n asm("r1") = *countTemp;
         if (i != n) {
-            register u32 *dst asm("r4") = base;
+            register struct Car **dst asm("r4") = base;
             register u8 current asm("r0");
             do {
-                register u32 *slot asm("r0") = (u32 *)(((u32)i << 2) + (u32)dst);
-                *slot = (u32) & ((u8(*)[0x190])gCars)[i][0];
+                register struct Car **slot asm("r0") = (struct Car **)(((u32)i << 2) + (u32)dst);
+                *slot = (struct Car *)&((u8(*)[0x190])gCars)[i][0];
                 i++;
                 current = *countTemp;
             } while (i != current);
@@ -29,7 +29,7 @@ void SortLinkCarsByTime(void)
     }
 
     do {
-        register u32 *p asm("r6") = base;
+        register struct Car **p asm("r6") = base;
         i = 0;
         swapped = 0;
         {
@@ -43,9 +43,9 @@ void SortLinkCarsByTime(void)
                 off = half << 1;
                 innerCount = count;
                 do {
-                    u32 a = p[0];
-                    u32 b = p[1];
-                    if (*(u32 *)(a + off) > *(u32 *)(b + off)) {
+                    struct Car *a = p[0];
+                    struct Car *b = p[1];
+                    if (*(u32 *)((u32)a + off) > *(u32 *)((u32)b + off)) {
                         p[0] = b;
                         p[1] = a;
                         swapped = 1;

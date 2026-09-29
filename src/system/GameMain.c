@@ -32,7 +32,7 @@ void GameMain(void)
     *ds = eight;
     ReadKeys();
     gUnk_020020B4 = z1;
-    SetVBlankCallback((u32)MainVBlankCallback);
+    SetVBlankCallback(MainVBlankCallback);
     *ie = 0x2001;
     *ds = eight;
     FillFadePalette(0x7FFF);

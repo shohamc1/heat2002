@@ -23,7 +23,7 @@ void SetupChallenge(u8 a, u8 *unused)
             FinishAllCars(0);
             SortCarsByTime();
             gNumLaps = 1;
-            (*(struct Car **)&gCarOrder) = gCars;
+            gCarOrder[0] = gCars;
             break;
         case 1:
             (*(u8 *)&gNumCars) = 1;
@@ -34,7 +34,7 @@ void SetupChallenge(u8 a, u8 *unused)
             FinishAllCars(0);
             SortCarsByTime();
             gNumLaps = 5;
-            (*(struct Car **)&gCarOrder) = gCars;
+            gCarOrder[0] = gCars;
             break;
         case 2:
             (*(u8 *)&gNumCars) = 24;
@@ -72,7 +72,7 @@ void SetupChallenge(u8 a, u8 *unused)
             SortCarsByTime();
             gNumLaps = 2;
             (*(u8 *)&gNumCars) = 1;
-            (*(struct Car **)&gCarOrder) = gCars;
+            gCarOrder[0] = gCars;
             break;
         case 5:
             (*(u8 *)&gNumCars) = 24;
@@ -115,7 +115,7 @@ void SetupChallenge(u8 a, u8 *unused)
             FinishAllCars(0);
             SortCarsByTime();
             gNumLaps = 5;
-            (*(struct Car **)&gCarOrder) = gCars;
+            gCarOrder[0] = gCars;
             break;
         case 8:
             (*(u8 *)&gNumCars) = 1;
@@ -128,7 +128,7 @@ void SetupChallenge(u8 a, u8 *unused)
             FinishAllCars(0);
             SortCarsByTime();
             gNumLaps = 3;
-            (*(struct Car **)&gCarOrder) = gCars;
+            gCarOrder[0] = gCars;
             break;
         case 9:
             (*(u8 *)&gNumCars) = 1;
@@ -142,7 +142,7 @@ void SetupChallenge(u8 a, u8 *unused)
             SortCarsByTime();
             gNumLaps = 3;
             gChallengeBestValue = 0;
-            (*(struct Car **)&gCarOrder) = gCars;
+            gCarOrder[0] = gCars;
             for (i = 0; i != 32; i++)
                 gWaypointSpeedSamples[i] = 0;
             break;

@@ -1,10 +1,10 @@
 #include "global.h"
 #include "gba/compat.h"
 #include "gba/m4a_internal.h"
-
-/* m4aSoundVSyncOff */
 #include "gba/defines.h"
 #include "gba/io_reg.h"
+
+/* m4aSoundVSyncOff */
 /* m4aSoundVSyncOn */
 
 void m4aSoundVSyncOff(void)

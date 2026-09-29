@@ -22,7 +22,7 @@ u8 MessageBox(const u8 *title, const u8 *line1, const u8 *line2)
     s8 v = 0;
     LoadMenuScreen(3, (u16 *)buf);
     DrawMessageBox(title, line1, line2);
-    FadeToBrightenedPalette((u32)buf, 0x0F);
+    FadeToBrightenedPalette(buf, 0x0F);
     sel = 0x40;
     do {
         ReadKeys();

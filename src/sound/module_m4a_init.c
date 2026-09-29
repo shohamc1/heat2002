@@ -1,18 +1,19 @@
 #include "global.h"
-#define GBA_CPUSET sub_08344B64
 #include "gba/compat.h"
 #include "gba/m4a_internal.h"
 #include "m4a.h"
 #include "variables.h"
-
-/* SoundInit (high copy) */
-void sub_0833A018(u32 a);
-void ModuleSampleFreqSet(u32 a);
-void sub_0833A4FC(void);
-void ModuleDummyCgbSound(void);
 #include "gba/defines.h"
 #include "gba/io_reg.h"
 #include "functions.h"
+
+#define GBA_CPUSET sub_08344B64
+
+/* SoundInit (high copy) */
+void sub_0833A018(MPlayFunc *jumpTable);
+void ModuleSampleFreqSet(u32 a);
+void sub_0833A4FC(void);
+void ModuleDummyCgbSound(void);
 /* SampleFreqSet (high copy) */
 extern u16 gUnk_0200C7DC[];
 /* m4aSoundMode (high copy) */
@@ -48,7 +49,7 @@ void ModuleSoundInit(struct SoundInfo *soundInfo)
     {
         MPlayFunc *jumpTable = gUnk_02038DE0;
 
-        sub_0833A018((u32)jumpTable);
+        sub_0833A018(jumpTable);
         soundInfo->MPlayJumpTable = jumpTable;
     }
     ModuleSampleFreqSet(0x40000);

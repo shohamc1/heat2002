@@ -1,5 +1,6 @@
 #include "global.h"
 #include "structs.h"
+
 /* no data.h: it declares gTextLayerMapPtr without const,
    which the users' bytes need; this file needs nothing else from it. */
 

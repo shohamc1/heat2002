@@ -1,10 +1,10 @@
 #include "global.h"
 #include "functions.h"
 #include "data.h"
-
-extern u8 gText_Practice[];
 #include "m4a.h"
 #include "variables.h"
+
+extern u8 gText_Practice[];
 extern u8 gText_Overwrite[];
 extern u8 gText_YouWillLoseThe[];
 extern u8 gText_PreviouslySavedCareer[];
@@ -12,7 +12,7 @@ extern u8 gText_AreYouSure[];
 extern u8 gText_No[];
 extern u8 gText_Yes[];
 
-void DrawCareerSessionMenu(u8 cursor)
+void DrawCareerSessionMenu(u8 cursor, u8 unused0, u8 unused1)
 {
     u8 sel = cursor;
     const u8 *text;
@@ -38,14 +38,12 @@ s8 CareerSessionMenu(u8 qualifyDone, u8 practiceDone)
     s8 sel;
     cursor = 0;
     LoadMenuScreen(6, (u16 *)buf);
-    /* DrawCareerSessionMenu: this file's old local prototype differs from
-       functions.h; call through the old signature (solved-walls 31). */
-    ((void (*)(u8, u8, u8))DrawCareerSessionMenu)(0, qualifyDone, practiceDone | qualifyDone);
-    FadeToBrightenedPalette((u32)buf, 0x0F);
+    DrawCareerSessionMenu(0, qualifyDone, practiceDone | qualifyDone);
+    FadeToBrightenedPalette(buf, 0x0F);
     sel = 0x40;
     do {
         ReadKeys();
-        ((void (*)(u8, u8, u8))DrawCareerSessionMenu)(cursor, qualifyDone, practiceDone);
+        DrawCareerSessionMenu(cursor, qualifyDone, practiceDone);
         if ((gKeysPressed & 9) && (practiceDone == 0 || cursor != 0) && (qualifyDone == 0 || cursor != 1))
             sel = cursor;
         if (gKeysPressed & 2)
@@ -67,7 +65,7 @@ s8 CareerSessionMenu(u8 qualifyDone, u8 practiceDone)
     return sel;
 }
 
-void DrawSeasonSessionMenu(u8 cursor)
+void DrawSeasonSessionMenu(u8 cursor, u8 unused0, u8 unused1)
 {
     u8 sel = cursor;
     const u8 *text;
@@ -91,14 +89,12 @@ s8 SeasonSessionMenu(u8 qualifyDone, u8 practiceDone)
     s8 sel;
     cursor = 0;
     LoadMenuScreen(6, (u16 *)buf);
-    /* DrawSeasonSessionMenu: this file's old local prototype differs from
-       functions.h; call through the old signature (solved-walls 31). */
-    ((void (*)(u8, u8, u8))DrawSeasonSessionMenu)(0, qualifyDone, practiceDone);
-    FadeToBrightenedPalette((u32)buf, 0x0F);
+    DrawSeasonSessionMenu(0, qualifyDone, practiceDone);
+    FadeToBrightenedPalette(buf, 0x0F);
     sel = 0x40;
     do {
         ReadKeys();
-        ((void (*)(u8, u8, u8))DrawSeasonSessionMenu)(cursor, qualifyDone, practiceDone);
+        DrawSeasonSessionMenu(cursor, qualifyDone, practiceDone);
         if ((gKeysPressed & 9) && (practiceDone == 0 || cursor != 0) && (qualifyDone == 0 || cursor != 1))
             sel = cursor;
         if (gKeysPressed & 2)
@@ -143,7 +139,7 @@ u8 CareerOverwriteConfirm(void)
     cursor = 0;
     LoadMenuScreen(6, (u16 *)buf);
     DrawCareerOverwriteConfirm(0);
-    FadeToBrightenedPalette((u32)buf, 0x0F);
+    FadeToBrightenedPalette(buf, 0x0F);
     sel = 0x40;
     do {
         ReadKeys();
@@ -190,7 +186,7 @@ s8 SaveCareerScreen(void)
     }
     LoadMenuScreen(6, (u16 *)buf);
     DrawSaveCareerStatus(0);
-    FadeToBrightenedPalette((u32)buf, 0x0F);
+    FadeToBrightenedPalette(buf, 0x0F);
     SaveSeason();
     DrawSaveCareerStatus(1);
     sel = 0x40;

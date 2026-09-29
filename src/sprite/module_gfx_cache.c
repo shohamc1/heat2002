@@ -1,11 +1,6 @@
 #include "global.h"
+#include "variables.h"
 
-struct Unk0833F958
-{
-    u8 field_00;
-    u8 field_01;
-    u32 field_04;
-};
 struct OamInit
 {
     u32 f0;
@@ -17,7 +12,6 @@ struct OamInit
     u32 fC;
     u32 f10;
 };
-#include "variables.h"
 struct Unk0833C270
 {
     u8 field_00;
@@ -32,7 +26,7 @@ extern u8 gUnk_02026A3C[];
 extern u8 gUnk_02026A64[];
 extern u8 gUnk_02026A84[];
 
-void ModuleInitObjPaletteCacheEntry(struct Unk0833F958 *entry)
+void ModuleInitObjPaletteCacheEntry(struct Unk0833C270 *entry)
 {
     entry->field_04 = 0xFFFF;
     entry->field_00 = 0;
@@ -84,7 +78,7 @@ void ModuleInitGfxCaches(void)
     color = 0x05000200;
     entry = (struct Unk0833C270 *)gUnk_0203C270;
     do {
-        ModuleInitObjPaletteCacheEntry((struct Unk0833F958 *)entry);
+        ModuleInitObjPaletteCacheEntry(entry);
         entry->field_08 = color;
         color += 0x20;
         entry++;

@@ -1,7 +1,7 @@
 #include "global.h"
 #include "variables.h"
-
 #include "functions.h"
+
 extern u8 gModule_TimeLabel[];
 void *ModuleAllocTask(void);
 void ModuleAddTask(u32 r0);

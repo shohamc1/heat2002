@@ -8,7 +8,10 @@
 // (agents' analysis 2026-09-28); unkXX fields have no reader anywhere in
 // the reachable code, and padXX regions are never touched at any width.
 
-struct Car {
+struct LaneSeg;
+
+struct Car
+{
     /* 0x00 */ s32 posX;
     /* 0x04 */ s32 unk04;
     /* 0x08 */ s32 posZ;
@@ -40,9 +43,11 @@ struct Car {
     /* 0x54 */ u8 pad54[0x55 - 0x54];
     /* 0x55 */ u8 hitCooldown;
     /* 0x56 */ u8 pad56[0x58 - 0x56];
-    /* 0x58 */ s32 driverPalette; /* cached gDriverPalettes[driverId] palette pointer; write-only (no reader in shipped code) */
+    /* 0x58 */ s32
+        driverPalette; /* cached gDriverPalettes[driverId] palette pointer; write-only (no reader in shipped code) */
     /* 0x5C */ u8 pad5C[0x7C - 0x5C];
-    /* 0x7C */ u8 carState; /* only 0 (init) and 2 (wreck reset) ever written; 1, 1-3 and 5-7 are tested but never set in matched code */
+    /* 0x7C */ u8 carState; /* only 0 (init) and 2 (wreck reset) ever written; 1, 1-3 and 5-7 are tested but never set
+                               in matched code */
     /* 0x7D */ u8 finished; /* 0 while racing; 1 once the car's result is recorded */
     /* 0x7E */ u8 pad7E[0x80 - 0x7E];
     /* 0x80 */ u32 unk80;
@@ -60,12 +65,12 @@ struct Car {
     /* 0xB4 */ s32 cornerZ[4];
     /* 0xC4 */ s32 nextCornerX[4];
     /* 0xD4 */ s32 nextCornerZ[4];
-    /* 0xE4 */ const u16 *gearPowerTable; /* per-driver gDriverGearPowerTables[driverId] */
-    /* 0xE8 */ const u16 *gearRatioTable; /* per-driver gDriverGearRatioTables[driverId] */
-    /* 0xEC */ const u16 *rpmPerSpeedTable; /* per-driver gDriverRpmPerSpeedTables[driverId] */
-    /* 0xF0 */ s32 lanePosition; /* row index (>>8) into the wall tables below */
-    /* 0xF4 */ s32 lanePoints; /* u16 (x,y) pairs, gLanePointTables[row+gTrackId*12] */
-    /* 0xF8 */ s32 laneSegments; /* 20-byte records, gLaneSegmentTables[row+gTrackId*12] */
+    /* 0xE4 */ const u16 *gearPowerTable;          /* per-driver gDriverGearPowerTables[driverId] */
+    /* 0xE8 */ const u16 *gearRatioTable;          /* per-driver gDriverGearRatioTables[driverId] */
+    /* 0xEC */ const u16 *rpmPerSpeedTable;        /* per-driver gDriverRpmPerSpeedTables[driverId] */
+    /* 0xF0 */ s32 lanePosition;                   /* row index (>>8) into the wall tables below */
+    /* 0xF4 */ const u16 *lanePoints;              /* u16 (x,y) pairs, gLanePointTables[row+gTrackId*12] */
+    /* 0xF8 */ const struct LaneSeg *laneSegments; /* 20-byte records, gLaneSegmentTables[row+gTrackId*12] */
     /* 0xFC */ u32 laneCellLists; /* base of 0xFF-terminated lane-segment index lists (held as a pointer) */
     /* 0x100 */ u32 laneCellGrid; /* u16[48*48] grid of offsets into laneCellLists (held as a pointer) */
     /* 0x104 */ u16 finishMin;
@@ -88,26 +93,29 @@ struct Car {
     /* 0x151 */ u8 pad151[0x154 - 0x151];
     /* 0x154 */ s32 laneLength;
     /* 0x158 */ s32 unk158;
-    /* 0x15C */ s32 tickCount; /* init 300, ++ every UpdateCar */
+    /* 0x15C */ s32 tickCount;    /* init 300, ++ every UpdateCar */
     /* 0x160 */ u16 zoneGripFlag; /* 0x32 near a zone entity; halves camera sway */
     /* 0x162 */ u8 driverId;
     /* 0x163 */ u8 pad163[0x164 - 0x163];
     /* 0x164 */ u16 points;
-    /* 0x166 */ u8 ledLapFlag; /* 1 until racePosition is a valid mid-pack value; lapping marker */
+    /* 0x166 */ u8 ledLapFlag;  /* 1 until racePosition is a valid mid-pack value; lapping marker */
     /* 0x167 */ u8 lapLedTimer; /* 0x1E countdown after being lapped */
-    /* 0x168 */ u8 lapsLed; /* bonus points: +5 if nonzero, +10 when no other car led strictly more laps (ties get it) */
+    /* 0x168 */ u8
+        lapsLed; /* bonus points: +5 if nonzero, +10 when no other car led strictly more laps (ties get it) */
     /* 0x169 */ u8 pad169[0x16C - 0x169];
-    /* 0x16C */ u32 finishTime; /* ms result/sort key: race finish time, best lap in mode 5, or random AI qualifying time */
+    /* 0x16C */ u32
+        finishTime;         /* ms result/sort key: race finish time, best lap in mode 5, or random AI qualifying time */
     /* 0x170 */ u8 onApron; /* tile 2/3; mild drag */
     /* 0x171 */ u8 onGrass; /* tile 4/5; strong drag */
-    /* 0x172 */ u8 behindBgFlag; /* adjacent tile bit 0 */
-    /* 0x173 */ u8 wasOnGrass; /* previous-frame onGrass */
+    /* 0x172 */ u8 behindBgFlag;     /* adjacent tile bit 0 */
+    /* 0x173 */ u8 wasOnGrass;       /* previous-frame onGrass */
     /* 0x174 */ u8 firstStepCrossed; /* car has begun moving */
     /* 0x175 */ u8 pitState;
     /* 0x176 */ u8 draftTimer;
     /* 0x177 */ u8 pad177[0x178 - 0x177];
     /* 0x178 */ u32 prePitLane; /* SetCarLane arg to warp back after pit */
-    /* 0x17C */ s32 trackCueCursor; /* gTrackCueList pointer walked by the 8-byte track-cue records (held as a pointer) */
+    /* 0x17C */ s32
+        trackCueCursor; /* gTrackCueList pointer walked by the 8-byte track-cue records (held as a pointer) */
     /* 0x180 */ u8 torqueDampTimer; /* nonzero: 16x torque while decrementing; armed outside the direct call graph */
     /* 0x181 */ u8 pitStall;
     /* 0x182 */ u16 pitExitPending;

@@ -1,4 +1,6 @@
 #include "global.h"
+#include "gba/m4a_internal.h"
+#include "functions.h"
 
 /* MidiKeyToCgbFreq, high 0x0833 module copy: same code as MidiKeyToCgbFreq
  * with the tables read from the module's EWRAM image (delta 0x17FF6E0 from
@@ -7,9 +9,7 @@
 extern const u8 gUnk_0200C7F4[];
 extern const s16 gUnk_0200C878[];
 extern const u8 gUnk_0200C890[];
-#include "gba/m4a_internal.h"
 /* CgbOscOff, high 0x0833 module copy: same code as CgbOscOff. */
-#include "functions.h"
 /* CgbSound, an older m4a revision than pokeemerald's and tmc's: no NR52
  * channel-status check, no pseudo-echo envelope write, and
  * envelopeStepTimeAndDir is a u8 kept across channels.

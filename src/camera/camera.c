@@ -1,14 +1,6 @@
 #include "global.h"
 #include "variables.h"
-struct UnkStruct080043F8
-{
-    u32 posX;
-    u32 unk04;
-    u32 posZ;
-    u32 velX;
-    u32 unk10;
-    u32 velZ;
-};
+#include "car.h"
 
 void SetCameraPos(u32 x, u32 y)
 {
@@ -105,7 +97,7 @@ void SmoothCamera(void)
     }
 }
 
-void SetCameraTarget(struct UnkStruct080043F8 *arg0)
+void SetCameraTarget(struct Car *arg0)
 {
     if (gIsDemo != 0) {
         gCamera[2] = arg0->posX;

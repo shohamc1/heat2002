@@ -1,11 +1,12 @@
 #include "global.h"
-#define GBA_CPUSET sub_08344B64
 #include "gba/compat.h"
 #include "gba/m4a_internal.h"
-
-/* m4aSoundVSyncOff (high copy) */
 #include "gba/defines.h"
 #include "gba/io_reg.h"
+
+#define GBA_CPUSET sub_08344B64
+
+/* m4aSoundVSyncOff (high copy) */
 /* m4aSoundVSyncOn (high copy) */
 
 void ModuleM4aSoundVSyncOff(void)

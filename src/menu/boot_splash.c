@@ -18,7 +18,7 @@ void ShowBootSplash3(void)
     *reg = 0x444;
     src = (u32)gUnk_082B370C;
     RLUnCompVram(src, VRAM);
-    FadeToBrightenedPalette((u32)gBootSplash3Palette, 0xF);
+    FadeToBrightenedPalette(gBootSplash3Palette, 0xF);
     WaitFramesOrKey(0x78);
     FadeToColor(0, 0xF);
 }
@@ -36,7 +36,7 @@ void ShowBootSplash2(void)
     *reg = 0x444;
     src = (u32)gUnk_0830EE78;
     RLUnCompVram(src, VRAM);
-    FadeToBrightenedPalette((u32)gBootSplash2Palette, 0xF);
+    FadeToBrightenedPalette(gBootSplash2Palette, 0xF);
     WaitFramesOrKey(0x78);
     FadeToColor(0, 0xF);
 }

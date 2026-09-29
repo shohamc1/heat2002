@@ -1,13 +1,13 @@
 #include "global.h"
-
-#define GBA_CPUSET sub_08344B64
 #include "gba/compat.h"
 #include "functions.h"
 #include "m4a.h"
 #include "variables.h"
+#include "structs.h"
+
+#define GBA_CPUSET sub_08344B64
 /* The cancelling offset preserves the initial base-to-p copy.
    Assigning off = 4 inside the loop keeps base + 4 out of the preheader. */
-#include "structs.h"
 void sub_08339C0C(void);
 void sub_08339B88(void);
 
@@ -51,7 +51,7 @@ void ModuleM4aSoundInit(void)
         count = playerCount;
     loop:
         tracksOffset = 4;
-        mplayInfo = playerEntry->unk0;
+        mplayInfo = (u32)playerEntry->unk0;
         ModuleMPlayOpen((struct MusicPlayerInfo *)mplayInfo,
                         (struct MusicPlayerTrack *)(*(u32 *)(entryOffset + (tableBase + tracksOffset))),
                         (*(u8 *)&playerEntry->unk8));
@@ -69,6 +69,6 @@ void ModuleM4aSoundMain(void)
 
 void ModuleM4aSongNumStart(u16 idx)
 {
-    u32 mplayInfo = gModule_MPlayTable[gModule_SongTable[idx].unk4].unk0;
-    ModuleMPlayStart((struct MusicPlayerInfo *)mplayInfo, (struct SongHeader *)(gModule_SongTable[idx].unk0));
+    struct MusicPlayerInfo *mplayInfo = gModule_MPlayTable[gModule_SongTable[idx].unk4].unk0;
+    ModuleMPlayStart(mplayInfo, gModule_SongTable[idx].unk0);
 }

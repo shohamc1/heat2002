@@ -25,9 +25,9 @@ void ShowCreditsPage1(void)
     CpuCopy16((u32)gTextLayerTiles, BG_SCREEN_ADDR(24), 0x2000);
     WaitForVBlank();
     REG_DISPCNT = 0x88 << 3;
-    DrawMetatileMap((u16 *)((u32)gCreditsPage1MetatileMap), (u16 *)((u32)gCreditsPage1MetatileTable));
-    BuildScreenPalette((u32)gCreditsPage1Palette, (u16 *)palette);
-    FadeToBrightenedPalette((u32)palette, 0x0F);
+    DrawMetatileMap(gCreditsPage1MetatileMap, gCreditsPage1MetatileTable);
+    BuildScreenPalette(gCreditsPage1Palette, (u16 *)palette);
+    FadeToBrightenedPalette(palette, 0x0F);
     WaitFramesOrKey(0x96 << 2);
     FadeToColor(0, 0x0F);
 }
@@ -41,9 +41,9 @@ void ShowCreditsPage2(void)
     CpuCopy16((u32)gTextLayerTiles, BG_SCREEN_ADDR(24), 0x2000);
     WaitForVBlank();
     REG_DISPCNT = 0x88 << 3;
-    DrawMetatileMap((u16 *)((u32)gCreditsPage2MetatileMap), (u16 *)((u32)gCreditsPage2MetatileTable));
-    BuildScreenPalette((u32)gCreditsPage2Palette, (u16 *)palette);
-    FadeToBrightenedPalette((u32)palette, 0x0F);
+    DrawMetatileMap(gCreditsPage2MetatileMap, gCreditsPage2MetatileTable);
+    BuildScreenPalette(gCreditsPage2Palette, (u16 *)palette);
+    FadeToBrightenedPalette(palette, 0x0F);
     WaitFramesOrKey(0x96 << 2);
     FadeToColor(0, 0x0F);
 }
@@ -57,9 +57,9 @@ void ShowCreditsPage3(void)
     CpuCopy16((u32)gTextLayerTiles, BG_SCREEN_ADDR(24), 0x2000);
     WaitForVBlank();
     REG_DISPCNT = 0x88 << 3;
-    DrawMetatileMap((u16 *)((u32)gCreditsPage3MetatileMap), (u16 *)((u32)gCreditsPage3MetatileTable));
-    BuildScreenPalette((u32)gCreditsPage3Palette, (u16 *)palette);
-    FadeToBrightenedPalette((u32)palette, 0x0F);
+    DrawMetatileMap(gCreditsPage3MetatileMap, gCreditsPage3MetatileTable);
+    BuildScreenPalette(gCreditsPage3Palette, (u16 *)palette);
+    FadeToBrightenedPalette(palette, 0x0F);
     WaitFramesOrKey(0x96 << 2);
     FadeToColor(0, 0x0F);
 }

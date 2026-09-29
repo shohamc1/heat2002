@@ -1,9 +1,9 @@
 #include "global.h"
 #include "car.h"
 #include "variables.h"
-
 #include "functions.h"
 #include "data.h"
+
 extern u8 gText_Timer[];
 extern u8 gText_MPH[];
 extern u8 gText_BlankRow8[];
@@ -19,7 +19,7 @@ u8 IsProgressPointCrossed(s32 point)
     return 1;
 }
 
-u32 IsChallengeTimeWithin(s32 limitMs)
+u8 IsChallengeTimeWithin(s32 limitMs)
 {
     if ((*(s32 *)&gChallengeTimerSec) * 1000 + (*(s32 *)&gChallengeTimerMs) <= limitMs)
         return 1;
@@ -146,9 +146,7 @@ void UpdateChallenge(void)
                         break;
                     case 1:
                         if (IsProgressPointCrossed(0x15E)) {
-                            /* IsChallengeTimeWithin: this file's old prototype returns u8; the matched definition
-                             * returns u32 */
-                            if (((u8 (*)(u32))IsChallengeTimeWithin)(0x2328))
+                            if (IsChallengeTimeWithin(0x2328))
                                 gChallengeResult = phase;
                             EndRace();
                             gChallengePhase = 0;
@@ -182,7 +180,7 @@ void UpdateChallenge(void)
                         break;
                     case 1:
                         if (IsProgressPointCrossed(0x96)) {
-                            if (((u8 (*)(u32))IsChallengeTimeWithin)(0xFA0))
+                            if (IsChallengeTimeWithin(0xFA0))
                                 gChallengeResult = phase;
                             EndRace();
                             gChallengePhase = 0;

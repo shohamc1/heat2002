@@ -17,7 +17,8 @@
 // two can never fold together. This header defines the struct before declaring any array of
 // it ("Declaration order matters for struct arrays",
 // docs/extern-headers-plan.md).
-struct Track {
+struct Track
+{
     /* 0x00 */ u32 unk00;
     /* 0x04 */ u32 unk04;
     /* 0x08 */ u32 unk08;
@@ -49,7 +50,6 @@ typedef char TrackSizeCheck[sizeof(struct Track) == 0x64 ? 1 : -1];
 // The ROM's track table at 0x08364B0C; every user agrees on this type.
 extern const struct Track gTrackData[];
 
-
 // One waypoint quad of a track's segment list: the 0x18-byte record
 // gTrackSegs points at after LoadTrackSegs loads the row from
 // gTrackSegTables (race_setup.c, one row per track). ModuleUpdateLapProgress and
@@ -57,7 +57,8 @@ extern const struct Track gTrackData[];
 // quad's corners; FindWaypointCrossing crosses the quad with a vertex pair.
 // Its old local tags (this struct, plus the coarser `struct SegBC4C`
 // prefix view) were merged here unchanged.
-struct TrackSeg {
+struct TrackSeg
+{
     /* 0x00 */ s32 f0;
     /* 0x04 */ s32 f4;
     /* 0x08 */ s32 f8;
@@ -68,29 +69,55 @@ struct TrackSeg {
     /* 0x15 */ u8 pad15[3];
 };
 
+// One 0x14-byte record of a lane's segment table (gLaneSegmentTables);
+// its points index the lane's u16 (x, z) pair list (gLanePointTables).
+struct LaneSeg
+{
+    /* 0x00 */ u8 pointA;
+    /* 0x01 */ u8 pointB; /* 0xFF ends the table */
+    /* 0x02 */ u8 unk2;
+    /* 0x03 */ u8 unk3;
+    /* 0x04 */ u16 startDist;
+    /* 0x06 */ u16 endDist;
+    /* 0x08 */ s32 unk8;
+    /* 0x0C */ s32 scaleX;
+    /* 0x10 */ s32 scaleZ;
+};
 
 // The m4a song/player tables (defined identically in sub_08001208.c and
 // ModuleM4aSongNumStart.c before the merge; the arrays are in data.h/variables.h).
-struct Unk0801DA90 { u32 unk0; u32 unk4; u32 unk8; };
-struct Unk0801DACC { u32 unk0; u16 unk4; };
-
+struct MusicPlayerInfo;
+struct MusicPlayerTrack;
+struct SongHeader;
+struct Unk0801DA90
+{
+    struct MusicPlayerInfo *unk0;
+    struct MusicPlayerTrack *unk4;
+    u32 unk8;
+};
+struct Unk0801DACC
+{
+    struct SongHeader *unk0;
+    u16 unk4;
+};
 
 // One row of the credits scroller's script table, gCreditTexts
 // (0x083FE114, 182 entries): the row's text and the flag sub_08016330
 // passes as DrawTextCenteredHighlight's third argument (0 on role rows
 // such as "LEAD PROGRAMMER", 1 on name and blank rows).
-struct CreditLine {
+struct CreditLine
+{
     /* 0x00 */ const u8 *text;
     /* 0x04 */ u8 highlight;
     /* 0x05 */ u8 pad[3];
 };
 
-
 // One driver's row of gTireGripDefaults (0x083677A8, 31 rows): the
 // four tire-grip corners SetTireGrip loads into gTireGripSlow/Fast and
 // gFrontTireGripSlow/Fast, and the slip-limit base it loads into
 // gTireSlipLimitBase.
-struct TireGripSetup {
+struct TireGripSetup
+{
     /* 0x00 */ u32 rearGripSlow;
     /* 0x04 */ u32 rearGripFast;
     /* 0x08 */ u32 frontGripSlow;
@@ -98,12 +125,12 @@ struct TireGripSetup {
     /* 0x10 */ u32 slipLimitBase;
 };
 
-
 // One track's record in gTrackStartGrids (race_setup.c, 12 rows): where
 // BuildStartingGrid (race/grid.c) starts placing the 24 starting-grid
 // slots — origin, per-row step, the offset from a slot to its teammate's
 // slot, and the direction value stored with every slot.
-struct TrackGrid {
+struct TrackGrid
+{
     /* 0x00 */ s32 originX;
     /* 0x04 */ s32 originY;
     /* 0x08 */ s32 rowStepX;
@@ -116,7 +143,8 @@ struct TrackGrid {
 // The window gTrackAiFinishTimeRanges (0x083FECB8, 12 rows, one per
 // track) bounds RandomizeAiFinishTimes's RandomInRange roll of each AI driver's
 // finish time.
-struct AiFinishTimeRange {
+struct AiFinishTimeRange
+{
     /* 0x00 */ u32 min;
     /* 0x04 */ u32 max;
 };
@@ -125,7 +153,8 @@ struct AiFinishTimeRange {
 // driver's name and the team id. Rows come in teammate pairs that share
 // the id; FindTeamDriverPair returns both rows matching one, and
 // FindDriverByTeam maps an id to its first row.
-struct DriverRosterEntry {
+struct DriverRosterEntry
+{
     /* 0x00 */ const u8 *name;
     /* 0x04 */ u8 teamId;
     /* 0x05 */ u8 pad[3];
@@ -135,14 +164,16 @@ struct DriverRosterEntry {
 // preview map (OBJ banks 0-3), and one row of gTrackSelectEntries
 // (rom_083FD91C.c, 12 rows): the menu's length/number/name strings,
 // the preview graphic, and its palette. DrawTrackSelect reads a row.
-struct TrackPreviewGfx {
+struct TrackPreviewGfx
+{
     /* 0x00 */ const u8 *unk0;
     /* 0x04 */ const u8 *unk4;
     /* 0x08 */ const u8 *unk8;
     /* 0x0C */ const u8 *unkC;
 };
 
-struct TrackSelectEntry {
+struct TrackSelectEntry
+{
     /* 0x00 */ u32 unk00;
     /* 0x04 */ const u8 *lenText;
     /* 0x08 */ const u8 *numText;
@@ -152,4 +183,3 @@ struct TrackSelectEntry {
 };
 
 #endif // GUARD_STRUCTS_H
-

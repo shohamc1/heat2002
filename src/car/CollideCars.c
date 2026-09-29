@@ -44,7 +44,6 @@ extern struct Coll gCarCollContact;
 extern struct Pt2 gCarCollisionNormals[];
 extern u8 gUnk_0202A530;
 
-void BuildCarCollFrame(struct Car *a, s32 *d);
 void KeepNearestCarContact(struct Car *a, s32 b, struct Car *c, s32 d, struct Coll *e, u8 *f, s32 g, s32 h);
 void DummyCarHitHook(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g);
 void DummyCarDamageHook(s32 a, u8 b);

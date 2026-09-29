@@ -3,6 +3,9 @@
 #include "functions.h"
 
 extern u32 gUnk_02025270[];
+/* Dead code reads these tables as u32; live code uses u16 (variables.h). */
+extern u32 gDeadTuneA[] asm("gUnk_0202A540");
+extern u32 gDeadTuneG[] asm("gUnk_0202CB20");
 extern u8 gText_FormatA[];
 extern u8 gText_FormatG[];
 
@@ -18,7 +21,7 @@ void sub_08004A7C(u8 sel)
     do {
         i = 0;
         base = gUnk_02025270;
-        p = gUnk_0202A540;
+        p = gDeadTuneA;
         do {
             sub_08017594(base, gText_FormatA, i, p[i]);
             sub_08004A50(base, 0x10, (i * 10) + 40, sel == i);
@@ -27,7 +30,7 @@ void sub_08004A7C(u8 sel)
         i = 0;
         base = gUnk_02025270;
         do {
-            sub_08017594(base, gText_FormatG, i, gUnk_0202CB20[i]);
+            sub_08017594(base, gText_FormatG, i, gDeadTuneG[i]);
             sub_08004A50(base, 0x78, (i * 10) + 40, sel == (i + 5));
             i = i + 1;
         } while (i != 5);
@@ -48,11 +51,11 @@ void sub_08004B1C(u8 arg)
     u32 j;
 
     if (sel <= 4) {
-        val = gUnk_0202A540[idx];
-        p = gUnk_0202CB20;
+        val = gDeadTuneA[idx];
+        p = gDeadTuneG;
     } else {
-        val = gUnk_0202CB20[idx - 5];
-        p = gUnk_0202CB20;
+        val = gDeadTuneG[idx - 5];
+        p = gDeadTuneG;
     }
     if (gKeysPressed & 0x20) {
         val = val - gTuneMenuSteps[sel];
@@ -65,10 +68,10 @@ void sub_08004B1C(u8 arg)
             val = gTuneMenuMaxValues[sel];
     }
     if (sel <= 4)
-        gUnk_0202A540[idx] = val;
+        gDeadTuneA[idx] = val;
     else
         *(p + (j = idx - 5)) = val;
-    ComputeGearRatioReciprocals((u16 *)p,(u16 *)gUnk_0202CB00);
+    ComputeGearRatioReciprocals((u16 *)p,gUnk_0202CB00);
 }
 
 void sub_08004BCC(void)

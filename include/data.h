@@ -3,7 +3,6 @@
 
 #include "structs.h"
 
-
 // ROM data that src/data/ defines and several files read, in ROM order.
 
 extern const u32 gPitStallPositions[];
@@ -55,7 +54,7 @@ extern const u32 *const gDriverCarGfxLeftTiles[];
 extern const u16 gAiDriverGearPowerTable[];
 extern const u32 gTextLayerTiles[];
 extern const u8 gResultsScreenPalette[];
-extern const u8 *const gLanePointTables[];
+extern const u16 *const gLanePointTables[];
 extern const u8 gText_PageNextArrow[];
 extern const u8 gSplashSpritePalette[];
 extern const u16 gTextCharMap[];
@@ -63,7 +62,7 @@ extern const s16 gSinTable[];
 extern const u8 gText_CameronSheppard[];
 extern const u8 gText_PageNoArrowBlank[];
 extern const struct TrackSeg *const gTrackSegTables[];
-extern const u8 *const gLaneSegmentTables[];
+extern const struct LaneSeg *const gLaneSegmentTables[];
 extern const u8 gText_MitchellSlater[];
 extern const struct CreditLine gCreditTexts[];
 

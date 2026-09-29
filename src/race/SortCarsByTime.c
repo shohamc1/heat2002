@@ -12,14 +12,14 @@ void SortCarsByTime(void)
 
     i = 0;
     do {
-        ((struct Car **)gCarOrder)[i] = &gCars[i];
+        (gCarOrder)[i] = &gCars[i];
         i++;
     } while (i != 0x18);
     /* A goto keeps the field-offset setup inside each sort pass. */
 outer:
     {
         swapped = 0;
-        p = (struct Car **)gCarOrder;
+        p = gCarOrder;
         i = 0;
         do {
             a = p[0];

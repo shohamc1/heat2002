@@ -39,9 +39,7 @@ void RaceStartSplashTask(struct EntityB0A0 *e)
         RemoveTask((u32)e);
         FreeTask((u32)e);
     }
-    /* DrawTextCentered: this file's old local prototype differs from
-       functions.h; call through the old signature (solved-walls 31). */
-    ((void (*)(u8 *, u32, u32))DrawTextCentered)(gText_BlankRowRaceMsg, 8, 1);
+    DrawTextCentered(gText_BlankRowRaceMsg, 8, 1);
 }
 
 void LinkRaceStartSplashTask(struct EntityB120 *e)

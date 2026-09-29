@@ -1,10 +1,11 @@
 #include "global.h"
-#define GBA_CPUSET sub_08344B64
 #include "gba/compat.h"
 #include "gba/m4a_internal.h"
 #include "functions.h"
 #include "m4a.h"
 #include "variables.h"
+
+#define GBA_CPUSET sub_08344B64
 
 /* MPlayExtender (high copy) */
 

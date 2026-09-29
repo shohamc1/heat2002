@@ -18,7 +18,7 @@ void LoadMainMenuBackdrop(void)
     CpuCopy16((u32)gTextLayerTiles, BG_SCREEN_ADDR(24), 0x2000);
     WaitForVBlank();
     REG_DISPCNT = 0xA8 << 3;
-    DrawBackdropMetatileMap((u16 *)((u32)gMainMenuMetatileMapAndTable));
+    DrawBackdropMetatileMap(gMainMenuMetatileMapAndTable);
 }
 
 void LoadResultsScreenBackdrop(void)
@@ -39,7 +39,7 @@ void LoadResultsScreenBackdrop(void)
     CpuCopy16(src, dest, size * 2);
     WaitForVBlank();
     REG_DISPCNT = 0xA8 << 3;
-    DrawBackdropMetatileMap((u16 *)gResultsScreenMetatileMapAndTable);
+    DrawBackdropMetatileMap(gResultsScreenMetatileMapAndTable);
 }
 
 void LoadMenuBackdrop(void)
@@ -50,5 +50,5 @@ void LoadMenuBackdrop(void)
     CpuCopy16((u32)gTextLayerTiles, BG_SCREEN_ADDR(24), 0x2000);
     WaitForVBlank();
     REG_DISPCNT = 0xA8 << 3;
-    DrawBackdropMetatileMap((u16 *)((u32)gMenuBackdropMetatileMapAndTable));
+    DrawBackdropMetatileMap(gMenuBackdropMetatileMapAndTable);
 }

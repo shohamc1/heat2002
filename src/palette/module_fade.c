@@ -1,11 +1,11 @@
 #include "global.h"
 #include "variables.h"
-
 #include "functions.h"
+#include "gba/compat.h"
+
 void ModulePackFadePalette(void);
 extern u16 gUnk_0203AAD0[];
 #define GBA_CPUSET sub_08344B64
-#include "gba/compat.h"
 void ModuleUpdatePaletteFade(void);
 
 void ModuleFillFadePalette(u32 color)

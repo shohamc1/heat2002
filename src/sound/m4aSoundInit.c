@@ -8,8 +8,8 @@
    Assigning off = 4 inside the loop keeps base + 4 out of the preheader. */
 
 void SoundMainRAM(void);
-extern u8 gUnk_02000DE0[];
-extern u8 gUnk_02001E20[];
+extern struct SoundInfo gUnk_02000DE0;
+extern struct CgbChannel gUnk_02001E20[];
 extern u8 gUnk_02002020[];
 
 void m4aSoundInit(void)
@@ -23,8 +23,8 @@ void m4aSoundInit(void)
     u32 tracksOffset;
 
     CpuCopy32((u32)SoundMainRAM & ~1, IWRAM_START + 0x7000, 0x400);
-    SoundInit((struct SoundInfo *)gUnk_02000DE0);
-    MPlayExtender((struct CgbChannel *)gUnk_02001E20);
+    SoundInit(&gUnk_02000DE0);
+    MPlayExtender(gUnk_02001E20);
     m4aSoundMode(0x0097EA00);
     playerCount = (u16)(u32)gNumMusicPlayersLow;
     if (playerCount != 0) {
@@ -35,7 +35,7 @@ void m4aSoundInit(void)
         count = playerCount;
     loop:
         tracksOffset = 4;
-        mplayInfo = playerEntry->unk0;
+        mplayInfo = (u32)playerEntry->unk0;
         MPlayOpen((struct MusicPlayerInfo *)mplayInfo,
                   (struct MusicPlayerTrack *)(*(u32 *)(entryOffset + (tableBase + tracksOffset))),
                   (*(u8 *)&playerEntry->unk8));

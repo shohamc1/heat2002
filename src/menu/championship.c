@@ -1,8 +1,9 @@
 #include "global.h"
 #include "data.h"
-
 #include "variables.h"
 #include "functions.h"
+#include "m4a.h"
+
 extern const u8 gText_BadLuck[];
 extern const u8 gText_YouVeBeenKicked[];
 extern const u8 gText_OffTheTeam[];
@@ -12,7 +13,6 @@ extern const u8 gText_StayOnThisTeam[];
 extern const u8 gText_CareerDecision[];
 extern const u8 gText_StayOnThisTeam_2[];
 extern const u8 gText_ChooseANewTeam[];
-#include "m4a.h"
 extern u8 gChampionshipRequiredFinish[];
 extern u8 gChampionshipTeamTiers[];
 
@@ -95,7 +95,7 @@ u8 CareerDecisionMenu(void)
     cursor = 0;
     LoadMenuScreen(6, (u16 *)palette);
     DrawCareerDecision(0);
-    FadeToBrightenedPalette((u32)palette, 0x0F);
+    FadeToBrightenedPalette(palette, 0x0F);
     choice = 0x40;
     do {
         ReadKeys();

@@ -1,7 +1,6 @@
 #include "global.h"
 #include "functions.h"
 #include "data.h"
-
 #include "variables.h"
 
 void DrawSingleRaceRetryMenu(u8 cursor)
@@ -26,7 +25,7 @@ u8 SingleRaceRetryMenu(void)
     cursor = 0;
     LoadMenuScreen(1, (u16 *)fadePalette);
     DrawSingleRaceRetryMenu(0);
-    FadeToBrightenedPalette((u32)fadePalette, 0x0F);
+    FadeToBrightenedPalette(fadePalette, 0x0F);
     selection = 0x40;
     do {
         ReadKeys();

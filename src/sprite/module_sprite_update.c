@@ -1,5 +1,6 @@
 #include "global.h"
 #include "variables.h"
+#include "functions.h"
 
 struct Unk
 {
@@ -16,7 +17,6 @@ struct Unk0833D848
     u16 d;
 };
 u32 ModuleSortSpritesByDepth(void);
-#include "functions.h"
 extern u16 gUnk_0203B6A0;
 extern u8 gUnk_0203B854;
 extern u8 gUnk_0203B6EC;

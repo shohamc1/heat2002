@@ -4,6 +4,7 @@
 #include "m4a.h"
 #include "variables.h"
 #include "functions.h"
+#include "data.h"
 
 /*
  * Per-frame car update: zero the impulse accumulators, run the sub-steps,
@@ -37,7 +38,7 @@ u8 CollideCars(struct Car *a);
 u8 UpdateLapProgress(struct Car *p, u8 a1);
 void UpdatePitStop(struct Car *a, u8 b);
 void UpdateRacePosition(u8 a);
-void ClampSteerHeading(s32 *car);
+void ClampSteerHeading(struct Car *car);
 void AddDamageSmokeTask(struct Car *a);
 extern u16 gPitEntryProgressPoints[];
 extern u16 gPitExitProgressPoints[];
@@ -45,9 +46,8 @@ void UpdateCar(struct Car *p, u8 idx);
 u8 CarNeedsPit(struct Car *p);
 u8 FindFreePitStall(u8 a);
 void EnterPit(struct Car *p, u8 a);
-#include "data.h"
 
-void ClampSteerHeading(s32 *car)
+void ClampSteerHeading(struct Car *car)
 {
     register u32 rot asm("r9");
     u32 tableIdx;
@@ -69,7 +69,7 @@ void ClampSteerHeading(s32 *car)
     s32 tmp;
     register s32 idx asm("r0");
 
-    rot = (((u16 *)car)[0x1A] >> 10) << 16;
+    rot = (car->heading >> 10) << 16;
     tableIdx = rot >> 14;
     sinHeading = gSinTable[tableIdx];
     cosHeading = gSinTable[tableIdx + 0x40];
@@ -78,7 +78,7 @@ void ClampSteerHeading(s32 *car)
     sin1 = tmp >> 8;
     tmp = cosHeading * scale;
     cos1 = tmp >> 8;
-    steerPtr = &car[0x4B];
+    steerPtr = &car->steerHeading;
     steerVal = *steerPtr;
     steerIdx = (steerVal >> 10) & 0x3F;
     steerIdx = steerIdx << 2;
@@ -97,51 +97,51 @@ void ClampSteerHeading(s32 *car)
     sin1 = gSinTable[tableIdx + 0x40];
     cos1 = *p;
     if (sin2 * sin1 + cos1 * cos2 < 0)
-        newSteer = ((u16 *)car)[0x1A] - 0x2800;
+        newSteer = car->heading - 0x2800;
     else
-        newSteer = ((u16 *)car)[0x1A] + 0x2800;
+        newSteer = car->heading + 0x2800;
     *steerPtr = newSteer;
-    car[0x4B] = *(u16 *)&car[0x4B];
+    car->steerHeading = *(u16 *)&car->steerHeading;
 }
 
-void UpdateSteering(s32 *a, u16 keys)
+void UpdateSteering(struct Car *car, u16 keys)
 {
     s32 t;
     u32 v;
     s32 x;
 
-    ((u8 *)a)[0x84] = 1;
-    if (a == (s32 *)gCars && a[0xB] > 0) {
+    car->unk84 = 1;
+    if (car == gCars && car->speed > 0) {
         if (!(keys & (DPAD_RIGHT | DPAD_LEFT)))
-            a[75] = (a[75] + ((u16 *)a)[0x1A]) / 2;
+            car->steerHeading = (car->steerHeading + car->heading) / 2;
         if (keys & DPAD_LEFT)
-            a[75] = ((u16 *)a)[0x1A] - 0x1400;
+            car->steerHeading = car->heading - 0x1400;
         if (keys & DPAD_RIGHT) {
-            a[75] = ((u16 *)a)[0x1A] + 0x1400;
+            car->steerHeading = car->heading + 0x1400;
         }
         return;
     }
     if (keys & (DPAD_RIGHT | DPAD_LEFT)) {
-        u8 cur = ((u8 *)a)[0x110];
-        if ((s8)((u8 *)a)[0x110] >= 0)
-            ((u8 *)a)[0x110] = cur + 1;
+        u8 cur = car->unk110;
+        if ((s8)car->unk110 >= 0)
+            car->unk110 = cur + 1;
     } else {
-        if (((u8 *)a)[0x110] != 0)
-            ((u8 *)a)[0x110] = ((u8 *)a)[0x110] - 1;
+        if (car->unk110 != 0)
+            car->unk110 = car->unk110 - 1;
     }
-    v = ((u8 *)a)[0x110];
+    v = car->unk110;
     t = (v * 3 >> 2) + 0x100;
-    x = -(a[0xB]) >> 12;
+    x = -(car->speed) >> 12;
     if (x < 0)
         x = 0;
     x = 0xFF - x;
     t += x * 2;
     if (keys & DPAD_LEFT) {
-        a[75] -= t;
-        ((u8 *)a)[0x84] = 0;
+        car->steerHeading -= t;
+        car->unk84 = 0;
     } else if (keys & DPAD_RIGHT) {
-        a[75] += t;
-        ((u8 *)a)[0x84] = 2;
+        car->steerHeading += t;
+        car->unk84 = 2;
     }
 }
 
@@ -157,7 +157,7 @@ void UpdateCarPhysics(struct Car *car, u32 b, u8 c)
     UpdateCarSurface(car);
     if (car->hitCooldown != 0)
         car->hitCooldown--;
-    UpdateSteering((s32 *)car, b);
+    UpdateSteering(car, b);
     ComputeForwardSpeed(car);
     UpdateEngine(car, b);
     UpdateTireForces(car, c);
@@ -241,14 +241,14 @@ void UpdateCar(struct Car *car, u8 idx)
             UpdateCarPhysics(car, gPlayerKeys[idx], idx);
         else
             UpdateCarPhysics(car, 2, idx);
-        ClampSteerHeading((s32 *)car);
+        ClampSteerHeading(car);
     } else if (idx == 0) {
         if (car->pitState != 0) {
             UpdatePitStop(car, 0);
             UpdateCarPhysics(car, car->aiInput, 0);
         } else if (gGameMode[0] == 9 || gGameMode[0] == 0xD || gGameMode[0] == 0xE || gGameMode[0] == 0xF ||
                    gGameMode[0] == 0x11) {
-            UpdateAiDriver((struct Unk0800C534 *)car, idx);
+            UpdateAiDriver(car, idx);
             UpdateCarPhysics(car, car->aiInput, idx);
         } else {
             /* One shared ClampSteerHeading call, as in the gIsLinkRace branch:
@@ -258,7 +258,7 @@ void UpdateCar(struct Car *car, u8 idx)
                 UpdateCarPhysics(car, gKeysHeld, 0);
             else
                 UpdateCarPhysics(car, 2, 0);
-            ClampSteerHeading((s32 *)car);
+            ClampSteerHeading(car);
         }
     } else {
         if (gGameMode[0] == 9 || gGameMode[0] == 0xD || gGameMode[0] == 0xE || gGameMode[0] == 0xF ||
@@ -270,7 +270,7 @@ void UpdateCar(struct Car *car, u8 idx)
                     UpdatePitStop(car, idx);
                 } else {
                 common:
-                    UpdateAiDriver((struct Unk0800C534 *)car, idx);
+                    UpdateAiDriver(car, idx);
                 }
                 p = &car->aiInput;
             } else {
@@ -281,7 +281,7 @@ void UpdateCar(struct Car *car, u8 idx)
             car->aiInput = v;
             p = &car->aiInput;
         }
-        ClampSteerHeading((s32 *)car);
+        ClampSteerHeading(car);
         UpdateCarPhysics(car, *p, idx);
     }
 

@@ -2,7 +2,7 @@
 #include "gba/defines.h"
 #include "variables.h"
 
-void DrawTrackMapWindow(u32 tileX, u32 tileY, u8 *map, u32 *dest, u8 *charBase)
+void DrawTrackMapWindow(u32 tileX, u32 tileY, u8 *map, u32 *dest, u8 *charBase, u16 unused)
 {
     u8 *mapPtr;
     u32 *destRow2;

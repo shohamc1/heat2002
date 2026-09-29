@@ -3,38 +3,38 @@
 #include "functions.h"
 #include "variables.h"
 #include "car.h"
-
-extern u8 gText_BlankRow[];
 #include "gba/io_reg.h"
 #include "m4a.h"
+
+extern u8 gText_BlankRow[];
 
 void DrawQualifyResults(u8 page)
 {
     u8 buf[0x28];
     u16 minutes, seconds, ms;
     u8 i;
-    u32 *walk;
-    u8 *ptr;
+    struct Car **walk;
+    struct Car *ptr;
     u8 base;
 
     base = page * 15;
     DummyUiFontLoad(gUiFontTable[0]);
     GetString(0x31);
     ((void (*)(void))DrawBigText)();
-    walk = (u32 *)((u8 *)gCarOrder + base * 4);
+    walk = gCarOrder + base;
     i = 0;
     do {
-        ptr = (u8 *)*walk;
+        ptr = *walk;
         DrawText(gText_BlankRow, 0, i + 4, 1);
         if (walk < gSeasonRaceIndex) {
-            SplitMilliseconds(*(u32 *)(ptr + 0x16C), &minutes, &seconds, &ms);
-            if (ptr != (u8 *)gCars || (gMenuBlinkCounter & 0x10) == 0) {
+            SplitMilliseconds(ptr->finishTime, &minutes, &seconds, &ms);
+            if (ptr != gCars || (gMenuBlinkCounter & 0x10) == 0) {
                 buf[0] = ((i + base + 1) / 10) % 10 + 0x30;
                 buf[1] = (i + base + 1) % 10 + 0x30;
                 buf[2] = 0x2E;
                 buf[3] = 0;
                 DrawText(buf, 0, i + 4, 1);
-                DrawText(GetDriverName(ptr[0x162]), 3, i + 4, 1);
+                DrawText(GetDriverName(ptr->driverId), 3, i + 4, 1);
                 buf[0] = (minutes / 10) % 10 + 0x30;
                 buf[1] = minutes % 10 + 0x30;
                 buf[2] = 0x3A;
@@ -70,10 +70,10 @@ u8 QualifyResultsScreen(void)
     page = v = 0;
     ZeroTextLayer();
     LoadResultsScreenBackdrop();
-    BuildScreenPalette((u32)gResultsScreenPalette, (u16 *)buf);
+    BuildScreenPalette(gResultsScreenPalette, (u16 *)buf);
     SortCarsByTime();
     DrawQualifyResults(0);
-    FadeToBrightenedPalette((u32)buf, 0x0F);
+    FadeToBrightenedPalette(buf, 0x0F);
     sel = 0x40;
     do {
         ReadKeys();
@@ -103,8 +103,8 @@ void DrawRaceResults(u8 page)
 {
     u8 buf[0x28];
     u16 minutes, seconds, ms;
-    u32 *walk;
-    u8 *ptr;
+    struct Car **walk;
+    struct Car *ptr;
     u8 base;
     u8 i;
 
@@ -112,17 +112,17 @@ void DrawRaceResults(u8 page)
     DummyUiFontLoad(gUiFontTable[0]);
     GetString(0x2F);
     ((void (*)(void))DrawBigText)();
-    walk = (u32 *)((u8 *)gCarOrder + base * 4);
+    walk = gCarOrder + base;
     i = 0;
     do {
         DrawText(gText_BlankRow36, 1, i + 4, 1);
         if (walk < gSeasonRaceIndex) {
-            ptr = (u8 *)*walk;
-            SplitMilliseconds(*(u32 *)(ptr + 0x16C), &minutes, &seconds, &ms);
-            if (ptr == (u8 *)gCars && (gMenuBlinkCounter & 0x10) != 0) {
+            ptr = *walk;
+            SplitMilliseconds(ptr->finishTime, &minutes, &seconds, &ms);
+            if (ptr == gCars && (gMenuBlinkCounter & 0x10) != 0) {
                 DrawText(gText_BlankRow36, 1, i + 4, 1);
             } else {
-                DrawText(GetDriverName(ptr[0x162]), 1, i + 4, 1);
+                DrawText(GetDriverName(ptr->driverId), 1, i + 4, 1);
                 buf[0] = (minutes / 10) % 10 + 0x30;
                 buf[1] = minutes % 10 + 0x30;
                 buf[2] = 0x3A;
@@ -162,7 +162,7 @@ u8 RaceResultsScreen(void)
     LoadMenuScreen(6, (u16 *)buf);
     /* DrawRaceResults: this file's old prototype differs from the matched definition; call through the old one */
     ((void (*)(s32))DrawRaceResults)(0);
-    FadeToBrightenedPalette((u32)buf, 0x0F);
+    FadeToBrightenedPalette(buf, 0x0F);
     sel = 0x40;
     do {
         ReadKeys();

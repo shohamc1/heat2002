@@ -1,10 +1,10 @@
 #include "global.h"
+#include "functions.h"
 
 extern u8 gRecordsTaskParams[];
 void DelayTask(u32 task);
 u32 AllocTask(void);
 void AddTask(u32 a);
-#include "functions.h"
 
 void AddTrackRecordTasks(void)
 {

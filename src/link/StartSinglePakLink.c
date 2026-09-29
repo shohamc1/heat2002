@@ -11,16 +11,14 @@ extern u8 gText_PressStartToExit[];
 u8 StartSinglePakLink(void)
 {
     s32 i;
-    /* SendMultibootIsland: this file's old prototype returns u8; the
-       matched definition returns u32; call through a function pointer. */
-    if (((u8 (*)(void))SendMultibootIsland)() == 1)
+    if (SendMultibootIsland() == 1)
         return 1;
     InitIntrHandlers();
     REG_IE = 0;
     REG_IME = 1;
     REG_DISPSTAT = DISPSTAT_VBLANK_INTR;
     ReadKeys();
-    SetVBlankCallback((u32)MainVBlankCallback);
+    SetVBlankCallback(MainVBlankCallback);
     REG_IE = INTR_FLAG_GAMEPAK | INTR_FLAG_VBLANK;
     REG_DISPSTAT = DISPSTAT_VBLANK_INTR;
     m4aSoundInit();
@@ -48,10 +46,8 @@ loop:
         /* RunRace: the ROM caller passes a third argument the matched definition drops; call
            through a function pointer with the old prototype. */
         if (((u8 (*)(u32, u32, void *))RunRace)(a0, a1, gUnk_0202CD90) != 0) {
-            /* DrawTextCentered: the ROM callers pass a third argument the matched definition drops; call
-               through a function pointer with the old prototype. */
-            ((void (*)(u32, u32, u32))DrawTextCentered)(GetString(0x75), 0x0A, 1);
-            ((void (*)(u32, u32, u32))DrawTextCentered)((u32)gText_PressStartToExit, 0x0C, 1);
+            DrawTextCentered(GetString(0x75), 0x0A, 1);
+            DrawTextCentered(gText_PressStartToExit, 0x0C, 1);
             StopAllSongsAndVSyncOff();
         wait1:
             ReadKeys();

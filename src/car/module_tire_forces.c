@@ -18,7 +18,7 @@ void ModuleUpdateTireForces(struct Car *car, u8 carIndex)
     s32 speedFactor, contactSpeed, contactVelX, contactVelZ;
 
     gUnk_0203DD38 = carIndex;
-    ModuleSetTireGrip((u32)car, carIndex);
+    ModuleSetTireGrip(car, carIndex);
     if (car == gModule_Cars && (car->tireWear0 > 0x7D000 || car->tireWear1 > 0x7D000 || car->tireWear2 > 0x7D000 ||
                                 car->tireWear3 > 0x7D000)) {
         gUnk_0203DD4C = 0x40;

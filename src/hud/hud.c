@@ -2,6 +2,8 @@
 #include "functions.h"
 #include "variables.h"
 #include "data.h"
+#include "m4a.h"
+
 extern u8 gText_HudPosLabel[];
 extern u8 gText_BlankRow16_2[];
 extern u8 gText_Lap[];
@@ -20,7 +22,6 @@ extern u8 gUnk_02025250;
 extern u8 gText_PitStopNeeded[];
 extern u8 gText_BlankRow20[];
 u8 CarNeedsPit(void);
-#include "m4a.h"
 extern u8 gUnk_02025228;
 extern u8 gUnk_083387A8[];
 
@@ -45,16 +46,14 @@ void DrawSpeedNeedle(u32 speed)
 
 void DrawPitStopWarning(void)
 {
-    u32 text;
+    const u8 *text;
 
     if (CarNeedsPit() != 0 && (gUnk_02025250 & 8) != 0) {
-        text = (u32)gText_PitStopNeeded;
-        /* DrawTextCentered: this file's old local prototype differs from
-           functions.h; call through the old signature (solved-walls 31). */
-        ((void (*)(u32, u32, u32))DrawTextCentered)(text, 6, 1);
+        text = gText_PitStopNeeded;
+        DrawTextCentered(text, 6, 1);
     } else {
-        text = (u32)gText_BlankRow20;
-        ((void (*)(u32, u32, u32))DrawTextCentered)(text, 6, 1);
+        text = gText_BlankRow20;
+        DrawTextCentered(text, 6, 1);
     }
     gUnk_02025250 = gUnk_02025250 + 1;
 }

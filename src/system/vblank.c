@@ -1,5 +1,6 @@
 #include "global.h"
 #include "variables.h"
+
 void AckVBlank(void);
 void ClearVBlankFlag(void);
 

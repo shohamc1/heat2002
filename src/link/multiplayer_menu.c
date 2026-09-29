@@ -1,7 +1,6 @@
 #include "global.h"
 #include "functions.h"
 #include "data.h"
-
 #include "m4a.h"
 #include "variables.h"
 
@@ -27,7 +26,7 @@ s8 MultiplayerMenu(void)
     LoadMenuScreen(4, (u16 *)palette);
     /* DrawMultiplayerMenu: this file's old prototype differs from the matched definition; call through the old one */
     ((void (*)(s32))DrawMultiplayerMenu)(0);
-    FadeToBrightenedPalette((u32)palette, 0x0F);
+    FadeToBrightenedPalette(palette, 0x0F);
     do {
         ReadKeys();
         ((void (*)(s32))DrawMultiplayerMenu)(cursor);

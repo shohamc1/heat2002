@@ -1,7 +1,6 @@
 #include "global.h"
 #include "functions.h"
 #include "data.h"
-
 #include "variables.h"
 
 void DrawChallengeCategoryComplete(u8 category)
@@ -25,7 +24,7 @@ u8 ShowChallengeCategoryComplete(u8 category)
     s8 zero = 0;
     LoadMenuScreen(3, (u16 *)palette);
     DrawChallengeCategoryComplete(category);
-    FadeToBrightenedPalette((u32)palette, 0x0F);
+    FadeToBrightenedPalette(palette, 0x0F);
     done = 0x40;
     do {
         ReadKeys();

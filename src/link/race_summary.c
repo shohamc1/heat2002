@@ -18,7 +18,7 @@ void DrawLinkRaceSummary(void)
     DummyUiFontLoad(gUiFontTable[0]);
     GetString(0x5B);
     ((void (*)(void))DrawBigText)();
-    carOrder = (struct Car **)gCarOrder;
+    carOrder = gCarOrder;
     for (i = 0; i != gNumLinkPlayers[0]; i++) {
         car = *carOrder;
         SplitMilliseconds(car->finishTime, &minutes, &seconds, &hundredths);
@@ -60,7 +60,7 @@ u8 ShowLinkRaceSummary(void)
     SortLinkCarsByTime();
     LoadMenuScreen(0, (u16 *)palette);
     DrawLinkRaceSummary();
-    FadeToBrightenedPalette((u32)palette, 0x0F);
+    FadeToBrightenedPalette(palette, 0x0F);
     result = 0x40;
     do {
         keys = gPlayerKeys[0];

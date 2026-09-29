@@ -3,7 +3,6 @@
 #include "data.h"
 #include "functions.h"
 #include "gba/syscall.h"
-
 #include "gba/io_reg.h"
 #include "gba/defines.h"
 #include "m4a.h"
@@ -42,9 +41,9 @@ u8 DriverSelectMenu(void)
     WaitForVBlank();
     ZeroTextLayer();
     LoadMenuBackdrop();
-    BuildScreenPalette((u32)gMenuPalette, (u16 *)palette);
+    BuildScreenPalette(gMenuPalette, (u16 *)palette);
     DrawDriverSelect(0);
-    FadeToBrightenedPalette((u32)palette, 0x0F);
+    FadeToBrightenedPalette(palette, 0x0F);
     REG_DISPCNT = 0xA8 << 3;
     WaitForVBlank();
     REG_DISPCNT = 0xAA << 5;

@@ -2,15 +2,15 @@
 #include "data.h"
 #include "functions.h"
 #include "variables.h"
-
-extern const u8 *const gChampionshipTeamNames[];
-extern const u8 *const gChampionshipQualifyTexts[];
-extern const u8 *const gChampionshipLockedTexts[];
 #include "gba/compat.h"
 #include "gba/syscall.h"
 #include "gba/io_reg.h"
 #include "gba/defines.h"
 #include "m4a.h"
+
+extern const u8 *const gChampionshipTeamNames[];
+extern const u8 *const gChampionshipQualifyTexts[];
+extern const u8 *const gChampionshipLockedTexts[];
 
 void DrawTeamSelectInfo(u8 teamId)
 {
@@ -99,9 +99,9 @@ u8 TeamSelectMenu(void)
     WaitForVBlank();
     ZeroTextLayer();
     LoadMenuBackdrop();
-    BuildScreenPalette((u32)gMenuPalette, (u16 *)palette);
+    BuildScreenPalette(gMenuPalette, (u16 *)palette);
     DrawTeamSelect(0x0C);
-    FadeToBrightenedPalette((u32)palette, 0x0F);
+    FadeToBrightenedPalette(palette, 0x0F);
     REG_DISPCNT = 0xA8 << 3;
     WaitForVBlank();
     REG_DISPCNT = 0xAA << 5;

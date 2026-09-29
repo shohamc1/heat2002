@@ -27,22 +27,15 @@
  * pad[10]) is as documented in the previous draft header below.
  */
 #include "global.h"
-/* functions.h prototypes UpdateAiDriver with the legacy local tag
-   Unk0800C534 (its gCars view). Bind that tag to the canonical record
-   for this TU only, so the prototype and the definition agree without
-   duplicating the struct. */
-#define Unk0800C534 Car
 #include "functions.h"
 #include "variables.h"
 #include "car.h"
 #include "data.h"
 
 void SetAiDriverGearTables(struct Car *car);
-void FindCarAhead(u32 a);
+void FindCarAhead(struct Car *car);
 s32 FindClosestLaneSegment(u32 a, u32 b);
-s32 WorldToLaneDistance(u32 a, u32 b, u32 c, u32 d, u32 e);
 void UpdateCarPredictedPos(struct Car *a);
-s32 ComputePitStallDistance(u32 a);
 s32 Atan2(s32 a, s32 b);
 
 void UpdateAiDriver(struct Car *ent, u8 param)
@@ -68,8 +61,8 @@ void UpdateAiDriver(struct Car *ent, u8 param)
     s32 t2;
     s32 t3;
 
-    SetAiDriverGearTables((struct Car *)ent);
-    FindCarAhead((u32)ent);
+    SetAiDriverGearTables(ent);
+    FindCarAhead(ent);
     zero = 0;
     if (gAiCarAheadSide == 0 || gGameMode[0] == 9 || gGameMode[0] == 0xD || gGameMode[0] == 0xE ||
         gGameMode[0] == 0xF || gGameMode[0] == 0x11) {
@@ -97,25 +90,23 @@ void UpdateAiDriver(struct Car *ent, u8 param)
     result = FindClosestLaneSegment((u32)ent, param);
     if (result == -1)
         return;
-    diff = WorldToLaneDistance((*(u32 *)&gClosestLanePointX), (*(u32 *)&gClosestLanePointZ), (*(u32 *)&ent->lanePoints),
-                               (*(u32 *)&gClosestLaneSegment), (*(u32 *)&gClosestLaneSegmentIndex));
+    diff = WorldToLaneDistance((*(u32 *)&gClosestLanePointX), (*(u32 *)&gClosestLanePointZ), ent->lanePoints,
+                               gClosestLaneSegment[0], (*(u32 *)&gClosestLaneSegmentIndex));
     diff = diff + 0x40;
     if (diff >= ent->laneLength)
         diff = diff - ent->laneLength;
-    GetLanePositionAtDistance(diff, (struct OutBD98 *)buf, (u16 *)(*(u32 *)&ent->lanePoints),
-                              (void *)(*(u32 *)&ent->laneSegments));
+    GetLanePositionAtDistance(diff, (struct OutBD98 *)buf, ent->lanePoints, ent->laneSegments);
     ps = &ent->pitState;
     stv = 0;
     stv = *ps;
     bufp = buf;
     if (stv != 0) {
         if (stv == 1) {
-            if (ComputePitStallDistance((u32)ent) <= 0x63 ||
-                (gTrackId == 3 && ComputePitStallDistance((u32)ent) <= 0xC7))
+            if (ComputePitStallDistance(ent) <= 0x63 || (gTrackId == 3 && ComputePitStallDistance(ent) <= 0xC7))
                 *ps = 2;
         }
         if (ent->pitState == 2) {
-            if (ComputePitStallDistance((u32)ent) <= 0x13 || gDamagePitsEnabled == 0 ||
+            if (ComputePitStallDistance(ent) <= 0x13 || gDamagePitsEnabled == 0 ||
                 (ent == gCars && gPitMenuActive == 0 && gPitServiceEnabled == 0))
                 ent->pitState = 3;
             buf[0] = gPitStallPositions[(gTrackId * 8 + ent->pitStall) * 2];

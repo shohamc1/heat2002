@@ -23,7 +23,7 @@ void ModuleBuildStartingGrid(u8 idx)
 
     x = gUnk_0202708C[idx].field00;
     y = gUnk_0202708C[idx].field04;
-    p = (u32 *)gUnk_0203D4A0;
+    p = gUnk_0203D4A0;
     j = 0;
     do {
         p[0] = x;

@@ -1,13 +1,7 @@
 #include "global.h"
 
-struct Unk0800C984
+void InitCarSteering(s32 *steer, u32 heading)
 {
-    u32 a;
-    u32 b;
-};
-
-void InitCarSteering(struct Unk0800C984 *steer, u32 heading)
-{
-    steer->b = heading;
-    steer->a = heading;
+    steer[1] = heading;
+    steer[0] = heading;
 }

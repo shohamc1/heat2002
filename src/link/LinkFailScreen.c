@@ -3,6 +3,7 @@
 #include "m4a.h"
 #include "data.h"
 #include "variables.h"
+
 void LinkFailScreen(void)
 {
     u8 fadePalette[0x200];
@@ -21,7 +22,7 @@ void LinkFailScreen(void)
     GetString(0x75);
     ((void (*)(void))DrawBigText)();
     DrawTextCenteredHighlight(GetString(0x75), 0x0A, 1);
-    FadeToBrightenedPalette((u32)fadePalette, 0x0F);
+    FadeToBrightenedPalette(fadePalette, 0x0F);
     do {
         VBlankIntrWait();
         ReadKeys();

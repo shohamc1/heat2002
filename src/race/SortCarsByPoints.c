@@ -13,12 +13,12 @@ void SortCarsByPoints(void)
 
     i = 0;
     do {
-        ((struct Car **)gCarOrder)[i] = &gCars[i];
+        (gCarOrder)[i] = &gCars[i];
         i++;
     } while (i != 0x18);
 outer:
     swapped = 0;
-    p = (struct Car **)gCarOrder;
+    p = gCarOrder;
     i = 0;
     off = 0x164;
     do {

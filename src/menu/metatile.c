@@ -1,11 +1,11 @@
 #include "global.h"
 #include "functions.h"
+#include "gba/defines.h"
 
 extern u16 gSharedMetatileTileTable[][4];
 extern u16 gUnk_0600F800[];
-#include "gba/defines.h"
 
-void DrawBackdropMetatileMap(u16 *map)
+void DrawBackdropMetatileMap(const u16 *map)
 {
     u16 *dest;
     u32 i;
@@ -31,10 +31,10 @@ void DrawBackdropMetatileMap(u16 *map)
     }
 }
 
-void DrawMetatileMap(u16 *map, u16 *table)
+void DrawMetatileMap(const u16 *map, const u16 *table)
 {
     u16 *dest;
-    u16 *entry;
+    const u16 *entry;
     u16 idx;
     u32 i;
     u32 j;

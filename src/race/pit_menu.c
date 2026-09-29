@@ -1,10 +1,10 @@
 #include "global.h"
 #include "data.h"
 #include "functions.h"
+#include "variables.h"
 
 extern u8 gText_BlankRow12[];
 extern u8 gText_BlankRow24[];
-#include "variables.h"
 extern u8 gText_PitMenu[];
 extern u8 gText_BlankRowPitMenu[];
 extern const u8 *const gPitMenuRowLabelTexts[];

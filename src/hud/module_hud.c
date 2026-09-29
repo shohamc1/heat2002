@@ -1,5 +1,6 @@
 #include "global.h"
 #include "variables.h"
+#include "functions.h"
 
 struct Unk0833E528Ent
 {
@@ -25,7 +26,6 @@ u32 ModuleRequestObjTiles4(u32 r0);
 u32 ModuleRequestObjPalette(u32 r0);
 void ModuleAddOamEntry(u32 r0, u32 r1);
 void ModuleM4aSongNumStart(u32 r0);
-#include "functions.h"
 extern u8 gModule_Pos[];
 extern u8 gModule_BlankRow16[];
 extern u8 gModule_Lap[];

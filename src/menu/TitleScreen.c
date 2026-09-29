@@ -26,7 +26,7 @@ u8 TitleScreen(void)
     REG_DISPCNT = 0xA8 << 3;
     CpuCopy16((u32)gTitleScreenGfx, VRAM, 0xA280);
     CpuCopy16((u32)gTextLayerTiles, BG_SCREEN_ADDR(24), 0x2000);
-    DrawBackdropMetatileMap((u16 *)((u32)gTitleScreenMetatileMap));
+    DrawBackdropMetatileMap(gTitleScreenMetatileMap);
     i = 0;
     do {
         *(u16 *)(*(volatile u32 *)&gTextLayerMapPtr[0] + 2 * i) = 0;
@@ -39,7 +39,7 @@ u8 TitleScreen(void)
     buf[0xEB] = RgbFromPercent(0x24, 0x24, 0x24);
     buf[0xEC] = RgbFromPercent(0x0E, 0x0E, 0x0E);
     buf[0xED] = RgbFromPercent(0, 0, 0);
-    FadeToBrightenedPalette((u32)buf, 0x0F);
+    FadeToBrightenedPalette(buf, 0x0F);
     j = 0;
     while (!(gKeysHeld & 8) && n != 0) {
         ReadKeys();

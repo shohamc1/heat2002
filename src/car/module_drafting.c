@@ -1,8 +1,9 @@
 #include "global.h"
 #include "variables.h"
-
 #include "car.h"
-void ModuleWorldToCarLocal(s32 *car, s32 x, s32 y, s32 *out)
+#include "functions.h"
+
+void ModuleWorldToCarLocal(struct Car *car, s32 x, s32 z, s32 *out)
 {
     s32 angIdx;
     s32 sin;
@@ -10,52 +11,47 @@ void ModuleWorldToCarLocal(s32 *car, s32 x, s32 y, s32 *out)
     s32 relx;
     s32 rely;
 
-    angIdx = -(car[75] >> 11) & 0x1F;
+    angIdx = -(car->steerHeading >> 11) & 0x1F;
     angIdx = angIdx << 3;
     sin = gModule_SinTable[angIdx];
     angIdx = angIdx + 0x40;
     cos = gModule_SinTable[angIdx];
-    relx = (x - car[0]) >> 16;
-    rely = (y - car[2]) >> 16;
+    relx = (x - car->posX) >> 16;
+    rely = (z - car->posZ) >> 16;
     out[0] = (relx * cos - sin * rely) >> 8;
     out[1] = (sin * relx + rely * cos) >> 8;
 }
 
-u8 ModuleCheckDrafting(u8 *car)
+u8 ModuleCheckDrafting(struct Car *car)
 {
-    struct Out08343234
-    {
-        s32 f0;
-        s32 f4;
-    };
-    struct Out08343234 relPos1;
-    struct Out08343234 relPos2;
+    s32 relPos1[2];
+    s32 relPos2[2];
     u8 i;
-    u8 *other;
+    struct Car *other;
     u32 count;
 
     count = gModule_NumCars[0];
     if (gModule_IsLinkRace != 0)
         count = gModule_NumLinkPlayers[0];
-    other = (u8 *)gModule_Cars;
-    for (i = 0; i != count; i++, other += 0x190) {
+    other = gModule_Cars;
+    for (i = 0; i != count; i++, other++) {
         if (other == car)
             continue;
-        ModuleWorldToCarLocal((s32 *)car, *(u32 *)(other + 0), *(u32 *)(other + 8), &relPos1);
-        if ((u32)(relPos1.f4 + 100) > 100)
+        ModuleWorldToCarLocal(car, other->posX, other->posZ, relPos1);
+        if ((u32)(relPos1[1] + 100) > 100)
             continue;
-        if (relPos1.f0 < -16)
+        if (relPos1[0] < -16)
             continue;
-        if (relPos1.f0 > 16)
+        if (relPos1[0] > 16)
             continue;
-        ModuleWorldToCarLocal((u32)other, *(u32 *)(car + 0), *(u32 *)(car + 8), &relPos2);
-        if (relPos2.f4 < 0)
+        ModuleWorldToCarLocal(other, car->posX, car->posZ, relPos2);
+        if (relPos2[1] < 0)
             continue;
-        if (relPos2.f0 < -16)
+        if (relPos2[0] < -16)
             continue;
-        if (relPos2.f0 > 16)
+        if (relPos2[0] > 16)
             continue;
-        car[0x176] = 15;
+        car->draftTimer = 15;
         return 1;
     }
     return 0;

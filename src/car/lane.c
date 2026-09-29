@@ -1,29 +1,8 @@
 #include "global.h"
-
-struct UnkStruct0800BBFC
-{
-    u8 a;
-    u8 b;
-    u16 c;
-    u16 d;
-    u16 e;
-    s32 f;
-    s32 g;
-    s32 h;
-};
 #include "variables.h"
 #include "data.h"
-struct VtxBC4C
-{ u16 x, y; };
-struct UnkStruct0800BD44_Entry
-{
-    u8 f0;
-    u8 f1;
-    u16 f2;
-    u16 f4;
-    u16 f6;
-    u8 pad[0xC];
-};
+#include "functions.h"
+
 struct UnkStruct0800BD44_Ctl
 {
     u8 pad[0x4C];
@@ -31,7 +10,6 @@ struct UnkStruct0800BD44_Ctl
     u8 waypoint;
     u8 subStep;
 };
-#include "functions.h"
 struct OutBD98
 {
     s32 x;
@@ -54,8 +32,8 @@ struct Car
     u8 pad30[0x34 - 0x30];
     s16 heading;
     u8 pad36[0xF4 - 0x36];
-    s32 lanePoints;
-    s32 laneSegments;
+    const u16 *lanePoints;
+    const struct LaneSeg *laneSegments;
     u8 padFC[0x154 - 0xFC];
     s32 laneLength;
 };
@@ -63,7 +41,7 @@ void UpdateCarPredictedPos(struct Car *a);
 s32 FindClosestLaneSegment(struct Car *a, s32 b);
 s32 Atan2(s32 a, s32 b);
 
-s32 WorldToLaneDistance(s32 posX, s32 posZ, u16 *points, struct UnkStruct0800BBFC *seg, s32 unused)
+s32 WorldToLaneDistance(s32 posX, s32 posZ, const u16 *points, const struct LaneSeg *seg, s32 unused)
 {
     s32 ax;
     s32 bx;
@@ -74,10 +52,10 @@ s32 WorldToLaneDistance(s32 posX, s32 posZ, u16 *points, struct UnkStruct0800BBF
     s32 distAlong;
     s32 axisScale;
 
-    ax = points[2 * seg->a];
-    bx = points[2 * seg->b];
-    az = points[2 * seg->a + 1];
-    bz = points[2 * seg->b + 1];
+    ax = points[2 * seg->pointA];
+    bx = points[2 * seg->pointB];
+    az = points[2 * seg->pointA + 1];
+    bz = points[2 * seg->pointB + 1];
     dx = bx - ax;
     if (dx < 0)
         dx = -dx;
@@ -86,16 +64,16 @@ s32 WorldToLaneDistance(s32 posX, s32 posZ, u16 *points, struct UnkStruct0800BBF
         dy = -dy;
     if (dx > dy) {
         distAlong = posX - ax;
-        axisScale = seg->g;
+        axisScale = seg->scaleX;
     } else {
         distAlong = posZ - az;
-        axisScale = seg->h;
+        axisScale = seg->scaleZ;
     }
     dx = distAlong * axisScale;
-    return seg->d + (s32)((dx * (seg->e - seg->d)) >> 16);
+    return seg->startDist + (s32)((dx * (seg->endDist - seg->startDist)) >> 16);
 }
 
-s32 FindWaypointCrossing(struct VtxBC4C *points, u8 *laneSeg)
+s32 FindWaypointCrossing(const u16 *points, const struct LaneSeg *laneSeg)
 {
     struct TrackSeg *trackSeg = gTrackSegTables[gTrackId];
     s32 t[6];
@@ -104,10 +82,10 @@ s32 FindWaypointCrossing(struct VtxBC4C *points, u8 *laneSeg)
     s32 i;
     s32 segX1, segZ1, segX2, segZ2, cross, param;
 
-    t[0] = points[laneSeg[0]].x;
-    t[1] = points[laneSeg[0]].y;
-    t[2] = points[laneSeg[1]].x;
-    t[3] = points[laneSeg[1]].y;
+    t[0] = points[2 * laneSeg->pointA];
+    t[1] = points[2 * laneSeg->pointA + 1];
+    t[2] = points[2 * laneSeg->pointB];
+    t[3] = points[2 * laneSeg->pointB + 1];
     x1 = t[0];
     y1 = t[1];
     x2 = t[2];
@@ -138,24 +116,24 @@ s32 FindWaypointCrossing(struct VtxBC4C *points, u8 *laneSeg)
     return -1;
 }
 
-void SetCarWaypointAtLaneDistance(s32 dist, u16 *points, struct UnkStruct0800BD44_Entry *segments,
+void SetCarWaypointAtLaneDistance(s32 dist, const u16 *points, const struct LaneSeg *segments,
                                   struct UnkStruct0800BD44_Ctl *car)
 {
-    struct UnkStruct0800BD44_Entry *seg;
+    const struct LaneSeg *seg;
     s32 waypoint;
 
     seg = segments;
-    if (seg->f6 < dist) {
+    if (seg->endDist < dist) {
         do {
             seg = seg + 1;
-        } while (seg->f6 < dist);
+        } while (seg->endDist < dist);
     }
 loop:
-    waypoint = FindWaypointCrossing((struct VtxBC4C *)points, (u8 *)seg);
+    waypoint = FindWaypointCrossing(points, seg);
     if (waypoint != -1)
         goto done;
     seg = seg + 1;
-    if (seg->f1 == 0xFF) {
+    if (seg->pointB == 0xFF) {
         car->lap = car->lap + 1;
         seg = segments;
     }
@@ -165,24 +143,24 @@ done:
     car->subStep = 0xF;
 }
 
-void GetLanePositionAtDistance(s32 dist, struct OutBD98 *pos, u16 *lanePoints, void *segments)
+void GetLanePositionAtDistance(s32 dist, struct OutBD98 *pos, const u16 *lanePoints, const struct LaneSeg *segments)
 {
     register struct OutBD98 *posOut asm("r8") = pos;
-    register u16 *points asm("r6") = lanePoints;
-    register u8 *seg asm("r4") = segments;
+    register const u16 *points asm("r6") = lanePoints;
+    register const struct LaneSeg *seg asm("r4") = segments;
     s32 scale;
     s32 rangeStart;
 
-    if (((u16 *)seg)[3] < dist) {
+    if (seg->endDist < dist) {
         do {
-            seg += 0x14;
-        } while (((u16 *)seg)[3] < dist);
+            seg++;
+        } while (seg->endDist < dist);
     }
-    rangeStart = ((u16 *)seg)[2];
-    scale = sub_08017230((dist - rangeStart) << 16, ((u16 *)seg)[3] - rangeStart);
+    rangeStart = seg->startDist;
+    scale = sub_08017230((dist - rangeStart) << 16, seg->endDist - rangeStart);
     {
-        register u16 *endPt asm("r2");
-        register u16 *basePt asm("r1");
+        register const u16 *endPt asm("r2");
+        register const u16 *basePt asm("r1");
         s32 x0;
         s32 x1;
         s32 y1;
@@ -191,9 +169,9 @@ void GetLanePositionAtDistance(s32 dist, struct OutBD98 *pos, u16 *lanePoints, v
         s32 dy;
         register s32 outY asm("r0");
 
-        x1 = seg[1];
-        endPt = (u16 *)(x1 * 4 + (u32)points);
-        basePt = (u16 *)(seg[0] * 4 + (u32)points);
+        x1 = seg->pointB;
+        endPt = (const u16 *)(x1 * 4 + (u32)points);
+        basePt = (const u16 *)(seg->pointA * 4 + (u32)points);
         x0 = basePt[0];
         x1 = endPt[0];
         dx = x1 - x0;
@@ -204,7 +182,7 @@ void GetLanePositionAtDistance(s32 dist, struct OutBD98 *pos, u16 *lanePoints, v
         dy = dy * scale >> 16;
         x0 += dx;
         posOut->x = x0;
-        outY = points[seg[0] * 2 + 1] + dy;
+        outY = points[seg->pointA * 2 + 1] + dy;
         posOut->y = outY;
     }
 }
@@ -250,8 +228,7 @@ void PlaceCarsAlongLane(struct Car **carOrder, s32 unused1, s32 unused2, s32 spa
     if (FindClosestLaneSegment(car, 0) == -1)
         return;
     dist = WorldToLaneDistance(*(s32 *)&gClosestLanePointX, *(s32 *)&gClosestLanePointZ, car->lanePoints,
-                               (struct UnkStruct0800BBFC *)*(s32 *)&gClosestLaneSegment,
-                               *(s32 *)&gClosestLaneSegmentIndex);
+                               gClosestLaneSegment[0], *(s32 *)&gClosestLaneSegmentIndex);
     dist -= 5000;
     if (dist < 0)
         dist += car->laneLength;
@@ -266,14 +243,12 @@ void PlaceCarsAlongLane(struct Car **carOrder, s32 unused1, s32 unused2, s32 spa
                 SetCarLane(car, 0x100);
             else
                 SetCarLane(car, 0x500);
-            SetCarWaypointAtLaneDistance(dist, car->lanePoints, (struct UnkStruct0800BD44_Entry *)car->laneSegments,
-                                         (struct UnkStruct0800BD44_Ctl *)car);
-            GetLanePositionAtDistance(dist, (struct OutBD98 *)pos, (u16 *)(car->lanePoints),
-                                      (void *)(car->laneSegments));
+            SetCarWaypointAtLaneDistance(dist, car->lanePoints, car->laneSegments, (struct UnkStruct0800BD44_Ctl *)car);
+            GetLanePositionAtDistance(dist, (struct OutBD98 *)pos, car->lanePoints, car->laneSegments);
             car->posX = pos[0] << 16;
             car->posZ = pos[1] << 16;
             GetLanePositionAtDistance(sub_080172C8(dist + 0x32, car->laneLength), pos, car->lanePoints,
-                                      (void *)car->laneSegments);
+                                      car->laneSegments);
             deltaX = (pos[0] << 16) - car->posX;
             deltaZ = (pos[1] << 16) - car->posZ;
             /* Stored straight to the s16 field, the minus is done in
@@ -301,10 +276,10 @@ void PlaceCarsAlongLane(struct Car **carOrder, s32 unused1, s32 unused2, s32 spa
         carPtr = carOrder;
         for (i = 0; i != gNumCars[0]; i++) {
             car = *carPtr++;
-            UpdateAiDriver((struct Unk0800C534 *)car, (u8)i);
+            UpdateAiDriver(car, (u8)i);
         }
     }
 }
 
-void SetCarLaneByIndex(u32 car, u8 laneIdx)
-{ SetCarLane((void *)car, laneIdx << 8); }
+void SetCarLaneByIndex(struct Car *car, u8 laneIdx)
+{ SetCarLane(car, laneIdx << 8); }

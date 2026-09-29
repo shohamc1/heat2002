@@ -1,10 +1,10 @@
 #include "global.h"
 #include "functions.h"
 #include "variables.h"
-
-#define GBA_CPUSET sub_08344B64
 #include "tilemap.h"
 #include "gba/compat.h"
+
+#define GBA_CPUSET sub_08344B64
 /* struct Track comes from include/structs.h via variables.h; it is the
    record type of gModule_TrackData, also from variables.h. */
 extern u16 gUnk_02022428[];
@@ -144,11 +144,11 @@ void ModuleDrawTrackMapWindow(u32 tileX, u32 tileY, u8 *map, u32 *dest, u32 *cha
     }
 }
 
-void ModuleFlushTilemapBuffer(u32 src, u32 dest)
+void ModuleFlushTilemapBuffer(u8 *src, u8 *dest)
 {
     u32 row;
-    u32 srcPtr = src;
-    u32 destPtr = dest;
+    u32 srcPtr = (u32)src;
+    u32 destPtr = (u32)dest;
 
     if (gUnk_02039234[0] != 0)
         srcPtr += 4;

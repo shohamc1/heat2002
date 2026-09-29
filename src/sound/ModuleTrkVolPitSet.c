@@ -1,9 +1,5 @@
 #include "global.h"
 
-/* NEAR-MISS (score 45): register-only diff — target homes the f12/f0F load
- * temps in r1 (reusing the dead flags reg); this agbcc picks r4, adding one
- * `adds r1, r4` copy in part 2. mode-local, u32 vol, operand orders all set. */
-
 struct Chan
 {
     u8 flags;

@@ -1,4 +1,6 @@
 #include "global.h"
+#include "variables.h"
+#include "car.h"
 
 struct Unk0800C28C
 {
@@ -15,26 +17,17 @@ struct Unk0800C28C
     u32 unk28;
     s32 speed;
 };
-#include "variables.h"
 struct Unk0800C358
 {
     u8 unk00[0x18];
     s32 unk18;
     s32 unk1C;
     u8 unk20[0xD4];
-    u32 *lanePoints;
-    u32 *laneSegments;
+    const u16 *lanePoints;
+    const struct LaneSeg *laneSegments;
     u32 *unkFC;
     u16 *unk100;
 };
-/*
- * PARKED (wave 4): rebuild diverges from the ROM (first diff at ROM
- * 0x0800C430: ours pushes {r4,r5,r6,lr} vs ROM {r4-r7,lr}). Dead-agent
- * mid-edit state whose rebuild diverges while a stale .o once matched.
- * Needs re-derivation from the asm before extracting.
- */
-#include "car.h"
-void WorldToCarLocal(s32 *a, s32 b, s32 c, s32 *d);
 
 void UpdateCarPredictedPos(struct Unk0800C28C *car)
 {
@@ -47,9 +40,9 @@ void UpdateCarPredictedPos(struct Unk0800C28C *car)
     }
 }
 
-u32 ComputeLaneSegmentDistSq(s32 posX, s32 posZ, u16 *points, u8 *seg)
+u32 ComputeLaneSegmentDistSq(s32 posX, s32 posZ, const u16 *points, const struct LaneSeg *seg)
 {
-    u16 *endPt;
+    const u16 *endPt;
     s32 ax;
     s32 az;
     s32 dx;
@@ -58,14 +51,14 @@ u32 ComputeLaneSegmentDistSq(s32 posX, s32 posZ, u16 *points, u8 *seg)
     s32 closestX;
     s32 closestZ;
 
-    ax = points[2 * seg[0]];
-    az = points[(2 * seg[0]) + 1];
-    endPt = (u16 *)(4 * seg[1] + (u32)points);
+    ax = points[2 * seg->pointA];
+    az = points[(2 * seg->pointA) + 1];
+    endPt = (const u16 *)(4 * seg->pointB + (u32)points);
     proj = (posX - ax) * (*endPt - ax);
     closestX = endPt[1];
     dx = posZ - az;
     proj = proj + dx * (closestX - az);
-    proj *= seg[2];
+    proj *= seg->unk2;
     if (proj < 0)
         proj = 0;
     if (proj > 0xFFFF)
@@ -84,10 +77,10 @@ u32 ComputeLaneSegmentDistSq(s32 posX, s32 posZ, u16 *points, u8 *seg)
 
 u32 FindClosestLaneSegment(struct Unk0800C358 *car)
 {
-    u32 *segments;
-    u32 *points;
+    const struct LaneSeg *segments;
+    const u16 *points;
     u32 bestDist;
-    u8 *seg;
+    const struct LaneSeg *seg;
     s32 carX;
     s32 carZ;
     s32 cellX;
@@ -101,7 +94,7 @@ u32 FindClosestLaneSegment(struct Unk0800C358 *car)
     segments = car->laneSegments;
     points = car->lanePoints;
     bestDist = -1;
-    gClosestLaneSegment[0] = (u32)seg;
+    gClosestLaneSegment[0] = seg;
     carX = car->unk18 >> 16;
     carZ = car->unk1C >> 16;
     cellX = car->unk18 >> 23;
@@ -118,11 +111,11 @@ u32 FindClosestLaneSegment(struct Unk0800C358 *car)
     cell = (u8 *)(car->unk100[cellZ * 48 + cellX] + (u32)car->unkFC);
     while (*cell != 0xFF) {
         segIdx = *cell;
-        seg = (u8 *)segments + segIdx * 20;
+        seg = segments + segIdx;
         dist = ComputeLaneSegmentDistSq(carX, carZ, points, seg);
         if (dist <= bestDist) {
             bestDist = dist;
-            gClosestLaneSegment[0] = (u32)seg;
+            gClosestLaneSegment[0] = seg;
             gClosestLaneSegmentIndex[0] = segIdx;
             bestX = gClosestLanePointX[0];
             bestZ = gClosestLanePointZ[0];

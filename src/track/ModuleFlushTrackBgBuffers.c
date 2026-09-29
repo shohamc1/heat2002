@@ -2,10 +2,10 @@
 #include "tilemap.h"
 #include "gba/defines.h"
 
-void ModuleFlushTilemapBuffer(u32 a, u32 b);
+void ModuleFlushTilemapBuffer(u8 *src, u8 *dest);
 
 void ModuleFlushTrackBgBuffers(void)
 {
-    ModuleFlushTilemapBuffer(TILEMAP_BUFFER(0), (u32)BG_SCREEN_ADDR(29));
-    ModuleFlushTilemapBuffer(TILEMAP_BUFFER(1), (u32)BG_SCREEN_ADDR(30));
+    ModuleFlushTilemapBuffer((u8 *)TILEMAP_BUFFER(0), BG_SCREEN_ADDR(29));
+    ModuleFlushTilemapBuffer((u8 *)TILEMAP_BUFFER(1), BG_SCREEN_ADDR(30));
 }

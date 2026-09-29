@@ -1,10 +1,10 @@
 #include "global.h"
 #include "m4a.h"
+#include "functions.h"
+#include "variables.h"
 
 void m4aSongNumStop(u16 a);
 void m4aSoundVSyncOff(void);
-#include "functions.h"
-#include "variables.h"
 
 void StopAllSongsAndVSyncOff(void)
 {

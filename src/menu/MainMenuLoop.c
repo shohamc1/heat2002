@@ -158,9 +158,7 @@ u32 MainMenuLoop(void)
         SortCarsByTime();
         gNumLaps = 3;
         gDamagePitsEnabled = 0;
-        /* RunRace: this file's old local prototype differs from
-           functions.h; call through the old signature (solved-walls 31). */
-        ((void (*)(u32, u8, void *))RunRace)(1, 0, gUnk_0202CDA8);
+        RunRace(1, 0, gUnk_0202CDA8);
         ResetBgScroll();
     }
 
@@ -174,7 +172,7 @@ u32 MainMenuLoop(void)
     if (gOptions[2] != 0)
         m4aSongNumStart(2);
     DrawMainMenu(gMainMenuCursor);
-    FadeToBrightenedPalette((u32)frame, 0x0F);
+    FadeToBrightenedPalette(frame, 0x0F);
 
     redraw = 0;
     quit = 0;
@@ -186,7 +184,7 @@ u32 MainMenuLoop(void)
             LoadMenuScreen(1, frame);
             ZeroTextLayer();
             DrawMainMenu(gMainMenuCursor);
-            FadeToBrightenedPalette((u32)frame, 0x0F);
+            FadeToBrightenedPalette(frame, 0x0F);
         }
 
         ReadKeys();
@@ -255,7 +253,7 @@ u32 MainMenuLoop(void)
                 gNumLaps = 3;
                 gRngState = 0x009F9AC4;
                 FadeToColor(0, 0x0F);
-                if (((u8 (*)(u32, u8, void *))RunRace)(0, 3, gUnk_0202CDC0) != 0) {
+                if (RunRace(0, 3, gUnk_0202CDC0) != 0) {
                     FadeToColor(0, 0x0F);
                 state3_accept:
                     LinkFailScreen();
@@ -343,10 +341,10 @@ u32 MainMenuLoop(void)
                     gCars[0].finished = 1;
                     FinishAllCars(1);
                     SortCarsByTime();
-                    (*(u32 *)&gCarOrder) = (u32)gCars;
+                    gCarOrder[0] = gCars;
                     gDamagePitsEnabled = 0;
                     TrackSelectMenu(0, gTrackId);
-                    ((void (*)(u32, u8, void *))RunRace)(0, 0x0E, gUnk_0202CD9C);
+                    RunRace(0, 0x0E, gUnk_0202CD9C);
                     if (gOptions[2] != 0)
                         m4aSongNumStart(2);
                     ResetBgScroll();
@@ -356,10 +354,10 @@ u32 MainMenuLoop(void)
                     break;
                 case 1:
                     gNumLaps = 2;
-                    (*(u32 *)&gCarOrder) = (u32)gCars;
+                    gCarOrder[0] = gCars;
                     gCars[0].finishTime = 0x0002BF20;
                     TrackSelectMenu(0, gTrackId);
-                    ((void (*)(u32, u8, void *))RunRace)(0, 0x11, gUnk_0202CDA8);
+                    RunRace(0, 0x11, gUnk_0202CDA8);
                     if (gOptions[2] != 0)
                         m4aSongNumStart(3);
                     ResetBgScroll();
@@ -378,7 +376,7 @@ u32 MainMenuLoop(void)
                     gNumLaps = 3;
                     gNumLaps = gLapsPerOption[gOptions[1]];
                     TrackSelectMenu(0, gTrackId);
-                    ((void (*)(u32, u8, void *))RunRace)(0, 9, gUnk_0202CDA8);
+                    RunRace(0, 9, gUnk_0202CDA8);
                     if (gOptions[2] != 0)
                         m4aSongNumStart(2);
                     ResetBgScroll();
@@ -441,7 +439,7 @@ u32 MainMenuLoop(void)
                 gCars[i].finishTime = i;
             gCars[0].finishTime = 0x0002CAD8;
             SortCarsByTime();
-            ((void (*)(u32, u8, void *))RunRace)(0, 9, gUnk_0202CDA8);
+            RunRace(0, 9, gUnk_0202CDA8);
             if (gNewTrackRecord != 0)
                 SaveTrackRecords();
             if (gOptions[2] != 0)
@@ -489,9 +487,9 @@ u32 MainMenuLoop(void)
             gCars[0].finished = 1;
             FinishAllCars(1);
             SortCarsByTime();
-            (*(u32 *)&gCarOrder) = (u32)gCars;
+            gCarOrder[0] = gCars;
             gIsTimeTrial = 1;
-            ((void (*)(u32, u8, void *))RunRace)(0, 0x0E, gUnk_0202CD9C);
+            RunRace(0, 0x0E, gUnk_0202CD9C);
             gIsTimeTrial = 0;
             if (gOptions[2] != 0)
                 m4aSongNumStart(2);
@@ -546,7 +544,7 @@ u32 MainMenuLoop(void)
                 gDamagePitsEnabled = 0;
             if (gChallengeIndex == 14)
                 gDamagePitsEnabled = 0;
-            ((void (*)(u32, u8, void *))RunRace)(0, 0x0F, gUnk_0202CDA8);
+            RunRace(0, 0x0F, gUnk_0202CDA8);
             gChallengeScore = gChallengeResult;
             if (gOptions[2] != 0)
                 m4aSongNumStart(2);
@@ -675,10 +673,10 @@ u32 MainMenuLoop(void)
                     gCars[0].finished = 1;
                     FinishAllCars(1);
                     SortCarsByTime();
-                    (*(u32 *)&gCarOrder) = (u32)gCars;
+                    gCarOrder[0] = gCars;
                     gDamagePitsEnabled = 0;
                     TrackSelectMenu(0, gTrackId);
-                    ((void (*)(u32, u8, void *))RunRace)(0, 0x0E, gUnk_0202CD9C);
+                    RunRace(0, 0x0E, gUnk_0202CD9C);
                     gDamagePitsEnabled = 1;
                     if (gOptions[2] != 0)
                         m4aSongNumStart(2);
@@ -689,10 +687,10 @@ u32 MainMenuLoop(void)
                     break;
                 case 1:
                     gNumLaps = 2;
-                    (*(u32 *)&gCarOrder) = (u32)gCars;
+                    gCarOrder[0] = gCars;
                     gCars[0].finishTime = 0x0002BF20;
                     TrackSelectMenu(0, gTrackId);
-                    ((void (*)(u32, u8, void *))RunRace)(0, 0x11, gUnk_0202CDA8);
+                    RunRace(0, 0x11, gUnk_0202CDA8);
                     if (gOptions[2] != 0)
                         m4aSongNumStart(2);
                     ResetBgScroll();
@@ -710,7 +708,7 @@ u32 MainMenuLoop(void)
                     SortCarsByTime();
                     gNumLaps = gSeasonNumLaps;
                     TrackSelectMenu(0, gTrackId);
-                    ((void (*)(u32, u8, void *))RunRace)(0, 9, gUnk_0202CDA8);
+                    RunRace(0, 9, gUnk_0202CDA8);
                     if (gOptions[2] != 0)
                         m4aSongNumStart(2);
                     ResetBgScroll();

@@ -1,5 +1,6 @@
 #include "global.h"
 #include "variables.h"
+#include "car.h"
 
 /*
  * Car-vs-track box collision: the high-region (0x0834 module) copy of
@@ -86,7 +87,6 @@ struct Unk08343DF8
     u8 pad36[0x3C - 0x36];
     s16 unk3C;
 };
-#include "car.h"
 /*
  * Car-vs-car box collision test: the high-region (0x0834 module) copy of
  * sub_0800D684, byte-identical in instruction stream and ported from that
@@ -116,7 +116,6 @@ extern s32 gModule_CarCollFrameOther[8];
 extern struct Coll gUnk_0203DEB0;
 extern struct Pt2 gUnk_0202AF08[];
 extern u8 gUnk_0203D4FC;
-void ModuleBuildCarCollFrame(struct Car *a, s32 *d);
 void ModuleKeepNearestCarContact(struct Car *a, s32 b, struct Car *c, s32 d, struct Coll *e, u8 *f, s32 g, s32 h);
 void ModuleDummyCarHitHook(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g);
 void ModuleDummyCarDamageHook(s32 carIdx, u8 damageStage);
@@ -157,7 +156,7 @@ u8 ModuleCollideCars(struct Car *car)
     hit = 0;
     other = gModule_Cars;
     pa = gModule_CarCollFrameSelf;
-    ModuleBuildCarCollFrame((struct Unk08343DF8 *)car, pa);
+    ModuleBuildCarCollFrame(car, pa);
     for (i = 0; i != count; i++, other++) {
         if (other == car)
             continue;
@@ -181,7 +180,7 @@ u8 ModuleCollideCars(struct Car *car)
             pz = -pz;
         if (pz > 0x6400)
             continue;
-        ModuleBuildCarCollFrame((struct Unk08343DF8 *)other, gModule_CarCollFrameOther);
+        ModuleBuildCarCollFrame(other, gModule_CarCollFrameOther);
 
         d[0] = gModule_CarCollFrameSelf[4];
         d[1] = gModule_CarCollFrameSelf[5];

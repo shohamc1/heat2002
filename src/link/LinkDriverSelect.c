@@ -3,6 +3,8 @@
 #include "functions.h"
 #include "variables.h"
 #include "car.h"
+#include "gba/io_reg.h"
+#include "m4a.h"
 
 extern u8 gDriverSelectTiles[], gMenuPalette[], gText_BlankRowDriverSelect[];
 extern u8 gDriverSelectGfxDest[];
@@ -10,8 +12,6 @@ extern u8 gDriverSelectGfxDest[];
    hard-register hint on p and the temps in the input loop select that
    allocation. The final gNumLinkPlayers[0] test is a volatile read so its value
    lands in r0 rather than being reused from r1. */
-#include "gba/io_reg.h"
-#include "m4a.h"
 
 s16 LinkMenuMoveHorizontal(u16 keys, s16 v, s16 lo, s16 hi, u8 unused, u8 playerId)
 {
@@ -76,9 +76,9 @@ s8 LinkDriverSelect(void)
     WaitForVBlank();
     ZeroTextLayer();
     LoadMenuBackdrop();
-    BuildScreenPalette((u32)gMenuPalette, (u16 *)buf);
+    BuildScreenPalette(gMenuPalette, (u16 *)buf);
     DrawDriverSelect(a[(*(volatile u32 *)REG_ADDR_SIOCNT << 26) >> 30]);
-    FadeToBrightenedPalette((u32)buf, 0x0F);
+    FadeToBrightenedPalette(buf, 0x0F);
     REG_DISPCNT = 0xA8 << 3;
     WaitForVBlank();
     REG_DISPCNT = 0xAA << 5;

@@ -1,6 +1,7 @@
 #include "global.h"
 #include "gba/defines.h"
 #include "variables.h"
+
 extern u16 gObjTileCache64Tiles[];
 extern u16 gObjTileCache16Tiles[];
 extern u16 gObjTileCache2Tiles[];
@@ -14,6 +15,7 @@ struct Unk080072F4
     u8 b;
     u16 c;
     u32 d;
+    u32 e;
 };
 struct unk_07304
 {
@@ -61,7 +63,7 @@ void InitGfxCaches(void)
 {
     u32 i;
     u32 color;
-    u32 *q;
+    struct Unk080072F4 *q;
 
     {
         u16 *b = gObjTileCache64Tiles;
@@ -95,10 +97,10 @@ void InitGfxCaches(void)
     }
     i = 0;
     color = OBJ_PLTT;
-    q = gObjPaletteCache;
-    for (; i != 0x10; q += 3, i++) {
-        InitObjPaletteCacheEntry((void *)q);
-        *(u32 *)((u8 *)q + 8) = color;
+    q = (struct Unk080072F4 *)gObjPaletteCache;
+    for (; i != 0x10; q++, i++) {
+        InitObjPaletteCacheEntry(q);
+        q->e = color;
         color += 0x20;
     }
 }

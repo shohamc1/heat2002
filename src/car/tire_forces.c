@@ -3,6 +3,7 @@
 #include "functions.h"
 #include "variables.h"
 #include "car.h"
+#include "m4a.h"
 
 extern s32 gTireGrip;
 extern s32 gUnk_0202CAEC;
@@ -10,7 +11,6 @@ extern s32 gUnk_0202CBE4;
 extern s32 gUnk_0202CAD8;
 extern s32 gUnk_0202CBE8;
 extern s32 gUnk_0202CBEC;
-#include "m4a.h"
 void AddSkidSmokeTask(u8 a, u8 b);
 
 void UpdateTireForces(struct Car *car, u8 carIndex)

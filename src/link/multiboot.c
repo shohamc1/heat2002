@@ -6,6 +6,8 @@
 #include "functions.h"
 #include "data.h"
 #include "variables.h"
+#include "gba/compat.h"
+
 void MultibootVBlankIntr(void);
 void SioTransferIntr(void);
 extern u32 gGameCodeAgbj;
@@ -20,7 +22,6 @@ void SioTransferInit(u32 a1, const u8 *a2);
 void DrawLinkProgressBar(u16 x, u16 y);
 void DrawMultibootProgressMarker(u32 id, u32 c);
 u32 SioTransferUpdate(u32 *frame);
-#include "gba/compat.h"
 extern u8 gText_BlankRow28_2[];
 extern u8 gUnk_08363EE8[];
 extern u8 gUnk_08364AC8[];
@@ -153,7 +154,7 @@ done:
     return 0;
 }
 
-u32 SendMultibootIsland(void)
+u8 SendMultibootIsland(void)
 {
     u8 work[0x24C];
     u32 len;
@@ -178,7 +179,7 @@ u32 SendMultibootIsland(void)
         u8 *buf = work + 0x4C;
         LoadMenuScreen(4, (u16 *)buf);
         InitSinglePakLinkScreen();
-        FadeToBrightenedPalette((u32)buf, 0x0F);
+        FadeToBrightenedPalette(buf, 0x0F);
     }
     start = gUnk_08363EE8;
     len = (u32)gUnk_08364AC8 - (u32)start;
@@ -254,7 +255,7 @@ loop:
         ReadKeys();
         if (gKeysPressed & 8) {
             if (work[0x18] == 0 && work[0x1E] != 0) {
-                sub_0800EEFC(work, (u32)(start + 0xC0), (void *)(len - 0xC0), 4, 1);
+                sub_0800EEFC(work, start + 0xC0, len - 0xC0, 4, 1);
                 {
                     register u32 value __asm__("r1");
                     __asm__ volatile("" : "=r"(value) : "0"(1));

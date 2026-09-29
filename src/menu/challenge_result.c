@@ -1,9 +1,9 @@
 #include "global.h"
 #include "functions.h"
 #include "data.h"
+#include "variables.h"
 
 // The retail body ignores both arguments; callers still pass them.
-#include "variables.h"
 
 void DrawChallengePassed(u8 unused1, u8 unused2)
 {
@@ -15,7 +15,7 @@ void DrawChallengePassed(u8 unused1, u8 unused2)
     DrawTextCenteredHighlight(text, 6, 1);
 }
 
-void DrawChallengeFailed(void)
+void DrawChallengeFailed(u8 unused)
 {
     const u8 *text;
     DummyUiFontLoad(gUiFontTable[0]);
@@ -33,7 +33,7 @@ u8 ShowChallengePassed(u8 challengeIdx, u8 alreadyBeaten)
     s8 resultIdx = challengeIdx;
     LoadMenuScreen(3, (u16 *)palette);
     DrawChallengePassed(resultIdx, alreadyBeaten);
-    FadeToBrightenedPalette((u32)palette, 0x0F);
+    FadeToBrightenedPalette(palette, 0x0F);
     done = 0x40;
     do {
         ReadKeys();

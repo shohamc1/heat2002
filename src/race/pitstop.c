@@ -2,9 +2,11 @@
 #include "functions.h"
 #include "variables.h"
 #include "car.h"
+#include "m4a.h"
+#include "data.h"
+
 extern u8 gPitLaneIndices[];
 void InitPitMenu(void);
-#include "m4a.h"
 extern u8 gText_PitControl[];
 extern u8 gText_BlankRow16_3[];
 extern u8 gText_GetReady[];
@@ -14,18 +16,6 @@ extern s32 gPitFuelToAdd;
 extern s32 gPlayerPitProgressRate;
 
 extern const u8 gText_BlankRow20_2[];
-/*
- * NEAR-MISS (256/256 bytes, 2 instructions differ): everything matches
- * except the stack frame: target reserves 44 bytes (11 reload slots) and
- * spills the A-branch index to [sp,#0x28]; we reserve 4 bytes and spill to
- * [sp,#0].  Tried: u16 v / u32 off / t7 / hi-lo pointer locals, a u16* base
- * variable, do{}while(0) wrappers, and a 98k-iteration permuter run; the
- * instruction stream is byte-identical in every variant, only alter_reg's
- * slot count differs (the retail source must create ~10 more pseudos that
- * end up unallocated).  Residual: sub sp,#0x2C + str [sp,#0x28].
- */
-#include "data.h"
-
 void ClearPitStopProgressBar(void)
 { DrawTextAt(gText_BlankRow20_2, 7, 10); }
 
@@ -103,26 +93,24 @@ void UpdatePitStop(struct Car *a1, u8 a2)
     if (gPitMenuActive != 0 && a1 == gCars)
         UpdatePitMenu();
     if (a1 == gCars && gDamagePitsEnabled == 0)
-        /* DrawTextCentered: the ROM callers pass a third argument the matched definition drops; call
-           through a function pointer with the old prototype. */
-        ((void (*)(u8 *, u32, u32))DrawTextCentered)(gText_PitControl, 10, 1);
+        DrawTextCentered(gText_PitControl, 10, 1);
     switch (a1->pitState) {
         case 0:
             break;
         case 1:
         case 2:
         case 3:
-            UpdateAiDriver((struct Unk0800C534 *)a1, a2);
+            UpdateAiDriver(a1, a2);
             break;
         case 4:
             if (gPitMenuActive == 0 && gPitServiceEnabled == 0)
                 a1->pitState = 5;
             else if (gDamagePitsEnabled != 0)
-                StopCar((struct Unk0A5BC *)a1);
+                StopCar(a1);
             else
                 a1->pitState = 5;
             if (gPitMenuActive != 0 && a1 == gCars) {
-                StopCar((struct Unk0A5BC *)a1);
+                StopCar(a1);
                 break;
             }
             a1->pitProgress = 0;
@@ -149,7 +137,7 @@ void UpdatePitStop(struct Car *a1, u8 a2)
             break;
         case 5:
             if (gDamagePitsEnabled != 0)
-                StopCar((struct Unk0A5BC *)a1);
+                StopCar(a1);
             if (a1->pitProgress < a1->pitDuration && (a1 != gCars || gPitServiceEnabled != 0) &&
                 gDamagePitsEnabled != 0)
                 goto l_big;
@@ -220,7 +208,7 @@ void UpdatePitStop(struct Car *a1, u8 a2)
                 if (a1 == gCars)
                     DrawTextAt(gText_BlankRow16_3, 9, 10);
             } else {
-                UpdateAiDriver((struct Unk0800C534 *)a1, a2);
+                UpdateAiDriver(a1, a2);
                 if (a1 == gCars && gDamagePitsEnabled != 0)
                     DrawTextAt(gText_GetReady, 10, 10);
             }

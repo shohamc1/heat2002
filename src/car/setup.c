@@ -1,11 +1,11 @@
 #include "global.h"
 #include "functions.h"
-
 #include "car.h"
 #include "variables.h"
+#include "data.h"
+
 extern u16 gUnk_08367B82[];
 extern u16 gUnk_08367B8C[];
-#include "data.h"
 
 void ComputeGearRatioReciprocals(u16 *src, u16 *dest)
 {
@@ -24,12 +24,12 @@ void InitTuneSettings(void)
     u16 *reciprocals;
     u8 i = 0;
     do {
-        ((u16 *)gUnk_0202A540)[i] = gUnk_08367B82[i];
-        ((u16 *)gUnk_0202CB20)[i] = gUnk_08367B8C[i];
+        gUnk_0202A540[i] = gUnk_08367B82[i];
+        gUnk_0202CB20[i] = gUnk_08367B8C[i];
         i++;
     } while (i != 5);
-    ratios = (u16 *)gUnk_0202CB20;
-    reciprocals = (u16 *)gUnk_0202CB00;
+    ratios = gUnk_0202CB20;
+    reciprocals = gUnk_0202CB00;
     ComputeGearRatioReciprocals(ratios, reciprocals);
 }
 

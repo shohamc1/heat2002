@@ -16,9 +16,9 @@ void ShowBootSplash1(void)
     CpuCopy16((u32)gTextLayerTiles, BG_SCREEN_ADDR(24), 0x2000);
     WaitForVBlank();
     REG_DISPCNT = 0xA8 << 3;
-    DrawMetatileMap((u16 *)((u32)gBootSplash1MetatileMap), (u16 *)((u32)gBootSplash1MetatileTable));
-    BuildScreenPalette((u32)gBootSplash1Palette, (u16 *)palette);
-    FadeToBrightenedPalette((u32)palette, 0x0F);
+    DrawMetatileMap(gBootSplash1MetatileMap, gBootSplash1MetatileTable);
+    BuildScreenPalette(gBootSplash1Palette, (u16 *)palette);
+    FadeToBrightenedPalette(palette, 0x0F);
     WaitFrames(0xB4);
     FadeToColor(0, 0x0F);
 }

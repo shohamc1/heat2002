@@ -16,14 +16,15 @@
 #include "global.h"
 #include "gba/io_reg.h"
 
-#define REG_ADDR_EEPROM     (void *)0xD000000
-#define REG_EEPROM          (*(vu16 *)REG_ADDR_EEPROM)
+#define REG_ADDR_EEPROM (void *)0xD000000
+#define REG_EEPROM (*(vu16 *)REG_ADDR_EEPROM)
 
 #define EEPROM_OUT_OF_RANGE 0x80FF
-#define EEPROM_VERIFY_FAIL  0x8000
-#define EEPROM_WRITE_FAIL   0xC001
+#define EEPROM_VERIFY_FAIL 0x8000
+#define EEPROM_WRITE_FAIL 0xC001
 
-typedef struct EEPROMConfig {
+typedef struct EEPROMConfig
+{
     u32 unk_00;
     u16 size;
     u16 waitcnt;
@@ -43,7 +44,8 @@ extern u8 timer_No;
 extern vu16 *timerReg;
 extern u16 shelt_ime;
 
-u16 IdentifyEeprom(u16 sizeInKbit) {
+u16 IdentifyEeprom(u16 sizeInKbit)
+{
     u16 ret;
 
     ret = 0;
@@ -60,7 +62,8 @@ u16 IdentifyEeprom(u16 sizeInKbit) {
     return ret;
 }
 
-void EepromTimerIntr(void) {
+void EepromTimerIntr(void)
+{
     if (timer_Count != 0) {
         if (--timer_Count == 0) {
             timeoutFlag = 1;
@@ -68,7 +71,8 @@ void EepromTimerIntr(void) {
     }
 }
 
-u16 SetEepromTimerIntr(u8 timerNo, u32 *timerPtr) {
+u16 SetEepromTimerIntr(u8 timerNo, u32 *timerPtr)
+{
     u16 ret;
 
     if (timerNo <= 3) {
@@ -83,7 +87,8 @@ u16 SetEepromTimerIntr(u8 timerNo, u32 *timerPtr) {
     return ret;
 }
 
-void StartEepromTimer(const u16 *maxTime) {
+void StartEepromTimer(const u16 *maxTime)
+{
     shelt_ime = REG_IME;
 
     REG_IME = 0;
@@ -96,7 +101,8 @@ void StartEepromTimer(const u16 *maxTime) {
     *timerReg-- = *maxTime++;
 }
 
-void StopEepromTimer(void) {
+void StopEepromTimer(void)
+{
     *timerReg++ = 0;
     *timerReg-- = 0;
 
@@ -105,7 +111,8 @@ void StopEepromTimer(void) {
     REG_IME = shelt_ime;
 }
 
-void Dma3Transmit(void *src, void *dest, u16 size) {
+void Dma3Transmit(void *src, void *dest, u16 size)
+{
     u16 ime = REG_IME;
     REG_IME = 0;
     REG_WAITCNT = (REG_WAITCNT & ~(WAITCNT_WS2_N_MASK | WAITCNT_WS2_S_MASK)) | gEEPROMConfig->waitcnt;
@@ -117,7 +124,8 @@ void Dma3Transmit(void *src, void *dest, u16 size) {
     REG_IME = ime;
 }
 
-u16 ReadEepromDword(u16 address, u16 *data) {
+u16 ReadEepromDword(u16 address, u16 *data)
+{
     u16 buffer[0x44];
     u16 *ptr;
     u8 *p;
@@ -162,7 +170,8 @@ u16 ReadEepromDword(u16 address, u16 *data) {
     return 0;
 }
 
-u16 ProgramEepromDword(u16 address, const u16 *data) {
+u16 ProgramEepromDword(u16 address, const u16 *data)
+{
     u16 buffer[0x52]; // this is one too large?
     u16 *ptr;
     u8 i;
@@ -215,7 +224,8 @@ u16 ProgramEepromDword(u16 address, const u16 *data) {
     return retval;
 }
 
-u16 VerifyEepromDword(u16 address, u16 *data) {
+u16 VerifyEepromDword(u16 address, u16 *data)
+{
     u16 buffer[4];
     u8 i;
     u16 *ptr;

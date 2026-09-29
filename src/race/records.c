@@ -1,5 +1,6 @@
 #include "global.h"
 #include "variables.h"
+
 void SetTrackRecord(u32 a, u32 b, u32 c);
 void AddTrackRecordTasks(void);
 

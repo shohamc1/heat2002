@@ -1,6 +1,7 @@
 #include "global.h"
 #include "functions.h"
 #include "variables.h"
+
 struct Unk0202A550
 {
     u8 filler[0x16C];

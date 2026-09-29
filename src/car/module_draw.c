@@ -1,5 +1,6 @@
 #include "global.h"
 #include "variables.h"
+#include "car.h"
 
 struct Thing
 {
@@ -10,14 +11,13 @@ extern u32 *gUnk_02026E14[];
 extern u32 *gUnk_02026E18[];
 extern u32 *gUnk_0202773C[];
 extern u8 gUnk_0201B590[];
-u32 ModuleAddDepthSortedSprite(u32 a, u32 b, u32 c);
+u32 ModuleAddDepthSortedSprite(u32 a, u32 b, u16 c);
 struct Thing *ModuleRequestObjTiles16(u32 a);
 struct Thing *ModuleRequestObjTiles2(u32 a);
 struct Thing *ModuleRequestObjTiles8(u32 a);
 struct Thing *ModuleRequestObjTiles4(u32 a);
 u8 ModuleRequestObjPalette(u32 a);
-u32 ModuleWorldToScreen(s32 x, s32 y, s32 *out);
-#include "car.h"
+u8 ModuleWorldToScreen(s32 x, s32 y, s32 *out);
 
 void ModuleDrawCar(struct Car *car, u8 idx)
 {
@@ -29,7 +29,7 @@ void ModuleDrawCar(struct Car *car, u8 idx)
     s32 k;
     u32 *row;
 
-    if ((u8)ModuleWorldToScreen(car->posX, car->posZ, pos) == 0)
+    if (ModuleWorldToScreen(car->posX, car->posZ, pos) == 0)
         return;
     y = pos[1];
     pos[0] -= 0x18;
@@ -52,12 +52,12 @@ void ModuleDrawCar(struct Car *car, u8 idx)
         t = ModuleRequestObjTiles8(gUnk_02026E14[car->driverId][k]);
         if (t != NULL) {
             ModuleAddDepthSortedSprite((pos[1] & 0xFF) | ((pos[0] & 0x1FF) << 16) | 0x80008000, t->unk10 | t5,
-                                       (u16)(y + 0x40));
+                                       y + 0x40);
         }
         t = ModuleRequestObjTiles16(gUnk_02026E18[car->driverId][k]);
         if (t != NULL) {
             ModuleAddDepthSortedSprite((pos[1] & 0xFF) | (((pos[0] + 0x10) & 0x1FF) << 16) | 0x80000000, t->unk10 | t5,
-                                       (u16)(y + 0x40));
+                                       y + 0x40);
         }
     } else {
         u8 *p162;
@@ -72,14 +72,14 @@ void ModuleDrawCar(struct Car *car, u8 idx)
             a = (pos[1] & 0xFF) | ((pos[0] & 0x1FF) << 16) | 0x80000000;
             b = t->unk10 | t5;
             a |= 0x10000000;
-            ModuleAddDepthSortedSprite(a, b, (u16)(y + 0x40));
+            ModuleAddDepthSortedSprite(a, b, y + 0x40);
         }
         t = ModuleRequestObjTiles8(gUnk_02026E14[*p162][k]);
         if (t != NULL) {
             a = (pos[1] & 0xFF) | (((pos[0] + 0x20) & 0x1FF) << 16) | 0x80008000;
             b = t->unk10 | t5;
             a |= 0x10000000;
-            ModuleAddDepthSortedSprite(a, b, (u16)(y + 0x40));
+            ModuleAddDepthSortedSprite(a, b, y + 0x40);
         }
     }
     if (gModule_IsLinkRace != 0) {
@@ -93,7 +93,7 @@ void ModuleDrawCar(struct Car *car, u8 idx)
             return;
         t5 = t->unk10 | 0x400;
         t5 |= (u32)(ModuleRequestObjPalette(gUnk_020243E8) << 24) >> 12;
-        ModuleAddDepthSortedSprite(k, t5, (u16)(y + 0x40));
+        ModuleAddDepthSortedSprite(k, t5, y + 0x40);
     } else {
         row = gUnk_0202773C[car->driverId];
         pos[1] -= 8;
@@ -104,7 +104,7 @@ void ModuleDrawCar(struct Car *car, u8 idx)
             return;
         t5 = t->unk10 | 0x400;
         t5 |= (u32)(ModuleRequestObjPalette(gUnk_0201B590) << 24) >> 12;
-        ModuleAddDepthSortedSprite(k, t5, (u16)(y + 0x40));
+        ModuleAddDepthSortedSprite(k, t5, y + 0x40);
     }
 }
 
@@ -112,14 +112,14 @@ void ModuleDrawAllCars(void)
 {
     u32 i;
     u32 limit;
-    u8 *p;
+    struct Car *p;
 
     limit = gModule_NumCars[0];
     if (gModule_IsLinkRace != 0)
         limit = gModule_NumLinkPlayers[0];
-    p = (u8 *)gModule_Cars;
-    for (i = 0; i != limit; i++, p += 0x190) {
+    p = gModule_Cars;
+    for (i = 0; i != limit; i++, p++) {
         if (gModule_GameMode[0] != 2 || i == 0)
-            ModuleDrawCar((struct Car *)p, i);
+            ModuleDrawCar(p, i);
     }
 }

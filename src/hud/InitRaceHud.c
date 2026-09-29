@@ -2,6 +2,7 @@
 #include "gba/compat.h"
 #include "functions.h"
 #include "variables.h"
+#include "data.h"
 
 extern const u8 gRaceHudObjTiles[];
 void UpdateRaceHud(void);
@@ -10,7 +11,6 @@ u32 AllocTask(void);
 void AddTask(u32 a);
 void DrawHudLabels(void);
 void InitCountdown(void);
-#include "data.h"
 extern u8 gText_HudBestLabel[];
 
 void DrawHudLabels(void)

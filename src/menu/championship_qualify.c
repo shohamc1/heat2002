@@ -1,11 +1,11 @@
 #include "global.h"
 #include "functions.h"
 #include "variables.h"
-
-extern const u8 *const gChampionshipRetainTexts[];
 #include "data.h"
 #include "m4a.h"
 #include "car.h"
+
+extern const u8 *const gChampionshipRetainTexts[];
 extern u32 gChampionshipQualifyLapTimeTargets[];
 extern u8 gChampionshipTrackIds[];
 
@@ -35,10 +35,10 @@ void ShowChampionshipQualifyResult(s8 passed)
     ZeroTextLayer();
     LoadResultsScreenBackdrop();
     src = gResultsScreenPalette;
-    BuildScreenPalette((u32)src, (u16 *)palette);
+    BuildScreenPalette(src, (u16 *)palette);
     /* DrawChampionshipQualifyResult: this file's old prototype took u8; the matched definition takes s8 */
     ((void (*)(u8))DrawChampionshipQualifyResult)(passed);
-    FadeToBrightenedPalette((u32)palette, 0x0F);
+    FadeToBrightenedPalette(palette, 0x0F);
     done = 0x40;
     do {
         ReadKeys();
@@ -65,9 +65,7 @@ u8 RunChampionshipQualifyTest(void)
     SortCarsByTime();
     TrackSelectMenu(0, gTrackId);
     raceArg = gUnk_0202CDA8;
-    /* RunRace: the ROM caller passes a third argument the matched definition drops; call
-       through a function pointer with the old prototype. */
-    ((u8 (*)(u8, u8, void *))RunRace)(0, 0x0D, raceArg);
+    RunRace(0, 0x0D, raceArg);
     if (gOptions[2] != 0)
         m4aSongNumStart(3);
     ResetBgScroll();

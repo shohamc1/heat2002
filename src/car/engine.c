@@ -2,8 +2,9 @@
 #include "functions.h"
 #include "variables.h"
 #include "car.h"
-s16 GetGearForSpeed(struct Car *a);
 #include "data.h"
+
+s16 GetGearForSpeed(struct Car *a);
 struct Unk0800A310
 {
     u32 posX;
@@ -71,7 +72,7 @@ void UpdateEngine(struct Car *car, s32 mode)
         car->drag += 0x18000;
         if (car->speed > 0) {
             if (gRaceEndState != 0 || (gIsLinkRace != 0 && car->finished != 0))
-                StopCar((struct Unk0A5BC *)car);
+                StopCar(car);
             else if (car->speed > 0x3E800)
                 car->drag = 0x3E800 - car->speed;
         }

@@ -1,38 +1,26 @@
 #include "global.h"
 #include "variables.h"
+#include "car.h"
+#include "functions.h"
 
-struct Unk08343DF8
-{
-    s32 unk00;
-    u8 pad04[4];
-    s32 unk08;
-    s32 unk0C;
-    u8 pad10[4];
-    s32 unk14;
-    u8 pad18[0x34 - 0x18];
-    u16 unk34;
-    u8 pad36[0x3C - 0x36];
-    s16 unk3C;
-};
-
-void ModuleBuildCarCollFrame(struct Unk08343DF8 *car, s32 *frame)
+void ModuleBuildCarCollFrame(struct Car *car, s32 *frame)
 {
     s32 x, z;
     s32 v;
 
-    v = -(car->unk34 >> 8) & 0xFF;
+    v = -(car->heading >> 8) & 0xFF;
     frame[0] = gModule_SinTable[v];
     frame[1] = gModule_SinTable[v + 0x40];
-    x = car->unk00;
+    x = car->posX;
     frame[4] = x >> 8;
-    z = car->unk08;
+    z = car->posZ;
     frame[5] = z >> 8;
-    v = car->unk34 + car->unk3C;
+    v = car->heading + (s16)car->yawRate;
     v = -(v >> 8) & 0xFF;
     frame[2] = gModule_SinTable[v];
     frame[3] = gModule_SinTable[v + 0x40];
-    frame[6] = (x + car->unk0C) >> 8;
-    frame[7] = (z + car->unk14) >> 8;
+    frame[6] = (x + car->velX) >> 8;
+    frame[7] = (z + car->velZ) >> 8;
 }
 
 void ModuleKeepNearestCarContact(s32 arg0, u8 arg1, u32 arg2, u8 arg3, u32 *arg4, u8 *arg5, u32 arg6, s32 arg7)

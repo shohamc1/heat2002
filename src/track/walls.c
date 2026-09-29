@@ -1,5 +1,6 @@
 #include "global.h"
 #include "variables.h"
+
 struct WallRec;
 struct Pt;
 extern u32 gUnk_0202CC48;

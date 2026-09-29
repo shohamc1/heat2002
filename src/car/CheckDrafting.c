@@ -1,25 +1,24 @@
 #include "global.h"
 #include "variables.h"
 #include "car.h"
+#include "functions.h"
 
-void WorldToCarLocal(s32 *a, s32 b, s32 c, s32 *d);
-
-u8 CheckDrafting(u8 *a)
+u8 CheckDrafting(struct Car *car)
 {
     s32 d1[2];
     s32 d2[2];
     u8 count;
     u8 i;
-    u8 *e;
+    struct Car *other;
 
     count = gNumCars[0];
     if (gIsLinkRace != 0)
         count = gNumLinkPlayers[0];
-    e = (u8 *)gCars;
-    for (i = 0; i != count; i++, e += 0x190) {
-        if (e == a)
+    other = gCars;
+    for (i = 0; i != count; i++, other++) {
+        if (other == car)
             continue;
-        WorldToCarLocal((s32 *)a, *(s32 *)&e[0], *(s32 *)&e[8], d1);
+        WorldToCarLocal(car, other->posX, other->posZ, d1);
         if ((u32)(d1[1] + 100) > 100)
             continue;
         {
@@ -28,13 +27,13 @@ u8 CheckDrafting(u8 *a)
 
             if (dx < lim || dx > 16)
                 continue;
-            WorldToCarLocal((s32 *)e, *(s32 *)&a[0], *(s32 *)&a[8], d2);
+            WorldToCarLocal(other, car->posX, car->posZ, d2);
             if (d2[1] < 0)
                 continue;
             if (d2[0] < lim || d2[0] > 16)
                 continue;
         }
-        a[0x176] = 15;
+        car->draftTimer = 15;
         return 1;
     }
     return 0;

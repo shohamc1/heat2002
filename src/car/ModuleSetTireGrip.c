@@ -1,9 +1,10 @@
 #include "global.h"
 #include "variables.h"
+#include "car.h"
 
 extern u32 gUnk_02026E20[];
 
-void ModuleSetTireGrip(u32 car, u8 carIndex)
+void ModuleSetTireGrip(struct Car *car, u8 carIndex)
 {
     if (gModule_IsLinkRace != 0) {
         gUnk_0203DCF4 = gUnk_02026E20[0];

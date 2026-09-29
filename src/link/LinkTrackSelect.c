@@ -30,9 +30,9 @@ u8 LinkTrackSelect(void)
     WaitForVBlank();
     ZeroTextLayer();
     LoadMenuBackdrop();
-    BuildScreenPalette((u32)gMenuPalette, (u16 *)buf);
+    BuildScreenPalette(gMenuPalette, (u16 *)buf);
     DrawTrackSelect(0, 1);
-    FadeToBrightenedPalette((u32)buf, 0x0F);
+    FadeToBrightenedPalette(buf, 0x0F);
     REG_DISPCNT = 0xA8 << 3;
     WaitForVBlank();
     REG_DISPCNT = 0xAA << 5;

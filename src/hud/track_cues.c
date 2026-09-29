@@ -1,34 +1,7 @@
-/*
- * NEAR-MISS (348/348 bytes, one 6-insn hunk @ 0x08004808-0x08004814).
- * 2026-09-21 session findings (fresh characterization of the residual):
- *  - The root cause is a CSE SWAP of the two zero pseudos, NOT sinking.
- *    At expand the structure is already perfect: c=cmd (mov r1,sp),
- *    z=0 (pos 2), w=0 (pos 3), 0x68, strh [c], mov r0,sp, strh [r0,#2] --
- *    exactly the target IF the strh consumes w and the two strb's consume z.
- *  - `cmd[1] = w` (array spelling) expands as an RMW `(cmd[1] & 0) | w`
- *    (store_bit_field path on the address-taken local array). First cse
- *    folds it to the const-0 TABLE LOOKUP, which rewrites the strh's
- *    operand to z (the FIRST SI zero) and rewrites the strb's
- *    subreg:QI(z) operands to the RMW's HI zero temp. Net: uses swap,
- *    w's def (now feeding the strb's across the calls) homed r10 LATE.
- *  - The pointer spelling `*(u16 *)((u8 *)cmd + 2) = w;` KILLS the RMW
- *    (clean subreg store, fresh sp copy preserved) but cse STILL swaps:
- *    {SI/HI lookups -> first-assigned zero, QI lookups -> second}. Under
- *    that rule {strh <- first, strb's <- second} is forced, while the
- *    target needs {strh <- second-materialized, strb's <- first}.
- *  - Tried and failed: u16 w / u32 w (same swap), swapped assignment
- *    order w=0;z=0 (identical bytes), chained `gUnk_0202523C =
- *    gUnk_020253C8 = z` (also reorders the strb pair), fresh permuter
- *    run 50k iters on the pointer spelling (floor 60, no improvement).
- *  - Untried leads: make one zero a mode cse tables separately (a
- *    QImode-native pseudo -- no known agbcc C spelling), or make z's def
- *    non-constant at cse time without extra insns.
- * Current form = the pointer-cast spelling with z-then-w order.
- */
-
 #include "global.h"
 #include "functions.h"
 #include "variables.h"
+
 extern const u8 *const gTrackCueIconGfxList[];
 extern u8 gTrackCueIconPalette[];
 extern u32 gUnk_0836524C[];

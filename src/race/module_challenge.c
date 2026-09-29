@@ -1,8 +1,8 @@
 #include "global.h"
 #include "car.h"
 #include "variables.h"
-
 #include "functions.h"
+
 extern u8 gModule_Timer[];
 extern u8 gModule_MPH[];
 extern const u8 gModule_BlankRow8[];
@@ -20,7 +20,7 @@ u8 ModuleIsProgressPointCrossed(s32 point)
     return 1;
 }
 
-u32 ModuleIsChallengeTimeWithin(s32 limitMs)
+u8 ModuleIsChallengeTimeWithin(s32 limitMs)
 {
     if ((*(s32 *)&gUnk_0203DCFC) * 1000 + (*(s32 *)&gUnk_0203D500) <= limitMs)
         return 1;
@@ -149,9 +149,7 @@ void ModuleUpdateChallenge(void)
                         break;
                     case 1:
                         if (ModuleIsProgressPointCrossed(0x15E)) {
-                            /* ModuleIsChallengeTimeWithin: this file's old prototype returns u8;
-                               the matched definition returns u32 */
-                            if (((u8 (*)(u32))ModuleIsChallengeTimeWithin)(0x2328))
+                            if (ModuleIsChallengeTimeWithin(0x2328))
                                 gUnk_0203E104 = phase;
                             ModuleEndRace();
                             gUnk_0203DD08 = 0;
@@ -185,7 +183,7 @@ void ModuleUpdateChallenge(void)
                         break;
                     case 1:
                         if (ModuleIsProgressPointCrossed(0x96)) {
-                            if (((u8 (*)(u32))ModuleIsChallengeTimeWithin)(0xFA0))
+                            if (ModuleIsChallengeTimeWithin(0xFA0))
                                 gUnk_0203E104 = phase;
                             ModuleEndRace();
                             gUnk_0203DD08 = 0;

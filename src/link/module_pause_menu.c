@@ -1,14 +1,14 @@
 #include "global.h"
 #include "variables.h"
-
 #include "functions.h"
+
 extern u8 gModule_Player1[];
 extern u8 gModule_Player2[];
 extern u8 gModule_Player3[];
 extern u8 gModule_Player4[];
 void ModuleDrawTextCenteredHighlight(u8 *s, u32 a, u32 b);
-extern u32 gUnk_02038FF0[];
-extern u32 gUnk_02039040[];
+extern struct MusicPlayerInfo gUnk_02038FF0;
+extern struct MusicPlayerInfo gUnk_02039040;
 void ModuleReadLinkMenuKeys(void);
 u32 ModuleExchangeLinkInput(void);
 void ModuleM4aSoundVSyncOff(void);
@@ -66,10 +66,10 @@ u8 ModuleSinglePakPauseMenu(void)
     gUnk_0203B850[0] = 0xFF;
     ModuleReadLinkMenuKeys();
     if (gUnk_0203B6FC & 8) {
-        ModuleM4aMPlayStop((struct MusicPlayerInfo *)gUnk_02038F70);
-        ModuleM4aMPlayStop((struct MusicPlayerInfo *)gUnk_02038FB0);
-        ModuleM4aMPlayStop((struct MusicPlayerInfo *)gUnk_02038FF0);
-        ModuleM4aMPlayStop((struct MusicPlayerInfo *)gUnk_02039040);
+        ModuleM4aMPlayStop(&gUnk_02038F70);
+        ModuleM4aMPlayStop(&gUnk_02038FB0);
+        ModuleM4aMPlayStop(&gUnk_02038FF0);
+        ModuleM4aMPlayStop(&gUnk_02039040);
         for (;;) {
             gModule_VBlanksThisFrame = 0;
             if (ModuleExchangeLinkInput() != 0) {

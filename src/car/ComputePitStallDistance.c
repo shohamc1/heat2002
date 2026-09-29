@@ -1,18 +1,10 @@
 #include "global.h"
 #include "variables.h"
 #include "data.h"
+#include "car.h"
+#include "functions.h"
 
-struct UnkStruct0800C4E0
-{
-    u8 pad0[2];
-    s16 f2;
-    u8 pad4[6];
-    s16 fA;
-    u8 padC[0x175];
-    u8 pitStall;
-};
-
-s32 ComputePitStallDistance(struct UnkStruct0800C4E0 *car)
+s32 ComputePitStallDistance(struct Car *car)
 {
     s32 *stalls;
     s32 *stallZPtr;
@@ -27,8 +19,8 @@ s32 ComputePitStallDistance(struct UnkStruct0800C4E0 *car)
     dx = stalls[stallIdx * 2];
     stallZPtr = (s32 *)((stallIdx * 2 + 1) * 4 + (u32)stalls);
     dz = *stallZPtr;
-    carX = car->f2;
-    carZ = car->fA;
+    carX = ((s16 *)&car->posX)[1]; /* high half of posX */
+    carZ = ((s16 *)&car->posZ)[1]; /* high half of posZ */
     dx = dx - carX;
     if (dx < 0)
         dx = -dx;

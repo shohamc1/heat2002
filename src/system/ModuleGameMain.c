@@ -8,7 +8,7 @@ extern u8 gModule_PleaseTurnOffYour[];
 extern u8 gModule_GameBoyAdvance[];
 
 void ModuleInitIntrHandlers(void);
-void ModuleSetVBlankCallback(u32 r0);
+void ModuleSetVBlankCallback(void (*callback)(void));
 void ModuleFillFadePalette(u16 color);
 void ModuleFadeToColor(u32 r0, u32 r1);
 void ModuleM4aSoundInit(void);
@@ -43,7 +43,7 @@ void ModuleGameMain(void)
     *ds = eight;
     ModuleReadKeys();
     gUnk_020390C4 = z1;
-    ModuleSetVBlankCallback((u32)ModuleMainVBlankCallback);
+    ModuleSetVBlankCallback(ModuleMainVBlankCallback);
     *ie = 0x2001;
     *ds = eight;
     ModuleFillFadePalette(0x7FFF);
@@ -76,8 +76,8 @@ void ModuleGameMain(void)
             ModuleDrawTextCenteredHighlight(ModuleGetString(MODULE_MSG_LINK_FAIL), 0x0A, 1);
             ModuleDrawTextCenteredHighlight((u32)gModule_PleaseTurnOffYour, 0x0C, 1);
             ModuleDrawTextCenteredHighlight((u32)gModule_GameBoyAdvance, 0x0D, 1);
-            ModuleM4aMPlayStop((struct MusicPlayerInfo *)((u32)gUnk_02038F70));
-            ModuleM4aMPlayStop((struct MusicPlayerInfo *)((u32)gUnk_02038FB0));
+            ModuleM4aMPlayStop(&gUnk_02038F70);
+            ModuleM4aMPlayStop(&gUnk_02038FB0);
             ModuleM4aSoundVSyncOff();
             for (;;) {
                 ModuleUpdateSprites();

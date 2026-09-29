@@ -2,18 +2,7 @@
 #include "gba/io_reg.h"
 #include "variables.h"
 
-/* Serial IRQ handler for the comm state at 0x03000C00.
- *
- * STATUS: near-miss, 3 real byte diffs remain (one register choice), and
- * only when compiled at -O1 (see drafts/IslandSioTransferIntr.notes.md):
- * the ROM's shape (Lneg block after the mode-1 arm reached by a real
- * `b`, plus the surviving `ldr r5, =0x03000C00; adds r4, r5, #0` pointer
- * copy) is only producible when GCC's Cygnus merge_blocks pass does not
- * run, i.e. at optimize <= 1. At the project's -O2 this function cannot
- * match from any C (merge_blocks hoists the Lneg block; details in the
- * notes). The -O1 build of this file differs from the ROM only in which
- * of r4/r5 holds the pointer copy (3 bytes at 0x0800e646..0x0800e64a).
- */
+/* Serial IRQ handler for the comm state at 0x03000C00. */
 
 struct CommRegs
 {

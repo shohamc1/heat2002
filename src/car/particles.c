@@ -1,4 +1,7 @@
 #include "global.h"
+#include "data.h"
+#include "functions.h"
+#include "car.h"
 
 struct EntityB658;
 struct EntityB7E0;
@@ -7,9 +10,6 @@ struct Unk0800B8EC;
 void DraftStreakTask(struct EntityB658 *);
 u32 AllocTask(void);
 void AddTask(u32 a);
-#include "data.h"
-#include "functions.h"
-#include "car.h"
 struct EntityB658
 {
     u8 pad00[0x08];

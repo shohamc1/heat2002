@@ -37,7 +37,7 @@ void ModuleInitIntrHandlers(void)
     gModule_IntrTable[13] = (u32)ModuleDummyIntr;
 }
 
-void ModuleSetVBlankCallback(void *callback)
+void ModuleSetVBlankCallback(void (*callback)(void))
 {
     gUnk_020375D0 = (u32)callback;
     if (callback == NULL)

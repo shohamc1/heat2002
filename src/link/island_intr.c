@@ -1,5 +1,4 @@
 #include "global.h"
-
 #include "variables.h"
 
 void IslandDummyIntr(void)

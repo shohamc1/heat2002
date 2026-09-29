@@ -3,9 +3,9 @@
 
 void DummyIntr(void);
 
-void SetVBlankCallback(u32 r0)
+void SetVBlankCallback(void (*callback)(void))
 {
-    gVBlankCallback[0] = r0;
-    if (r0 == 0)
+    gVBlankCallback[0] = (u32)callback;
+    if (callback == NULL)
         gVBlankCallback[0] = (u32)DummyIntr;
 }

@@ -18,11 +18,11 @@ void MPlayOpen(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track
         return;
     if (count > 0x10)
         count = 0x10;
-    soundInfo = (struct SoundInfo *)gSoundInfoPtr[0];
+    soundInfo = gSoundInfoPtr[0];
     if (soundInfo->ident != ID_NUMBER)
         return;
     soundInfo->ident = soundInfo->ident + 1;
-    Clear64byte((void *)playerInfo);
+    Clear64byte(playerInfo);
     playerInfo->tracks = track;
     playerInfo->trackCount = count;
     playerInfo->status = MUSICPLAYER_STATUS_PAUSE;

@@ -5,10 +5,14 @@
 // sorted by address. Stage 1 catch-all of docs/extern-headers-plan.md;
 // the addresses stay in symbols.ld.
 
-#include "structs.h"    // struct Track, complete (gModule_TrackData below)
+#include "structs.h" // struct Track, complete (gModule_TrackData below)
 
 // Forward-declared struct tags; the defining files complete them.
+struct Car;
+struct LaneSeg;
 struct CommRegs;
+struct MusicPlayerInfo;
+struct SoundInfo;
 struct Pt;
 struct Unk0833D848;
 struct WallRec;
@@ -26,7 +30,7 @@ extern u16 *gUnk_0202CC68;
 extern u8 gLapProgressAdvanced;
 extern u8 gUnk_02025370;
 extern u32 gUnk_0200BC50[];
-extern u32 gUnk_0202CB20[];
+extern u16 gUnk_0202CB20[];
 extern u32 gCamera[];
 extern u32 gChallengeTimerSec;
 extern s32 gUnk_02000470;
@@ -66,7 +70,7 @@ extern u32 gUnk_02022DE8;
 extern s32 gUnk_02000474;
 extern struct CommRegs gIsland_SioTransfer;
 extern u32 gObjTileCache4[];
-extern u8 gUnk_0202713E[];
+extern const u16 gUnk_0202713E[];
 extern u8 gProgressFlags[];
 extern u32 *gUnk_0202772C[];
 extern u8 gUnk_0202EDC8[];
@@ -78,13 +82,13 @@ extern u8 *gUnk_0200BC54;
 extern struct Unk0801DACC gModule_SongTable[];
 extern u8 gChallengePhase;
 extern s32 gUnk_02023A20[];
-extern u32 gUnk_0202A540[];
+extern u16 gUnk_0202A540[];
 extern u8 gUnk_0202523C;
 extern u32 gUnk_0202CC1C[];
 extern u32 gBgMapWidth;
 extern u8 gSeasonNumLaps;
 extern u32 gObjTileCache2[];
-extern u32 gCarOrder[];
+extern struct Car *gCarOrder[];
 extern u32 gUnk_0202CC00[];
 extern s32 gUnk_02000484;
 extern u8 gDefaultCountdownSeconds;
@@ -124,7 +128,7 @@ extern u32 gUnk_0202CB14;
 extern u32 gIsland_OamBuffer[];
 extern u16 *gUnk_0202CC6C;
 extern u32 gUnk_0200BC2C;
-extern u32 gClosestLaneSegment[];
+extern const struct LaneSeg *gClosestLaneSegment[];
 extern u32 gUnk_02024828;
 extern u16 gLinkSendWords[];
 extern u32 gUnk_02022DF8;
@@ -139,7 +143,7 @@ extern u8 gOamAffineCount;
 extern u16 gIntrCheck;
 extern s32 gTireContactVelZ;
 extern u32 gUnk_02022E20[];
-extern u32 gSoundInfoPtr[];
+extern struct SoundInfo *gSoundInfoPtr[];
 extern u32 gUnk_02024C30;
 extern u8 gUnk_0202CDA8[];
 extern s32 gUnk_02000464;
@@ -168,7 +172,7 @@ extern u32 gModule_TextLayerMapPtr[];
 extern u32 gObjTileCache16[];
 extern s32 gTireContactVelX;
 extern u8 gStartedCarCount;
-extern u32 gUnk_0202CB00[];
+extern u16 gUnk_0202CB00[];
 extern u32 *gUnk_02026E1C[];
 extern u32 gTrackMapWidth[];
 extern s32 gUnk_02000468;
@@ -197,7 +201,7 @@ extern u8 gUnk_02025244;
 extern u8 gChallengeIndex;
 extern struct WallRec *gUnk_0202CC40;
 extern u16 gTrackRecordMin[];
-extern u8 gUnk_02027154[];
+extern const u16 gUnk_02027154[];
 extern u8 gFrontTireGripSlow;
 extern s32 gUnk_0202CBD4;
 extern u8 gUnk_02021594[];
@@ -205,7 +209,7 @@ extern s16 gUnk_0202E930;
 extern u16 gTrackRecordMs[];
 extern u8 gCheatCodeWasValid;
 extern u32 gObjTileCache1[];
-extern u8 gUnk_0202714A[];
+extern const u16 gUnk_0202714A[];
 extern u32 gTireSlipLimitBase;
 extern u16 gLinkVBlankTimeout;
 extern u8 gLinkPlayerCount;
@@ -217,38 +221,38 @@ extern u8 gUnk_020243E8[];
 extern s32 gUnk_0202CB0C;
 extern u8 *gUnk_02025230;
 extern u32 gIntrTable[];
-extern u16 gKeysPressed; /* 0x020005CC */
-extern u16 gUnk_02000DD0; /* 0x02000DD0 */
-extern u8 gBgMusicPlayer[]; /* 0x02001F20 */
-extern u8 gUnk_02001FA0[]; /* 0x02001FA0 */
-extern u8 gUnk_02001FE0[]; /* 0x02001FE0 */
-extern u8 gUnk_02002030[]; /* 0x02002030 */
-extern u8 gNumCars[]; /* 0x02002090 */
-extern u8 gChallengeScore; /* 0x02002098 */
-extern u8 gPreRaceSimActive; /* 0x020020A8 */
-extern u8 gNumLinkPlayers[]; /* 0x020020AC */
-extern u8 gVBlankWorkDone; /* 0x020020C0 */
-extern u8 gRaceStarted; /* 0x020020C4 */
-extern u8 gTrackId; /* 0x020020CC */
-extern u32 gRngState; /* 0x020020D4 */
-extern u8 gIsLinkRace; /* 0x020020DC */
-extern u8 gIsDemo; /* 0x020020E0 */
-extern u8 gUnk_020020EC; /* 0x020020EC */
-extern u8 gNewTrackRecord; /* 0x020020F0 */
-extern u8 gGameMode[]; /* 0x0200215C */
-extern u16 gLinkTxSeqNum; /* 0x02002170 */
-extern u8 gRaceAborted; /* 0x020021BC */
-extern u8 gBgScrollUpdateEnabled; /* 0x020021C4 */
-extern u8 gRaceEndState; /* 0x020021E0 */
-extern u8 gFadeActive; /* 0x02022E14 */
-extern u16 gRaceSec; /* 0x02025220 */
-extern u16 gRaceMs; /* 0x02025224 */
-extern u8 gPauseMenuCursor; /* 0x02025248 */
-extern u16 gRaceMin; /* 0x02025260 */
-extern u32 gRaceStartTaskPtr; /* 0x0202CC04 */
-extern u8 gLapTimeTextBuf[]; /* 0x0202CC10 */
-extern u8 gOptions[]; /* 0x0202EF00 */
-extern u8 gLinkPlayerId[]; /* 0x0202EF90 */
+extern u16 gKeysPressed;                     /* 0x020005CC */
+extern u16 gUnk_02000DD0;                    /* 0x02000DD0 */
+extern u8 gBgMusicPlayer[];                  /* 0x02001F20 */
+extern struct MusicPlayerInfo gUnk_02001FA0; /* 0x02001FA0 */
+extern struct MusicPlayerInfo gUnk_02001FE0; /* 0x02001FE0 */
+extern struct MusicPlayerInfo gUnk_02002030; /* 0x02002030 */
+extern u8 gNumCars[];                        /* 0x02002090 */
+extern u8 gChallengeScore;                   /* 0x02002098 */
+extern u8 gPreRaceSimActive;                 /* 0x020020A8 */
+extern u8 gNumLinkPlayers[];                 /* 0x020020AC */
+extern u8 gVBlankWorkDone;                   /* 0x020020C0 */
+extern u8 gRaceStarted;                      /* 0x020020C4 */
+extern u8 gTrackId;                          /* 0x020020CC */
+extern u32 gRngState;                        /* 0x020020D4 */
+extern u8 gIsLinkRace;                       /* 0x020020DC */
+extern u8 gIsDemo;                           /* 0x020020E0 */
+extern u8 gUnk_020020EC;                     /* 0x020020EC */
+extern u8 gNewTrackRecord;                   /* 0x020020F0 */
+extern u8 gGameMode[];                       /* 0x0200215C */
+extern u16 gLinkTxSeqNum;                    /* 0x02002170 */
+extern u8 gRaceAborted;                      /* 0x020021BC */
+extern u8 gBgScrollUpdateEnabled;            /* 0x020021C4 */
+extern u8 gRaceEndState;                     /* 0x020021E0 */
+extern u8 gFadeActive;                       /* 0x02022E14 */
+extern u16 gRaceSec;                         /* 0x02025220 */
+extern u16 gRaceMs;                          /* 0x02025224 */
+extern u8 gPauseMenuCursor;                  /* 0x02025248 */
+extern u16 gRaceMin;                         /* 0x02025260 */
+extern u32 gRaceStartTaskPtr;                /* 0x0202CC04 */
+extern u8 gLapTimeTextBuf[];                 /* 0x0202CC10 */
+extern u8 gOptions[];                        /* 0x0202EF00 */
+extern u8 gLinkPlayerId[];                   /* 0x0202EF90 */
 
 // High module (links at its EWRAM run address)
 
@@ -359,7 +363,7 @@ extern u16 gUnk_02039248;
 extern s32 gUnk_0203DF44;
 extern u16 gModule_TrackRecordSec[];
 extern u16 gUnk_0203B610[];
-extern u8 gUnk_02038FB0[];
+extern struct MusicPlayerInfo gUnk_02038FB0;
 extern u8 gModule_ObjTileCache1[];
 extern u32 gUnk_02039200[];
 extern u32 gUnk_0203DD34;
@@ -371,7 +375,7 @@ extern u16 gModule_PaletteFadeSteps;
 extern const struct TrackSeg *gModule_TrackSegs;
 extern u8 gUnk_0203B850[];
 extern u16 gModule_LinkTxBuffer[];
-extern u8 gUnk_0203D4A0[];
+extern u32 gUnk_0203D4A0[];
 extern u8 gModule_IsLinkRace;
 extern u16 gModule_LinkRecvWords[];
 extern u8 gUnk_0203ACD4;
@@ -380,22 +384,22 @@ extern u8 gUnk_0203E1C0[];
 extern u8 gUnk_0203E1E0[];
 extern u32 gUnk_02039244;
 extern struct WallRec *gUnk_0203DE60;
-extern u8 gUnk_02038F70[];
+extern struct MusicPlayerInfo gUnk_02038F70;
 extern u16 gUnk_0203917C;
 extern u32 gModule_Camera[];
-extern u16 gUnk_02037618; /* 0x02037618 */
-extern u16 gUnk_0203761C; /* 0x0203761C */
-extern u16 gUnk_02037E20; /* 0x02037E20 */
-extern u32 gUnk_020390E4; /* 0x020390E4 */
-extern u8 gUnk_020392C0; /* 0x020392C0 */
-extern u16 gModule_LapSec[]; /* 0x0203B6A8 */
-extern u16 gModule_LapMin[]; /* 0x0203B6C8 */
+extern u16 gUnk_02037618;     /* 0x02037618 */
+extern u16 gUnk_0203761C;     /* 0x0203761C */
+extern u16 gUnk_02037E20;     /* 0x02037E20 */
+extern u32 gUnk_020390E4;     /* 0x020390E4 */
+extern u8 gUnk_020392C0;      /* 0x020392C0 */
+extern u16 gModule_LapSec[];  /* 0x0203B6A8 */
+extern u16 gModule_LapMin[];  /* 0x0203B6C8 */
 extern u16 gModule_RaceSec[]; /* 0x0203B6D0 */
-extern u16 gModule_RaceMs[]; /* 0x0203B6D4 */
-extern u8 gUnk_0203B6E8; /* 0x0203B6E8 */
-extern u8 gUnk_0203B6F0; /* 0x0203B6F0 */
+extern u16 gModule_RaceMs[];  /* 0x0203B6D4 */
+extern u8 gUnk_0203B6E8;      /* 0x0203B6E8 */
+extern u8 gUnk_0203B6F0;      /* 0x0203B6F0 */
 extern u16 gModule_RaceMin[]; /* 0x0203B704 */
-extern u16 gModule_LapMs[]; /* 0x0203B858 */
-extern u8 gUnk_0203DE30[]; /* 0x0203DE30 */
+extern u16 gModule_LapMs[];   /* 0x0203B858 */
+extern u8 gUnk_0203DE30[];    /* 0x0203DE30 */
 
 #endif

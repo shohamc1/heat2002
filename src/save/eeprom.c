@@ -1,5 +1,6 @@
 #include "global.h"
 #include "variables.h"
+
 void sub_08017000(u16 a, u16 *b);
 u32 sub_08016E38(u32 a);
 u32 sub_08016EA0(u32 a, u32 b);

@@ -1,6 +1,7 @@
 #include "global.h"
 #include "gba/defines.h"
 #include "variables.h"
+
 void ResetSpriteQueues(void);
 struct UnkStruct080044DC
 {
@@ -50,7 +51,7 @@ u32 AddOamEntry(u32 a, u32 b)
     return 1;
 }
 
-u32 AddDepthSortedSprite(u32 arg0, u32 arg1, u32 arg2)
+u32 AddDepthSortedSprite(u32 arg0, u32 arg1, u16 arg2)
 {
     struct UnkStruct080044DC *r3 = *(struct UnkStruct080044DC **)&gUnk_02024820;
     u32 r;

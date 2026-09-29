@@ -1,9 +1,10 @@
 #include "global.h"
-#define GBA_CPUFASTSET sub_08344B60
 #include "gba/defines.h"
 #include "gba/io_reg.h"
 #include "gba/compat.h"
 #include "variables.h"
+
+#define GBA_CPUFASTSET sub_08344B60
 
 extern u8 gUnk_020391C8;
 

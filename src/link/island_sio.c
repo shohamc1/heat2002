@@ -1,8 +1,8 @@
 #include "global.h"
 #include "variables.h"
-
-void sub_083647FC(u32 src, u32 dest, u32 control);
 #include "gba/io_reg.h"
+
+void sub_083647FC(const void *src, void *dest, u32 control);
 struct CommRegs
 {
     u8 mode;   /* +0 */
@@ -32,7 +32,7 @@ void IslandSioTransferInit(u32 send, u32 chunk)
     *(volatile u16 *)0x04000208 = 1;
     fill = 0;
     g = (u32 *)&gIsland_SioTransfer;
-    sub_083647FC((u32)&fill, (u32)g, 0x05000006);
+    sub_083647FC(&fill, g, 0x05000006);
     *(volatile u32 *)0x04000128 = 0x2003;
     g[1] = chunk;
     g[2] = -1;

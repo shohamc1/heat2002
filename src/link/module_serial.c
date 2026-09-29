@@ -1,6 +1,5 @@
 #include "global.h"
 #include "gba/io_reg.h"
-
 #include "variables.h"
 
 void ModuleInitMultiplayerSio(void)
