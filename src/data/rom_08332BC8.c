@@ -55,10 +55,11 @@ const u16 gTextGlyphTileIndices[] = {
     176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193
 };
 // Its users declare it as u32 x[], u8 x[].
-const u32 gTextLayerTiles[] = INCBIN_U32("build/assets/unknown/data_0833338C.bin");
-/* Full 256-color BG palette; LoadTrack copies only its first 16
- * colors into a scratch buffer. Graphics, kept as INCBIN. */
-const u16 gTrackBgPalette[] = INCBIN_U16("build/assets/graphics/palettes/race_hud_bg.pal.bin");
+const u32 gTextLayerTiles[] = INCBIN_U32("build/assets/graphics/tiles/text_layer.tiles.bin");
+/* Full 256-color BG palette of the race HUD's char sheet (below);
+ * LoadTrack copies only its first 16 colors into a scratch buffer.
+ * Editable: assets/graphics/palettes/race_hud_bg.pal. */
+const u16 gRaceHudBgPalette[] = INCBIN_U16("build/assets/graphics/palettes/race_hud_bg.pal.bin");
 // Its users declare it as u16 x[], u8 x[].
 /* HUD label layout grid: byte offsets into this table give the
  * gFontTileEntries index of each fixed label cell. */
@@ -156,7 +157,9 @@ const u16 gFontTileEntries[] = {
     192,  193, 194,  195, 196, 197,  198, 199, 200, 201, 202,  203,  204, 205,  206, 207, 208,  209, 210,  211,
     212,  213, 214,  215, 216, 217,  218, 219, 220, 221, 222,  223,  224, 225
 };
-/* BG tilemap copied to screen base block 24 by LoadTrack; the
- * 0x2000-byte copy deliberately runs past this blob into the
- * graphics that follow. Graphics, kept as INCBIN. */
-const u16 gTrackBgTilemap[] = INCBIN_U16("build/assets/unknown/data_08335C60.bin");
+/* The race HUD's BG0 character sheet: 226 4bpp tiles (the glyph and
+ * icon tiles gFontTileEntries indexes), copied to 0x0600C000 by
+ * LoadTrack; the 0x2000-byte copy deliberately runs past this blob
+ * into the graphics that follow. Editable:
+ * assets/graphics/tiles/race_hud_bg.png. */
+const u16 gRaceHudBgTiles[] = INCBIN_U16("build/assets/graphics/tiles/race_hud_bg.tiles.bin");

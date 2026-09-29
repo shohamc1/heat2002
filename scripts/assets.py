@@ -47,6 +47,15 @@ A "pal" asset is one palette blob as an editable JASC .pal text file
 it back into the BGR555 halfwords the ROM holds. The colour count is
 the blob's, so adding or removing a line fails the build.
 
+A "tiles" asset is one uncompressed tile sheet as an editable indexed
+.png (assets/graphics/tiles/NAME.png): the tiles in reading order,
+`width` tiles to a row, `bitDepth` 4 or 8, coloured by the pal asset
+its `palette` option names (the .png is only a picture of the sheet;
+the palette itself is edited in that .pal file). A ragged last row is
+padded with copies of tile 0, and the padding cells must stay that way.
+The tile count is the blob's, so painting new tiles into the padding
+fails the build.
+
 `convert` writes an editable .png next to each "rl"/"lz" graphics .bin
 (gbagfx), then converts it back and checks that the result matches the
 .bin byte for byte. It needs the tools from `make tools`; `make convert`
@@ -97,7 +106,8 @@ OUT = ROOT / "build" / "assets"
 EDIT = ROOT / "assets"
 TOOLS = ROOT / "tools" / "bin"
 # Asset types the build makes from an editable file, and that file's suffix.
-EDITABLE = {"midi": ".mid", "aif": ".aif", "screen": ".png", "pal": ".pal"}
+EDITABLE = {"midi": ".mid", "aif": ".aif", "screen": ".png", "pal": ".pal",
+            "tiles": ".png"}
 # Every "screen" is a 240x160 background: 15x10 metatiles of 2x2 8x8 tiles.
 SCREEN_W, SCREEN_H = 240, 160
 
@@ -122,7 +132,9 @@ def built(asset):
     path = OUT / asset["path"]
     if asset.get("type") == "midi":
         return path.with_suffix(".s")
-    return path.with_suffix(".pal.bin") if asset.get("type") == "pal" else path
+    if asset.get("type") == "pal":
+        return path.with_suffix(".pal.bin")
+    return path.with_suffix(".tiles.bin") if asset.get("type") == "tiles" else path
 
 
 def find(path):
@@ -215,6 +227,84 @@ def bgr555_to_rgb8(color):
     return up(color & 31), up(color >> 5 & 31), up(color >> 10 & 31)
 
 
+def write_indexed_png(path, pixels, w, h, palette):
+    """Write an 8-bit indexed PNG: `pixels` are palette indices, the
+    palette BGR555 halfwords in the PNG's order."""
+    plte = bytearray()
+    for color in struct.unpack(f"<{len(palette) // 2}H", palette):
+        plte += bytes(bgr555_to_rgb8(color))
+    rows = b"".join(b"\0" + pixels[y * w:(y + 1) * w] for y in range(h))
+    path.write_bytes(b"\x89PNG\r\n\x1a\n"
+                     + png_chunk(b"IHDR", struct.pack(">IIBBBBB",
+                                                      w, h, 8, 3, 0, 0, 0))
+                     + png_chunk(b"PLTE", bytes(plte))
+                     + png_chunk(b"IDAT", zlib.compress(rows, 9))
+                     + png_chunk(b"IEND", b""))
+
+
+def read_indexed_png(path, w, h, colors):
+    """Read an 8-bit indexed PNG of exactly w*h pixels with `colors`
+    palette entries: (linear indices, BGR555 palette). Only what an editor
+    keeps of an indexed PNG: 8-bit indices, every palette entry, no
+    interlacing."""
+    data = path.read_bytes()
+    if data[:8] != b"\x89PNG\r\n\x1a\n":
+        sys.exit(f"{path}: not a PNG")
+    chunks, pos = {}, 8
+    while pos + 12 <= len(data):
+        length = int.from_bytes(data[pos:pos + 4], "big")
+        tag, body = data[pos + 4:pos + 8], data[pos + 8:pos + 8 + length]
+        pos += 12 + length
+        if tag == b"IDAT":
+            chunks.setdefault(b"IDAT", []).append(body)
+        elif tag not in chunks:
+            chunks[tag] = body
+        if tag == b"IEND":
+            break
+    width, height, depth, color, _, _, interlace = \
+        struct.unpack(">IIBBBBB", chunks[b"IHDR"])
+    plte = chunks.get(b"PLTE", b"")
+    if (width, height) != (w, h):
+        sys.exit(f"{path}: {width}x{height}, want {w}x{h}")
+    if color != 3 or depth != 8:
+        sys.exit(f"{path}: want an 8-bit indexed PNG (save it in indexed\n"
+                 "mode): its palette order is the ROM's")
+    if interlace:
+        sys.exit(f"{path}: interlaced; save it without interlacing")
+    if len(plte) != 3 * colors:
+        sys.exit(f"{path}: {len(plte) // 3} palette entries, want {colors}\n"
+                 "(an editor trimmed the unused tail; keep every entry)")
+    packed = zlib.decompress(b"".join(chunks[b"IDAT"]))
+    pixels, prev = bytearray(w * h), bytearray(w)
+    pos = 0
+    for y in range(h):
+        # Undo the per-row filter, whatever the editor chose (RFC 2083).
+        filter_, row = packed[pos], bytearray(packed[pos + 1:pos + 1 + w])
+        pos += 1 + w
+        if filter_ > 4:
+            sys.exit(f"{path}: bad PNG row filter {filter_}")
+        for x in range(w):
+            a, b, c = row[x - 1] if x else 0, prev[x], prev[x - 1] if x else 0
+            if filter_ == 1:
+                row[x] = (row[x] + a) & 0xFF
+            elif filter_ == 2:
+                row[x] = (row[x] + b) & 0xFF
+            elif filter_ == 3:
+                row[x] = (row[x] + (a + b) // 2) & 0xFF
+            elif filter_ == 4:
+                pa, pb, pc = abs(b - c), abs(a - c), abs(a + b - 2 * c)
+                guess = a if pa <= pb and pa <= pc else (b if pb <= pc else c)
+                row[x] = (row[x] + guess) & 0xFF
+        pixels[y * w:(y + 1) * w] = row
+        prev = row
+    palette = bytearray(2 * colors)
+    for i in range(colors):
+        r, g, b = plte[3 * i:3 * i + 3]
+        struct.pack_into("<H", palette, 2 * i,
+                         r >> 3 | (g >> 3) << 5 | (b >> 3) << 10)
+    return bytes(pixels), bytes(palette)
+
+
 def write_jasc_pal(path, palette):
     """Write a palette blob (BGR555 u16s) as a JASC .pal text file, the
     format every graphics editor's colour picker reads and writes."""
@@ -251,78 +341,88 @@ def read_jasc_pal(path, size):
 def write_screen_png(path, pixels, palette):
     """Write a screen's picture as an 8-bit indexed PNG: the palette order
     is the ROM's, so the file edits straight back into its blobs."""
-    plte = bytearray()
-    for color in struct.unpack("<256H", palette):
-        plte += bytes(bgr555_to_rgb8(color))
-    rows = b"".join(b"\0" + pixels[y * SCREEN_W:(y + 1) * SCREEN_W]
-                    for y in range(SCREEN_H))
-    path.write_bytes(b"\x89PNG\r\n\x1a\n"
-                     + png_chunk(b"IHDR", struct.pack(">IIBBBBB",
-                                                      SCREEN_W, SCREEN_H, 8, 3, 0, 0, 0))
-                     + png_chunk(b"PLTE", bytes(plte))
-                     + png_chunk(b"IDAT", zlib.compress(rows, 9))
-                     + png_chunk(b"IEND", b""))
+    write_indexed_png(path, pixels, SCREEN_W, SCREEN_H, palette)
 
 
 def read_screen_png(path):
-    """Read a screen's picture back: (linear palette indices, BGR555
-    palette). Only what an editor keeps of an indexed PNG: 8-bit indices,
-    all 256 palette entries, no interlacing."""
-    data = path.read_bytes()
-    if data[:8] != b"\x89PNG\r\n\x1a\n":
-        sys.exit(f"{path}: not a PNG")
-    chunks, pos = {}, 8
-    while pos + 12 <= len(data):
-        length = int.from_bytes(data[pos:pos + 4], "big")
-        tag, body = data[pos + 4:pos + 8], data[pos + 8:pos + 8 + length]
-        pos += 12 + length
-        if tag == b"IDAT":
-            chunks.setdefault(b"IDAT", []).append(body)
-        elif tag not in chunks:
-            chunks[tag] = body
-        if tag == b"IEND":
-            break
-    w, h, depth, color, _, _, interlace = struct.unpack(">IIBBBBB", chunks[b"IHDR"])
-    plte = chunks.get(b"PLTE", b"")
-    if (w, h) != (SCREEN_W, SCREEN_H):
-        sys.exit(f"{path}: {w}x{h}, want {SCREEN_W}x{SCREEN_H}")
-    if color != 3 or depth != 8:
-        sys.exit(f"{path}: want an 8-bit indexed PNG (save it in indexed\n"
-                 "mode): its palette order is the ROM's")
-    if interlace:
-        sys.exit(f"{path}: interlaced; save it without interlacing")
-    if len(plte) != 3 * 256:
-        sys.exit(f"{path}: {len(plte) // 3} palette entries, want 256\n"
-                 "(an editor trimmed the unused tail; keep every entry)")
-    packed = zlib.decompress(b"".join(chunks[b"IDAT"]))
-    pixels, prev = bytearray(w * h), bytearray(w)
-    pos = 0
-    for y in range(h):
-        # Undo the per-row filter, whatever the editor chose (RFC 2083).
-        filter_, row = packed[pos], bytearray(packed[pos + 1:pos + 1 + w])
-        pos += 1 + w
-        if filter_ > 4:
-            sys.exit(f"{path}: bad PNG row filter {filter_}")
-        for x in range(w):
-            a, b, c = row[x - 1] if x else 0, prev[x], prev[x - 1] if x else 0
-            if filter_ == 1:
-                row[x] = (row[x] + a) & 0xFF
-            elif filter_ == 2:
-                row[x] = (row[x] + b) & 0xFF
-            elif filter_ == 3:
-                row[x] = (row[x] + (a + b) // 2) & 0xFF
-            elif filter_ == 4:
-                pa, pb, pc = abs(b - c), abs(a - c), abs(a + b - 2 * c)
-                guess = a if pa <= pb and pa <= pc else (b if pb <= pc else c)
-                row[x] = (row[x] + guess) & 0xFF
-        pixels[y * w:(y + 1) * w] = row
-        prev = row
-    palette = bytearray(512)
-    for i in range(256):
-        r, g, b = plte[3 * i:3 * i + 3]
-        struct.pack_into("<H", palette, 2 * i,
-                         r >> 3 | (g >> 3) << 5 | (b >> 3) << 10)
-    return bytes(pixels), bytes(palette)
+    """Read a screen's picture back."""
+    return read_indexed_png(path, SCREEN_W, SCREEN_H, 256)
+
+
+def tiles_layout(asset):
+    """(depth, tiles per row, tile count) of a tiles sheet. The blob is
+    8*depth bytes per tile: 32 at 4bpp, 64 at 8bpp."""
+    opts = asset["options"]
+    depth = opts.get("bitDepth", 4)
+    return depth, opts["width"], asset["size"] // 8 // depth
+
+
+def pal_asset(asset):
+    """The pal asset a tiles sheet's `palette` option names."""
+    for other in assets():
+        if other["path"] == asset["options"]["palette"]:
+            return other
+    sys.exit(f"{asset['path']}: no pal asset named {asset['options']['palette']}")
+
+
+def pal_colors(asset, rom, count):
+    """The first `count` colours of a sheet's palette, from that palette's
+    own editable file, unpacking it if a fresh clone doesn't have it."""
+    source = pal_asset(asset)
+    unpack_asset(source, rom)
+    data = read_jasc_pal(editable(source), source["size"])
+    if len(data) < 2 * count:
+        sys.exit(f"{asset['path']}: {source['path']} holds {len(data) // 2} "
+                 f"colours, the sheet needs {count}")
+    return data[:2 * count]
+
+
+def unpack_tiles(asset, rom, out):
+    """Write a sheet's editable .png: the tiles in reading order, `width`
+    to a row, the padding cells of a ragged last row copies of tile 0."""
+    depth, width, count = tiles_layout(asset)
+    start = int(asset["start"], 16) - ROM_BASE
+    data = rom[start:start + asset["size"]]
+    rows = -(-count // width)
+    w, h = width * 8, rows * 8
+    px = bytearray(w * h)
+    for i in range(rows * width):
+        t = i if i < count else 0
+        tx, ty = i % width, i // width
+        for y in range(8):
+            base = t * 8 * depth + y * depth
+            src = data[base:base + depth]
+            row = (bytes(v for b in src for v in (b & 15, b >> 4))
+                   if depth == 4 else src)
+            off = (ty * 8 + y) * w + tx * 8
+            px[off:off + 8] = row
+    write_indexed_png(out, px, w, h, pal_colors(asset, rom, 1 << depth))
+
+
+def build_tiles(asset):
+    """Build a sheet's blob from its editable .png alone."""
+    depth, width, count = tiles_layout(asset)
+    rows = -(-count // width)
+    png = editable(asset)
+    px, _ = read_indexed_png(png, width * 8, rows * 8, 1 << depth)
+    data = bytearray()
+    for i in range(rows * width):
+        tile = bytearray()
+        for y in range(8):
+            off = (i // width * 8 + y) * width * 8 + i % width * 8
+            row = px[off:off + 8]
+            tile += (bytes(row[2 * k] | row[2 * k + 1] << 4 for k in range(4))
+                     if depth == 4 else bytes(row))
+        if i >= count and tile != data[:8 * depth]:
+            sys.exit(f"{png}: the padding cells past tile {count - 1} must "
+                     "stay copies of tile 0")
+        if i < count:
+            data += tile
+    path = built(asset)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(data)
+
+
 
 
 def build_screen(asset):
@@ -373,6 +473,10 @@ def extract():
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_bytes(read_jasc_pal(editable(asset), asset["size"]))
             continue
+        if kind == "tiles":
+            unpack_asset(asset, rom)
+            build_tiles(asset)
+            continue
         start = int(asset["start"], 16) - ROM_BASE
         path = OUT / asset["path"]
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -409,6 +513,8 @@ def unpack_asset(asset, rom=None):
             write_screen_png(tmp, compose_screen(blobs), blobs["pal"])
         elif asset["type"] == "pal":
             write_jasc_pal(tmp, rom[start:start + asset["size"]])
+        elif asset["type"] == "tiles":
+            unpack_tiles(asset, rom, tmp)
         else:
             raw = Path(t) / "sample.bin"
             raw.write_bytes(rom[start:start + asset["size"]])

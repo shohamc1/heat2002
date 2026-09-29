@@ -2855,11 +2855,6 @@
   "size": 32
  },
  {
-  "path": "unknown/data_082B8710.bin",
-  "start": "0x082B8710",
-  "size": 7168
- },
- {
   "path": "unknown/data_0830EC78.bin",
   "start": "0x0830EC78",
   "size": 512
@@ -2868,21 +2863,6 @@
   "path": "unknown/data_08331F88.bin",
   "start": "0x08331F88",
   "size": 64
- },
- {
-  "path": "unknown/data_08331FC8.bin",
-  "start": "0x08331FC8",
-  "size": 3072
- },
- {
-  "path": "unknown/data_0833338C.bin",
-  "start": "0x0833338C",
-  "size": 6208
- },
- {
-  "path": "unknown/data_08335C60.bin",
-  "start": "0x08335C60",
-  "size": 7232
  },
  {
   "path": "unknown/data_08344E68.bin",
