@@ -15,7 +15,7 @@ void ModuleSampleFreqSet(u32 a);
 void sub_0833A4FC(void);
 void ModuleDummyCgbSound(void);
 /* SampleFreqSet (high copy) */
-extern u16 gUnk_0200C7DC[];
+extern u16 gModule_PcmSamplesPerVBlankTable[];
 /* m4aSoundMode (high copy) */
 void ModuleM4aSoundVSyncOff(void);
 
@@ -66,7 +66,7 @@ void ModuleSampleFreqSet(u32 freq)
 
         soundInfo->freq = freq;
         {
-            u16 pcmSamplesPerVBlank = gUnk_0200C7DC[freq - 1];
+            u16 pcmSamplesPerVBlank = gModule_PcmSamplesPerVBlankTable[freq - 1];
 
             soundInfo->pcmSamplesPerVBlank = pcmSamplesPerVBlank;
             soundInfo->pcmDmaPeriod = sub_08344BB8(0xC6 << 3, pcmSamplesPerVBlank);

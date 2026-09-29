@@ -80,7 +80,7 @@ tmc's asset_processor does. The following list covers how, and why:
   would overwrite the built copy with the ROM's bytes whenever the JSON
   changed.
 - Songs link in place: `assets.py song` runs mid2agb and
-  `data/rom_0801D29C.s` `.include`s the result, so a song's track and
+  `data/sound/sounds.s` `.include`s the result, so a song's track and
   `GOTO` pointers resolve where it lands, as pokeemerald's song objects do.
   The voicegroup pointer resolves to a label on the voicegroup's
   `.incbin`. mid2agb's output needs four fixes for that: `label::` becomes
@@ -93,10 +93,10 @@ tmc's asset_processor does. The following list covers how, and why:
 - Without a ROM, `assets.py blank` writes each song's assembly as a
   `.space` of its size, so CI needs none of the tools.
 
-The song table, the music player table and the voicegroups are assembly
-in `data/rom_0801D29C.s`, written with tmc's `song`, `music_player` and
-`voice_*` macros (see "Pointers" below), so they follow a song or sample
-that changes size.
+The voicegroups are assembly in
+`data/sound/voicegroups.s`, written with tmc's `voice_*` macros; the
+song and music player tables are C (`src/sound/tables.c`), so they stay
+put when a song or sample changes size.
 
 Graphics, compressed, `0x0807CA7C`-`0x08339xxx` + three island copies
 (341 KB), established 2026-09-23 (steps 1-2 of
@@ -603,7 +603,8 @@ measure what's left, and what's left.
 
 The pass rewrote 181 tables, in this order:
 
-1. Sound, in `data/rom_0801D29C.s`: the song table (`gSongTable`
+1. Sound, then one fragment (`data/rom_0801D29C.s`, since split into
+   `data/sound/` and `src/sound/tables.c`): the song table (`gSongTable`
    [gUnk_0801DACC]), the music player table (`gMPlayTable` [gUnk_0801DA90])
    and both voicegroups, written with
    tmc's `song`, `music_player` and `voice_*` macros
@@ -648,7 +649,7 @@ aliases, six became labels (the two sound tables, the two boot logos,
 `ldscript.ld`, and 18 lines that nothing used were deleted. The high module's 136 `symbols.ld`
 names for its own code and data went the same way: 21 function names, 110
 labels and five aliases. `gClockTable`, `gMPlayJumpTableTemplate`,
-`gUnk_0200C668` and `gUnk_0200C8DC` moved from fixed `ldscript.ld`
+`gUnk_0200C668` and `gModule_ClockTable` moved from fixed `ldscript.ld`
 addresses to labels.
 
 To check that the tables follow a size change, pad one song and one

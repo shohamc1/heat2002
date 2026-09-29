@@ -381,7 +381,6 @@ SECTIONS
         build/src/data/rom_0801CD08.o(.rodata);
         build/data/rom_0801CF88.o(.text*);
         build/src/data/rom_0801D018.o(.rodata);
-        build/data/rom_0801D1FC.o(.text*);
         build/src/data/rom_0801D230.o(.rodata);
         build/data/sound/voicegroups.o(.text*);
         build/data/sound/programmable_wave_samples.o(.text*);
@@ -615,6 +614,12 @@ SECTIONS
         build/lib/libgcc/high/_negdi2.o(.text);
         build/lib/libgcc/high/_umodsi3.o(.text);
         build/data/rom_08344E68.o(.text*);
+        build/src/sound/module_engine_tables.o(.rodata);
+        build/data/rom_08345390.o(.text*);
+        build/data/sound/module_sound.o(.text*);
+        build/src/sound/module_tables.o(.rodata);
+        build/data/sound/module_songs.o(.text*);
+        build/data/rom_08345730.o(.text*);
         build/src/data/high_module_text.o(.rodata);
         build/data/rom_08345B98.o(.text*);
         build/src/data/career_text.o(.rodata);

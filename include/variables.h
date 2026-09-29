@@ -392,6 +392,8 @@ extern u8 gUnk_0203E1E0[];
 extern u32 gUnk_02039244;
 extern struct WallRec *gModule_Walls;
 extern struct MusicPlayerInfo gModule_BgMusicPlayer;
+extern struct MusicPlayerInfo gUnk_02038FF0; /* gModule_MPlayTable rows 2-3 */
+extern struct MusicPlayerInfo gUnk_02039040;
 extern u16 gUnk_0203917C;
 extern u32 gModule_Camera[];
 extern u16 gUnk_02037618;     /* 0x02037618 */

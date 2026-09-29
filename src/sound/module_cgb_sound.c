@@ -4,11 +4,11 @@
 
 /* MidiKeyToCgbFreq, high 0x0833 module copy: same code as MidiKeyToCgbFreq
  * with the tables read from the module's EWRAM image (delta 0x17FF6E0 from
- * the low copies): gUnk_0200C7F4 = gCgbScaleTable, gUnk_0200C878 =
- * gCgbFreqTable, gUnk_0200C890 = gNoiseTable. */
-extern const u8 gUnk_0200C7F4[];
-extern const s16 gUnk_0200C878[];
-extern const u8 gUnk_0200C890[];
+ * the low copies): gModule_CgbScaleTable = gCgbScaleTable, gModule_CgbFreqTable =
+ * gCgbFreqTable, gModule_NoiseTable = gNoiseTable. */
+extern const u8 gModule_CgbScaleTable[];
+extern const s16 gModule_CgbFreqTable[];
+extern const u8 gModule_NoiseTable[];
 /* CgbOscOff, high 0x0833 module copy: same code as CgbOscOff. */
 /* CgbSound, an older m4a revision than pokeemerald's and tmc's: no NR52
  * channel-status check, no pseudo-echo envelope write, and
@@ -17,7 +17,7 @@ extern const u8 gUnk_0200C890[];
  * This is the high 0x0833 module's copy: same code as CgbSound with
  * the callees and the gCgb3Vol table relocated (the table is the module's
  * EWRAM image at 0x0200C8CC). */
-extern const u8 gUnk_0200C8CC[];
+extern const u8 gModule_Cgb3Vol[];
 
 u32 ModuleMidiKeyToCgbFreq(u8 chanNum, u8 key, u8 fineAdjust)
 {
@@ -30,7 +30,7 @@ u32 ModuleMidiKeyToCgbFreq(u8 chanNum, u8 key, u8 fineAdjust)
                 key = 59;
         }
 
-        return gUnk_0200C890[key];
+        return gModule_NoiseTable[key];
     } else {
         s32 val1;
         s32 val2;
@@ -46,11 +46,11 @@ u32 ModuleMidiKeyToCgbFreq(u8 chanNum, u8 key, u8 fineAdjust)
             }
         }
 
-        val1 = gUnk_0200C7F4[key];
-        val1 = gUnk_0200C878[val1 & 0xF] >> (val1 >> 4);
+        val1 = gModule_CgbScaleTable[key];
+        val1 = gModule_CgbFreqTable[val1 & 0xF] >> (val1 >> 4);
 
-        val2 = gUnk_0200C7F4[key + 1];
-        val2 = gUnk_0200C878[val2 & 0xF] >> (val2 >> 4);
+        val2 = gModule_CgbScaleTable[key + 1];
+        val2 = gModule_CgbFreqTable[val2 & 0xF] >> (val2 >> 4);
 
         return val1 + ((fineAdjust * (val2 - val1)) >> 8) + 2048;
     }
@@ -331,7 +331,7 @@ void ModuleCgbSound(void)
         if (channels->modify & CGB_CHANNEL_MO_VOL) {
             REG_NR51 = (REG_NR51 & ~channels->panMask) | channels->pan;
             if (ch == 3) {
-                *nrx2ptr = gUnk_0200C8CC[channels->envelopeVolume];
+                *nrx2ptr = gModule_Cgb3Vol[channels->envelopeVolume];
                 if (channels->n4 & 0x80) {
                     *nrx0ptr = 0x80;
                     *nrx4ptr = channels->n4;

@@ -464,7 +464,7 @@ The pointer pass on 2026-09-25 (see "Pointers" in
 - 110 data names, such as `gUnk_0200CA74`, became labels in the image's
   data fragments. Each label keeps its `gUnk_<EWRAM address>` name, and a
   blob splits where a label falls inside it. `gUnk_0200C668` and
-  `gUnk_0200C8DC` moved from `ldscript.ld` to labels the same way.
+  `gModule_ClockTable` moved from `ldscript.ld` to labels the same way.
 - `gUnk_02025220` and `gUnk_0202522C` stay in `symbols.ld` for the main
   program's variables. See the next section for the module's names.
 

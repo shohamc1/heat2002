@@ -15,6 +15,10 @@ SHA1 is wrong, no matter how clean the C looks. Never edit `baserom.gba`,
   **1159 functions** originally, split into one fragment per gap between
   decompiled functions. The folder was `asm/` until 2026-09-25. No code is
   left in it: every fragment holds only `.incbin` lines for data assets.
+  `data/sound/` holds the MP2K sound data's fragments (see the sound
+  paragraph below); the Makefile picks both levels up, but the scripts
+  that scan for code glob `data/*.s` at the top level only -- the sound
+  files hold none.
   luvdis found 743 of the functions. The other 409 Thumb functions are reached only
   through a pointer or never called (callbacks, leaf functions, empty `bx lr`
   stubs), so the `bl`-and-`push` seed rule missed them and luvdis left them as
@@ -44,8 +48,17 @@ SHA1 is wrong, no matter how clean the C looks. Never edit `baserom.gba`,
   together.
   Sound builds from editable files, as in zeldaret/tmc: each song from
   `assets/sound/songs/*.mid` (mid2agb, then assembled in place by
-  `data/rom_0801D29C.s`) and each sample from `assets/sound/samples/*.aif`
-  (aif2pcm). `make` builds those tools from `tools/tmc` and runs
+  `data/sound/sounds.s`) and each sample from `assets/sound/samples/*.aif`
+  (aif2pcm, into `data/sound/direct_sound_samples.s`). The rest of the
+  sound range is split as tmc's `data/sound/` is: the voice groups in
+  `voicegroups.s`, the eight CGB waves one `.bin` each in
+  `programmable_wave_samples.s` (the high module's copy, in
+  `data/sound/module_sound.s`, `.incbin`s the same files), and the song
+  and music player tables in C (`src/sound/tables.c`; the module's twins
+  in `src/sound/module_tables.c`, its engine tables in
+  `src/sound/module_engine_tables.c` sharing their initialisers with the
+  main program's through `src/data/m4a_engine_tables.h`).
+  `make` builds those tools from `tools/tmc` and runs
   `scripts/assets.py unpack` to write each editable file from `baserom.gba`
   only when it's missing, so edits survive `make` and `make clean`. Delete a
   file to get the ROM's version back. `assets/*/` is gitignored: never
@@ -444,6 +457,12 @@ placement", with these differences:
 3. Delete the blob's `symbols.ld` line.
 4. In `ldscript.ld`, place the object's `.rodata`, not its `.text`:
    `build/src/data/rom_ADDR.o(.rodata);`.
+
+The sound tables are the one exception to `src/data/`: tmc keeps them in
+`src/sound.c`, next to the m4a code that reads them, so they live in
+`src/sound/tables.c` and `src/sound/module_tables.c` (no `INCBIN_*`, so
+they need no `$(ASSET_STAMP)` dependency). A ROM-data C file elsewhere
+than `src/data/` needs a line here saying why.
 
 Check alignment before you cut. agbcc aligns each array to its element size,
 and a file's `.rodata` takes the alignment of its widest array. The blobs sit

@@ -56,7 +56,7 @@ M4A_OBJS := $(BUILD)/lib/m4a/m4a_1.o $(BUILD)/lib/m4a/m4a_1_high.o
 M4A_HIGH_BASE := 0x08339B78
 M4A_HIGH_EXTERNS := Clear64byte=ModuleClear64byte ClearChain=ModuleClearChain \
 	FadeOutBody=ModuleFadeOutBody MidiKeyToFreq=ModuleMidiKeyToFreq TrkVolPitSet=ModuleTrkVolPitSet \
-	gClockTable=gUnk_0200C8DC gMPlayJumpTableTemplate=gUnk_0200C668
+	gClockTable=gModule_ClockTable gMPlayJumpTableTemplate=gUnk_0200C668
 
 # libgcc, built from tools/agbcc/libgcc as its own Makefile builds it: the
 # division helpers and _call_via_rX are the hand-written lib1thumb.asm, the
@@ -147,7 +147,7 @@ HIGH_LIBGCC_REDEFINES := --redefine-sym __divsi3=sub_08344BB8 \
 	--redefine-sym _call_via_lr=_08344BB4
 # ponytail: every C object depends on every .inc; per-file deps (scaninc)
 # if that rebuild gets slow.
-$(BUILD)/src/%.o: src/%.c $(wildcard include/*.h) $(ASM_INCS) Makefile $(PREPROC)
+$(BUILD)/src/%.o: src/%.c $(wildcard include/*.h src/data/*.h) $(ASM_INCS) Makefile $(PREPROC)
 	@mkdir -p $(@D)
 	$(CPP) $(CPPFLAGS) $< -o $(BUILD)/src/$*.i
 	$(PREPROC) $(TARGET) $(BUILD)/src/$*.i > $(BUILD)/src/$*.pp.i

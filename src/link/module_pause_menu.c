@@ -7,8 +7,6 @@ extern u8 gModule_Player2[];
 extern u8 gModule_Player3[];
 extern u8 gModule_Player4[];
 void ModuleDrawTextCenteredHighlight(u8 *s, u32 a, u32 b);
-extern struct MusicPlayerInfo gUnk_02038FF0;
-extern struct MusicPlayerInfo gUnk_02039040;
 void ModuleReadLinkMenuKeys(void);
 u32 ModuleExchangeLinkInput(void);
 void ModuleM4aSoundVSyncOff(void);
