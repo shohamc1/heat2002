@@ -362,7 +362,8 @@ docstring:
   back (`0x082C0454`, `0x082DAFB4`).
 - `"tiles"`: the four uncompressed sheets as indexed PNGs under
   `assets/graphics/tiles/` — the text layer's 194 glyphs, the race
-  HUD's 96 OBJ tiles, the 112 driver-select car tiles, and
+  HUD's 96 OBJ tiles, the driver-select OBJ font's 224 4bpp tiles
+  (first typed as 112 8bpp car tiles, which drew as stripes), and
   `gTrackBgTilemap`, which is no tilemap but the race HUD's 226-tile
   4bpp BG character sheet (renamed `gRaceHudBgTiles`, its palette
   `gRaceHudBgPalette`; the seven rl streams after it at `0x083378A0`
@@ -385,10 +386,11 @@ docstring:
 - Every `rl`/`lz` entry in the region names its palette in `options`
   now, so `make convert` writes colour PNGs for all of them.
 
-Two palettes stay raw because 29+1 of their colours set the GBA's
-unused bit 15, which no editable colour format holds:
-boot splash 2's palette (`0x0830EC78`) and `gDamageSmokePalettes`
-(`0x08331F88`). Three module blobs also stay raw: `gFontTileEntries`'
+Two palettes set the GBA's unused bit 15, which no `.pal` line holds:
+30 colours of boot splash 2's palette (`0x0830EC78`) and one of
+`gDamageSmokePalettes` (`0x08331F88`). Each is a `"pal"` whose `bit15`
+option lists those colour indices, and `extract` sets the bit on them
+again, so the colours stay editable. Three module blobs stay raw: `gFontTileEntries`'
 copy and the 592-byte string tail (their editable is the C source),
 and the module's own variant of the HUD glyph grid (`0x0835A06A`,
 which replaces part of `gFontGlyphGrid` with big-digit glyphs).

@@ -2845,16 +2845,6 @@
   "size": 3888
  },
  {
-  "path": "unknown/data_0830EC78.bin",
-  "start": "0x0830EC78",
-  "size": 512
- },
- {
-  "path": "unknown/data_08331F88.bin",
-  "start": "0x08331F88",
-  "size": 64
- },
- {
   "path": "unknown/data_08344E68.bin",
   "start": "0x08344E68",
   "size": 640

@@ -250,8 +250,8 @@ $(BUILD)/lib/m4a/m4a_1_high.o: $(BUILD)/lib/m4a/m4a_1.o Makefile
 		$(foreach e,$(M4A_HIGH_EXTERNS),--redefine-sym $(e)) $< $@
 
 # Data assets: scripts/assets.py copies each file that assets/*.json lists
-# out of baserom.gba, and the asm pulls them in with .incbin. A "screen"
-# background builds from its editable .png and a "pal" palette from its
+# out of baserom.gba, and the asm pulls them in with .incbin. A background
+# or tile sheet builds from its editable .png and a palette from its
 # editable .pal the way a song builds from its .mid, so the stamp depends
 # on those files: editing one rebuilds its blobs into the ROM.
 ASSETS_JSON := $(wildcard assets/*.json)
@@ -273,7 +273,7 @@ $(TARGET).code.sha1: baserom.gba scripts/assets.py $(ASSETS_JSON)
 	printf '%s  $(BUILD)/$(TARGET).code.gba\n' \
 		"$$(shasum < $(BUILD)/baserom.code.gba | cut -d' ' -f1)" > $@
 
-# The screen pictures and palette files, like the songs: named explicitly
+# The pictures and palette files, like the songs: named explicitly
 # so make never deletes them as intermediate files, and order-only so one
 # that exists is never out of date. `unpack` writes each from baserom.gba
 # only when it's missing, so your edits survive every build; delete one to

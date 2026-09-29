@@ -57,8 +57,9 @@ SHA1 is wrong, no matter how clean the C looks. Never edit `baserom.gba`,
   (`"tiles"`), and palettes as JASC `.pal` text files under
   `assets/graphics/palettes/` (`"pal"`). Every blob's size is fixed by
   its entry, so an edit that outgrows it fails the build instead of
-  shifting the ROM; the few palettes whose colours set the GBA's unused
-  bit 15 stay raw, recorded in `docs/learnings/parked.md`. A high-module
+  shifting the ROM. A palette whose ROM colours set the GBA's unused
+  bit 15 lists them in its `bit15` option, and the build sets the bit
+  again. A high-module
   blob the ROM also holds in the main program is a `"copy"`: its
   fragment incbins the original's build output, so one edit changes
   both GBAs.

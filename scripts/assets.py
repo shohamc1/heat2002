@@ -10,8 +10,9 @@ data stays out of git and a build needs your own baserom.gba.
 .bin name: they're the GBA's own formats (m4a song bytecode, PCM samples
 with their header, RL/LZ77 graphics streams), not MIDI, AIFF or PNG yet.
 It skips "midi" songs and "aif" samples: the build makes those from their
-editable files. A "screen" it builds from its editable .png the same way
-(see below), after unpacking the picture when it's missing.
+editable files. A "screen", "tiles", "bitmap" or "pal" it builds from
+its editable .png or .pal the same way (see below), after unpacking that
+file when it's missing.
 
 `unpack FILE` writes one song's or one sample's editable file: assets/PATH
 with .mid (agb2mid) or .aif (aif2pcm) in place of .bin. The editable files
@@ -24,7 +25,8 @@ includes in place: mid2agb with the song's options from assets/*.json, so
 the song's pointers resolve where it links. `make` turns a sample's .aif
 back into its .bin with aif2pcm alone.
 
-`list` prints the editable file of every song, sample and screen.
+`list` prints the editable file of every song, sample, picture and
+palette.
 
 A "screen" asset is one full-screen 240x160 background: an editable
 indexed .png (256 colours) that `unpack` writes from the ROM only when
@@ -45,14 +47,17 @@ A "pal" asset is one palette blob as an editable JASC .pal text file
 "Microsoft Palette"): one `R G B` line per colour, in the ROM's order.
 `unpack` writes it from the ROM only when it's missing; `extract` reads
 it back into the BGR555 halfwords the ROM holds. The colour count is
-the blob's, so adding or removing a line fails the build.
+the blob's, so adding or removing a line fails the build. A few ROM
+colours set the GBA's unused bit 15, which no .pal line can hold:
+`options {"bit15": [INDEX, ...]}` lists them, and `extract` sets the bit
+on those colours again, whatever their edited value.
 
 A "tiles" asset is one uncompressed tile sheet as an editable indexed
 .png (assets/graphics/tiles/NAME.png): the tiles in reading order,
 `width` tiles to a row, `bitDepth` 4 or 8, coloured by the pal asset
 its `palette` option names (the .png is only a picture of the sheet;
 the palette itself is edited in that .pal file). A ragged last row is
-padded with copies of tile 0, and the padding cells must stay that way.
+padded with blank tiles (colour 0), and the padding cells must stay blank.
 The tile count is the blob's, so painting new tiles into the padding
 fails the build.
 
@@ -64,8 +69,7 @@ the picture with the original tool's RL algorithm. The stream's slot is
 a fixed size, so a picture that recompresses bigger fails the build;
 the padding after a shorter stream is zero, as the BIOS never reads it.
 The picture's palette is the 512 bytes before the stream and stays a
-separate asset (a "pal", or raw when it uses bit 15): the .png's
-colours are a preview.
+separate "pal" asset: the .png's colours are a preview.
 
 A "copy" asset is one blob of the high module (or island) that the ROM
 also holds in the main program: its data/*.s fragment `.incbin`s the
@@ -81,9 +85,9 @@ zero-fill it in CI. Its `options.sources` list records the chain
 .bin byte for byte. It needs the tools from `make tools`; `make convert`
 builds them and runs this.
 
-The PNGs are greyscale (no palette identified yet): gbagfx maps a color
-index to 255-index both ways, so the round trip is exact without knowing
-the palette. Its width is in 8-pixel tiles and must divide the tile count
+Without a palette the PNGs are greyscale: gbagfx maps a color index to
+255-index both ways, so the round trip is exact without knowing the
+palette. Its width is in 8-pixel tiles and must divide the tile count
 exactly, or the PNG grows a partial row of padding tiles that convert back
 to extra bytes. `options` carries "bitDepth" (4 or 8) and "width" (tiles);
 without them convert picks 4bpp and the widest width up to 16 tiles that
@@ -158,12 +162,12 @@ def built(asset):
 
 
 def find(path):
-    """The song, sample or screen whose editable file is `path`."""
+    """The asset whose editable file is `path`."""
     path = Path(path).resolve()
     for asset in assets():
         if asset.get("type") in EDITABLE and editable(asset) == path:
             return asset
-    sys.exit(f"{path}: no song, sample or screen in assets/*.json has this file")
+    sys.exit(f"{path}: no asset in assets/*.json has this editable file")
 
 
 def screen_part(asset, part):
@@ -269,10 +273,10 @@ def write_indexed_png(path, pixels, w, h, palette):
 
 
 def read_indexed_png(path, w, h, colors):
-    """Read an 8-bit indexed PNG of exactly w*h pixels with `colors`
-    palette entries: (linear indices, BGR555 palette). Only what an editor
-    keeps of an indexed PNG: 8-bit indices, every palette entry, no
-    interlacing."""
+    """Read an indexed PNG of exactly w*h pixels with `colors` palette
+    entries: (linear indices, BGR555 palette). Only what an editor keeps
+    of an indexed PNG: 1, 2, 4 or 8-bit indices (editors save a
+    16-colour picture at 4 bits), every palette entry, no interlacing."""
     data = path.read_bytes()
     if data[:8] != b"\x89PNG\r\n\x1a\n":
         sys.exit(f"{path}: not a PNG")
@@ -292,24 +296,26 @@ def read_indexed_png(path, w, h, colors):
     plte = chunks.get(b"PLTE", b"")
     if (width, height) != (w, h):
         sys.exit(f"{path}: {width}x{height}, want {w}x{h}")
-    if color != 3 or depth != 8:
-        sys.exit(f"{path}: want an 8-bit indexed PNG (save it in indexed\n"
-                 "mode): its palette order is the ROM's")
+    if color != 3 or depth not in (1, 2, 4, 8):
+        sys.exit(f"{path}: want an indexed PNG (save it in indexed mode):\n"
+                 "its palette order is the ROM's")
     if interlace:
         sys.exit(f"{path}: interlaced; save it without interlacing")
     if len(plte) != 3 * colors:
         sys.exit(f"{path}: {len(plte) // 3} palette entries, want {colors}\n"
                  "(an editor trimmed the unused tail; keep every entry)")
     packed = zlib.decompress(b"".join(chunks[b"IDAT"]))
-    pixels, prev = bytearray(w * h), bytearray(w)
+    stride = (w * depth + 7) // 8
+    pixels, prev = bytearray(w * h), bytearray(stride)
     pos = 0
     for y in range(h):
         # Undo the per-row filter, whatever the editor chose (RFC 2083).
-        filter_, row = packed[pos], bytearray(packed[pos + 1:pos + 1 + w])
-        pos += 1 + w
+        # An indexed pixel is at most one byte, so filters work bytewise.
+        filter_, row = packed[pos], bytearray(packed[pos + 1:pos + 1 + stride])
+        pos += 1 + stride
         if filter_ > 4:
             sys.exit(f"{path}: bad PNG row filter {filter_}")
-        for x in range(w):
+        for x in range(stride):
             a, b, c = row[x - 1] if x else 0, prev[x], prev[x - 1] if x else 0
             if filter_ == 1:
                 row[x] = (row[x] + a) & 0xFF
@@ -321,8 +327,12 @@ def read_indexed_png(path, w, h, colors):
                 pa, pb, pc = abs(b - c), abs(a - c), abs(a + b - 2 * c)
                 guess = a if pa <= pb and pa <= pc else (b if pb <= pc else c)
                 row[x] = (row[x] + guess) & 0xFF
-        pixels[y * w:(y + 1) * w] = row
         prev = row
+        if depth < 8:  # unpack the indices, leftmost pixel in the high bits
+            mask = (1 << depth) - 1
+            row = bytes(row[x * depth // 8] >> (8 - depth - x * depth % 8) & mask
+                        for x in range(w))
+        pixels[y * w:(y + 1) * w] = row
     palette = bytearray(2 * colors)
     for i in range(colors):
         r, g, b = plte[3 * i:3 * i + 3]
@@ -453,9 +463,8 @@ def build_bitmap(asset):
 def unpack_bitmap(asset, rom, out):
     """Write a bitmap screen's editable .png: the RL stream decompressed
     to linear mode-4 pixels. The picture's palette is the 512 bytes
-    before the stream, and only previews: a palette that uses the GBA's
-    unused bit 15 has no editable form, so palettes stay separate
-    assets."""
+    before the stream, and only previews: the palette is its own "pal"
+    asset."""
     start = int(asset["start"], 16) - ROM_BASE
     pixels = rl_decompress(rom[start:start + asset["size"]])
     write_indexed_png(out, pixels, SCREEN_W, SCREEN_H, rom[start - 512:start])
@@ -491,16 +500,15 @@ def pal_colors(asset, rom, count):
 
 def unpack_tiles(asset, rom, out):
     """Write a sheet's editable .png: the tiles in reading order, `width`
-    to a row, the padding cells of a ragged last row copies of tile 0."""
+    to a row, the padding cells of a ragged last row blank (colour 0)."""
     depth, width, count = tiles_layout(asset)
     start = int(asset["start"], 16) - ROM_BASE
     data = rom[start:start + asset["size"]]
     rows = -(-count // width)
     w, h = width * 8, rows * 8
     px = bytearray(w * h)
-    for i in range(rows * width):
-        t = i if i < count else 0
-        tx, ty = i % width, i // width
+    for t in range(count):
+        tx, ty = t % width, t // width
         for y in range(8):
             base = t * 8 * depth + y * depth
             src = data[base:base + depth]
@@ -525,9 +533,10 @@ def build_tiles(asset):
             row = px[off:off + 8]
             tile += (bytes(row[2 * k] | row[2 * k + 1] << 4 for k in range(4))
                      if depth == 4 else bytes(row))
-        if i >= count and tile != data[:8 * depth]:
+        if i >= count and any(tile):
             sys.exit(f"{png}: the padding cells past tile {count - 1} must "
-                     "stay copies of tile 0")
+                     "stay blank (colour 0): the ROM has no room for more "
+                     "tiles")
         if i < count:
             data += tile
     path = built(asset)
@@ -592,7 +601,10 @@ def extract():
             unpack_asset(asset, rom)
             path = built(asset)
             path.parent.mkdir(parents=True, exist_ok=True)
-            path.write_bytes(read_jasc_pal(editable(asset), asset["size"]))
+            data = bytearray(read_jasc_pal(editable(asset), asset["size"]))
+            for i in asset.get("options", {}).get("bit15", []):
+                data[2 * i + 1] |= 0x80
+            path.write_bytes(data)
             continue
         if kind == "tiles":
             unpack_asset(asset, rom)
@@ -609,7 +621,7 @@ def extract():
 
 
 def unpack(path):
-    """Write one song's .mid, one sample's .aif or one screen's .png from
+    """Write one asset's editable file (.mid, .aif, .png or .pal) from
     baserom.gba, unless the file already exists: then it's the user's,
     edits and all."""
     unpack_asset(find(path))

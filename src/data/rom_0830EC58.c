@@ -5,4 +5,4 @@
  * requests for championship place 1, and the palette of the second boot
  * splash drawn by ShowBootSplash2 (its gfx is the RLUnComp blob that follows). */
 const u8 gSilverTrophyPalette[] = INCBIN_U8("build/assets/graphics/palettes/silver_trophy.pal.bin");
-const u32 gBootSplash2Palette[] = INCBIN_U32("build/assets/unknown/data_0830EC78.bin");
+const u32 gBootSplash2Palette[] = INCBIN_U32("build/assets/graphics/palettes/boot_splash2.pal.bin");
