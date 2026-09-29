@@ -117,7 +117,7 @@ whole-ROM figure underneath. `scripts/blocks.txt` lists all 1159 block
 addresses. `progress.py` counts one function per block, so the count
 doesn't change when you rename functions, merge them into one file, or move
 files. An extra C function that isn't a block start, such as the
-out-of-line copy of the inline helper `min_0800D5BC`, adds its bytes to the
+out-of-line copy of the inline helper `Min`, adds its bytes to the
 block before it.
 
 ## The loop

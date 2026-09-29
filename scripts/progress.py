@@ -240,7 +240,7 @@ def c_blocks():
 
     Every function in build/src/**/*.o counts, whatever it's called and
     however many share a file. A function that isn't a block start (the
-    out-of-line copy of an inline helper such as min_0800D5BC) adds its
+    out-of-line copy of an inline helper such as Min) adds its
     bytes to the block before it. `is_c` is False for an ASM_FUNC.
     """
     funcs = {}

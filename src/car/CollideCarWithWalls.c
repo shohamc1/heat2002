@@ -6,10 +6,11 @@
  * runs the tile test, then applies the impulse and steering correction.
  *
  * Shapes the retail bytes depend on:
- * - min_0800D5BC/max_0800D5C8 are `inline` min/max helpers written as
+ * - Min/Max are `inline` min/max helpers written as
  *   `r = b; if (a < b) r = a;` (the ternary folds to MIN_EXPR and flips the
- *   compare). Being non-static inline, GCC also emits them out of line
- *   after the function: the 24 bytes at 0x0800D5BC..0x0800D5D4.
+ *   compare). Being non-static inline (GNU89), GCC also emits them out of
+ *   line after the function: the 24 bytes at 0x0800D5BC..0x0800D5D4.
+ *   Nothing in the ROM calls those copies.
  * - `total` is a separate struct, not boxes[4]: its address is a PRE'd
  *   pseudo with no register, so reload keeps it in r7 across the chains.
  * - `d0`/`d1` are long long: the dead high half of each product keeps r5
@@ -79,7 +80,7 @@ u16 *GetWallListAt(s16 x, s16 y);
 void TestCornersVsWalls(struct Corner *a1, struct Box *a2, struct Box *a3, struct Res *a4, u16 *a5, s32 *a6);
 void DummyWallHitHook(s32 a, s32 b);
 
-inline s32 min_0800D5BC(s32 a, s32 b)
+inline s32 Min(s32 a, s32 b)
 {
     s32 r = b;
     if (a < b)
@@ -87,7 +88,7 @@ inline s32 min_0800D5BC(s32 a, s32 b)
     return r;
 }
 
-inline s32 max_0800D5C8(s32 a, s32 b)
+inline s32 Max(s32 a, s32 b)
 {
     s32 r = b;
     if (a > b)
@@ -119,23 +120,23 @@ s32 CollideCarWithWalls(struct Ent *a)
             corner[i].f[3] = a->nextCornerZ[i];
             corner[i].f[4] = a->nextCornerX[i] - a->cornerX[i];
             corner[i].f[5] = a->nextCornerZ[i] - a->cornerZ[i];
-            boxes[i].unk00 = min_0800D5BC(corner[i].f[0], corner[i].f[2]) >> 16;
-            boxes[i].unk08 = min_0800D5BC(corner[i].f[1], corner[i].f[3]) >> 16;
-            boxes[i].unk04 = max_0800D5C8(corner[i].f[0], corner[i].f[2]) >> 16;
-            boxes[i].unk0C = max_0800D5C8(corner[i].f[1], corner[i].f[3]) >> 16;
+            boxes[i].unk00 = Min(corner[i].f[0], corner[i].f[2]) >> 16;
+            boxes[i].unk08 = Min(corner[i].f[1], corner[i].f[3]) >> 16;
+            boxes[i].unk04 = Max(corner[i].f[0], corner[i].f[2]) >> 16;
+            boxes[i].unk0C = Max(corner[i].f[1], corner[i].f[3]) >> 16;
         }
-        total.unk00 = min_0800D5BC(boxes[0].unk00, boxes[1].unk00);
-        total.unk00 = min_0800D5BC(total.unk00, boxes[2].unk00);
-        total.unk00 = min_0800D5BC(total.unk00, boxes[3].unk00);
-        total.unk08 = min_0800D5BC(boxes[0].unk08, boxes[1].unk08);
-        total.unk08 = min_0800D5BC(total.unk08, boxes[2].unk08);
-        total.unk08 = min_0800D5BC(total.unk08, boxes[3].unk08);
-        total.unk04 = max_0800D5C8(boxes[0].unk04, boxes[1].unk04);
-        total.unk04 = max_0800D5C8(total.unk04, boxes[2].unk04);
-        total.unk04 = max_0800D5C8(total.unk04, boxes[3].unk04);
-        total.unk0C = max_0800D5C8(boxes[0].unk0C, boxes[1].unk0C);
-        total.unk0C = max_0800D5C8(total.unk0C, boxes[2].unk0C);
-        total.unk0C = max_0800D5C8(total.unk0C, boxes[3].unk0C);
+        total.unk00 = Min(boxes[0].unk00, boxes[1].unk00);
+        total.unk00 = Min(total.unk00, boxes[2].unk00);
+        total.unk00 = Min(total.unk00, boxes[3].unk00);
+        total.unk08 = Min(boxes[0].unk08, boxes[1].unk08);
+        total.unk08 = Min(total.unk08, boxes[2].unk08);
+        total.unk08 = Min(total.unk08, boxes[3].unk08);
+        total.unk04 = Max(boxes[0].unk04, boxes[1].unk04);
+        total.unk04 = Max(total.unk04, boxes[2].unk04);
+        total.unk04 = Max(total.unk04, boxes[3].unk04);
+        total.unk0C = Max(boxes[0].unk0C, boxes[1].unk0C);
+        total.unk0C = Max(total.unk0C, boxes[2].unk0C);
+        total.unk0C = Max(total.unk0C, boxes[3].unk0C);
         tile = GetWallListAt(corner[0].f[0] >> 16, corner[0].f[1] >> 16);
         best = 99999;
         TestCornersVsWalls(corner, &total, boxes, &res, tile, &best);

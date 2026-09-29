@@ -312,7 +312,7 @@ def _selftest():
     if ELF.exists():
         # The ELF, not the name, gives the address: a helper without a sub_
         # name, and an EWRAM symbol mapped back to its ROM address.
-        assert addr_of("min_0800D5BC") == 0x0800D5BC, addr_of("min_0800D5BC")
+        assert addr_of("Min") == 0x0800D5BC, addr_of("Min")
         assert addr_of("sub_08339AEC") == 0x08339AEC, addr_of("sub_08339AEC")
         assert link_address(0x08340EFC) == 0x0200847C, hex(link_address(0x08340EFC))
         assert link_address(0x08364550) == 0x02000668, hex(link_address(0x08364550))
