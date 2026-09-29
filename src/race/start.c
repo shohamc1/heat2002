@@ -1,6 +1,14 @@
 #include "global.h"
 #include "variables.h"
 
+struct Task
+{
+    /* 0x00 */ u8 pad00[0x0C];
+    /* 0x0C */ u32 callback;
+    /* 0x10 */ u8 pad10[8];
+    /* 0x18 */ s32 timer;
+};
+
 void RaceStartSplashTask(void);
 u32 AllocTask(void);
 void AddTask(u32 a);
@@ -23,8 +31,8 @@ void StartRace(void)
     gRaceStarted = 1;
     task = AllocTask();
     if (task != 0) {
-        *(u32 *)(task + 0x18) = 0;
-        *(u32 *)(task + 0x0C) = (u32)RaceStartSplashTask;
+        ((struct Task *)task)->timer = 0;
+        ((struct Task *)task)->callback = (u32)RaceStartSplashTask;
         AddTask(task);
         gRaceStartTaskPtr = task;
     }
@@ -39,8 +47,8 @@ void InitLinkRaceStart(void)
     if (gGameMode[0] == 3 || gGameMode[0] == 4) {
         task = AllocTask();
         if (task != 0) {
-            *(u32 *)(task + 0x18) = 0;
-            *(u32 *)(task + 0x0C) = (u32)LinkRaceStartSplashTask;
+            ((struct Task *)task)->timer = 0;
+            ((struct Task *)task)->callback = (u32)LinkRaceStartSplashTask;
             AddTask(task);
             gRaceStartTaskPtr = task;
         }

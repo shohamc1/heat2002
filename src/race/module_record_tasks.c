@@ -1,6 +1,12 @@
 #include "global.h"
 #include "functions.h"
 
+struct Task
+{
+    /* 0x00 */ u8 pad00[0x18];
+    /* 0x18 */ s32 timer;
+};
+
 extern u8 gUnk_020277F4[];
 void *ModuleAllocTask(void);
 void ModuleAddTask(u32 r0);
@@ -27,7 +33,7 @@ void ModuleAddTrackRecordTasks(void)
 
 void ModuleDelayTask(u32 task)
 {
-    if (--*(u32 *)(task + 0x18) == 0) {
+    if (--((struct Task *)task)->timer == 0) {
         ModuleRemoveTask(task);
         ModuleFreeTask(task);
     }

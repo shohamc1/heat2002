@@ -1,6 +1,14 @@
 #include "global.h"
 #include "variables.h"
 
+struct Task
+{
+    /* 0x00 */ u8 pad00[0x0C];
+    /* 0x0C */ u32 callback;
+    /* 0x10 */ u8 pad10[8];
+    /* 0x18 */ s32 timer;
+};
+
 void ModuleRaceStartSplashTask(void);
 void *ModuleAllocTask(void);
 void ModuleAddTask(u32);
@@ -25,8 +33,8 @@ void ModuleStartRace(void)
 
     task = (u32)ModuleAllocTask();
     if (task != 0) {
-        *(u32 *)(task + 0x18) = 0;
-        *(u32 *)(task + 0x0C) = (u32)ModuleRaceStartSplashTask;
+        ((struct Task *)task)->timer = 0;
+        ((struct Task *)task)->callback = (u32)ModuleRaceStartSplashTask;
         ModuleAddTask(task);
         gUnk_0203DE24 = task;
     }
@@ -43,8 +51,8 @@ void ModuleInitLinkRaceStart(void)
     if (modeDiff <= 1) {
         task = (u32)ModuleAllocTask();
         if (task != 0) {
-            *(u32 *)(task + 0x18) = 0;
-            *(u32 *)(task + 0x0C) = (u32)ModuleLinkRaceStartSplashTask;
+            ((struct Task *)task)->timer = 0;
+            ((struct Task *)task)->callback = (u32)ModuleLinkRaceStartSplashTask;
             ModuleAddTask(task);
             gUnk_0203DE24 = task;
         }

@@ -2,22 +2,17 @@
 #include "functions.h"
 #include "variables.h"
 
-struct Unk08342BA4
+struct Task
 {
-    u8 filler0[0x0C];
-    u32 field0C;
-    u8 filler10[0x18 - 0x10];
-    u32 field18;
-};
-struct Unk08342C3C
-{
-    u8 pad00[0x18];
-    s32 f18;
+    /* 0x00 */ u8 pad00[0x0C];
+    /* 0x0C */ u32 callback;
+    /* 0x10 */ u8 pad10[8];
+    /* 0x18 */ s32 timer;
 };
 
 void ModuleLapTimeTask(u32 task);
 void *ModuleAllocTask(void);
-void ModuleLapSnapshotTask(struct Unk08342C3C *e);
+void ModuleLapSnapshotTask(struct Task *e);
 void ModuleAddTask(u32 a);
 
 void ModuleLapTimeTask(u32 task)
@@ -26,7 +21,7 @@ void ModuleLapTimeTask(u32 task)
 
     ModuleDrawText(ModuleGetString(MODULE_MSG_LAP_TIME), 9, 5);
     ModuleDrawText(gUnk_0203DE30, 0xD, 5);
-    if (--*(u32 *)(task + 0x18) == 0) {
+    if (--((struct Task *)task)->timer == 0) {
         ModuleDrawText(gUnk_0200D118, 9, 5);
         ModuleRemoveTask(task);
         ModuleFreeTask(task);
@@ -37,7 +32,7 @@ void ModuleDrawLapTime(u32 min, u32 sec, u32 ms)
 {
     u8 *text;
     u32 nul;
-    struct Unk08342BA4 *task;
+    struct Task *task;
 
     text = gUnk_0203DE30;
     nul = 0;
@@ -52,13 +47,13 @@ void ModuleDrawLapTime(u32 min, u32 sec, u32 ms)
     text[8] = nul;
     task = ModuleAllocTask();
     if (task != 0) {
-        task->field18 = 0x5A;
-        task->field0C = (u32)ModuleLapTimeTask;
+        task->timer = 0x5A;
+        task->callback = (u32)ModuleLapTimeTask;
         ModuleAddTask(task);
     }
 }
 
-void ModuleLapSnapshotTask(struct Unk08342C3C *e)
+void ModuleLapSnapshotTask(struct Task *e)
 {
     u8 buf[0x60];
     u8 *p0;
@@ -96,8 +91,8 @@ void ModuleLapSnapshotTask(struct Unk08342C3C *e)
     q8 = buf;
     q8[8] = sub_08344C50(millis, 10) + 0x30;
     buf[9] = nul;
-    e->f18 = e->f18 - 2;
-    if (e->f18 == 0) {
+    e->timer = e->timer - 2;
+    if (e->timer == 0) {
         ModuleRemoveTask((u32)e);
         ModuleFreeTask((u32)e);
     }

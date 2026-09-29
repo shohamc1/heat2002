@@ -3,18 +3,13 @@
 #include "functions.h"
 #include "variables.h"
 
-struct EntityB0A0
+struct Task
 {
-    /* 0x00 */ u8 pad0[0x18];
-    /* 0x18 */ u32 unk18;
-};
-struct EntityB120
-{
-    /* 0x00 */ u8 pad0[0x18];
-    /* 0x18 */ s32 unk18;
+    /* 0x00 */ u8 pad00[0x18];
+    /* 0x18 */ s32 timer; /* LinkRaceStartSplashTask compares it signed (ble) */
 };
 
-void RaceStartSplashTask(struct EntityB0A0 *e)
+void RaceStartSplashTask(struct Task *e)
 {
     u32 *sprite;
     u32 counter;
@@ -22,9 +17,9 @@ void RaceStartSplashTask(struct EntityB0A0 *e)
     u32 attr2;
     u8 frame;
 
-    counter = e->unk18;
-    frame = (u8)e->unk18 % 0x17;
-    e->unk18 = counter + 1;
+    counter = e->timer;
+    frame = (u8)e->timer % 0x17;
+    e->timer = counter + 1;
     sprite = RequestObjTiles16(gSplashSpriteFrames[frame]);
     if (sprite != 0) {
         register u32 attr asm("r6") = 0x80680040;
@@ -35,14 +30,14 @@ void RaceStartSplashTask(struct EntityB0A0 *e)
         if (gIsLinkRace == 0)
             AddOamEntry(attr, attr2);
     }
-    if (e->unk18 == 0x30) {
+    if (e->timer == 0x30) {
         RemoveTask((u32)e);
         FreeTask((u32)e);
     }
     DrawTextCentered(gText_BlankRowRaceMsg, 8, 1);
 }
 
-void LinkRaceStartSplashTask(struct EntityB120 *e)
+void LinkRaceStartSplashTask(struct Task *e)
 {
     u32 *sprite;
     s32 counter;
@@ -50,10 +45,10 @@ void LinkRaceStartSplashTask(struct EntityB120 *e)
     u32 attr2;
     u32 palBits;
 
-    counter = e->unk18;
-    frame = (u8)((u8)e->unk18 % 0x17);
-    e->unk18 = counter + 1;
-    if (e->unk18 > 0x1E) {
+    counter = e->timer;
+    frame = (u8)((u8)e->timer % 0x17);
+    e->timer = counter + 1;
+    if (e->timer > 0x1E) {
         sprite = RequestObjTiles16(gSplashSpriteFrames[frame]);
         if (sprite != 0) {
             register u32 attr asm("r6") = 0x80680040;
@@ -64,7 +59,7 @@ void LinkRaceStartSplashTask(struct EntityB120 *e)
                 AddOamEntry(attr, attr2);
         }
     }
-    if (e->unk18 == 0x4E) {
+    if (e->timer == 0x4E) {
         RemoveTask((u32)e);
         FreeTask((u32)e);
         gRaceStarted = 1;

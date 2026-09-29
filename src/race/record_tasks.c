@@ -1,6 +1,12 @@
 #include "global.h"
 #include "functions.h"
 
+struct Task
+{
+    /* 0x00 */ u8 pad00[0x18];
+    /* 0x18 */ s32 timer;
+};
+
 extern u8 gRecordsTaskParams[];
 void DelayTask(u32 task);
 u32 AllocTask(void);
@@ -25,7 +31,7 @@ void AddTrackRecordTasks(void)
 
 void DelayTask(u32 task)
 {
-    if (--*(u32 *)(task + 0x18) == 0) {
+    if (--((struct Task *)task)->timer == 0) {
         RemoveTask(task);
         FreeTask(task);
     }

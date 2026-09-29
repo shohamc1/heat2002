@@ -3,16 +3,18 @@
 #include "functions.h"
 #include "variables.h"
 
-struct Unk0800B46C
+struct Task
 {
-    u8 pad00[0x18];
-    s32 f18;
+    /* 0x00 */ u8 pad00[0x0C];
+    /* 0x0C */ u32 callback;
+    /* 0x10 */ u8 pad10[8];
+    /* 0x18 */ s32 timer;
 };
 
 void LapTimeTask(u32 task);
 u32 AllocTask(void);
 void AddTask(u32 a);
-void LapSnapshotTask(struct Unk0800B46C *);
+void LapSnapshotTask(struct Task *);
 
 void LapTimeTask(u32 task)
 {
@@ -20,7 +22,7 @@ void LapTimeTask(u32 task)
 
     DrawTextAt(GetString(0x9A), 9, 5);
     DrawTextAt(gLapTimeTextBuf, 0xD, 5);
-    if (--*(u32 *)(task + 0x18) == 0) {
+    if (--((struct Task *)task)->timer == 0) {
         DrawTextAt(gText_BlankRowRaceMsg, 9, 5);
         RemoveTask(task);
         FreeTask(task);
@@ -44,13 +46,13 @@ void DrawLapTime(s32 min, s32 sec, s32 ms)
     text[8] = nul;
     task = AllocTask();
     if (task != 0) {
-        *(u32 *)(task + 0x18) = 0x5A;
-        *(u32 *)(task + 0x0C) = (u32)LapTimeTask;
+        ((struct Task *)task)->timer = 0x5A;
+        ((struct Task *)task)->callback = (u32)LapTimeTask;
         AddTask(task);
     }
 }
 
-void LapSnapshotTask(struct Unk0800B46C *e)
+void LapSnapshotTask(struct Task *e)
 {
     u8 buf[0x60];
     u8 *p0;
@@ -88,8 +90,8 @@ void LapSnapshotTask(struct Unk0800B46C *e)
     q8 = buf;
     q8[8] = sub_080172C8(millis, 10) + 0x30;
     buf[9] = nul;
-    e->f18 = e->f18 - 2;
-    if (e->f18 == 0) {
+    e->timer = e->timer - 2;
+    if (e->timer == 0) {
         RemoveTask((u32)e);
         FreeTask((u32)e);
     }
