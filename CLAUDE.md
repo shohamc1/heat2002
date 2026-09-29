@@ -230,7 +230,7 @@ maps closely onto the source:
   loses the libcall's hard-r0 return and changes register allocation.
 - Before drafting from scratch, check whether an instruction-identical twin
   is already matched: the 0x0834 module duplicates parts of the low region
-  (`sub_08343EA8` is `sub_0800D684` with renamed globals).
+  (`ModuleCollideCars [sub_08343EA8]` is `sub_0800D684` with renamed globals).
 - Never write a ROM address (`0x08xxxxxx`) as a number in C. A shiftable
   build is a project goal, and each raw address means another edit and
   re-match later. For a function, declare it and use its name:
