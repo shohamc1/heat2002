@@ -2,29 +2,31 @@
 #include "variables.h"
 #include "car.h"
 
-extern u32 gUnk_02026E20[];
+// Row 0 of gTireGripDefaults (src/data/race_setup.c) as five u32s, carried
+// in the module image: the second GBA has no cartridge to read it from.
+extern u32 gModule_TireGripDefaults[];
 
 void ModuleSetTireGrip(struct Car *car, u8 carIndex)
 {
     if (gModule_IsLinkRace != 0) {
-        gUnk_0203DCF4 = gUnk_02026E20[0];
-        gUnk_0203D4E0 = gUnk_02026E20[1];
-        gUnk_0203DDE4 = gUnk_02026E20[2];
-        gUnk_0203DDFC = gUnk_02026E20[3];
-        gUnk_0203D4DC = gUnk_02026E20[4];
+        gModule_TireGripSlow = gModule_TireGripDefaults[0];
+        gModule_TireGripFast = gModule_TireGripDefaults[1];
+        gModule_FrontTireGripSlow = gModule_TireGripDefaults[2];
+        gModule_FrontTireGripFast = gModule_TireGripDefaults[3];
+        gModule_TireSlipLimitBase = gModule_TireGripDefaults[4];
         return;
     }
     if (carIndex == 0) {
-        gUnk_0203DCF4 = gUnk_02026E20[0];
-        gUnk_0203D4E0 = gUnk_02026E20[1];
-        gUnk_0203DDE4 = gUnk_02026E20[2];
-        gUnk_0203DDFC = gUnk_02026E20[3];
-        gUnk_0203D4DC = gUnk_02026E20[4];
+        gModule_TireGripSlow = gModule_TireGripDefaults[0];
+        gModule_TireGripFast = gModule_TireGripDefaults[1];
+        gModule_FrontTireGripSlow = gModule_TireGripDefaults[2];
+        gModule_FrontTireGripFast = gModule_TireGripDefaults[3];
+        gModule_TireSlipLimitBase = gModule_TireGripDefaults[4];
         return;
     }
-    gUnk_0203DCF4 = 0xA0;
-    gUnk_0203D4E0 = 0xFF;
-    gUnk_0203DDE4 = 0x80;
-    gUnk_0203DDFC = 0x80;
-    gUnk_0203D4DC = 0xB060;
+    gModule_TireGripSlow = 0xA0;
+    gModule_TireGripFast = 0xFF;
+    gModule_FrontTireGripSlow = 0x80;
+    gModule_FrontTireGripFast = 0x80;
+    gModule_TireSlipLimitBase = 0xB060;
 }

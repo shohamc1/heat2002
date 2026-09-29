@@ -6,11 +6,11 @@
 #include "m4a.h"
 
 extern s32 gTireGrip;
-extern s32 gUnk_0202CAEC;
-extern s32 gUnk_0202CBE4;
-extern s32 gUnk_0202CAD8;
-extern s32 gUnk_0202CBE8;
-extern s32 gUnk_0202CBEC;
+extern s32 gFrontTireGrip;
+extern s32 gCarHeadingAngle;
+extern s32 gYawContactSpeed;
+extern s32 gYawContactVelX;
+extern s32 gYawContactVelZ;
 void AddSkidSmokeTask(u8 a, u8 b);
 
 void UpdateTireForces(struct Car *car, u8 carIndex)
@@ -23,23 +23,23 @@ void UpdateTireForces(struct Car *car, u8 carIndex)
     if (car == gCars && (car->tireWear0 > 0x7D000 || car->tireWear1 > 0x7D000 || car->tireWear2 > 0x7D000 ||
                          car->tireWear3 > 0x7D000)) {
         gTireGrip = 0x40;
-        gUnk_0202CAEC = 0x80;
+        gFrontTireGrip = 0x80;
         gTireSlipLimit = 0x11F40;
-        frontGrip = &gUnk_0202CAEC;
+        frontGrip = &gFrontTireGrip;
     } else {
         speedFactor = -car->speed >> 12;
         if (speedFactor < 0)
             speedFactor = 0;
         if (carIndex != 0 && gIsLinkRace == 0) {
             gTireGrip = gTireGripFast;
-            gUnk_0202CAEC = gFrontTireGripFast;
+            gFrontTireGrip = gFrontTireGripFast;
             gTireSlipLimit = gTireSlipLimitBase;
-            frontGrip = &gUnk_0202CAEC;
+            frontGrip = &gFrontTireGrip;
         } else {
             gTireGrip = (gTireGripSlow * (0xFF - speedFactor) + gTireGripFast * speedFactor) >> 8;
-            gUnk_0202CAEC = (gFrontTireGripSlow * (0xFF - speedFactor) + gFrontTireGripFast * speedFactor) >> 8;
+            gFrontTireGrip = (gFrontTireGripSlow * (0xFF - speedFactor) + gFrontTireGripFast * speedFactor) >> 8;
             gTireSlipLimit = gTireSlipLimitBase;
-            frontGrip = &gUnk_0202CAEC;
+            frontGrip = &gFrontTireGrip;
         }
     }
     if (car == gCars || gIsLinkRace != 0) {
@@ -51,10 +51,10 @@ void UpdateTireForces(struct Car *car, u8 carIndex)
         if (car->onGrass != 0)
             *frontGrip >>= 1;
     }
-    gUnk_0202CBE4 = ((car->heading >> 8) - 0x40) & 0xFF;
-    gUnk_0202CAD8 = contactSpeed = (*(s16 *)&car->yawRate) << 7;
-    gUnk_0202CBE8 = (contactVelX = contactSpeed * -gSinTable[((car->heading >> 8) - 0x40) & 0xFF]) >> 8;
-    gUnk_0202CBEC = (contactVelZ = contactSpeed * gSinTable[(((car->heading >> 8) - 0x40) & 0xFF) + 0x40]) >> 8;
+    gCarHeadingAngle = ((car->heading >> 8) - 0x40) & 0xFF;
+    gYawContactSpeed = contactSpeed = (*(s16 *)&car->yawRate) << 7;
+    gYawContactVelX = (contactVelX = contactSpeed * -gSinTable[((car->heading >> 8) - 0x40) & 0xFF]) >> 8;
+    gYawContactVelZ = (contactVelZ = contactSpeed * gSinTable[(((car->heading >> 8) - 0x40) & 0xFF) + 0x40]) >> 8;
     if (car->zoneGripFlag != 0) {
         gTireContactVelX = car->velX + (contactVelX >> 9);
         gTireContactVelZ = car->velZ + (contactVelZ >> 9);
@@ -62,19 +62,19 @@ void UpdateTireForces(struct Car *car, u8 carIndex)
         gTireContactVelX = car->velX + (contactVelX >> 8);
         gTireContactVelZ = car->velZ + (contactVelZ >> 8);
     }
-    gUnk_0202CBD4 = *frontGrip;
-    gUnk_0202CB0C = gUnk_0202CBE4;
+    gAxleTireGrip = *frontGrip;
+    gAxleCarAngle = gCarHeadingAngle;
     gTireForceAngle = ((((car->steerHeading >> 8) - 0x40) & 0xFF) >> 2) << 2;
     ComputeAxleTireForce(0, car);
     if (car->zoneGripFlag != 0) {
-        gTireContactVelX = car->velX - (gUnk_0202CBE8 >> 1);
-        gTireContactVelZ = car->velZ - (gUnk_0202CBEC >> 1);
+        gTireContactVelX = car->velX - (gYawContactVelX >> 1);
+        gTireContactVelZ = car->velZ - (gYawContactVelZ >> 1);
     } else {
-        gTireContactVelX = car->velX - gUnk_0202CBE8;
-        gTireContactVelZ = car->velZ - gUnk_0202CBEC;
+        gTireContactVelX = car->velX - gYawContactVelX;
+        gTireContactVelZ = car->velZ - gYawContactVelZ;
     }
-    gUnk_0202CBD4 = gTireGrip;
-    gUnk_0202CB0C = (*(angle = &gUnk_0202CBE4) + 0x80) & 0xFF;
+    gAxleTireGrip = gTireGrip;
+    gAxleCarAngle = (*(angle = &gCarHeadingAngle) + 0x80) & 0xFF;
     gTireForceAngle = *angle & 0xFF;
     ComputeAxleTireForce(1, car);
     frontGrip = &car->engineForce;
@@ -143,7 +143,7 @@ void ComputeAxleTireForce(u8 axle, struct Car *car)
         }
     }
 tail:
-    m = slipSpeed * gUnk_0202CBD4;
+    m = slipSpeed * gAxleTireGrip;
     m >>= 8;
     m = -m;
     forcePtr = &car->forceX;
@@ -152,7 +152,7 @@ tail:
     *forcePtr += (sin * m) >> 8;
     armAngle = gTireForceAngle;
     armAngle += 0x40;
-    armAngle -= gUnk_0202CB0C;
+    armAngle -= gAxleCarAngle;
     armAngle &= 0xFF;
     mm = gSinTable[armAngle] * m;
     m = mm >> 8;

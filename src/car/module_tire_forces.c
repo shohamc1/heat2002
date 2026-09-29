@@ -3,12 +3,12 @@
 #include "variables.h"
 #include "car.h"
 
-extern s32 gUnk_0203DD4C;
-extern s32 gUnk_0203DD0C;
-extern s32 gUnk_0203DE04;
-extern s32 gUnk_0203DCF8;
-extern s32 gUnk_0203DE08;
-extern s32 gUnk_0203DE0C;
+extern s32 gModule_TireGrip;
+extern s32 gModule_FrontTireGrip;
+extern s32 gModule_CarHeadingAngle;
+extern s32 gModule_YawContactSpeed;
+extern s32 gModule_YawContactVelX;
+extern s32 gModule_YawContactVelZ;
 void ModuleAddSkidSmokeTask(u8 a, u8 b);
 void ModuleM4aSongNumStart(u16 idx);
 
@@ -17,64 +17,64 @@ void ModuleUpdateTireForces(struct Car *car, u8 carIndex)
     s32 *frontGrip, *angle;
     s32 speedFactor, contactSpeed, contactVelX, contactVelZ;
 
-    gUnk_0203DD38 = carIndex;
+    gModule_CurrentCarIndex = carIndex;
     ModuleSetTireGrip(car, carIndex);
     if (car == gModule_Cars && (car->tireWear0 > 0x7D000 || car->tireWear1 > 0x7D000 || car->tireWear2 > 0x7D000 ||
                                 car->tireWear3 > 0x7D000)) {
-        gUnk_0203DD4C = 0x40;
-        gUnk_0203DD0C = 0x80;
-        gUnk_0203D4E4 = 0x11F40;
-        frontGrip = &gUnk_0203DD0C;
+        gModule_TireGrip = 0x40;
+        gModule_FrontTireGrip = 0x80;
+        gModule_TireSlipLimit = 0x11F40;
+        frontGrip = &gModule_FrontTireGrip;
     } else {
         speedFactor = -car->speed >> 12;
         if (speedFactor < 0)
             speedFactor = 0;
         if (carIndex != 0 && gModule_IsLinkRace == 0) {
-            gUnk_0203DD4C = gUnk_0203D4E0;
-            gUnk_0203DD0C = gUnk_0203DDFC;
-            gUnk_0203D4E4 = gUnk_0203D4DC;
-            frontGrip = &gUnk_0203DD0C;
+            gModule_TireGrip = gModule_TireGripFast;
+            gModule_FrontTireGrip = gModule_FrontTireGripFast;
+            gModule_TireSlipLimit = gModule_TireSlipLimitBase;
+            frontGrip = &gModule_FrontTireGrip;
         } else {
-            gUnk_0203DD4C = (gUnk_0203DCF4 * (0xFF - speedFactor) + gUnk_0203D4E0 * speedFactor) >> 8;
-            gUnk_0203DD0C = (gUnk_0203DDE4 * (0xFF - speedFactor) + gUnk_0203DDFC * speedFactor) >> 8;
-            gUnk_0203D4E4 = gUnk_0203D4DC;
-            frontGrip = &gUnk_0203DD0C;
+            gModule_TireGrip = (gModule_TireGripSlow * (0xFF - speedFactor) + gModule_TireGripFast * speedFactor) >> 8;
+            gModule_FrontTireGrip = (gModule_FrontTireGripSlow * (0xFF - speedFactor) + gModule_FrontTireGripFast * speedFactor) >> 8;
+            gModule_TireSlipLimit = gModule_TireSlipLimitBase;
+            frontGrip = &gModule_FrontTireGrip;
         }
     }
     if (car == gModule_Cars || gModule_IsLinkRace != 0) {
         if (car->onApron != 0) {
-            gUnk_0203DD4C >>= 1;
+            gModule_TireGrip >>= 1;
             *frontGrip <<= 1;
-            gUnk_0203D4E4 >>= 1;
+            gModule_TireSlipLimit >>= 1;
         }
         if (car->onGrass != 0)
             *frontGrip >>= 1;
     }
-    gUnk_0203DE04 = ((car->heading >> 8) - 0x40) & 0xFF;
-    gUnk_0203DCF8 = contactSpeed = (*(s16 *)&car->yawRate) << 7;
-    gUnk_0203DE08 = (contactVelX = contactSpeed * -gModule_SinTable[((car->heading >> 8) - 0x40) & 0xFF]) >> 8;
-    gUnk_0203DE0C = (contactVelZ = contactSpeed * gModule_SinTable[(((car->heading >> 8) - 0x40) & 0xFF) + 0x40]) >> 8;
+    gModule_CarHeadingAngle = ((car->heading >> 8) - 0x40) & 0xFF;
+    gModule_YawContactSpeed = contactSpeed = (*(s16 *)&car->yawRate) << 7;
+    gModule_YawContactVelX = (contactVelX = contactSpeed * -gModule_SinTable[((car->heading >> 8) - 0x40) & 0xFF]) >> 8;
+    gModule_YawContactVelZ = (contactVelZ = contactSpeed * gModule_SinTable[(((car->heading >> 8) - 0x40) & 0xFF) + 0x40]) >> 8;
     if (car->zoneGripFlag != 0) {
-        gUnk_0203D51C = car->velX + (contactVelX >> 9);
-        gUnk_0203D4F4 = car->velZ + (contactVelZ >> 9);
+        gModule_TireContactVelX = car->velX + (contactVelX >> 9);
+        gModule_TireContactVelZ = car->velZ + (contactVelZ >> 9);
     } else {
-        gUnk_0203D51C = car->velX + (contactVelX >> 8);
-        gUnk_0203D4F4 = car->velZ + (contactVelZ >> 8);
+        gModule_TireContactVelX = car->velX + (contactVelX >> 8);
+        gModule_TireContactVelZ = car->velZ + (contactVelZ >> 8);
     }
-    gUnk_0203DDF4 = *frontGrip;
-    gUnk_0203DD2C = gUnk_0203DE04;
-    gUnk_0203DE10 = ((((car->steerHeading >> 8) - 0x40) & 0xFF) >> 2) << 2;
+    gModule_AxleTireGrip = *frontGrip;
+    gModule_AxleCarAngle = gModule_CarHeadingAngle;
+    gModule_TireForceAngle = ((((car->steerHeading >> 8) - 0x40) & 0xFF) >> 2) << 2;
     ModuleComputeAxleTireForce(0, car);
     if (car->zoneGripFlag != 0) {
-        gUnk_0203D51C = car->velX - (gUnk_0203DE08 >> 1);
-        gUnk_0203D4F4 = car->velZ - (gUnk_0203DE0C >> 1);
+        gModule_TireContactVelX = car->velX - (gModule_YawContactVelX >> 1);
+        gModule_TireContactVelZ = car->velZ - (gModule_YawContactVelZ >> 1);
     } else {
-        gUnk_0203D51C = car->velX - gUnk_0203DE08;
-        gUnk_0203D4F4 = car->velZ - gUnk_0203DE0C;
+        gModule_TireContactVelX = car->velX - gModule_YawContactVelX;
+        gModule_TireContactVelZ = car->velZ - gModule_YawContactVelZ;
     }
-    gUnk_0203DDF4 = gUnk_0203DD4C;
-    gUnk_0203DD2C = (*(angle = &gUnk_0203DE04) + 0x80) & 0xFF;
-    gUnk_0203DE10 = *angle & 0xFF;
+    gModule_AxleTireGrip = gModule_TireGrip;
+    gModule_AxleCarAngle = (*(angle = &gModule_CarHeadingAngle) + 0x80) & 0xFF;
+    gModule_TireForceAngle = *angle & 0xFF;
     ModuleComputeAxleTireForce(1, car);
     frontGrip = &car->engineForce;
     if (*frontGrip != 0) {
@@ -100,34 +100,34 @@ void ModuleComputeAxleTireForce(u8 axle, struct Car *car)
     s32 t;
     s32 *forcePtr;
 
-    cos = gModule_SinTable[((gUnk_0203DE10 + 0x40) & 0xFF) + 0x40];
-    sin = gModule_SinTable[(gUnk_0203DE10 + 0x40) & 0xFF];
-    lateralVel = cos * gUnk_0203D51C + sin * gUnk_0203D4F4;
+    cos = gModule_SinTable[((gModule_TireForceAngle + 0x40) & 0xFF) + 0x40];
+    sin = gModule_SinTable[(gModule_TireForceAngle + 0x40) & 0xFF];
+    lateralVel = cos * gModule_TireContactVelX + sin * gModule_TireContactVelZ;
     slipSpeed = lateralVel >> 8;
     if (axle != 0) {
         if (gModule_DamagePitsEnabled != 0) {
             car->tireWear0 += ((lateralVel >> 17) < 0 ? -(lateralVel >> 17) : (lateralVel >> 17));
             car->tireWear1 += ((lateralVel >> 17) < 0 ? -(lateralVel >> 17) : (lateralVel >> 17));
         }
-        if (slipSpeed < -gUnk_0203D4E4) {
-            slipSpeed = -gUnk_0203D4E4 / 2;
-            ModuleAddSkidSmokeTask(gUnk_0203DD38, 2);
+        if (slipSpeed < -gModule_TireSlipLimit) {
+            slipSpeed = -gModule_TireSlipLimit / 2;
+            ModuleAddSkidSmokeTask(gModule_CurrentCarIndex, 2);
             if (gModule_IsLinkRace == 0) {
-                if (gUnk_0203DD38 == 0)
+                if (gModule_CurrentCarIndex == 0)
                     goto e2check;
                 goto tail;
             }
-            if (gUnk_0203DD38 != gModule_LinkPlayerId)
+            if (gModule_CurrentCarIndex != gModule_LinkPlayerId)
                 goto tail;
-        } else if (slipSpeed > gUnk_0203D4E4) {
-            slipSpeed = gUnk_0203D4E4 / 2;
-            ModuleAddSkidSmokeTask(gUnk_0203DD38, 3);
+        } else if (slipSpeed > gModule_TireSlipLimit) {
+            slipSpeed = gModule_TireSlipLimit / 2;
+            ModuleAddSkidSmokeTask(gModule_CurrentCarIndex, 3);
             if (gModule_IsLinkRace == 0) {
-                if (gUnk_0203DD38 == 0)
+                if (gModule_CurrentCarIndex == 0)
                     goto e2check;
                 goto tail;
             }
-            if (gUnk_0203DD38 != gModule_LinkPlayerId)
+            if (gModule_CurrentCarIndex != gModule_LinkPlayerId)
                 goto tail;
         } else {
             goto tail;
@@ -142,16 +142,16 @@ void ModuleComputeAxleTireForce(u8 axle, struct Car *car)
         }
     }
 tail:
-    m = slipSpeed * gUnk_0203DDF4;
+    m = slipSpeed * gModule_AxleTireGrip;
     m >>= 8;
     m = -m;
     forcePtr = &car->forceX;
     *forcePtr += (m * cos) >> 8;
     forcePtr = &car->forceZ;
     *forcePtr += (sin * m) >> 8;
-    armAngle = gUnk_0203DE10;
+    armAngle = gModule_TireForceAngle;
     armAngle += 0x40;
-    armAngle -= gUnk_0203DD2C;
+    armAngle -= gModule_AxleCarAngle;
     armAngle &= 0xFF;
     mm = gModule_SinTable[armAngle] * m;
     m = mm >> 8;

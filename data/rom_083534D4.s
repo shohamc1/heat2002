@@ -163,8 +163,8 @@ gUnk_02026E18:
 	.global gUnk_02026E1C
 gUnk_02026E1C:
 	.incbin "build/assets/unknown/data_0835F89C.bin"
-	.global gUnk_02026E20
-gUnk_02026E20:
+	.global gModule_TireGripDefaults
+gModule_TireGripDefaults:
 	.incbin "build/assets/unknown/data_0835F8A0.bin"
 	.global gUnk_0202708C
 gUnk_0202708C:
