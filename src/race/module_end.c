@@ -15,8 +15,6 @@ struct Task
 extern u8 gModule_DemoMode[];
 extern u8 gModule_OutOfTime[];
 void ModuleDemoEndTask(u32 task);
-void *ModuleAllocTask(void);
-void ModuleAddTask(u32);
 extern u8 gUnk_020390A8;
 void ModuleRaceEndTask(u32 task);
 

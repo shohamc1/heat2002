@@ -1,10 +1,8 @@
 #include "global.h"
 #include "variables.h"
 
-struct WallRec;
-struct Pt;
 extern u32 gUnk_0203DE68;
-extern u8 gUnk_0202AED4[];
+extern struct TrackWalls gModule_TrackWallTables[];
 
 u16 *ModuleGetWallListAt(s32 xIn, s32 yIn)
 {
@@ -20,24 +18,9 @@ u16 *ModuleGetWallListAt(s32 xIn, s32 yIn)
 
 void ModuleLoadTrackWalls(u32 idx)
 {
-    u32 four;
-    u32 eight;
-    u8 *wallTableCopy;
-    u32 twelve;
-    u8 *wallTable;
-    u32 sixteen;
-    u8 **wallTablePtr;
-    wallTablePtr = &wallTable;
-    if (1) {
-        four = 4;
-        eight = 8;
-        twelve = 0xC;
-        sixteen = 0x10;
-        gModule_Walls = (struct WallRec *)*((u32 *)((idx * 20) + ((wallTable = gUnk_0202AED4) + four)));
-        wallTableCopy = wallTable;
-        gModule_WallVertices = (struct Pt *)*((u32 *)((*wallTablePtr) + ((idx * 2) * 10)));
-        gUnk_0203DE68 = *((u32 *)((idx * 20) + (wallTable + eight)));
-    }
-    gUnk_0203DE8C = (u16 *)*((u32 *)((idx * 20) + ((*wallTablePtr) + twelve)));
-    gUnk_0203DE88 = (u16 *)*((u32 *)((idx * 20) + (wallTableCopy + sixteen)));
+    gModule_Walls = gModule_TrackWallTables[idx].walls;
+    gModule_WallVertices = gModule_TrackWallTables[idx].vertices;
+    gUnk_0203DE68 = gModule_TrackWallTables[idx].wallCount;
+    gUnk_0203DE8C = gModule_TrackWallTables[idx].cellLists;
+    gUnk_0203DE88 = gModule_TrackWallTables[idx].cellGrid;
 }

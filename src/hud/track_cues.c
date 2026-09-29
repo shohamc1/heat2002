@@ -3,6 +3,12 @@
 #include "functions.h"
 #include "variables.h"
 
+struct ObjTileCacheEntry
+{
+    u8 pad00[0x10]; /* age, pending, unk05-07, gfx, vramDest */
+    u32 tileIndex;  /* OAM attr2 base: tile number, OR'd with palette/priority at each use */
+};
+
 extern const u8 *const gTrackCueIconGfxList[];
 extern u8 gTrackCueIconPalette[];
 extern u32 gUnk_0836524C[];
@@ -27,7 +33,7 @@ void DrawTrackCueIcon(u8 cueId, u16 angle)
         zero = 0;
         zero2 = 0;
         cmdPtr[0] = 0x68;
-        *(u16 *)((u8 *)cmd + 2) = zero2;
+        cmd[1] = zero2;
         tileEntry = RequestObjTiles16(gTrackCueIconGfxList[cueId & 7]);
         hFlip = (cueId & 8) >> 3;
         vFlip = (cueId & 0x10) >> 4;
@@ -36,7 +42,8 @@ void DrawTrackCueIcon(u8 cueId, u16 angle)
         }
         gUnk_020251F0 = angle;
         attr = ((cmd[1] & 0xFF) | ((cmd[0] & 0x1FF) << 16)) | 0x80000000;
-        attr2 = tileEntry[4] | (RequestObjPalette((u32)gTrackCueIconPalette) << 12);
+        attr2 =
+            ((struct ObjTileCacheEntry *)tileEntry)->tileIndex | (RequestObjPalette((u32)gTrackCueIconPalette) << 12);
         attr |= 0x04000100;
         gUnk_0202523C = zero;
         gUnk_020253C8 = zero;
@@ -57,7 +64,8 @@ void DrawTrackCueIcon(u8 cueId, u16 angle)
             return;
         }
         attr = ((cmd[1] & 0xFF) | ((cmd[0] & 0x1FF) << 16)) | 0x80000000;
-        attr2 = tileEntry[4] | (RequestObjPalette((u32)gTrackCueIconPalette) << 12);
+        attr2 =
+            ((struct ObjTileCacheEntry *)tileEntry)->tileIndex | (RequestObjPalette((u32)gTrackCueIconPalette) << 12);
         if (hFlip != 0) {
             attr |= 0x10000000;
         }

@@ -10,8 +10,6 @@ struct Task
 };
 
 void ModuleRaceStartSplashTask(void);
-void *ModuleAllocTask(void);
-void ModuleAddTask(u32);
 void ModuleLinkRaceStartSplashTask(void);
 
 void ModuleStartRace(void)

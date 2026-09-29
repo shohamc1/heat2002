@@ -109,54 +109,54 @@ extern const u8 gUnk_0830877C[];
 extern const u8 gUnk_0830AB68[];
 extern const u8 gUnk_0830CA10[];
 extern const u8 gUnk_0830E418[];
-extern const u8 gUnk_083CA0C4[];
-extern const u8 gUnk_083CA9DC[];
-extern const u8 gUnk_083CCDDC[];
-extern const u8 gUnk_083CDA98[];
-extern const u8 gUnk_083CEC98[];
-extern const u8 gUnk_083CF7D0[];
-extern const u8 gUnk_083D2430[];
-extern const u8 gUnk_083D32A8[];
-extern const u8 gUnk_083D44A8[];
-extern const u8 gUnk_083D4A28[];
-extern const u8 gUnk_083D5FA8[];
-extern const u8 gUnk_083D669E[];
-extern const u8 gUnk_083D78A0[];
-extern const u8 gUnk_083D7FE0[];
-extern const u8 gUnk_083D9C80[];
-extern const u8 gUnk_083DA5D0[];
-extern const u8 gUnk_083DB7D0[];
-extern const u8 gUnk_083DC1C0[];
-extern const u8 gUnk_083DE920[];
-extern const u8 gUnk_083DF630[];
-extern const u8 gUnk_083E0830[];
-extern const u8 gUnk_083E1290[];
-extern const u8 gUnk_083E3BB0[];
-extern const u8 gUnk_083E4A40[];
-extern const u8 gUnk_083E5C40[];
-extern const u8 gUnk_083E6218[];
-extern const u8 gUnk_083E7918[];
-extern const u8 gUnk_083E81CA[];
-extern const u8 gUnk_083E93CC[];
-extern const u8 gUnk_083E996C[];
-extern const u8 gUnk_083EAFAC[];
-extern const u8 gUnk_083EB890[];
-extern const u8 gUnk_083ECA90[];
-extern const u8 gUnk_083ED040[];
-extern const u8 gUnk_083EE6A0[];
-extern const u8 gUnk_083EEE84[];
-extern const u8 gUnk_083F0084[];
-extern const u8 gUnk_083F0CC4[];
-extern const u8 gUnk_083F3D64[];
-extern const u8 gUnk_083F4D42[];
-extern const u8 gUnk_083F5F44[];
-extern const u8 gUnk_083F64A4[];
-extern const u8 gUnk_083F79C4[];
-extern const u8 gUnk_083F80C4[];
-extern const u8 gUnk_083F92C4[];
-extern const u8 gUnk_083F9B14[];
-extern const u8 gUnk_083FBBF4[];
-extern const u8 gUnk_083FC71C[];
+extern struct Pt gUnk_083CA0C4[];
+extern struct WallRec gUnk_083CA9DC[];
+extern u16 gUnk_083CCDDC[];
+extern u16 gUnk_083CDA98[];
+extern struct Pt gUnk_083CEC98[];
+extern struct WallRec gUnk_083CF7D0[];
+extern u16 gUnk_083D2430[];
+extern u16 gUnk_083D32A8[];
+extern struct Pt gUnk_083D44A8[];
+extern struct WallRec gUnk_083D4A28[];
+extern u16 gUnk_083D5FA8[];
+extern u16 gUnk_083D669E[];
+extern struct Pt gUnk_083D78A0[];
+extern struct WallRec gUnk_083D7FE0[];
+extern u16 gUnk_083D9C80[];
+extern u16 gUnk_083DA5D0[];
+extern struct Pt gUnk_083DB7D0[];
+extern struct WallRec gUnk_083DC1C0[];
+extern u16 gUnk_083DE920[];
+extern u16 gUnk_083DF630[];
+extern struct Pt gUnk_083E0830[];
+extern struct WallRec gUnk_083E1290[];
+extern u16 gUnk_083E3BB0[];
+extern u16 gUnk_083E4A40[];
+extern struct Pt gUnk_083E5C40[];
+extern struct WallRec gUnk_083E6218[];
+extern u16 gUnk_083E7918[];
+extern u16 gUnk_083E81CA[];
+extern struct Pt gUnk_083E93CC[];
+extern struct WallRec gUnk_083E996C[];
+extern u16 gUnk_083EAFAC[];
+extern u16 gUnk_083EB890[];
+extern struct Pt gUnk_083ECA90[];
+extern struct WallRec gUnk_083ED040[];
+extern u16 gUnk_083EE6A0[];
+extern u16 gUnk_083EEE84[];
+extern struct Pt gUnk_083F0084[];
+extern struct WallRec gUnk_083F0CC4[];
+extern u16 gUnk_083F3D64[];
+extern u16 gUnk_083F4D42[];
+extern struct Pt gUnk_083F5F44[];
+extern struct WallRec gUnk_083F64A4[];
+extern u16 gUnk_083F79C4[];
+extern u16 gUnk_083F80C4[];
+extern struct Pt gUnk_083F92C4[];
+extern struct WallRec gUnk_083F9B14[];
+extern u16 gUnk_083FBBF4[];
+extern u16 gUnk_083FC71C[];
 extern const u32 gUnk_083FED48[];
 extern const u32 gUnk_083FED4C[];
 extern const u32 gUnk_083FED50[];
@@ -230,21 +230,21 @@ extern const struct TrackPreviewGfx gTrackPreviewGfx_Track10[];
 extern const struct TrackPreviewGfx gTrackPreviewGfx_Track11[];
 extern const struct TrackPreviewGfx gTrackPreviewGfx_Track9[];
 
-// Its users declare it as struct TrackWalls x[].
-// Stays flat: twelve rows of (table, table, count, table, table) in
-// the lane-data region, but no decompiled code reads it yet.
-const u32 gTrackWallTables[60] = { (u32)gUnk_083CA0C4, (u32)gUnk_083CA9DC, 0x120, (u32)gUnk_083CCDDC, (u32)gUnk_083CDA98,
-                                (u32)gUnk_083D44A8, (u32)gUnk_083D4A28, 0xAC,  (u32)gUnk_083D5FA8, (u32)gUnk_083D669E,
-                                (u32)gUnk_083CEC98, (u32)gUnk_083CF7D0, 0x163, (u32)gUnk_083D2430, (u32)gUnk_083D32A8,
-                                (u32)gUnk_083D78A0, (u32)gUnk_083D7FE0, 0xE5,  (u32)gUnk_083D9C80, (u32)gUnk_083DA5D0,
-                                (u32)gUnk_083DB7D0, (u32)gUnk_083DC1C0, 0x13B, (u32)gUnk_083DE920, (u32)gUnk_083DF630,
-                                (u32)gUnk_083E0830, (u32)gUnk_083E1290, 0x149, (u32)gUnk_083E3BB0, (u32)gUnk_083E4A40,
-                                (u32)gUnk_083E5C40, (u32)gUnk_083E6218, 0xB8,  (u32)gUnk_083E7918, (u32)gUnk_083E81CA,
-                                (u32)gUnk_083E93CC, (u32)gUnk_083E996C, 0xB2,  (u32)gUnk_083EAFAC, (u32)gUnk_083EB890,
-                                (u32)gUnk_083ECA90, (u32)gUnk_083ED040, 0xB3,  (u32)gUnk_083EE6A0, (u32)gUnk_083EEE84,
-                                (u32)gUnk_083F0084, (u32)gUnk_083F0CC4, 0x185, (u32)gUnk_083F3D64, (u32)gUnk_083F4D42,
-                                (u32)gUnk_083F5F44, (u32)gUnk_083F64A4, 0xA9,  (u32)gUnk_083F79C4, (u32)gUnk_083F80C4,
-                                (u32)gUnk_083F92C4, (u32)gUnk_083F9B14, 0x107, (u32)gUnk_083FBBF4, (u32)gUnk_083FC71C };
+// One row per track, read by LoadTrackWalls.
+const struct TrackWalls gTrackWallTables[12] = {
+    { gUnk_083CA0C4, gUnk_083CA9DC, 0x120, gUnk_083CCDDC, gUnk_083CDA98 },
+    { gUnk_083D44A8, gUnk_083D4A28, 0xAC, gUnk_083D5FA8, gUnk_083D669E },
+    { gUnk_083CEC98, gUnk_083CF7D0, 0x163, gUnk_083D2430, gUnk_083D32A8 },
+    { gUnk_083D78A0, gUnk_083D7FE0, 0xE5, gUnk_083D9C80, gUnk_083DA5D0 },
+    { gUnk_083DB7D0, gUnk_083DC1C0, 0x13B, gUnk_083DE920, gUnk_083DF630 },
+    { gUnk_083E0830, gUnk_083E1290, 0x149, gUnk_083E3BB0, gUnk_083E4A40 },
+    { gUnk_083E5C40, gUnk_083E6218, 0xB8, gUnk_083E7918, gUnk_083E81CA },
+    { gUnk_083E93CC, gUnk_083E996C, 0xB2, gUnk_083EAFAC, gUnk_083EB890 },
+    { gUnk_083ECA90, gUnk_083ED040, 0xB3, gUnk_083EE6A0, gUnk_083EEE84 },
+    { gUnk_083F0084, gUnk_083F0CC4, 0x185, gUnk_083F3D64, gUnk_083F4D42 },
+    { gUnk_083F5F44, gUnk_083F64A4, 0xA9, gUnk_083F79C4, gUnk_083F80C4 },
+    { gUnk_083F92C4, gUnk_083F9B14, 0x107, gUnk_083FBBF4, gUnk_083FC71C },
+};
 // No decompiled code reads these labels yet.
 const u8 *const gUnk_083FDA0C[] = { gText_Frontleft, gText_Frontright, gText_Rearleft, gText_Rearright,
                                     gText_Back,      gText_Front,      gText_Left,     gText_Right };

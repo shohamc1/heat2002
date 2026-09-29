@@ -3,13 +3,16 @@
 
 struct Task
 {
-    /* 0x00 */ u8 pad00[0x18];
+    /* 0x00 */ u32 unk00;
+    /* 0x04 */ u32 unk04;
+    /* 0x08 */ u8 pad08[4];
+    /* 0x0C */ u32 callback;
+    /* 0x10 */ u8 pad10[8];
     /* 0x18 */ s32 timer;
+    /* 0x1C */ u32 unk1C;
 };
 
 extern u8 gUnk_020277F4[];
-void *ModuleAllocTask(void);
-void ModuleAddTask(u32 r0);
 void ModuleDelayTask(u32 task);
 
 void ModuleAddTrackRecordTasks(void)
@@ -18,13 +21,13 @@ void ModuleAddTrackRecordTasks(void)
 
     row = 0;
     do {
-        u32 *task = ModuleAllocTask();
+        struct Task *task = ModuleAllocTask();
         if (task != 0) {
-            task[6] = 0x60;
-            task[7] = row * 32;
-            task[0] = gUnk_020277F4[row];
-            task[1] = 0x28;
-            task[3] = (u32)ModuleDelayTask;
+            task->timer = 0x60;
+            task->unk1C = row * 32;
+            task->unk00 = gUnk_020277F4[row];
+            task->unk04 = 0x28;
+            task->callback = (u32)ModuleDelayTask;
             ModuleAddTask((u32)task);
         }
         row++;

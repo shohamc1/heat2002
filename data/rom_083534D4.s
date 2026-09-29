@@ -242,8 +242,8 @@ gUnk_0202780C:
 	.incbin "build/assets/unknown/data_083608F8.bin"
 	.incbin "build/assets/unknown/data_08360C2C.bin"
 	.incbin "build/assets/unknown/data_08361780.bin"
-	.global gUnk_0202AED4
-gUnk_0202AED4:
+	.global gModule_TrackWallTables
+gModule_TrackWallTables:
 	.incbin "build/assets/unknown/data_08363954.bin"
 	.global gModule_CarCollisionNormals
 gModule_CarCollisionNormals:

@@ -19,8 +19,8 @@
 // docs/extern-headers-plan.md).
 struct Track
 {
-    /* 0x00 */ u32 bg3Tiles;      /* 4bpp tiles copied to char block 2 (BG3) */
-    /* 0x04 */ u32 bg2Tiles;      /* 4bpp tiles copied to char block 0 (BG2) */
+    /* 0x00 */ u32 bg3Tiles; /* 4bpp tiles copied to char block 2 (BG3) */
+    /* 0x04 */ u32 bg2Tiles; /* 4bpp tiles copied to char block 0 (BG2) */
     /* 0x08 */ u32 unk08;
     /* 0x0C */ u16 *bg3Metatiles; /* 32 bytes per metatile, 4x4 tilemap entries */
     /* 0x10 */ u16 *bg2Metatiles;
@@ -36,7 +36,7 @@ struct Track
     /* 0x38 */ u32 unk38;
     /* 0x3C */ u32 unk3C;
     /* 0x40 */ u32 unk40;
-    /* 0x44 */ u16 *cellMap; /* RLE-compressed u16 collision cell map */
+    /* 0x44 */ u16 *cellMap;     /* RLE-compressed u16 collision cell map */
     /* 0x48 */ u32 surfaceTable; /* 16 bytes per cell value: surface code per 4x4 sub-position */
     /* 0x4C */ u8 pad4C[0x5C - 0x4C];
     /* 0x5C */ u16 bg3MapLen; /* RLE source word count of bg3Map */
@@ -74,7 +74,7 @@ struct TrackSeg
 struct LaneSeg
 {
     /* 0x00 */ u8 pointA;
-    /* 0x01 */ u8 pointB; /* 0xFF ends the table */
+    /* 0x01 */ u8 pointB;    /* 0xFF ends the table */
     /* 0x02 */ u8 projScale; /* scales the dot product into the 16.16 segment parameter */
     /* 0x03 */ u8 unk3;
     /* 0x04 */ u16 startDist;
@@ -82,6 +82,37 @@ struct LaneSeg
     /* 0x08 */ s32 unk8;
     /* 0x0C */ s32 scaleX;
     /* 0x10 */ s32 scaleZ;
+};
+
+// A track's wall geometry, read by LoadTrackWalls and TestCornersVsWalls.
+struct Pt
+{
+    s32 x;
+    s32 y;
+};
+// One wall segment between two gWallVertices entries (0x20 bytes).
+struct WallRec
+{
+    u16 vertex0;      /* index into gWallVertices */
+    u16 vertex1;      /* 0x02 */
+    s32 normalX;      /* 0x04: 1.15 unit normal of the wall segment */
+    s32 normalZ;      /* 0x08 */
+    s32 minX;         /* 0x0C: segment AABB */
+    s32 maxX;         /* 0x10 */
+    s32 minZ;         /* 0x14 */
+    s32 maxZ;         /* 0x18 */
+    u8 steerAngle;    /* 0x1C: post-hit steer heading, gSinTable index */
+    u8 steerAngleOpp; /* 0x1D: +0x80, used when heading opposes it */
+    u8 unk1E;         /* 0x1E */
+};
+// One row of gTrackWallTables, per track.
+struct TrackWalls
+{
+    /* 0x00 */ struct Pt *vertices;
+    /* 0x04 */ struct WallRec *walls;
+    /* 0x08 */ u32 wallCount;
+    /* 0x0C */ u16 *cellLists; /* 0xFFFF-terminated wall-index lists */
+    /* 0x10 */ u16 *cellGrid;  /* u16[48*48] grid of offsets into cellLists */
 };
 
 // The m4a song/player tables (defined identically in sub_08001208.c and
@@ -170,8 +201,8 @@ struct DriverRosterEntry
 // the preview graphic, and its palette. DrawTrackSelect reads a row.
 struct TrackPreviewGfx
 {
-    /* 0x00 */ const u8 *topLeftGfx;     /* RL streams for the 2x2 preview's */
-    /* 0x04 */ const u8 *topRightGfx;    /* four 64x64 sprites */
+    /* 0x00 */ const u8 *topLeftGfx;  /* RL streams for the 2x2 preview's */
+    /* 0x04 */ const u8 *topRightGfx; /* four 64x64 sprites */
     /* 0x08 */ const u8 *bottomLeftGfx;
     /* 0x0C */ const u8 *bottomRightGfx;
 };

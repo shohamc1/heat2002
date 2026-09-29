@@ -20,8 +20,6 @@ void ModuleDrawPitStopWarning(struct Car *p);
 void ModuleDummyHudHook(struct Car *p);
 void ModuleUpdateTrackCues(struct Car *p);
 extern u8 gModule_TimeLabel[];
-void *ModuleAllocTask(void);
-void ModuleAddTask(u32 r0);
 void ModuleDrawHudLabels(void);
 void ModuleInitCountdown(void);
 void ModuleUpdateRaceHud(void);

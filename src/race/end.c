@@ -9,13 +9,11 @@ struct Task
     /* 0x0C */ u32 callback;
     /* 0x10 */ u8 pad10[8];
     /* 0x18 */ s32 timer;
+    /* 0x1C */ u32 unk1C;
 };
-u32 AllocTask(void);
-void AddTask(u32 a);
 extern u8 gText_DemoMode[];
 extern u8 gText_BlankRow12_3[];
 void DemoEndTask(u32 task);
-void AddTask(u32);
 
 void DemoEndTask(u32 task)
 {
@@ -37,7 +35,7 @@ void DemoEndTask(u32 task)
 
 void AddDemoEndTask(void)
 {
-    u32 task = AllocTask();
+    u32 task = (u32)AllocTask();
 
     if (task != 0) {
         ((struct Task *)task)->timer = 0xE1 << 2;
@@ -77,12 +75,12 @@ void EndRace(void)
 {
     u8 *p = &gRaceEndState;
     if (*p == 0) {
-        u32 *r = (u32 *)AllocTask();
-        if (r != 0) {
-            r[7] = gChallengeScore;
-            r[6] = 0x64;
-            r[3] = (u32)RaceEndTask;
-            AddTask((u32)r);
+        struct Task *task = AllocTask();
+        if (task != 0) {
+            task->unk1C = gChallengeScore;
+            task->timer = 0x64;
+            task->callback = (u32)RaceEndTask;
+            AddTask((u32)task);
         }
         *p = 1;
     }

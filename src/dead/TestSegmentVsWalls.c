@@ -2,20 +2,6 @@
 #include "functions.h"
 #include "variables.h"
 
-struct WallRec {
-    u16 f00;
-    u16 f02;
-    s32 f04;
-    s32 f08;
-    s32 f0C;
-    s32 f10;
-    s32 f14;
-    s32 f18;
-    u8 f1C;
-    u8 f1D;
-    u8 f1E;
-};
-
 struct Box {
     s32 f00;
     s32 f04;
@@ -43,11 +29,6 @@ struct Hit {
     s32 f10;
 };
 
-struct Pt {
-    s32 x;
-    s32 y;
-};
-
 
 
 s32 TestSegmentVsWalls(struct Seg *seg, struct Box *box2, struct Box *box,
@@ -69,21 +50,21 @@ s32 TestSegmentVsWalls(struct Seg *seg, struct Box *box2, struct Box *box,
     pbox = box;
     for (w = wallList; *w != 0xFFFF; w++) {
         wall = &gWalls[*w];
-        pax = gWallVertices[wall->f00].x;
-        pay = gWallVertices[wall->f00].y;
-        pbx = gWallVertices[wall->f02].x;
-        pby = gWallVertices[wall->f02].y;
+        pax = gWallVertices[wall->vertex0].x;
+        pay = gWallVertices[wall->vertex0].y;
+        pbx = gWallVertices[wall->vertex1].x;
+        pby = gWallVertices[wall->vertex1].y;
         dx0 = seg->f10;
-        wf04 = wall->f04;
-        if (dx0 * wf04 + seg->f14 * wall->f08 > 0)
+        wf04 = wall->normalX;
+        if (dx0 * wf04 + seg->f14 * wall->normalZ > 0)
             continue;
-        if (pbox->f00 > wall->f10)
+        if (pbox->f00 > wall->maxX)
             continue;
-        if (pbox->f08 > wall->f18)
+        if (pbox->f08 > wall->maxZ)
             continue;
-        if (pbox->f04 < wall->f0C)
+        if (pbox->f04 < wall->minX)
             continue;
-        if (pbox->f0C < wall->f14)
+        if (pbox->f0C < wall->minZ)
             continue;
         gUnk_02000470 = pax;
         gUnk_02000474 = pay;
@@ -112,7 +93,7 @@ s32 TestSegmentVsWalls(struct Seg *seg, struct Box *box2, struct Box *box,
         if (t2 > lim)
             continue;
         po->f04 = wf04;
-        po->f08 = wall->f08;
+        po->f08 = wall->normalZ;
         return 1;
     }
     return 0;

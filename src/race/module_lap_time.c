@@ -11,9 +11,7 @@ struct Task
 };
 
 void ModuleLapTimeTask(u32 task);
-void *ModuleAllocTask(void);
 void ModuleLapSnapshotTask(struct Task *e);
-void ModuleAddTask(u32 a);
 
 void ModuleLapTimeTask(u32 task)
 {
@@ -100,12 +98,12 @@ void ModuleLapSnapshotTask(struct Task *e)
 
 void ModuleSaveLapTime(void)
 {
-    u32 *task;
+    struct Task *task;
 
-    task = (u32 *)ModuleAllocTask();
+    task = ModuleAllocTask();
     if (task != 0) {
-        task[6] = 0x40;
-        task[3] = (u32)ModuleLapSnapshotTask;
+        task->timer = 0x40;
+        task->callback = (u32)ModuleLapSnapshotTask;
         ModuleAddTask((u32)task);
         gUnk_0203DE28[0] = gModule_LapMin[0];
         gUnk_0203DE3C[0] = gModule_LapSec[0];

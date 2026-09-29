@@ -12,8 +12,6 @@ struct Task
 };
 
 void LapTimeTask(u32 task);
-u32 AllocTask(void);
-void AddTask(u32 a);
 void LapSnapshotTask(struct Task *);
 
 void LapTimeTask(u32 task)
@@ -44,7 +42,7 @@ void DrawLapTime(s32 min, s32 sec, s32 ms)
     text[6] = ms / 100 + 0x30;
     text[7] = ms % 100 / 10 + 0x30;
     text[8] = nul;
-    task = AllocTask();
+    task = (u32)AllocTask();
     if (task != 0) {
         ((struct Task *)task)->timer = 0x5A;
         ((struct Task *)task)->callback = (u32)LapTimeTask;
@@ -99,12 +97,12 @@ void LapSnapshotTask(struct Task *e)
 
 void SaveLapTime(void)
 {
-    u32 *task;
+    struct Task *task;
 
-    task = (u32 *)AllocTask();
+    task = AllocTask();
     if (task != 0) {
-        task[6] = 0x40;
-        task[3] = (u32)LapSnapshotTask;
+        task->timer = 0x40;
+        task->callback = (u32)LapSnapshotTask;
         AddTask((u32)task);
         gUnk_0202CC08[0] = gLapMin[0];
         gUnk_0202CC1C[0] = gLapSec[0];

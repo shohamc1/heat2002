@@ -56,8 +56,6 @@ struct ObjTileCacheEntry
 };
 
 void DraftStreakTask(struct DraftStreak *);
-u32 AllocTask(void);
-void AddTask(u32 a);
 extern const u8 *const gDraftStreakFrames[];
 extern u8 gDraftStreakPalette[];
 u32 WorldToScreen(s32 x, s32 y, s32 *out);
@@ -77,7 +75,7 @@ void AddDraftStreakTask(u8 carIdx, u8 cornerIdx)
 {
     u32 task;
 
-    task = AllocTask();
+    task = (u32)AllocTask();
     if (task != 0) {
         ((struct DraftStreak *)task)->timer = 0;
         ((struct DraftStreak *)task)->carIdx = carIdx;
@@ -147,7 +145,7 @@ void AddSkidSmokeTask(u8 carIdx, u8 cornerIdx)
     u32 cornerX, cornerZ;
     struct Car *car;
 
-    task = AllocTask();
+    task = (u32)AllocTask();
     if (task != 0) {
         car = &gCars[carIdx];
         ((struct SkidSmoke *)task)->timer = 0;
@@ -205,7 +203,7 @@ void AddDamageSmokeTask(s32 *car)
 {
     u32 task;
 
-    task = AllocTask();
+    task = (u32)AllocTask();
     if (task != 0) {
         ((struct DamageSmoke *)task)->timer = 0;
         ((struct DamageSmoke *)task)->riseRate = 2;

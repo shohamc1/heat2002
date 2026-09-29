@@ -2,21 +2,6 @@
 #include "functions.h"
 #include "variables.h"
 
-struct WallRec
-{
-    u16 vertex0;   /* index into gWallVertices */
-    u16 vertex1;   /* 0x02 */
-    s32 normalX;   /* 0x04: 1.15 unit normal of the wall segment */
-    s32 normalZ;   /* 0x08 */
-    s32 minX;      /* 0x0C: segment AABB */
-    s32 maxX;      /* 0x10 */
-    s32 minZ;      /* 0x14 */
-    s32 maxZ;      /* 0x18 */
-    u8 steerAngle;    /* 0x1C: post-hit steer heading, gSinTable index */
-    u8 steerAngleOpp; /* 0x1D: +0x80, used when heading opposes it */
-    u8 unk1E;         /* 0x1E */
-};
-
 struct Box
 {
     s32 minX; /* 0x00: corner-sweep AABB, world units */
@@ -41,20 +26,14 @@ struct Corner
 
 struct Hit
 {
-    u8 pad00[4];   /* 0x00 */
-    s32 normalX;   /* 0x04: wall normal, slightly amplified */
-    s32 normalZ;   /* 0x08 */
-    u8 cornerIndex;    /* 0x0C: which car corner hit */
-    u8 steerAngle;     /* 0x0D */
-    u8 steerAngleOpp;  /* 0x0E */
-    u8 unk0F;          /* 0x0F */
-    s32 unk10;         /* 0x10: winning wall index (write-only) */
-};
-
-struct Pt
-{
-    s32 x;
-    s32 y;
+    u8 pad00[4];      /* 0x00 */
+    s32 normalX;      /* 0x04: wall normal, slightly amplified */
+    s32 normalZ;      /* 0x08 */
+    u8 cornerIndex;   /* 0x0C: which car corner hit */
+    u8 steerAngle;    /* 0x0D */
+    u8 steerAngleOpp; /* 0x0E */
+    u8 unk0F;         /* 0x0F */
+    s32 unk10;        /* 0x10: winning wall index (write-only) */
 };
 
 s32 TestCornersVsWalls(struct Corner *corn, struct Box *box, struct Box *cbox, struct Hit *out, u16 *wallList,

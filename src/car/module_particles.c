@@ -53,12 +53,9 @@ struct ObjTileCacheEntry
     u32 tileIndex;  /* OAM attr2 base: tile number, OR'd with palette/priority at each use */
 };
 
-void *ModuleAllocTask(void);
-void ModuleAddTask(u32);
 void ModuleDraftStreakTask(u32 task);
 u8 ModuleWorldToScreen(s32 x, s32 y, s32 *out);
 void ModuleSkidSmokeTask(u32 e);
-void ModuleAddTask(u32 a);
 void ModuleDamageSmokeTask(struct DamageSmoke *e);
 extern u32 gUnk_0202B370[];
 extern u8 gUnk_0201F370[];
@@ -128,37 +125,26 @@ void ModuleDraftStreakTask(u32 task)
 
 void ModuleAddSkidSmokeTask(u8 carIdx, u8 cornerIdx)
 {
-    u32 *task;
-    u32 car;
-    u32 cornerOff;
-    u32 cornerPtr;
+    struct SkidSmoke *task;
+    struct Car *car;
     u32 cornerX;
     u32 cornerZ;
 
-    task = (u32 *)ModuleAllocTask();
+    task = ModuleAllocTask();
     if (task != 0) {
-        car = (u32)gModule_Cars + carIdx * 400;
-        task[6] = 0;
-        ((struct SkidSmoke *)task)->carIdx = carIdx;
-        task[7] = cornerIdx;
-        task[8] = 2;
-        cornerOff = cornerIdx * 4;
-        cornerPtr = car + 0xC4;
-        cornerPtr += cornerOff;
-        cornerX = *(u32 *)cornerPtr;
-        task[0] = cornerX;
-        task[1] = 0;
-        cornerPtr = car + 0xD4;
-        cornerPtr += cornerOff;
-        cornerZ = *(u32 *)cornerPtr;
-        task[2] = cornerZ;
-        cornerPtr = car + 0xA4;
-        cornerPtr += cornerOff;
-        task[10] = cornerX - *(u32 *)cornerPtr;
-        cornerPtr = car + 0xB4;
-        cornerPtr += cornerOff;
-        task[12] = cornerZ - *(u32 *)cornerPtr;
-        task[3] = (u32)ModuleSkidSmokeTask;
+        car = &gModule_Cars[carIdx];
+        task->timer = 0;
+        task->carIdx = carIdx;
+        task->cornerIdx = cornerIdx;
+        task->unk20 = 2;
+        cornerX = car->nextCornerX[cornerIdx];
+        task->posX = cornerX;
+        task->rise = 0;
+        cornerZ = car->nextCornerZ[cornerIdx];
+        task->posZ = cornerZ;
+        task->velX = cornerX - car->cornerX[cornerIdx];
+        task->velZ = cornerZ - car->cornerZ[cornerIdx];
+        task->callback = (u32)ModuleSkidSmokeTask;
         ModuleAddTask((u32)task);
     }
 }

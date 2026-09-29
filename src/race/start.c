@@ -10,8 +10,6 @@ struct Task
 };
 
 void RaceStartSplashTask(void);
-u32 AllocTask(void);
-void AddTask(u32 a);
 void LinkRaceStartSplashTask(void);
 
 void StartRace(void)
@@ -29,7 +27,7 @@ void StartRace(void)
     if (gGameMode[0] == 0x11)
         gGameMode[0] = 5;
     gRaceStarted = 1;
-    task = AllocTask();
+    task = (u32)AllocTask();
     if (task != 0) {
         ((struct Task *)task)->timer = 0;
         ((struct Task *)task)->callback = (u32)RaceStartSplashTask;
@@ -45,7 +43,7 @@ void InitLinkRaceStart(void)
     gRaceStarted = 0;
     gRaceEndState = 0;
     if (gGameMode[0] == 3 || gGameMode[0] == 4) {
-        task = AllocTask();
+        task = (u32)AllocTask();
         if (task != 0) {
             ((struct Task *)task)->timer = 0;
             ((struct Task *)task)->callback = (u32)LinkRaceStartSplashTask;

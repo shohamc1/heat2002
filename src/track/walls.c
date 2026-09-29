@@ -1,19 +1,8 @@
 #include "global.h"
 #include "variables.h"
 
-struct WallRec;
-struct Pt;
-struct TrackWalls
-{
-    u32 vertices;  /* 0x00: struct Pt[] wall vertices */
-    u32 walls;     /* 0x04: struct WallRec[] records */
-    u32 wallCount; /* 0x08 */
-    u32 cellLists; /* 0x0C: 0xFFFF-terminated wall-index lists */
-    u32 cellGrid;  /* 0x10: u16[48*48] grid of list offsets */
-};
-
 extern u32 gUnk_0202CC48;
-extern struct TrackWalls gTrackWallTables[];
+extern const struct TrackWalls gTrackWallTables[];
 
 u16 *GetWallListAt(s32 x, s32 y)
 {
@@ -27,9 +16,9 @@ u16 *GetWallListAt(s32 x, s32 y)
 
 void LoadTrackWalls(u32 idx)
 {
-    gWalls = (struct WallRec *)gTrackWallTables[idx].walls;
-    gWallVertices = (struct Pt *)gTrackWallTables[idx].vertices;
+    gWalls = gTrackWallTables[idx].walls;
+    gWallVertices = gTrackWallTables[idx].vertices;
     gUnk_0202CC48 = gTrackWallTables[idx].wallCount;
-    gUnk_0202CC6C = (u16 *)gTrackWallTables[idx].cellLists;
-    gUnk_0202CC68 = (u16 *)gTrackWallTables[idx].cellGrid;
+    gUnk_0202CC6C = gTrackWallTables[idx].cellLists;
+    gUnk_0202CC68 = gTrackWallTables[idx].cellGrid;
 }

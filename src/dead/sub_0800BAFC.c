@@ -1,8 +1,6 @@
 #include "global.h"
 #include "variables.h"
 
-u32 AllocTask(void);
-void AddTask(u32 a);
 void sub_0800BA38(void *e);
 
 void sub_0800BAFC(s32 a, s32 b)
