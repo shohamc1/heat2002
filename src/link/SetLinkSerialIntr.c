@@ -4,4 +4,4 @@
 void SerialIntr(void);
 
 void SetLinkSerialIntr(void)
-{ gIntrTable[0] = (u32)SerialIntr; }
+{ gIntrTable[0] = SerialIntr; }

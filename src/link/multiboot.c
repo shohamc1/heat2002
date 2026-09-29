@@ -115,8 +115,8 @@ u32 SendMultibootPayload(void)
         REG_IE |= INTR_FLAG_GAMEPAK;
     REG_DISPSTAT = DISPSTAT_VBLANK_INTR;
     REG_IME = 1;
-    gIntrTable[1] = (u32)MultibootVBlankIntr;
-    gIntrTable[0] = (u32)SioTransferIntr;
+    gIntrTable[1] = MultibootVBlankIntr;
+    gIntrTable[0] = SioTransferIntr;
     REG_DISPCNT &= ~DISPCNT_OBJ_ON;
     for (i = 0; i < 3; i++)
         LZ77UnCompVram(gUnk_083FDA50[i], (void *)(OBJ_VRAM0 + i * 0x200));

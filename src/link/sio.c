@@ -5,15 +5,15 @@
 
 struct CommRegs
 {
-    u8 mode;   /* +0 */
-    u8 state;  /* +1 */
-    u8 retry;  /* +2 */
-    u8 flag;   /* +3 */
-    u32 data;  /* +4 */
-    s32 count; /* +8 */
-    u32 checksum;    /* +0xC */
-    u32 crc;   /* +0x10 */
-    s32 index; /* +0x14 */
+    u8 mode;      /* +0 */
+    u8 state;     /* +1 */
+    u8 retry;     /* +2 */
+    u8 flag;      /* +3 */
+    u32 *data;    /* +4 */
+    s32 count;    /* +8 */
+    u32 checksum; /* +0xC */
+    u32 crc;      /* +0x10 */
+    s32 index;    /* +0x14 */
 };
 
 void SioTransferInit(u32 a1, const u8 *a2)
@@ -98,7 +98,7 @@ u32 SioTransferUpdate(u32 *a1)
             if (gSioTransfer.mode != 1) {
                 if (gSioTransfer.index < chunk) {
                     register s32 *w __asm__("r3") = (s32 *)&gSioTransfer;
-                    u32 *data = (u32 *)gSioTransfer.data;
+                    u32 *data = gSioTransfer.data;
                     {
                         s32 i;
 

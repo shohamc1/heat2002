@@ -179,7 +179,7 @@ extern s32 gUnk_02000468;
 extern u8 gPitServiceSelections[];
 extern u32 gUnk_0200BC4C;
 extern u32 gUnk_0202AF44[][2];
-extern u32 gVBlankCallback[];
+extern IntrFunc gVBlankCallback;
 extern u32 gChallengeTimerMs;
 extern u8 gTrackCueId;
 extern struct CommRegs gSioTransfer;
@@ -220,7 +220,7 @@ extern u16 gUnk_0202F170[];
 extern u8 gUnk_020243E8[];
 extern s32 gAxleCarAngle;
 extern u8 *gUnk_02025230;
-extern u32 gIntrTable[];
+extern IntrFunc gIntrTable[];
 extern u16 gKeysPressed;                     /* 0x020005CC */
 extern u16 gUnk_02000DD0;                    /* 0x02000DD0 */
 extern u8 gBgMusicPlayer[];                  /* 0x02001F20 */
@@ -328,7 +328,7 @@ extern struct ObjTileCacheEntry gModule_ObjTileCache16[];
 extern u8 gModule_TireGripSlow;
 extern s32 gModule_TireForceAngle;
 extern u8 gModule_PaletteFadeActive;
-extern u32 gUnk_020375D0;
+extern IntrFunc gModule_VBlankCallback;
 extern s32 gUnk_020375C8;
 extern u32 gUnk_020392A8;
 extern u8 gModule_RaceEndState;
@@ -355,7 +355,7 @@ extern struct DepthSortedSprite gModule_DepthSortedSprites[];
 extern struct ObjPaletteCacheEntry gModule_ObjPaletteCache[];
 extern u32 gUnk_02039260;
 extern s32 gUnk_020375A4;
-extern u32 gModule_IntrTable[];
+extern IntrFunc gModule_IntrTable[];
 extern u8 gUnk_0203D4E8;
 extern u8 gModule_LinkPlayerId;
 extern u8 gModule_TaskSlotUsed[];

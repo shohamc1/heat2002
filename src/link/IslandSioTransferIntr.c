@@ -6,15 +6,15 @@
 
 struct CommRegs
 {
-    u8 mode;   /* +0 */
-    u8 state;  /* +1 */
-    u8 retry;  /* +2 */
-    u8 flag;   /* +3 */
-    u32 data;  /* +4 */
-    s32 count; /* +8 */
-    u32 checksum;    /* +0xC */
-    u32 crc;   /* +0x10 */
-    s32 index; /* +0x14 */
+    u8 mode;      /* +0 */
+    u8 state;     /* +1 */
+    u8 retry;     /* +2 */
+    u8 flag;      /* +3 */
+    u32 *data;    /* +4 */
+    s32 count;    /* +8 */
+    u32 checksum; /* +0xC */
+    u32 crc;      /* +0x10 */
+    s32 index;    /* +0x14 */
 };
 
 void IslandSioTransferIntr(void)
@@ -38,7 +38,7 @@ void IslandSioTransferIntr(void)
         if (n < 0)
             *sio = 0xFEFEFEFE;
         else if (n <= 0x1FFF)
-            *sio = ((u32 *)p->data)[n];
+            *sio = p->data[n];
         else
             *sio = p->checksum;
         goto Ltail;
@@ -49,7 +49,7 @@ Lneg:
     goto Ltail;
 Lpos:
     if (cnt <= 0x1FFF)
-        ((u32 *)p->data)[cnt] = v;
+        p->data[cnt] = v;
     else
         p->checksum = v;
 Ltail:

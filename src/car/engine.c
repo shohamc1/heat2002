@@ -10,13 +10,13 @@ extern s32 gCornerOffsetZ[]; /* 0x08368280 */
 
 s32 GetGearForSpeed(struct Car *car, s32 speed)
 {
-    u16 *rpmPerSpeedTable;
+    const u16 *rpmPerSpeedTable;
     u16 nextGear;
     s16 gear;
     s32 rpm;
 
     nextGear = 0;
-    rpmPerSpeedTable = (u16 *)car->rpmPerSpeedTable;
+    rpmPerSpeedTable = car->rpmPerSpeedTable;
     do {
         gear = nextGear;
         rpm = (-(s32)rpmPerSpeedTable[gear] * speed) >> 8;

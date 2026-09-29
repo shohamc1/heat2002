@@ -9,12 +9,12 @@ extern s32 gUnk_020277C4[]; /* 0x020277C4 */
 
 u32 ModuleGetGearForSpeed(struct Car *car, s32 speed)
 {
-    u16 *rpmPerSpeedTable;
+    const u16 *rpmPerSpeedTable;
     s16 gear;
     s32 rpm;
 
     gear = 0;
-    rpmPerSpeedTable = (u16 *)car->rpmPerSpeedTable;
+    rpmPerSpeedTable = car->rpmPerSpeedTable;
     do {
         rpm = -(s32)rpmPerSpeedTable[gear] * speed >> 8;
         if ((u32)(rpm - 2001) <= 8998)

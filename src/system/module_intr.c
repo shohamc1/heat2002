@@ -8,46 +8,42 @@ void sub_083397C4(void);
 void ModuleVBlankIntr(void);
 void ModuleDummyIntr(void);
 void ModuleClearVBlankFlag(void);
-/* The high module's _call_via_r0 stub (0x08344B7C): _08344B7C(target) jumps
-   to target with it in r0, the shape the module's own copy of the libgcc
-   stub provides where the low program emits bl _call_via_r0. */
-void _08344B7C(u32 arg0);
 void ModuleAckVBlank(void);
 
 void ModuleInitIntrHandlers(void)
 {
     ModuleClearVBlankFlag();
-    gUnk_020375D0 = (u32)ModuleDummyIntr;
+    gModule_VBlankCallback = ModuleDummyIntr;
     DmaCopy16(3, (u32)sub_083397C4, EWRAM_START + 0x37620, 0x800);
     INTR_VECTOR = (void *)EWRAM_START + 0x37620;
     REG_WAITCNT = WAITCNT_SRAM_4 | WAITCNT_WS0_N_3 | WAITCNT_WS0_S_1 | WAITCNT_PREFETCH_ENABLE;
-    gModule_IntrTable[1] = (u32)ModuleVBlankIntr;
-    gModule_IntrTable[0] = (u32)ModuleDummyIntr;
-    gModule_IntrTable[2] = (u32)ModuleDummyIntr;
-    gModule_IntrTable[3] = (u32)ModuleDummyIntr;
-    gModule_IntrTable[4] = (u32)ModuleDummyIntr;
-    gModule_IntrTable[5] = (u32)ModuleDummyIntr;
-    gModule_IntrTable[6] = (u32)ModuleDummyIntr;
-    gModule_IntrTable[7] = (u32)ModuleDummyIntr;
-    gModule_IntrTable[8] = (u32)ModuleDummyIntr;
-    gModule_IntrTable[9] = (u32)ModuleDummyIntr;
-    gModule_IntrTable[10] = (u32)ModuleDummyIntr;
-    gModule_IntrTable[11] = (u32)ModuleDummyIntr;
-    gModule_IntrTable[12] = (u32)ModuleDummyIntr;
-    gModule_IntrTable[13] = (u32)ModuleDummyIntr;
+    gModule_IntrTable[1] = ModuleVBlankIntr;
+    gModule_IntrTable[0] = ModuleDummyIntr;
+    gModule_IntrTable[2] = ModuleDummyIntr;
+    gModule_IntrTable[3] = ModuleDummyIntr;
+    gModule_IntrTable[4] = ModuleDummyIntr;
+    gModule_IntrTable[5] = ModuleDummyIntr;
+    gModule_IntrTable[6] = ModuleDummyIntr;
+    gModule_IntrTable[7] = ModuleDummyIntr;
+    gModule_IntrTable[8] = ModuleDummyIntr;
+    gModule_IntrTable[9] = ModuleDummyIntr;
+    gModule_IntrTable[10] = ModuleDummyIntr;
+    gModule_IntrTable[11] = ModuleDummyIntr;
+    gModule_IntrTable[12] = ModuleDummyIntr;
+    gModule_IntrTable[13] = ModuleDummyIntr;
 }
 
 void ModuleSetVBlankCallback(void (*callback)(void))
 {
-    gUnk_020375D0 = (u32)callback;
+    gModule_VBlankCallback = callback;
     if (callback == NULL)
-        gUnk_020375D0 = (u32)ModuleDummyIntr;
+        gModule_VBlankCallback = ModuleDummyIntr;
 }
 
 void ModuleVBlankIntr(void)
 {
-    if (gUnk_020375D0 != 0)
-        _08344B7C(gUnk_020375D0);
+    if (gModule_VBlankCallback != NULL)
+        gModule_VBlankCallback();
     ModuleAckVBlank();
 }
 

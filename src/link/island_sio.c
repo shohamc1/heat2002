@@ -4,15 +4,15 @@
 
 struct CommRegs
 {
-    u8 mode;   /* +0 */
-    u8 state;  /* +1 */
-    u8 retry;  /* +2 */
-    u8 flag;   /* +3 */
-    u32 data;  /* +4 */
-    s32 count; /* +8 */
-    u32 checksum;    /* +0xC */
-    u32 crc;   /* +0x10 */
-    s32 index; /* +0x14 */
+    u8 mode;      /* +0 */
+    u8 state;     /* +1 */
+    u8 retry;     /* +2 */
+    u8 flag;      /* +3 */
+    u32 *data;    /* +4 */
+    s32 count;    /* +8 */
+    u32 checksum; /* +0xC */
+    u32 crc;      /* +0x10 */
+    s32 index;    /* +0x14 */
 };
 
 void sub_083647FC(const void *src, void *dest, u32 control);
@@ -100,7 +100,7 @@ u32 IslandSioTransferUpdate(u32 *chunkSize)
             if (gIsland_SioTransfer.mode != 1) {
                 if (gIsland_SioTransfer.index < chunk) {
                     register s32 *w __asm__("r3") = (s32 *)&gIsland_SioTransfer;
-                    u32 *data = (u32 *)gIsland_SioTransfer.data;
+                    u32 *data = gIsland_SioTransfer.data;
                     {
                         s32 i;
 
