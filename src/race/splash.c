@@ -5,7 +5,7 @@
 
 void RaceStartSplashTask(struct Task *e)
 {
-    u32 *sprite;
+    struct ObjTileCacheEntry *sprite;
     u32 counter;
     u32 attr;
     u32 attr2;
@@ -20,7 +20,7 @@ void RaceStartSplashTask(struct Task *e)
         u32 palBits;
 
         palBits = (RequestObjPalette((u32)gSplashSpritePalette) << 12) | 0x400;
-        attr2 = sprite[4] | palBits;
+        attr2 = sprite->tileIndex | palBits;
         if (gIsLinkRace == 0)
             AddOamEntry(attr, attr2);
     }
@@ -33,7 +33,7 @@ void RaceStartSplashTask(struct Task *e)
 
 void LinkRaceStartSplashTask(struct Task *e)
 {
-    u32 *sprite;
+    struct ObjTileCacheEntry *sprite;
     s32 counter;
     u32 frame;
     u32 attr2;
@@ -48,7 +48,7 @@ void LinkRaceStartSplashTask(struct Task *e)
             register u32 attr asm("r6") = 0x80680040;
 
             palBits = (RequestObjPalette((u32)gSplashSpritePalette) << 12) | 0x400;
-            attr2 = sprite[4] | palBits;
+            attr2 = sprite->tileIndex | palBits;
             if (gIsLinkRace == 0)
                 AddOamEntry(attr, attr2);
         }

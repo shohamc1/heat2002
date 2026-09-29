@@ -7,7 +7,7 @@ extern u16 gSpriteTextControlCharCodes[];
 
 void DrawSpriteText(u8 *a, u32 b, u32 c)
 {
-    u32 *p;
+    struct ObjTileCacheEntry *p;
     u32 pal;
     u32 x;
     u16 *q;
@@ -26,7 +26,7 @@ loop:
         p = RequestObjTiles1((u32)((u8 *)gTextLayerTiles + gTextGlyphTileIndices[*q] * TILE_SIZE_4BPP));
         if (p != 0) {
             x = ((b & 0x1FF) << 0x10) | pal;
-            AddOamEntry(x, p[4] | (RequestObjPalette((u32)((u8 *)gFontPalette)) << 12));
+            AddOamEntry(x, p->tileIndex | (RequestObjPalette((u32)((u8 *)gFontPalette)) << 12));
         }
     }
     b += 8;

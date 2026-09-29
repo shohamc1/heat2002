@@ -5,16 +5,6 @@ extern u16 gUnk_0201F550[];
 extern u8 gUnk_0201FB54[];
 extern u8 gUnk_0201F390[];
 
-struct ObjTileCacheEntry
-{
-    /* +0x00 */ u32 age;
-    /* +0x04 */ u8 pending;
-    /* +0x05 */ u8 unk05[3];
-    /* +0x08 */ void *gfx;
-    /* +0x0C */ u32 vramDest;
-    /* +0x10 */ u32 tileIndex;
-};
-
 struct ObjTileCacheEntry *ModuleRequestObjTiles1(void *a);
 u32 ModuleRequestObjPalette(u32 a);
 void ModuleAddOamEntry(u32 a, u32 b);

@@ -49,17 +49,10 @@ struct DamageSmoke
     /* 0x2C */ u8 pad2C[4];
     /* 0x30 */ s32 velZ;
 };
-struct ObjTileCacheEntry
-{
-    u8 pad00[0x10]; /* age, pending, unk05-07, gfx, vramDest */
-    u32 tileIndex;  /* OAM attr2 base: tile number, OR'd with palette/priority at each use */
-};
-
 void DraftStreakTask(struct DraftStreak *);
 extern const u8 *const gDraftStreakFrames[];
 extern u8 gDraftStreakPalette[];
 u32 WorldToScreen(s32 x, s32 y, s32 *out);
-u32 *RequestObjTiles1Compressed(u32 a);
 void SkidSmokeTask(struct SkidSmoke *);
 extern const u8 *const gSkidSmokeFrames[]; /* 0x083FF60C */
 extern u8 gSkidSmokePalette[];             /* 0x08330D18 */
@@ -101,7 +94,7 @@ void DraftStreakTask(struct DraftStreak *e)
     s32 rel;
     s32 dx;
     s32 dy;
-    u32 *sprite;
+    struct ObjTileCacheEntry *sprite;
     u32 attr;
     u32 palBits;
     u32 attr2;
@@ -126,7 +119,7 @@ void DraftStreakTask(struct DraftStreak *e)
             if (sprite != 0) {
                 attr = (pos[1] & 0xFF) | ((pos[0] & 0x1FF) << 0x10);
                 palBits = (RequestObjPalette((u32)gDraftStreakPalette) << 12) | 0x800;
-                attr2 = sprite[4] | palBits;
+                attr2 = sprite->tileIndex | palBits;
                 AddOamEntry(attr, attr2);
             }
         }
@@ -167,7 +160,7 @@ void AddSkidSmokeTask(u8 carIdx, u8 cornerIdx)
 void SkidSmokeTask(struct SkidSmoke *e)
 {
     s32 pos[2];
-    u32 *sprite;
+    struct ObjTileCacheEntry *sprite;
     u32 attr;
     u32 palBits;
     u32 attr2;
@@ -184,7 +177,7 @@ void SkidSmokeTask(struct SkidSmoke *e)
             if (sprite != 0) {
                 attr = (pos[1] & 0xFF) | ((pos[0] & 0x1FF) << 0x10);
                 palBits = (RequestObjPalette((u32)gSkidSmokePalette) << 12) | 0x800;
-                attr2 = sprite[4] | palBits;
+                attr2 = sprite->tileIndex | palBits;
                 AddOamEntry(attr, attr2);
             }
         }

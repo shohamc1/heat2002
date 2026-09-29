@@ -2,11 +2,6 @@
 #include "variables.h"
 #include "car.h"
 
-struct ObjTileCacheEntry
-{
-    u8 pad00[0x10]; /* age, pending, unk05-07, gfx, vramDest */
-    u32 tileIndex;
-};
 extern u32 *gUnk_02026E14[];
 extern u32 *gUnk_02026E18[];
 extern u32 *gUnk_0202773C[];
@@ -56,8 +51,8 @@ void ModuleDrawCar(struct Car *car, u8 idx)
         }
         t = ModuleRequestObjTiles16(gUnk_02026E18[car->driverId][k]);
         if (t != NULL) {
-            ModuleAddDepthSortedSprite((pos[1] & 0xFF) | (((pos[0] + 0x10) & 0x1FF) << 16) | 0x80000000, t->tileIndex | t5,
-                                       y + 0x40);
+            ModuleAddDepthSortedSprite((pos[1] & 0xFF) | (((pos[0] + 0x10) & 0x1FF) << 16) | 0x80000000,
+                                       t->tileIndex | t5, y + 0x40);
         }
     } else {
         u8 *p162;

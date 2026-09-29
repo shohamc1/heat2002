@@ -3,12 +3,6 @@
 #include "functions.h"
 #include "variables.h"
 
-struct ObjTileCacheEntry
-{
-    u8 pad00[0x10]; /* age, pending, unk05-07, gfx, vramDest */
-    u32 tileIndex;
-};
-
 struct Car
 {
     s32 posX;
@@ -31,8 +25,6 @@ extern const u32 *const gDriverNumberFrameLists[];
 extern u8 gDriverNumberPalette[];
 
 u32 AddDepthSortedSprite(u32 a, u32 b, u16 c);
-struct ObjTileCacheEntry *RequestObjTiles2(u32 a);
-struct ObjTileCacheEntry *RequestObjTiles8(u32 a);
 u32 WorldToScreen(s32 x, s32 y, s32 *out);
 
 void DrawCar(struct Car *car, u8 idx)

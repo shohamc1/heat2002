@@ -2,16 +2,6 @@
 #include "functions.h"
 #include "variables.h"
 
-struct ObjTileCacheEntry
-{
-    u32 age;
-    u8 pending;
-    u8 unk05[3];
-    u32 gfx;
-    u32 vramDest;
-    u32 tileIndex;
-};
-
 struct ObjTileCacheEntry *ModuleRequestObjTiles4(u32 a);
 u32 ModuleRequestObjPalette(u32 a);
 void ModuleAddOamEntry(u32 a, u32 b);

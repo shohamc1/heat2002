@@ -3,23 +3,23 @@
 
 u8 ModuleRequestObjPalette(u32 palette)
 {
-    u32 *p;
+    struct ObjPaletteCacheEntry *p;
     u32 i;
 
-    p = gUnk_0203C270;
-    for (i = 0; i != 0x10; i++, p += 3) {
-        if (p[1] == palette) {
-            *(u8 *)p = 1;
-            *((u8 *)p + 1) = 1;
+    p = gModule_ObjPaletteCache;
+    for (i = 0; i != 0x10; i++, p++) {
+        if (p->palette == palette) {
+            p->age = 1;
+            p->pending = 1;
             return i;
         }
     }
-    p = gUnk_0203C270;
-    for (i = 0; i != 0x10; i++, p += 3) {
-        if (*(u8 *)p == 0) {
-            *(u8 *)p = 1;
-            *((u8 *)p + 1) = 1;
-            p[1] = palette;
+    p = gModule_ObjPaletteCache;
+    for (i = 0; i != 0x10; i++, p++) {
+        if (p->age == 0) {
+            p->age = 1;
+            p->pending = 1;
+            p->palette = palette;
             return i;
         }
     }

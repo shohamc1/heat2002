@@ -2,15 +2,6 @@
 #include "variables.h"
 #include "functions.h"
 
-struct ObjTileCacheEntry
-{
-    u32 age;
-    u8 pending;
-    u8 unk05[3];
-    void *gfx;
-    u32 vramDest;
-    u32 tileIndex;
-};
 struct Car
 {
     u8 pad00[0x8C];
@@ -31,7 +22,7 @@ u8 ModuleCarNeedsPit(void);
 void ModuleDrawTextCenteredHighlight(const u8 *a, u32 b, u32 c);
 extern u8 gUnk_0203B6D8;
 extern u8 gUnk_02024F70[];
-u32 ModuleRequestObjTiles4(u32 r0);
+struct ObjTileCacheEntry *ModuleRequestObjTiles4(u32 r0);
 u32 ModuleRequestObjPalette(u32 r0);
 void ModuleAddOamEntry(u32 r0, u32 r1);
 void ModuleM4aSongNumStart(u32 r0);
@@ -81,7 +72,7 @@ void ModuleDummyHudHook(void)
 void ModuleDrawLowFuelWarning(s32 fuel)
 {
     u16 pos[2];
-    u32 entry;
+    struct ObjTileCacheEntry *entry;
     u32 attr;
     u32 tileAttr;
     u16 *dest;
@@ -97,7 +88,7 @@ void ModuleDrawLowFuelWarning(s32 fuel)
         attr = pos[1] & 0xFF;
         attr |= (pos[0] & 0x1FF) << 16;
         attr |= 0x40000000;
-        tileAttr = ((struct ObjTileCacheEntry *)entry)->tileIndex | (((u32)ModuleRequestObjPalette((u32)gUnk_02024F50) << 24) >> 12);
+        tileAttr = entry->tileIndex | (((u32)ModuleRequestObjPalette((u32)gUnk_02024F50) << 24) >> 12);
         ModuleAddOamEntry(attr | 0x02000100, tileAttr);
     }
     gUnk_0203B828 = ((fuel >> 16) + 0xBE) & 0xFF;

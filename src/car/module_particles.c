@@ -47,19 +47,13 @@ struct DamageSmoke
     /* 0x2C */ u8 pad2C[4];
     /* 0x30 */ s32 velZ;
 };
-struct ObjTileCacheEntry
-{
-    u8 pad00[0x10]; /* age, pending, unk05-07, gfx, vramDest */
-    u32 tileIndex;  /* OAM attr2 base: tile number, OR'd with palette/priority at each use */
-};
-
 void ModuleDraftStreakTask(struct DraftStreak *task);
 u8 ModuleWorldToScreen(s32 x, s32 y, s32 *out);
 void ModuleSkidSmokeTask(struct SkidSmoke *e);
 void ModuleDamageSmokeTask(struct DamageSmoke *e);
 extern u32 gUnk_0202B370[];
 extern u8 gUnk_0201F370[];
-u32 *ModuleRequestObjTiles16(u32 a);
+struct ObjTileCacheEntry *ModuleRequestObjTiles16(u32 a);
 u32 ModuleGetTrackTileType(s32 x, s32 y);
 s32 ModuleRequestObjPalette(u32 a);
 u32 ModuleAddOamEntry(u32 a, u32 b);

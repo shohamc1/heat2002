@@ -244,4 +244,30 @@ struct Task
     /* 0x40 */ u8 pad40[4];
 };
 
+// One slot of an OBJ tile cache (gObjTileCache1 to gObjTileCache64, by
+// tile count). RequestObjTiles* hands a slot out for a graphics pointer,
+// UploadPendingGfx copies it to vramDest, and AgeGfxCaches frees it when
+// age reaches zero.
+struct ObjTileCacheEntry
+{
+    /* 0x00 */ u32 age;    /* set to 1 on each request, counted down each frame */
+    /* 0x04 */ u8 pending; /* 1: copy to VRAM, 3: RL-decompress (1-tile cache) */
+    /* 0x05 */ u8 unk05;   /* RequestObjTiles64's flag argument */
+    /* 0x06 */ u8 unk06;
+    /* 0x07 */ u8 unk07;
+    /* 0x08 */ u32 gfx; /* source graphics; 0xFFFF when the slot is free */
+    /* 0x0C */ u32 vramDest;
+    /* 0x10 */ u32 tileIndex; /* OAM attr2 base: tile number, OR'd with palette/priority at each use */
+};
+
+// One slot of gObjPaletteCache: an OBJ palette bank and what it holds.
+struct ObjPaletteCacheEntry
+{
+    /* 0x00 */ u8 age;
+    /* 0x01 */ u8 pending;
+    /* 0x02 */ u8 pad02[2];
+    /* 0x04 */ u32 palette; /* source palette; 0xFFFF when the slot is free */
+    /* 0x08 */ u32 palDest;
+};
+
 #endif // GUARD_STRUCTS_H
