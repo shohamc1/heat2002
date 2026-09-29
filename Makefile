@@ -250,11 +250,15 @@ $(BUILD)/lib/m4a/m4a_1_high.o: $(BUILD)/lib/m4a/m4a_1.o Makefile
 		$(foreach e,$(M4A_HIGH_EXTERNS),--redefine-sym $(e)) $< $@
 
 # Data assets: scripts/assets.py copies each file that assets/*.json lists
-# out of baserom.gba, and the asm pulls them in with .incbin.
+# out of baserom.gba, and the asm pulls them in with .incbin. A "screen"
+# background builds from its editable .png the way a song builds from its
+# .mid, so the stamp depends on the pictures: editing one rebuilds its
+# blobs into the ROM.
 ASSETS_JSON := $(wildcard assets/*.json)
 ifneq ($(wildcard baserom.gba),)
+SCREEN_PNGS := $(filter %.png,$(shell python3 scripts/assets.py list))
 ASSET_STAMP := $(BUILD)/assets/.extracted
-$(ASSET_STAMP): baserom.gba scripts/assets.py $(ASSETS_JSON)
+$(ASSET_STAMP): baserom.gba scripts/assets.py $(ASSETS_JSON) $(SCREEN_PNGS)
 	python3 scripts/assets.py extract
 	touch $@
 
@@ -266,6 +270,13 @@ $(TARGET).code.sha1: baserom.gba scripts/assets.py $(ASSETS_JSON)
 	python3 scripts/assets.py mask baserom.gba $(BUILD)/baserom.code.gba
 	printf '%s  $(BUILD)/$(TARGET).code.gba\n' \
 		"$$(shasum < $(BUILD)/baserom.code.gba | cut -d' ' -f1)" > $@
+
+# The screen pictures, like the songs: named explicitly so make never
+# deletes them as intermediate files, and order-only so one that exists is
+# never out of date. `unpack` writes each from baserom.gba only when it's
+# missing, so your edits survive every build; delete one to get the ROM's.
+$(SCREEN_PNGS): | baserom.gba
+	python3 scripts/assets.py unpack $@
 else
 # No baserom.gba (CI): every asset is zero fill of its listed size, so the
 # code still links at its real addresses. Only check-code can pass.

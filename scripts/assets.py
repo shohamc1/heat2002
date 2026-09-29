@@ -10,7 +10,8 @@ data stays out of git and a build needs your own baserom.gba.
 .bin name: they're the GBA's own formats (m4a song bytecode, PCM samples
 with their header, RL/LZ77 graphics streams), not MIDI, AIFF or PNG yet.
 It skips "midi" songs and "aif" samples: the build makes those from their
-editable files.
+editable files. A "screen" it builds from its editable .png the same way
+(see below), after unpacking the picture when it's missing.
 
 `unpack FILE` writes one song's or one sample's editable file: assets/PATH
 with .mid (agb2mid) or .aif (aif2pcm) in place of .bin. The editable files
@@ -23,7 +24,21 @@ includes in place: mid2agb with the song's options from assets/*.json, so
 the song's pointers resolve where it links. `make` turns a sample's .aif
 back into its .bin with aif2pcm alone.
 
-`list` prints the editable file of every song and sample.
+`list` prints the editable file of every song, sample and screen.
+
+A "screen" asset is one full-screen 240x160 background: an editable
+indexed .png (256 colours) that `unpack` writes from the ROM only when
+it's missing. `extract` builds the ROM's four blobs from the .png alone,
+in the layout the ROM stores them: the 256-colour palette, the 15x10
+metatile map, the metatile table (four tile indices per 2x2 metatile,
+top-left, top-right, bottom-left, bottom-right) and the 8bpp tiles. The
+converter is the original tool's algorithm: scan the 2x2 metatiles row
+by row, give each new metatile the next metatile index and each new 8x8
+tile within it the next tile index, with no flips and no palette bits.
+The PNG must stay indexed with all 256 palette entries: its palette
+order is the ROM's. `options` carries the screen's metatile and tile
+counts, which fix the blob sizes, so an edit that adds unique metatiles
+or tiles no longer fits and fails the build.
 
 `convert` writes an editable .png next to each "rl"/"lz" graphics .bin
 (gbagfx), then converts it back and checks that the result matches the
@@ -61,9 +76,11 @@ Usage:
 """
 
 import json
+import struct
 import subprocess
 import sys
 import tempfile
+import zlib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -73,7 +90,9 @@ OUT = ROOT / "build" / "assets"
 EDIT = ROOT / "assets"
 TOOLS = ROOT / "tools" / "bin"
 # Asset types the build makes from an editable file, and that file's suffix.
-EDITABLE = {"midi": ".mid", "aif": ".aif"}
+EDITABLE = {"midi": ".mid", "aif": ".aif", "screen": ".png"}
+# Every "screen" is a 240x160 background: 15x10 metatiles of 2x2 8x8 tiles.
+SCREEN_W, SCREEN_H = 240, 160
 
 
 def assets():
@@ -98,12 +117,189 @@ def built(asset):
 
 
 def find(path):
-    """The song or sample whose editable file is `path`."""
+    """The song, sample or screen whose editable file is `path`."""
     path = Path(path).resolve()
     for asset in assets():
         if asset.get("type") in EDITABLE and editable(asset) == path:
             return asset
-    sys.exit(f"{path}: no song or sample in assets/*.json has this file")
+    sys.exit(f"{path}: no song, sample or screen in assets/*.json has this file")
+
+
+def screen_part(asset, part):
+    """One of a screen's blobs under build/assets/ ("pal", "map", "table"
+    or "tiles"), built from the .png whatever its edit."""
+    return (OUT / asset["path"]).with_suffix(f".{part}.bin")
+
+
+def screen_blob_sizes(asset):
+    """Each blob's size: a 512-byte palette, a 15x10 u16 map, a u16[4]
+    table row per metatile and 64 bytes per 8bpp tile."""
+    opts = asset["options"]
+    return {"pal": 512, "map": 2 * 150,
+            "table": 8 * opts["metatiles"], "tiles": 64 * opts["tiles"]}
+
+
+def screen_blobs(asset, rom):
+    """A screen's four blobs straight out of the ROM."""
+    start = int(asset["start"], 16) - ROM_BASE
+    sizes = screen_blob_sizes(asset)
+    pal, map_ = rom[start:start + 512], rom[start + 512:start + 812]
+    mid = start + 512 + sizes["map"]
+    table = rom[mid:mid + sizes["table"]]
+    tiles = rom[mid + sizes["table"]:mid + sizes["table"] + sizes["tiles"]]
+    return {"pal": pal, "map": map_, "table": table, "tiles": tiles}
+
+
+def compose_screen(blobs):
+    """The 240x160 picture a screen's map, table and tiles draw."""
+    map_, table, tiles = blobs["map"], blobs["table"], blobs["tiles"]
+    px = bytearray(SCREEN_W * SCREEN_H)
+    for i in range(150):
+        metatile = struct.unpack_from("<H", map_, 2 * i)[0]
+        for s in range(4):  # top-left, top-right, bottom-left, bottom-right
+            sx = (i % 15) * 16 + (s & 1) * 8
+            sy = (i // 15) * 16 + (s >> 1) * 8
+            tile = struct.unpack_from("<H", table, 8 * metatile + 2 * s)[0]
+            for y in range(8):
+                row = (sy + y) * SCREEN_W + sx
+                src = 64 * tile + 8 * y
+                px[row:row + 8] = tiles[src:src + 8]
+    return bytes(px)
+
+
+def split_screen(pixels, palette):
+    """The converter the original tool ran, in reverse: the palette, map,
+    table and tiles the ROM holds, rebuilt from the picture alone. Scan the
+    2x2 metatiles row by row; give each new metatile the next metatile
+    index, and each new tile within it the next tile index."""
+    map_, table, tiles = bytearray(300), bytearray(), bytearray()
+    metatiles, tile_ids = {}, {}
+    for i in range(150):
+        cell = []
+        for s in range(4):
+            sx = (i % 15) * 16 + (s & 1) * 8
+            sy = (i // 15) * 16 + (s >> 1) * 8
+            pat = b"".join(pixels[(sy + y) * SCREEN_W + sx:
+                                  (sy + y) * SCREEN_W + sx + 8]
+                           for y in range(8))
+            if pat not in tile_ids:
+                tile_ids[pat] = len(tile_ids)
+                tiles += pat
+            cell.append(tile_ids[pat])
+        if tuple(cell) not in metatiles:
+            metatiles[tuple(cell)] = len(metatiles)
+            table += struct.pack("<4H", *cell)
+        struct.pack_into("<H", map_, 2 * i, metatiles[tuple(cell)])
+    return {"pal": palette, "map": bytes(map_), "table": bytes(table),
+            "tiles": bytes(tiles)}
+
+
+def png_chunk(tag, data):
+    return (len(data).to_bytes(4, "big") + tag + data
+            + (zlib.crc32(tag + data) & 0xFFFFFFFF).to_bytes(4, "big"))
+
+
+def bgr555_to_rgb8(color):
+    """A GBA palette entry as the 8-bit RGB a PNG holds it."""
+    def up(v):
+        return v << 3 | v >> 2
+    return up(color & 31), up(color >> 5 & 31), up(color >> 10 & 31)
+
+
+def write_screen_png(path, pixels, palette):
+    """Write a screen's picture as an 8-bit indexed PNG: the palette order
+    is the ROM's, so the file edits straight back into its blobs."""
+    plte = bytearray()
+    for color in struct.unpack("<256H", palette):
+        plte += bytes(bgr555_to_rgb8(color))
+    rows = b"".join(b"\0" + pixels[y * SCREEN_W:(y + 1) * SCREEN_W]
+                    for y in range(SCREEN_H))
+    path.write_bytes(b"\x89PNG\r\n\x1a\n"
+                     + png_chunk(b"IHDR", struct.pack(">IIBBBBB",
+                                                      SCREEN_W, SCREEN_H, 8, 3, 0, 0, 0))
+                     + png_chunk(b"PLTE", bytes(plte))
+                     + png_chunk(b"IDAT", zlib.compress(rows, 9))
+                     + png_chunk(b"IEND", b""))
+
+
+def read_screen_png(path):
+    """Read a screen's picture back: (linear palette indices, BGR555
+    palette). Only what an editor keeps of an indexed PNG: 8-bit indices,
+    all 256 palette entries, no interlacing."""
+    data = path.read_bytes()
+    if data[:8] != b"\x89PNG\r\n\x1a\n":
+        sys.exit(f"{path}: not a PNG")
+    chunks, pos = {}, 8
+    while pos + 12 <= len(data):
+        length = int.from_bytes(data[pos:pos + 4], "big")
+        tag, body = data[pos + 4:pos + 8], data[pos + 8:pos + 8 + length]
+        pos += 12 + length
+        if tag == b"IDAT":
+            chunks.setdefault(b"IDAT", []).append(body)
+        elif tag not in chunks:
+            chunks[tag] = body
+        if tag == b"IEND":
+            break
+    w, h, depth, color, _, _, interlace = struct.unpack(">IIBBBBB", chunks[b"IHDR"])
+    plte = chunks.get(b"PLTE", b"")
+    if (w, h) != (SCREEN_W, SCREEN_H):
+        sys.exit(f"{path}: {w}x{h}, want {SCREEN_W}x{SCREEN_H}")
+    if color != 3 or depth != 8:
+        sys.exit(f"{path}: want an 8-bit indexed PNG (save it in indexed\n"
+                 "mode): its palette order is the ROM's")
+    if interlace:
+        sys.exit(f"{path}: interlaced; save it without interlacing")
+    if len(plte) != 3 * 256:
+        sys.exit(f"{path}: {len(plte) // 3} palette entries, want 256\n"
+                 "(an editor trimmed the unused tail; keep every entry)")
+    packed = zlib.decompress(b"".join(chunks[b"IDAT"]))
+    pixels, prev = bytearray(w * h), bytearray(w)
+    pos = 0
+    for y in range(h):
+        # Undo the per-row filter, whatever the editor chose (RFC 2083).
+        filter_, row = packed[pos], bytearray(packed[pos + 1:pos + 1 + w])
+        pos += 1 + w
+        if filter_ > 4:
+            sys.exit(f"{path}: bad PNG row filter {filter_}")
+        for x in range(w):
+            a, b, c = row[x - 1] if x else 0, prev[x], prev[x - 1] if x else 0
+            if filter_ == 1:
+                row[x] = (row[x] + a) & 0xFF
+            elif filter_ == 2:
+                row[x] = (row[x] + b) & 0xFF
+            elif filter_ == 3:
+                row[x] = (row[x] + (a + b) // 2) & 0xFF
+            elif filter_ == 4:
+                pa, pb, pc = abs(b - c), abs(a - c), abs(a + b - 2 * c)
+                guess = a if pa <= pb and pa <= pc else (b if pb <= pc else c)
+                row[x] = (row[x] + guess) & 0xFF
+        pixels[y * w:(y + 1) * w] = row
+        prev = row
+    palette = bytearray(512)
+    for i in range(256):
+        r, g, b = plte[3 * i:3 * i + 3]
+        struct.pack_into("<H", palette, 2 * i,
+                         r >> 3 | (g >> 3) << 5 | (b >> 3) << 10)
+    return bytes(pixels), bytes(palette)
+
+
+def build_screen(asset):
+    """Build a screen's blobs under build/assets/ from its editable .png:
+    the only input, so editing the picture edits the ROM."""
+    png = editable(asset)
+    pixels, palette = read_screen_png(png)
+    blobs = split_screen(pixels, palette)
+    for part, size in screen_blob_sizes(asset).items():
+        if len(blobs[part]) != size:
+            what = "metatiles" if part == "table" else "tiles"
+            have = len(blobs[part]) // (8 if part == "table" else 64)
+            want = asset["options"][what]
+            sys.exit(f"{png}: the picture has {have} unique {what}, but the "
+                     f"ROM has room for {want}: a screen's blobs are a "
+                     "fixed size")
+        path = screen_part(asset, part)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(blobs[part])
 
 
 def song_flags(opts):
@@ -118,7 +314,15 @@ def extract():
         sys.exit("baserom.gba is missing: copy your own ROM to the repo root")
     rom = BASEROM.read_bytes()
     for asset in assets():
-        if asset.get("type") in EDITABLE:
+        kind = asset.get("type")
+        if kind in ("midi", "aif"):
+            continue
+        if kind == "screen":
+            # The .png is the source: unpack it if a fresh clone doesn't
+            # have it yet (never over one that exists), then build the
+            # blobs from the picture alone.
+            unpack_asset(asset, rom)
+            build_screen(asset)
             continue
         start = int(asset["start"], 16) - ROM_BASE
         path = OUT / asset["path"]
@@ -127,14 +331,20 @@ def extract():
 
 
 def unpack(path):
-    """Write one song's .mid or one sample's .aif from baserom.gba, unless
-    the file already exists: then it's the user's, edits and all."""
-    asset = find(path)
+    """Write one song's .mid, one sample's .aif or one screen's .png from
+    baserom.gba, unless the file already exists: then it's the user's,
+    edits and all."""
+    unpack_asset(find(path))
+
+
+def unpack_asset(asset, rom=None):
     out = editable(asset)
     if out.exists():
         return
-    if not BASEROM.exists():
-        sys.exit("baserom.gba is missing: copy your own ROM to the repo root")
+    if rom is None:
+        if not BASEROM.exists():
+            sys.exit("baserom.gba is missing: copy your own ROM to the repo root")
+        rom = BASEROM.read_bytes()
     out.parent.mkdir(parents=True, exist_ok=True)
     start = int(asset["start"], 16) - ROM_BASE
     # Convert in a temporary folder, so a failed run leaves no partial file
@@ -145,9 +355,12 @@ def unpack(path):
             opts = asset["options"]
             header = hex(start + opts["headerOffset"])
             run(TOOLS / "agb2mid", BASEROM, header, BASEROM, tmp, *song_flags(opts))
+        elif asset["type"] == "screen":
+            blobs = screen_blobs(asset, rom)
+            write_screen_png(tmp, compose_screen(blobs), blobs["pal"])
         else:
             raw = Path(t) / "sample.bin"
-            raw.write_bytes(BASEROM.read_bytes()[start:start + asset["size"]])
+            raw.write_bytes(rom[start:start + asset["size"]])
             run(TOOLS / "aif2pcm", raw, tmp)
         tmp.rename(out)
 
@@ -184,6 +397,12 @@ def list_editable():
 def blank():
     """Zero-fill every asset at its listed size, for a build with no ROM."""
     for asset in assets():
+        if asset.get("type") == "screen":
+            for part, size in screen_blob_sizes(asset).items():
+                path = screen_part(asset, part)
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(bytes(size))
+            continue
         path = built(asset)
         path.parent.mkdir(parents=True, exist_ok=True)
         if path.suffix == ".s":

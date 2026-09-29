@@ -392,9 +392,7 @@ SECTIONS
         build/data/rom_0807CE30.o(.text*);
         build/src/data/game_text.o(.rodata);
         build/src/data/title_screen.o(.rodata);
-        build/data/rom_082A0820.o(.text*);
         build/src/data/rom_082A9730.o(.rodata);
-        build/data/rom_082B0028.o(.text*);
         build/src/data/rom_082B350C.o(.rodata);
         build/data/rom_082B370C.o(.text*);
         build/src/data/strings.o(.rodata);
@@ -403,7 +401,7 @@ SECTIONS
         build/src/data/rom_082E4328.o(.rodata);
         build/src/data/rom_082E4528.o(.rodata);
         build/src/data/rom_082EE104.o(.rodata);
-        build/data/rom_082F0000.o(.text*);
+        build/data/rom_082F7EE0.o(.text*);
         build/src/data/rom_0830E670.o(.rodata);
         build/data/rom_0830E690.o(.text*);
         build/src/data/rom_0830EC58.o(.rodata);

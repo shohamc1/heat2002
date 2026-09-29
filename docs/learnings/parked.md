@@ -332,6 +332,23 @@ end of the main program or at the head of a separately built high module.
 The `ALIGN(4)` matters: the removed asm fragment's own alignment supplied
 the 3 bytes between `0x0833967D` and `0x08339680`.
 
+Since 2026-09-29 the nine full-screen metatile backgrounds build from
+editable pictures, the same model as the sound (issue #2). Each is one
+`"screen"` entry in `assets/graphics.json` covering its whole ROM range
+(palette, metatile map, metatile table, tiles; driver select keeps the 32
+bytes past its tiles as `data_082B86F0.bin`): `assets.py unpack` writes
+`assets/graphics/screens/NAME.png` (indexed, 256 colours) from the ROM only
+when it's missing, and `extract` regenerates the four blobs from the
+picture alone with the original converter's dedupe — scan the 2x2
+metatiles row by row, give each new metatile the next metatile index and
+each new 8x8 tile within it the next tile index. Verified byte for byte on
+all nine; `make check` prints MATCH with the pictures as the only inputs,
+and editing one changes the ROM. The `metatiles_*` entries and the 46
+`unknown` blobs they replaced are gone; the tile tails left
+`data/rom_082A0820.s`, `data/rom_082B0028.s` and `data/rom_082F0000.s`
+(the last truncated to `rom_082F7EE0.s`), so the `src/data/*.c` files hold
+whole screens.
+
 ## ROM data defined in C
 
 Since 2026-09-25, C defines each ROM data table that C code reads, as
