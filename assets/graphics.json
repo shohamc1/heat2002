@@ -7,7 +7,7 @@
   {"path": "graphics/screens/main_menu.png", "start": "0x082A9730", "size": 40412, "type": "screen", "options": {"metatiles": 150, "tiles": 600}},
   {"path": "graphics/palettes/boot_splash3.pal", "start": "0x082B350C", "size": 512, "type": "pal"},
   {"path": "graphics/screens/boot_splash3.png", "start": "0x082B370C", "size": 8354, "type": "bitmap"},
-  {"path": "graphics/screens/licensed_by_nintendo.png", "start": "0x082B731C", "size": 5076, "type": "screen", "options": {"metatiles": 21, "tiles": 64}},
+  {"path": "graphics/screens/licensed_by_nintendo.png", "start": "0x082B731C", "size": 5108, "type": "screen", "options": {"metatiles": 21, "tiles": 64, "tail": 32}},
   {"path": "graphics/tiles/driver_select_cars.png", "start": "0x082B8710", "size": 7168, "type": "tiles", "options": {"bitDepth": 8, "width": 8, "palette": "graphics/palettes/driver_car.pal"}},
   {"path": "graphics/rl_082BA310.bin", "start": "0x082BA310", "size": 1989, "type": "rl", "options": {"bitDepth": 8, "width": 8, "palette": "0x082CC5D8"}},
   {"path": "graphics/palettes/pal_082BAAD8.pal", "start": "0x082BAAD8", "size": 512, "type": "pal"},

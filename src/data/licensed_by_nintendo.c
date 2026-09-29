@@ -12,4 +12,4 @@ const u32 gLicensedByNintendoPalette[] = INCBIN_U32("build/assets/graphics/scree
 const u16 gLicensedByNintendoMetatileMap[150] = INCBIN_U16("build/assets/graphics/screens/licensed_by_nintendo.map.bin");
 // Its users declare it as u16 x[][4] (21 rows of 4).
 const u16 gLicensedByNintendoMetatileTable[84] = INCBIN_U16("build/assets/graphics/screens/licensed_by_nintendo.table.bin");
-const u32 gLicensedByNintendoBgGfx[] = INCBIN_U32("build/assets/graphics/screens/licensed_by_nintendo.tiles.bin", "build/assets/unknown/data_082B86F0.bin");
+const u32 gLicensedByNintendoBgGfx[] = INCBIN_U32("build/assets/graphics/screens/licensed_by_nintendo.tiles.bin", "build/assets/graphics/screens/licensed_by_nintendo.tail.bin");

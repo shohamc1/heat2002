@@ -165,10 +165,16 @@ def screen_part(asset, part):
 
 def screen_blob_sizes(asset):
     """Each blob's size: a 512-byte palette, a 15x10 u16 map, a u16[4]
-    table row per metatile and 64 bytes per 8bpp tile."""
+    table row per metatile, 64 bytes per 8bpp tile, and optionally the
+    dead bytes the ROM holds past the tiles (the Licensed By Nintendo
+    screen's 32) — the one part the picture cannot rebuild, so `extract`
+    copies it from the ROM."""
     opts = asset["options"]
-    return {"pal": 512, "map": 2 * 150,
-            "table": 8 * opts["metatiles"], "tiles": 64 * opts["tiles"]}
+    sizes = {"pal": 512, "map": 2 * 150,
+             "table": 8 * opts["metatiles"], "tiles": 64 * opts["tiles"]}
+    if opts.get("tail"):
+        sizes["tail"] = opts["tail"]
+    return sizes
 
 
 def screen_blobs(asset, rom):
@@ -529,6 +535,8 @@ def build_screen(asset):
     pixels, palette = read_screen_png(png)
     blobs = split_screen(pixels, palette)
     for part, size in screen_blob_sizes(asset).items():
+        if part == "tail":  # dead bytes after the tiles, not from the picture
+            continue
         if len(blobs[part]) != size:
             what = "metatiles" if part == "table" else "tiles"
             have = len(blobs[part]) // (8 if part == "table" else 64)
@@ -559,9 +567,16 @@ def extract():
         if kind == "screen":
             # The .png is the source: unpack it if a fresh clone doesn't
             # have it yet (never over one that exists), then build the
-            # blobs from the picture alone.
+            # blobs from the picture alone. A screen with a tail also
+            # copies that many dead ROM bytes after its tiles.
             unpack_asset(asset, rom)
             build_screen(asset)
+            if asset.get("options", {}).get("tail"):
+                start = int(asset["start"], 16) - ROM_BASE
+                sizes = screen_blob_sizes(asset)
+                path = screen_part(asset, "tail")
+                path.write_bytes(rom[start + asset["size"] - sizes["tail"]:
+                                     start + asset["size"]])
             continue
         if kind == "pal":
             # The .pal text file is the source, same rule as a screen.
