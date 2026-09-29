@@ -86,8 +86,9 @@ What the source shapes turned out to be, for the next m4a batch:
   lfoSpeed=0x16; tone.type=1` and passes the *track* to ClearChain);
   `sub_08001234` = m4aSongNumStartOrChange, `sub_08001280` =
   m4aSongNumStartOrContinue. The high module's song-num family reads its
-  **own EWRAM tables** (`gUnk_0200CA74`, `gUnk_0200CAA4`), not the ROM
-  tables.
+  **own EWRAM tables** (`gModule_MPlayTable` [was `gUnk_0200CA74`],
+  `gModule_SongTable` [was `gUnk_0200CAA4`], both C in
+  `src/sound/module_tables.c`), not the ROM tables.
 - Both `ply_memacc` copies were mis-scoped (jump table + 18 case bodies as
   `.byte` rows; 344 bytes each, not 54). The low copy hand-cut like
   `sub_0800F8D0`. The high copy `ModulePlyMemacc [sub_0833BA00]` runs from EWRAM
@@ -464,7 +465,9 @@ The pointer pass on 2026-09-25 (see "Pointers" in
 - 110 data names, such as `gUnk_0200CA74`, became labels in the image's
   data fragments. Each label keeps its `gUnk_<EWRAM address>` name, and a
   blob splits where a label falls inside it. `gUnk_0200C668` and
-  `gModule_ClockTable` moved from `ldscript.ld` to labels the same way.
+  `gUnk_0200C8DC` (the clock table, now `gModule_ClockTable` in
+  `src/sound/module_engine_tables.c`) moved from `ldscript.ld` to labels
+  the same way.
 - `gUnk_02025220` and `gUnk_0202522C` stay in `symbols.ld` for the main
   program's variables. See the next section for the module's names.
 

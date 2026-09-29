@@ -460,8 +460,11 @@ placement", with these differences:
 
 The sound tables are the one exception to `src/data/`: tmc keeps them in
 `src/sound.c`, next to the m4a code that reads them, so they live in
-`src/sound/tables.c` and `src/sound/module_tables.c` (no `INCBIN_*`, so
-they need no `$(ASSET_STAMP)` dependency). A ROM-data C file elsewhere
+`src/sound/tables.c` and `src/sound/module_tables.c`, and the high
+module's engine tables beside them in `src/sound/module_engine_tables.c`
+(their initialisers shared with `src/data/rom_0801D018.c` through
+`src/data/m4a_engine_tables.h`; none of the three uses `INCBIN_*`, so
+none needs the `$(ASSET_STAMP)` dependency). A ROM-data C file elsewhere
 than `src/data/` needs a line here saying why.
 
 Check alignment before you cut. agbcc aligns each array to its element size,

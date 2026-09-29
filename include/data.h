@@ -43,8 +43,9 @@ extern const u8 gText_Ab[];
 extern const u8 *const gUiFontTable[];
 extern const u8 gText_Abc[];
 extern const struct MusicPlayer gMPlayTable[];
-/* Song headers, the labels mid2agb gives the songs that data/sound/sounds.s
- * includes in place; gSongTable's rows name them. */
+/* Song headers; gSongTable's rows name them. The songs' labels come from
+ * mid2agb in data/sound/sounds.s; song_dummy is the 4-byte empty song
+ * data/sound/direct_sound_samples.s holds. */
 extern struct SongHeader song_dummy;
 extern struct SongHeader song_01;
 extern struct SongHeader song_02;

@@ -99,7 +99,8 @@ differs, the note in `docs/decomp-queue.md`'s Tier 1 section is the record.
 | `ply_xswee [sub_080025A4]` | `ModulePlyXswee [sub_0833BC64]` | `ply_xswee` |
 
 The high module's song-num family reads its own EWRAM copies of the song
-and player tables (`gUnk_0200CA74`, `gUnk_0200CAA4`), and its table data
+and player tables (`gModule_MPlayTable` [was `gUnk_0200CA74`],
+`gModule_SongTable` [was `gUnk_0200CAA4`]), and its table data
 sits at one fixed delta 0x17FF6E0 from the low ROM tables (already recorded
 for `gCgb3Vol`); code addresses in the module map at delta 0x6338A80
 (0x08338A80 ↔ 0x02000000).

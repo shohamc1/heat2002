@@ -649,7 +649,8 @@ aliases, six became labels (the two sound tables, the two boot logos,
 `ldscript.ld`, and 18 lines that nothing used were deleted. The high module's 136 `symbols.ld`
 names for its own code and data went the same way: 21 function names, 110
 labels and five aliases. `gClockTable`, `gMPlayJumpTableTemplate`,
-`gUnk_0200C668` and `gModule_ClockTable` moved from fixed `ldscript.ld`
+`gUnk_0200C668` and `gUnk_0200C8DC` (the clock table, now `gModule_ClockTable`
+in `src/sound/module_engine_tables.c`) moved from fixed `ldscript.ld`
 addresses to labels.
 
 To check that the tables follow a size change, pad one song and one
@@ -2418,7 +2419,7 @@ callee-saved assignment; when that happens, re-pin the anchor
 
 The high module's copy sub_0833B348 matched as a straight port of the
 same source (callees renamed to sub_0833B2E0/sub_0833B290; gCgb3Vol is
-the module's EWRAM image, gUnk_0200C8CC = 0x0200C8CC in symbols.ld) on
+the module's EWRAM image, `gModule_Cgb3Vol` [was `gUnk_0200C8CC`]) on
 its first compile.
 
 Matched from a plain rewrite of tmc's `CgbSound`

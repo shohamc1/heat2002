@@ -20,8 +20,8 @@ are the sound's source. `make` unpacks a file only when it's missing, and
 `unpack` never overwrites one, so your edits survive every build. They stay
 out of git (.gitignore), since the ROM's data is copyrighted.
 
-`song MID OUT` turns a song's .mid into the assembly that data/*.s
-includes in place: mid2agb with the song's options from assets/*.json, so
+`song MID OUT` turns a song's .mid into the assembly that
+data/sound/sounds.s includes in place: mid2agb with the song's options from assets/*.json, so
 the song's pointers resolve where it links. `make` turns a sample's .aif
 back into its .bin with aif2pcm alone.
 
@@ -677,7 +677,8 @@ def unpack_asset(asset, rom=None):
 
 
 def song(mid, out):
-    """mid2agb a song's .mid into assembly that data/*.s can include."""
+    """mid2agb a song's .mid into assembly that data/sound/sounds.s can
+    include."""
     asset = find(mid)
     opts = asset["options"]
     out = Path(out)
