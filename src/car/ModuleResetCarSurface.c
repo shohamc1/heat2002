@@ -1,4 +1,5 @@
 #include "global.h"
+#include "car.h"
 
 void ModuleResetCarSurface(u8 *car)
 {
@@ -7,9 +8,9 @@ void ModuleResetCarSurface(u8 *car)
     u32 sp[0x0A];
 
     (void)sp;
-    *(u8 *)(carAddr + (0xB8 << 1)) = 0;
-    wasGrass = *(u8 *)(carAddr + 0x171);
-    *(u8 *)(carAddr + 0x173) = wasGrass;
-    *(u8 *)(carAddr + 0x171) = 0;
-    *(u8 *)(carAddr + 0x172) = 0;
+    ((struct Car *)carAddr)->onApron = 0;
+    wasGrass = ((struct Car *)carAddr)->onGrass;
+    ((struct Car *)carAddr)->wasOnGrass = wasGrass;
+    ((struct Car *)carAddr)->onGrass = 0;
+    ((struct Car *)carAddr)->behindBgFlag = 0;
 }

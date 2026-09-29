@@ -101,7 +101,7 @@ extern u32 gSeasonRaceIndex[];
 extern u8 gChampionshipAvailable[];
 extern u32 gUnk_02025FD0;
 extern u16 gUnk_0201F590[];
-extern u8 gUnk_0202A6E0[];
+extern u8 gAiCars[];
 extern u8 gMenuValueChanged;
 extern u32 gUnk_0202ED84;
 extern u8 gUnk_02024824;

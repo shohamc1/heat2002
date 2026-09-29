@@ -120,7 +120,7 @@ void InitCar(u8 a, struct Car *car, s32 b, s32 c, u32 d, u32 unused)
     car->tickCount = 0x12C;
     car->velX = 0;
     car->velZ = 0;
-    car->unk110 = 0;
+    car->steerRamp = 0;
     car->forceX = 0;
     car->forceZ = 0;
     car->engineForce = 0;

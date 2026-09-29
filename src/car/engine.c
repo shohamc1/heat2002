@@ -4,33 +4,6 @@
 #include "variables.h"
 #include "data.h"
 
-struct Unk0800A310
-{
-    u32 posX;
-    u32 unk4;
-    u32 posZ;
-    u32 velX;
-    u32 unk10;
-    u32 velZ;
-    u32 unk18;
-    u32 unk1C;
-    u32 unk20;
-    u32 unk24;
-    u32 unk28;
-    u32 speed;
-    u32 unk30;
-    u16 heading;
-    u16 respawnHeading;
-    u16 respawnWaypoint;
-    u16 unk3A;
-    s16 yawRate;
-    u8 pad3E[0xA4 - 0x3E];
-    s32 cornerX[4];
-    s32 cornerZ[4];
-    s32 nextCornerX[4];
-    s32 nextCornerZ[4];
-};
-
 s32 GetGearForSpeed(struct Car *car, s32 speed);
 extern s32 gCornerOffsetX[]; /* 0x08368270 */
 extern s32 gCornerOffsetZ[]; /* 0x08368280 */
@@ -124,7 +97,7 @@ void UpdateEngine(struct Car *car, s32 mode)
     }
 }
 
-void ComputeForwardSpeed(s32 *a)
+void ComputeForwardSpeed(struct Car *a)
 {
     u32 ang;
     u16 i;
@@ -133,16 +106,16 @@ void ComputeForwardSpeed(s32 *a)
     s32 x;
     s32 y;
 
-    ang = ((u16 *)a)[0x1A];
+    ang = a->heading;
     i = (-(ang >> 11) & 0x1F) << 3;
     dx = gSinTable[i];
     dy = gSinTable[i + 0x40];
-    x = a[3];
-    y = a[5];
-    a[0xB] = (x * dx + y * dy) >> 8;
+    x = a->velX;
+    y = a->velZ;
+    a->speed = (x * dx + y * dy) >> 8;
 }
 
-void ComputeCarCorners(struct Unk0800A310 *obj)
+void ComputeCarCorners(struct Car *obj)
 {
     s32 sin;
     s32 cos;
@@ -163,7 +136,7 @@ void ComputeCarCorners(struct Unk0800A310 *obj)
         obj->cornerZ[i] += obj->posZ;
     }
 
-    idx = (obj->heading + obj->yawRate) >> 8 & 0xFF;
+    idx = (obj->heading + (s16)obj->yawRate) >> 8 & 0xFF;
     sin = gSinTable[idx];
     cos = gSinTable[idx + 0x40];
     for (i = 0; i != 4; i++) {

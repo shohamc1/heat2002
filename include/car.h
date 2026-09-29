@@ -18,8 +18,8 @@ struct Car
     /* 0x0C */ s32 velX;
     /* 0x10 */ u32 unk10;
     /* 0x14 */ s32 velZ;
-    /* 0x18 */ s32 unk18;
-    /* 0x1C */ s32 unk1C;
+    /* 0x18 */ s32 predictedPosX; /* posX advanced ~14 frames for the lane search */
+    /* 0x1C */ s32 predictedPosZ;
     /* 0x20 */ s32 unk20;
     /* 0x24 */ s32 unk24;
     /* 0x28 */ s32 unk28;
@@ -77,7 +77,7 @@ struct Car
     /* 0x106 */ u16 finishSec;
     /* 0x108 */ u16 finishMs;
     /* 0x10A */ u8 pad10A[0x110 - 0x10A];
-    /* 0x110 */ u8 unk110;
+    /* 0x110 */ u8 steerRamp; /* frames steering held, 0-0x7F; scales the steer rate */
     /* 0x111 */ u8 pad111[0x128 - 0x111];
     /* 0x128 */ s32 unk128;
     /* 0x12C */ s32 steerHeading;

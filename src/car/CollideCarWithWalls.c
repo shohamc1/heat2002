@@ -25,18 +25,18 @@
  *   slots come out permuted.
  */
 
-struct Ent
+struct Car
 {
     u8 pad00[0x0C];
-    s32 unk0C;
+    s32 velX;
     u8 pad10[4];
-    s32 unk14;
+    s32 velZ;
     u8 pad18[0x34 - 0x18];
-    u16 unk34;
+    u16 heading;
     u16 respawnHeading;
     u16 respawnWaypoint;
     u16 unk3A;
-    u16 unk3C;
+    u16 yawRate;
     u8 pad3E[0x7C - 0x3E];
     u8 carState;
     u8 pad7D[0xA4 - 0x7D];
@@ -96,7 +96,7 @@ inline s32 Max(s32 a, s32 b)
     return r;
 }
 
-s32 CollideCarWithWalls(struct Ent *a)
+s32 CollideCarWithWalls(struct Car *a)
 {
     struct Corner corner[4];
     struct Box boxes[4];
@@ -147,18 +147,18 @@ s32 CollideCarWithWalls(struct Ent *a)
                 t = -0x80000000LL;
             d0 = ((long long)res.unk04 * t) >> 29;
             d1 = ((long long)res.unk08 * t) >> 29;
-            gUnk_0202CC70 = a->unk0C;
-            gUnk_0202CC64 = a->unk14;
+            gUnk_0202CC70 = a->velX;
+            gUnk_0202CC64 = a->velZ;
             gUnk_0202CC4C = t;
             gWallCollisionNormal[1] = res.unk04;
             gWallCollisionNormal[2] = res.unk08;
-            a->unk0C -= d0;
-            a->unk14 -= d1;
+            a->velX -= d0;
+            a->velZ -= d1;
             DummyWallHitHook(a->cornerX[res.unk0C], a->cornerZ[res.unk0C]);
             {
                 s32 v1 = gSinTable[res.unk0D];
                 s32 v2 = gSinTable[res.unk0D + 0x40];
-                u8 ang = a->unk34 >> 8;
+                u8 ang = a->heading >> 8;
                 s32 v3 = gSinTable[ang];
                 s32 v4 = gSinTable[ang + 0x40];
 
@@ -166,9 +166,9 @@ s32 CollideCarWithWalls(struct Ent *a)
                 if (v3 * v1 + v4 * v2 <= 0)
                     v = res.unk0E;
                 a->steerHeading = v << 8;
-                v = ((v << 8) - a->unk34) << 16;
+                v = ((v << 8) - a->heading) << 16;
                 v >>= 20;
-                a->unk3C += v;
+                a->yawRate += v;
             }
             return t >> 7;
         }

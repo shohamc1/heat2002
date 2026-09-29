@@ -21,19 +21,19 @@ u32 ModuleCarNeedsPit(u32 car)
 
     if (car != (u32)gModule_Cars) {
         ret = 0;
-        if (*(s32 *)(car + 0x9C) <= 0xA0 << 6)
+        if (((struct Car *)car)->fuel <= 0xA0 << 6)
             ret = 1;
-        tireWear = *(s32 *)(car + 0x8C);
+        tireWear = ((struct Car *)car)->tireWear0;
         wearLimit = 0x3E7FF;
     } else {
         ret = 0;
-        if (*(s32 *)(car + 0x9C) <= 0xA0 << 6)
+        if (((struct Car *)car)->fuel <= 0xA0 << 6)
             ret = 1;
-        tireWear = *(s32 *)(car + 0x8C);
+        tireWear = ((struct Car *)car)->tireWear0;
         wearLimit = 0x5DBFF;
     }
-    if (tireWear > wearLimit || *(s32 *)(car + 0x90) > wearLimit || *(s32 *)(car + 0x94) > wearLimit ||
-        *(s32 *)(car + 0x98) > wearLimit)
+    if (tireWear > wearLimit || ((struct Car *)car)->tireWear1 > wearLimit || ((struct Car *)car)->tireWear2 > wearLimit ||
+        ((struct Car *)car)->tireWear3 > wearLimit)
         ret = 1;
     return ret;
 }

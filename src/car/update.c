@@ -122,14 +122,14 @@ void UpdateSteering(struct Car *car, u16 keys)
         return;
     }
     if (keys & (DPAD_RIGHT | DPAD_LEFT)) {
-        u8 cur = car->unk110;
-        if ((s8)car->unk110 >= 0)
-            car->unk110 = cur + 1;
+        u8 cur = car->steerRamp;
+        if ((s8)car->steerRamp >= 0)
+            car->steerRamp = cur + 1;
     } else {
-        if (car->unk110 != 0)
-            car->unk110 = car->unk110 - 1;
+        if (car->steerRamp != 0)
+            car->steerRamp = car->steerRamp - 1;
     }
-    v = car->unk110;
+    v = car->steerRamp;
     t = (v * 3 >> 2) + 0x100;
     x = -(car->speed) >> 12;
     if (x < 0)

@@ -150,7 +150,7 @@ camera_ready:
             &gEngineSoundPlayer, 1,
             (s16)(gEngineSoundFreqBases[p->gear] + ((p->rpm * gEngineSoundRpmMultipliers[p->gear]) >> 6)) >> 3);
         if (gIsDemo != 0) {
-            SetCameraTarget((struct Car *)gUnk_0202A6E0);
+            SetCameraTarget((struct Car *)gAiCars);
             gUnk_08364ADC = t = gFrameCounter / 256;
             if ((t & 7) == 0)
                 gUnk_08364ADC = 4;

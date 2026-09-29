@@ -29,18 +29,18 @@
  *   slots come out permuted.
  */
 
-struct Ent
+struct Car
 {
     u8 pad00[0x0C];
-    s32 unk0C;
+    s32 velX;
     u8 pad10[4];
-    s32 unk14;
+    s32 velZ;
     u8 pad18[0x34 - 0x18];
-    u16 unk34;
+    u16 heading;
     u16 respawnHeading;
     u16 respawnWaypoint;
     u16 unk3A;
-    u16 unk3C;
+    u16 yawRate;
     u8 pad3E[0x7C - 0x3E];
     u8 carState;
     u8 pad7D[0xA4 - 0x7D];
@@ -100,7 +100,7 @@ inline s32 ModuleMax(s32 a, s32 b)
     return r;
 }
 
-s32 ModuleCollideCarWithWalls(struct Ent *a)
+s32 ModuleCollideCarWithWalls(struct Car *a)
 {
     struct Corner corner[4];
     struct Box boxes[4];
@@ -151,18 +151,18 @@ s32 ModuleCollideCarWithWalls(struct Ent *a)
                 t = -0x80000000LL;
             d0 = ((long long)res.unk04 * t) >> 29;
             d1 = ((long long)res.unk08 * t) >> 29;
-            gUnk_0203DE90 = a->unk0C;
-            gUnk_0203DE84 = a->unk14;
+            gUnk_0203DE90 = a->velX;
+            gUnk_0203DE84 = a->velZ;
             gUnk_0203DE6C = t;
             gUnk_0203DE70[1] = res.unk04;
             gUnk_0203DE70[2] = res.unk08;
-            a->unk0C -= d0;
-            a->unk14 -= d1;
+            a->velX -= d0;
+            a->velZ -= d1;
             ModuleDummyWallHitHook(a->cornerX[res.unk0C], a->cornerZ[res.unk0C]);
             {
                 s32 v1 = gModule_SinTable[res.unk0D];
                 s32 v2 = gModule_SinTable[res.unk0D + 0x40];
-                u8 ang = a->unk34 >> 8;
+                u8 ang = a->heading >> 8;
                 s32 v3 = gModule_SinTable[ang];
                 s32 v4 = gModule_SinTable[ang + 0x40];
 
@@ -170,9 +170,9 @@ s32 ModuleCollideCarWithWalls(struct Ent *a)
                 if (v3 * v1 + v4 * v2 <= 0)
                     v = res.unk0E;
                 a->steerHeading = v << 8;
-                v = ((v << 8) - a->unk34) << 16;
+                v = ((v << 8) - a->heading) << 16;
                 v >>= 20;
-                a->unk3C += v;
+                a->yawRate += v;
             }
             return t >> 7;
         }

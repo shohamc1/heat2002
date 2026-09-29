@@ -4,13 +4,6 @@
 #include "car.h"
 
 struct Unk08342FF0;
-struct Tbl
-{
-    u8 pad[0xC4];
-    s32 nextCornerX[4];
-    s32 nextCornerZ[4];
-    u8 pad2[0x190 - 0xE4];
-};
 struct Unk08342FF0
 {
     s32 f00;
@@ -67,7 +60,7 @@ void ModuleAddDraftStreakTask(u8 carIdx, u8 cornerIdx)
 
 void ModuleDraftStreakTask(u32 task)
 {
-    struct Tbl *car;
+    struct Car *car;
     s32 pos[2];
     s32 cornerX;
     s32 cornerZ;
@@ -79,10 +72,10 @@ void ModuleDraftStreakTask(u32 task)
     s32 dy;
     s32 counter;
 
-    car = (struct Tbl *)((u8 *)gModule_Cars + *(u8 *)(task + 0x34) * 0x190);
+    car = (struct Car *)((u8 *)gModule_Cars + *(u8 *)(task + 0x34) * 0x190);
     cornerX = car->nextCornerX[*(s32 *)(task + 0x1C) + 2];
     cornerZ = car->nextCornerZ[*(s32 *)(task + 0x1C) + 2];
-    idx = *(u16 *)((u8 *)car + 0x34) >> 8;
+    idx = car->heading >> 8;
     sin = gModule_SinTable[idx];
     cos = gModule_SinTable[idx + 0x40];
     dy = *(s32 *)(task + 0x08) + 0xFFF60000;

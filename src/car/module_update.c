@@ -123,14 +123,14 @@ void ModuleUpdateSteering(struct Car *car, u16 keys)
         return;
     }
     if (keys & (DPAD_RIGHT | DPAD_LEFT)) {
-        u8 cur = car->unk110;
-        if ((s8)car->unk110 >= 0)
-            car->unk110 = cur + 1;
+        u8 cur = car->steerRamp;
+        if ((s8)car->steerRamp >= 0)
+            car->steerRamp = cur + 1;
     } else {
-        if (car->unk110 != 0)
-            car->unk110 = car->unk110 - 1;
+        if (car->steerRamp != 0)
+            car->steerRamp = car->steerRamp - 1;
     }
-    steerRamp = car->unk110;
+    steerRamp = car->steerRamp;
     steerRate = (steerRamp * 3 >> 2) + 0x100;
     speedTerm = -(car->speed) >> 12;
     if (speedTerm < 0)
@@ -235,36 +235,27 @@ again:
 
 void ModuleUpdateCar(u8 *car, u8 idx)
 {
-    u8 *posCar;
-    u8 *carsBase;
-    u32 byteOffset;
-
     if (gModule_IsLinkRace != 0) {
-        if (gModule_RaceEndState == 0 && car[0x7D] == 0)
+        if (gModule_RaceEndState == 0 && ((struct Car *)car)->finished == 0)
             ModuleUpdateCarPhysics(car, gUnk_020390B0[idx], idx);
         else
             ModuleUpdateCarPhysics(car, 2, idx);
         ModuleClampSteerHeading((struct Car *)car);
     }
-    if (*(s32 *)(car + 0x88) > 0x11940 && car[0x7C] != 1 && (gModule_FrameCounter & 0x3F) == 0)
+    if (((struct Car *)car)->damage > 0x11940 && ((struct Car *)car)->carState != 1 && (gModule_FrameCounter & 0x3F) == 0)
         ModuleAddDamageSmokeTask(car);
     if (gModule_IsLinkRace != 0) {
         if (idx == gModule_LinkPlayerId) {
             ModuleUpdateRacePosition(idx);
-            carsBase = (u8 *)gModule_Cars;
-            byteOffset = idx * 400;
-            posCar = byteOffset + carsBase;
-            if (posCar[0x150] != 0 && posCar[0x150] != 0x63)
-                posCar[0x166] = 0;
+            if (gModule_Cars[idx].racePosition != 0 && gModule_Cars[idx].racePosition != 0x63)
+                gModule_Cars[idx].ledLapFlag = 0;
         }
     } else if (idx == 0) {
         ModuleUpdateRacePosition(0);
-        posCar = (u8 *)gModule_Cars;
-        byteOffset = 0x150;
-        if (posCar[byteOffset] != 0 && posCar[byteOffset] != 0x63)
-            posCar[byteOffset + 0x16] = idx;
+        if (gModule_Cars[0].racePosition != 0 && gModule_Cars[0].racePosition != 0x63)
+            gModule_Cars[0].ledLapFlag = idx;
     }
-    *(s32 *)(car + 0x15C) += 1;
+    ((struct Car *)car)->tickCount++;
 }
 
 void ModuleUpdateAllCars(void)

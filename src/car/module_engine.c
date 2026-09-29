@@ -2,33 +2,6 @@
 #include "car.h"
 #include "variables.h"
 
-struct Unk08341DA0
-{
-    u32 unk0;
-    u32 unk4;
-    u32 unk8;
-    u32 unkC;
-    u32 unk10;
-    u32 unk14;
-    u32 unk18;
-    u32 unk1C;
-    u32 unk20;
-    u32 unk24;
-    u32 unk28;
-    u32 unk2C;
-    u32 unk30;
-    u16 unk34;
-    u16 respawnHeading;
-    u16 respawnWaypoint;
-    u16 unk3A;
-    s16 unk3C;
-    u8 pad3E[0xA4 - 0x3E];
-    s32 cornerX[4];
-    s32 cornerZ[4];
-    s32 nextCornerX[4];
-    s32 nextCornerZ[4];
-};
-
 u32 ModuleGetGearForSpeed(struct Car *car, s32 speed);
 void ModuleStopCar(struct Car *a);
 extern s32 gUnk_020277B4[]; /* 0x020277B4 */
@@ -129,17 +102,17 @@ void ModuleComputeForwardSpeed(u8 *car)
     s32 x;
     s32 y;
 
-    i = -(s32)(*(u16 *)(car + 0x34) >> 11) & 0x1F;
+    i = -(s32)(((struct Car *)car)->heading >> 11) & 0x1F;
     i = i << 3;
     dx = gModule_SinTable[i];
     i = i + 0x40;
     dy = gModule_SinTable[i];
-    x = *(s32 *)(car + 0x0C);
-    y = *(s32 *)(car + 0x14);
-    *(s32 *)(car + 0x2C) = (x * dx + y * dy) >> 8;
+    x = ((struct Car *)car)->velX;
+    y = ((struct Car *)car)->velZ;
+    ((struct Car *)car)->speed = (x * dx + y * dy) >> 8;
 }
 
-void ModuleComputeCarCorners(struct Unk08341DA0 *car)
+void ModuleComputeCarCorners(struct Car *car)
 {
     s32 sin;
     s32 cos;
@@ -148,7 +121,7 @@ void ModuleComputeCarCorners(struct Unk08341DA0 *car)
     s32 offsetX;
     s32 offsetZ;
 
-    idx = car->unk34 >> 8;
+    idx = car->heading >> 8;
     sin = gModule_SinTable[idx];
     cos = gModule_SinTable[idx + 0x40];
     for (i = 0; i != 4; i++) {
@@ -156,11 +129,11 @@ void ModuleComputeCarCorners(struct Unk08341DA0 *car)
         offsetZ = gUnk_020277C4[i];
         car->cornerX[i] = (cos * offsetX - sin * offsetZ) >> 8;
         car->cornerZ[i] = (sin * offsetX + cos * offsetZ) >> 8;
-        car->cornerX[i] += car->unk0;
-        car->cornerZ[i] += car->unk8;
+        car->cornerX[i] += car->posX;
+        car->cornerZ[i] += car->posZ;
     }
 
-    idx = (car->unk34 + car->unk3C) >> 8 & 0xFF;
+    idx = (car->heading + (s16)car->yawRate) >> 8 & 0xFF;
     sin = gModule_SinTable[idx];
     cos = gModule_SinTable[idx + 0x40];
     for (i = 0; i != 4; i++) {
@@ -168,7 +141,7 @@ void ModuleComputeCarCorners(struct Unk08341DA0 *car)
         offsetZ = gUnk_020277C4[i];
         car->nextCornerX[i] = (cos * offsetX - sin * offsetZ) >> 8;
         car->nextCornerZ[i] = (sin * offsetX + cos * offsetZ) >> 8;
-        car->nextCornerX[i] += car->unk0 + car->unkC;
-        car->nextCornerZ[i] += car->unk8 + car->unk14;
+        car->nextCornerX[i] += car->posX + car->velX;
+        car->nextCornerZ[i] += car->posZ + car->velZ;
     }
 }

@@ -2,28 +2,6 @@
 #include "variables.h"
 #include "car.h"
 
-struct Ent
-{
-    u8 pad00[0x0C];
-    s32 unk0C;
-    u8 pad10[4];
-    s32 unk14;
-    u8 pad18[0x34 - 0x18];
-    u16 unk34;
-    u16 respawnHeading;
-    u16 respawnWaypoint;
-    u16 unk3A;
-    u16 unk3C;
-    u8 pad3E[0x7C - 0x3E];
-    u8 carState;
-    u8 pad7D[0xA4 - 0x7D];
-    s32 cornerX[4];
-    s32 cornerZ[4];
-    s32 nextCornerX[4];
-    s32 nextCornerZ[4];
-    u8 padE4[0x12C - 0xE4];
-    s32 steerHeading;
-};
 struct Corner
 { s32 f[6]; };
 struct Box
@@ -43,19 +21,6 @@ struct Res
     u8 unk0E;
     u8 unk0F;
     s32 unk10;
-};
-struct Unk08343DF8
-{
-    s32 unk00;
-    u8 pad04[4];
-    s32 unk08;
-    s32 unk0C;
-    u8 pad10[4];
-    s32 unk14;
-    u8 pad18[0x34 - 0x18];
-    u16 unk34;
-    u8 pad36[0x3C - 0x36];
-    s16 unk3C;
 };
 /*
  * Car-vs-car box collision test: the high-region (0x0834 module) copy of

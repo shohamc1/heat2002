@@ -113,7 +113,7 @@ void ModuleInitCar(u8 carIdx, struct Car *car, s32 posX, s32 posZ, u32 heading)
     car->tickCount = 0x12C;
     car->velX = 0;
     car->velZ = 0;
-    car->unk110 = 0;
+    car->steerRamp = 0;
     car->forceX = 0;
     car->forceZ = 0;
     car->engineForce = 0;

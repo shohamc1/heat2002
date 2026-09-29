@@ -5,7 +5,6 @@
 // address. Stage 1 catch-all of docs/extern-headers-plan.md.
 struct Car;
 struct CgbChannel;
-struct Ent;
 struct LaneSeg;
 struct MusicPlayerInfo;
 struct MusicPlayerTrack;

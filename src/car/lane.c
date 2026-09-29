@@ -21,18 +21,21 @@ struct Car
     s32 unk04;
     s32 posZ;
     u8 pad0C[0x18 - 0x0C];
-    s32 unk18;
-    s32 unk1C;
+    s32 predictedPosX;
+    s32 predictedPosZ;
     s32 unk20;
     s32 unk24;
     s32 unk28;
     s32 speed;
     u8 pad30[0x34 - 0x30];
     s16 heading;
-    u8 pad36[0xF4 - 0x36];
+    u8 pad36[0xF0 - 0x36];
+    s32 lanePosition;
     const u16 *lanePoints;
     const struct LaneSeg *laneSegments;
-    u8 padFC[0x154 - 0xFC];
+    u32 laneCellLists;
+    u32 laneCellGrid;
+    u8 pad104[0x154 - 0x104];
     s32 laneLength;
 };
 
@@ -192,12 +195,12 @@ void SetCarLane(void *car, s32 lanePosition)
 {
     s32 row = lanePosition >> 8;
 
-    *(u32 *)((u8 *)car + 0xF0) = lanePosition;
-    *(u32 *)((u8 *)car + 0xF4) = (u32)gLanePointTables[row + gTrackId * 12];
-    *(u32 *)((u8 *)car + 0xF8) = (u32)gLaneSegmentTables[row + gTrackId * 12];
-    *(u32 *)((u8 *)car + 0xFC) = (u32)gLaneCellLists[row + gTrackId * 12];
-    *(u32 *)&((u16 *)car)[0x80] = (u32)gLaneCellGrids[row + gTrackId * 12];
-    *(u32 *)&((u16 *)car)[0xAA] = *(u16 *)gLaneLengthPtrs[row + gTrackId * 12];
+    ((struct Car *)car)->lanePosition = lanePosition;
+    ((struct Car *)car)->lanePoints = gLanePointTables[row + gTrackId * 12];
+    ((struct Car *)car)->laneSegments = gLaneSegmentTables[row + gTrackId * 12];
+    ((struct Car *)car)->laneCellLists = (u32)gLaneCellLists[row + gTrackId * 12];
+    ((struct Car *)car)->laneCellGrid = (u32)gLaneCellGrids[row + gTrackId * 12];
+    ((struct Car *)car)->laneLength = *(u16 *)gLaneLengthPtrs[row + gTrackId * 12];
 }
 
 void PlaceCarsAlongLane(struct Car **carOrder, s32 unused1, s32 unused2, s32 spacing, u8 singleLane)
@@ -224,8 +227,8 @@ void PlaceCarsAlongLane(struct Car **carOrder, s32 unused1, s32 unused2, s32 spa
     car = *carOrder;
     car->speed = 0;
     UpdateCarPredictedPos(car);
-    car->unk18 = car->posX;
-    car->unk1C = car->posZ;
+    car->predictedPosX = car->posX;
+    car->predictedPosZ = car->posZ;
     if (FindClosestLaneSegment(car, 0) == -1)
         return;
     dist = WorldToLaneDistance(*(s32 *)&gClosestLanePointX, *(s32 *)&gClosestLanePointZ, car->lanePoints,

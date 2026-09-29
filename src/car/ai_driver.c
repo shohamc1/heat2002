@@ -4,47 +4,20 @@
 #include "data.h"
 #include "functions.h"
 
-struct Unk0800C28C
-{
-    u32 posX;
-    u32 unk04;
-    u32 posZ;
-    u32 velX;
-    u32 unk10;
-    u32 velZ;
-    u32 unk18;
-    u32 unk1C;
-    s32 unk20;
-    u32 unk24;
-    u32 unk28;
-    s32 speed;
-};
-struct Unk0800C358
-{
-    u8 unk00[0x18];
-    s32 unk18;
-    s32 unk1C;
-    u8 unk20[0xD4];
-    const u16 *lanePoints;
-    const struct LaneSeg *laneSegments;
-    u32 *unkFC;
-    u16 *unk100;
-};
-
 void SetAiDriverGearTables(struct Car *car);
 void FindCarAhead(struct Car *car);
-u32 FindClosestLaneSegment(struct Unk0800C358 *car);
-void UpdateCarPredictedPos(struct Unk0800C28C *car);
+u32 FindClosestLaneSegment(struct Car *car);
+void UpdateCarPredictedPos(struct Car *car);
 s32 Atan2(s32 a, s32 b);
 
-void UpdateCarPredictedPos(struct Unk0800C28C *car)
+void UpdateCarPredictedPos(struct Car *car)
 {
     if (car->speed > (s32)0xFFFF0000) {
-        car->unk18 = car->posX;
-        car->unk1C = car->posZ;
+        car->predictedPosX = car->posX;
+        car->predictedPosZ = car->posZ;
     } else {
-        car->unk18 = car->posX + car->velX * 8 + car->velX * 4 + car->velX * 2;
-        car->unk1C = car->posZ + car->velZ * 8 + car->velZ * 4 + car->velX * 2;
+        car->predictedPosX = car->posX + car->velX * 8 + car->velX * 4 + car->velX * 2;
+        car->predictedPosZ = car->posZ + car->velZ * 8 + car->velZ * 4 + car->velX * 2;
     }
 }
 
@@ -83,7 +56,7 @@ u32 ComputeLaneSegmentDistSq(s32 posX, s32 posZ, const u16 *points, const struct
     return proj;
 }
 
-u32 FindClosestLaneSegment(struct Unk0800C358 *car)
+u32 FindClosestLaneSegment(struct Car *car)
 {
     const struct LaneSeg *segments;
     const u16 *points;
@@ -103,10 +76,10 @@ u32 FindClosestLaneSegment(struct Unk0800C358 *car)
     points = car->lanePoints;
     bestDist = -1;
     gClosestLaneSegment[0] = seg;
-    carX = car->unk18 >> 16;
-    carZ = car->unk1C >> 16;
-    cellX = car->unk18 >> 23;
-    cellZ = car->unk1C >> 23;
+    carX = car->predictedPosX >> 16;
+    carZ = car->predictedPosZ >> 16;
+    cellX = car->predictedPosX >> 23;
+    cellZ = car->predictedPosZ >> 23;
     if (cellX < 0)
         cellX = 0;
     if (cellZ < 0)
@@ -116,7 +89,7 @@ u32 FindClosestLaneSegment(struct Unk0800C358 *car)
     if (cellZ > 47)
         cellZ = 47;
     /* Offset first preserves the ROM register and address-load order. */
-    cell = (u8 *)(car->unk100[cellZ * 48 + cellX] + (u32)car->unkFC);
+    cell = (u8 *)(((u16 *)car->laneCellGrid)[cellZ * 48 + cellX] + car->laneCellLists);
     while (*cell != 0xFF) {
         segIdx = *cell;
         seg = segments + segIdx;
@@ -257,7 +230,7 @@ void UpdateAiDriver(struct Car *ent, u8 param)
             }
         }
     }
-    ((void (*)(struct Car *))UpdateCarPredictedPos)(ent);
+    UpdateCarPredictedPos(ent);
     result = ((s32 (*)(u32, u32))FindClosestLaneSegment)((u32)ent, param);
     if (result == -1)
         return;
