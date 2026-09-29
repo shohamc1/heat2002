@@ -2,23 +2,24 @@
 #include "functions.h"
 #include "variables.h"
 
-struct Unk08341A30Ent
+struct ObjTileCacheEntry
 {
-    u32 field_00;
-    u32 field_04;
-    u32 field_08;
-    u32 field_0C;
-    u32 field_10;
+    u32 age;
+    u8 pending;
+    u8 unk05[3];
+    u32 gfx;
+    u32 vramDest;
+    u32 tileIndex;
 };
 
-struct Unk08341A30Ent *ModuleRequestObjTiles4(u32 a);
+struct ObjTileCacheEntry *ModuleRequestObjTiles4(u32 a);
 u32 ModuleRequestObjPalette(u32 a);
 void ModuleAddOamEntry(u32 a, u32 b);
 
 void ModuleDrawLinkMarker(u32 x, u32 y, u32 carIdx)
 {
     u32 *frames;
-    struct Unk08341A30Ent *sprite;
+    struct ObjTileCacheEntry *sprite;
     u32 attr2;
 
     frames = gUnk_0202772C[carIdx];
@@ -29,7 +30,7 @@ void ModuleDrawLinkMarker(u32 x, u32 y, u32 carIdx)
     sprite = ModuleRequestObjTiles4(*frames);
     if (sprite == 0)
         return;
-    attr2 = sprite->field_10;
+    attr2 = sprite->tileIndex;
     attr2 |= (ModuleRequestObjPalette((u32 *)gUnk_020243E8) << 24) >> 12;
     ModuleAddOamEntry(y, attr2);
 }

@@ -1,34 +1,35 @@
 #include "global.h"
 #include "variables.h"
 
-struct SoundSlot0833F
+struct ObjTileCacheEntry
 {
-    /* +0x00 */ u32 unk00;
-    /* +0x04 */ u8 unk04;
+    /* +0x00 */ u32 age;
+    /* +0x04 */ u8 pending;
     /* +0x05 */ u8 unk05[3];
-    /* +0x08 */ void *unk08;
-    /* +0x0C */ u8 unk0C[8];
+    /* +0x08 */ void *gfx;
+    /* +0x0C */ u32 vramDest;
+    /* +0x10 */ u32 tileIndex;
 };
 
-struct SoundSlot0833F *ModuleRequestObjTiles16(void *gfx)
+struct ObjTileCacheEntry *ModuleRequestObjTiles16(void *gfx)
 {
-    struct SoundSlot0833F *entry;
+    struct ObjTileCacheEntry *entry;
     u32 i;
 
-    entry = (struct SoundSlot0833F *)gModule_ObjTileCache16;
+    entry = (struct ObjTileCacheEntry *)gModule_ObjTileCache16;
     for (i = 0; i != 0x18; i++, entry++) {
-        if (entry->unk08 == gfx) {
-            entry->unk00 = 1;
+        if (entry->gfx == gfx) {
+            entry->age = 1;
             return entry;
         }
     }
 
-    entry = (struct SoundSlot0833F *)gModule_ObjTileCache16;
+    entry = (struct ObjTileCacheEntry *)gModule_ObjTileCache16;
     for (i = 0; i != 0x18; i++, entry++) {
-        if (entry->unk00 == 0) {
-            entry->unk00 = 1;
-            entry->unk04 = 1;
-            entry->unk08 = gfx;
+        if (entry->age == 0) {
+            entry->age = 1;
+            entry->pending = 1;
+            entry->gfx = gfx;
             return entry;
         }
     }
@@ -36,25 +37,25 @@ struct SoundSlot0833F *ModuleRequestObjTiles16(void *gfx)
     return 0;
 }
 
-struct SoundSlot0833F *ModuleRequestObjTiles2(void *gfx)
+struct ObjTileCacheEntry *ModuleRequestObjTiles2(void *gfx)
 {
-    struct SoundSlot0833F *entry;
+    struct ObjTileCacheEntry *entry;
     u32 i;
 
-    entry = (struct SoundSlot0833F *)gModule_ObjTileCache2;
+    entry = (struct ObjTileCacheEntry *)gModule_ObjTileCache2;
     for (i = 0; i != 0x20; i++, entry++) {
-        if (entry->unk08 == gfx) {
-            entry->unk00 = 1;
+        if (entry->gfx == gfx) {
+            entry->age = 1;
             return entry;
         }
     }
 
-    entry = (struct SoundSlot0833F *)gModule_ObjTileCache2;
+    entry = (struct ObjTileCacheEntry *)gModule_ObjTileCache2;
     for (i = 0; i != 0x20; i++, entry++) {
-        if (entry->unk00 == 0) {
-            entry->unk00 = 1;
-            entry->unk04 = 1;
-            entry->unk08 = gfx;
+        if (entry->age == 0) {
+            entry->age = 1;
+            entry->pending = 1;
+            entry->gfx = gfx;
             return entry;
         }
     }
@@ -62,25 +63,25 @@ struct SoundSlot0833F *ModuleRequestObjTiles2(void *gfx)
     return 0;
 }
 
-struct SoundSlot0833F *ModuleRequestObjTiles8(void *gfx)
+struct ObjTileCacheEntry *ModuleRequestObjTiles8(void *gfx)
 {
-    struct SoundSlot0833F *entry;
+    struct ObjTileCacheEntry *entry;
     u32 i;
 
-    entry = (struct SoundSlot0833F *)gModule_ObjTileCache8;
+    entry = (struct ObjTileCacheEntry *)gModule_ObjTileCache8;
     for (i = 0; i != 0x14; i++, entry++) {
-        if (entry->unk08 == gfx) {
-            entry->unk00 = 1;
+        if (entry->gfx == gfx) {
+            entry->age = 1;
             return entry;
         }
     }
 
-    entry = (struct SoundSlot0833F *)gModule_ObjTileCache8;
+    entry = (struct ObjTileCacheEntry *)gModule_ObjTileCache8;
     for (i = 0; i != 0x14; i++, entry++) {
-        if (entry->unk00 == 0) {
-            entry->unk00 = 1;
-            entry->unk04 = 1;
-            entry->unk08 = gfx;
+        if (entry->age == 0) {
+            entry->age = 1;
+            entry->pending = 1;
+            entry->gfx = gfx;
             return entry;
         }
     }
@@ -88,25 +89,25 @@ struct SoundSlot0833F *ModuleRequestObjTiles8(void *gfx)
     return 0;
 }
 
-struct SoundSlot0833F *ModuleRequestObjTiles4(void *gfx)
+struct ObjTileCacheEntry *ModuleRequestObjTiles4(void *gfx)
 {
-    struct SoundSlot0833F *entry;
+    struct ObjTileCacheEntry *entry;
     u32 i;
 
-    entry = (struct SoundSlot0833F *)gModule_ObjTileCache4;
+    entry = (struct ObjTileCacheEntry *)gModule_ObjTileCache4;
     for (i = 0; i != 0x10; i++, entry++) {
-        if (entry->unk08 == gfx) {
-            entry->unk00 = 1;
+        if (entry->gfx == gfx) {
+            entry->age = 1;
             return entry;
         }
     }
 
-    entry = (struct SoundSlot0833F *)gModule_ObjTileCache4;
+    entry = (struct ObjTileCacheEntry *)gModule_ObjTileCache4;
     for (i = 0; i != 0x10; i++, entry++) {
-        if (entry->unk00 == 0) {
-            entry->unk00 = 1;
-            entry->unk04 = 1;
-            entry->unk08 = gfx;
+        if (entry->age == 0) {
+            entry->age = 1;
+            entry->pending = 1;
+            entry->gfx = gfx;
             return entry;
         }
     }
@@ -114,25 +115,25 @@ struct SoundSlot0833F *ModuleRequestObjTiles4(void *gfx)
     return 0;
 }
 
-struct SoundSlot0833F *ModuleRequestObjTiles1(void *gfx)
+struct ObjTileCacheEntry *ModuleRequestObjTiles1(void *gfx)
 {
-    struct SoundSlot0833F *entry;
+    struct ObjTileCacheEntry *entry;
     u32 i;
 
-    entry = (struct SoundSlot0833F *)gModule_ObjTileCache1;
+    entry = (struct ObjTileCacheEntry *)gModule_ObjTileCache1;
     for (i = 0; i != 0x20; i++, entry++) {
-        if (entry->unk08 == gfx) {
-            entry->unk00 = 1;
+        if (entry->gfx == gfx) {
+            entry->age = 1;
             return entry;
         }
     }
 
-    entry = (struct SoundSlot0833F *)gModule_ObjTileCache1;
+    entry = (struct ObjTileCacheEntry *)gModule_ObjTileCache1;
     for (i = 0; i != 0x20; i++, entry++) {
-        if (entry->unk00 == 0) {
-            entry->unk00 = 1;
-            entry->unk04 = 1;
-            entry->unk08 = gfx;
+        if (entry->age == 0) {
+            entry->age = 1;
+            entry->pending = 1;
+            entry->gfx = gfx;
             return entry;
         }
     }

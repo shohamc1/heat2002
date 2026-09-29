@@ -1,23 +1,24 @@
 #include "global.h"
 #include "variables.h"
 
-struct OamInit
+struct ObjTileCacheEntry
 {
-    u32 f0;
-    u8 f4;
-    u8 f5;
-    u8 f6;
-    u8 f7;
-    u32 f8;
-    u32 fC;
-    u32 f10;
+    u32 age;
+    u8 pending;
+    u8 unk05;
+    u8 unk06;
+    u8 unk07;
+    u32 gfx;
+    u32 vramDest;
+    u32 tileIndex; /* OAM attr2 base: tile number, OR'd with palette/priority at each use */
 };
-struct Unk0833C270
+struct ObjPaletteCacheEntry
 {
-    u8 field_00;
-    u8 field_01;
-    u32 field_04;
-    u32 field_08;
+    u8 age;
+    u8 pending;
+    u8 pad02;
+    u32 palette;
+    u32 palDest;
 };
 extern u8 gUnk_020269C4[];
 extern u8 gUnk_020269CC[];
@@ -26,24 +27,24 @@ extern u8 gUnk_02026A3C[];
 extern u8 gUnk_02026A64[];
 extern u8 gUnk_02026A84[];
 
-void ModuleInitObjPaletteCacheEntry(struct Unk0833C270 *entry)
+void ModuleInitObjPaletteCacheEntry(struct ObjPaletteCacheEntry *entry)
 {
-    entry->field_04 = 0xFFFF;
-    entry->field_00 = 0;
-    entry->field_01 = 0;
+    entry->palette = 0xFFFF;
+    entry->age = 0;
+    entry->pending = 0;
 }
 
-void ModuleInitObjTileCache(u32 count, u16 *tiles, struct OamInit *entries)
+void ModuleInitObjTileCache(u32 count, u16 *tiles, struct ObjTileCacheEntry *entries)
 {
     u32 i;
 
     for (i = 0; i != count; i++, entries++, tiles++) {
-        entries->f8 = 0xFFFF;
-        entries->f0 = 0;
-        entries->f4 = 0;
-        entries->f10 = *tiles;
-        entries->fC = (*tiles << 5) + 0x06010000;
-        entries->f6 = 0;
+        entries->gfx = 0xFFFF;
+        entries->age = 0;
+        entries->pending = 0;
+        entries->tileIndex = *tiles;
+        entries->vramDest = (*tiles << 5) + 0x06010000;
+        entries->unk06 = 0;
     }
 }
 
@@ -51,7 +52,7 @@ void ModuleInitGfxCaches(void)
 {
     u32 i;
     u32 color;
-    struct Unk0833C270 *entry;
+    struct ObjPaletteCacheEntry *entry;
     u16 *src;
     void *dest;
 
@@ -76,10 +77,10 @@ void ModuleInitGfxCaches(void)
 
     i = 0;
     color = 0x05000200;
-    entry = (struct Unk0833C270 *)gUnk_0203C270;
+    entry = (struct ObjPaletteCacheEntry *)gUnk_0203C270;
     do {
         ModuleInitObjPaletteCacheEntry(entry);
-        entry->field_08 = color;
+        entry->palDest = color;
         color += 0x20;
         entry++;
         i++;

@@ -2,14 +2,14 @@
 #include "variables.h"
 #include "functions.h"
 
-struct Unk0833E528Ent
+struct ObjTileCacheEntry
 {
-    u32 field_00;
-    u8 field_04;
-    u8 field_05[3];
-    void *field_08;
-    u8 field_0C[4];
-    u32 field_10;
+    u32 age;
+    u8 pending;
+    u8 unk05[3];
+    void *gfx;
+    u32 vramDest;
+    u32 tileIndex;
 };
 struct Car
 {
@@ -21,7 +21,7 @@ struct Car
 };
 
 extern u32 gUnk_02024EE8[];
-struct Unk0833E528Ent *ModuleRequestObjTiles16(void *a, u16 *b);
+struct ObjTileCacheEntry *ModuleRequestObjTiles16(void *a, u16 *b);
 u32 ModuleRequestObjPalette(u32 a);
 void ModuleAddOamEntry(u32 a, u32 b);
 extern u8 gModule_PitStopNeeded[];
@@ -43,7 +43,7 @@ extern u8 gUnk_0203B6A4;
 void ModuleDrawSpeedNeedle(u32 speed)
 {
     u16 pos[2];
-    struct Unk0833E528Ent *entry;
+    struct ObjTileCacheEntry *entry;
     u32 attr;
     u32 tileAttr;
 
@@ -54,7 +54,7 @@ void ModuleDrawSpeedNeedle(u32 speed)
         attr = pos[1] & 0xFF;
         attr |= (pos[0] & 0x1FF) << 16;
         attr |= 0x80000000;
-        tileAttr = entry->field_10 | ((ModuleRequestObjPalette((u32 *)gUnk_02024F50) << 24) >> 12);
+        tileAttr = entry->tileIndex | ((ModuleRequestObjPalette((u32 *)gUnk_02024F50) << 24) >> 12);
         attr |= 0x100;
         ModuleAddOamEntry(attr, tileAttr);
     }
@@ -97,7 +97,7 @@ void ModuleDrawLowFuelWarning(s32 fuel)
         attr = pos[1] & 0xFF;
         attr |= (pos[0] & 0x1FF) << 16;
         attr |= 0x40000000;
-        tileAttr = *(u32 *)(entry + 0x10) | (((u32)ModuleRequestObjPalette((u32)gUnk_02024F50) << 24) >> 12);
+        tileAttr = ((struct ObjTileCacheEntry *)entry)->tileIndex | (((u32)ModuleRequestObjPalette((u32)gUnk_02024F50) << 24) >> 12);
         ModuleAddOamEntry(attr | 0x02000100, tileAttr);
     }
     gUnk_0203B828 = ((fuel >> 16) + 0xBE) & 0xFF;

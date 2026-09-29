@@ -4,6 +4,12 @@
 #include "data.h"
 #include "m4a.h"
 
+struct ObjTileCacheEntry
+{
+    u8 pad00[0x10]; /* age, pending, unk05-07, gfx, vramDest */
+    u32 tileIndex;  /* OAM attr2 base: tile number, OR'd with palette/priority at each use */
+};
+
 struct Car
 {
     u8 pad00[0x8C];
@@ -38,7 +44,7 @@ void DrawSpeedNeedle(u32 speed)
     entry = RequestObjTiles16((u32)gUnk_08338720);
     if (entry != 0) {
         attr = (pos[1] & 0xFF) | ((pos[0] & 0x1FF) << 16) | 0x80000000;
-        tileAttr = *(u32 *)((u32)entry + 0x10) | ((u8)RequestObjPalette((u32)gHudWarningIconPalette) << 12);
+        tileAttr = ((struct ObjTileCacheEntry *)entry)->tileIndex | ((u8)RequestObjPalette((u32)gHudWarningIconPalette) << 12);
         attr |= 0x100;
         AddOamEntry(attr, tileAttr);
     }
@@ -81,7 +87,7 @@ void DrawLowFuelWarning(s32 fuel)
         attr = pos[1] & 0xFF;
         attr |= (pos[0] & 0x1FF) << 16;
         attr |= 0x40000000;
-        tileAttr = *(u32 *)(entry + 0x10) | (((u32)RequestObjPalette((u32)gHudWarningIconPalette) << 24) >> 12);
+        tileAttr = ((struct ObjTileCacheEntry *)entry)->tileIndex | (((u32)RequestObjPalette((u32)gHudWarningIconPalette) << 24) >> 12);
         AddOamEntry(attr | 0x02000100, tileAttr);
     }
     gUnk_02025398 = ((fuel >> 16) + 0xBE) & 0xFF;

@@ -1,33 +1,35 @@
 #include "global.h"
 #include "data.h"
 
-struct Entry
+struct BigDigitGlyphRow
 {
-    u16 a;
-    u16 b;
+    u16 topLeft;
+    u16 topRight;
 };
 
-struct Unk
+/* One big digit's 2x2 glyph block: the bottom row sits one font-grid row
+   (0x88 bytes) below the top row. */
+struct BigDigitGlyph
 {
-    u16 a;
-    u16 b;
-    u8 pad[0x84];
-    u16 c;
-    u16 d;
+    u16 topLeft;
+    u16 topRight;
+    u8 pad04[0x88 - 0x04];
+    u16 bottomLeft;
+    u16 bottomRight;
 };
 
-extern struct Entry gBigDigitGlyphs[];
+extern struct BigDigitGlyphRow gBigDigitGlyphs[];
 
 extern u16 gSmallDigitGlyphs[];
 
 void DrawBigDigit(u16 *dest, u8 idx)
 {
-    struct Unk *e = (struct Unk *)&gBigDigitGlyphs[idx];
+    struct BigDigitGlyph *e = (struct BigDigitGlyph *)&gBigDigitGlyphs[idx];
 
-    dest[0] = gFontTileEntries[e->a] | 0xE000;
-    dest[1] = gFontTileEntries[e->b] | 0xE000;
-    dest[0x20] = gFontTileEntries[e->c] | 0xE000;
-    dest[0x21] = 0xE000 | gFontTileEntries[e->d];
+    dest[0] = gFontTileEntries[e->topLeft] | 0xE000;
+    dest[1] = gFontTileEntries[e->topRight] | 0xE000;
+    dest[0x20] = gFontTileEntries[e->bottomLeft] | 0xE000;
+    dest[0x21] = 0xE000 | gFontTileEntries[e->bottomRight];
 }
 
 void DrawSmallDigit(u16 *dest, u8 idx)

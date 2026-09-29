@@ -2,19 +2,12 @@
 #include "variables.h"
 #include "functions.h"
 
-struct Unk
+struct DepthSortedSprite
 {
-    u32 a;
-    u32 b;
-    u16 c;
-    u16 d;
-};
-struct Unk0833D848
-{
-    u32 a;
-    u32 b;
-    u16 c;
-    u16 d;
+    u32 attr01;
+    u32 attr2;
+    u16 depth;
+    u16 pad0A;
 };
 typedef struct
 {
@@ -63,7 +56,7 @@ restart:
     do {
         x = gUnk_0203B610[i];
         y = gUnk_0203B610[i + 1];
-        if (((struct Unk *)gUnk_0203B0F0)[x].c < ((struct Unk *)gUnk_0203B0F0)[y].c) {
+        if (((struct DepthSortedSprite *)gModule_DepthSortedSprites)[x].depth < ((struct DepthSortedSprite *)gModule_DepthSortedSprites)[y].depth) {
             gUnk_0203B610[i] = y;
             gUnk_0203B610[i + 1] = x;
             swapped = 1;
@@ -79,7 +72,7 @@ void ModuleFlushSortedSprites(void)
     u32 *spritePtr;
     u32 *oamPtr;
     u16 *orderPtr;
-    struct Unk0833D848 *entry;
+    struct DepthSortedSprite *entry;
     u32 i;
 
     i = gUnk_0203ACD4;
@@ -94,11 +87,11 @@ void ModuleFlushSortedSprites(void)
     ModuleSortSpritesByDepth();
     orderPtr = gUnk_0203B610;
     for (i = 0; i != gUnk_0203ACD4; i++) {
-        entry = &gUnk_0203B0F0[*orderPtr];
-        if (entry->b != 0xFFFFFFFF) {
+        entry = &gModule_DepthSortedSprites[*orderPtr];
+        if (entry->attr2 != 0xFFFFFFFF) {
             oamPtr = gUnk_0203ACD8;
-            oamPtr[0] = entry->a;
-            oamPtr[1] = entry->b;
+            oamPtr[0] = entry->attr01;
+            oamPtr[1] = entry->attr2;
             gUnk_0203ACD8 = oamPtr + 2;
         }
         orderPtr++;

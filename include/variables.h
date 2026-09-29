@@ -14,7 +14,7 @@ struct CommRegs;
 struct MusicPlayerInfo;
 struct SoundInfo;
 struct Pt;
-struct Unk0833D848;
+struct DepthSortedSprite;
 struct WallRec;
 
 // Main program
@@ -114,7 +114,7 @@ extern s32 gUnk_02000480;
 extern u32 gUnk_0202A3F0[];
 extern u8 gPitStallOccupied[];
 extern u8 gTrackSelectFrameCount;
-extern u8 gUnk_02024C40[];
+extern u8 gDepthSortedSprites[];
 extern u32 gClosestLanePointX[];
 extern u8 gFrontTireGripFast;
 extern u8 gTireGripSlow;
@@ -351,7 +351,7 @@ extern u8 gUnk_0203DD10;
 extern u32 gUnk_0203C380;
 extern u32 gUnk_0203DE24;
 extern s32 gModule_TireContactVelX;
-extern struct Unk0833D848 gUnk_0203B0F0[];
+extern struct DepthSortedSprite gModule_DepthSortedSprites[];
 extern u32 gUnk_0203C270[];
 extern u32 gUnk_02039260;
 extern s32 gUnk_020375A4;

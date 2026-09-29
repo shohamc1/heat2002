@@ -64,8 +64,8 @@ gUnk_02021394:
 	.global gUnk_02021594
 gUnk_02021594:
 	.incbin "build/assets/unknown/data_0835A014.bin"
-	.global gUnk_020215AA
-gUnk_020215AA:
+	.global gModule_BigDigitGlyphs
+gModule_BigDigitGlyphs:
 	.incbin "build/assets/unknown/data_0835A02A.bin"
 	.global gUnk_020215D2
 gUnk_020215D2:

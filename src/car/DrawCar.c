@@ -3,10 +3,10 @@
 #include "functions.h"
 #include "variables.h"
 
-struct Thing
+struct ObjTileCacheEntry
 {
-    u8 pad00[0x10];
-    u32 unk10;
+    u8 pad00[0x10]; /* age, pending, unk05-07, gfx, vramDest */
+    u32 tileIndex;
 };
 
 struct Car
@@ -31,14 +31,14 @@ extern const u32 *const gDriverNumberFrameLists[];
 extern u8 gDriverNumberPalette[];
 
 u32 AddDepthSortedSprite(u32 a, u32 b, u16 c);
-struct Thing *RequestObjTiles2(u32 a);
-struct Thing *RequestObjTiles8(u32 a);
+struct ObjTileCacheEntry *RequestObjTiles2(u32 a);
+struct ObjTileCacheEntry *RequestObjTiles8(u32 a);
 u32 WorldToScreen(s32 x, s32 y, s32 *out);
 
 void DrawCar(struct Car *car, u8 idx)
 {
     s32 pos[2];
-    struct Thing *t;
+    struct ObjTileCacheEntry *t;
     u32 t5;
     u16 y;
     u8 flip;
@@ -67,11 +67,11 @@ void DrawCar(struct Car *car, u8 idx)
     if (flip == 0) {
         t = RequestObjTiles8(gDriverCarSpriteHalfATables[car->driverId][k]);
         if (t != NULL) {
-            AddDepthSortedSprite((pos[1] & 0xFF) | ((pos[0] & 0x1FF) << 16) | 0x80008000, t->unk10 | t5, y + 0x40);
+            AddDepthSortedSprite((pos[1] & 0xFF) | ((pos[0] & 0x1FF) << 16) | 0x80008000, t->tileIndex | t5, y + 0x40);
         }
         t = RequestObjTiles16(gDriverCarSpriteHalfBTables[car->driverId][k]);
         if (t != NULL) {
-            AddDepthSortedSprite((pos[1] & 0xFF) | (((pos[0] + 0x10) & 0x1FF) << 16) | 0x80000000, t->unk10 | t5,
+            AddDepthSortedSprite((pos[1] & 0xFF) | (((pos[0] + 0x10) & 0x1FF) << 16) | 0x80000000, t->tileIndex | t5,
                                  y + 0x40);
         }
     } else {
@@ -85,14 +85,14 @@ void DrawCar(struct Car *car, u8 idx)
         t = RequestObjTiles16(tbl[*p162][k]);
         if (t != NULL) {
             a = (pos[1] & 0xFF) | ((pos[0] & 0x1FF) << 16) | 0x80000000;
-            b = t->unk10 | t5;
+            b = t->tileIndex | t5;
             a |= 0x10000000;
             AddDepthSortedSprite(a, b, y + 0x40);
         }
         t = RequestObjTiles8(gDriverCarSpriteHalfATables[*p162][k]);
         if (t != NULL) {
             a = (pos[1] & 0xFF) | (((pos[0] + 0x20) & 0x1FF) << 16) | 0x80008000;
-            b = t->unk10 | t5;
+            b = t->tileIndex | t5;
             a |= 0x10000000;
             AddDepthSortedSprite(a, b, y + 0x40);
         }
@@ -106,7 +106,7 @@ void DrawCar(struct Car *car, u8 idx)
         t = RequestObjTiles4(*row);
         if (t == NULL)
             return;
-        t5 = t->unk10 | 0x400;
+        t5 = t->tileIndex | 0x400;
         t5 |= (u32)(RequestObjPalette((u32)gLinkMarkerPalette) << 24) >> 12;
         AddDepthSortedSprite(k, t5, y + 0x40);
     } else {
@@ -117,7 +117,7 @@ void DrawCar(struct Car *car, u8 idx)
         t = RequestObjTiles2(*row);
         if (t == NULL)
             return;
-        t5 = t->unk10 | 0x400;
+        t5 = t->tileIndex | 0x400;
         t5 |= (u32)(RequestObjPalette((u32)gDriverNumberPalette) << 24) >> 12;
         AddDepthSortedSprite(k, t5, y + 0x40);
     }

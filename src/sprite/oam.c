@@ -2,11 +2,12 @@
 #include "gba/defines.h"
 #include "variables.h"
 
-struct UnkStruct080044DC
+struct DepthSortedSprite
 {
-    u32 unk0;
-    u32 unk4;
-    u16 unk8;
+    u32 attr01;
+    u32 attr2;
+    u16 depth;
+    u16 pad0A;
 };
 
 void ResetSpriteQueues(void);
@@ -54,13 +55,13 @@ u32 AddOamEntry(u32 a, u32 b)
 
 u32 AddDepthSortedSprite(u32 arg0, u32 arg1, u16 arg2)
 {
-    struct UnkStruct080044DC *r3 = *(struct UnkStruct080044DC **)&gUnk_02024820;
+    struct DepthSortedSprite *r3 = *(struct DepthSortedSprite **)&gUnk_02024820;
     u32 r;
 
-    r3->unk0 = arg0;
-    r3->unk4 = arg1;
-    r3->unk8 = arg2;
-    *(struct UnkStruct080044DC **)&gUnk_02024820 = r3 + 1;
+    r3->attr01 = arg0;
+    r3->attr2 = arg1;
+    r3->depth = arg2;
+    *(struct DepthSortedSprite **)&gUnk_02024820 = r3 + 1;
     r = gUnk_02024824 + 1;
     gUnk_02024824 = r;
     return r;

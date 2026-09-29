@@ -1,30 +1,32 @@
 #include "global.h"
 #include "variables.h"
 
-struct Entry
+struct BigDigitGlyphRow
 {
-    u16 a;
-    u16 b;
+    u16 topLeft;
+    u16 topRight;
 };
-struct Unk
+/* One big digit's 2x2 glyph block: the bottom row sits one font-grid row
+   (0x88 bytes) below the top row. */
+struct BigDigitGlyph
 {
-    u16 a;
-    u16 b;
-    u8 pad[0x84];
-    u16 c;
-    u16 d;
+    u16 topLeft;
+    u16 topRight;
+    u8 pad04[0x88 - 0x04];
+    u16 bottomLeft;
+    u16 bottomRight;
 };
-extern struct Entry gUnk_020215AA[];
+extern struct BigDigitGlyphRow gModule_BigDigitGlyphs[];
 extern u16 gUnk_020215D2[];
 
 void ModuleDrawBigDigit(u16 *dest, u8 idx)
 {
-    struct Unk *e = (struct Unk *)&gUnk_020215AA[idx];
+    struct BigDigitGlyph *e = (struct BigDigitGlyph *)&gModule_BigDigitGlyphs[idx];
 
-    dest[0] = gModule_FontTileEntries[e->a] | 0xE000;
-    dest[1] = gModule_FontTileEntries[e->b] | 0xE000;
-    dest[0x20] = gModule_FontTileEntries[e->c] | 0xE000;
-    dest[0x21] = 0xE000 | gModule_FontTileEntries[e->d];
+    dest[0] = gModule_FontTileEntries[e->topLeft] | 0xE000;
+    dest[1] = gModule_FontTileEntries[e->topRight] | 0xE000;
+    dest[0x20] = gModule_FontTileEntries[e->bottomLeft] | 0xE000;
+    dest[0x21] = 0xE000 | gModule_FontTileEntries[e->bottomRight];
 }
 
 void ModuleDrawSmallDigit(u16 *dest, s32 idx)

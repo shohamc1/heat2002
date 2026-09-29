@@ -47,8 +47,8 @@ outer:
     do {
         a = gSpriteOrderTable[i];
         b = gSpriteOrderTable[i + 1];
-        ea = gUnk_02024C40 + a * 12;
-        eb = gUnk_02024C40 + b * 12;
+        ea = gDepthSortedSprites + a * 12;
+        eb = gDepthSortedSprites + b * 12;
         if (*(u16 *)(ea + 8) < *(u16 *)(eb + 8)) {
             gSpriteOrderTable[i] = b;
             gSpriteOrderTable[i + 1] = a;
@@ -78,7 +78,7 @@ void FlushSortedSprites(void)
     SortSpritesByDepth();
     tbl = gSpriteOrderTable;
     for (i = 0; i != gUnk_02024824; tbl++, i++) {
-        base = (u32)gUnk_02024C40;
+        base = (u32)gDepthSortedSprites;
         e = base + *tbl * 12;
         if (*(s32 *)(e + 4) != -1) {
             p = gUnk_02024828;

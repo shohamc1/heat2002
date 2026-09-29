@@ -4,24 +4,24 @@
 #include "functions.h"
 #include "gba/syscall.h"
 
-struct Unk080072F4
+struct ObjPaletteCacheEntry
 {
-    u8 a;
-    u8 b;
-    u16 c;
-    u32 d;
-    u32 e;
+    u8 age;
+    u8 pending;
+    u8 pad02;
+    u32 palette;
+    u32 palDest;
 };
-struct unk_07304
+struct ObjTileCacheEntry
 {
-    u32 f0;
-    u8 f4;
-    u8 f5;
-    u8 f6;
-    u8 f7;
-    u32 f8;
-    u32 fC;
-    u32 f10;
+    u32 age;
+    u8 pending;
+    u8 unk05;
+    u8 unk06;
+    u8 unk07;
+    u32 gfx;
+    u32 vramDest;
+    u32 tileIndex; /* OAM attr2 base: tile number, OR'd with palette/priority at each use */
 };
 
 extern u16 gObjTileCache64Tiles[];
@@ -33,14 +33,14 @@ extern u16 gObjTileCache1Tiles[];
 extern s32 gObjPalBytesCopiedThisFrame;
 extern s32 gObjPalBytesPeak;
 
-void InitObjPaletteCacheEntry(struct Unk080072F4 *entry)
+void InitObjPaletteCacheEntry(struct ObjPaletteCacheEntry *entry)
 {
-    entry->d = 0xFFFF;
-    entry->a = 0;
-    entry->b = 0;
+    entry->palette = 0xFFFF;
+    entry->age = 0;
+    entry->pending = 0;
 }
 
-void InitObjTileCache(u32 count, u16 *tiles, struct unk_07304 *entries)
+void InitObjTileCache(u32 count, u16 *tiles, struct ObjTileCacheEntry *entries)
 {
     u32 i;
     u32 tile;
@@ -49,13 +49,13 @@ void InitObjTileCache(u32 count, u16 *tiles, struct unk_07304 *entries)
     if (i != count) {
         register u32 f asm("r12") = 0xFFFF;
         do {
-            entries->f8 = f;
-            entries->f0 = 0;
-            entries->f4 = 0;
-            entries->f10 = *tiles;
+            entries->gfx = f;
+            entries->age = 0;
+            entries->pending = 0;
+            entries->tileIndex = *tiles;
             tile = *tiles;
-            entries->fC = OBJ_VRAM0 + (tile << 5);
-            entries->f6 = 0;
+            entries->vramDest = OBJ_VRAM0 + (tile << 5);
+            entries->unk06 = 0;
             i++;
             entries++;
             tiles++;
@@ -67,7 +67,7 @@ void InitGfxCaches(void)
 {
     u32 i;
     u32 color;
-    struct Unk080072F4 *q;
+    struct ObjPaletteCacheEntry *q;
 
     {
         u16 *b = gObjTileCache64Tiles;
@@ -101,10 +101,10 @@ void InitGfxCaches(void)
     }
     i = 0;
     color = OBJ_PLTT;
-    q = (struct Unk080072F4 *)gObjPaletteCache;
+    q = (struct ObjPaletteCacheEntry *)gObjPaletteCache;
     for (; i != 0x10; q++, i++) {
         InitObjPaletteCacheEntry(q);
-        q->e = color;
+        q->palDest = color;
         color += 0x20;
     }
 }
@@ -388,7 +388,7 @@ void UploadPendingGfx(void)
     u8 *p;
     u32 i;
     s32 src;
-    s32 len;
+    s32 dest;
     s32 *q;
 
     gObjPalBytesCopiedThisFrame = 0;
@@ -396,11 +396,11 @@ void UploadPendingGfx(void)
     p = (u8 *)gObjTileCache64;
     i = 0;
     do {
-        if (p[4] != 0) {
-            src = *(s32 *)(p + 8);
-            len = *(s32 *)(p + 0xC);
-            RLUnCompVram(src, len);
-            p[4] = 0;
+        if (((struct ObjTileCacheEntry *)p)->pending != 0) {
+            src = ((struct ObjTileCacheEntry *)p)->gfx;
+            dest = ((struct ObjTileCacheEntry *)p)->vramDest;
+            RLUnCompVram(src, dest);
+            ((struct ObjTileCacheEntry *)p)->pending = 0;
         }
         i++;
         p += 0x14;
@@ -409,11 +409,11 @@ void UploadPendingGfx(void)
     p = (u8 *)gObjTileCache16;
     i = 0;
     do {
-        if (p[4] != 0) {
-            src = *(s32 *)(p + 8);
-            len = *(s32 *)(p + 0xC);
-            RLUnCompVram(src, len);
-            p[4] = 0;
+        if (((struct ObjTileCacheEntry *)p)->pending != 0) {
+            src = ((struct ObjTileCacheEntry *)p)->gfx;
+            dest = ((struct ObjTileCacheEntry *)p)->vramDest;
+            RLUnCompVram(src, dest);
+            ((struct ObjTileCacheEntry *)p)->pending = 0;
         }
         i++;
         p += 0x14;
@@ -422,12 +422,12 @@ void UploadPendingGfx(void)
     p = (u8 *)gObjTileCache2;
     i = 0;
     do {
-        if (p[4] != 0) {
-            src = *(s32 *)(p + 8);
-            len = *(s32 *)(p + 0xC);
+        if (((struct ObjTileCacheEntry *)p)->pending != 0) {
+            src = ((struct ObjTileCacheEntry *)p)->gfx;
+            dest = ((struct ObjTileCacheEntry *)p)->vramDest;
             RLUnCompVram((const void *)src, buf);
-            CpuSet(buf, (void *)len, 0x20);
-            p[4] = 0;
+            CpuSet(buf, (void *)dest, 0x20);
+            ((struct ObjTileCacheEntry *)p)->pending = 0;
         }
         i++;
         p += 0x14;
@@ -436,11 +436,11 @@ void UploadPendingGfx(void)
     p = (u8 *)gObjTileCache8;
     i = 0;
     do {
-        if (p[4] != 0) {
-            src = *(s32 *)(p + 8);
-            len = *(s32 *)(p + 0xC);
-            RLUnCompVram(src, len);
-            p[4] = 0;
+        if (((struct ObjTileCacheEntry *)p)->pending != 0) {
+            src = ((struct ObjTileCacheEntry *)p)->gfx;
+            dest = ((struct ObjTileCacheEntry *)p)->vramDest;
+            RLUnCompVram(src, dest);
+            ((struct ObjTileCacheEntry *)p)->pending = 0;
         }
         i++;
         p += 0x14;
@@ -449,11 +449,11 @@ void UploadPendingGfx(void)
     p = (u8 *)gObjTileCache4;
     i = 0;
     do {
-        if (p[4] != 0) {
-            src = *(s32 *)(p + 8);
-            len = *(s32 *)(p + 0xC);
-            RLUnCompVram(src, len);
-            p[4] = 0;
+        if (((struct ObjTileCacheEntry *)p)->pending != 0) {
+            src = ((struct ObjTileCacheEntry *)p)->gfx;
+            dest = ((struct ObjTileCacheEntry *)p)->vramDest;
+            RLUnCompVram(src, dest);
+            ((struct ObjTileCacheEntry *)p)->pending = 0;
         }
         i++;
         p += 0x14;
@@ -462,14 +462,14 @@ void UploadPendingGfx(void)
     p = (u8 *)gObjTileCache1;
     i = 0;
     do {
-        if (p[4] != 0) {
-            src = *(s32 *)(p + 8);
-            len = *(s32 *)(p + 0xC);
-            if (p[4] == 1)
-                CpuSet(src, len, 0x10);
+        if (((struct ObjTileCacheEntry *)p)->pending != 0) {
+            src = ((struct ObjTileCacheEntry *)p)->gfx;
+            dest = ((struct ObjTileCacheEntry *)p)->vramDest;
+            if (((struct ObjTileCacheEntry *)p)->pending == 1)
+                CpuSet(src, dest, 0x10);
             else
-                RLUnCompVram(src, len);
-            p[4] = 0;
+                RLUnCompVram(src, dest);
+            ((struct ObjTileCacheEntry *)p)->pending = 0;
         }
         i++;
         p += 0x14;
@@ -479,11 +479,11 @@ void UploadPendingGfx(void)
     i = 0;
     q = &gObjPalBytesCopiedThisFrame;
     do {
-        if (p[1] != 0) {
-            src = *(s32 *)(p + 4);
-            len = *(s32 *)(p + 8);
-            CpuSet(src, len, 0x10);
-            p[1] = 0;
+        if (((struct ObjPaletteCacheEntry *)p)->pending != 0) {
+            src = ((struct ObjPaletteCacheEntry *)p)->palette;
+            dest = ((struct ObjPaletteCacheEntry *)p)->palDest;
+            CpuSet(src, dest, 0x10);
+            ((struct ObjPaletteCacheEntry *)p)->pending = 0;
             *q += 0x20;
         }
         i++;
