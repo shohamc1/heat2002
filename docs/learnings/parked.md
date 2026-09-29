@@ -373,8 +373,30 @@ docstring:
   as editable PNGs; `assets.py` carries the original RL compressor,
   which reproduces 653 of the ROM's 672 streams byte for byte — the 19
   it cannot are exactly the documented "overrun" and "raw" ones. Both
-  splash streams sit at their exact ROM budget, so an edit that
-  recompresses bigger fails the build.
+  splash streams fill their ROM slot exactly, so almost any edit that
+  adds detail recompresses bigger. Since 2026-09-30 that grows the slot
+  in whole words and moves the rest of the ROM, instead of failing:
+  `RLUnCompVram` reads the size from the stream's header, and no code
+  or linker script pins an address after it.
+
+The same day, screens and tile sheets learned to grow, each up to what
+its loader copies: `CpuCopy16(gfx, VRAM, 0xA280)` loads 650 tiles for
+every metatile screen (a screen needs at most 600), and `0x2000` loads
+256 tiles for the text layer, the race HUD's BG sheet, and the
+driver-select font (`maxTiles`). The title screen, main menu, results
+screen and menu backdrop stay at exactly 600 unique tiles
+(`sharedTable`): `DrawBackdropMetatileMap` draws them through
+`gSharedMetatileTileTable`, whose entry N is tile N, and ignores their
+own tables. `race_hud_obj` loads in fixed 12-tile chunks, so it can't
+grow, and palettes never do. The module's copy of the race HUD sheet
+incbins a fixed 7232 bytes, so the module never changes size: some of
+its variables sit at fixed EWRAM addresses past the image. Tested by
+growing the Crawfish splash, boot splash 1, credits page 1, the text
+layer and the HUD sheet in one build: `shift_test.py` against the
+original ROM matched all 300 loads and all RAM, and the rendered
+screens differed only where the pictures were edited. The test now
+matches RAM pointers by symbol, so a build shifted by different amounts
+in different places passes too.
 - `"copy"`: eleven high-module blobs that the ROM also holds in the
   main program; the module fragments `.incbin` the original's build
   output directly (slices with offset and length, `.space` for the

@@ -55,11 +55,13 @@ SHA1 is wrong, no matter how clean the C looks. Never edit `baserom.gba`,
   under `assets/graphics/screens/` (`"screen"` metatile pictures and
   `"bitmap"` mode-4 ones), tile sheets under `assets/graphics/tiles/`
   (`"tiles"`), and palettes as JASC `.pal` text files under
-  `assets/graphics/palettes/` (`"pal"`). Every blob's size is fixed by
-  its entry, so an edit that outgrows it fails the build instead of
-  shifting the ROM. A palette whose ROM colours set the GBA's unused
-  bit 15 lists them in its `bit15` option, and the build sets the bit
-  again. A high-module
+  `assets/graphics/palettes/` (`"pal"`). An edited picture can grow up
+  to what its loader copies, and everything after it in the ROM moves
+  (the edited build then no longer matches, as with any edit); a palette
+  keeps its colour count, which the hardware fixes. `assets.py`'s
+  docstring gives each type's limit. A palette whose ROM colours set the
+  GBA's unused bit 15 lists them in its `bit15` option, and the build
+  sets the bit again. A high-module
   blob the ROM also holds in the main program is a `"copy"`: its
   fragment incbins the original's build output, so one edit changes
   both GBAs.

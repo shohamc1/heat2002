@@ -38,6 +38,7 @@ import sys
 import tempfile
 import time
 import zlib
+from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -165,7 +166,7 @@ class Symbols:
                              check=True).stdout
         rows = [line.split() for line in out.splitlines()]
         self.rows = [(int(a, 16), n) for a, t, n in (r for r in rows if len(r) == 3)
-                     if t not in "aAN" and not n.startswith("$")]
+                     if t not in "aAN" and not n.startswith(("$", "."))]
         self.addrs = [a for a, _ in self.rows]
         self.by_name = {n: a for a, n in self.rows}
 
@@ -273,9 +274,13 @@ RAM_SKIP = (0x020005D0, 0x02000DD0)
 
 
 def shift_of(base, shifted):
-    """(first moved base address, ROM end, delta) from the two symbol tables."""
+    """(first moved base address, ROM end, delta) from the two symbol tables.
+    Only names defined once count: every object has its own
+    `.gcc2_compiled.`, and pairing two of those gives a false delta."""
+    once = Counter(n for _, n in base.rows)
     moved = sorted((a, shifted.by_name[n] - a) for a, n in base.rows
-                   if n in shifted.by_name and 0x08000000 <= a < 0x0A000000
+                   if once[n] == 1 and n in shifted.by_name
+                   and 0x08000000 <= a < 0x0A000000
                    and shifted.by_name[n] != a)
     if not moved:
         sys.exit("the two ELFs have the same addresses: nothing was shifted")
@@ -283,12 +288,21 @@ def shift_of(base, shifted):
     return start, max(a for a, _ in base.rows if a < 0x0A000000), delta
 
 
-def ram_diffs(base, shifted, shift):
+def moved_pointer(base, shifted):
+    """Whether two words are one ROM pointer: the same symbol+offset in each
+    build. An edited asset that grows moves each later region by its own
+    amount, so a single delta can't describe the shift."""
+    def moved(a, b):
+        return (0x08000000 <= a < 0x0A000000 and 0x08000000 <= b < 0x0A000000
+                and base.name(a) == shifted.name(b))
+    return moved
+
+
+def ram_diffs(base, shifted, moved):
     """RAM addresses whose words differ other than by a moved ROM pointer."""
-    start, end, delta = shift
     out = []
     for i, (a, b) in enumerate(zip(base, shifted)):
-        if a == b or (start <= a <= end and b == a + delta):
+        if a == b or moved(a, b):
             continue
         addr = 0x02000000 + i * 4 if i < 0x10000 else 0x03000000 + (i - 0x10000) * 4
         if not RAM_SKIP[0] <= addr < RAM_SKIP[1]:
@@ -358,7 +372,9 @@ def main():
     base_elf, base_rom, shift_elf, shift_rom = sys.argv[1:]
     mgba = find_mgba()
     OUT.mkdir(parents=True, exist_ok=True)
-    shift = shift_of(Symbols(base_elf), Symbols(shift_elf))
+    base_syms, shift_syms = Symbols(base_elf), Symbols(shift_elf)
+    shift = shift_of(base_syms, shift_syms)
+    moved = moved_pointer(base_syms, shift_syms)
     print(f"shift test: {shift[2]:#x} bytes from {shift[0]:#x}; {FRAMES} frames, then up to "
           f"{HITS} loads per build; mGBA {mgba}")
     base = run(mgba, base_elf, base_rom, "base")
@@ -380,7 +396,7 @@ def main():
         if a[0] != b[0]:
             print(f"{key}: screens differ; see {OUT}/base_{key}.png and shift_{key}.png")
             failed = True
-        diffs = ram_diffs(a[1], b[1], shift)
+        diffs = ram_diffs(a[1], b[1], moved)
         if diffs:
             print(f"{key}: {len(diffs)} RAM words differ")
             for addr in diffs[:8]:
@@ -406,7 +422,8 @@ def _selftest():
         png(rows, path)
         data = path.read_bytes()
         assert data.startswith(b"\x89PNG") and b"IEND" in data
-    shift = (0x0800020C, 0x083FFF00, 0x104)
+    def shift(a, b):
+        return 0x0800020C <= a <= 0x083FFF00 and b == a + 0x104
     base = [0x08001000, 0x08070000, 0x00000005, 0x08000104] + [0] * 0x11FFC
     good = [0x08001104, 0x08070000, 0x00000005, 0x08000104] + [0] * 0x11FFC
     assert ram_diffs(base, good, shift) == [], "a moved pointer or an equal word is fine"

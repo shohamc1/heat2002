@@ -16,14 +16,14 @@ const u8 gCreditsPage1Palette[512] = INCBIN_U8("build/assets/graphics/screens/cr
 const u16 gCreditsPage1MetatileMap[150] = INCBIN_U16("build/assets/graphics/screens/credits_page1.map.bin");
 
 // Its users declare it as u8 x[].
-const u16 gCreditsPage1MetatileTable[424] = INCBIN_U16("build/assets/graphics/screens/credits_page1.table.bin");
+const u16 gCreditsPage1MetatileTable[] = INCBIN_U16("build/assets/graphics/screens/credits_page1.table.bin");
 
-const u8 gCreditsPage1Gfx[12160] = INCBIN_U8("build/assets/graphics/screens/credits_page1.tiles.bin");
+const u8 gCreditsPage1Gfx[] = INCBIN_U8("build/assets/graphics/screens/credits_page1.tiles.bin");
 const u8 gCreditsPage2Palette[] = INCBIN_U8("build/assets/graphics/screens/credits_page2.pal.bin");
 const u16 gCreditsPage2MetatileMap[150] = INCBIN_U16("build/assets/graphics/screens/credits_page2.map.bin");
-const u16 gCreditsPage2MetatileTable[420] = INCBIN_U16("build/assets/graphics/screens/credits_page2.table.bin");
+const u16 gCreditsPage2MetatileTable[] = INCBIN_U16("build/assets/graphics/screens/credits_page2.table.bin");
 const u8 gCreditsPage2Gfx[] = INCBIN_U8("build/assets/graphics/screens/credits_page2.tiles.bin");
 const u8 gCreditsPage3Palette[] = INCBIN_U8("build/assets/graphics/screens/credits_page3.pal.bin");
 const u16 gCreditsPage3MetatileMap[150] = INCBIN_U16("build/assets/graphics/screens/credits_page3.map.bin");
-const u16 gCreditsPage3MetatileTable[420] = INCBIN_U16("build/assets/graphics/screens/credits_page3.table.bin");
+const u16 gCreditsPage3MetatileTable[] = INCBIN_U16("build/assets/graphics/screens/credits_page3.table.bin");
 const u8 gCreditsPage3Gfx[] = INCBIN_U8("build/assets/graphics/screens/credits_page3.tiles.bin");

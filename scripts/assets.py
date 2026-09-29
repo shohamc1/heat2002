@@ -38,9 +38,13 @@ converter is the original tool's algorithm: scan the 2x2 metatiles row
 by row, give each new metatile the next metatile index and each new 8x8
 tile within it the next tile index, with no flips and no palette bits.
 The PNG must stay indexed with all 256 palette entries: its palette
-order is the ROM's. `options` carries the screen's metatile and tile
-counts, which fix the blob sizes, so an edit that adds unique metatiles
-or tiles no longer fits and fails the build.
+order is the ROM's. `options` carries the ROM's metatile and tile
+counts. An edit that changes them resizes the table and tiles, and the
+rest of the ROM moves by a multiple of 4 bytes; the loaders copy 650
+tiles' worth whatever the count, and a screen needs at most 600.
+`"sharedTable": true` marks the four screens that DrawBackdropMetatileMap
+draws through gSharedMetatileTileTable (tile N at N) instead of their own
+table: those must keep all 600 tiles unique.
 
 A "pal" asset is one palette blob as an editable JASC .pal text file
 (assets/graphics/palettes/NAME.pal, the format graphics editors call
@@ -57,17 +61,21 @@ A "tiles" asset is one uncompressed tile sheet as an editable indexed
 `width` tiles to a row, `bitDepth` 4 or 8, coloured by the pal asset
 its `palette` option names (the .png is only a picture of the sheet;
 the palette itself is edited in that .pal file). A ragged last row is
-padded with blank tiles (colour 0), and the padding cells must stay blank.
-The tile count is the blob's, so painting new tiles into the padding
-fails the build.
+padded with blank tiles (colour 0). `maxTiles` is how many tiles the
+game's loader copies (256 for the three sheets it's set on): painting a
+new tile into the padding, or into rows added below, grows the sheet up
+to that many and moves the rest of the ROM. Without it, the padding must
+stay blank.
 
 A "bitmap" asset is a full-screen mode-4 background (240x160, 8bpp
 linear pixels, 256 colours) whose gfx the ROM stores as one RL stream:
 ShowBootSplash2 and ShowBootSplash3 draw the two there are. `unpack`
 decompresses the stream into the editable .png; `extract` recompresses
-the picture with the original tool's RL algorithm. The stream's slot is
-a fixed size, so a picture that recompresses bigger fails the build;
-the padding after a shorter stream is zero, as the BIOS never reads it.
+the picture with the original tool's RL algorithm. A shorter stream is
+zero-padded to the ROM's slot, as the BIOS never reads past the size in
+its header. A bigger one grows the slot in whole words and moves the
+rest of the ROM, which the shiftable build allows (`make shift-test`);
+the build then no longer matches, as with any edit.
 The picture's palette is the 512 bytes before the stream and stays a
 separate "pal" asset: the .png's colours are a preview.
 
@@ -273,8 +281,8 @@ def write_indexed_png(path, pixels, w, h, palette):
 
 
 def read_indexed_png(path, w, h, colors):
-    """Read an indexed PNG of exactly w*h pixels with `colors` palette
-    entries: (linear indices, BGR555 palette). Only what an editor keeps
+    """Read an indexed PNG of exactly w*h pixels (any height when h is
+    None) with `colors` palette entries: (linear indices, BGR555 palette). Only what an editor keeps
     of an indexed PNG: 1, 2, 4 or 8-bit indices (editors save a
     16-colour picture at 4 bits), every palette entry, no interlacing."""
     data = path.read_bytes()
@@ -294,8 +302,9 @@ def read_indexed_png(path, w, h, colors):
     width, height, depth, color, _, _, interlace = \
         struct.unpack(">IIBBBBB", chunks[b"IHDR"])
     plte = chunks.get(b"PLTE", b"")
-    if (width, height) != (w, h):
-        sys.exit(f"{path}: {width}x{height}, want {w}x{h}")
+    if width != w or height != (h or height):
+        sys.exit(f"{path}: {width}x{height}, want {w}x{h or height}")
+    h = height
     if color != 3 or depth not in (1, 2, 4, 8):
         sys.exit(f"{path}: want an indexed PNG (save it in indexed mode):\n"
                  "its palette order is the ROM's")
@@ -445,16 +454,16 @@ def bitmap_part(asset):
 
 
 def build_bitmap(asset):
-    """Build a bitmap screen's stream from its editable .png alone. The
-    stream's slot is a fixed size, so a picture that recompresses bigger
-    no longer fits and fails the build."""
+    """Build a bitmap screen's stream from its editable .png alone. A
+    stream that fits the ROM's slot is zero-padded to it, so nothing
+    moves; a bigger one grows the slot in whole words, so everything
+    after it moves by a multiple of 4 and keeps its alignment."""
     png = editable(asset)
     pixels, _ = read_indexed_png(png, SCREEN_W, SCREEN_H, 256)
     stream = rl_compress(pixels)
     room = asset["size"]
     if len(stream) > room:
-        sys.exit(f"{png}: recompresses to {len(stream)} bytes, the ROM has "
-                 f"room for {room}: a bitmap screen's blob is a fixed size")
+        room += -(-(len(stream) - room) // 4) * 4
     path = bitmap_part(asset)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_bytes(stream + bytes(room - len(stream)))
@@ -520,25 +529,31 @@ def unpack_tiles(asset, rom, out):
 
 
 def build_tiles(asset):
-    """Build a sheet's blob from its editable .png alone."""
+    """Build a sheet's blob from its editable .png alone. With `maxTiles`,
+    a tile painted past the ROM's last one (in the padding, or in rows
+    added below) grows the sheet up to that tile, and blank cells before
+    it become blank tiles."""
     depth, width, count = tiles_layout(asset)
-    rows = -(-count // width)
+    limit = asset["options"].get("maxTiles", count)
     png = editable(asset)
-    px, _ = read_indexed_png(png, width * 8, rows * 8, 1 << depth)
-    data = bytearray()
-    for i in range(rows * width):
+    px, _ = read_indexed_png(png, width * 8, None, 1 << depth)
+    tiles = []
+    for i in range(len(px) // 64):
         tile = bytearray()
         for y in range(8):
             off = (i // width * 8 + y) * width * 8 + i % width * 8
             row = px[off:off + 8]
             tile += (bytes(row[2 * k] | row[2 * k + 1] << 4 for k in range(4))
                      if depth == 4 else bytes(row))
-        if i >= count and any(tile):
-            sys.exit(f"{png}: the padding cells past tile {count - 1} must "
-                     "stay blank (colour 0): the ROM has no room for more "
-                     "tiles")
-        if i < count:
-            data += tile
+        tiles.append(bytes(tile))
+    used = max([count] + [i + 1 for i, t in enumerate(tiles) if any(t)])
+    if len(px) // (width * 8) % 8 or used > limit:
+        sys.exit(f"{png}: {used} tiles, the game loads {limit}: leave the "
+                 f"cells past tile {limit - 1} blank (colour 0), and keep "
+                 "the height a multiple of 8")
+    if len(tiles) < count:
+        sys.exit(f"{png}: {len(tiles)} cells, the sheet has {count} tiles")
+    data = b"".join(tiles[:used])
     path = built(asset)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_bytes(data)
@@ -555,13 +570,13 @@ def build_screen(asset):
     for part, size in screen_blob_sizes(asset).items():
         if part == "tail":  # dead bytes after the tiles, not from the picture
             continue
-        if len(blobs[part]) != size:
+        if len(blobs[part]) != size and asset["options"].get("sharedTable"):
             what = "metatiles" if part == "table" else "tiles"
             have = len(blobs[part]) // (8 if part == "table" else 64)
             want = asset["options"][what]
             sys.exit(f"{png}: the picture has {have} unique {what}, but the "
-                     f"ROM has room for {want}: a screen's blobs are a "
-                     "fixed size")
+                     f"game draws it with the shared table, which needs "
+                     f"all {want}: keep every 8x8 tile unique")
         path = screen_part(asset, part)
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(blobs[part])
