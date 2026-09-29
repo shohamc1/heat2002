@@ -3,13 +3,6 @@
 #include "data.h"
 #include "functions.h"
 
-struct UnkStruct0800BD44_Ctl
-{
-    u8 pad[0x4C];
-    u8 lap;
-    u8 waypoint;
-    u8 subStep;
-};
 struct OutBD98
 {
     s32 x;
@@ -29,7 +22,12 @@ struct Car
     s32 speed;
     u8 pad30[0x34 - 0x30];
     s16 heading;
-    u8 pad36[0xF0 - 0x36];
+    u8 pad36[0x4C - 0x36];
+    u8 lap;
+    u8 waypoint;
+    u8 subStep;
+    u8 pad4F;
+    u8 pad50[0xF0 - 0x50];
     s32 lanePosition;
     const u16 *lanePoints;
     const struct LaneSeg *laneSegments;
@@ -121,7 +119,7 @@ s32 FindWaypointCrossing(const u16 *points, const struct LaneSeg *laneSeg)
 }
 
 void SetCarWaypointAtLaneDistance(s32 dist, const u16 *points, const struct LaneSeg *segments,
-                                  struct UnkStruct0800BD44_Ctl *car)
+                                  struct Car *car)
 {
     const struct LaneSeg *seg;
     s32 waypoint;
@@ -247,7 +245,7 @@ void PlaceCarsAlongLane(struct Car **carOrder, s32 unused1, s32 unused2, s32 spa
                 SetCarLane(car, 0x100);
             else
                 SetCarLane(car, 0x500);
-            SetCarWaypointAtLaneDistance(dist, car->lanePoints, car->laneSegments, (struct UnkStruct0800BD44_Ctl *)car);
+            SetCarWaypointAtLaneDistance(dist, car->lanePoints, car->laneSegments, car);
             GetLanePositionAtDistance(dist, (struct OutBD98 *)pos, car->lanePoints, car->laneSegments);
             car->posX = pos[0] << 16;
             car->posZ = pos[1] << 16;
