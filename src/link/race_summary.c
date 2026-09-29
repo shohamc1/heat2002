@@ -25,7 +25,7 @@ void SortLinkCarsByTime(void)
             register u8 current asm("r0");
             do {
                 register struct Car **slot asm("r0") = (struct Car **)(((u32)i << 2) + (u32)dst);
-                *slot = (struct Car *)&((u8(*)[0x190])gCars)[i][0];
+                *slot = &gCars[i];
                 i++;
                 current = *countTemp;
             } while (i != current);

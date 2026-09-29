@@ -13,27 +13,26 @@ u8 ModuleFindFreePitStall(void)
     return 0x63;
 }
 
-u32 ModuleCarNeedsPit(u32 car)
+u32 ModuleCarNeedsPit(struct Car *car)
 {
     s32 ret;
     s32 tireWear;
     s32 wearLimit;
 
-    if (car != (u32)gModule_Cars) {
+    if (car != gModule_Cars) {
         ret = 0;
-        if (((struct Car *)car)->fuel <= 0xA0 << 6)
+        if (car->fuel <= 0xA0 << 6)
             ret = 1;
-        tireWear = ((struct Car *)car)->tireWear0;
+        tireWear = car->tireWear0;
         wearLimit = 0x3E7FF;
     } else {
         ret = 0;
-        if (((struct Car *)car)->fuel <= 0xA0 << 6)
+        if (car->fuel <= 0xA0 << 6)
             ret = 1;
-        tireWear = ((struct Car *)car)->tireWear0;
+        tireWear = car->tireWear0;
         wearLimit = 0x5DBFF;
     }
-    if (tireWear > wearLimit || ((struct Car *)car)->tireWear1 > wearLimit || ((struct Car *)car)->tireWear2 > wearLimit ||
-        ((struct Car *)car)->tireWear3 > wearLimit)
+    if (tireWear > wearLimit || car->tireWear1 > wearLimit || car->tireWear2 > wearLimit || car->tireWear3 > wearLimit)
         ret = 1;
     return ret;
 }

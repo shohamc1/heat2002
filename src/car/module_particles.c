@@ -164,7 +164,7 @@ void ModuleSkidSmokeTask(struct SkidSmoke *e)
     }
 }
 
-void ModuleAddDamageSmokeTask(s32 *car)
+void ModuleAddDamageSmokeTask(struct Car *car)
 {
     struct DamageSmoke *task;
 
@@ -172,11 +172,11 @@ void ModuleAddDamageSmokeTask(s32 *car)
     if (task != 0) {
         task->timer = 0;
         task->riseRate = 2;
-        task->posX = car[0];
+        task->posX = car->posX;
         task->rise = -6;
-        task->posZ = car[2];
-        task->velX = car[3] >> 1;
-        task->velZ = car[5] >> 1;
+        task->posZ = car->posZ;
+        task->velX = car->velX >> 1;
+        task->velZ = car->velZ >> 1;
         task->callback = ModuleDamageSmokeTask;
         ModuleAddTask(task);
     }

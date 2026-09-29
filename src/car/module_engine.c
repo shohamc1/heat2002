@@ -94,7 +94,7 @@ void ModuleUpdateEngine(struct Car *car, s32 mode)
     }
 }
 
-void ModuleComputeForwardSpeed(u8 *car)
+void ModuleComputeForwardSpeed(struct Car *car)
 {
     s32 i;
     s32 dx;
@@ -102,14 +102,14 @@ void ModuleComputeForwardSpeed(u8 *car)
     s32 x;
     s32 y;
 
-    i = -(s32)(((struct Car *)car)->heading >> 11) & 0x1F;
+    i = -(s32)(car->heading >> 11) & 0x1F;
     i = i << 3;
     dx = gModule_SinTable[i];
     i = i + 0x40;
     dy = gModule_SinTable[i];
-    x = ((struct Car *)car)->velX;
-    y = ((struct Car *)car)->velZ;
-    ((struct Car *)car)->speed = (x * dx + y * dy) >> 8;
+    x = car->velX;
+    y = car->velZ;
+    car->speed = (x * dx + y * dy) >> 8;
 }
 
 void ModuleComputeCarCorners(struct Car *car)

@@ -189,16 +189,16 @@ void GetLanePositionAtDistance(s32 dist, struct OutBD98 *pos, const u16 *lanePoi
     }
 }
 
-void SetCarLane(void *car, s32 lanePosition)
+void SetCarLane(struct Car *car, s32 lanePosition)
 {
     s32 row = lanePosition >> 8;
 
-    ((struct Car *)car)->lanePosition = lanePosition;
-    ((struct Car *)car)->lanePoints = gLanePointTables[row + gTrackId * 12];
-    ((struct Car *)car)->laneSegments = gLaneSegmentTables[row + gTrackId * 12];
-    ((struct Car *)car)->laneCellLists = (u32)gLaneCellLists[row + gTrackId * 12];
-    ((struct Car *)car)->laneCellGrid = (u32)gLaneCellGrids[row + gTrackId * 12];
-    ((struct Car *)car)->laneLength = *(u16 *)gLaneLengthPtrs[row + gTrackId * 12];
+    car->lanePosition = lanePosition;
+    car->lanePoints = gLanePointTables[row + gTrackId * 12];
+    car->laneSegments = gLaneSegmentTables[row + gTrackId * 12];
+    car->laneCellLists = (u32)gLaneCellLists[row + gTrackId * 12];
+    car->laneCellGrid = (u32)gLaneCellGrids[row + gTrackId * 12];
+    car->laneLength = *(u16 *)gLaneLengthPtrs[row + gTrackId * 12];
 }
 
 void PlaceCarsAlongLane(struct Car **carOrder, s32 unused1, s32 unused2, s32 spacing, u8 singleLane)

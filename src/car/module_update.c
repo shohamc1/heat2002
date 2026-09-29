@@ -40,7 +40,7 @@ void ModuleAddDraftStreakTask(u8 a, u8 b);
 u8 ModuleCollideCars(struct Car *a);
 u8 ModuleUpdateLapProgress(struct Car *p, u8 a1);
 void ModuleM4aSongNumStart(u16 idx);
-void ModuleAddDamageSmokeTask(u8 *a);
+void ModuleAddDamageSmokeTask(struct Car *car);
 void ModuleUpdateRacePosition(u8 idx);
 extern u16 gUnk_02026DC4[];
 extern u16 gUnk_02026DDC[];
@@ -233,16 +233,16 @@ again:
     car->yawRate = ((s16)car->yawRate * 31) >> 5;
 }
 
-void ModuleUpdateCar(u8 *car, u8 idx)
+void ModuleUpdateCar(struct Car *car, u8 idx)
 {
     if (gModule_IsLinkRace != 0) {
-        if (gModule_RaceEndState == 0 && ((struct Car *)car)->finished == 0)
+        if (gModule_RaceEndState == 0 && car->finished == 0)
             ModuleUpdateCarPhysics(car, gUnk_020390B0[idx], idx);
         else
             ModuleUpdateCarPhysics(car, 2, idx);
-        ModuleClampSteerHeading((struct Car *)car);
+        ModuleClampSteerHeading(car);
     }
-    if (((struct Car *)car)->damage > 0x11940 && ((struct Car *)car)->carState != 1 && (gModule_FrameCounter & 0x3F) == 0)
+    if (car->damage > 0x11940 && car->carState != 1 && (gModule_FrameCounter & 0x3F) == 0)
         ModuleAddDamageSmokeTask(car);
     if (gModule_IsLinkRace != 0) {
         if (idx == gModule_LinkPlayerId) {
@@ -255,7 +255,7 @@ void ModuleUpdateCar(u8 *car, u8 idx)
         if (gModule_Cars[0].racePosition != 0 && gModule_Cars[0].racePosition != 0x63)
             gModule_Cars[0].ledLapFlag = idx;
     }
-    ((struct Car *)car)->tickCount++;
+    car->tickCount++;
 }
 
 void ModuleUpdateAllCars(void)

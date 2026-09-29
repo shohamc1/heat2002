@@ -7,7 +7,7 @@ void RandomizeAiFinishTimes(void)
 {
     u32 minTime = gTrackAiFinishTimeRanges[gTrackId].min;
     u32 maxTime = gTrackAiFinishTimeRanges[gTrackId].max;
-    struct Car *car = (struct Car *)gAiCars;
+    struct Car *car = gAiCars;
     s32 i = 0;
     do {
         car->finishTime = RandomInRange(minTime, maxTime);

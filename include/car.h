@@ -130,9 +130,13 @@ typedef char CarSizeCheck[sizeof(struct Car) == 0x190 ? 1 : -1];
 
 // gCars: the main program's cars at 0x0202A550 (stride 0x190).
 extern struct Car gCars[];
+// gAiCars: &gCars[1], the first AI car (an alias label in symbols.ld).
+extern struct Car gAiCars[];
 
 // gModule_Cars: the high module's cars, gUnk_0203D520 on the other GBA
 // (renamed separately; a different machine, not an alias of gCars).
 extern struct Car gModule_Cars[];
+// gModule_AiCars: &gModule_Cars[1].
+extern struct Car gModule_AiCars[];
 
 #endif // GUARD_CAR_H

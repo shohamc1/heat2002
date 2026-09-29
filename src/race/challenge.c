@@ -225,7 +225,6 @@ void InitRaceCars(u32 a1)
     u32 *p;
     struct Car **pp;
     u32 i;
-    u32 off;
     struct Car *car;
 
     u32 d;
@@ -254,11 +253,9 @@ void InitRaceCars(u32 a1)
     } else {
         p = gUnk_0202A3F0;
         i = 0;
-        off = 0;
         do {
-            InitCar(i, (struct Car *)(off + (u32)gCars), p[0] << 16, p[1] << 16, p[2] << 8, i + eed0);
+            InitCar(i, &gCars[i], p[0] << 16, p[1] << 16, p[2] << 8, i + eed0);
             p += 3;
-            off += 400;
             i++;
         } while (i != 0x18);
     }

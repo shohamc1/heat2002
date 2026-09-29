@@ -136,7 +136,7 @@ void ModuleBuildCarCollFrame(struct Car *car, s32 *frame);
 void WorldToCarLocal(struct Car *car, s32 x, s32 z, s32 *out);
 s32 WorldToLaneDistance(s32 posX, s32 posZ, const u16 *points, const struct LaneSeg *seg, s32 unused);
 void GetLanePositionAtDistance(s32 x, struct OutBD98 *out, const u16 *points, const struct LaneSeg *segments);
-void SetCarLane(void *base, s32 arg);
+void SetCarLane(struct Car *car, s32 lanePosition);
 void SetCarLaneByIndex(struct Car *car, u8 laneIdx);
 void PlaceCarsAlongLane(struct Car **arr, s32 a1, s32 a2, s32 a3, u8 a4);
 void UpdateAiDriver(struct Car *ent, u8 param);

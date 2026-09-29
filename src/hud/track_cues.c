@@ -77,7 +77,7 @@ void LoadTrackCues(u8 trackIdx)
         gUnk_02025244 = gTrackCueList;
 }
 
-void UpdateTrackCues(u32 car)
+void UpdateTrackCues(struct Car *car)
 {
     u8 pad[0x28];
     u8 *cueRecord;
@@ -86,21 +86,21 @@ void UpdateTrackCues(u32 car)
 
     if (gUnk_02025244 == 0)
         return;
-    cueRecord = (u8 *)((struct Car *)car)->trackCueCursor;
-    progress = (u32)((struct Car *)car)->progress & 0xFFFF;
+    cueRecord = (u8 *)car->trackCueCursor;
+    progress = (u32)car->progress & 0xFFFF;
     cueEnd = gUnk_02025254;
     if (progress <= cueEnd || cueEnd == 0) {
         if (*(s8 *)&gTrackCueId != -1 && gRaceEndState == 0)
             DrawTrackCueIcon(gTrackCueId, gUnk_020251F8);
     }
-    progress = (u32)((struct Car *)car)->progress & 0xFFFF;
+    progress = (u32)car->progress & 0xFFFF;
     if (progress >= *(u16 *)cueRecord) {
         do {
             gTrackCueId = cueRecord[2];
             gUnk_020251F8 = *(u16 *)(cueRecord + 4);
             gUnk_02025254 = *(u16 *)(cueRecord + 6);
             cueRecord += 8;
-            ((struct Car *)car)->trackCueCursor = (u32)cueRecord;
+            car->trackCueCursor = (u32)cueRecord;
         } while (progress >= *(u16 *)cueRecord);
     }
 }
