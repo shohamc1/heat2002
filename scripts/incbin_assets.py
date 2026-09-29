@@ -150,7 +150,7 @@ def check_labels(lines, path):
 
 def referenced(name, fragment, new_text):
     """Is `name` used outside the removed ranges? (protocol step 4)"""
-    files = [p for p in (ROOT / "data").glob("*.s") if p != fragment]
+    files = [p for p in (ROOT / "data").rglob("*.s") if p != fragment]
     files += (ROOT / "src").glob("*.c") + (ROOT / "include").glob("*.h")
     files += [ROOT / "ldscript.ld", ROOT / "symbols.ld"]
     pat = re.compile(rf"\b{re.escape(name)}\b")

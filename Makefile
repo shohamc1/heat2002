@@ -17,7 +17,7 @@ CFLAGS  := -O2 -mthumb-interwork -fhex-asm -Wimplicit -Wparentheses
 CPPFLAGS := -I include -I tools/agbcc/include -iquote include -nostdinc -undef
 
 C_SRCS   := $(shell find src -name '*.c')
-DATA_SRCS := $(wildcard data/*.s)
+DATA_SRCS := $(wildcard data/*.s data/sound/*.s)
 # Bodies of ASM_FUNC functions (include/global.h), included from C.
 ASM_INCS := $(shell find asm -name '*.inc' 2>/dev/null)
 # Runtime library: newlib objects built from the vendored source with the
@@ -330,16 +330,17 @@ tools/bin/gbafix: $(TMC_SRC)/gbafix/gbafix.c
 # (gitignored), as zeldaret/tmc's asset_processor does. `assets.py unpack`
 # writes each .mid or .aif from baserom.gba only when it's missing, so your
 # edits survive every build; delete one to get the ROM's back. A song goes
-# through mid2agb into assembly that data/rom_0801D29C.s includes in place,
-# so its pointers resolve where it links; a sample goes through aif2pcm.
-# Without baserom.gba (CI) there's nothing to unpack: `assets.py blank`
-# writes both as zero fill, and none of these tools are needed.
+# through mid2agb into assembly that data/sound/sounds.s includes in place,
+# so its pointers resolve where it links; a sample goes through aif2pcm into
+# data/sound/direct_sound_samples.s. Without baserom.gba (CI) there's
+# nothing to unpack: `assets.py blank` writes both as zero fill, and none of
+# these tools are needed.
 ifneq ($(wildcard baserom.gba),)
 SOUND_EDITABLE := $(shell python3 scripts/assets.py list)
 SOUND_SONGS    := $(filter %.mid,$(SOUND_EDITABLE))
 SOUND_SAMPLES  := $(filter %.aif,$(SOUND_EDITABLE))
-$(BUILD)/data/rom_0801D29C.o: $(SOUND_SONGS:%.mid=$(BUILD)/%.s) \
-	$(SOUND_SAMPLES:%.aif=$(BUILD)/%.bin)
+$(BUILD)/data/sound/sounds.o: $(SOUND_SONGS:%.mid=$(BUILD)/%.s)
+$(BUILD)/data/sound/direct_sound_samples.o: $(SOUND_SAMPLES:%.aif=$(BUILD)/%.bin)
 
 # The stamp rebuilds them after a build without baserom.gba zero-filled them.
 $(BUILD)/assets/sound/songs/%.s: assets/sound/songs/%.mid tools/bin/mid2agb \

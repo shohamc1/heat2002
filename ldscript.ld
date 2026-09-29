@@ -383,7 +383,11 @@ SECTIONS
         build/src/data/rom_0801D018.o(.rodata);
         build/data/rom_0801D1FC.o(.text*);
         build/src/data/rom_0801D230.o(.rodata);
-        build/data/rom_0801D29C.o(.text*);
+        build/data/sound/voicegroups.o(.text*);
+        build/data/sound/programmable_wave_samples.o(.text*);
+        build/src/sound/tables.o(.rodata);
+        build/data/sound/direct_sound_samples.o(.text*);
+        build/data/sound/sounds.o(.text*);
         build/src/data/race_text.o(.rodata);
         build/data/rom_0806FFF4.o(.text*);
         build/src/data/link_text.o(.rodata);

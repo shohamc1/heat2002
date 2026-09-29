@@ -11,7 +11,6 @@ extern u8 gUnk_02002160[];                        /* 0x02002160 */
 extern u32 gUnk_020021D0[];                       /* 0x020021D0 */
 extern u8 gUnk_020021EC[];                        /* 0x020021EC */
 extern u8 gUnk_020021F0;                          /* 0x020021F0 */
-extern struct MusicPlayerInfo gEngineSoundPlayer; /* 0x02001F60 */
 extern u8 gUnk_08364ADC;                          /* 0x08364ADC */
 extern u32 gEngineSoundFreqBases[];               /* 0x08364AE0 */
 extern u8 gEngineSoundRpmMultipliers[];           /* 0x08364AF4 */
@@ -193,7 +192,7 @@ camera_ready:
                 WaitForVBlank();
                 REG_DISPCNT &= ~DISPCNT_OBJ_ON;
                 if (gOptions[2] != 0)
-                    m4aMPlayFadeOut(gBgMusicPlayer, 2);
+                    m4aMPlayFadeOut((u32)&gBgMusicPlayer, 2);
                 BeginFadeToColor(0x19, 0);
             }
         } else {

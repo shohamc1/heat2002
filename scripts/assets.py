@@ -724,10 +724,11 @@ def blank():
         path = built(asset)
         path.parent.mkdir(parents=True, exist_ok=True)
         if path.suffix == ".s":
-            # The song table names each song's header label.
+            # The song table (src/sound/tables.c, another object) names each
+            # song's header label, so it must be global even zero-filled.
             head = asset["options"]["headerOffset"]
-            path.write_text(f"\t.space {head}\n{path.stem}:\n"
-                            f"\t.space {asset['size'] - head}\n")
+            path.write_text(f"\t.space {head}\n\t.global {path.stem}\n"
+                            f"{path.stem}:\n\t.space {asset['size'] - head}\n")
         else:
             path.write_bytes(bytes(asset["size"]))
 

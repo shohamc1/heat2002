@@ -22,7 +22,7 @@ struct WallRec;
 extern u16 gUnk_02021D04[];
 extern s32 gUnk_02000478;
 extern u8 gLinkPlayerSlots[];
-extern struct MusicPlayer gModule_MPlayTable[];
+extern const struct MusicPlayer gModule_MPlayTable[];
 extern struct Track gModule_TrackData[];
 extern u16 gLinkMenuKeysPrev;
 extern u8 gUnk_02024F50[];
@@ -79,7 +79,7 @@ extern u16 gUnk_02022DE4;
 extern u16 gUnk_0202F040[];
 extern s32 gClosestLanePointZ[];
 extern u8 *gUnk_0200BC54;
-extern struct Song gModule_SongTable[];
+extern const struct Song gModule_SongTable[];
 extern u8 gChallengePhase;
 extern s32 gUnk_02023A20[];
 extern u16 gUnk_0202A540[];
@@ -221,9 +221,15 @@ extern u8 gUnk_020243E8[];
 extern s32 gAxleCarAngle;
 extern u8 *gUnk_02025230;
 extern IntrFunc gIntrTable[];
+extern struct MusicPlayerTrack gUnk_02000000[]; /* 0x02000000: gMPlayTable's track arrays */
+extern struct MusicPlayerTrack gUnk_02000320[]; /* 0x02000320 */
+extern struct MusicPlayerTrack gUnk_02000370[]; /* 0x02000370 */
+extern struct MusicPlayerTrack gUnk_020003C0[]; /* 0x020003C0 */
+extern struct MusicPlayerTrack gUnk_02000410[]; /* 0x02000410 */
 extern u16 gKeysPressed;                     /* 0x020005CC */
 extern u16 gUnk_02000DD0;                    /* 0x02000DD0 */
-extern u8 gBgMusicPlayer[];                  /* 0x02001F20 */
+extern struct MusicPlayerInfo gBgMusicPlayer; /* 0x02001F20 */
+extern struct MusicPlayerInfo gEngineSoundPlayer; /* 0x02001F60 */
 extern struct MusicPlayerInfo gMPlayInfo_SE2; /* 0x02001FA0 */
 extern struct MusicPlayerInfo gMPlayInfo_SE4; /* 0x02001FE0 */
 extern struct MusicPlayerInfo gMPlayInfo_SE3; /* 0x02002030 */

@@ -133,7 +133,9 @@ struct MusicPlayer
 struct Song
 {
     struct SongHeader *header; /* 0x00 */
-    u16 ms;                    /* 0x04: music-player index */
+    u16 ms;                    /* 0x04: music-player index (start) */
+    u16 me;                    /* 0x06: music-player index (stop); the ROM rows carry the same index in both
+                                  -- the byte-exact gSongTable needs the field, not padding */
 };
 
 // One row of the credits scroller's script table, gCreditTexts

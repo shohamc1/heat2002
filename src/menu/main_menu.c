@@ -61,7 +61,7 @@ u8 TitleScreen(void)
         n--;
     }
     if (n == 0)
-        m4aMPlayFadeOut(gBgMusicPlayer, 2);
+        m4aMPlayFadeOut((u32)&gBgMusicPlayer, 2);
     FadeToColor(0, 0x0F);
     if (n == 0)
         return 1;

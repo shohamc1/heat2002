@@ -1,5 +1,12 @@
 [
-  {"path": "sound/cgb_waves.bin", "start": "0x0801DA10", "size": 128},
+  {"path": "sound/waves/wave_0801DA10.bin", "start": "0x0801DA10", "size": 16},
+  {"path": "sound/waves/wave_0801DA20.bin", "start": "0x0801DA20", "size": 16},
+  {"path": "sound/waves/wave_0801DA30.bin", "start": "0x0801DA30", "size": 16},
+  {"path": "sound/waves/wave_0801DA40.bin", "start": "0x0801DA40", "size": 16},
+  {"path": "sound/waves/wave_0801DA50.bin", "start": "0x0801DA50", "size": 16},
+  {"path": "sound/waves/wave_0801DA60.bin", "start": "0x0801DA60", "size": 16},
+  {"path": "sound/waves/wave_0801DA70.bin", "start": "0x0801DA70", "size": 16},
+  {"path": "sound/waves/wave_0801DA80.bin", "start": "0x0801DA80", "size": 16},
   {"path": "sound/song_dummy.bin", "start": "0x0801DBBC", "size": 4},
   {"path": "sound/samples/sample_0801DBC0.bin", "start": "0x0801DBC0", "size": 2309, "type": "aif", "align": 4},
   {"path": "sound/samples/sample_0801E4C8.bin", "start": "0x0801E4C8", "size": 4993, "type": "aif", "align": 4},

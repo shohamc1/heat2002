@@ -32,7 +32,7 @@ void sub_0833A9FC(void)
 {
     u16 cnt;
     u32 n;
-    struct MusicPlayer *p;
+    const struct MusicPlayer *p;
 
     cnt = (u16)(u32)gNumMusicPlayersHigh;
     if (cnt != 0)
@@ -59,7 +59,7 @@ void sub_0833AA34(void)
 {
     u16 cnt;
     u32 n;
-    struct MusicPlayer *p;
+    const struct MusicPlayer *p;
 
     cnt = (u16)(u32)gNumMusicPlayersHigh;
     if (cnt != 0)
