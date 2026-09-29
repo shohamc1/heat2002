@@ -1,20 +1,10 @@
 #include "global.h"
+#include "functions.h"
 #include "variables.h"
-
-struct Task
-{
-    /* 0x00 */ u8 pad00[0x0C];
-    /* 0x0C */ u32 callback;
-    /* 0x10 */ u8 pad10[8];
-    /* 0x18 */ s32 timer;
-};
-
-void RaceStartSplashTask(void);
-void LinkRaceStartSplashTask(void);
 
 void StartRace(void)
 {
-    u32 task;
+    struct Task *task;
 
     if (gGameMode[0] == 9)
         gGameMode[0] = 6;
@@ -27,10 +17,10 @@ void StartRace(void)
     if (gGameMode[0] == 0x11)
         gGameMode[0] = 5;
     gRaceStarted = 1;
-    task = (u32)AllocTask();
+    task = AllocTask();
     if (task != 0) {
-        ((struct Task *)task)->timer = 0;
-        ((struct Task *)task)->callback = (u32)RaceStartSplashTask;
+        task->timer = 0;
+        task->callback = RaceStartSplashTask;
         AddTask(task);
         gRaceStartTaskPtr = task;
     }
@@ -38,15 +28,15 @@ void StartRace(void)
 
 void InitLinkRaceStart(void)
 {
-    u32 task;
+    struct Task *task;
 
     gRaceStarted = 0;
     gRaceEndState = 0;
     if (gGameMode[0] == 3 || gGameMode[0] == 4) {
-        task = (u32)AllocTask();
+        task = AllocTask();
         if (task != 0) {
-            ((struct Task *)task)->timer = 0;
-            ((struct Task *)task)->callback = (u32)LinkRaceStartSplashTask;
+            task->timer = 0;
+            task->callback = LinkRaceStartSplashTask;
             AddTask(task);
             gRaceStartTaskPtr = task;
         }

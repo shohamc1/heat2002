@@ -3,27 +3,19 @@
 #include "functions.h"
 #include "variables.h"
 
-struct Task
-{
-    /* 0x00 */ u8 pad00[0x0C];
-    /* 0x0C */ u32 callback;
-    /* 0x10 */ u8 pad10[8];
-    /* 0x18 */ s32 timer;
-    /* 0x1C */ u32 unk1C;
-};
 extern u8 gText_DemoMode[];
 extern u8 gText_BlankRow12_3[];
-void DemoEndTask(u32 task);
+void DemoEndTask(struct Task *task);
 
-void DemoEndTask(u32 task)
+void DemoEndTask(struct Task *task)
 {
-    if (((struct Task *)task)->timer & 0x10)
+    if (task->timer & 0x10)
         DrawTextAt(gText_DemoMode, 0xB, 0xA);
     else
         DrawTextAt(gText_BlankRow12_3, 0xB, 0xA);
-    --((struct Task *)task)->timer;
+    --task->timer;
     ReadKeys();
-    if ((gKeysHeld & 0x3FF) != 0 || ((struct Task *)task)->timer == 0) {
+    if ((gKeysHeld & 0x3FF) != 0 || task->timer == 0) {
         BeginFadeToColor(0xA, 0);
         WaitForVBlank();
         REG_DISPCNT &= ~DISPCNT_OBJ_ON;
@@ -35,11 +27,11 @@ void DemoEndTask(u32 task)
 
 void AddDemoEndTask(void)
 {
-    u32 task = (u32)AllocTask();
+    struct Task *task = AllocTask();
 
     if (task != 0) {
-        ((struct Task *)task)->timer = 0xE1 << 2;
-        ((struct Task *)task)->callback = (u32)DemoEndTask;
+        task->timer = 0xE1 << 2;
+        task->callback = DemoEndTask;
         AddTask(task);
     }
 }
@@ -59,8 +51,8 @@ void RaceEndTask(struct Task *e)
         }
         e->timer = e->timer - 1;
         if (e->timer == 0) {
-            RemoveTask((u32)e);
-            FreeTask((u32)e);
+            RemoveTask(e);
+            FreeTask(e);
             if (gGameMode[0] != 4) {
                 BeginFadeToColor(0x0A, 0);
                 WaitForVBlank();
@@ -79,8 +71,8 @@ void EndRace(void)
         if (task != 0) {
             task->unk1C = gChallengeScore;
             task->timer = 0x64;
-            task->callback = (u32)RaceEndTask;
-            AddTask((u32)task);
+            task->callback = RaceEndTask;
+            AddTask(task);
         }
         *p = 1;
     }

@@ -3,12 +3,6 @@
 #include "car.h"
 #include "functions.h"
 
-struct Task
-{
-    /* 0x00 */ u8 pad00[0x0C];
-    /* 0x0C */ u32 callback;
-};
-
 void ModuleUpdateRaceTimers(void);
 void ModuleDrawTime(u16 *dest, s32 a, s32 b, s32 c);
 void ModuleDrawSpeedNeedle(u32 a1);
@@ -109,14 +103,14 @@ void ModuleDrawHudLabels(void)
 
 void ModuleInitRaceHud(void)
 {
-    void *task;
+    struct Task *task;
 
     if (gModule_IsDemo[0] != 0)
         return;
     task = ModuleAllocTask();
     if (task != 0) {
-        ((struct Task *)task)->callback = (u32)ModuleUpdateRaceHud;
-        ModuleAddTask((u32)task);
+        task->callback = ModuleUpdateRaceHud;
+        ModuleAddTask(task);
     }
     ModuleDrawHudLabels();
     ModuleDrawText(gModule_TimeLabel, 0, 0x13);

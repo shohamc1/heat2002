@@ -3,12 +3,6 @@
 #include "functions.h"
 #include "variables.h"
 
-struct Task
-{
-    /* 0x00 */ u8 pad00[0x18];
-    /* 0x18 */ s32 timer; /* LinkRaceStartSplashTask compares it signed (ble) */
-};
-
 void RaceStartSplashTask(struct Task *e)
 {
     u32 *sprite;
@@ -31,8 +25,8 @@ void RaceStartSplashTask(struct Task *e)
             AddOamEntry(attr, attr2);
     }
     if (e->timer == 0x30) {
-        RemoveTask((u32)e);
-        FreeTask((u32)e);
+        RemoveTask(e);
+        FreeTask(e);
     }
     DrawTextCentered(gText_BlankRowRaceMsg, 8, 1);
 }
@@ -60,8 +54,8 @@ void LinkRaceStartSplashTask(struct Task *e)
         }
     }
     if (e->timer == 0x4E) {
-        RemoveTask((u32)e);
-        FreeTask((u32)e);
+        RemoveTask(e);
+        FreeTask(e);
         gRaceStarted = 1;
     }
 }

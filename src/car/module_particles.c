@@ -9,7 +9,7 @@ struct DraftStreak
     /* 0x00 */ u32 unk00;
     /* 0x04 */ u32 unk04;
     /* 0x08 */ s32 axialDist; /* 16.16 distance along the car's heading axis */
-    /* 0x0C */ u32 callback;
+    /* 0x0C */ void (*callback)();
     /* 0x10 */ u8 pad10[8];
     /* 0x18 */ s32 timer;
     /* 0x1C */ s32 cornerIdx;
@@ -22,7 +22,7 @@ struct SkidSmoke
     /* 0x00 */ s32 posX;
     /* 0x04 */ s32 rise;
     /* 0x08 */ s32 posZ;
-    /* 0x0C */ u32 callback;
+    /* 0x0C */ void (*callback)();
     /* 0x10 */ u8 pad10[8];
     /* 0x18 */ s32 timer;
     /* 0x1C */ s32 cornerIdx;
@@ -38,7 +38,7 @@ struct DamageSmoke
     /* 0x00 */ s32 posX;
     /* 0x04 */ s32 rise;
     /* 0x08 */ s32 posZ;
-    /* 0x0C */ u32 callback;
+    /* 0x0C */ void (*callback)();
     /* 0x10 */ u8 pad10[8];
     /* 0x18 */ s32 timer;
     /* 0x1C */ s32 riseRate;
@@ -53,9 +53,9 @@ struct ObjTileCacheEntry
     u32 tileIndex;  /* OAM attr2 base: tile number, OR'd with palette/priority at each use */
 };
 
-void ModuleDraftStreakTask(u32 task);
+void ModuleDraftStreakTask(struct DraftStreak *task);
 u8 ModuleWorldToScreen(s32 x, s32 y, s32 *out);
-void ModuleSkidSmokeTask(u32 e);
+void ModuleSkidSmokeTask(struct SkidSmoke *e);
 void ModuleDamageSmokeTask(struct DamageSmoke *e);
 extern u32 gUnk_0202B370[];
 extern u8 gUnk_0201F370[];
@@ -69,23 +69,23 @@ void ModuleDummyWallHitHook(s32 cornerX, s32 cornerZ)
 
 void ModuleAddDraftStreakTask(u8 carIdx, u8 cornerIdx)
 {
-    u32 task;
+    struct DraftStreak *task;
 
-    task = (u32)ModuleAllocTask();
+    task = ModuleAllocTask();
     if (task != 0) {
-        ((struct DraftStreak *)task)->timer = 0;
-        ((struct DraftStreak *)task)->carIdx = carIdx;
-        ((struct DraftStreak *)task)->unk20 = 2;
-        ((struct DraftStreak *)task)->unk00 = 0;
-        ((struct DraftStreak *)task)->unk04 = 0;
-        ((struct DraftStreak *)task)->axialDist = 0x80000;
-        ((struct DraftStreak *)task)->cornerIdx = cornerIdx;
-        ((struct DraftStreak *)task)->callback = (u32)ModuleDraftStreakTask;
+        task->timer = 0;
+        task->carIdx = carIdx;
+        task->unk20 = 2;
+        task->unk00 = 0;
+        task->unk04 = 0;
+        task->axialDist = 0x80000;
+        task->cornerIdx = cornerIdx;
+        task->callback = ModuleDraftStreakTask;
         ModuleAddTask(task);
     }
 }
 
-void ModuleDraftStreakTask(u32 task)
+void ModuleDraftStreakTask(struct DraftStreak *task)
 {
     struct Car *car;
     s32 pos[2];
@@ -99,13 +99,13 @@ void ModuleDraftStreakTask(u32 task)
     s32 dy;
     s32 counter;
 
-    car = (struct Car *)((u8 *)gModule_Cars + ((struct DraftStreak *)task)->carIdx * 0x190);
-    cornerX = car->nextCornerX[((struct DraftStreak *)task)->cornerIdx + 2];
-    cornerZ = car->nextCornerZ[((struct DraftStreak *)task)->cornerIdx + 2];
+    car = &gModule_Cars[task->carIdx];
+    cornerX = car->nextCornerX[task->cornerIdx + 2];
+    cornerZ = car->nextCornerZ[task->cornerIdx + 2];
     idx = car->heading >> 8;
     sin = gModule_SinTable[idx];
     cos = gModule_SinTable[idx + 0x40];
-    dy = ((struct DraftStreak *)task)->axialDist + 0xFFF60000;
+    dy = task->axialDist + 0xFFF60000;
     rel = dy;
     dx = -(rel * sin) >> 8;
     dy = (cos * rel) >> 8;
@@ -113,10 +113,9 @@ void ModuleDraftStreakTask(u32 task)
         pos[0] -= 4;
         pos[1] -= 6;
     }
-    counter = ((struct DraftStreak *)task)->timer + 1;
-    idx = task + 0x18;
-    *(s32 *)idx = counter;
-    ((struct DraftStreak *)task)->axialDist += 0x10000;
+    counter = task->timer + 1;
+    task->timer = counter;
+    task->axialDist += 0x10000;
     if (counter == 0x10) {
         ModuleRemoveTask(task);
         ModuleFreeTask(task);
@@ -144,27 +143,27 @@ void ModuleAddSkidSmokeTask(u8 carIdx, u8 cornerIdx)
         task->posZ = cornerZ;
         task->velX = cornerX - car->cornerX[cornerIdx];
         task->velZ = cornerZ - car->cornerZ[cornerIdx];
-        task->callback = (u32)ModuleSkidSmokeTask;
-        ModuleAddTask((u32)task);
+        task->callback = ModuleSkidSmokeTask;
+        ModuleAddTask(task);
     }
 }
 
-void ModuleSkidSmokeTask(u32 e)
+void ModuleSkidSmokeTask(struct SkidSmoke *e)
 {
     s32 pos[2];
     s32 frame;
     s32 riseY;
 
-    if (ModuleWorldToScreen(((struct SkidSmoke *)e)->posX, ((struct SkidSmoke *)e)->posZ, pos) != 0) {
+    if (ModuleWorldToScreen(e->posX, e->posZ, pos) != 0) {
         pos[0] -= 4;
         riseY = pos[1] - 4;
-        pos[1] = riseY + (((struct SkidSmoke *)e)->rise >> 2);
+        pos[1] = riseY + (e->rise >> 2);
     }
-    frame = ((struct SkidSmoke *)e)->timer + 2;
-    ((struct SkidSmoke *)e)->timer = frame;
-    ((struct SkidSmoke *)e)->rise -= 1;
-    ((struct SkidSmoke *)e)->posX += ((struct SkidSmoke *)e)->velX >> 1;
-    ((struct SkidSmoke *)e)->posZ += ((struct SkidSmoke *)e)->velZ >> 1;
+    frame = e->timer + 2;
+    e->timer = frame;
+    e->rise -= 1;
+    e->posX += e->velX >> 1;
+    e->posZ += e->velZ >> 1;
     if (frame == 0x10) {
         ModuleRemoveTask(e);
         ModuleFreeTask(e);
@@ -173,18 +172,18 @@ void ModuleSkidSmokeTask(u32 e)
 
 void ModuleAddDamageSmokeTask(s32 *car)
 {
-    u32 task;
+    struct DamageSmoke *task;
 
-    task = (u32)ModuleAllocTask();
+    task = ModuleAllocTask();
     if (task != 0) {
-        ((struct DamageSmoke *)task)->timer = 0;
-        ((struct DamageSmoke *)task)->riseRate = 2;
-        ((struct DamageSmoke *)task)->posX = car[0];
-        ((struct DamageSmoke *)task)->rise = -6;
-        ((struct DamageSmoke *)task)->posZ = car[2];
-        ((struct DamageSmoke *)task)->velX = car[3] >> 1;
-        ((struct DamageSmoke *)task)->velZ = car[5] >> 1;
-        ((struct DamageSmoke *)task)->callback = (u32)ModuleDamageSmokeTask;
+        task->timer = 0;
+        task->riseRate = 2;
+        task->posX = car[0];
+        task->rise = -6;
+        task->posZ = car[2];
+        task->velX = car[3] >> 1;
+        task->velZ = car[5] >> 1;
+        task->callback = ModuleDamageSmokeTask;
         ModuleAddTask(task);
     }
 }
@@ -227,7 +226,7 @@ void ModuleDamageSmokeTask(struct DamageSmoke *e)
     e->posX = e->posX + e->velX;
     e->posZ = e->posZ + e->velZ;
     if (frame == 0x20) {
-        ModuleRemoveTask((u32)e);
-        ModuleFreeTask((u32)e);
+        ModuleRemoveTask(e);
+        ModuleFreeTask(e);
     }
 }

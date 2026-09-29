@@ -2,24 +2,16 @@
 #include "functions.h"
 #include "variables.h"
 
-struct Task
-{
-    /* 0x00 */ u8 pad00[0x0C];
-    /* 0x0C */ u32 callback;
-    /* 0x10 */ u8 pad10[8];
-    /* 0x18 */ s32 timer;
-};
-
-void ModuleLapTimeTask(u32 task);
+void ModuleLapTimeTask(struct Task *task);
 void ModuleLapSnapshotTask(struct Task *e);
 
-void ModuleLapTimeTask(u32 task)
+void ModuleLapTimeTask(struct Task *task)
 {
     u8 unused[0x28];
 
     ModuleDrawText(ModuleGetString(MODULE_MSG_LAP_TIME), 9, 5);
     ModuleDrawText(gUnk_0203DE30, 0xD, 5);
-    if (--((struct Task *)task)->timer == 0) {
+    if (--task->timer == 0) {
         ModuleDrawText(gUnk_0200D118, 9, 5);
         ModuleRemoveTask(task);
         ModuleFreeTask(task);
@@ -46,7 +38,7 @@ void ModuleDrawLapTime(u32 min, u32 sec, u32 ms)
     task = ModuleAllocTask();
     if (task != 0) {
         task->timer = 0x5A;
-        task->callback = (u32)ModuleLapTimeTask;
+        task->callback = ModuleLapTimeTask;
         ModuleAddTask(task);
     }
 }
@@ -91,8 +83,8 @@ void ModuleLapSnapshotTask(struct Task *e)
     buf[9] = nul;
     e->timer = e->timer - 2;
     if (e->timer == 0) {
-        ModuleRemoveTask((u32)e);
-        ModuleFreeTask((u32)e);
+        ModuleRemoveTask(e);
+        ModuleFreeTask(e);
     }
 }
 
@@ -103,8 +95,8 @@ void ModuleSaveLapTime(void)
     task = ModuleAllocTask();
     if (task != 0) {
         task->timer = 0x40;
-        task->callback = (u32)ModuleLapSnapshotTask;
-        ModuleAddTask((u32)task);
+        task->callback = ModuleLapSnapshotTask;
+        ModuleAddTask(task);
         gUnk_0203DE28[0] = gModule_LapMin[0];
         gUnk_0203DE3C[0] = gModule_LapSec[0];
         gUnk_0203DE20[0] = gModule_LapMs[0];

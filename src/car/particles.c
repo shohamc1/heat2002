@@ -9,7 +9,7 @@ struct DraftStreak
     /* 0x00 */ u32 unk00;
     /* 0x04 */ u32 unk04;
     /* 0x08 */ s32 axialDist; /* 16.16 distance along the car's heading axis */
-    /* 0x0C */ u32 callback;
+    /* 0x0C */ void (*callback)();
     /* 0x10 */ u8 pad10[8];
     /* 0x18 */ s32 timer;
     /* 0x1C */ s32 cornerIdx;
@@ -23,7 +23,7 @@ struct SkidSmoke
     /* 0x00 */ s32 posX;
     /* 0x04 */ s32 rise;
     /* 0x08 */ s32 posZ;
-    /* 0x0C */ u32 callback;
+    /* 0x0C */ void (*callback)();
     /* 0x10 */ u8 pad10[8];
     /* 0x18 */ s32 timer;
     /* 0x1C */ s32 cornerIdx;
@@ -40,7 +40,7 @@ struct DamageSmoke
     /* 0x00 */ s32 posX;
     /* 0x04 */ s32 rise;
     /* 0x08 */ s32 posZ;
-    /* 0x0C */ u32 callback;
+    /* 0x0C */ void (*callback)();
     /* 0x10 */ u8 pad10[8];
     /* 0x18 */ s32 timer;
     /* 0x1C */ s32 riseRate;
@@ -73,18 +73,18 @@ void DummyWallHitHook(void)
 
 void AddDraftStreakTask(u8 carIdx, u8 cornerIdx)
 {
-    u32 task;
+    struct DraftStreak *task;
 
-    task = (u32)AllocTask();
+    task = AllocTask();
     if (task != 0) {
-        ((struct DraftStreak *)task)->timer = 0;
-        ((struct DraftStreak *)task)->carIdx = carIdx;
-        ((struct DraftStreak *)task)->unk20 = 2;
-        ((struct DraftStreak *)task)->unk00 = 0;
-        ((struct DraftStreak *)task)->unk04 = 0;
-        ((struct DraftStreak *)task)->axialDist = 0x80000;
-        ((struct DraftStreak *)task)->cornerIdx = cornerIdx;
-        ((struct DraftStreak *)task)->callback = (u32)DraftStreakTask;
+        task->timer = 0;
+        task->carIdx = carIdx;
+        task->unk20 = 2;
+        task->unk00 = 0;
+        task->unk04 = 0;
+        task->axialDist = 0x80000;
+        task->cornerIdx = cornerIdx;
+        task->callback = DraftStreakTask;
         AddTask(task);
     }
 }
@@ -134,32 +134,32 @@ void DraftStreakTask(struct DraftStreak *e)
     e->timer = e->timer + 1;
     e->axialDist = e->axialDist + 0x10000;
     if (e->timer == 0x10) {
-        RemoveTask((u32)e);
-        FreeTask((u32)e);
+        RemoveTask(e);
+        FreeTask(e);
     }
 }
 
 void AddSkidSmokeTask(u8 carIdx, u8 cornerIdx)
 {
-    u32 task;
+    struct SkidSmoke *task;
     u32 cornerX, cornerZ;
     struct Car *car;
 
-    task = (u32)AllocTask();
+    task = AllocTask();
     if (task != 0) {
         car = &gCars[carIdx];
-        ((struct SkidSmoke *)task)->timer = 0;
-        ((struct SkidSmoke *)task)->carIdx = carIdx;
-        ((struct SkidSmoke *)task)->cornerIdx = cornerIdx;
-        ((struct SkidSmoke *)task)->unk20 = 2;
+        task->timer = 0;
+        task->carIdx = carIdx;
+        task->cornerIdx = cornerIdx;
+        task->unk20 = 2;
         cornerX = car->nextCornerX[cornerIdx];
-        ((struct SkidSmoke *)task)->posX = cornerX;
-        ((struct SkidSmoke *)task)->rise = 0;
+        task->posX = cornerX;
+        task->rise = 0;
         cornerZ = car->nextCornerZ[cornerIdx];
-        ((struct SkidSmoke *)task)->posZ = cornerZ;
-        ((struct SkidSmoke *)task)->velX = cornerX - car->cornerX[cornerIdx];
-        ((struct SkidSmoke *)task)->velZ = cornerZ - car->cornerZ[cornerIdx];
-        ((struct SkidSmoke *)task)->callback = (u32)SkidSmokeTask;
+        task->posZ = cornerZ;
+        task->velX = cornerX - car->cornerX[cornerIdx];
+        task->velZ = cornerZ - car->cornerZ[cornerIdx];
+        task->callback = SkidSmokeTask;
         AddTask(task);
     }
 }
@@ -194,25 +194,25 @@ void SkidSmokeTask(struct SkidSmoke *e)
     e->posX = e->posX + (e->velX >> 1);
     e->posZ = e->posZ + (e->velZ >> 1);
     if (e->timer == 0x10) {
-        RemoveTask((u32)e);
-        FreeTask((u32)e);
+        RemoveTask(e);
+        FreeTask(e);
     }
 }
 
 void AddDamageSmokeTask(s32 *car)
 {
-    u32 task;
+    struct DamageSmoke *task;
 
-    task = (u32)AllocTask();
+    task = AllocTask();
     if (task != 0) {
-        ((struct DamageSmoke *)task)->timer = 0;
-        ((struct DamageSmoke *)task)->riseRate = 2;
-        ((struct DamageSmoke *)task)->posX = car[0];
-        ((struct DamageSmoke *)task)->rise = -6;
-        ((struct DamageSmoke *)task)->posZ = car[2];
-        ((struct DamageSmoke *)task)->velX = car[3] >> 1;
-        ((struct DamageSmoke *)task)->velZ = car[5] >> 1;
-        ((struct DamageSmoke *)task)->callback = (u32)DamageSmokeTask;
+        task->timer = 0;
+        task->riseRate = 2;
+        task->posX = car[0];
+        task->rise = -6;
+        task->posZ = car[2];
+        task->velX = car[3] >> 1;
+        task->velZ = car[5] >> 1;
+        task->callback = DamageSmokeTask;
         AddTask(task);
     }
 }
@@ -255,7 +255,7 @@ void DamageSmokeTask(struct DamageSmoke *e)
     e->posX = e->posX + e->velX;
     e->posZ = e->posZ + e->velZ;
     if (frame == 0x20) {
-        RemoveTask((u32)e);
-        FreeTask((u32)e);
+        RemoveTask(e);
+        FreeTask(e);
     }
 }

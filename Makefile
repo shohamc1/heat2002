@@ -127,6 +127,8 @@ all: $(TARGET).gba
 # targets), so objects that ldscript.ld places in the EWRAM images get their
 # libcall symbols renamed after assembly, whatever their file is called. A
 # src/sub_083[3-9]*.c file counts too, so it matches before it's placed.
+# A call through a function pointer goes through a _call_via_rN stub, so
+# those names take the high copy's addresses too.
 # Writing the call as `/` instead of a bare sub_08344BB8 call matters: a
 # libcall carries a hard-r0 return that an ordinary call does not, and that
 # changes register allocation.
@@ -134,7 +136,15 @@ HIGH_LIBGCC_OBJS := $(sort $(patsubst src/%.c,$(BUILD)/src/%.o,$(wildcard src/su
 	$(shell sed -n '/^    \.high_module /,/^    \.text_tail /s|^ *\(build/src/[^.]*\.o\).*|\1|p' ldscript.ld))
 HIGH_LIBGCC_REDEFINES := --redefine-sym __divsi3=sub_08344BB8 \
 	--redefine-sym __modsi3=sub_08344C50 --redefine-sym __umodsi3=sub_08344DA8 \
-	--redefine-sym __muldi3=sub_08344D20 --redefine-sym __negdi2=sub_08344D90
+	--redefine-sym __muldi3=sub_08344D20 --redefine-sym __negdi2=sub_08344D90 \
+	--redefine-sym _call_via_r0=_08344B7C --redefine-sym _call_via_r1=_08344B80 \
+	--redefine-sym _call_via_r2=_08344B84 --redefine-sym _call_via_r3=_08344B88 \
+	--redefine-sym _call_via_r4=_08344B8C --redefine-sym _call_via_r5=_08344B90 \
+	--redefine-sym _call_via_r6=_08344B94 --redefine-sym _call_via_r7=_08344B98 \
+	--redefine-sym _call_via_r8=_08344B9C --redefine-sym _call_via_r9=_08344BA0 \
+	--redefine-sym _call_via_sl=_08344BA4 --redefine-sym _call_via_fp=_08344BA8 \
+	--redefine-sym _call_via_ip=_08344BAC --redefine-sym _call_via_sp=_08344BB0 \
+	--redefine-sym _call_via_lr=_08344BB4
 # ponytail: every C object depends on every .inc; per-file deps (scaninc)
 # if that rebuild gets slow.
 $(BUILD)/src/%.o: src/%.c $(wildcard include/*.h) $(ASM_INCS) Makefile $(PREPROC)

@@ -4,12 +4,6 @@
 #include "variables.h"
 #include "data.h"
 
-struct Task
-{
-    /* 0x00 */ u8 pad00[0x0C];
-    /* 0x0C */ u32 callback;
-};
-
 extern const u8 gRaceHudObjTiles[];
 void UpdateRaceHud(void);
 extern u8 gText_TimeLabel[];
@@ -61,8 +55,8 @@ void InitRaceHud(void)
         return;
     task = AllocTask();
     if (task != 0) {
-        task->callback = (u32)UpdateRaceHud;
-        AddTask((u32)task);
+        task->callback = UpdateRaceHud;
+        AddTask(task);
     }
     DrawHudLabels();
     DrawTextAt(gText_TimeLabel, 0, 0x13);

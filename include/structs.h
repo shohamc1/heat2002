@@ -217,4 +217,31 @@ struct TrackSelectEntry
     /* 0x14 */ const u8 *previewPalette;
 };
 
+// The 0x44-byte task slot that AllocTask hands out: 256 of them in gTasks,
+// and 64 in the high module's gModule_Tasks. RunTasks walks the prev/next
+// list and calls callback with the slot. callback is unprototyped so each
+// body can take the slot as its own view (DraftStreak, SkidSmoke and
+// DamageSmoke in src/car/particles.c). timer counts calls in every body
+// that reads it; the other words are per-task data.
+struct Task
+{
+    /* 0x00 */ u32 unk00;
+    /* 0x04 */ u32 unk04;
+    /* 0x08 */ u32 unk08;
+    /* 0x0C */ void (*callback)();
+    /* 0x10 */ struct Task *prev;
+    /* 0x14 */ struct Task *next;
+    /* 0x18 */ s32 timer; /* signed: LinkRaceStartSplashTask compares it with ble */
+    /* 0x1C */ u32 unk1C;
+    /* 0x20 */ u32 unk20;
+    /* 0x24 */ u8 pad24[4];
+    /* 0x28 */ u32 unk28;
+    /* 0x2C */ u8 pad2C[4];
+    /* 0x30 */ u32 unk30;
+    /* 0x34 */ u8 unk34;
+    /* 0x35 */ u8 pad35[0x3C - 0x35];
+    /* 0x3C */ u32 slotIndex; /* index into gTaskSlotUsed */
+    /* 0x40 */ u8 pad40[4];
+};
+
 #endif // GUARD_STRUCTS_H

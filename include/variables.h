@@ -99,7 +99,7 @@ extern u32 gUnk_02022DE0;
 extern u16 gUnk_020251F0;
 extern u32 gSeasonRaceIndex[];
 extern u8 gChampionshipAvailable[];
-extern u32 gUnk_02025FD0;
+extern struct Task *gTaskListHead;
 extern u16 gUnk_0201F590[];
 extern u8 gAiCars[];
 extern u8 gMenuValueChanged;
@@ -136,7 +136,8 @@ extern u16 gLinkRecvWords[];
 extern u32 gObjPaletteCache[];
 extern u32 gWaypointSpeedSamples[];
 extern u32 gCountdownMs;
-extern u8 gUnk_02025ED0[];
+extern u8 gTaskSlotUsed[];
+extern struct Task gTasks[];
 extern u8 gUnk_0202CC2C;
 extern u8 gCheatMsgBlinkTimer;
 extern u8 gOamAffineCount;
@@ -249,7 +250,7 @@ extern u16 gRaceSec;                         /* 0x02025220 */
 extern u16 gRaceMs;                          /* 0x02025224 */
 extern u8 gPauseMenuCursor;                  /* 0x02025248 */
 extern u16 gRaceMin;                         /* 0x02025260 */
-extern u32 gRaceStartTaskPtr;                /* 0x0202CC04 */
+extern struct Task *gRaceStartTaskPtr;               /* 0x0202CC04 */
 extern u8 gLapTimeTextBuf[];                 /* 0x0202CC10 */
 extern u8 gOptions[];                        /* 0x0202EF00 */
 extern u8 gLinkPlayerId[];                   /* 0x0202EF90 */
@@ -348,8 +349,8 @@ extern u8 gUnk_0203DDE8[];
 extern u8 gModule_FrontTireGripFast;
 extern u16 gUnk_0203B828;
 extern u8 gUnk_0203DD10;
-extern u32 gUnk_0203C380;
-extern u32 gUnk_0203DE24;
+extern struct Task *gModule_TaskListHead;
+extern struct Task *gModule_RaceStartTaskPtr;
 extern s32 gModule_TireContactVelX;
 extern struct DepthSortedSprite gModule_DepthSortedSprites[];
 extern u32 gUnk_0203C270[];
@@ -358,7 +359,8 @@ extern s32 gUnk_020375A4;
 extern u32 gModule_IntrTable[];
 extern u8 gUnk_0203D4E8;
 extern u8 gModule_LinkPlayerId;
-extern u8 gUnk_0203C340[];
+extern u8 gModule_TaskSlotUsed[];
+extern struct Task gModule_Tasks[];
 extern u16 gUnk_02039248;
 extern s32 gUnk_0203DF44;
 extern u16 gModule_TrackRecordSec[];

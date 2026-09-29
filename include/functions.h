@@ -11,6 +11,7 @@ struct MusicPlayerTrack;
 struct OutBD98;
 struct SongHeader;
 struct SoundInfo;
+struct Task;
 
 // Main program
 
@@ -85,10 +86,12 @@ u32 *RequestObjTiles1(u32 a);
 u8 RequestObjPalette(u32 a);
 void InitTasks(void);
 void *AllocTask(void);
-void AddTask(u32 task);
-void FreeTask(u32 p);
-void RemoveTask(u32 p);
+void AddTask(void *task);
+void FreeTask(void *task);
+void RemoveTask(void *task);
 void RunTasks(void);
+void RaceStartSplashTask(struct Task *task);
+void LinkRaceStartSplashTask(struct Task *task);
 void AwardRacePoints(struct Car *a1, u32 a2);
 void BuildStartingGrid(u8 a1);
 void ClearPitMenu(void);
@@ -284,9 +287,11 @@ void ModuleDrawBigDigit(u16 *dest, u8 idx);
 void ModuleDrawSmallDigit(u16 *a, s32 b);
 void ModuleDrawText(const u8 *text, u32 x, u32 y);
 void *ModuleAllocTask(void);
-void ModuleAddTask(u32 task);
-void ModuleFreeTask(u32 p);
-void ModuleRemoveTask(u32 p);
+void ModuleAddTask(void *task);
+void ModuleFreeTask(void *task);
+void ModuleRemoveTask(void *task);
+void ModuleRaceStartSplashTask(struct Task *task);
+void ModuleLinkRaceStartSplashTask(struct Task *task);
 void sub_0834047C(u16 *a, u16 *b);
 void ModuleSetTireGrip(struct Car *car, u8 b);
 void ModuleComputeAxleTireForce(u8 axle, struct Car *car);
