@@ -8,7 +8,8 @@ extern u16 gObjTileCache8Tiles[];
 extern u16 gObjTileCache4Tiles[];
 extern u16 gObjTileCache1Tiles[];
 
-struct Unk080072F4 {
+struct Unk080072F4
+{
     u8 a;
     u8 b;
     u16 c;
@@ -26,7 +27,6 @@ struct unk_07304
     u32 f10;
 };
 
-
 void InitObjPaletteCacheEntry(struct Unk080072F4 *entry)
 {
     entry->d = 0xFFFF;
@@ -34,15 +34,13 @@ void InitObjPaletteCacheEntry(struct Unk080072F4 *entry)
     entry->b = 0;
 }
 
-
 void InitObjTileCache(u32 count, u16 *tiles, struct unk_07304 *entries)
 {
     u32 i;
     u32 tile;
 
     i = 0;
-    if (i != count)
-    {
+    if (i != count) {
         register u32 f asm("r12") = 0xFFFF;
         do {
             entries->f8 = f;
@@ -58,7 +56,6 @@ void InitObjTileCache(u32 count, u16 *tiles, struct unk_07304 *entries)
         } while (i != count);
     }
 }
-
 
 void InitGfxCaches(void)
 {
@@ -105,7 +102,6 @@ void InitGfxCaches(void)
         color += 0x20;
     }
 }
-
 
 void AgeGfxCaches(void)
 {
@@ -176,7 +172,6 @@ void AgeGfxCaches(void)
     }
 }
 
-
 u32 *RequestObjTiles64(u32 gfx, u8 flag)
 {
     u32 *entry;
@@ -206,7 +201,6 @@ u32 *RequestObjTiles64(u32 gfx, u8 flag)
     return 0;
 }
 
-
 u32 *RequestObjTiles16(u32 gfx)
 {
     u32 *entry;
@@ -230,7 +224,6 @@ u32 *RequestObjTiles16(u32 gfx)
     }
     return 0;
 }
-
 
 u32 *RequestObjTiles2(u32 gfx)
 {
@@ -256,7 +249,6 @@ u32 *RequestObjTiles2(u32 gfx)
     return 0;
 }
 
-
 u32 *RequestObjTiles8(u32 gfx)
 {
     u32 *entry;
@@ -280,7 +272,6 @@ u32 *RequestObjTiles8(u32 gfx)
     }
     return 0;
 }
-
 
 u32 *RequestObjTiles4(u32 gfx)
 {
@@ -309,7 +300,6 @@ u32 *RequestObjTiles4(u32 gfx)
     return 0;
 }
 
-
 u32 *RequestObjTiles1(u32 gfx)
 {
     u32 *entry;
@@ -334,7 +324,6 @@ u32 *RequestObjTiles1(u32 gfx)
     return 0;
 }
 
-
 u32 *RequestObjTiles1Compressed(u32 gfx)
 {
     u32 *entry;
@@ -358,4 +347,3 @@ u32 *RequestObjTiles1Compressed(u32 gfx)
     }
     return 0;
 }
-

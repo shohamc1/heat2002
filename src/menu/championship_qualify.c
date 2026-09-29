@@ -9,7 +9,6 @@ extern const u8 *const gChampionshipRetainTexts[];
 extern u32 gChampionshipQualifyLapTimeTargets[];
 extern u8 gChampionshipTrackIds[];
 
-
 void DrawChampionshipQualifyResult(s8 passed)
 {
     GetString(0x14);
@@ -26,7 +25,6 @@ void DrawChampionshipQualifyResult(s8 passed)
         DrawText(GetString(0x16), 0, 0xE, 1);
     }
 }
-
 
 void ShowChampionshipQualifyResult(s8 passed)
 {
@@ -51,7 +49,6 @@ void ShowChampionshipQualifyResult(s8 passed)
     } while (done == 0x40);
     FadeToColor(0, 0x0F);
 }
-
 
 u8 RunChampionshipQualifyTest(void)
 {
@@ -79,4 +76,3 @@ u8 RunChampionshipQualifyTest(void)
     ((void (*)(u8))ShowChampionshipQualifyResult)(gChallengeResult);
     return gChallengeResult;
 }
-

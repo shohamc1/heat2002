@@ -6,24 +6,19 @@ extern const struct TireGripSetup gTireGripDefaults[];
 
 void SetTireGrip(struct Car *car, u8 carIndex)
 {
-    if (gIsLinkRace != 0)
-    {
+    if (gIsLinkRace != 0) {
         gTireGripSlow = gTireGripDefaults[0].rearGripSlow;
         gTireGripFast = gTireGripDefaults[0].rearGripFast;
         gFrontTireGripSlow = gTireGripDefaults[0].frontGripSlow;
         gFrontTireGripFast = gTireGripDefaults[0].frontGripFast;
         gTireSlipLimitBase = gTireGripDefaults[0].slipLimitBase;
-    }
-    else if (carIndex == 0)
-    {
+    } else if (carIndex == 0) {
         gTireGripSlow = gTireGripDefaults[0].rearGripSlow;
         gTireGripFast = gTireGripDefaults[0].rearGripFast;
         gFrontTireGripSlow = gTireGripDefaults[0].frontGripSlow;
         gFrontTireGripFast = gTireGripDefaults[0].frontGripFast;
         gTireSlipLimitBase = gTireGripDefaults[0].slipLimitBase;
-    }
-    else
-    {
+    } else {
         gTireGripSlow = 160;
         gTireGripFast = 255;
         gFrontTireGripSlow = 128;

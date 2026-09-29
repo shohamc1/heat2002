@@ -12,7 +12,6 @@ void m4aSoundVSyncOff(void);
 void ClearPausedPlayerText(void);
 void DrawPausedPlayerText(void);
 
-
 u8 LinkPauseConfirmMenu(void)
 {
     u8 unused[0x200];
@@ -55,14 +54,13 @@ u8 LinkPauseConfirmMenu(void)
         }
         DrawPauseConfirmMenu(*cursor);
         gVBlankWorkDone = bMask;
-spin:
+    spin:
         if (gVBlankWorkDone == 0)
             goto spin;
         *blink = (u8)(*blink + 1);
         ReadKeys();
     }
 }
-
 
 u8 LinkPauseMenu(void)
 {
@@ -109,7 +107,7 @@ u8 LinkPauseMenu(void)
             DrawPauseMenu(*cursor);
             *blink = *blink + 1;
             gVBlankWorkDone = bMask;
-poll:
+        poll:
             if (gVBlankWorkDone == 0)
                 goto poll;
         }
@@ -117,41 +115,37 @@ poll:
     return 0;
 }
 
-
 void DrawPausedPlayerText(void)
 {
     /* DrawTextCentered: the ROM callers pass a third argument the matched definition drops; call
        through a function pointer with the old prototype. */
     ((void (*)(u32, u32, u32))DrawTextCentered)(GetString(0x96), 8, 1);
     switch (gLinkMenuPlayerIndex) {
-    case 0:
-        ((void (*)(u32, u32, u32))DrawTextCentered)((u32)gText_Player1, 9, 1);
-        break;
-    case 1:
-        ((void (*)(u32, u32, u32))DrawTextCentered)((u32)gText_Player2, 9, 1);
-        break;
-    case 2:
-        ((void (*)(u32, u32, u32))DrawTextCentered)((u32)gText_Player3, 9, 1);
-        break;
-    case 3:
-        ((void (*)(u32, u32, u32))DrawTextCentered)((u32)gText_Player4, 9, 1);
-        break;
+        case 0:
+            ((void (*)(u32, u32, u32))DrawTextCentered)((u32)gText_Player1, 9, 1);
+            break;
+        case 1:
+            ((void (*)(u32, u32, u32))DrawTextCentered)((u32)gText_Player2, 9, 1);
+            break;
+        case 2:
+            ((void (*)(u32, u32, u32))DrawTextCentered)((u32)gText_Player3, 9, 1);
+            break;
+        case 3:
+            ((void (*)(u32, u32, u32))DrawTextCentered)((u32)gText_Player4, 9, 1);
+            break;
     }
 }
-
 
 void ClearPausedPlayerText(void)
 {
     u8 col;
 
-    for (col = 0; col != 0x1B; col++)
-    {
+    for (col = 0; col != 0x1B; col++) {
         u16 *map = (u16 *)(*(volatile u32 *)&gTextLayerMapPtr[0]);
         map[col + 0x100] = 0x47;
         map[col + 0x120] = 0x47;
     }
 }
-
 
 u8 SinglePakPauseMenu(void)
 {
@@ -190,12 +184,11 @@ u8 SinglePakPauseMenu(void)
                 DrawPausedPlayerText();
                 gFrameCounter++;
                 *vblankFlag = startMask;
-poll:
+            poll:
                 if (*vblankFlag == 0)
                     goto poll;
+            }
         }
-    }
     }
     return 0;
 }
-

@@ -2,7 +2,6 @@
 #include "variables.h"
 #include "car.h"
 
-
 void ModuleUpdateRaceTimers(void);
 void ModuleDrawTime(u16 *dest, s32 a, s32 b, s32 c);
 void ModuleDrawSpeedNeedle(u32 a1);
@@ -30,10 +29,8 @@ void ModuleUpdateRaceHud(void)
     if (gModule_GameMode[0] == 0x0E || gModule_GameMode[0] == 0x02) {
         dest = (u16 *)(gModule_TextLayerMapPtr[0] + 0x486);
         if (gUnk_0203E1E0[0] != 0)
-            ModuleDrawTime(dest,
-                         gModule_TrackRecordMin[gModule_TrackId],
-                         gModule_TrackRecordSec[gModule_TrackId],
-                         gModule_TrackRecordMs[gModule_TrackId]);
+            ModuleDrawTime(dest, gModule_TrackRecordMin[gModule_TrackId], gModule_TrackRecordSec[gModule_TrackId],
+                           gModule_TrackRecordMs[gModule_TrackId]);
     }
     v = -car->speed >> 13;
     v = v * 3 / 2;

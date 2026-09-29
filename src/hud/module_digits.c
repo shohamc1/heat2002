@@ -17,7 +17,6 @@ struct Unk
 extern struct Entry gUnk_020215AA[];
 extern u16 gUnk_020215D2[];
 
-
 void ModuleDrawBigDigit(u16 *dest, u8 idx)
 {
     struct Unk *e = (struct Unk *)&gUnk_020215AA[idx];
@@ -28,7 +27,6 @@ void ModuleDrawBigDigit(u16 *dest, u8 idx)
     dest[0x21] = 0xE000 | gModule_FontTileEntries[e->d];
 }
 
-
 void ModuleDrawSmallDigit(u16 *dest, s32 idx)
 {
     u32 glyphAddr;
@@ -38,4 +36,3 @@ void ModuleDrawSmallDigit(u16 *dest, s32 idx)
     tile = (gModule_FontTileEntries[*(u16 *)glyphAddr] & 0xFFF) | 0xE000;
     *dest = tile;
 }
-

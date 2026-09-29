@@ -75,42 +75,42 @@ void InitCar(u8 a, struct Car *car, s32 b, s32 c, u32 d)
        so the equal-valued arms stay separate as in the ROM. */
     if (gGameMode[0] == 0xF) {
         switch (gChallengeIndex) {
-        case 0:
-            car->lap = 1;
-            break;
-        case 1:
-            car->lap = 4;
-            break;
-        case 2:
-            car->lap = 5;
-            break;
-        case 3:
-            car->lap = 0x28;
-            break;
-        case 6:
-            car->lap = 0x28;
-            break;
-        case 10:
-            car->lap = 0xF;
-            break;
-        case 11:
-            car->lap = 0xF;
-            break;
-        case 12:
-            car->lap = 0x55;
-            break;
-        case 13:
-            car->lap = 0x12;
-            break;
-        case 14:
-            car->lap = 5;
-            break;
-        case 15:
-            car->lap = 0x14;
-            break;
-        default:
-            car->lap = 0;
-            break;
+            case 0:
+                car->lap = 1;
+                break;
+            case 1:
+                car->lap = 4;
+                break;
+            case 2:
+                car->lap = 5;
+                break;
+            case 3:
+                car->lap = 0x28;
+                break;
+            case 6:
+                car->lap = 0x28;
+                break;
+            case 10:
+                car->lap = 0xF;
+                break;
+            case 11:
+                car->lap = 0xF;
+                break;
+            case 12:
+                car->lap = 0x55;
+                break;
+            case 13:
+                car->lap = 0x12;
+                break;
+            case 14:
+                car->lap = 5;
+                break;
+            case 15:
+                car->lap = 0x14;
+                break;
+            default:
+                car->lap = 0;
+                break;
         }
     } else {
         car->lap = 0;

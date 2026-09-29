@@ -15,7 +15,6 @@ void ply_endtie(void);
 void CgbSound(void);
 void MidiKeyToCgbFreq(void);
 
-
 void MPlayExtender(struct CgbChannel *cgbChans)
 {
     u32 ident;
@@ -33,8 +32,7 @@ void MPlayExtender(struct CgbChannel *cgbChans)
     REG_SOUNDCNT_L = 0xFF77;
     soundInfo = SOUND_INFO_PTR;
     ident = soundInfo->ident;
-    if (ident == ID_NUMBER)
-    {
+    if (ident == ID_NUMBER) {
         soundInfo->ident = ident + 1;
         gMPlayJumpTable[8] = (MPlayFunc)ply_memacc;
         gMPlayJumpTable[0x11] = (MPlayFunc)ply_lfos;

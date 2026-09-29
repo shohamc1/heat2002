@@ -10,7 +10,6 @@ extern const u16 gResultsScreenMetatileMapAndTable[];
 extern const u8 gUnk_082E4B04[];
 extern const u16 gMenuBackdropMetatileMapAndTable[];
 
-
 void LoadMainMenuBackdrop(void)
 {
     REG_BG0CNT = BGCNT_PRIORITY(2) | BGCNT_CHARBASE(3) | BGCNT_SCREENBASE(28);
@@ -21,7 +20,6 @@ void LoadMainMenuBackdrop(void)
     REG_DISPCNT = 0xA8 << 3;
     DrawBackdropMetatileMap((u16 *)((u32)gMainMenuMetatileMapAndTable));
 }
-
 
 void LoadResultsScreenBackdrop(void)
 {
@@ -44,7 +42,6 @@ void LoadResultsScreenBackdrop(void)
     DrawBackdropMetatileMap((u16 *)gResultsScreenMetatileMapAndTable);
 }
 
-
 void LoadMenuBackdrop(void)
 {
     REG_BG0CNT = BGCNT_PRIORITY(1) | BGCNT_CHARBASE(3) | BGCNT_SCREENBASE(28);
@@ -55,4 +52,3 @@ void LoadMenuBackdrop(void)
     REG_DISPCNT = 0xA8 << 3;
     DrawBackdropMetatileMap((u16 *)((u32)gMenuBackdropMetatileMapAndTable));
 }
-

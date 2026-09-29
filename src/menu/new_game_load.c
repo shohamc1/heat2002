@@ -5,10 +5,10 @@
 #include "m4a.h"
 #include "variables.h"
 
-
 void DrawNewGameLoadMenu(u8 cursor)
 {
-    const u8 *text; DummyUiFontLoad(gUiFontTable[0]);
+    const u8 *text;
+    DummyUiFontLoad(gUiFontTable[0]);
     GetString(0x4E);
     ((void (*)(void))DrawBigText)();
     text = GetString(0x5F);
@@ -16,7 +16,6 @@ void DrawNewGameLoadMenu(u8 cursor)
     text = GetString(0x5E);
     DrawTextCenteredHighlight(text, 0xA, cursor == 1);
 }
-
 
 u8 NewGameLoadMenu(void)
 {
@@ -43,4 +42,3 @@ u8 NewGameLoadMenu(void)
     FadeToColor(0, 0x0F);
     return sel;
 }
-

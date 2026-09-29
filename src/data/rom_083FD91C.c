@@ -1,7 +1,6 @@
 #include "global.h"
 #include "data.h"
 
-
 extern const u8 gText_Rearright[];
 extern const u8 gText_Rearleft[];
 extern const u8 gText_Frontright[];
@@ -234,39 +233,28 @@ extern const struct TrackPreviewGfx gUnk_083FEEE8[];
 // Its users declare it as struct tbl_0800CCE0 x[].
 // Stays flat: twelve rows of (table, table, count, table, table) in
 // the lane-data region, but no decompiled code reads it yet.
-const u32 gUnk_083FD91C[60] = {
-    (u32)gUnk_083CA0C4, (u32)gUnk_083CA9DC, 0x120, (u32)gUnk_083CCDDC, (u32)gUnk_083CDA98,
-    (u32)gUnk_083D44A8, (u32)gUnk_083D4A28, 0xAC, (u32)gUnk_083D5FA8, (u32)gUnk_083D669E,
-    (u32)gUnk_083CEC98, (u32)gUnk_083CF7D0, 0x163, (u32)gUnk_083D2430, (u32)gUnk_083D32A8,
-    (u32)gUnk_083D78A0, (u32)gUnk_083D7FE0, 0xE5, (u32)gUnk_083D9C80, (u32)gUnk_083DA5D0,
-    (u32)gUnk_083DB7D0, (u32)gUnk_083DC1C0, 0x13B, (u32)gUnk_083DE920, (u32)gUnk_083DF630,
-    (u32)gUnk_083E0830, (u32)gUnk_083E1290, 0x149, (u32)gUnk_083E3BB0, (u32)gUnk_083E4A40,
-    (u32)gUnk_083E5C40, (u32)gUnk_083E6218, 0xB8, (u32)gUnk_083E7918, (u32)gUnk_083E81CA,
-    (u32)gUnk_083E93CC, (u32)gUnk_083E996C, 0xB2, (u32)gUnk_083EAFAC, (u32)gUnk_083EB890,
-    (u32)gUnk_083ECA90, (u32)gUnk_083ED040, 0xB3, (u32)gUnk_083EE6A0, (u32)gUnk_083EEE84,
-    (u32)gUnk_083F0084, (u32)gUnk_083F0CC4, 0x185, (u32)gUnk_083F3D64, (u32)gUnk_083F4D42,
-    (u32)gUnk_083F5F44, (u32)gUnk_083F64A4, 0xA9, (u32)gUnk_083F79C4, (u32)gUnk_083F80C4,
-    (u32)gUnk_083F92C4, (u32)gUnk_083F9B14, 0x107, (u32)gUnk_083FBBF4, (u32)gUnk_083FC71C
-};
+const u32 gUnk_083FD91C[60] = { (u32)gUnk_083CA0C4, (u32)gUnk_083CA9DC, 0x120, (u32)gUnk_083CCDDC, (u32)gUnk_083CDA98,
+                                (u32)gUnk_083D44A8, (u32)gUnk_083D4A28, 0xAC,  (u32)gUnk_083D5FA8, (u32)gUnk_083D669E,
+                                (u32)gUnk_083CEC98, (u32)gUnk_083CF7D0, 0x163, (u32)gUnk_083D2430, (u32)gUnk_083D32A8,
+                                (u32)gUnk_083D78A0, (u32)gUnk_083D7FE0, 0xE5,  (u32)gUnk_083D9C80, (u32)gUnk_083DA5D0,
+                                (u32)gUnk_083DB7D0, (u32)gUnk_083DC1C0, 0x13B, (u32)gUnk_083DE920, (u32)gUnk_083DF630,
+                                (u32)gUnk_083E0830, (u32)gUnk_083E1290, 0x149, (u32)gUnk_083E3BB0, (u32)gUnk_083E4A40,
+                                (u32)gUnk_083E5C40, (u32)gUnk_083E6218, 0xB8,  (u32)gUnk_083E7918, (u32)gUnk_083E81CA,
+                                (u32)gUnk_083E93CC, (u32)gUnk_083E996C, 0xB2,  (u32)gUnk_083EAFAC, (u32)gUnk_083EB890,
+                                (u32)gUnk_083ECA90, (u32)gUnk_083ED040, 0xB3,  (u32)gUnk_083EE6A0, (u32)gUnk_083EEE84,
+                                (u32)gUnk_083F0084, (u32)gUnk_083F0CC4, 0x185, (u32)gUnk_083F3D64, (u32)gUnk_083F4D42,
+                                (u32)gUnk_083F5F44, (u32)gUnk_083F64A4, 0xA9,  (u32)gUnk_083F79C4, (u32)gUnk_083F80C4,
+                                (u32)gUnk_083F92C4, (u32)gUnk_083F9B14, 0x107, (u32)gUnk_083FBBF4, (u32)gUnk_083FC71C };
 // No decompiled code reads these labels yet.
-const u8 *const gUnk_083FDA0C[] = {
-    gText_Frontleft, gText_Frontright, gText_Rearleft, gText_Rearright,
-    gText_Back, gText_Front, gText_Left, gText_Right
-};
+const u8 *const gUnk_083FDA0C[] = { gText_Frontleft, gText_Frontright, gText_Rearleft, gText_Rearright,
+                                    gText_Back,      gText_Front,      gText_Left,     gText_Right };
 // Its users declare it as struct Pt2 x[].
 /* Collision response normals, one (x, z) pair per contact direction,
  * in 20.12 fixed point (4096 = 1). */
-const s32 gCarCollisionNormals[8] = {
-    0, 4096,
-    0, -4096,
-    -4096, 0,
-    4096, 0
-};
+const s32 gCarCollisionNormals[8] = { 0, 4096, 0, -4096, -4096, 0, 4096, 0 };
 // No decompiled code reads this word yet.
 const s32 gUnk_083FDA4C[1] = { 10000 };
-const u8 *const gUnk_083FDA50[3] = {
-    gUnk_0807CA7C, gUnk_0807CAC8, gUnk_0807CB14
-};
+const u8 *const gUnk_083FDA50[3] = { gUnk_0807CA7C, gUnk_0807CAC8, gUnk_0807CB14 };
 // No decompiled code reads this word yet.
 const u32 gUnk_083FDA5C[1] = { 0x800F };
 // Options-menu row v runs from gOptionsMenuMinValues[v] to
@@ -292,26 +280,35 @@ const struct TrackSelectEntry gTrackSelectEntries[12] = {
 // The 30-driver roster (struct DriverRosterEntry, structs.h): name and
 // team id, rows in teammate pairs sharing the id.
 const struct DriverRosterEntry gDriverRoster[] = {
-    { gText_StevePark, 0 }, { gText_DaleEarnhardtJR, 0 }, { gText_KevinHarvick, 0x1 },
-    { gText_DaleJarrett, 0x2 }, { gText_RickyRudd, 0x2 }, { gText_JeffGordon, 0x3 },
-    { gText_JasonPope, 0x4 }, { gText_JoeFried, 0x4 }, { gText_RustyWallace, 0x7 },
-    { gText_SterlingMarlin, 0x8 }, { gText_BrianLocke, 0x5 }, { gText_JayMcgee, 0x5 },
-    { gText_MitchellSlater, 0x6 }, { gText_JamesBrown, 0x6 }, { gText_NeilWilson, 0x9 },
-    { gText_TimMunson, 0x9 }, { gText_AndrewBishop, 0xA }, { gText_DanielEvans, 0xA },
-    { gText_SeanKendrick, 0xB }, { gText_JakeMay, 0xB }, { gText_ChrisWalsh, 0xC },
-    { gText_JamesDaly, 0xC }, { gText_AdamBouskill, 0xD }, { gText_TimCoode, 0xD },
-    { gText_WillGreenough, 0xE }, { gText_JonnieShearn, 0xE }, { gText_DaveMurphy, 0xF },
-    { gText_DarrenJackson, 0xF }, { gText_MikeMerren, 0x10 }, { gText_CameronSheppard, 0x10 },
+    { gText_StevePark, 0 },        { gText_DaleEarnhardtJR, 0 }, { gText_KevinHarvick, 0x1 },
+    { gText_DaleJarrett, 0x2 },    { gText_RickyRudd, 0x2 },     { gText_JeffGordon, 0x3 },
+    { gText_JasonPope, 0x4 },      { gText_JoeFried, 0x4 },      { gText_RustyWallace, 0x7 },
+    { gText_SterlingMarlin, 0x8 }, { gText_BrianLocke, 0x5 },    { gText_JayMcgee, 0x5 },
+    { gText_MitchellSlater, 0x6 }, { gText_JamesBrown, 0x6 },    { gText_NeilWilson, 0x9 },
+    { gText_TimMunson, 0x9 },      { gText_AndrewBishop, 0xA },  { gText_DanielEvans, 0xA },
+    { gText_SeanKendrick, 0xB },   { gText_JakeMay, 0xB },       { gText_ChrisWalsh, 0xC },
+    { gText_JamesDaly, 0xC },      { gText_AdamBouskill, 0xD },  { gText_TimCoode, 0xD },
+    { gText_WillGreenough, 0xE },  { gText_JonnieShearn, 0xE },  { gText_DaveMurphy, 0xF },
+    { gText_DarrenJackson, 0xF },  { gText_MikeMerren, 0x10 },   { gText_CameronSheppard, 0x10 },
 };
 // Its users declare it as u8 *x[].
-const u8 *const gChampionshipLockedTexts[] = {
-    gText_NotAvailableYouNeedToFinishASeasonInTheTop5, gText_NotAvailableYouNeedToFinishASeasonInTheTop5, gText_NotAvailableYouNeedToFinishASeasonInTheTop5,
-    gText_NotAvailableYouNeedToFinishASeasonInTheTop5, gText_NotAvailableYouNeedToFinishASeasonInTheTop5, gText_NotAvailableYouNeedToFinishASeasonInTheTop5,
-    gText_NotAvailableYouNeedToFinishASeasonInTheTop5, gText_NotAvailableYouNeedToFinishASeasonInTheTop10, gText_NotAvailableYouNeedToFinishASeasonInTheTop10,
-    gText_NotAvailableYouNeedToFinishASeasonInTheTop10, gText_NotAvailableYouNeedToFinishASeasonInTheTop10, gText_NotAvailableYouNeedToFinishASeasonInTheTop10,
-    gText_NotAvailable, gText_NotAvailable, gText_NotAvailable,
-    gText_NotAvailable, gText_NotAvailable
-};
+const u8 *const gChampionshipLockedTexts[] = { gText_NotAvailableYouNeedToFinishASeasonInTheTop5,
+                                               gText_NotAvailableYouNeedToFinishASeasonInTheTop5,
+                                               gText_NotAvailableYouNeedToFinishASeasonInTheTop5,
+                                               gText_NotAvailableYouNeedToFinishASeasonInTheTop5,
+                                               gText_NotAvailableYouNeedToFinishASeasonInTheTop5,
+                                               gText_NotAvailableYouNeedToFinishASeasonInTheTop5,
+                                               gText_NotAvailableYouNeedToFinishASeasonInTheTop5,
+                                               gText_NotAvailableYouNeedToFinishASeasonInTheTop10,
+                                               gText_NotAvailableYouNeedToFinishASeasonInTheTop10,
+                                               gText_NotAvailableYouNeedToFinishASeasonInTheTop10,
+                                               gText_NotAvailableYouNeedToFinishASeasonInTheTop10,
+                                               gText_NotAvailableYouNeedToFinishASeasonInTheTop10,
+                                               gText_NotAvailable,
+                                               gText_NotAvailable,
+                                               gText_NotAvailable,
+                                               gText_NotAvailable,
+                                               gText_NotAvailable };
 /* Team tier (0, 1 or 2) passed to UnlockChampionshipTier when a championship is
  * started with team a; UnlockChampionshipTier unlocks every team in tiers at or
  * below it. */
@@ -321,59 +318,79 @@ const u8 gChampionshipTeamTiers[17] = { 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2
 const u8 gChampionshipRequiredFinish[19] = { 5, 5, 5, 5, 5, 5, 5, 10, 10, 10, 10, 10, 20, 20, 20, 20, 20, 0, 0 };
 // Its users declare it as u8 *x[].
 const u8 *const gChampionshipQualifyTexts[] = {
-    gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns, gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf37SecondsOnHooleyDowns, gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns,
-    gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf37SecondsOnHooleyDowns, gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns, gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf37SecondsOnHooleyDowns,
-    gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns, gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf37SecondsOnHooleyDowns, gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns,
-    gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf37SecondsOnHooleyDowns, gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns, gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf37SecondsOnHooleyDowns,
-    gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns, gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf37SecondsOnHooleyDowns, gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns,
-    gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf37SecondsOnHooleyDowns, gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns
+    gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns,
+    gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf37SecondsOnHooleyDowns,
+    gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns,
+    gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf37SecondsOnHooleyDowns,
+    gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns,
+    gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf37SecondsOnHooleyDowns,
+    gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns,
+    gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf37SecondsOnHooleyDowns,
+    gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns,
+    gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf37SecondsOnHooleyDowns,
+    gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns,
+    gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf37SecondsOnHooleyDowns,
+    gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns,
+    gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf37SecondsOnHooleyDowns,
+    gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns,
+    gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf37SecondsOnHooleyDowns,
+    gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns
 };
 /* Track id for each championship index; all zero in the shipped ROM. */
-const u8 gChampionshipTrackIds[20] = {0};
+const u8 gChampionshipTrackIds[20] = { 0 };
 /* Qualifying lap-time target in milliseconds (33 or 37 seconds) for
  * each championship index, compared against the player's lap time. */
-const u32 gChampionshipQualifyLapTimeTargets[17] = {
-    33000, 37000, 33000, 37000, 33000, 37000,
-    33000, 37000, 33000, 37000, 33000, 37000,
-    33000, 37000, 33000, 37000, 33000
-};
-const u8 *const gChampionshipRetainTexts[] = {
-    gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop5, gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop5, gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop5,
-    gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop5, gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop5, gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop5,
-    gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop5, gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop10, gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop10,
-    gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop10, gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop10, gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop10,
-    gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop20, gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop20, gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop20,
-    gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop20, gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop20
-};
+const u32 gChampionshipQualifyLapTimeTargets[17] = { 33000, 37000, 33000, 37000, 33000, 37000, 33000, 37000, 33000,
+                                                     37000, 33000, 37000, 33000, 37000, 33000, 37000, 33000 };
+const u8 *const gChampionshipRetainTexts[] = { gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop5,
+                                               gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop5,
+                                               gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop5,
+                                               gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop5,
+                                               gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop5,
+                                               gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop5,
+                                               gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop5,
+                                               gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop10,
+                                               gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop10,
+                                               gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop10,
+                                               gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop10,
+                                               gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop10,
+                                               gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop20,
+                                               gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop20,
+                                               gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop20,
+                                               gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop20,
+                                               gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop20 };
 // Its users declare it as u8 *x[].
-const u32 gChampionshipTeamNames[17] = {
-    (u32)gText_Dei, (u32)gText_Rcr, (u32)gText_Ryr,
-    (u32)gText_HendrickMotorsports, (u32)gText_DalyEnterprises, (u32)gText_MackneyMotorsports,
-    (u32)gText_KravitzRacing, (u32)gText_Penske, (u32)gText_ChipGanassi,
-    (u32)gText_JimFerrisMotorsports, (u32)gText_AndylandRacing, (u32)gText_TtMotorsports,
-    (u32)gText_TeamTino, (u32)gText_MikeMacconellRacing, (u32)gText_EricHayashiMotorsports,
-    (u32)gText_Darby, (u32)gText_TeamCrawfish
-};
+const u32 gChampionshipTeamNames[17] = { (u32)gText_Dei,
+                                         (u32)gText_Rcr,
+                                         (u32)gText_Ryr,
+                                         (u32)gText_HendrickMotorsports,
+                                         (u32)gText_DalyEnterprises,
+                                         (u32)gText_MackneyMotorsports,
+                                         (u32)gText_KravitzRacing,
+                                         (u32)gText_Penske,
+                                         (u32)gText_ChipGanassi,
+                                         (u32)gText_JimFerrisMotorsports,
+                                         (u32)gText_AndylandRacing,
+                                         (u32)gText_TtMotorsports,
+                                         (u32)gText_TeamTino,
+                                         (u32)gText_MikeMacconellRacing,
+                                         (u32)gText_EricHayashiMotorsports,
+                                         (u32)gText_Darby,
+                                         (u32)gText_TeamCrawfish };
 // No decompiled code reads these bytes yet.
 const u8 gUnk_083FDE14[4] = { 4, 7, 8, 9 };
 // Its users declare it as u32 x, u32 x[].
 // The font row every screen loads through DummyUiFontLoad (a stub in the
 // retail build; sub_08006738 is the working twin).
-const u8 *const gUiFontTable[] = {
-    gText_UnderscoreRow32
-};
+const u8 *const gUiFontTable[] = { gText_UnderscoreRow32 };
 /* Season schedule: track id for each gSeasonRaceIndex (34 races; bytes
  * 17-33 double as the gChallengeIndex track table via the gUnk_083FDE2D
  * alias). */
-const u8 gChampionshipTrackOrder[34] = {
-    0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 0, 5, 1, 2, 6, 10,
-    3, 11, 8, 6, 0, 1, 8, 10, 1, 10, 3, 1, 4, 2, 9, 3, 0
-};
+const u8 gChampionshipTrackOrder[34] = { 0, 1,  2, 3, 4, 5, 6, 8,  9, 10, 11, 0, 5, 1, 2, 6, 10,
+                                         3, 11, 8, 6, 0, 1, 8, 10, 1, 10, 3,  1, 4, 2, 9, 3, 0 };
 // Sixteen 0x7FFF words. No decompiled code reads them yet.
-const u16 gUnk_083FDE3E[16] = {
-    0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF,
-    0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF
-};
+const u16 gUnk_083FDE3E[16] = { 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF,
+                                0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF };
 // GetString ids; DrawMainMenuItems draws the first seven as its menu rows.
 const u16 gUnk_083FDE5E[10] = { 72, 73, 74, 75, 76, 77, 78, 79, 80, 106 };
 // No decompiled code reads these bytes yet.
@@ -381,57 +398,30 @@ const u8 gUnk_083FDE72[6] = { 2, 1, 0, 3, 0, 0 };
 // LinkTrackSelect.c maps the cursor to a track id through this table.
 const u8 gLinkTrackSelectTrackIds[12] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
 // Twenty 4-byte rows. No decompiled code reads them yet.
-const u8 gUnk_083FDE84[80] = {
-    3, 4, 5, 0, 3, 4, 5, 0,
-    3, 4, 4, 0, 2, 7, 5, 0,
-    3, 6, 3, 0, 3, 2, 5, 0,
-    3, 4, 5, 0, 3, 5, 5, 0,
-    3, 4, 3, 0, 3, 8, 5, 0,
-    4, 4, 7, 0, 3, 4, 5, 0,
-    3, 3, 5, 0, 2, 4, 6, 0,
-    3, 1, 5, 0, 3, 2, 1, 0,
-    3, 1, 5, 0, 3, 4, 1, 0,
-    3, 4, 5, 0, 3, 2, 5, 0
-};
+const u8 gUnk_083FDE84[80] = { 3, 4, 5, 0, 3, 4, 5, 0, 3, 4, 4, 0, 2, 7, 5, 0, 3, 6, 3, 0, 3, 2, 5, 0, 3, 4, 5,
+                               0, 3, 5, 5, 0, 3, 4, 3, 0, 3, 8, 5, 0, 4, 4, 7, 0, 3, 4, 5, 0, 3, 3, 5, 0, 2, 4,
+                               6, 0, 3, 1, 5, 0, 3, 2, 1, 0, 3, 1, 5, 0, 3, 4, 1, 0, 3, 4, 5, 0, 3, 2, 5, 0 };
 // No decompiled code reads these labels yet.
-const u8 *const gUnk_083FDED4[] = {
-    gText_A, gText_Ab, gText_Abc, gText_Abcd,
-    gText_Abcde, gText_Abcdee, gText_Abcdeee, gText_Abcdeeee
-};
-const u8 *const gDriverCarPalettes[] = {
-    gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8,
-    gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8,
-    gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8,
-    gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8,
-    gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8,
-    gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8,
-    gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8,
-    gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8,
-    gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8,
-    gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8,
-    gUnk_082CC5D8, gUnk_082CC5D8
-};
+const u8 *const gUnk_083FDED4[] = { gText_A,     gText_Ab,     gText_Abc,     gText_Abcd,
+                                    gText_Abcde, gText_Abcdee, gText_Abcdeee, gText_Abcdeeee };
+const u8 *const gDriverCarPalettes[] = { gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8,
+                                         gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8,
+                                         gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8,
+                                         gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8,
+                                         gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8,
+                                         gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8,
+                                         gUnk_082CC5D8, gUnk_082CC5D8 };
 const u32 *const gDriverCarGfxLeftTiles[] = {
-    gUnk_083FED9C, gUnk_083FEDBC, gUnk_083FEDAC,
-    gUnk_083FEDB8, gUnk_083FEDA8, gUnk_083FEDA4,
-    gUnk_083FED98, gUnk_083FEDA0, gUnk_083FEDB0,
-    gUnk_083FEDB4, gUnk_083FED48, gUnk_083FED4C,
-    gUnk_083FED50, gUnk_083FED54, gUnk_083FED58,
-    gUnk_083FED5C, gUnk_083FED60, gUnk_083FED64,
-    gUnk_083FED68, gUnk_083FED6C, gUnk_083FED70,
-    gUnk_083FED74, gUnk_083FED78, gUnk_083FED7C,
-    gUnk_083FED80, gUnk_083FED84, gUnk_083FED88,
-    gUnk_083FED8C, gUnk_083FED90, gUnk_083FED94
+    gUnk_083FED9C, gUnk_083FEDBC, gUnk_083FEDAC, gUnk_083FEDB8, gUnk_083FEDA8, gUnk_083FEDA4,
+    gUnk_083FED98, gUnk_083FEDA0, gUnk_083FEDB0, gUnk_083FEDB4, gUnk_083FED48, gUnk_083FED4C,
+    gUnk_083FED50, gUnk_083FED54, gUnk_083FED58, gUnk_083FED5C, gUnk_083FED60, gUnk_083FED64,
+    gUnk_083FED68, gUnk_083FED6C, gUnk_083FED70, gUnk_083FED74, gUnk_083FED78, gUnk_083FED7C,
+    gUnk_083FED80, gUnk_083FED84, gUnk_083FED88, gUnk_083FED8C, gUnk_083FED90, gUnk_083FED94
 };
 const u32 *const gDriverCarGfxRightTiles[] = {
-    gUnk_083FEE14, gUnk_083FEE34, gUnk_083FEE24,
-    gUnk_083FEE30, gUnk_083FEE20, gUnk_083FEE1C,
-    gUnk_083FEE10, gUnk_083FEE18, gUnk_083FEE28,
-    gUnk_083FEE2C, gUnk_083FEDC0, gUnk_083FEDC4,
-    gUnk_083FEDC8, gUnk_083FEDCC, gUnk_083FEDD0,
-    gUnk_083FEDD4, gUnk_083FEDD8, gUnk_083FEDDC,
-    gUnk_083FEDE0, gUnk_083FEDE4, gUnk_083FEDE8,
-    gUnk_083FEDEC, gUnk_083FEDF0, gUnk_083FEDF4,
-    gUnk_083FEDF8, gUnk_083FEDFC, gUnk_083FEE00,
-    gUnk_083FEE04, gUnk_083FEE08, gUnk_083FEE0C
+    gUnk_083FEE14, gUnk_083FEE34, gUnk_083FEE24, gUnk_083FEE30, gUnk_083FEE20, gUnk_083FEE1C,
+    gUnk_083FEE10, gUnk_083FEE18, gUnk_083FEE28, gUnk_083FEE2C, gUnk_083FEDC0, gUnk_083FEDC4,
+    gUnk_083FEDC8, gUnk_083FEDCC, gUnk_083FEDD0, gUnk_083FEDD4, gUnk_083FEDD8, gUnk_083FEDDC,
+    gUnk_083FEDE0, gUnk_083FEDE4, gUnk_083FEDE8, gUnk_083FEDEC, gUnk_083FEDF0, gUnk_083FEDF4,
+    gUnk_083FEDF8, gUnk_083FEDFC, gUnk_083FEE00, gUnk_083FEE04, gUnk_083FEE08, gUnk_083FEE0C
 };

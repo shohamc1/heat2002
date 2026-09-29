@@ -12,8 +12,6 @@ extern u8 gUnk_02000DE0[];
 extern u8 gUnk_02001E20[];
 extern u8 gUnk_02002020[];
 
-
-
 void m4aSoundInit(void)
 {
     u32 mplayInfo;
@@ -29,8 +27,7 @@ void m4aSoundInit(void)
     MPlayExtender((struct CgbChannel *)gUnk_02001E20);
     m4aSoundMode(0x0097EA00);
     playerCount = (u16)(u32)gNumMusicPlayersLow;
-    if (playerCount != 0)
-    {
+    if (playerCount != 0) {
         tableBase = (u32)gUnk_0801DA90;
         tracksOffset = playerCount;
         playerEntry = (struct Unk0801DA90 *)(tableBase + tracksOffset - playerCount);
@@ -39,7 +36,9 @@ void m4aSoundInit(void)
     loop:
         tracksOffset = 4;
         mplayInfo = playerEntry->unk0;
-        MPlayOpen((struct MusicPlayerInfo *)mplayInfo,(struct MusicPlayerTrack *)(*(u32 *)(entryOffset + (tableBase + tracksOffset))), (*(u8 *)&playerEntry->unk8));
+        MPlayOpen((struct MusicPlayerInfo *)mplayInfo,
+                  (struct MusicPlayerTrack *)(*(u32 *)(entryOffset + (tableBase + tracksOffset))),
+                  (*(u8 *)&playerEntry->unk8));
         *(u32 *)(mplayInfo + 0x18) = (u32)gUnk_02002020;
         playerEntry++;
         entryOffset += 12;

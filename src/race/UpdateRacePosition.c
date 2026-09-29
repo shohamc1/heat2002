@@ -2,7 +2,6 @@
 #include "variables.h"
 #include "car.h"
 
-
 void UpdateRacePosition(u8 idx)
 {
     u8 n = gNumCars[0];

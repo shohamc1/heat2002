@@ -3,7 +3,6 @@
 
 void DummyIntr(void);
 
-
 void SetVBlankCallback(u32 r0)
 {
     gVBlankCallback[0] = r0;

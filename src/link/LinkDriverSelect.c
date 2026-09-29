@@ -13,11 +13,9 @@ extern u8 gDriverSelectGfxDest[];
 #include "gba/io_reg.h"
 #include "m4a.h"
 
-
 s16 LinkMenuMoveHorizontal(u16 keys, s16 v, s16 lo, s16 hi, u8 unused, u8 playerId)
 {
-    if (keys & DPAD_LEFT)
-    {
+    if (keys & DPAD_LEFT) {
         gMenuValueChanged = 1;
         if (gLinkPlayerId[0] == playerId && gOptions[3] != 0)
             m4aSongNumStart(8);
@@ -25,8 +23,7 @@ s16 LinkMenuMoveHorizontal(u16 keys, s16 v, s16 lo, s16 hi, u8 unused, u8 player
         if (v < lo)
             v = hi;
     }
-    if (keys & DPAD_RIGHT)
-    {
+    if (keys & DPAD_RIGHT) {
         gMenuValueChanged = 1;
         if (gLinkPlayerId[0] == playerId && gOptions[3] != 0)
             m4aSongNumStart(8);
@@ -36,7 +33,6 @@ s16 LinkMenuMoveHorizontal(u16 keys, s16 v, s16 lo, s16 hi, u8 unused, u8 player
     }
     return v;
 }
-
 
 s8 LinkDriverSelect(void)
 {
@@ -147,7 +143,7 @@ s8 LinkDriverSelect(void)
         }
         UpdateSprites();
         gVBlankWorkDone = 0;
-spin:
+    spin:
         if (gVBlankWorkDone == 0)
             goto spin;
     }
@@ -159,4 +155,3 @@ spin:
         return 0;
     return e;
 }
-

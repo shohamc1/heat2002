@@ -1,7 +1,8 @@
 #include "global.h"
 #include "variables.h"
 
-struct Thing {
+struct Thing
+{
     u8 pad00[0x10];
     u32 unk10;
 };
@@ -17,7 +18,6 @@ struct Thing *ModuleRequestObjTiles4(u32 a);
 u8 ModuleRequestObjPalette(u32 a);
 u32 ModuleWorldToScreen(s32 x, s32 y, s32 *out);
 #include "car.h"
-
 
 void ModuleDrawCar(struct Car *car, u8 idx)
 {
@@ -51,13 +51,13 @@ void ModuleDrawCar(struct Car *car, u8 idx)
     if (flip == 0) {
         t = ModuleRequestObjTiles8(gUnk_02026E14[car->driverId][k]);
         if (t != NULL) {
-            ModuleAddDepthSortedSprite((pos[1] & 0xFF) | ((pos[0] & 0x1FF) << 16) | 0x80008000,
-                         t->unk10 | t5, (u16)(y + 0x40));
+            ModuleAddDepthSortedSprite((pos[1] & 0xFF) | ((pos[0] & 0x1FF) << 16) | 0x80008000, t->unk10 | t5,
+                                       (u16)(y + 0x40));
         }
         t = ModuleRequestObjTiles16(gUnk_02026E18[car->driverId][k]);
         if (t != NULL) {
-            ModuleAddDepthSortedSprite((pos[1] & 0xFF) | (((pos[0] + 0x10) & 0x1FF) << 16) | 0x80000000,
-                         t->unk10 | t5, (u16)(y + 0x40));
+            ModuleAddDepthSortedSprite((pos[1] & 0xFF) | (((pos[0] + 0x10) & 0x1FF) << 16) | 0x80000000, t->unk10 | t5,
+                                       (u16)(y + 0x40));
         }
     } else {
         u8 *p162;
@@ -108,7 +108,6 @@ void ModuleDrawCar(struct Car *car, u8 idx)
     }
 }
 
-
 void ModuleDrawAllCars(void)
 {
     u32 i;
@@ -119,10 +118,8 @@ void ModuleDrawAllCars(void)
     if (gModule_IsLinkRace != 0)
         limit = gModule_NumLinkPlayers[0];
     p = (u8 *)gModule_Cars;
-    for (i = 0; i != limit; i++, p += 0x190)
-    {
+    for (i = 0; i != limit; i++, p += 0x190) {
         if (gModule_GameMode[0] != 2 || i == 0)
             ModuleDrawCar((struct Car *)p, i);
     }
 }
-

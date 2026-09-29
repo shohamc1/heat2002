@@ -21,7 +21,6 @@ void ModuleInitRaceCars(u32 idx);
 void ModuleResetRaceTimer(void);
 void sub_08344B60(u32 a, u32 b, u32 c);
 
-
 void ModuleLoadTrackTiles(u8 idx)
 {
     u32 off;
@@ -37,7 +36,6 @@ void ModuleLoadTrackTiles(u8 idx)
     gUnk_02039248 = 0;
     gUnk_020392A4 = 0;
 }
-
 
 void ModuleLoadTrack(u32 idx)
 {
@@ -93,7 +91,6 @@ void ModuleLoadTrack(u32 idx)
     gModule_NumFinishedCars = 0;
 }
 
-
 void ModuleUpdateTrackScroll(void)
 {
     s32 x;
@@ -114,7 +111,6 @@ void ModuleUpdateTrackScroll(void)
     ModuleDrawTrackMapWindow(x, y, (*(u32 *)&gUnk_02039268), 0x03000800, (*(u32 *)&gUnk_0203922C), gUnk_020392A4);
 }
 
-
 void ModuleDrawTrackMapWindow(u32 tileX, u32 tileY, u8 *map, u32 *dest, u32 *charBase, u16 unused)
 {
     u8 *mapPtr;
@@ -127,11 +123,9 @@ void ModuleDrawTrackMapWindow(u32 tileX, u32 tileY, u8 *map, u32 *dest, u32 *cha
 
     mapPtr = map + tileY * gUnk_02039244 + tileX;
     destPtr = dest;
-    for (row = 0; row != 0x18; row += 4)
-    {
+    for (row = 0; row != 0x18; row += 4) {
         destRow2 = destPtr + 36;
-        for (col = 0; col != 9; col++)
-        {
+        for (col = 0; col != 9; col++) {
             tileIdx = *mapPtr++;
             tileSrc = &charBase[tileIdx * 8];
             destPtr[0] = *tileSrc++;
@@ -150,7 +144,6 @@ void ModuleDrawTrackMapWindow(u32 tileX, u32 tileY, u8 *map, u32 *dest, u32 *cha
     }
 }
 
-
 void ModuleFlushTilemapBuffer(u32 src, u32 dest)
 {
     u32 row;
@@ -165,4 +158,3 @@ void ModuleFlushTilemapBuffer(u32 src, u32 dest)
         destPtr += TILEMAP_DST_STRIDE;
     }
 }
-

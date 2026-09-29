@@ -1,7 +1,12 @@
 #include "global.h"
 #include "functions.h"
 #include "variables.h"
-struct Unk0202A550 { u8 filler[0x16C]; u32 finishTime; u8 filler170[400 - 0x170]; };
+struct Unk0202A550
+{
+    u8 filler[0x16C];
+    u32 finishTime;
+    u8 filler170[400 - 0x170];
+};
 extern const struct AiFinishTimeRange gTrackAiFinishTimeRanges[];
 void RandomizeAiFinishTimes(void)
 {

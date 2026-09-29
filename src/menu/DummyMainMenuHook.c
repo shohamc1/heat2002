@@ -1,3 +1,4 @@
 #include "global.h"
 
-void DummyMainMenuHook(void) {}
+void DummyMainMenuHook(void)
+{}

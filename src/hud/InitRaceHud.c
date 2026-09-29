@@ -13,7 +13,6 @@ void InitCountdown(void);
 #include "data.h"
 extern u8 gText_HudBestLabel[];
 
-
 void DrawHudLabels(void)
 {
     u16 *dst;
@@ -47,7 +46,6 @@ void DrawHudLabels(void)
         } while (row != 6);
     }
 }
-
 
 void InitRaceHud(void)
 {
@@ -91,13 +89,10 @@ void InitRaceHud(void)
     InitCountdown();
 }
 
-
 void InitTimeTrialHud(void)
 {
     InitRaceHud();
-    if (gIsTimeTrial != 0)
-    {
+    if (gIsTimeTrial != 0) {
         DrawTextAt(gText_HudBestLabel, 0, 0x12);
     }
 }
-

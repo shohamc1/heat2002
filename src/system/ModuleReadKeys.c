@@ -2,7 +2,6 @@
 #include "gba/io_reg.h"
 #include "variables.h"
 
-
 void ModuleReadKeys(void)
 {
     u16 keys = ~REG_KEYINPUT;

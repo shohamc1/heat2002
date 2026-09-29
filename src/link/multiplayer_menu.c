@@ -5,10 +5,10 @@
 #include "m4a.h"
 #include "variables.h"
 
-
 void DrawMultiplayerMenu(u8 selected)
 {
-    const u8 *text; DummyUiFontLoad(gUiFontTable[0]);
+    const u8 *text;
+    DummyUiFontLoad(gUiFontTable[0]);
     GetString(0x5A);
     ((void (*)(void))DrawBigText)();
     text = GetString(0x51);
@@ -16,7 +16,6 @@ void DrawMultiplayerMenu(u8 selected)
     text = GetString(0x52);
     DrawTextCenteredHighlight(text, 0xB, selected == 1);
 }
-
 
 s8 MultiplayerMenu(void)
 {
@@ -51,4 +50,3 @@ s8 MultiplayerMenu(void)
     FadeToColor(0, 0x0F);
     return choice;
 }
-

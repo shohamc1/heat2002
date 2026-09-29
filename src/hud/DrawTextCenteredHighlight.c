@@ -1,7 +1,6 @@
 #include "global.h"
 #include "data.h"
 
-
 void DrawTextCenteredHighlight(const u8 *text, u32 y, u8 highlight)
 {
     const u8 *s = text;
@@ -12,8 +11,7 @@ void DrawTextCenteredHighlight(const u8 *text, u32 y, u8 highlight)
     u16 *out;
     u16 color;
 
-    while (c != 0)
-    {
+    while (c != 0) {
         s++;
         len++;
         c = *s;
@@ -24,8 +22,7 @@ void DrawTextCenteredHighlight(const u8 *text, u32 y, u8 highlight)
     color = 0xE0 << 8;
     if (highlight != 0)
         color = 0xF0 << 8;
-    while ((c = *text++) != 0)
-    {
+    while ((c = *text++) != 0) {
         u16 idx = gTextCharMap[(u8)(c - 0x20)];
         *out++ = color | gTextGlyphTileIndices[idx];
     }

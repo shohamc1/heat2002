@@ -29,7 +29,8 @@ void ModuleM4aSongNumStart(u32 r0);
 extern u8 gModule_Pos[];
 extern u8 gModule_BlankRow16[];
 extern u8 gModule_Lap[];
-struct Car {
+struct Car
+{
     u8 pad00[0x8C];
     s32 tireWear0;
     s32 tireWear1;
@@ -37,7 +38,6 @@ struct Car {
     s32 tireWear3;
 };
 extern u8 gUnk_0203B6A4;
-
 
 void ModuleDrawSpeedNeedle(u32 speed)
 {
@@ -49,8 +49,7 @@ void ModuleDrawSpeedNeedle(u32 speed)
     pos[0] = 0xC8;
     pos[1] = 0x78;
     entry = ModuleRequestObjTiles16(gUnk_02024EE8, pos);
-    if (entry != 0)
-    {
+    if (entry != 0) {
         attr = pos[1] & 0xFF;
         attr |= (pos[0] & 0x1FF) << 16;
         attr |= 0x80000000;
@@ -61,29 +60,22 @@ void ModuleDrawSpeedNeedle(u32 speed)
     gUnk_0203B6DC = (speed + 0xA0) & 0xFF;
 }
 
-
 void ModuleDrawPitStopWarning(void)
 {
     u32 text;
 
-    if (ModuleCarNeedsPit() != 0 && (gUnk_0203B6F8 & 8) != 0)
-    {
+    if (ModuleCarNeedsPit() != 0 && (gUnk_0203B6F8 & 8) != 0) {
         text = (u32)gModule_PitStopNeeded;
         ModuleDrawTextCenteredHighlight((u8 *)text, 6, 1);
-    }
-    else
-    {
+    } else {
         text = (u32)gModule_BlankRow20;
         ModuleDrawTextCenteredHighlight((u8 *)text, 6, 1);
     }
     gUnk_0203B6F8 = gUnk_0203B6F8 + 1;
 }
 
-
 void ModuleDummyHudHook(void)
-{
-}
-
+{}
 
 void ModuleDrawLowFuelWarning(s32 fuel)
 {
@@ -121,7 +113,6 @@ void ModuleDrawLowFuelWarning(s32 fuel)
         *dest = 0xE000 | gModule_FontTileEntries[*(u16 *)&gUnk_02021594[glyphOff]];
     }
 }
-
 
 void ModuleDrawRacePosition(s32 position)
 {
@@ -169,7 +160,6 @@ void ModuleDrawRacePosition(s32 position)
         ModuleDrawBigDigit((u16 *)(gModule_TextLayerMapPtr[0] + 0x38), (u8)(position - 0x14));
     }
 }
-
 
 void ModuleDrawLapCounter(s32 lap, s32 totalLaps)
 {
@@ -222,7 +212,6 @@ void ModuleDrawLapCounter(s32 lap, s32 totalLaps)
     }
 }
 
-
 void ModuleDrawTireWear(struct Car *p)
 {
     u16 *dest;
@@ -261,4 +250,3 @@ void ModuleDrawTireWear(struct Car *p)
     }
     gUnk_0203B6A4++;
 }
-

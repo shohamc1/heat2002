@@ -6,7 +6,6 @@ u32 AllocTask(void);
 void AddTask(u32 a);
 void LinkRaceStartSplashTask(void);
 
-
 void StartRace(void)
 {
     u32 task;
@@ -31,7 +30,6 @@ void StartRace(void)
     }
 }
 
-
 void InitLinkRaceStart(void)
 {
     u32 task;
@@ -48,4 +46,3 @@ void InitLinkRaceStart(void)
         }
     }
 }
-

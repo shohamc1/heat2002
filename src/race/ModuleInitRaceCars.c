@@ -27,7 +27,7 @@ void ModuleInitRaceCars(u32 trackIdx)
         grid = (u32 *)gUnk_0203D4A0;
         for (i = 0; i != 5; i++) {
             ModuleInitCar((u8)i, *order, grid[0] << 16, grid[1] << 16, grid[2] << 8,
-                         ((((s32)(*order++ - (u32)gModule_Cars)) * (s32)0xC28F5C29) >> 4) + extra);
+                          ((((s32)(*order++ - (u32)gModule_Cars)) * (s32)0xC28F5C29) >> 4) + extra);
             grid += 3;
         }
     } else {

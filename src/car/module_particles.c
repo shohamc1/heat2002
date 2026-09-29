@@ -9,7 +9,8 @@ void ModuleDraftStreakTask(u32 task);
 #include "variables.h"
 #include "car.h"
 u32 ModuleWorldToScreen(s32 x, s32 y, s32 *out);
-struct Tbl {
+struct Tbl
+{
     u8 pad[0xC4];
     s32 nextCornerX[4];
     s32 nextCornerZ[4];
@@ -43,19 +44,15 @@ struct Unk08342FF0Sprite
     u32 f10;
 };
 
-
 void ModuleDummyWallHitHook(s32 cornerX, s32 cornerZ)
-{
-}
-
+{}
 
 void ModuleAddDraftStreakTask(u8 carIdx, u8 cornerIdx)
 {
     u32 task;
 
     task = (u32)ModuleAllocTask();
-    if (task != 0)
-    {
+    if (task != 0) {
         *(u32 *)(task + 0x18) = 0;
         *(u8 *)(task + 0x34) = carIdx;
         *(u32 *)(task + 0x20) = 2;
@@ -67,7 +64,6 @@ void ModuleAddDraftStreakTask(u8 carIdx, u8 cornerIdx)
         ModuleAddTask(task);
     }
 }
-
 
 void ModuleDraftStreakTask(u32 task)
 {
@@ -93,8 +89,7 @@ void ModuleDraftStreakTask(u32 task)
     rel = dy;
     dx = -(rel * sin) >> 8;
     dy = (cos * rel) >> 8;
-    if ((u8)ModuleWorldToScreen(cornerX + dx, cornerZ + dy, pos) != 0)
-    {
+    if ((u8)ModuleWorldToScreen(cornerX + dx, cornerZ + dy, pos) != 0) {
         pos[0] -= 4;
         pos[1] -= 6;
     }
@@ -102,13 +97,11 @@ void ModuleDraftStreakTask(u32 task)
     idx = task + 0x18;
     *(s32 *)idx = counter;
     *(s32 *)(task + 0x08) += 0x10000;
-    if (counter == 0x10)
-    {
+    if (counter == 0x10) {
         ModuleRemoveTask(task);
         ModuleFreeTask(task);
     }
 }
-
 
 void ModuleAddSkidSmokeTask(u8 carIdx, u8 cornerIdx)
 {
@@ -147,15 +140,13 @@ void ModuleAddSkidSmokeTask(u8 carIdx, u8 cornerIdx)
     }
 }
 
-
 void ModuleSkidSmokeTask(u32 e)
 {
     s32 pos[2];
     s32 frame;
     s32 riseY;
 
-    if ((u8)ModuleWorldToScreen(*(s32 *)(e + 0x00), *(s32 *)(e + 0x08), pos) != 0)
-    {
+    if ((u8)ModuleWorldToScreen(*(s32 *)(e + 0x00), *(s32 *)(e + 0x08), pos) != 0) {
         pos[0] -= 4;
         riseY = pos[1] - 4;
         pos[1] = riseY + (*(s32 *)(e + 0x04) >> 2);
@@ -165,21 +156,18 @@ void ModuleSkidSmokeTask(u32 e)
     *(s32 *)(e + 0x04) -= 1;
     *(s32 *)(e + 0x00) += *(s32 *)(e + 0x28) >> 1;
     *(s32 *)(e + 0x08) += *(s32 *)(e + 0x30) >> 1;
-    if (frame == 0x10)
-    {
+    if (frame == 0x10) {
         ModuleRemoveTask(e);
         ModuleFreeTask(e);
     }
 }
-
 
 void ModuleAddDamageSmokeTask(s32 *car)
 {
     u32 task;
 
     task = (u32)ModuleAllocTask();
-    if (task != 0)
-    {
+    if (task != 0) {
         *(u32 *)(task + 0x18) = 0;
         *(u32 *)(task + 0x1C) = 2;
         *(u32 *)(task + 0x00) = car[0];
@@ -192,7 +180,6 @@ void ModuleAddDamageSmokeTask(s32 *car)
     }
 }
 
-
 void ModuleDamageSmokeTask(struct Unk08342FF0 *e)
 {
     s32 out[2];
@@ -204,26 +191,20 @@ void ModuleDamageSmokeTask(struct Unk08342FF0 *e)
     s32 screenY;
     s32 frame;
 
-    if (((u32)ModuleWorldToScreen(e->f00, e->f08, out) << 24) != 0)
-    {
+    if (((u32)ModuleWorldToScreen(e->f00, e->f08, out) << 24) != 0) {
         screenX = out[0];
         out[0] = screenX - 8;
         screenY = out[1] - 8;
         out[1] = screenY + (e->f04 >> 1);
-        if ((u32)(screenX + 0x17) <= 0x10E && out[1] <= 0x9F && out[1] > -0x10)
-        {
+        if ((u32)(screenX + 0x17) <= 0x10E && out[1] <= 0x9F && out[1] > -0x10) {
             sprite = ModuleRequestObjTiles16(gUnk_0202B370[e->f18 & 0x1F]);
-            if (sprite != 0)
-            {
+            if (sprite != 0) {
                 tileType = ModuleGetTrackTileType(e->f00 >> 19, e->f08 >> 19);
-                if (tileType & 1)
-                {
+                if (tileType & 1) {
                     attr = (out[1] & 0xFF) | ((out[0] & 0x1FF) << 16) | 0x40000000;
                     palBits = ((u8)ModuleRequestObjPalette((u32)gUnk_0201F370) << 12) | 0x800;
                     ModuleAddOamEntry(attr, sprite->f10 | palBits);
-                }
-                else
-                {
+                } else {
                     attr = (out[1] & 0xFF) | ((out[0] & 0x1FF) << 16) | 0x40000000;
                     palBits = ((u8)ModuleRequestObjPalette((u32)gUnk_0201F370) << 12) | 0x400;
                     ModuleAddOamEntry(attr, sprite->f10 | palBits);
@@ -236,10 +217,8 @@ void ModuleDamageSmokeTask(struct Unk08342FF0 *e)
     e->f04 = e->f04 - e->f1C;
     e->f00 = e->f00 + e->f28;
     e->f08 = e->f08 + e->f30;
-    if (frame == 0x20)
-    {
+    if (frame == 0x20) {
         ModuleRemoveTask((u32)e);
         ModuleFreeTask((u32)e);
     }
 }
-

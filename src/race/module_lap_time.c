@@ -19,21 +19,18 @@ struct Unk08342C3C
 void ModuleLapSnapshotTask(struct Unk08342C3C *e);
 void ModuleAddTask(u32 a);
 
-
 void ModuleLapTimeTask(u32 task)
 {
     u8 unused[0x28];
 
     ModuleDrawText(ModuleGetString(MODULE_MSG_LAP_TIME), 9, 5);
     ModuleDrawText(gUnk_0203DE30, 0xD, 5);
-    if (--*(u32 *)(task + 0x18) == 0)
-    {
+    if (--*(u32 *)(task + 0x18) == 0) {
         ModuleDrawText(gUnk_0200D118, 9, 5);
         ModuleRemoveTask(task);
         ModuleFreeTask(task);
     }
 }
-
 
 void ModuleDrawLapTime(u32 min, u32 sec, u32 ms)
 {
@@ -53,14 +50,12 @@ void ModuleDrawLapTime(u32 min, u32 sec, u32 ms)
     text[7] = sub_08344BB8(sub_08344C50(ms, 0x64), 0x0A) + 0x30;
     text[8] = nul;
     task = ModuleAllocTask();
-    if (task != 0)
-    {
+    if (task != 0) {
         task->field18 = 0x5A;
         task->field0C = (u32)ModuleLapTimeTask;
         ModuleAddTask(task);
     }
 }
-
 
 void ModuleLapSnapshotTask(struct Unk08342C3C *e)
 {
@@ -101,13 +96,11 @@ void ModuleLapSnapshotTask(struct Unk08342C3C *e)
     q8[8] = sub_08344C50(millis, 10) + 0x30;
     buf[9] = nul;
     e->f18 = e->f18 - 2;
-    if (e->f18 == 0)
-    {
+    if (e->f18 == 0) {
         ModuleRemoveTask((u32)e);
         ModuleFreeTask((u32)e);
     }
 }
-
 
 void ModuleSaveLapTime(void)
 {
@@ -123,4 +116,3 @@ void ModuleSaveLapTime(void)
         gUnk_0203DE20[0] = gModule_LapMs[0];
     }
 }
-

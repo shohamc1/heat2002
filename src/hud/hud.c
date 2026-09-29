@@ -5,7 +5,8 @@
 extern u8 gText_HudPosLabel[];
 extern u8 gText_BlankRow16_2[];
 extern u8 gText_Lap[];
-struct Car {
+struct Car
+{
     u8 pad00[0x8C];
     s32 tireWear0;
     s32 tireWear1;
@@ -22,7 +23,6 @@ u8 CarNeedsPit(void);
 #include "m4a.h"
 extern u8 gUnk_02025228;
 extern u8 gUnk_083387A8[];
-
 
 void DrawSpeedNeedle(u32 speed)
 {
@@ -43,31 +43,24 @@ void DrawSpeedNeedle(u32 speed)
     gUnk_0202522C = (speed + 0xA0) & 0xFF;
 }
 
-
 void DrawPitStopWarning(void)
 {
     u32 text;
 
-    if (CarNeedsPit() != 0 && (gUnk_02025250 & 8) != 0)
-    {
+    if (CarNeedsPit() != 0 && (gUnk_02025250 & 8) != 0) {
         text = (u32)gText_PitStopNeeded;
         /* DrawTextCentered: this file's old local prototype differs from
            functions.h; call through the old signature (solved-walls 31). */
         ((void (*)(u32, u32, u32))DrawTextCentered)(text, 6, 1);
-    }
-    else
-    {
+    } else {
         text = (u32)gText_BlankRow20;
         ((void (*)(u32, u32, u32))DrawTextCentered)(text, 6, 1);
     }
     gUnk_02025250 = gUnk_02025250 + 1;
 }
 
-
 void DummyHudHook(void)
-{
-}
-
+{}
 
 void DrawLowFuelWarning(s32 fuel)
 {
@@ -105,7 +98,6 @@ void DrawLowFuelWarning(s32 fuel)
         *dest = 0xE000 | gFontTileEntries[*(u16 *)((u8 *)gFontGlyphGrid + glyphOff)];
     }
 }
-
 
 void DrawRacePosition(s32 arg)
 {
@@ -153,7 +145,6 @@ void DrawRacePosition(s32 arg)
         DrawBigDigit((u16 *)(gTextLayerMapPtr[0] + 0x38), (u8)(arg - 0x14));
     }
 }
-
 
 void DrawLapCounter(s32 a, s32 b)
 {
@@ -206,7 +197,6 @@ void DrawLapCounter(s32 a, s32 b)
     }
 }
 
-
 void DrawTireWear(struct Car *p)
 {
     u16 *dest;
@@ -245,4 +235,3 @@ void DrawTireWear(struct Car *p)
     }
     gTireWearBlinkCounter++;
 }
-

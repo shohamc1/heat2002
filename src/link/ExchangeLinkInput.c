@@ -18,22 +18,17 @@ u8 IsLinkSeqNumExpected(u16 seq, u8 next);
 u8 IsValidLinkKeys(u16 id);
 u16 UnpackLinkKeys(u16 id);
 
-
 u8 IsLinkSeqNumExpected(u16 seq, u8 next)
 {
-    if (next == 0)
-    {
+    if (next == 0) {
         if (seq != gLinkTxSeqNum)
             return 0;
-    }
-    else
-    {
+    } else {
         if (seq != ((gLinkTxSeqNum + 1) & 7))
             return 0;
     }
     return 1;
 }
-
 
 u8 IsValidLinkKeys(u16 keys)
 {
@@ -43,7 +38,6 @@ u8 IsValidLinkKeys(u16 keys)
         return 0;
     return 1;
 }
-
 
 s32 ExchangeLinkInput(void)
 {
@@ -67,7 +61,7 @@ s32 ExchangeLinkInput(void)
     done = 0;
     retry = 0;
     do {
-top:
+    top:
         if (retry > gNumLinkPlayers[0]) {
             gLinkVBlankTimeout = 0;
             gLinkTxSeqNum = 0;
@@ -75,12 +69,12 @@ top:
         }
         goto send;
 
-timeout:
+    timeout:
         gLinkVBlankTimeout = 0;
         retry++;
         goto top;
 
-send:
+    send:
         if (phase == 0)
             gLinkSendWords[0] = (gLinkTxSeqNum << 11) | ((keys & 0x7F) | ((keys & 0xF) << 7)) | 0x8000;
         else
@@ -103,12 +97,9 @@ send:
         if (phase == 0) {
             n = 0;
             for (i = phase; i < gNumLinkPlayers[0]; i++) {
-                if ((recv[i] & 0xF) == ((recv[i] >> 7) & 0xF)
-                    && recv[i] != 0xFFFF
-                    && recv[i] != 0
-                    && ((recv[i] >> 14) == 2 || (recv[i] >> 14) == 1)
-                    && IsLinkSeqNumExpected((recv[i] >> 11) & 7, 0)
-                    && IsValidLinkKeys(recv[i] & 0x7F))
+                if ((recv[i] & 0xF) == ((recv[i] >> 7) & 0xF) && recv[i] != 0xFFFF && recv[i] != 0 &&
+                    ((recv[i] >> 14) == 2 || (recv[i] >> 14) == 1) && IsLinkSeqNumExpected((recv[i] >> 11) & 7, 0) &&
+                    IsValidLinkKeys(recv[i] & 0x7F))
                     n++;
             }
             if (n == gNumLinkPlayers[0]) {
@@ -119,10 +110,8 @@ send:
         } else {
             n2 = 0;
             for (i = 0; i < gNumLinkPlayers[0]; i++) {
-                if ((recv[i] & 0xF) == ((recv[i] >> 7) & 0xF)
-                    && recv[i] != 0xFFFF
-                    && recv[i] != 0
-                    && IsValidLinkKeys(recv[i] & 0x7F)) {
+                if ((recv[i] & 0xF) == ((recv[i] >> 7) & 0xF) && recv[i] != 0xFFFF && recv[i] != 0 &&
+                    IsValidLinkKeys(recv[i] & 0x7F)) {
                     if ((recv[i] >> 14) == 1 && IsLinkSeqNumExpected((recv[i] >> 11) & 7, 0))
                         n2++;
                     else if ((recv[i] >> 14) == 2 && IsLinkSeqNumExpected((recv[i] >> 11) & 7, 1)) {
@@ -141,4 +130,3 @@ send:
     gLinkTxSeqNum = (gLinkTxSeqNum + 1) & 7;
     return 0;
 }
-

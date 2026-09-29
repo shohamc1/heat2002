@@ -3,6 +3,4 @@
 void ClearTextLayer(void);
 
 void ClearRaceTextLayer(void)
-{
-    ClearTextLayer();
-}
+{ ClearTextLayer(); }

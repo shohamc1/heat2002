@@ -3,7 +3,6 @@
 
 extern u8 gModule_02025220[]; /* 0x02025220 */
 
-
 void ModuleResetLapTimer(void)
 {
     gModule_LapMs[0] = 0;
@@ -11,14 +10,12 @@ void ModuleResetLapTimer(void)
     gModule_LapMin[0] = 0;
 }
 
-
 void ModuleResetRaceTimer(void)
 {
     gModule_RaceMs[0] = 0;
     gModule_RaceSec[0] = 0;
     gModule_RaceMin[0] = 0;
 }
-
 
 void ModuleSetCountdownSeconds(u8 seconds)
 {
@@ -28,7 +25,6 @@ void ModuleSetCountdownSeconds(u8 seconds)
     if (secondsVal > 99)
         gModule_CountdownSeconds = 99;
 }
-
 
 void ModuleInitCountdown(void)
 {
@@ -40,8 +36,7 @@ void ModuleInitCountdown(void)
     gUnk_0203B6E8 = 1;
     if (gModule_GameMode[0] == 0xA)
         gModule_CountdownSeconds = 0x14;
-    if (gModule_GameMode[0] == 0)
-    {
+    if (gModule_GameMode[0] == 0) {
         seconds = (u8)(3 - gModule_Options[0]);
         trackExtra = gModule_02025220;
         trackExtra += gModule_TrackId;
@@ -49,4 +44,3 @@ void ModuleInitCountdown(void)
         gModule_CountdownSeconds = *trackExtra + seconds;
     }
 }
-

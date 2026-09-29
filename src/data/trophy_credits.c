@@ -12,11 +12,9 @@ const u8 gGoldTrophyPalette[32] = INCBIN_U8("build/assets/unknown/data_08310160.
 const u8 gCreditsPage1Palette[512] = INCBIN_U8("build/assets/unknown/data_08310180.bin");
 
 // Its users declare it as u8 x[].
-const u16 gCreditsPage1MetatileMap[150] =
-    INCBIN_U16("build/assets/graphics/metatiles_08310380.bin");
+const u16 gCreditsPage1MetatileMap[150] = INCBIN_U16("build/assets/graphics/metatiles_08310380.bin");
 
 // Its users declare it as u8 x[].
-const u16 gCreditsPage1MetatileTable[424] =
-    INCBIN_U16("build/assets/graphics/metatiles_083104AC.bin");
+const u16 gCreditsPage1MetatileTable[424] = INCBIN_U16("build/assets/graphics/metatiles_083104AC.bin");
 
 const u8 gCreditsPage1Gfx[12160] = INCBIN_U8("build/assets/unknown/data_083107FC.bin");

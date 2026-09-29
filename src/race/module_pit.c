@@ -3,7 +3,6 @@
 
 #include "car.h"
 
-
 u8 ModuleFindFreePitStall(void)
 {
     u8 i;
@@ -15,34 +14,27 @@ u8 ModuleFindFreePitStall(void)
     return 0x63;
 }
 
-
 u32 ModuleCarNeedsPit(u32 car)
 {
     s32 ret;
     s32 tireWear;
     s32 wearLimit;
 
-    if (car != (u32)gModule_Cars)
-    {
+    if (car != (u32)gModule_Cars) {
         ret = 0;
         if (*(s32 *)(car + 0x9C) <= 0xA0 << 6)
             ret = 1;
         tireWear = *(s32 *)(car + 0x8C);
         wearLimit = 0x3E7FF;
-    }
-    else
-    {
+    } else {
         ret = 0;
         if (*(s32 *)(car + 0x9C) <= 0xA0 << 6)
             ret = 1;
         tireWear = *(s32 *)(car + 0x8C);
         wearLimit = 0x5DBFF;
     }
-    if (tireWear > wearLimit
-        || *(s32 *)(car + 0x90) > wearLimit
-        || *(s32 *)(car + 0x94) > wearLimit
-        || *(s32 *)(car + 0x98) > wearLimit)
+    if (tireWear > wearLimit || *(s32 *)(car + 0x90) > wearLimit || *(s32 *)(car + 0x94) > wearLimit ||
+        *(s32 *)(car + 0x98) > wearLimit)
         ret = 1;
     return ret;
 }
-

@@ -1,7 +1,6 @@
 #include "global.h"
 #include "variables.h"
 
-
 void ModuleClearTextLayer(void)
 {
     u16 *p = (u16 *)(*(u32 *)&gModule_TextLayerMapPtr);

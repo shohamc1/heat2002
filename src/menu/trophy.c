@@ -17,7 +17,6 @@ extern u8 gText_Bronze[];
 #include "gba/defines.h"
 #include "variables.h"
 
-
 void DrawTrophyScreen(u32 place)
 {
     u32 palette;
@@ -53,7 +52,6 @@ void DrawTrophyScreen(u32 place)
         DrawTextCenteredHighlight(gText_Bronze, 0x12, 1);
 }
 
-
 u8 TrophyScreen(u8 place)
 {
     u8 buf[0x200];
@@ -74,8 +72,7 @@ u8 TrophyScreen(u8 place)
     WaitForVBlank();
     REG_DISPCNT = 0xAA << 5;
     sel = 0x40;
-    do
-    {
+    do {
         ClearOamBuffer();
         ReadKeys();
         DrawTrophyScreen(place);
@@ -88,4 +85,3 @@ u8 TrophyScreen(u8 place)
     FadeToColor(0, 0x0F);
     return sel;
 }
-

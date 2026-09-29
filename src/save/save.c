@@ -6,7 +6,6 @@ extern u16 gSeasonSaveFlag[];
 extern u16 gSeasonSaveData[];
 extern u16 gSaveFormatFillPattern[];
 
-
 u32 IsSeasonSaved(void)
 {
     u32 saveOffset = 8;
@@ -17,7 +16,6 @@ u32 IsSeasonSaved(void)
         return 1;
     return 0;
 }
-
 
 void SaveSeason(void)
 {
@@ -56,7 +54,6 @@ void SaveSeason(void)
     StartMenuMusic();
 }
 
-
 void LoadSeason(void)
 {
     struct Car *q;
@@ -90,7 +87,6 @@ void LoadSeason(void)
     StartMenuMusic();
 }
 
-
 void LoadTrackRecords(void)
 {
     u16 *src;
@@ -116,7 +112,6 @@ void LoadTrackRecords(void)
     } while (i != 0x0C);
     StartMenuMusic();
 }
-
 
 void SaveTrackRecords(void)
 {
@@ -144,7 +139,6 @@ void SaveTrackRecords(void)
     StartMenuMusic();
 }
 
-
 void LoadProgress(void)
 {
     u8 *p;
@@ -153,20 +147,37 @@ void LoadProgress(void)
     ReadSaveBlocks(0x10, 0x30);
     p = gProgressSaveBuffer;
     i = 0;
-    do { gProgressFlags[i] = *p++; i++; } while (i != 0x0A);
+    do {
+        gProgressFlags[i] = *p++;
+        i++;
+    } while (i != 0x0A);
     i = 0;
-    do { gChallengeCategoryUnlocked[i] = *p++; i++; } while (i != 0x04);
+    do {
+        gChallengeCategoryUnlocked[i] = *p++;
+        i++;
+    } while (i != 0x04);
     i = 0;
-    do { gChallengeStatus[i] = *p++; i++; } while (i != 0x10);
+    do {
+        gChallengeStatus[i] = *p++;
+        i++;
+    } while (i != 0x10);
     i = 0;
-    do { gCheatFlags[i] = *p++; i++; } while (i != 0x08);
+    do {
+        gCheatFlags[i] = *p++;
+        i++;
+    } while (i != 0x08);
     i = 0;
-    do { gUnk_0202EDC8[i] = *p++; i++; } while (i != 0x04);
+    do {
+        gUnk_0202EDC8[i] = *p++;
+        i++;
+    } while (i != 0x04);
     i = 0;
-    do { gUnk_0202ED80[i] = *p++; i++; } while (i != 0x04);
+    do {
+        gUnk_0202ED80[i] = *p++;
+        i++;
+    } while (i != 0x04);
     StartMenuMusic();
 }
-
 
 void SaveProgress(void)
 {
@@ -175,21 +186,38 @@ void SaveProgress(void)
     StopAllSongsAndVSyncOff();
     p = gProgressSaveBuffer;
     i = 0;
-    do { *p++ = gProgressFlags[i]; i++; } while (i != 0x0A);
+    do {
+        *p++ = gProgressFlags[i];
+        i++;
+    } while (i != 0x0A);
     i = 0;
-    do { *p++ = gChallengeCategoryUnlocked[i]; i++; } while (i != 0x04);
+    do {
+        *p++ = gChallengeCategoryUnlocked[i];
+        i++;
+    } while (i != 0x04);
     i = 0;
-    do { *p++ = gChallengeStatus[i]; i++; } while (i != 0x10);
+    do {
+        *p++ = gChallengeStatus[i];
+        i++;
+    } while (i != 0x10);
     i = 0;
-    do { *p++ = gCheatFlags[i]; i++; } while (i != 0x08);
+    do {
+        *p++ = gCheatFlags[i];
+        i++;
+    } while (i != 0x08);
     i = 0;
-    do { *p++ = gUnk_0202EDC8[i]; i++; } while (i != 0x04);
+    do {
+        *p++ = gUnk_0202EDC8[i];
+        i++;
+    } while (i != 0x04);
     i = 0;
-    do { *p++ = gUnk_0202ED80[i]; i++; } while (i != 0x04);
+    do {
+        *p++ = gUnk_0202ED80[i];
+        i++;
+    } while (i != 0x04);
     WriteSaveBlocks(0x10, 0x30);
     StartMenuMusic();
 }
-
 
 void LoadOptions(void)
 {
@@ -205,22 +233,19 @@ void LoadOptions(void)
     StartMenuMusic();
 }
 
-
 void SaveOptions(void)
 {
     u32 i;
     u8 *dst;
     StopAllSongsAndVSyncOff();
     dst = gUnk_0202F1B8;
-    for (i = 0; i != 6; i++)
-    {
+    for (i = 0; i != 6; i++) {
         *dst = gOptions[i];
         dst++;
     }
     WriteSaveBlocks(0xBC << 1, 8);
     StartMenuMusic();
 }
-
 
 void FormatSave(void)
 {
@@ -310,7 +335,6 @@ void FormatSave(void)
     WriteSaveBlocks(0, 8);
 }
 
-
 u32 IsSaveValid(void)
 {
     InitEeprom();
@@ -319,4 +343,3 @@ u32 IsSaveValid(void)
         return 1;
     return 0;
 }
-

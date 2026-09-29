@@ -13,7 +13,6 @@ extern s32 gUnk_0202CBEC;
 #include "m4a.h"
 void AddSkidSmokeTask(u8 a, u8 b);
 
-
 void UpdateTireForces(struct Car *car, u8 carIndex)
 {
     s32 *frontGrip, *angle;
@@ -21,9 +20,8 @@ void UpdateTireForces(struct Car *car, u8 carIndex)
 
     gCurrentCarIndex = carIndex;
     SetTireGrip(car, carIndex);
-    if (car == gCars
-        && (car->tireWear0 > 0x7D000 || car->tireWear1 > 0x7D000
-            || car->tireWear2 > 0x7D000 || car->tireWear3 > 0x7D000)) {
+    if (car == gCars && (car->tireWear0 > 0x7D000 || car->tireWear1 > 0x7D000 || car->tireWear2 > 0x7D000 ||
+                         car->tireWear3 > 0x7D000)) {
         gTireGrip = 0x40;
         gUnk_0202CAEC = 0x80;
         gTireSlipLimit = 0x11F40;
@@ -90,7 +88,6 @@ void UpdateTireForces(struct Car *car, u8 carIndex)
     }
 }
 
-
 void ComputeAxleTireForce(u8 axle, struct Car *car)
 {
     s32 cos;
@@ -136,7 +133,7 @@ void ComputeAxleTireForce(u8 axle, struct Car *car)
         } else {
             goto tail;
         }
-e2check:
+    e2check:
         if (gOptions[3] != 0 && gIsDemo == 0 && gRaceEndState == 0)
             m4aSongNumStart(0xB);
     } else {
@@ -171,4 +168,3 @@ tail:
         car->torque += m;
     }
 }
-

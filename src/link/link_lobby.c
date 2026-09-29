@@ -4,18 +4,19 @@
 #include "functions.h"
 #include "variables.h"
 
-struct UnkEFA0 {
+struct UnkEFA0
+{
     u8 unk0;
     u8 unk1;
     u8 unk2;
     u8 unk3;
 };
-struct EFA0s4 {
-    struct UnkEFA0 r[4];
-};
+struct EFA0s4
+{ struct UnkEFA0 r[4]; };
 extern u8 gText_BlankRowLinkLobby[];
 #include "data.h"
-struct EntEFA0 {
+struct EntEFA0
+{
     u8 f0;
     u8 f1;
     s8 f2;
@@ -23,13 +24,11 @@ struct EntEFA0 {
 };
 /* gLinkPlayerSlots is u8[] in variables.h; the wrapper keeps the array
    subscript expansion for the order-sensitive uses below. */
-struct LinkLobbySlots {
-    struct EntEFA0 r[4];
-};
+struct LinkLobbySlots
+{ struct EntEFA0 r[4]; };
 extern u8 gText_EmptySlot[];
 #include "m4a.h"
 extern u16 gUnk_020020B8;
-
 
 s32 UpdateLinkLobby(void)
 {
@@ -146,19 +145,17 @@ u8 LinkLobby(void)
     ((void (*)(u8))DrawLinkLobby)(0);
     FadeToBrightenedPalette((u32)buf, 0x0F);
     gUnk_020020B8 = v;
-    do
-    {
+    do {
         ReadKeys();
         ((void (*)(u8))DrawLinkLobby)(v);
         r = UpdateLinkLobby();
-        switch (r)
-        {
-        case 1:
-            sel = 1;
-            break;
-        case -1:
-            sel = 0;
-            break;
+        switch (r) {
+            case 1:
+                sel = 1;
+                break;
+            case -1:
+                sel = 0;
+                break;
         }
         if (gKeysPressed & 2)
             sel = 0;

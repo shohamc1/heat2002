@@ -9,7 +9,6 @@ u32 GetCarOrderIndex(struct Car *car);
    ROM. Solved-walls 31 variant: keep this file's declared view. */
 extern struct TrackGrid gTrackStartGrids[];
 
-
 u32 GetCarOrderIndex(struct Car *car)
 {
     u32 *order = gCarOrder;
@@ -21,7 +20,6 @@ u32 GetCarOrderIndex(struct Car *car)
     }
     return 0x18;
 }
-
 
 void AwardRacePoints(struct Car *a1, u32 a2)
 {
@@ -46,7 +44,6 @@ void AwardRacePoints(struct Car *a1, u32 a2)
         a1->points += 10;
 }
 
-
 void BuildStartingGrid(u8 a1)
 {
     u32 x = gTrackStartGrids[a1].originX;
@@ -67,4 +64,3 @@ void BuildStartingGrid(u8 a1)
         y += gTrackStartGrids[a1].rowStepY;
     }
 }
-

@@ -5,16 +5,14 @@
 
 s16 MenuMoveVertical(u16 keys, s16 v, s16 lo, s16 hi)
 {
-    if (keys & DPAD_UP)
-    {
+    if (keys & DPAD_UP) {
         if (gOptions[3] != 0)
             m4aSongNumStart(8);
         v = v - 1;
         if (v < lo)
             v = hi;
     }
-    if (keys & DPAD_DOWN)
-    {
+    if (keys & DPAD_DOWN) {
         if (gOptions[3] != 0)
             m4aSongNumStart(8);
         v = v + 1;
@@ -26,14 +24,12 @@ s16 MenuMoveVertical(u16 keys, s16 v, s16 lo, s16 hi)
 
 s16 MenuMoveVerticalSilent(u16 keys, s16 v, s16 lo, s16 hi)
 {
-    if (keys & DPAD_UP)
-    {
+    if (keys & DPAD_UP) {
         v = v - 1;
         if (v < lo)
             v = hi;
     }
-    if (keys & DPAD_DOWN)
-    {
+    if (keys & DPAD_DOWN) {
         v = v + 1;
         if (v > hi)
             v = lo;
@@ -43,8 +39,7 @@ s16 MenuMoveVerticalSilent(u16 keys, s16 v, s16 lo, s16 hi)
 
 s16 MenuMoveHorizontal(u16 keys, s16 v, s16 lo, s16 hi)
 {
-    if (keys & DPAD_LEFT)
-    {
+    if (keys & DPAD_LEFT) {
         gMenuValueChanged = 1;
         if (gOptions[3] != 0)
             m4aSongNumStart(8);
@@ -52,8 +47,7 @@ s16 MenuMoveHorizontal(u16 keys, s16 v, s16 lo, s16 hi)
         if (v < lo)
             v = hi;
     }
-    if (keys & DPAD_RIGHT)
-    {
+    if (keys & DPAD_RIGHT) {
         gMenuValueChanged = 1;
         if (gOptions[3] != 0)
             m4aSongNumStart(8);
@@ -66,15 +60,13 @@ s16 MenuMoveHorizontal(u16 keys, s16 v, s16 lo, s16 hi)
 
 s16 MenuMoveHorizontalSilent(u16 keys, s16 v, s16 lo, s16 hi)
 {
-    if (keys & DPAD_LEFT)
-    {
+    if (keys & DPAD_LEFT) {
         gMenuValueChanged = 1;
         v = v - 1;
         if (v < lo)
             v = hi;
     }
-    if (keys & DPAD_RIGHT)
-    {
+    if (keys & DPAD_RIGHT) {
         gMenuValueChanged = 1;
         v = v + 1;
         if (v > hi)
@@ -85,8 +77,7 @@ s16 MenuMoveHorizontalSilent(u16 keys, s16 v, s16 lo, s16 hi)
 
 s16 MenuMoveHorizontalClamped(u16 keys, s16 v, s16 lo, s16 hi)
 {
-    if (keys & DPAD_LEFT)
-    {
+    if (keys & DPAD_LEFT) {
         gMenuValueChanged = 1;
         v = v - 1;
         if (v < lo)
@@ -94,8 +85,7 @@ s16 MenuMoveHorizontalClamped(u16 keys, s16 v, s16 lo, s16 hi)
         else if (gOptions[3] != 0)
             m4aSongNumStart(8);
     }
-    if (keys & DPAD_RIGHT)
-    {
+    if (keys & DPAD_RIGHT) {
         gMenuValueChanged = 1;
         v = v + 1;
         if (v > hi)

@@ -8,15 +8,14 @@ extern u8 gText_BlankRow[];
 #include "gba/io_reg.h"
 #include "m4a.h"
 
-
 void DrawQualifyResults(u8 page)
 {
     u8 buf[0x28];
     u16 minutes, seconds, ms;
     u8 i;
-        u32 *walk;
-        u8 *ptr;
-        u8 base;
+    u32 *walk;
+    u8 *ptr;
+    u8 base;
 
     base = page * 15;
     DummyUiFontLoad(gUiFontTable[0]);
@@ -62,7 +61,6 @@ void DrawQualifyResults(u8 page)
     gMenuBlinkCounter++;
 }
 
-
 u8 QualifyResultsScreen(void)
 {
     u8 buf[0x200];
@@ -100,7 +98,6 @@ u8 QualifyResultsScreen(void)
     FadeToColor(0, 0x0F);
     return sel;
 }
-
 
 void DrawRaceResults(u8 page)
 {
@@ -152,7 +149,6 @@ void DrawRaceResults(u8 page)
     gMenuBlinkCounter++;
 }
 
-
 u8 RaceResultsScreen(void)
 {
     u8 buf[0x200];
@@ -191,4 +187,3 @@ u8 RaceResultsScreen(void)
     FadeToColor(0, 0x0F);
     return sel;
 }
-

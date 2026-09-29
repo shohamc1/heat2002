@@ -8,7 +8,6 @@ extern u32 gBootSplash3Palette[];
 extern u32 gUnk_0830EE78[];
 extern u32 gBootSplash2Palette[];
 
-
 void ShowBootSplash3(void)
 {
     u32 src;
@@ -23,7 +22,6 @@ void ShowBootSplash3(void)
     WaitFramesOrKey(0x78);
     FadeToColor(0, 0xF);
 }
-
 
 void ShowBootSplash2(void)
 {
@@ -42,4 +40,3 @@ void ShowBootSplash2(void)
     WaitFramesOrKey(0x78);
     FadeToColor(0, 0xF);
 }
-

@@ -1,8 +1,8 @@
 #include "global.h"
 #include "data.h"
 
-
-struct Unk0800D5D4 {
+struct Unk0800D5D4
+{
     s32 posX;
     u8 pad04[4];
     s32 posZ;
@@ -47,8 +47,7 @@ void BuildCarCollFrame(struct Unk0800D5D4 *a, s32 *d)
 
 void KeepNearestCarContact(s32 a, u8 b, s32 c, u8 d, struct unk_D64C *e, u8 *f, s32 g, s32 h)
 {
-    if (h < gUnk_0202CD24)
-    {
+    if (h < gUnk_0202CD24) {
         e->a = a;
         e->c = c;
         e->b = b;

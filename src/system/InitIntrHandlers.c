@@ -8,7 +8,6 @@ void DummyIntr(void);
 void IntrMain(void);
 void VBlankIntr(void);
 
-
 void ClearVBlankFlag(void);
 
 void InitIntrHandlers(void)

@@ -2,7 +2,6 @@
 #include "car.h"
 #include "variables.h"
 
-
 u32 GetPlayerStanding(void)
 {
     u32 i;

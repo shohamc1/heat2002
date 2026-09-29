@@ -11,15 +11,13 @@
 void sub_08339C0C(void);
 void sub_08339B88(void);
 
-
 void ModuleMPlayFadeOut(u32 mplayInfo, u16 fadeOutDelay)
 {
     u32 info = mplayInfo;
     u32 ident = *(u32 *)(info + 0x34);
     u32 initialFadeVol = 0x80 << 1;
 
-    if (ident == 0x68736D53)
-    {
+    if (ident == 0x68736D53) {
         *(u16 *)(info + 0x26) = fadeOutDelay;
         *(u16 *)(info + 0x24) = fadeOutDelay;
         *(u16 *)(info + 0x28) = initialFadeVol;
@@ -29,7 +27,6 @@ void ModuleMPlayFadeOut(u32 mplayInfo, u16 fadeOutDelay)
         *(u32 *)(info + 0x34) = ident;
     }
 }
-
 
 void ModuleM4aSoundInit(void)
 {
@@ -46,8 +43,7 @@ void ModuleM4aSoundInit(void)
     ModuleMPlayExtender((void *)EWRAM_START + 0x38E70);
     ModuleM4aSoundMode(0x0097D800);
     playerCount = (u16)(u32)gNumMusicPlayersHigh;
-    if (playerCount != 0)
-    {
+    if (playerCount != 0) {
         tableBase = (u32)gModule_MPlayTable;
         tracksOffset = playerCount;
         playerEntry = (struct Unk0801DA90 *)(tableBase + tracksOffset - playerCount);
@@ -56,7 +52,9 @@ void ModuleM4aSoundInit(void)
     loop:
         tracksOffset = 4;
         mplayInfo = playerEntry->unk0;
-        ModuleMPlayOpen((struct MusicPlayerInfo *)mplayInfo,(struct MusicPlayerTrack *)(*(u32 *)(entryOffset + (tableBase + tracksOffset))), (*(u8 *)&playerEntry->unk8));
+        ModuleMPlayOpen((struct MusicPlayerInfo *)mplayInfo,
+                        (struct MusicPlayerTrack *)(*(u32 *)(entryOffset + (tableBase + tracksOffset))),
+                        (*(u8 *)&playerEntry->unk8));
         *(u32 *)(mplayInfo + 0x18) = EWRAM_START + 0x39030;
         playerEntry++;
         entryOffset += 12;
@@ -66,16 +64,11 @@ void ModuleM4aSoundInit(void)
     }
 }
 
-
 void ModuleM4aSoundMain(void)
-{
-    sub_08339B88();
-}
-
+{ sub_08339B88(); }
 
 void ModuleM4aSongNumStart(u16 idx)
 {
     u32 mplayInfo = gModule_MPlayTable[gModule_SongTable[idx].unk4].unk0;
-    ModuleMPlayStart((struct MusicPlayerInfo *)mplayInfo,(struct SongHeader *)(gModule_SongTable[idx].unk0));
+    ModuleMPlayStart((struct MusicPlayerInfo *)mplayInfo, (struct SongHeader *)(gModule_SongTable[idx].unk0));
 }
-

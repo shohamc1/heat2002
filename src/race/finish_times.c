@@ -7,18 +7,17 @@
 /* car.h types 0x4C as u8 lap, but this function's load is a signed ldrsb
    (its old local view typed the field s8). Reach it through this view so
    the offset stays inside the MEM like a plain component access. */
-struct CarLapS8 {
+struct CarLapS8
+{
     u8 pad[0x4C];
     s8 lap;
 };
-
 
 u32 ComputeProgressDistance(s32 progress, u8 trackId)
 {
     u32 lapDistance = progress & 0xFFFF;
     return (progress >> 16) * gTrackLapLengths[trackId] + lapDistance;
 }
-
 
 void FinishAllCars(u8 recomposeTimes)
 {
@@ -53,4 +52,3 @@ void FinishAllCars(u8 recomposeTimes)
         car++;
     } while (i != 0x18);
 }
-

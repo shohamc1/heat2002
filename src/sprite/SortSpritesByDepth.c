@@ -1,7 +1,6 @@
 #include "global.h"
 #include "variables.h"
 
-
 u32 SortSpritesByDepth(void)
 {
     u8 swapped;

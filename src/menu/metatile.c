@@ -5,7 +5,6 @@ extern u16 gSharedMetatileTileTable[][4];
 extern u16 gUnk_0600F800[];
 #include "gba/defines.h"
 
-
 void DrawBackdropMetatileMap(u16 *map)
 {
     u16 *dest;
@@ -32,7 +31,6 @@ void DrawBackdropMetatileMap(u16 *map)
     }
 }
 
-
 void DrawMetatileMap(u16 *map, u16 *table)
 {
     u16 *dest;
@@ -57,4 +55,3 @@ void DrawMetatileMap(u16 *map, u16 *table)
         dest += 0x22;
     }
 }
-

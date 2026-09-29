@@ -21,7 +21,6 @@ void ModuleWorldToCarLocal(s32 *car, s32 x, s32 y, s32 *out)
     out[1] = (sin * relx + rely * cos) >> 8;
 }
 
-
 u8 ModuleCheckDrafting(u8 *car)
 {
     struct Out08343234
@@ -39,8 +38,7 @@ u8 ModuleCheckDrafting(u8 *car)
     if (gModule_IsLinkRace != 0)
         count = gModule_NumLinkPlayers[0];
     other = (u8 *)gModule_Cars;
-    for (i = 0; i != count; i++, other += 0x190)
-    {
+    for (i = 0; i != count; i++, other += 0x190) {
         if (other == car)
             continue;
         ModuleWorldToCarLocal((s32 *)car, *(u32 *)(other + 0), *(u32 *)(other + 8), &relPos1);
@@ -62,4 +60,3 @@ u8 ModuleCheckDrafting(u8 *car)
     }
     return 0;
 }
-

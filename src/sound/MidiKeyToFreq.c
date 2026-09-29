@@ -10,7 +10,6 @@ struct Unk10CC
 extern const u8 gMidiKeyToFreqTable[];
 extern const u32 gMidiKeyToFreqOctaveBases[];
 
-
 s32 MidiKeyToFreq(struct Unk10CC *arg0, u8 arg1, u32 arg2)
 {
     u8 idx;
@@ -22,8 +21,7 @@ s32 MidiKeyToFreq(struct Unk10CC *arg0, u8 arg1, u32 arg2)
 
     idx = arg1;
     packed = arg2 << 24;
-    if (idx > 0xB2)
-    {
+    if (idx > 0xB2) {
         idx = 0xB2;
         packed = 0xFF000000;
     }

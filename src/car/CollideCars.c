@@ -23,7 +23,8 @@
  * - The range pre-check is `px` load-then-subtract and `pz` in one expression.
  */
 
-struct Coll {
+struct Coll
+{
     struct Car *a;
     struct Car *c;
     u8 b;
@@ -31,7 +32,8 @@ struct Coll {
     s32 g;
 };
 
-struct Pt2 {
+struct Pt2
+{
     s32 f0;
     s32 f1;
 };
@@ -43,8 +45,7 @@ extern struct Pt2 gCarCollisionNormals[];
 extern u8 gUnk_0202A530;
 
 void BuildCarCollFrame(struct Car *a, s32 *d);
-void KeepNearestCarContact(struct Car *a, s32 b, struct Car *c, s32 d, struct Coll *e,
-                  u8 *f, s32 g, s32 h);
+void KeepNearestCarContact(struct Car *a, s32 b, struct Car *c, s32 d, struct Coll *e, u8 *f, s32 g, s32 h);
 void DummyCarHitHook(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g);
 void DummyCarDamageHook(s32 a, u8 b);
 void ComputeForwardSpeed(struct Car *a);
@@ -253,9 +254,8 @@ u8 CollideCars(struct Car *car)
             b->impactSpeed = 0;
         b->rpm = (b->impactSpeed << 8) / -b->gearRatioTable[b->gear];
         if (a == gCars || b == gCars || gIsLinkRace != 0) {
-            if (gRaceEndState == 0 && gIsDemo == 0 && gOptions[3] != 0
-                && (car == gCars || gIsLinkRace != 0)
-                && a->hitCooldown == 0 && b->hitCooldown == 0)
+            if (gRaceEndState == 0 && gIsDemo == 0 && gOptions[3] != 0 && (car == gCars || gIsLinkRace != 0) &&
+                a->hitCooldown == 0 && b->hitCooldown == 0)
                 m4aSongNumStart(0x12);
         }
         a->hitCooldown = 0x10;

@@ -8,22 +8,18 @@ u8 Atan2(s32 x, s32 y)
     s32 a;
 
     a = x;
-    for (;;)
-    {
-        if ((u32)(a + 0x7F) > 0xFE)
-        {
+    for (;;) {
+        if ((u32)(a + 0x7F) > 0xFE) {
             a = a / 2;
             y = y / 2;
             continue;
         }
-        if (y < -0x7F)
-        {
+        if (y < -0x7F) {
             a = a / 2;
             y = y / 2;
             continue;
         }
-        if (y > 0x7F)
-        {
+        if (y > 0x7F) {
             a = a / 2;
             y = y / 2;
             continue;

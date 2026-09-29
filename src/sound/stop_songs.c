@@ -6,7 +6,6 @@ void m4aSoundVSyncOff(void);
 #include "functions.h"
 #include "variables.h"
 
-
 void StopAllSongsAndVSyncOff(void)
 {
     u8 r4;
@@ -14,7 +13,6 @@ void StopAllSongsAndVSyncOff(void)
         m4aSongNumStop(r4);
     m4aSoundVSyncOff();
 }
-
 
 void StopAllSongs(void)
 {
@@ -24,11 +22,9 @@ void StopAllSongs(void)
         m4aSongNumStop(i);
 }
 
-
 void StartMenuMusic(void)
 {
     if (gOptions[2] != 0)
         m4aSongNumStart(2);
     m4aSoundVSyncOn();
 }
-

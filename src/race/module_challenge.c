@@ -11,7 +11,6 @@ extern u8 gUnk_0203DD08;
 extern s32 gUnk_0203DDF8;
 extern u8 gUnk_0203DD30;
 
-
 u8 ModuleIsProgressPointCrossed(s32 point)
 {
     if ((*(s32 *)&gUnk_0203DD34) > point)
@@ -21,14 +20,12 @@ u8 ModuleIsProgressPointCrossed(s32 point)
     return 1;
 }
 
-
 u32 ModuleIsChallengeTimeWithin(s32 limitMs)
 {
     if ((*(s32 *)&gUnk_0203DCFC) * 1000 + (*(s32 *)&gUnk_0203D500) <= limitMs)
         return 1;
     return 0;
 }
-
 
 void ModuleDrawChallengeTimer(void)
 {
@@ -59,7 +56,6 @@ void ModuleDrawChallengeTimer(void)
     ((void (*)(u16 *, u32))ModuleDrawBigDigit)(dest, sub_08344C50(sub_08344BB8(*sec, 0xA), 0xA));
 }
 
-
 void ModuleDrawChallengeSpeed(u32 mph)
 {
     u16 *tilemap;
@@ -78,13 +74,11 @@ void ModuleDrawChallengeSpeed(u32 mph)
     ModuleDrawText(gModule_MPH, 0x10, 0x0F);
 }
 
-
 void ModuleClearChallengeSpeed(void)
 {
     ModuleDrawText(gModule_BlankRow8, 10, 14);
     ModuleDrawText(gModule_BlankRow12_2, 10, 15);
 }
-
 
 void ModuleUpdateChallengeTimer(void)
 {
@@ -101,14 +95,12 @@ void ModuleUpdateChallengeTimer(void)
     }
 }
 
-
 void ModuleResetChallengeTimer(void)
 {
     gUnk_0203D500 = 0;
     gUnk_0203DCFC = 0;
     gUnk_0203DD04 = 0;
 }
-
 
 u32 ModuleGetAverageWaypointSpeed(void)
 {
@@ -120,8 +112,7 @@ u32 ModuleGetAverageWaypointSpeed(void)
     do {
         sample = gUnk_0203DD60[i];
         sum += sample;
-        if (sample == 0)
-        {
+        if (sample == 0) {
             result = 0;
             goto end;
         }
@@ -132,14 +123,12 @@ end:
     return result;
 }
 
-
 void ModuleClearWaypointSpeedSamples(void)
 {
     u32 i;
     for (i = 0; i != 13; i = (u8)(i + 1))
         gUnk_0203DD60[i] = 0;
 }
-
 
 void ModuleUpdateChallenge(void)
 {
@@ -149,86 +138,85 @@ void ModuleUpdateChallenge(void)
     if (gModule_GameMode[0] == 0x10) {
         ModuleUpdateChallengeTimer();
         switch (gUnk_0203DFB0) {
-        case 0:
-            phase = gUnk_0203DD08;
-            switch (phase) {
             case 0:
-                if (ModuleIsProgressPointCrossed(0xDC)) {
-                    gUnk_0203DD08 = 1;
-                    ModuleResetChallengeTimer();
+                phase = gUnk_0203DD08;
+                switch (phase) {
+                    case 0:
+                        if (ModuleIsProgressPointCrossed(0xDC)) {
+                            gUnk_0203DD08 = 1;
+                            ModuleResetChallengeTimer();
+                        }
+                        break;
+                    case 1:
+                        if (ModuleIsProgressPointCrossed(0x15E)) {
+                            /* ModuleIsChallengeTimeWithin: this file's old prototype returns u8;
+                               the matched definition returns u32 */
+                            if (((u8 (*)(u32))ModuleIsChallengeTimeWithin)(0x2328))
+                                gUnk_0203E104 = phase;
+                            ModuleEndRace();
+                            gUnk_0203DD08 = 0;
+                        }
+                        ModuleDrawChallengeTimer();
+                        break;
                 }
                 break;
             case 1:
-                if (ModuleIsProgressPointCrossed(0x15E)) {
-                    /* ModuleIsChallengeTimeWithin: this file's old prototype returns u8;
-                       the matched definition returns u32 */
-                    if (((u8 (*)(u32))ModuleIsChallengeTimeWithin)(0x2328))
-                        gUnk_0203E104 = phase;
-                    ModuleEndRace();
-                    gUnk_0203DD08 = 0;
-                }
-                ModuleDrawChallengeTimer();
+            case 2:
+            case 3:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 10:
+            case 11:
+            case 12:
+            case 13:
+            case 14:
+            case 15:
                 break;
-            }
-            break;
-        case 1:
-        case 2:
-        case 3:
-        case 5:
-        case 6:
-        case 7:
-        case 8:
-        case 10:
-        case 11:
-        case 12:
-        case 13:
-        case 14:
-        case 15:
-            break;
-        case 4:
-            phase = gUnk_0203DD08;
-            switch (phase) {
-            case 0:
-                if (ModuleIsProgressPointCrossed(0x55)) {
-                    gUnk_0203DD08 = 1;
-                    ModuleResetChallengeTimer();
+            case 4:
+                phase = gUnk_0203DD08;
+                switch (phase) {
+                    case 0:
+                        if (ModuleIsProgressPointCrossed(0x55)) {
+                            gUnk_0203DD08 = 1;
+                            ModuleResetChallengeTimer();
+                        }
+                        break;
+                    case 1:
+                        if (ModuleIsProgressPointCrossed(0x96)) {
+                            if (((u8 (*)(u32))ModuleIsChallengeTimeWithin)(0xFA0))
+                                gUnk_0203E104 = phase;
+                            ModuleEndRace();
+                            gUnk_0203DD08 = 0;
+                        }
+                        ModuleDrawChallengeTimer();
+                        break;
                 }
                 break;
-            case 1:
-                if (ModuleIsProgressPointCrossed(0x96)) {
-                    if (((u8 (*)(u32))ModuleIsChallengeTimeWithin)(0xFA0))
-                        gUnk_0203E104 = phase;
+            case 9:
+                speed = ModuleGetAverageWaypointSpeed();
+                if (speed < 0)
+                    speed = 0;
+                if (speed > gUnk_0203DDF8)
+                    gUnk_0203DDF8 = speed;
+                if (gUnk_0203DDF8 > 0x76) {
+                    gUnk_0203E104 = 1;
                     ModuleEndRace();
-                    gUnk_0203DD08 = 0;
                 }
-                ModuleDrawChallengeTimer();
+                if (gUnk_0203DDF8 > 0x79) {
+                    if (gUnk_0203DD30 & 8)
+                        ModuleDrawChallengeSpeed(gUnk_0203DDF8);
+                    else
+                        ModuleClearChallengeSpeed();
+                    gUnk_0203DD30++;
+                    if (gUnk_0203DD30 > 0x40)
+                        ModuleEndRace();
+                } else if (gUnk_0203DDF8 != 0) {
+                    ModuleDrawChallengeSpeed(speed);
+                }
                 break;
-            }
-            break;
-        case 9:
-            speed = ModuleGetAverageWaypointSpeed();
-            if (speed < 0)
-                speed = 0;
-            if (speed > gUnk_0203DDF8)
-                gUnk_0203DDF8 = speed;
-            if (gUnk_0203DDF8 > 0x76) {
-                gUnk_0203E104 = 1;
-                ModuleEndRace();
-            }
-            if (gUnk_0203DDF8 > 0x79) {
-                if (gUnk_0203DD30 & 8)
-                    ModuleDrawChallengeSpeed(gUnk_0203DDF8);
-                else
-                    ModuleClearChallengeSpeed();
-                gUnk_0203DD30++;
-                if (gUnk_0203DD30 > 0x40)
-                    ModuleEndRace();
-            } else if (gUnk_0203DDF8 != 0) {
-                ModuleDrawChallengeSpeed(speed);
-            }
-            break;
         }
         gUnk_0203DD34 = gModule_Cars[0].progress & 0xFFFF;
     }
 }
-

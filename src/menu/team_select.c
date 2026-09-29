@@ -12,7 +12,6 @@ extern const u8 *const gChampionshipLockedTexts[];
 #include "gba/defines.h"
 #include "m4a.h"
 
-
 void DrawTeamSelectInfo(u8 teamId)
 {
     u8 *blankRow;
@@ -28,7 +27,6 @@ void DrawTeamSelectInfo(u8 teamId)
     else
         DrawText(gChampionshipLockedTexts[teamId], 0, 0x11, 1);
 }
-
 
 u16 FindTeamDriverPair(u8 teamId)
 {
@@ -53,7 +51,6 @@ u16 FindTeamDriverPair(u8 teamId)
     lowByte = &drivers[0];
     return (drivers[1] << 8) | *lowByte;
 }
-
 
 u32 DrawTeamSelect(u8 teamId)
 {
@@ -85,7 +82,6 @@ u32 DrawTeamSelect(u8 teamId)
         Draw64x64Sprite(0x50, 0x30, 0x80);
     }
 }
-
 
 u8 TeamSelectMenu(void)
 {
@@ -135,4 +131,3 @@ u8 TeamSelectMenu(void)
     FadeToColor(0, 0x0F);
     return choice != 0 ? cursor : 0;
 }
-

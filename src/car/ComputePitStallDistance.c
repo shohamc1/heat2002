@@ -2,8 +2,8 @@
 #include "variables.h"
 #include "data.h"
 
-
-struct UnkStruct0800C4E0 {
+struct UnkStruct0800C4E0
+{
     u8 pad0[2];
     s16 f2;
     u8 pad4[6];

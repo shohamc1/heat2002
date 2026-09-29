@@ -1,7 +1,8 @@
 #include "global.h"
 #include "variables.h"
 
-struct Unk08343DF8 {
+struct Unk08343DF8
+{
     s32 unk00;
     u8 pad04[4];
     s32 unk08;
@@ -13,7 +14,6 @@ struct Unk08343DF8 {
     u8 pad36[0x3C - 0x36];
     s16 unk3C;
 };
-
 
 void ModuleBuildCarCollFrame(struct Unk08343DF8 *car, s32 *frame)
 {

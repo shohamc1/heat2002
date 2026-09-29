@@ -22,7 +22,6 @@ void IslandDrawMultibootProgressMarker(s16 a, u8 b);
 u32 IslandSioTransferUpdate(u32 *a1);
 void _08364810(u32 target);
 
-
 void IslandDrawLinkProgressBar(u16 progress, u16 y)
 {
     s16 *oam = (s16 *)gIsland_OamBuffer;
@@ -68,7 +67,6 @@ void IslandDrawLinkProgressBar(u16 progress, u16 y)
     oam[0x42] = (oam[0x42] & ~0x3FF) | 0x20;
 }
 
-
 void IslandAgbMain(void)
 {
     u32 frame;
@@ -113,4 +111,3 @@ void IslandAgbMain(void)
     sub_08364804(0xE2);
     _08364810((u32)gUnk_02000D00);
 }
-

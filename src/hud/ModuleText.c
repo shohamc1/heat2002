@@ -19,8 +19,7 @@ void ModuleDrawTextCenteredHighlight(u8 *str, u32 y)
 
     cursor = str;
     len = 0;
-    while (*cursor != 0)
-    {
+    while (*cursor != 0) {
         cursor++;
         len++;
     }
@@ -30,16 +29,12 @@ void ModuleDrawTextCenteredHighlight(u8 *str, u32 y)
     e = 0xE0 << 8;
     t = 0x47;
     c = *str++;
-    while (c != 0)
-    {
-        if (c != 0x20)
-        {
+    while (c != 0) {
+        if (c != 0x20) {
             v = e;
             v |= gModule_FontTileEntries[gUnk_02021D04[(u8)(c - '!')]];
             *dest++ = v;
-        }
-        else
-        {
+        } else {
             t = 0x47;
             *dest++ = t;
         }

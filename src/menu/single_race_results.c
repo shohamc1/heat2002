@@ -7,7 +7,6 @@
 #include "gba/io_reg.h"
 #include "m4a.h"
 
-
 void DrawSingleRaceResultsPage(u8 page)
 {
     u8 timeText[0x28];
@@ -56,7 +55,6 @@ void DrawSingleRaceResultsPage(u8 page)
     gMenuBlinkCounter++;
 }
 
-
 u8 SingleRaceResultsScreen(void)
 {
     u8 fadePalette[0x200];
@@ -90,4 +88,3 @@ u8 SingleRaceResultsScreen(void)
     FadeToColor(0, 0x0F);
     return selection;
 }
-

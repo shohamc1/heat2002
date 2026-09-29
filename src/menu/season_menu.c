@@ -12,11 +12,11 @@ extern u8 gText_AreYouSure[];
 extern u8 gText_No[];
 extern u8 gText_Yes[];
 
-
 void DrawCareerSessionMenu(u8 cursor)
 {
     u8 sel = cursor;
-    const u8 *text; DummyUiFontLoad(gUiFontTable[0]);
+    const u8 *text;
+    DummyUiFontLoad(gUiFontTable[0]);
     GetString(0x00);
     ((void (*)(void))DrawBigText)();
     text = (u32)gText_Practice;
@@ -30,7 +30,6 @@ void DrawCareerSessionMenu(u8 cursor)
     text = GetString(0x08);
     DrawTextCenteredHighlight(text, 0xE, sel == 4);
 }
-
 
 s8 CareerSessionMenu(u8 qualifyDone, u8 practiceDone)
 {
@@ -52,7 +51,7 @@ s8 CareerSessionMenu(u8 qualifyDone, u8 practiceDone)
         if (gKeysPressed & 2)
             sel = 0xFF;
         cursor = MenuMoveVertical(gKeysPressed, cursor, 0, 4);
-again:
+    again:
         if ((cursor == 0 && (qualifyDone != 0 || practiceDone != 0)) || (cursor == 1 && qualifyDone != 0)) {
             if (gKeysPressed & 0xC0)
                 cursor = MenuMoveVertical(gKeysPressed, cursor, 0, 4);
@@ -68,11 +67,11 @@ again:
     return sel;
 }
 
-
 void DrawSeasonSessionMenu(u8 cursor)
 {
     u8 sel = cursor;
-    const u8 *text; DummyUiFontLoad(gUiFontTable[0]);
+    const u8 *text;
+    DummyUiFontLoad(gUiFontTable[0]);
     GetString(0x00);
     ((void (*)(void))DrawBigText)();
     text = GetString(0x01);
@@ -84,7 +83,6 @@ void DrawSeasonSessionMenu(u8 cursor)
     text = GetString(0x08);
     DrawTextCenteredHighlight(text, 0xC, sel == 3);
 }
-
 
 s8 SeasonSessionMenu(u8 qualifyDone, u8 practiceDone)
 {
@@ -106,7 +104,7 @@ s8 SeasonSessionMenu(u8 qualifyDone, u8 practiceDone)
         if (gKeysPressed & 2)
             sel = 0xFF;
         cursor = MenuMoveVertical(gKeysPressed, cursor, 0, 3);
-again:
+    again:
         if ((cursor == 0 && (qualifyDone != 0 || practiceDone != 0)) || (cursor == 1 && qualifyDone != 0)) {
             if (gKeysPressed & 0xC0)
                 cursor = MenuMoveVertical(gKeysPressed, cursor, 0, 3);
@@ -122,7 +120,6 @@ again:
     return sel;
 }
 
-
 void DrawCareerOverwriteConfirm(u8 cursor)
 {
     u32 text;
@@ -136,7 +133,6 @@ void DrawCareerOverwriteConfirm(u8 cursor)
     text = (u32)gText_Yes;
     DrawTextCenteredHighlight(text, 0xE, cursor == 1);
 }
-
 
 u8 CareerOverwriteConfirm(void)
 {
@@ -165,7 +161,6 @@ u8 CareerOverwriteConfirm(void)
     return sel;
 }
 
-
 void DrawSaveCareerStatus(u8 status)
 {
     u8 state;
@@ -181,7 +176,6 @@ void DrawSaveCareerStatus(u8 status)
     if (state == 2)
         DrawTextCenteredHighlight(GetString(0x62), 9, 1);
 }
-
 
 s8 SaveCareerScreen(void)
 {
@@ -211,4 +205,3 @@ s8 SaveCareerScreen(void)
     FadeToColor(0, 0x0F);
     return sel;
 }
-

@@ -4,7 +4,8 @@
 #include "car.h"
 s16 GetGearForSpeed(struct Car *a);
 #include "data.h"
-struct Unk0800A310 {
+struct Unk0800A310
+{
     u32 posX;
     u32 unk4;
     u32 posZ;

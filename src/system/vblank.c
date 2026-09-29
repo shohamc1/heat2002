@@ -13,13 +13,10 @@ void VBlankIntr(void)
 }
 
 void DummyIntr(void)
-{
-}
+{}
 
 void ClearVBlankFlag(void)
-{
-    *(vu16 *)&gUnk_02000DD0 &= 0xFFFE;
-}
+{ *(vu16 *)&gUnk_02000DD0 &= 0xFFFE; }
 
 void AckVBlank(void)
 {

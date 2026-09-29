@@ -1,7 +1,6 @@
 #include "global.h"
 #include "functions.h"
 
-
 u32 RandomInRange(u32 a, u32 b)
 {
     u32 r4 = a;

@@ -3,7 +3,6 @@
 #include "car.h"
 #include "data.h"
 
-
 void UpdateRaceTimers(void);
 void DrawTime(u16 *dest, s32 a, s32 b, s32 c);
 void DrawSpeedNeedle(u32 a1);
@@ -31,10 +30,7 @@ void UpdateRaceHud(void)
     if (gGameMode[0] == 0x0E || gGameMode[0] == 0x02) {
         dest = (u16 *)(gTextLayerMapPtr[0] + 0x486);
         if (gIsTimeTrial != 0)
-            DrawTime(dest,
-                         gTrackRecordMin[gTrackId],
-                         gTrackRecordSec[gTrackId],
-                         gTrackRecordMs[gTrackId]);
+            DrawTime(dest, gTrackRecordMin[gTrackId], gTrackRecordSec[gTrackId], gTrackRecordMs[gTrackId]);
     }
     v = -car->speed >> 13;
     v = v * 3 / 2;

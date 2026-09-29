@@ -5,26 +5,25 @@
 // The retail body ignores both arguments; callers still pass them.
 #include "variables.h"
 
-
 void DrawChallengePassed(u8 unused1, u8 unused2)
 {
-    const u8 *text; DummyUiFontLoad(gUiFontTable[0]);
+    const u8 *text;
+    DummyUiFontLoad(gUiFontTable[0]);
     GetString(0xA9);
     ((void (*)(void))DrawBigText)();
     text = GetString(0xAA);
     DrawTextCenteredHighlight(text, 6, 1);
 }
 
-
 void DrawChallengeFailed(void)
 {
-    const u8 *text; DummyUiFontLoad(gUiFontTable[0]);
+    const u8 *text;
+    DummyUiFontLoad(gUiFontTable[0]);
     GetString(0xBD);
     ((void (*)(void))DrawBigText)();
     text = GetString(0xBE);
     DrawTextCenteredHighlight(text, 6, 1);
 }
-
 
 u8 ShowChallengePassed(u8 challengeIdx, u8 alreadyBeaten)
 {
@@ -46,4 +45,3 @@ u8 ShowChallengePassed(u8 challengeIdx, u8 alreadyBeaten)
     FadeToColor(0, 0x0F);
     return done;
 }
-

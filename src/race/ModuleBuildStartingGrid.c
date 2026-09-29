@@ -25,8 +25,7 @@ void ModuleBuildStartingGrid(u8 idx)
     y = gUnk_0202708C[idx].field04;
     p = (u32 *)gUnk_0203D4A0;
     j = 0;
-    do
-    {
+    do {
         p[0] = x;
         p[1] = y;
         p[2] = gUnk_0202708C[idx].field18;

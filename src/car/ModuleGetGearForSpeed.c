@@ -9,8 +9,7 @@ u32 ModuleGetGearForSpeed(struct Car *car, s32 speed)
 
     gear = 0;
     rpmPerSpeedTable = (u16 *)car->rpmPerSpeedTable;
-    do
-    {
+    do {
         rpm = -(s32)rpmPerSpeedTable[gear] * speed >> 8;
         if ((u32)(rpm - 2001) <= 8998)
             return gear;

@@ -2,7 +2,6 @@
 #include "functions.h"
 #include "variables.h"
 
-
 u8 PauseConfirmMenu(void)
 {
     u8 unused[0x200];
@@ -12,33 +11,32 @@ u8 PauseConfirmMenu(void)
     ReadKeys();
     while (1) {
 
-    if (gKeysPressed & 0xC0)
-        gPauseMenuCursor ^= 1;
-    startMask = gKeysPressed & 8;
-    if (startMask != 0) {
-        gMenuBlinkCounter = 0;
-        DrawPauseConfirmMenu(3);
-        return 0;
-    }
-    aMask = gKeysPressed & 1;
-    if (aMask != 0) {
-        gMenuBlinkCounter = startMask;
-        DrawPauseConfirmMenu(3);
-        return gPauseMenuCursor + 1;
-    }
-    if (gKeysPressed & 2) {
-        gMenuBlinkCounter = aMask;
-        DrawPauseConfirmMenu(3);
-        gPauseMenuCursor = aMask;
-        return 1;
-    }
-    DrawPauseConfirmMenu(gPauseMenuCursor);
-    WaitForVBlank();
+        if (gKeysPressed & 0xC0)
+            gPauseMenuCursor ^= 1;
+        startMask = gKeysPressed & 8;
+        if (startMask != 0) {
+            gMenuBlinkCounter = 0;
+            DrawPauseConfirmMenu(3);
+            return 0;
+        }
+        aMask = gKeysPressed & 1;
+        if (aMask != 0) {
+            gMenuBlinkCounter = startMask;
+            DrawPauseConfirmMenu(3);
+            return gPauseMenuCursor + 1;
+        }
+        if (gKeysPressed & 2) {
+            gMenuBlinkCounter = aMask;
+            DrawPauseConfirmMenu(3);
+            gPauseMenuCursor = aMask;
+            return 1;
+        }
+        DrawPauseConfirmMenu(gPauseMenuCursor);
+        WaitForVBlank();
         gMenuBlinkCounter++;
         ReadKeys();
     }
 }
-
 
 u8 PauseMenu(void)
 {
@@ -96,4 +94,3 @@ u8 PauseMenu(void)
     }
     return 0;
 }
-

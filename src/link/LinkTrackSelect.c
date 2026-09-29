@@ -68,8 +68,8 @@ u8 LinkTrackSelect(void)
         }
         WaitForVBlank();
         if (gLinkPlayerId[0] == 0)
-/* old prototype u8 DrawTrackSelect(s8, u8): the s8 parameter keeps the
-             sign-extending ldrsb of gTrackSelectCursor */
+            /* old prototype u8 DrawTrackSelect(s8, u8): the s8 parameter keeps the
+                         sign-extending ldrsb of gTrackSelectCursor */
             ((u8 (*)(s8, u8))DrawTrackSelect)((s8)(*(s8 *)&gTrackSelectCursor), 1);
         else
             ((u8 (*)(s8, u8))DrawTrackSelect)((s8)(*(s8 *)&gTrackSelectCursor), 1);

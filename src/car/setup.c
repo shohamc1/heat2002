@@ -7,7 +7,6 @@ extern u16 gUnk_08367B82[];
 extern u16 gUnk_08367B8C[];
 #include "data.h"
 
-
 void ComputeGearRatioReciprocals(u16 *src, u16 *dest)
 {
     u8 i = 0;
@@ -18,7 +17,6 @@ void ComputeGearRatioReciprocals(u16 *src, u16 *dest)
         i++;
     } while (i != 5);
 }
-
 
 void InitTuneSettings(void)
 {
@@ -35,7 +33,6 @@ void InitTuneSettings(void)
     ComputeGearRatioReciprocals(ratios, reciprocals);
 }
 
-
 void SetAiDriverGearTables(struct Car *car)
 {
     *(vu8 *)&gGameMode[0]; /* deliberate volatile read: keeps the load in the output */
@@ -43,4 +40,3 @@ void SetAiDriverGearTables(struct Car *car)
     car->gearRatioTable = gAiDriverGearRatioTable;
     car->rpmPerSpeedTable = gAiDriverRpmPerSpeedTable;
 }
-

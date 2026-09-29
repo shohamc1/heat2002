@@ -18,7 +18,6 @@ extern u16 gUnk_0200C7DC[];
 /* m4aSoundMode (high copy) */
 void ModuleM4aSoundVSyncOff(void);
 
-
 void ModuleSoundInit(struct SoundInfo *soundInfo)
 {
 
@@ -30,7 +29,8 @@ void ModuleSoundInit(struct SoundInfo *soundInfo)
     REG_DMA1CNT_H = DMA_32BIT;
     REG_DMA2CNT_H = DMA_32BIT;
     REG_SOUNDCNT_X = (SOUND_MASTER_ENABLE | SOUND_1_ON | SOUND_2_ON | SOUND_3_ON | SOUND_4_ON);
-    REG_SOUNDCNT_H = (SOUND_ALL_MIX_FULL | SOUND_A_RIGHT_OUTPUT | SOUND_A_FIFO_RESET | SOUND_B_LEFT_OUTPUT | SOUND_B_FIFO_RESET);
+    REG_SOUNDCNT_H =
+        (SOUND_ALL_MIX_FULL | SOUND_A_RIGHT_OUTPUT | SOUND_A_FIFO_RESET | SOUND_B_LEFT_OUTPUT | SOUND_B_FIFO_RESET);
     REG_SOUNDBIAS_H = (REG_SOUNDBIAS_H & 0x3F) | 0x40;
     REG_DMA1SAD = (u32)soundInfo->pcmBuffer;
     REG_DMA1DAD = REG_ADDR_FIFO_A;
@@ -54,7 +54,6 @@ void ModuleSoundInit(struct SoundInfo *soundInfo)
     ModuleSampleFreqSet(0x40000);
     soundInfo->ident = ID_NUMBER;
 }
-
 
 void ModuleSampleFreqSet(u32 freq)
 {
@@ -88,7 +87,6 @@ void ModuleSampleFreqSet(u32 freq)
     }
 }
 
-
 void ModuleM4aSoundMode(u32 mode)
 {
     struct SoundInfo *soundInfo = (struct SoundInfo *)SOUND_INFO_PTR;
@@ -106,7 +104,8 @@ void ModuleM4aSoundMode(u32 mode)
     temp = mode & 0xF00;
     if (temp != 0) {
         soundInfo->maxChans = temp >> 8;
-        for (temp = MAX_DIRECTSOUND_CHANNELS, chan = &soundInfo->chans[0].statusFlags; temp != 0; temp--, chan += sizeof(struct SoundChannel))
+        for (temp = MAX_DIRECTSOUND_CHANNELS, chan = &soundInfo->chans[0].statusFlags; temp != 0;
+             temp--, chan += sizeof(struct SoundChannel))
             *chan = 0;
     }
     temp = mode & 0xF000;
@@ -124,4 +123,3 @@ void ModuleM4aSoundMode(u32 mode)
     }
     soundInfo->ident = ID_NUMBER;
 }
-

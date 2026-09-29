@@ -3,14 +3,12 @@
 
 extern u8 gTrackCountdownExtraSeconds[];
 
-
 void ResetLapTimer(void)
 {
     gLapMs[0] = 0;
     gLapSec[0] = 0;
     gLapMin[0] = 0;
 }
-
 
 void ResetRaceTimer(void)
 {
@@ -19,14 +17,12 @@ void ResetRaceTimer(void)
     gRaceMin = 0;
 }
 
-
 void SetCountdownSeconds(u8 seconds)
 {
     gCountdownSeconds = seconds;
     if (gCountdownSeconds > 0x63)
         gCountdownSeconds = 0x63;
 }
-
 
 void InitCountdown(void)
 {
@@ -49,4 +45,3 @@ void InitCountdown(void)
         gCountdownSeconds = *trackExtra + seconds;
     }
 }
-

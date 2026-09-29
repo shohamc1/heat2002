@@ -12,7 +12,6 @@ extern s32 gUnk_0203DE0C;
 void ModuleAddSkidSmokeTask(u8 a, u8 b);
 void ModuleM4aSongNumStart(u16 idx);
 
-
 void ModuleUpdateTireForces(struct Car *car, u8 carIndex)
 {
     s32 *frontGrip, *angle;
@@ -20,9 +19,8 @@ void ModuleUpdateTireForces(struct Car *car, u8 carIndex)
 
     gUnk_0203DD38 = carIndex;
     ModuleSetTireGrip((u32)car, carIndex);
-    if (car == gModule_Cars
-        && (car->tireWear0 > 0x7D000 || car->tireWear1 > 0x7D000
-            || car->tireWear2 > 0x7D000 || car->tireWear3 > 0x7D000)) {
+    if (car == gModule_Cars && (car->tireWear0 > 0x7D000 || car->tireWear1 > 0x7D000 || car->tireWear2 > 0x7D000 ||
+                                car->tireWear3 > 0x7D000)) {
         gUnk_0203DD4C = 0x40;
         gUnk_0203DD0C = 0x80;
         gUnk_0203D4E4 = 0x11F40;
@@ -89,7 +87,6 @@ void ModuleUpdateTireForces(struct Car *car, u8 carIndex)
     }
 }
 
-
 void ModuleComputeAxleTireForce(u8 axle, struct Car *car)
 {
     s32 cos;
@@ -135,7 +132,7 @@ void ModuleComputeAxleTireForce(u8 axle, struct Car *car)
         } else {
             goto tail;
         }
-e2check:
+    e2check:
         if (gModule_Options[3] != 0 && gModule_IsDemo[0] == 0 && gModule_RaceEndState == 0)
             ModuleM4aSongNumStart(0xB);
     } else {
@@ -170,4 +167,3 @@ tail:
         car->torque += m;
     }
 }
-

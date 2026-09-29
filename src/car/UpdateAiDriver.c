@@ -37,7 +37,6 @@
 #include "car.h"
 #include "data.h"
 
-
 void SetAiDriverGearTables(struct Car *car);
 void FindCarAhead(u32 a);
 s32 FindClosestLaneSegment(u32 a, u32 b);
@@ -72,26 +71,21 @@ void UpdateAiDriver(struct Car *ent, u8 param)
     SetAiDriverGearTables((struct Car *)ent);
     FindCarAhead((u32)ent);
     zero = 0;
-    if (gAiCarAheadSide == 0 || gGameMode[0] == 9 || gGameMode[0] == 0xD
-        || gGameMode[0] == 0xE || gGameMode[0] == 0xF || gGameMode[0] == 0x11)
-    {
+    if (gAiCarAheadSide == 0 || gGameMode[0] == 9 || gGameMode[0] == 0xD || gGameMode[0] == 0xE ||
+        gGameMode[0] == 0xF || gGameMode[0] == 0x11) {
         ent->aiInput = 1;
         gAiCarAheadSide = 0;
         pA0 = &ent->aiInput;
-    }
-    else
-    {
+    } else {
         if (ent->pitState == 0 && (-ent->speed) >> 12 > 0x28)
             ent->aiInput = ent->aiInput & 0xFFFE;
         else
             ent->aiInput = 1;
         pA0 = &ent->aiInput;
-        if (ent->pitState == 0)
-        {
+        if (ent->pitState == 0) {
             if (gUnk_0202CC2C != 0)
                 *pA0 = 2;
-            if (gAiCarAheadSide != 0)
-            {
+            if (gAiCarAheadSide != 0) {
                 ent->lanePosition = (ent->lanePosition - 0x20) & 0x7FF;
                 if (ent->lanePosition <= 0x100)
                     ent->lanePosition = 0x6FF;
@@ -103,58 +97,51 @@ void UpdateAiDriver(struct Car *ent, u8 param)
     result = FindClosestLaneSegment((u32)ent, param);
     if (result == -1)
         return;
-    diff = WorldToLaneDistance((*(u32 *)&gClosestLanePointX), (*(u32 *)&gClosestLanePointZ), (*(u32 *)&ent->lanePoints), (*(u32 *)&gClosestLaneSegment), (*(u32 *)&gClosestLaneSegmentIndex));
+    diff = WorldToLaneDistance((*(u32 *)&gClosestLanePointX), (*(u32 *)&gClosestLanePointZ), (*(u32 *)&ent->lanePoints),
+                               (*(u32 *)&gClosestLaneSegment), (*(u32 *)&gClosestLaneSegmentIndex));
     diff = diff + 0x40;
     if (diff >= ent->laneLength)
         diff = diff - ent->laneLength;
-    GetLanePositionAtDistance(diff,(struct OutBD98 *)buf,(u16 *)(*(u32 *)&ent->lanePoints),(void *)(*(u32 *)&ent->laneSegments));
+    GetLanePositionAtDistance(diff, (struct OutBD98 *)buf, (u16 *)(*(u32 *)&ent->lanePoints),
+                              (void *)(*(u32 *)&ent->laneSegments));
     ps = &ent->pitState;
     stv = 0;
     stv = *ps;
     bufp = buf;
-    if (stv != 0)
-    {
-        if (stv == 1)
-        {
-            if (ComputePitStallDistance((u32)ent) <= 0x63
-                || (gTrackId == 3 && ComputePitStallDistance((u32)ent) <= 0xC7))
+    if (stv != 0) {
+        if (stv == 1) {
+            if (ComputePitStallDistance((u32)ent) <= 0x63 ||
+                (gTrackId == 3 && ComputePitStallDistance((u32)ent) <= 0xC7))
                 *ps = 2;
         }
-        if (ent->pitState == 2)
-        {
-            if (ComputePitStallDistance((u32)ent) <= 0x13 || gDamagePitsEnabled == 0
-                || (ent == gCars && gPitMenuActive == 0 && gPitServiceEnabled == 0))
+        if (ent->pitState == 2) {
+            if (ComputePitStallDistance((u32)ent) <= 0x13 || gDamagePitsEnabled == 0 ||
+                (ent == gCars && gPitMenuActive == 0 && gPitServiceEnabled == 0))
                 ent->pitState = 3;
             buf[0] = gPitStallPositions[(gTrackId * 8 + ent->pitStall) * 2];
             bufp[1] = gPitStallPositions[(gTrackId * 8 + ent->pitStall) * 2 + 1];
         }
-        if (ent->pitState == 3)
-        {
+        if (ent->pitState == 3) {
             if (gDamagePitsEnabled == 0)
                 ent->pitState = 4;
             t1 = gPitStallPositions[(gTrackId * 8 + 6) * 2];
             t2 = gPitStallPositions[(gTrackId * 8 + 6) * 2 + 1];
             t3 = gPitStallPositions[(gTrackId * 8 + 7) * 2];
-            angle = -(Atan2(t1 - t3,
-                t2 - gPitStallPositions[(gTrackId * 8 + 7) * 2 + 1]) << 8) + 0x8400;
+            angle = -(Atan2(t1 - t3, t2 - gPitStallPositions[(gTrackId * 8 + 7) * 2 + 1]) << 8) + 0x8400;
         }
     }
     limit = 4;
-    if (gGameMode[0] == 9 || gGameMode[0] == 0xD || gGameMode[0] == 0xE
-        || gGameMode[0] == 0xF || gGameMode[0] == 0x11)
+    if (gGameMode[0] == 9 || gGameMode[0] == 0xD || gGameMode[0] == 0xE || gGameMode[0] == 0xF || gGameMode[0] == 0x11)
         limit = -99;
-    if (result > limit || ent->pitState != 0)
-    {
+    if (result > limit || ent->pitState != 0) {
         diffxy = (buf[0] << 16) - ent->posX;
         dya = (bufp[1] << 16) - ent->posZ;
         angl = 0x8400 - (Atan2(diffxy >> 5, dya >> 5) << 8);
-        if (ent->pitState != 0)
-        {
+        if (ent->pitState != 0) {
             d34 = angl - ent->heading;
             if (d34 < 0)
                 d34 = -d34;
-            if (d34 > 0x4000)
-            {
+            if (d34 > 0x4000) {
                 ent->heading = angl;
                 ent->steerHeading = angl;
             }
@@ -165,14 +152,12 @@ void UpdateAiDriver(struct Car *ent, u8 param)
             diffxy = angl - ent->steerHeading;
         diffxy = diffxy << 16;
         diffxy = diffxy >> 16;
-        if (ent->pitState == 3)
-        {
+        if (ent->pitState == 3) {
             d2 = angle - ent->heading;
             d2 = d2 << 16;
             d2 = d2 >> 16;
-            if ((d2 < 0 ? -d2 : d2) <= 0x3FF
-                || gTrackId == 3 || gTrackId == 1 || gTrackId == 9
-                || ((d2 < 0 ? -d2 : d2) <= 0xFFF && (gTrackId == 4 || gTrackId == 2)))
+            if ((d2 < 0 ? -d2 : d2) <= 0x3FF || gTrackId == 3 || gTrackId == 1 || gTrackId == 9 ||
+                ((d2 < 0 ? -d2 : d2) <= 0xFFF && (gTrackId == 4 || gTrackId == 2)))
                 ent->pitState = 4;
         }
         if (ent->pitState == 0 && gAiCarAheadSide == 0)
@@ -197,8 +182,7 @@ void UpdateAiDriver(struct Car *ent, u8 param)
     }
     if (ent->pitState == 3 && (-ent->speed) >> 12 > 0xA)
         *pA0 = 2;
-    if (zero != 0)
-    {
+    if (zero != 0) {
         zero = (s16)zero;
         ent->steerHeading = ent->steerHeading + zero;
     }

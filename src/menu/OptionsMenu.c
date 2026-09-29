@@ -29,8 +29,7 @@ u8 OptionsMenu(void)
         if (gKeysPressed & 2)
             sel = 1;
         v = MenuMoveVertical(gKeysPressed, v, 0, 5);
-        gOptions[v] = MenuMoveHorizontal(gKeysPressed, gOptions[v],
-                                        gOptionsMenuMinValues[v], gOptionsMenuMaxValues[v]);
+        gOptions[v] = MenuMoveHorizontal(gKeysPressed, gOptions[v], gOptionsMenuMinValues[v], gOptionsMenuMaxValues[v]);
         if (v == 2) {
             if ((gKeysPressed & 0x30) && gOptions[2] != 0)
                 StartMenuMusic();

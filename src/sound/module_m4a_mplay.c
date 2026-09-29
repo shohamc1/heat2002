@@ -10,7 +10,6 @@ void sub_0833A228(void);
 void sub_0833A488(struct MusicPlayerInfo *, struct MusicPlayerTrack *);
 /* m4aMPlayStop (high copy) */
 
-
 void ModuleMPlayOpen(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *tracks, u32 trackCount)
 {
     struct MusicPlayerInfo *playerInfo = mplayInfo;
@@ -30,14 +29,12 @@ void ModuleMPlayOpen(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack 
     playerInfo->tracks = track;
     playerInfo->trackCount = count;
     playerInfo->status = MUSICPLAYER_STATUS_PAUSE;
-    while (count != 0)
-    {
+    while (count != 0) {
         track->flags = 0;
         count--;
         track++;
     }
-    if (soundInfo->MPlayMainHead != NULL)
-    {
+    if (soundInfo->MPlayMainHead != NULL) {
         playerInfo->MPlayMainNext = soundInfo->MPlayMainHead;
         playerInfo->musicPlayerNext = soundInfo->musicPlayerHead;
         soundInfo->MPlayMainHead = NULL;
@@ -47,7 +44,6 @@ void ModuleMPlayOpen(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack 
     soundInfo->ident = ID_NUMBER;
     playerInfo->ident = ID_NUMBER;
 }
-
 
 void ModuleMPlayStart(struct MusicPlayerInfo *mplayInfo, struct SongHeader *songHeader)
 {
@@ -79,7 +75,7 @@ void ModuleMPlayStart(struct MusicPlayerInfo *mplayInfo, struct SongHeader *song
     track = playerInfo->tracks;
     if (i < song->trackCount && i < playerInfo->trackCount) {
         trackIdx = i;
-loopA:
+    loopA:
         sub_0833A488(playerInfo, track);
         track->flags = 0xC0;
         track->chan = (struct SoundChannel *)trackIdx;
@@ -95,7 +91,7 @@ loopA:
     }
     if (i < playerInfo->trackCount) {
         trackIdx = 0;
-loopB:
+    loopB:
         sub_0833A488(playerInfo, track);
         track->flags = trackIdx;
         i++;
@@ -107,7 +103,6 @@ loopB:
         ModuleM4aSoundMode(song->reverb);
     playerInfo->ident = ID_NUMBER;
 }
-
 
 void ModuleM4aMPlayStop(struct MusicPlayerInfo *mplayInfo)
 {
@@ -121,12 +116,10 @@ void ModuleM4aMPlayStop(struct MusicPlayerInfo *mplayInfo)
     playerInfo->status = playerInfo->status | MUSICPLAYER_STATUS_PAUSE;
     remaining = playerInfo->trackCount;
     track = playerInfo->tracks;
-    while (remaining > 0)
-    {
+    while (remaining > 0) {
         sub_0833A488(playerInfo, track);
         remaining--;
         track = (struct MusicPlayerTrack *)((u8 *)track + 0x50);
     }
     playerInfo->ident = ID_NUMBER;
 }
-

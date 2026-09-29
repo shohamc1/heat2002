@@ -17,10 +17,6 @@ u8 ModuleIsValidLinkKeys(u16 id);
 u16 ModuleUnpackLinkKeys(u16 id);
 void ModuleSioSendWord(u16 data);
 
-
-
-
-
 s32 ModuleExchangeLinkInput(void)
 {
     u16 recv[4];
@@ -43,7 +39,7 @@ s32 ModuleExchangeLinkInput(void)
     done = 0;
     retry = 0;
     do {
-top:
+    top:
         if (retry > gModule_NumLinkPlayers[0]) {
             gUnk_0203917C = 0;
             gModule_LinkTxSeqNum = 0;
@@ -51,12 +47,12 @@ top:
         }
         goto send;
 
-timeout:
+    timeout:
         gUnk_0203917C = 0;
         retry++;
         goto top;
 
-send:
+    send:
         if (phase == 0)
             gModule_LinkTxBuffer[0] = (gModule_LinkTxSeqNum << 11) | ((keys & 0x7F) | ((keys & 0xF) << 7)) | 0x8000;
         else
@@ -79,12 +75,9 @@ send:
         if (phase == 0) {
             n = 0;
             for (i = phase; i < gModule_NumLinkPlayers[0]; i++) {
-                if ((recv[i] & 0xF) == ((recv[i] >> 7) & 0xF)
-                    && recv[i] != 0xFFFF
-                    && recv[i] != 0
-                    && ((recv[i] >> 14) == 2 || (recv[i] >> 14) == 1)
-                    && ModuleIsLinkSeqNumExpected((recv[i] >> 11) & 7, 0)
-                    && ModuleIsValidLinkKeys(recv[i] & 0x7F))
+                if ((recv[i] & 0xF) == ((recv[i] >> 7) & 0xF) && recv[i] != 0xFFFF && recv[i] != 0 &&
+                    ((recv[i] >> 14) == 2 || (recv[i] >> 14) == 1) &&
+                    ModuleIsLinkSeqNumExpected((recv[i] >> 11) & 7, 0) && ModuleIsValidLinkKeys(recv[i] & 0x7F))
                     n++;
             }
             if (n == gModule_NumLinkPlayers[0]) {
@@ -95,10 +88,8 @@ send:
         } else {
             n2 = 0;
             for (i = 0; i < gModule_NumLinkPlayers[0]; i++) {
-                if ((recv[i] & 0xF) == ((recv[i] >> 7) & 0xF)
-                    && recv[i] != 0xFFFF
-                    && recv[i] != 0
-                    && ModuleIsValidLinkKeys(recv[i] & 0x7F)) {
+                if ((recv[i] & 0xF) == ((recv[i] >> 7) & 0xF) && recv[i] != 0xFFFF && recv[i] != 0 &&
+                    ModuleIsValidLinkKeys(recv[i] & 0x7F)) {
                     if ((recv[i] >> 14) == 1 && ModuleIsLinkSeqNumExpected((recv[i] >> 11) & 7, 0))
                         n2++;
                     else if ((recv[i] >> 14) == 2 && ModuleIsLinkSeqNumExpected((recv[i] >> 11) & 7, 1)) {
@@ -117,4 +108,3 @@ send:
     gModule_LinkTxSeqNum = (gModule_LinkTxSeqNum + 1) & 7;
     return 0;
 }
-

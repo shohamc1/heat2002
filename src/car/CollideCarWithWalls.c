@@ -40,7 +40,8 @@ inline s32 max_0800D5C8(s32 a, s32 b)
     return r;
 }
 
-struct Ent {
+struct Ent
+{
     u8 pad00[0x0C];
     s32 unk0C;
     u8 pad10[4];
@@ -62,18 +63,19 @@ struct Ent {
     s32 steerHeading;
 };
 
-struct Corner {
-    s32 f[6];
-};
+struct Corner
+{ s32 f[6]; };
 
-struct Box {
+struct Box
+{
     s32 unk00;
     s32 unk04;
     s32 unk08;
     s32 unk0C;
 };
 
-struct Res {
+struct Res
+{
     u8 pad00[4];
     s32 unk04;
     s32 unk08;
@@ -90,8 +92,7 @@ extern s32 gUnk_0202CC64;
 extern s32 gUnk_0202CC70;
 
 u16 *GetWallListAt(s16 x, s16 y);
-void TestCornersVsWalls(struct Corner *a1, struct Box *a2, struct Box *a3,
-                  struct Res *a4, u16 *a5, s32 *a6);
+void TestCornersVsWalls(struct Corner *a1, struct Box *a2, struct Box *a3, struct Res *a4, u16 *a5, s32 *a6);
 void DummyWallHitHook(s32 a, s32 b);
 
 s32 CollideCarWithWalls(struct Ent *a)
@@ -139,36 +140,36 @@ s32 CollideCarWithWalls(struct Ent *a)
         best = 99999;
         TestCornersVsWalls(corner, &total, boxes, &res, tile, &best);
         if (best != 99999) {
-        t = (long long)corner[res.unk0C].f[4] * res.unk04 + (long long)corner[res.unk0C].f[5] * res.unk08;
-        t = t * 192 >> 8;
-        if (t > -0x80000000LL)
-            t = -0x80000000LL;
-        d0 = ((long long)res.unk04 * t) >> 29;
-        d1 = ((long long)res.unk08 * t) >> 29;
-        gUnk_0202CC70 = a->unk0C;
-        gUnk_0202CC64 = a->unk14;
-        gUnk_0202CC4C = t;
-        gWallCollisionNormal[1] = res.unk04;
-        gWallCollisionNormal[2] = res.unk08;
-        a->unk0C -= d0;
-        a->unk14 -= d1;
-        DummyWallHitHook(a->cornerX[res.unk0C], a->cornerZ[res.unk0C]);
-        {
-            s32 v1 = gSinTable[res.unk0D];
-            s32 v2 = gSinTable[res.unk0D + 0x40];
-            u8 ang = a->unk34 >> 8;
-            s32 v3 = gSinTable[ang];
-            s32 v4 = gSinTable[ang + 0x40];
+            t = (long long)corner[res.unk0C].f[4] * res.unk04 + (long long)corner[res.unk0C].f[5] * res.unk08;
+            t = t * 192 >> 8;
+            if (t > -0x80000000LL)
+                t = -0x80000000LL;
+            d0 = ((long long)res.unk04 * t) >> 29;
+            d1 = ((long long)res.unk08 * t) >> 29;
+            gUnk_0202CC70 = a->unk0C;
+            gUnk_0202CC64 = a->unk14;
+            gUnk_0202CC4C = t;
+            gWallCollisionNormal[1] = res.unk04;
+            gWallCollisionNormal[2] = res.unk08;
+            a->unk0C -= d0;
+            a->unk14 -= d1;
+            DummyWallHitHook(a->cornerX[res.unk0C], a->cornerZ[res.unk0C]);
+            {
+                s32 v1 = gSinTable[res.unk0D];
+                s32 v2 = gSinTable[res.unk0D + 0x40];
+                u8 ang = a->unk34 >> 8;
+                s32 v3 = gSinTable[ang];
+                s32 v4 = gSinTable[ang + 0x40];
 
-            v = res.unk0D;
-            if (v3 * v1 + v4 * v2 <= 0)
-                v = res.unk0E;
-            a->steerHeading = v << 8;
-            v = ((v << 8) - a->unk34) << 16;
-        v >>= 20;
-        a->unk3C += v;
-        }
-        return t >> 7;
+                v = res.unk0D;
+                if (v3 * v1 + v4 * v2 <= 0)
+                    v = res.unk0E;
+                a->steerHeading = v << 8;
+                v = ((v << 8) - a->unk34) << 16;
+                v >>= 20;
+                a->unk3C += v;
+            }
+            return t >> 7;
         }
     }
     return 0;

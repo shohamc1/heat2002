@@ -3,7 +3,8 @@
 #include "functions.h"
 #include "variables.h"
 extern u32 gUnk_0202EDBC;
-struct Unk_0202EFA0 {
+struct Unk_0202EFA0
+{
     u8 unk0;
     u8 unk1;
     u8 unk2;
@@ -65,9 +66,8 @@ void DetectLinkPlayers(void)
         /* edd0 is a variable so its pseudo predates the SIOCNT address
            temp: they tie on allocation priority, and the older one gets
            r6. */
-        ed[0] = ((u16)((((*(vu32 *)REG_ADDR_SIOCNT << 26) >> 30) + 1) << 12)
-                 | 0x100)
-              | ((*(edd0 = &gLinkSyncByte) + 1) & 0xFF);
+        ed[0] = ((u16)((((*(vu32 *)REG_ADDR_SIOCNT << 26) >> 30) + 1) << 12) | 0x100) |
+                ((*(edd0 = &gLinkSyncByte) + 1) & 0xFF);
         SioSendWord(ed[0]);
         gLinkPlayerSlots[2] |= 0xFF;
         gLinkPlayerSlots[6] |= 0xFF;

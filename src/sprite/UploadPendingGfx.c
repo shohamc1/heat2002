@@ -6,7 +6,6 @@
 extern s32 gObjPalBytesCopiedThisFrame;
 extern s32 gObjPalBytesPeak;
 
-
 void UploadPendingGfx(void)
 {
     u8 buf[0x200];

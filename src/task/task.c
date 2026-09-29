@@ -10,11 +10,12 @@ struct Slot78E4
     u32 c;
 };
 
-struct Node0800796C {
+struct Node0800796C
+{
     u32 f0[3];
     u32 (*callback)(u32);
     u32 f10;
-        struct Node0800796C *next;
+    struct Node0800796C *next;
 };
 
 extern u32 gUnk_0202A3E0;
@@ -38,10 +39,8 @@ void *AllocTask(void)
     u32 off = 0;
     u32 q = (u32)&p[0].b;
 
-    while (i != 0x100)
-    {
-        if (*(u8 *)(i + flagsAddr) == 0)
-        {
+    while (i != 0x100) {
+        if (*(u8 *)(i + flagsAddr) == 0) {
             *(u8 *)(i + flagsAddr) = one;
             *(u32 *)(off + q) = i;
             return p;
@@ -54,9 +53,7 @@ void *AllocTask(void)
 }
 
 void FreeTask(u32 p)
-{
-    gUnk_02025ED0[*(u32 *)(p + 0x3C)] = 0;
-}
+{ gUnk_02025ED0[*(u32 *)(p + 0x3C)] = 0; }
 
 void AddTask(u32 r0)
 {
@@ -74,16 +71,12 @@ void RemoveTask(u32 p)
 
     next = *(u32 *)(p + 0x14);
     prev = *(u32 *)(p + 0x10);
-    if (prev != 0)
-    {
+    if (prev != 0) {
         *(u32 *)(prev + 0x14) = next;
-    }
-    else
-    {
+    } else {
         gUnk_02025FD0 = next;
     }
-    if (next != 0)
-    {
+    if (next != 0) {
         *(u32 *)(next + 0x10) = prev;
     }
 }

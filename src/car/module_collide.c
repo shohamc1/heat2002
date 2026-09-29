@@ -28,7 +28,8 @@
  *   slots come out permuted.
  */
 
-struct Ent {
+struct Ent
+{
     u8 pad00[0x0C];
     s32 unk0C;
     u8 pad10[4];
@@ -49,16 +50,17 @@ struct Ent {
     u8 padE4[0x12C - 0xE4];
     s32 steerHeading;
 };
-struct Corner {
-    s32 f[6];
-};
-struct Box {
+struct Corner
+{ s32 f[6]; };
+struct Box
+{
     s32 unk00;
     s32 unk04;
     s32 unk08;
     s32 unk0C;
 };
-struct Res {
+struct Res
+{
     u8 pad00[4];
     s32 unk04;
     s32 unk08;
@@ -69,10 +71,10 @@ struct Res {
     s32 unk10;
 };
 u16 *ModuleGetWallListAt(s16 x, s16 y);
-void ModuleTestCornersVsWalls(struct Corner *a1, struct Box *a2, struct Box *a3,
-                  struct Res *a4, u16 *a5, s32 *a6);
+void ModuleTestCornersVsWalls(struct Corner *a1, struct Box *a2, struct Box *a3, struct Res *a4, u16 *a5, s32 *a6);
 void ModuleDummyWallHitHook(s32 a, s32 b);
-struct Unk08343DF8 {
+struct Unk08343DF8
+{
     s32 unk00;
     u8 pad04[4];
     s32 unk08;
@@ -96,14 +98,16 @@ struct Unk08343DF8 {
  * libcall symbols for src/sub_083[3-9]*.c objects. Calling sub_08344BB8
  * directly loses the libcall's hard-r0 return and flips the allocation.
  */
-struct Coll {
+struct Coll
+{
     struct Car *a;
     struct Car *c;
     u8 b;
     u8 d;
     s32 g;
 };
-struct Pt2 {
+struct Pt2
+{
     s32 f0;
     s32 f1;
 };
@@ -113,19 +117,11 @@ extern struct Coll gUnk_0203DEB0;
 extern struct Pt2 gUnk_0202AF08[];
 extern u8 gUnk_0203D4FC;
 void ModuleBuildCarCollFrame(struct Car *a, s32 *d);
-void ModuleKeepNearestCarContact(struct Car *a, s32 b, struct Car *c, s32 d, struct Coll *e,
-                  u8 *f, s32 g, s32 h);
+void ModuleKeepNearestCarContact(struct Car *a, s32 b, struct Car *c, s32 d, struct Coll *e, u8 *f, s32 g, s32 h);
 void ModuleDummyCarHitHook(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g);
 void ModuleDummyCarDamageHook(s32 carIdx, u8 damageStage);
 void ModuleComputeForwardSpeed(struct Car *a);
 void ModuleM4aSongNumStart(u16 idx);
-
-
-
-
-
-
-
 
 u8 ModuleCollideCars(struct Car *car)
 {
@@ -331,9 +327,8 @@ u8 ModuleCollideCars(struct Car *car)
             b->impactSpeed = 0;
         b->rpm = (b->impactSpeed << 8) / -b->gearRatioTable[b->gear];
         if (a == gModule_Cars || b == gModule_Cars || gModule_IsLinkRace != 0) {
-            if (gModule_RaceEndState == 0 && gModule_IsDemo[0] == 0 && gModule_Options[3] != 0
-                && (car == gModule_Cars || gModule_IsLinkRace != 0)
-                && a->hitCooldown == 0 && b->hitCooldown == 0)
+            if (gModule_RaceEndState == 0 && gModule_IsDemo[0] == 0 && gModule_Options[3] != 0 &&
+                (car == gModule_Cars || gModule_IsLinkRace != 0) && a->hitCooldown == 0 && b->hitCooldown == 0)
                 ModuleM4aSongNumStart(0x12);
         }
         a->hitCooldown = 0x10;
@@ -343,6 +338,5 @@ u8 ModuleCollideCars(struct Car *car)
     return 0;
 }
 
-
-void ModuleDummyCarDamageHook(s32 carIdx, u8 damageStage) {}
-
+void ModuleDummyCarDamageHook(s32 carIdx, u8 damageStage)
+{}

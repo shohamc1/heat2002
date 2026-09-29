@@ -2,7 +2,8 @@
 #include "functions.h"
 #include "variables.h"
 
-struct WallRec {
+struct WallRec
+{
     u16 f00;
     u16 f02;
     s32 f04;
@@ -16,14 +17,16 @@ struct WallRec {
     u8 f1E;
 };
 
-struct Box {
+struct Box
+{
     s32 f00;
     s32 f04;
     s32 f08;
     s32 f0C;
 };
 
-struct Corner {
+struct Corner
+{
     u16 f00;
     s16 f02;
     u16 f04;
@@ -36,7 +39,8 @@ struct Corner {
     s32 f14;
 };
 
-struct Hit {
+struct Hit
+{
     s32 f00;
     s32 f04;
     s32 f08;
@@ -47,15 +51,14 @@ struct Hit {
     s32 f10;
 };
 
-struct Pt {
+struct Pt
+{
     s32 x;
     s32 y;
 };
 
-
-
-s32 TestCornersVsWalls(struct Corner *corn, struct Box *box, struct Box *cbox,
-                  struct Hit *out, u16 *wallList, s32 *best)
+s32 TestCornersVsWalls(struct Corner *corn, struct Box *box, struct Box *cbox, struct Hit *out, u16 *wallList,
+                       s32 *best)
 {
     s32 tmp[4];
     s32 pax, pay, pbx, pby;
@@ -111,18 +114,14 @@ s32 TestCornersVsWalls(struct Corner *corn, struct Box *box, struct Box *cbox,
             gUnk_02000480 = (x2 - x1) * (pby - pay) - (y2 - y1) * (pbx - pax);
             if (gUnk_02000480 == 0)
                 continue;
-            gUnk_02000488 = ((y1 - pay) * (pbx - pax)
-                           - (x1 - pax) * (pby - pay)) << 8;
-            t1 = (((y1 - pay) * (pbx - pax)
-                 - (x1 - pax) * (pby - pay)) << 8) / gUnk_02000480;
+            gUnk_02000488 = ((y1 - pay) * (pbx - pax) - (x1 - pax) * (pby - pay)) << 8;
+            t1 = (((y1 - pay) * (pbx - pax) - (x1 - pax) * (pby - pay)) << 8) / gUnk_02000480;
             gUnk_02000488 = t1;
             lim = 0x100;
             if (t1 > lim)
                 continue;
-            gUnk_02000484 = ((x2 - x1) * (y1 - pay)
-                           - (y2 - y1) * (x1 - pax)) << 8;
-            t2 = (((x2 - x1) * (y1 - pay)
-                 - (y2 - y1) * (x1 - pax)) << 8) / gUnk_02000480;
+            gUnk_02000484 = ((x2 - x1) * (y1 - pay) - (y2 - y1) * (x1 - pax)) << 8;
+            t2 = (((x2 - x1) * (y1 - pay) - (y2 - y1) * (x1 - pax)) << 8) / gUnk_02000480;
             gUnk_02000484 = t2;
             if (t2 > lim)
                 continue;

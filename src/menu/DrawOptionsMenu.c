@@ -6,7 +6,6 @@
 extern u8 gText_ViewLicensingInfo[];
 extern u8 gText_BlankRow12_4[];
 
-
 void DrawOptionsMenu(u32 a)
 {
     u8 *p;

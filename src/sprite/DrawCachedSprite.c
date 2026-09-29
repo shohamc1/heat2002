@@ -1,7 +1,6 @@
 #include "global.h"
 #include "functions.h"
 
-
 void DrawCachedSprite(u32 posX, u32 posY, u32 gfxId, u32 palette, u8 hflip)
 {
     u32 *entry;

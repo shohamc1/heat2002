@@ -6,7 +6,6 @@ extern u32 gUnk_0202EDE4;
 extern u16 gUnk_0202EDF0[];
 extern u16 gUnk_0500013C;
 
-
 void sub_08010768(s32 a)
 {
     s32 r;

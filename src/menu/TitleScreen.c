@@ -9,7 +9,6 @@ extern const u8 gTitleScreenGfx[];
 extern const u16 gTitleScreenMetatileMap[];
 extern const u8 gTitleScreenPalette[];
 
-
 u8 TitleScreen(void)
 {
     u16 buf[0x100];

@@ -10,7 +10,6 @@ struct Unk10CC
 extern const u8 gUnk_0200C6F8[];
 extern const u32 gUnk_0200C7AC[];
 
-
 s32 ModuleMidiKeyToFreq(struct Unk10CC *track, u8 key, u32 fineTune)
 {
     u8 idx;
@@ -22,8 +21,7 @@ s32 ModuleMidiKeyToFreq(struct Unk10CC *track, u8 key, u32 fineTune)
 
     idx = key;
     fineTunePacked = fineTune << 24;
-    if (idx > 0xB2)
-    {
+    if (idx > 0xB2) {
         idx = 0xB2;
         fineTunePacked = 0xFF000000;
     }

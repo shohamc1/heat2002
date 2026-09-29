@@ -99,8 +99,8 @@ s32 ModuleRunRace(u8 isDemo, u8 gameMode)
         gModule_NumCars[0] = 1;
     if (*isDemoPtr != 0)
         gModule_NumCars[0] = 2;
-    if (gModule_TrackId > 6 && gModule_TrackId != 8 && gModule_TrackId != 9
-        && gModule_TrackId != 0xA && gModule_TrackId != 0xB)
+    if (gModule_TrackId > 6 && gModule_TrackId != 8 && gModule_TrackId != 9 && gModule_TrackId != 0xA &&
+        gModule_TrackId != 0xB)
         gModule_NumCars[0] = 1;
     if ((u8)(gModule_GameMode[0] - 3) <= 1)
         gModule_NumCars[0] = gModule_NumLinkPlayers[0];
@@ -153,8 +153,8 @@ s32 ModuleRunRace(u8 isDemo, u8 gameMode)
     if ((u8)(gModule_GameMode[0] - 3) <= 1)
         ModuleInitLinkRaceStart();
 skip42B04:
-    if (gModule_GameMode[0] == 9 || gModule_GameMode[0] == 0xD || gModule_GameMode[0] == 0xE
-        || gModule_GameMode[0] == 0xF || gModule_GameMode[0] == 0x11) {
+    if (gModule_GameMode[0] == 9 || gModule_GameMode[0] == 0xD || gModule_GameMode[0] == 0xE ||
+        gModule_GameMode[0] == 0xF || gModule_GameMode[0] == 0x11) {
         gUnk_020390B8 = 1;
         for (i = 0; i != 20; i++)
             ModuleUpdateAllCars();
@@ -164,10 +164,10 @@ skip42B04:
     if (gModule_IsLinkRace != 0) {
         ModuleSetCameraTarget(&gModule_Cars[(*(volatile u32 *)0x04000128 << 0x1A) >> 0x1E]);
         goto after_d5f4;
-rrret:
+    rrret:
         gUnk_02039154 = 1;
         goto ret1;
-after_d5f4: ;
+    after_d5f4:;
     } else {
         ModuleSetCameraTarget(gModule_Cars);
     }
@@ -201,9 +201,8 @@ after_d5f4: ;
             car = gModule_Cars;
         else
             car = &gModule_Cars[gModule_LinkPlayerId];
-        ModuleM4aMPlayPitchControl(gUnk_02038FB0, 1,
-                    ((s16)(gUnk_02025190[car->gear]
-                         + ((car->rpm * gUnk_020251A4[car->gear]) >> 6))) >> 3);
+        ModuleM4aMPlayPitchControl(
+            gUnk_02038FB0, 1, ((s16)(gUnk_02025190[car->gear] + ((car->rpm * gUnk_020251A4[car->gear]) >> 6))) >> 3);
         if (gModule_IsDemo[0] != 0) {
             ModuleSetCameraTarget(gUnk_0203D6B0);
             gUnk_020250EC = t2 = gModule_FrameCounter / 256;
@@ -214,8 +213,8 @@ after_d5f4: ;
                 ModuleSetCameraTarget(&gModule_Cars[(*(volatile u32 *)0x04000128 << 0x1A) >> 0x1E]);
             else
                 ModuleSetCameraTarget(gModule_Cars);
-            if (gModule_GameMode[0] == 9 || gModule_GameMode[0] == 0xD || gModule_GameMode[0] == 0xE
-                || gModule_GameMode[0] == 0xF || gModule_GameMode[0] == 0x11) {
+            if (gModule_GameMode[0] == 9 || gModule_GameMode[0] == 0xD || gModule_GameMode[0] == 0xE ||
+                gModule_GameMode[0] == 0xF || gModule_GameMode[0] == 0x11) {
                 gModule_Camera[0] = *(u32 *)&gModule_Cars[0];
                 gModule_Camera[1] = *(u32 *)((u8 *)&gModule_Cars[0] + 8);
             }
@@ -226,8 +225,8 @@ after_d5f4: ;
         ModuleRunTasks();
         ModuleDrawAllCars();
         ModuleDrawLinkFinishTimes();
-        if (gModule_RaceStarted != 0 || gModule_GameMode[0] == 9 || gModule_GameMode[0] == 0xD
-            || gModule_GameMode[0] == 0xE || gModule_GameMode[0] == 0xF || gModule_GameMode[0] == 0x11)
+        if (gModule_RaceStarted != 0 || gModule_GameMode[0] == 9 || gModule_GameMode[0] == 0xD ||
+            gModule_GameMode[0] == 0xE || gModule_GameMode[0] == 0xF || gModule_GameMode[0] == 0x11)
             ModuleUpdateAllCars();
         ModuleUpdateTrackScroll(gModule_Camera[0], gModule_Camera[1]);
         ModuleUpdateSprites();
@@ -256,12 +255,12 @@ after_d5f4: ;
                 r = ModuleSinglePakPauseMenu();
             else
                 r = ModuleLinkPauseMenu();
-r_ext:
+        r_ext:
             rt = (u8)r;
             goto r_tests;
-r_zero:
+        r_zero:
             rt = 0;
-r_tests:
+        r_tests:
             if (rt == 1)
                 goto r_case1;
             if (rt <= 1)
@@ -271,16 +270,15 @@ r_tests:
             if (rt == 0x27)
                 goto r_case27;
             goto r_end;
-r_case1:
+        r_case1:
             ModuleM4aSongNumStart(0x38);
             goto r_end;
-r_case2:
-            if (gModule_GameMode[0] == 2 || gModule_GameMode[0] == 0xE || gModule_GameMode[0] == 0
-                || gModule_GameMode[0] == 7 || gModule_GameMode[0] == 6 || gModule_GameMode[0] == 9
-                || gModule_GameMode[0] == 5 || gModule_GameMode[0] == 0x11 || gModule_GameMode[0] == 1
-                || gModule_GameMode[0] == 3 || gModule_GameMode[0] == 0xC || gModule_GameMode[0] == 0xD
-                || gModule_GameMode[0] == 0x10 || gModule_GameMode[0] == 0xF
-                || gModule_GameMode[0] == 0x11) {
+        r_case2:
+            if (gModule_GameMode[0] == 2 || gModule_GameMode[0] == 0xE || gModule_GameMode[0] == 0 ||
+                gModule_GameMode[0] == 7 || gModule_GameMode[0] == 6 || gModule_GameMode[0] == 9 ||
+                gModule_GameMode[0] == 5 || gModule_GameMode[0] == 0x11 || gModule_GameMode[0] == 1 ||
+                gModule_GameMode[0] == 3 || gModule_GameMode[0] == 0xC || gModule_GameMode[0] == 0xD ||
+                gModule_GameMode[0] == 0x10 || gModule_GameMode[0] == 0xF || gModule_GameMode[0] == 0x11) {
                 gUnk_020391CC = 1;
                 gModule_RaceEndState = 2;
                 ModuleWaitForVBlank();
@@ -288,16 +286,16 @@ r_case2:
                 ModuleBeginFadeToColor(0x19, 0);
             }
             goto r_end;
-r_case27:
+        r_case27:
             flag = 1;
-r_end: ;
+        r_end:;
         }
         if (gModule_IsLinkRace != 0) {
             linkResult = ModuleExchangeLinkInput();
             if (linkResult != 0)
                 goto rrret;
             (*(volatile s8 *)&gModule_VBlankWorkDone) = linkResult;
-wait_ec:
+        wait_ec:
             if ((*(volatile s8 *)&gModule_VBlankWorkDone) == 0)
                 goto wait_ec;
         } else {
@@ -310,7 +308,7 @@ wait_ec:
             gUnk_02039154 = 1;
     }
     if (flag != 0) {
-ret1:
+    ret1:
         return 1;
     }
     ModuleM4aMPlayStop((struct MusicPlayerInfo *)gUnk_02038FB0);

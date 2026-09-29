@@ -5,7 +5,6 @@
 
 extern u16 gSpriteTextControlCharCodes[];
 
-
 void DrawSpriteText(u8 *a, u32 b, u32 c)
 {
     u32 *p;

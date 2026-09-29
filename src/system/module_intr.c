@@ -14,7 +14,6 @@ void ModuleClearVBlankFlag(void);
 void _08344B7C(u32 arg0);
 void ModuleAckVBlank(void);
 
-
 void ModuleInitIntrHandlers(void)
 {
     ModuleClearVBlankFlag();
@@ -38,14 +37,12 @@ void ModuleInitIntrHandlers(void)
     gModule_IntrTable[13] = (u32)ModuleDummyIntr;
 }
 
-
 void ModuleSetVBlankCallback(void *callback)
 {
     gUnk_020375D0 = (u32)callback;
     if (callback == NULL)
         gUnk_020375D0 = (u32)ModuleDummyIntr;
 }
-
 
 void ModuleVBlankIntr(void)
 {
@@ -54,24 +51,17 @@ void ModuleVBlankIntr(void)
     ModuleAckVBlank();
 }
 
-
 void ModuleDummyIntr(void)
-{
-}
-
+{}
 
 void ModuleClearVBlankFlag(void)
-{
-    *(vu16 *)&gUnk_02037E20 &= ~1;
-}
-
+{ *(vu16 *)&gUnk_02037E20 &= ~1; }
 
 void ModuleAckVBlank(void)
 {
     *(volatile u16 *)0x04000202 = 1;
     gUnk_02037E20 = 1;
 }
-
 
 void ModuleWaitForVBlank(void)
 {
@@ -89,4 +79,3 @@ void ModuleWaitForVBlank(void)
         hit = mask & value;
     } while (hit == 0);
 }
-

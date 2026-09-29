@@ -1,7 +1,6 @@
 #include "global.h"
 #include "functions.h"
 
-
 void ModuleDrawTime(u16 *dest, s32 min, u32 sec, u32 ms)
 {
     u32 digits[8];

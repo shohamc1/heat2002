@@ -1,7 +1,6 @@
 #include "global.h"
 #include "functions.h"
 
-
 void DrawTime(u16 *dest, s32 a, s32 b, s32 c)
 {
     u32 i;

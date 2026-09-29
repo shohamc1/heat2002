@@ -11,7 +11,6 @@ extern u8 gText_ChallengeStatusNA[];
 extern u8 gText_ChallengeStatusOpen[];
 extern const u8 *const gChallengeGoalTexts[];
 
-
 void DrawChallengeCategorySelect(u32 cursor)
 {
     u8 i;
@@ -25,7 +24,6 @@ void DrawChallengeCategorySelect(u32 cursor)
         i++;
     } while (i != 4);
 }
-
 
 u8 ChallengeCategorySelect(void)
 {
@@ -45,8 +43,8 @@ u8 ChallengeCategorySelect(void)
             gChallengeCategorySelected = cursor;
         }
     retry:
-/* old prototype u8 MenuMoveVertical(...): the s16 return shuffles the
-        r5/r6 allocation for v and sel */
+        /* old prototype u8 MenuMoveVertical(...): the s16 return shuffles the
+                r5/r6 allocation for v and sel */
         cursor = ((u8 (*)(u16, s8, u32, u32))MenuMoveVertical)(gKeysPressed, cursor, 0, 3);
         if (gChallengeCategoryUnlocked[cursor] == 0)
             goto retry;
@@ -59,7 +57,6 @@ u8 ChallengeCategorySelect(void)
     FadeToColor(0, 0x0F);
     return sel;
 }
-
 
 void DrawChallengeSelect(u8 category, u8 challengeIdx)
 {
@@ -110,7 +107,6 @@ void DrawChallengeSelect(u8 category, u8 challengeIdx)
     }
 }
 
-
 u8 ChallengeSelect(u8 category, u8 challengeIdx)
 {
     u8 buf[0x200];
@@ -137,4 +133,3 @@ u8 ChallengeSelect(u8 category, u8 challengeIdx)
     FadeToColor(0, 0x0F);
     return cursor;
 }
-

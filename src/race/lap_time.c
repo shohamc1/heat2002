@@ -13,21 +13,18 @@ struct Unk0800B46C
 };
 void LapSnapshotTask(struct Unk0800B46C *);
 
-
 void LapTimeTask(u32 task)
 {
     u8 unused[0x28];
 
     DrawTextAt(GetString(0x9A), 9, 5);
     DrawTextAt(gLapTimeTextBuf, 0xD, 5);
-    if (--*(u32 *)(task + 0x18) == 0)
-    {
+    if (--*(u32 *)(task + 0x18) == 0) {
         DrawTextAt(gText_BlankRowRaceMsg, 9, 5);
         RemoveTask(task);
         FreeTask(task);
     }
 }
-
 
 void DrawLapTime(s32 min, s32 sec, s32 ms)
 {
@@ -51,7 +48,6 @@ void DrawLapTime(s32 min, s32 sec, s32 ms)
         AddTask(task);
     }
 }
-
 
 void LapSnapshotTask(struct Unk0800B46C *e)
 {
@@ -92,13 +88,11 @@ void LapSnapshotTask(struct Unk0800B46C *e)
     q8[8] = sub_080172C8(millis, 10) + 0x30;
     buf[9] = nul;
     e->f18 = e->f18 - 2;
-    if (e->f18 == 0)
-    {
+    if (e->f18 == 0) {
         RemoveTask((u32)e);
         FreeTask((u32)e);
     }
 }
-
 
 void SaveLapTime(void)
 {
@@ -114,4 +108,3 @@ void SaveLapTime(void)
         gUnk_0202CC00[0] = gLapMs[0];
     }
 }
-

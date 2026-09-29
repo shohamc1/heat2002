@@ -6,7 +6,6 @@
 #include "m4a.h"
 #include "variables.h"
 
-
 u8 TrackSelectMenu(u8 a, u8 b)
 {
     u8 buf[0x200];
@@ -37,8 +36,7 @@ u8 TrackSelectMenu(u8 a, u8 b)
         ClearOamBuffer();
         DrawTrackSelect(v, a);
         ReadKeys();
-        if (((gKeysPressed & A_BUTTON) && a == 1)
-            || (a == 0 && gTrackSelectFrameCount == 0x20))
+        if (((gKeysPressed & A_BUTTON) && a == 1) || (a == 0 && gTrackSelectFrameCount == 0x20))
             sel = v;
         if (a != 0)
             v = MenuMoveHorizontalClamped(gKeysPressed, v, 0, 0x0B);

@@ -32,7 +32,6 @@ extern u8 gUnk_02026A3C[];
 extern u8 gUnk_02026A64[];
 extern u8 gUnk_02026A84[];
 
-
 void ModuleInitObjPaletteCacheEntry(struct Unk0833F958 *entry)
 {
     entry->field_04 = 0xFFFF;
@@ -40,13 +39,11 @@ void ModuleInitObjPaletteCacheEntry(struct Unk0833F958 *entry)
     entry->field_01 = 0;
 }
 
-
 void ModuleInitObjTileCache(u32 count, u16 *tiles, struct OamInit *entries)
 {
     u32 i;
 
-    for (i = 0; i != count; i++, entries++, tiles++)
-    {
+    for (i = 0; i != count; i++, entries++, tiles++) {
         entries->f8 = 0xFFFF;
         entries->f0 = 0;
         entries->f4 = 0;
@@ -55,7 +52,6 @@ void ModuleInitObjTileCache(u32 count, u16 *tiles, struct OamInit *entries)
         entries->f6 = 0;
     }
 }
-
 
 void ModuleInitGfxCaches(void)
 {
@@ -95,7 +91,6 @@ void ModuleInitGfxCaches(void)
         i++;
     } while (i != 16);
 }
-
 
 void ModuleAgeGfxCaches(void)
 {
@@ -165,4 +160,3 @@ void ModuleAgeGfxCaches(void)
             (*(u8 *)p)--;
     }
 }
-

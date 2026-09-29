@@ -4,8 +4,7 @@
 
 void ResetBgScroll(void)
 {
-    gUnk_0200BC48 = gUnk_0200BC4C = gUnk_02022DF8 = gUnk_0200BC2C = gUnk_02022DE0 =
-        gUnk_02022DE8 = 0;
+    gUnk_0200BC48 = gUnk_0200BC4C = gUnk_02022DF8 = gUnk_0200BC2C = gUnk_02022DE0 = gUnk_02022DE8 = 0;
     REG_BG3HOFS = 0;
     REG_BG3VOFS = 0;
     REG_BG2HOFS = 0;

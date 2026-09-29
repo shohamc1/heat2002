@@ -37,8 +37,7 @@ void ModuleMPlayExtender(struct CgbChannel *cgbChans)
     REG_SOUNDCNT_L = 0xFF77;
     soundInfo = SOUND_INFO_PTR;
     ident = soundInfo->ident;
-    if (ident == ID_NUMBER)
-    {
+    if (ident == ID_NUMBER) {
         soundInfo->ident = ident + 1;
         gUnk_02038DE0[8] = (MPlayFunc)ModulePlyMemacc;
         gUnk_02038DE0[0x11] = (MPlayFunc)sub_0833A764;

@@ -3,12 +3,14 @@
 #include "functions.h"
 #include "variables.h"
 
-struct Thing {
+struct Thing
+{
     u8 pad00[0x10];
     u32 unk10;
 };
 
-struct Car {
+struct Car
+{
     s32 posX;
     s32 unk04;
     s32 posZ;
@@ -65,13 +67,13 @@ void DrawCar(struct Car *car, u8 idx)
     if (flip == 0) {
         t = RequestObjTiles8(gDriverCarSpriteHalfATables[car->driverId][k]);
         if (t != NULL) {
-            AddDepthSortedSprite((pos[1] & 0xFF) | ((pos[0] & 0x1FF) << 16) | 0x80008000,
-                         t->unk10 | t5, (u16)(y + 0x40));
+            AddDepthSortedSprite((pos[1] & 0xFF) | ((pos[0] & 0x1FF) << 16) | 0x80008000, t->unk10 | t5,
+                                 (u16)(y + 0x40));
         }
         t = RequestObjTiles16(gDriverCarSpriteHalfBTables[car->driverId][k]);
         if (t != NULL) {
-            AddDepthSortedSprite((pos[1] & 0xFF) | (((pos[0] + 0x10) & 0x1FF) << 16) | 0x80000000,
-                         t->unk10 | t5, (u16)(y + 0x40));
+            AddDepthSortedSprite((pos[1] & 0xFF) | (((pos[0] + 0x10) & 0x1FF) << 16) | 0x80000000, t->unk10 | t5,
+                                 (u16)(y + 0x40));
         }
     } else {
         u8 *p162;

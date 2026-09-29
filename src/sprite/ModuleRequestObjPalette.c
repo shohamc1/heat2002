@@ -1,7 +1,6 @@
 #include "global.h"
 #include "variables.h"
 
-
 u8 ModuleRequestObjPalette(u32 palette)
 {
     u32 *p;

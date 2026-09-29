@@ -1,7 +1,6 @@
 #include "global.h"
 #include "variables.h"
 
-
 u16 ModuleReadLinkMenuKeys(void)
 {
     u16 keys;

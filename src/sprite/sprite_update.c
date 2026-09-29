@@ -3,15 +3,20 @@
 #include "functions.h"
 #include "variables.h"
 
-typedef struct {
+typedef struct
+{
     u32 a;
-    union {
+    union
+    {
         u32 w;
-        struct { u16 lo; u16 hi; } h;
+        struct
+        {
+            u16 lo;
+            u16 hi;
+        } h;
     } u;
 } Ent;
 void SetSpriteRotMatrices(void);
-
 
 void SetSpriteRotMatrices(void)
 {
@@ -110,9 +115,5 @@ void SetSpriteRotMatrices(void)
     }
 }
 
-
 void UpdateSprites(void)
-{
-    SetSpriteRotMatrices();
-}
-
+{ SetSpriteRotMatrices(); }

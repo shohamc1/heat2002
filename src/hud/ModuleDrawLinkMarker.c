@@ -11,7 +11,6 @@ struct Unk08341A30Ent
     u32 field_10;
 };
 
-
 struct Unk08341A30Ent *ModuleRequestObjTiles4(u32 a);
 u32 ModuleRequestObjPalette(u32 a);
 void ModuleAddOamEntry(u32 a, u32 b);

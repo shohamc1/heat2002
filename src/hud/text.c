@@ -8,11 +8,10 @@ void DrawText(const u8 *text, u32 x, u32 y, u8 highlight)
     u32 c;
 
     out += y * 32 + x; /* 32 tilemap entries per text row */
-    color = 0xE0 << 8;   /* tilemap entry: palette bank 14 */
+    color = 0xE0 << 8; /* tilemap entry: palette bank 14 */
     if (highlight != 0)
         color = 0xF0 << 8; /* palette bank 15 */
-    while ((c = *text++) != 0)
-    {
+    while ((c = *text++) != 0) {
         u16 idx = gTextCharMap[(u8)(c - ' ')];
         *out++ = color | gTextGlyphTileIndices[idx];
     }

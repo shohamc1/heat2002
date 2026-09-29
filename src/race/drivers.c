@@ -12,15 +12,13 @@ void AssignRandomDrivers(void)
     for (i = 1; i != 0x18; i++)
         gCars[i].driverId = 99;
     i = 1;
-    for (;;)
-    {
+    for (;;) {
         v = 0x1F & Random8();
         if (v > 0x1D)
             continue;
         dup = 0;
         j = 0;
-        do
-        {
+        do {
             if (v == gCars[j].driverId)
                 dup = 1;
             j++;
@@ -41,19 +39,16 @@ void FillUnassignedDrivers(void)
     u8 dup;
     u8 j;
 
-    for (i = 1; i != 0x18; i++)
-    {
+    for (i = 1; i != 0x18; i++) {
         if (gCars[i].driverId != 99)
             continue;
-        for (;;)
-        {
+        for (;;) {
             v = 0x1F & Random8();
             if (v > 0x1D)
                 continue;
             dup = 0;
             j = 0;
-            do
-            {
+            do {
                 if (v == gCars[j].driverId)
                     dup = 1;
                 j++;

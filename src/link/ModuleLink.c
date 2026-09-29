@@ -29,8 +29,7 @@ void ModuleResetLinkState(void)
     timeoutPtr = &gUnk_0203917C;
     playerSlotsPtr = gUnk_0203E1C0;
     mask = 0xFF;
-    do
-    {
+    do {
         playerSlotsPtr[i * 4 + 0] |= mask;
         playerSlotsPtr[i * 4 + 1] |= mask;
         playerSlotsPtr[i * 4 + 2] |= mask;
@@ -44,12 +43,10 @@ void ModuleResetLinkState(void)
     if ((*(u8 *)0x04000128 & 0x30) == 0)
         *(volatile u16 *)0x04000200 |= 0x40;
     i = 0;
-    do
-    {
+    do {
         gModule_LinkTxBuffer[i] = 0;
         j = 0;
-        do
-        {
+        do {
             *(u16 *)((u8 *)gModule_LinkRecvWords + j * 2 + i * 8) = 0;
             j++;
         } while (j <= 3);
@@ -78,9 +75,8 @@ void ModuleLinkHandshake(void)
         /* lang is a variable so its pseudo predates the SIOCNT address
            temp: they tie on allocation priority, and the older one gets
            r6. */
-        tx[0] = ((u16)((((*(vu32 *)REG_ADDR_SIOCNT << 26) >> 30) + 1) << 12)
-                 | 0x100)
-              | ((*(lang = &gModule_Language) + 1) & 0xFF);
+        tx[0] = ((u16)((((*(vu32 *)REG_ADDR_SIOCNT << 26) >> 30) + 1) << 12) | 0x100) |
+                ((*(lang = &gModule_Language) + 1) & 0xFF);
         ModuleSioSendWord(tx[0]);
         gUnk_0203E1C0[2] |= 0xFF;
         gUnk_0203E1C0[6] |= 0xFF;

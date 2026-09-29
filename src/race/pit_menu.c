@@ -13,7 +13,6 @@ extern const u8 *const gPitMenuFuelOptionTexts[];
 extern const u8 *const gPitMenuRepairOptionTexts[];
 extern u8 gPitMenuBlinkCounter;
 
-
 void ClearPitMenu(void)
 {
     u32 blankText;
@@ -27,30 +26,23 @@ void ClearPitMenu(void)
     DrawTextAt(blankText, 0x0A, 0x0C);
 }
 
-
 void DrawPitMenu(u8 cursorRow)
 {
     DrawTextAt(gText_PitMenu, 0x0B, 0x07);
-    if (cursorRow != 0 || (gPitMenuBlinkCounter & 4) == 0)
-    {
+    if (cursorRow != 0 || (gPitMenuBlinkCounter & 4) == 0) {
         DrawTextAt(gPitMenuRowLabelTexts[0], 0x06, 0x09);
         DrawTextAt(gPitMenuTireOptionTexts[gPitServiceSelections[0]], 0x0D, 0x09);
-    }
-    else
+    } else
         DrawTextAt(gText_BlankRowPitMenu, 0x06, 0x09);
-    if (cursorRow != 1 || (gPitMenuBlinkCounter & 4) == 0)
-    {
+    if (cursorRow != 1 || (gPitMenuBlinkCounter & 4) == 0) {
         DrawTextAt(gPitMenuRowLabelTexts[1], 0x06, 0x0A);
         DrawTextAt(gPitMenuFuelOptionTexts[gPitServiceSelections[1]], 0x0D, 0x0A);
-    }
-    else
+    } else
         DrawTextAt(gText_BlankRow28, 0x06, 0x0A);
-    if (cursorRow != 2 || (gPitMenuBlinkCounter & 4) == 0)
-    {
+    if (cursorRow != 2 || (gPitMenuBlinkCounter & 4) == 0) {
         DrawTextAt(gPitMenuRowLabelTexts[2], 0x06, 0x0B);
         DrawTextAt(gPitMenuRepairOptionTexts[gPitServiceSelections[2]], 0x0D, 0x0B);
-    }
-    else
+    } else
         DrawTextAt(gText_BlankRow28, 0x06, 0x0B);
     if (cursorRow != 3 || (gPitMenuBlinkCounter & 4) == 0)
         DrawTextAt(gPitMenuRowLabelTexts[3], 0x0D, 0x0C);
@@ -58,7 +50,6 @@ void DrawPitMenu(u8 cursorRow)
         DrawTextAt(gText_BlankRowPitMenu, 0x0A, 0x0C);
     gPitMenuBlinkCounter++;
 }
-
 
 void InitPitMenu(void)
 {
@@ -68,7 +59,6 @@ void InitPitMenu(void)
     gPitServiceSelections[2] = 0;
     gPitMenuActive = 1;
 }
-
 
 void UpdatePitMenu(void)
 {
@@ -80,8 +70,7 @@ void UpdatePitMenu(void)
         gPitServiceSelections[1] = MenuMoveHorizontalSilent(gKeysPressed, gPitServiceSelections[1], 0, 2);
     if (gPitMenuCursorRow == 2)
         gPitServiceSelections[2] = MenuMoveHorizontalSilent(gKeysPressed, gPitServiceSelections[2], 0, 1);
-    if (gPitMenuCursorRow == 3 && (gKeysPressed & 1))
-    {
+    if (gPitMenuCursorRow == 3 && (gKeysPressed & 1)) {
         gPitMenuActive = 0;
         gPitServiceEnabled = 1;
         if (gPitServiceSelections[0] == 3 && gPitServiceSelections[1] == 2 && gPitServiceSelections[2] == 1)
@@ -89,4 +78,3 @@ void UpdatePitMenu(void)
         ClearPitMenu();
     }
 }
-

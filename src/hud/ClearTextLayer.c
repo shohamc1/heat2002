@@ -1,7 +1,6 @@
 #include "global.h"
 #include "data.h"
 
-
 void ClearTextLayer(void)
 {
     u16 *p = (*(u16 **)&gTextLayerMapPtr);

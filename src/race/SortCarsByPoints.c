@@ -2,7 +2,6 @@
 #include "car.h"
 #include "variables.h"
 
-
 void SortCarsByPoints(void)
 {
     u8 i;

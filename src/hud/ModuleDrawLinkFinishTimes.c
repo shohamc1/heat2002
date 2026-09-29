@@ -3,7 +3,6 @@
 #include "variables.h"
 #include "car.h"
 
-
 void ModuleDrawTime(u32 a, u16 b, u16 c, u16 d);
 void ModuleDrawLinkMarker(u8 a, u32 b, u8 c);
 
@@ -28,8 +27,7 @@ void ModuleDrawLinkFinishTimes(void)
     if (gModule_IsLinkRace != 0)
         row = 2;
     place = 1;
-    for (i = 0; i != gModule_NumFinishedCars; i++)
-    {
+    for (i = 0; i != gModule_NumFinishedCars; i++) {
         u32 *tbl = gModule_TextLayerMapPtr;
 
         carIdx = gModule_FinishedCarOrder[i];

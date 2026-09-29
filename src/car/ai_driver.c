@@ -1,6 +1,7 @@
 #include "global.h"
 
-struct Unk0800C28C {
+struct Unk0800C28C
+{
     u32 posX;
     u32 unk04;
     u32 posZ;
@@ -15,7 +16,8 @@ struct Unk0800C28C {
     s32 speed;
 };
 #include "variables.h"
-struct Unk0800C358 {
+struct Unk0800C358
+{
     u8 unk00[0x18];
     s32 unk18;
     s32 unk1C;
@@ -34,21 +36,16 @@ struct Unk0800C358 {
 #include "car.h"
 void WorldToCarLocal(s32 *a, s32 b, s32 c, s32 *d);
 
-
 void UpdateCarPredictedPos(struct Unk0800C28C *car)
 {
-    if (car->speed > (s32)0xFFFF0000)
-    {
+    if (car->speed > (s32)0xFFFF0000) {
         car->unk18 = car->posX;
         car->unk1C = car->posZ;
-    }
-    else
-    {
+    } else {
         car->unk18 = car->posX + car->velX * 8 + car->velX * 4 + car->velX * 2;
         car->unk1C = car->posZ + car->velZ * 8 + car->velZ * 4 + car->velX * 2;
     }
 }
-
 
 u32 ComputeLaneSegmentDistSq(s32 posX, s32 posZ, u16 *points, u8 *seg)
 {
@@ -84,7 +81,6 @@ u32 ComputeLaneSegmentDistSq(s32 posX, s32 posZ, u16 *points, u8 *seg)
     proj = closestX * closestX + closestZ * closestZ;
     return proj;
 }
-
 
 u32 FindClosestLaneSegment(struct Unk0800C358 *car)
 {
@@ -138,7 +134,6 @@ u32 FindClosestLaneSegment(struct Unk0800C358 *car)
     return bestDist;
 }
 
-
 void FindCarAhead(struct Car *car)
 {
     s32 localPos[2];
@@ -184,4 +179,3 @@ void FindCarAhead(struct Car *car)
             *side = 2;
     } while (++carIdx, other++, carIdx != gNumCars[0]);
 }
-

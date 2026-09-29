@@ -6,7 +6,6 @@
 
 extern u8 gText_BlankRow28_3[];
 
-
 void DrawLinkRaceSummary(void)
 {
     u8 timeText[0x28];
@@ -45,7 +44,6 @@ void DrawLinkRaceSummary(void)
     gMenuBlinkCounter++;
 }
 
-
 u8 ShowLinkRaceSummary(void)
 {
     u8 palette[0x200];
@@ -64,15 +62,11 @@ u8 ShowLinkRaceSummary(void)
     DrawLinkRaceSummary();
     FadeToBrightenedPalette((u32)palette, 0x0F);
     result = 0x40;
-    do
-    {
+    do {
         keys = gPlayerKeys[0];
-        if (ExchangeLinkInput() != 0)
-        {
+        if (ExchangeLinkInput() != 0) {
             result = 5;
-        }
-        else
-        {
+        } else {
             keys = (keys ^ gPlayerKeys[0]) & gPlayerKeys[0];
             DrawLinkRaceSummary();
             if (gLinkPlayerId[0] != 0)
@@ -87,4 +81,3 @@ u8 ShowLinkRaceSummary(void)
     FadeToColor(0, 0x0F);
     return result;
 }
-

@@ -2,7 +2,8 @@
 #include "gba/defines.h"
 #include "variables.h"
 void ResetSpriteQueues(void);
-struct UnkStruct080044DC {
+struct UnkStruct080044DC
+{
     u32 unk0;
     u32 unk4;
     u16 unk8;
@@ -27,8 +28,7 @@ void ClearOamBuffer(void)
     r1 = 0;
     r2 = 0xAA;
     r0 = (u32 *)gUnk_02024830;
-    while (r1 != 0x80)
-    {
+    while (r1 != 0x80) {
         *r0 = r2;
         r0 += 2;
         r1++;

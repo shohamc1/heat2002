@@ -9,7 +9,6 @@
 #include "m4a.h"
 #include "variables.h"
 
-
 u8 DrawDriverSelect(u8 driverIdx)
 {
     u8 unused[0xC];
@@ -26,7 +25,6 @@ u8 DrawDriverSelect(u8 driverIdx)
     Draw64x64Sprite(0x38, 0x40, 0);
     Draw64x64Sprite(0x78, 0x40, 0x80);
 }
-
 
 u8 DriverSelectMenu(void)
 {
@@ -58,7 +56,7 @@ u8 DriverSelectMenu(void)
         ReadKeys();
         if (gKeysPressed & 1)
             choice = driver;
-inner:
+    inner:
         cursor = MenuMoveHorizontal(gKeysPressed, cursor, 0, 0x0B);
         if (cursor == 6 || cursor == 7 || cursor == 10 || cursor == 11) {
             if ((gKeysPressed & 0x30) == 0)
@@ -69,7 +67,7 @@ inner:
             choice = 0;
         UpdateSprites();
         gVBlankWorkDone = 0;
-wait:
+    wait:
         if (gVBlankWorkDone == 0)
             goto wait;
         WaitForVBlank();
@@ -83,4 +81,3 @@ wait:
     FadeToColor(0, 0x0F);
     return choice != 0 ? cursor : 0;
 }
-

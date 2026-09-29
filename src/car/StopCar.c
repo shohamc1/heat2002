@@ -1,6 +1,7 @@
 #include "global.h"
 
-struct Unk0A5BC {
+struct Unk0A5BC
+{
     u8 pad0[0x0C];
     u32 velX;
     u32 f10;

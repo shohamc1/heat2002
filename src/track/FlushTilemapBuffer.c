@@ -3,7 +3,6 @@
 #include "gba/compat.h"
 #include "variables.h"
 
-
 void FlushTilemapBuffer(u8 *src, u8 *dest)
 {
     s32 row;

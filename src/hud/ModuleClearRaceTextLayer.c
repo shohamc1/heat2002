@@ -3,6 +3,4 @@
 u32 ModuleClearTextLayer(void);
 
 void ModuleClearRaceTextLayer(void)
-{
-    ModuleClearTextLayer();
-}
+{ ModuleClearTextLayer(); }

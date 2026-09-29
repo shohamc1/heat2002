@@ -3,7 +3,6 @@
 
 #include "variables.h"
 
-
 void ModuleInitMultiplayerSio(void)
 {
     REG_RCNT = 0;
@@ -12,7 +11,6 @@ void ModuleInitMultiplayerSio(void)
     REG_IE |= INTR_FLAG_SERIAL;
     REG_IME = 1;
 }
-
 
 void ModuleSioSendWord(u16 data)
 {
@@ -23,7 +21,6 @@ void ModuleSioSendWord(u16 data)
     if ((*(u8 *)0x04000128 & 0x30) == 0)
         REG_SIOCNT |= 0x80;
 }
-
 
 void ModuleSerialIntr(void)
 {
@@ -42,4 +39,3 @@ void ModuleSerialIntr(void)
     gIntrCheck |= 0x80;
     REG_IME = 1;
 }
-

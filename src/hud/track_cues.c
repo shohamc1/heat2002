@@ -36,7 +36,6 @@ extern u16 gUnk_020251F8;
 extern u16 gUnk_02025254;
 void DrawTrackCueIcon(u8 a, u16 b);
 
-
 void DrawTrackCueIcon(u8 cueId, u16 angle)
 {
     u16 cmd[2];
@@ -48,8 +47,7 @@ void DrawTrackCueIcon(u8 cueId, u16 angle)
     register u8 zero asm("r10");
     u16 zero2;
     u16 *cmdPtr;
-    if (angle != 0)
-    {
+    if (angle != 0) {
         gUnk_020251F0 = angle;
         cmdPtr = cmd;
         zero = 0;
@@ -59,51 +57,42 @@ void DrawTrackCueIcon(u8 cueId, u16 angle)
         tileEntry = RequestObjTiles16(gTrackCueIconGfxList[cueId & 7]);
         hFlip = (cueId & 8) >> 3;
         vFlip = (cueId & 0x10) >> 4;
-        if (tileEntry == 0)
-        {
+        if (tileEntry == 0) {
             return;
         }
         gUnk_020251F0 = angle;
         attr = ((cmd[1] & 0xFF) | ((cmd[0] & 0x1FF) << 16)) | 0x80000000;
-        attr2 = tileEntry[4] | (RequestObjPalette((u32) gTrackCueIconPalette) << 12);
+        attr2 = tileEntry[4] | (RequestObjPalette((u32)gTrackCueIconPalette) << 12);
         attr |= 0x04000100;
         gUnk_0202523C = zero;
         gUnk_020253C8 = zero;
-        if (hFlip != 0)
-        {
+        if (hFlip != 0) {
             gUnk_0202523C = 1;
         }
-        if (vFlip != 0)
-        {
+        if (vFlip != 0) {
             gUnk_020253C8 = 1;
         }
         AddOamEntry(attr, attr2);
-    }
-    else
-    {
+    } else {
         cmd[0] = 0x68;
         cmd[1] = angle;
         tileEntry = RequestObjTiles16(gTrackCueIconGfxList[cueId & 7]);
         hFlip = (cueId & 8) >> 3;
         vFlip = (cueId & 0x10) >> 4;
-        if (tileEntry == 0)
-        {
+        if (tileEntry == 0) {
             return;
         }
         attr = ((cmd[1] & 0xFF) | ((cmd[0] & 0x1FF) << 16)) | 0x80000000;
-        attr2 = tileEntry[4] | (RequestObjPalette((u32) gTrackCueIconPalette) << 12);
-        if (hFlip != 0)
-        {
+        attr2 = tileEntry[4] | (RequestObjPalette((u32)gTrackCueIconPalette) << 12);
+        if (hFlip != 0) {
             attr |= 0x10000000;
         }
-        if (vFlip != 0)
-        {
+        if (vFlip != 0) {
             attr |= 0x20000000;
         }
         AddOamEntry(attr, attr2);
     }
 }
-
 
 void LoadTrackCues(u8 trackIdx)
 {
@@ -113,7 +102,6 @@ void LoadTrackCues(u8 trackIdx)
     if (gTrackCueList == 0)
         gUnk_02025244 = gTrackCueList;
 }
-
 
 void UpdateTrackCues(u32 car)
 {
@@ -142,4 +130,3 @@ void UpdateTrackCues(u32 car)
         } while (progress >= *(u16 *)cueRecord);
     }
 }
-

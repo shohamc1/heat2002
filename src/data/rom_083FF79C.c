@@ -13,8 +13,5 @@ extern const u8 gUnk_08338F5C[];
 extern const u8 gUnk_083390C8[];
 extern const u8 gUnk_0833923C[];
 
-const u8 *const gTrackCueIconGfxList[] = {
-    gUnk_08338810, gUnk_08338980, gUnk_08338AFC,
-    gUnk_08338C6C, gUnk_08338DF0, gUnk_08338F5C,
-    gUnk_083390C8, gUnk_0833923C
-};
+const u8 *const gTrackCueIconGfxList[] = { gUnk_08338810, gUnk_08338980, gUnk_08338AFC, gUnk_08338C6C,
+                                           gUnk_08338DF0, gUnk_08338F5C, gUnk_083390C8, gUnk_0833923C };

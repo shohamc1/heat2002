@@ -1,21 +1,23 @@
 #include "global.h"
 #include "variables.h"
 
-struct Unk83_A {
+struct Unk83_A
+{
     u16 f9 : 9;
     u16 : 7;
 };
 
-struct Unk83_B {
+struct Unk83_B
+{
     u8 f6 : 6;
     u8 g2 : 2;
 };
 
-struct Unk83_C {
+struct Unk83_C
+{
     u16 f10 : 10;
     u16 : 6;
 };
-
 
 void IslandDrawMultibootProgressMarker(s16 x, u8 y)
 {

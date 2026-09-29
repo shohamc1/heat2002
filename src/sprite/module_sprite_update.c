@@ -20,16 +20,21 @@ u32 ModuleSortSpritesByDepth(void);
 extern u16 gUnk_0203B6A0;
 extern u8 gUnk_0203B854;
 extern u8 gUnk_0203B6EC;
-typedef struct {
+typedef struct
+{
     u32 a;
-    union {
+    union
+    {
         u32 w;
-        struct { u16 lo; u16 hi; } h;
+        struct
+        {
+            u16 lo;
+            u16 hi;
+        } h;
     } u;
 } Ent;
 void ModuleSetSpriteRotMatrices(void);
 void ModuleUpdateSprites(void);
-
 
 void ModuleResetSpriteOrderTable(void)
 {
@@ -43,7 +48,6 @@ void ModuleResetSpriteOrderTable(void)
         i++;
     } while (i != 0x40);
 }
-
 
 u32 ModuleSortSpritesByDepth(void)
 {
@@ -65,9 +69,9 @@ restart:
         }
         i++;
     } while (i != 0x3F);
-    if (swapped != 0) goto restart;
+    if (swapped != 0)
+        goto restart;
 }
-
 
 void ModuleFlushSortedSprites(void)
 {
@@ -78,8 +82,7 @@ void ModuleFlushSortedSprites(void)
     u32 i;
 
     i = gUnk_0203ACD4;
-    while (i != 0x3F)
-    {
+    while (i != 0x3F) {
         spritePtr = gUnk_0203ACD0;
         ((u16 *)spritePtr)[4] = 0;
         spritePtr[1] = 0xFFFFFFFF;
@@ -89,11 +92,9 @@ void ModuleFlushSortedSprites(void)
     }
     ModuleSortSpritesByDepth();
     orderPtr = gUnk_0203B610;
-    for (i = 0; i != gUnk_0203ACD4; i++)
-    {
+    for (i = 0; i != gUnk_0203ACD4; i++) {
         entry = &gUnk_0203B0F0[*orderPtr];
-        if (entry->b != 0xFFFFFFFF)
-        {
+        if (entry->b != 0xFFFFFFFF) {
             oamPtr = gUnk_0203ACD8;
             oamPtr[0] = entry->a;
             oamPtr[1] = entry->b;
@@ -102,7 +103,6 @@ void ModuleFlushSortedSprites(void)
         orderPtr++;
     }
 }
-
 
 void ModuleSetSpriteRotMatrices(void)
 {
@@ -201,9 +201,5 @@ void ModuleSetSpriteRotMatrices(void)
     }
 }
 
-
 void ModuleUpdateSprites(void)
-{
-    ModuleSetSpriteRotMatrices();
-}
-
+{ ModuleSetSpriteRotMatrices(); }

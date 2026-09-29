@@ -7,7 +7,6 @@
 
 #include "car.h"
 
-
 void DrawStandings(u8 page)
 {
     u8 buf[0x28];
@@ -58,7 +57,6 @@ void DrawStandings(u8 page)
     }
 }
 
-
 u8 StandingsScreen(void)
 {
     void *p;
@@ -99,4 +97,3 @@ u8 StandingsScreen(void)
     FadeToColor(0, 0x0F);
     return sel;
 }
-

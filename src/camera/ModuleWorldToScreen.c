@@ -1,7 +1,6 @@
 #include "global.h"
 #include "variables.h"
 
-
 u32 ModuleWorldToScreen(s32 x, s32 y, s32 *out)
 {
     s32 dx = x - ((s32 *)gModule_Camera)[0];

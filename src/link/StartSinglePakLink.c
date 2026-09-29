@@ -48,24 +48,24 @@ loop:
         /* RunRace: the ROM caller passes a third argument the matched definition drops; call
            through a function pointer with the old prototype. */
         if (((u8 (*)(u32, u32, void *))RunRace)(a0, a1, gUnk_0202CD90) != 0) {
-        /* DrawTextCentered: the ROM callers pass a third argument the matched definition drops; call
-           through a function pointer with the old prototype. */
-        ((void (*)(u32, u32, u32))DrawTextCentered)(GetString(0x75), 0x0A, 1);
-        ((void (*)(u32, u32, u32))DrawTextCentered)((u32)gText_PressStartToExit, 0x0C, 1);
-        StopAllSongsAndVSyncOff();
-wait1:
-        ReadKeys();
-        if ((gKeysPressed & 8) == 0)
-            goto wait1;
-wait2:
-        ReadKeys();
-        if (gKeysPressed & 8)
-            goto wait2;
-        FadeToColor(0, 0x32);
-    } else {
-        SortLinkCarsByTime();
-        WaitForLinkRestart();
-        goto loop;
-    }
+            /* DrawTextCentered: the ROM callers pass a third argument the matched definition drops; call
+               through a function pointer with the old prototype. */
+            ((void (*)(u32, u32, u32))DrawTextCentered)(GetString(0x75), 0x0A, 1);
+            ((void (*)(u32, u32, u32))DrawTextCentered)((u32)gText_PressStartToExit, 0x0C, 1);
+            StopAllSongsAndVSyncOff();
+        wait1:
+            ReadKeys();
+            if ((gKeysPressed & 8) == 0)
+                goto wait1;
+        wait2:
+            ReadKeys();
+            if (gKeysPressed & 8)
+                goto wait2;
+            FadeToColor(0, 0x32);
+        } else {
+            SortLinkCarsByTime();
+            WaitForLinkRestart();
+            goto loop;
+        }
     }
 }

@@ -2,7 +2,7 @@
 #include "gba/defines.h"
 void PackFadePalette(void);
 #include "gba/compat.h"
-extern u8 gUnk_02022E10; /* 0x02022E10 */
+extern u8 gUnk_02022E10;    /* 0x02022E10 */
 extern u32 gUnk_02024620[]; /* 0x02024620 */
 #include "functions.h"
 void BeginFadeToBrightenedPalette(u32 a, u32 b);
@@ -13,8 +13,7 @@ void UpdatePaletteFade(void)
     u8 *p = (u8 *)(EWRAM_START + 0x22E14);
     if (v == 0)
         *p = v;
-    if (*p != 0)
-    {
+    if (*p != 0) {
         u32 i;
         u32 n;
         u32 *r3;
@@ -24,8 +23,7 @@ void UpdatePaletteFade(void)
         n = 0x300;
         r3 = (u32 *)(EWRAM_START + 0x22E20);
         r4 = (u32 *)(EWRAM_START + 0x23A20);
-        while (i != n)
-        {
+        while (i != n) {
             *r3++ += *r4++;
             i++;
         }
@@ -42,8 +40,7 @@ void PackFadePalette(void)
     u32 m = 0x1F;
     u32 r7 = 0x80 << 1;
 
-    while (r4 != r7)
-    {
+    while (r4 != r7) {
         s32 x = *r6++;
         s32 y = *r6++;
         s32 z = *r6++;
@@ -62,8 +59,7 @@ void FlushPaletteBuffer(void)
 {
     u32 p;
 
-    if (gUnk_02022E10 != 0)
-    {
+    if (gUnk_02022E10 != 0) {
         p = (u32)gUnk_02024620;
         CpuCopy16(p, PLTT, PLTT_SIZE / 2);
         gUnk_02022E10 = 0;
@@ -76,8 +72,7 @@ void FadeToColor(u32 r0, u32 r1)
     u32 r2 = (u16)r0;
 
     BeginFadeToColor(r1, r2);
-    for (r4 = 0; r4 != r1; r4++)
-    {
+    for (r4 = 0; r4 != r1; r4++) {
         WaitForVBlank();
         UpdatePaletteFade();
     }
@@ -88,8 +83,7 @@ void FadeToBrightenedPalette(u32 a, u32 b)
     u32 i;
 
     BeginFadeToBrightenedPalette(b, a);
-    for (i = 0; i != b; i++)
-    {
+    for (i = 0; i != b; i++) {
         WaitForVBlank();
         UpdatePaletteFade();
     }

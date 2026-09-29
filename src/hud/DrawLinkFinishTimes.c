@@ -4,7 +4,6 @@
 #include "car.h"
 #include "data.h"
 
-
 void DrawTime(u32 a, u16 b, u16 c, u16 d);
 void DrawLinkMarker(u8 a, u32 b, u8 c);
 
@@ -29,8 +28,7 @@ void DrawLinkFinishTimes(void)
     if (gIsLinkRace != 0)
         row = 2;
     place = 1;
-    for (i = 0; i != gNumFinishedCars; i++)
-    {
+    for (i = 0; i != gNumFinishedCars; i++) {
         u32 *tbl = gTextLayerMapPtr;
 
         carIdx = gFinishedCarOrder[i];

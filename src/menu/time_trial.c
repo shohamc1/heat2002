@@ -5,7 +5,6 @@
 #include "m4a.h"
 #include "variables.h"
 
-
 void DrawTimeTrialMenu(u8 cursor)
 {
     u8 sel;
@@ -19,7 +18,6 @@ void DrawTimeTrialMenu(u8 cursor)
     DrawTextCenteredHighlight(GetString(0x9D), 0xB, cursor == 2);
     DrawTextCenteredHighlight(GetString(8), 0xD, sel == 3);
 }
-
 
 u8 TimeTrialMenu(void)
 {
@@ -46,4 +44,3 @@ u8 TimeTrialMenu(void)
     FadeToColor(0, 0x0F);
     return sel;
 }
-

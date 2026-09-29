@@ -21,7 +21,6 @@
 extern u32 gUnk_0203DFC4;
 extern u32 gUnk_0203DE40;
 
-
 u8 ModuleUpdateLapProgress(struct Car *p, u8 carIdx)
 {
     u8 unused1[40];
@@ -69,17 +68,16 @@ u8 ModuleUpdateLapProgress(struct Car *p, u8 carIdx)
 
     p->progress = ((s8)p->lap << 16) + p->waypoint * 16 + p->subStep;
 
-    det = (corners[2] - corners[0]) * (lC - l4)
-        - (corners[3] - corners[1]) * (l8 - l0);
+    det = (corners[2] - corners[0]) * (lC - l4) - (corners[3] - corners[1]) * (l8 - l0);
     if (det == 0)
         return 0;
     {
-    register s32 dx asm("r6");
-    register s32 dy asm("r5");
-    if ((u32)((((dx = corners[1] - l4) * (l8 - l0) - (dy = corners[0] - l0) * (lC - l4)) << 8) / det) > 0x100)
-        return 0;
-    if ((u32)((((dx) * (corners[2] - corners[0]) - (corners[3] - corners[1]) * (dy)) << 8) / det) > 0x100)
-        return 0;
+        register s32 dx asm("r6");
+        register s32 dy asm("r5");
+        if ((u32)((((dx = corners[1] - l4) * (l8 - l0) - (dy = corners[0] - l0) * (lC - l4)) << 8) / det) > 0x100)
+            return 0;
+        if ((u32)((((dx) * (corners[2] - corners[0]) - (corners[3] - corners[1]) * (dy)) << 8) / det) > 0x100)
+            return 0;
     }
 
     if (p->firstStepCrossed == 0) {
@@ -95,62 +93,62 @@ u8 ModuleUpdateLapProgress(struct Car *p, u8 carIdx)
     p->respawnHeading = p->heading;
     p->respawnWaypoint = p->waypoint;
     {
-    s32 t = e->unk10;
-    if (t == 1) {
-        if (gModule_GameMode[0] == 0x0C) {
-            if ((time = gModule_LapMin[0] * 60000 + gModule_LapSec[0] * 1000 + gModule_LapMs[0]) < gUnk_0203DFC4)
-                gUnk_0203E104 = t;
-        }
-        if (carIdx == v6C && gModule_GameMode[0] != 0x0C && p->ledLapFlag != 0) {
-            p->lapLedTimer = 0x1E;
-            p->lapsLed = p->lapsLed + 1;
-        }
-        p->lap = p->lap + 1;
-        {
-        s32 z = 0;
-        s32 m = z - 1;
-        p->waypoint = m;
-        }
-        p->subStep = 0;
-        p->progress = ((s8)p->lap << 16) + p->waypoint * 16;
-        if (carIdx == v6C) {
-            if (gUnk_0203E1E0[0] != 0 && p->lapStartedFlag != 0)
-                ModuleCheckTrackRecord(gModule_LapMin[0], gModule_LapSec[0], gModule_LapMs[0]);
-        }
-        p->ledLapFlag = 1;
-        if (p == gModule_Cars && gModule_GameMode[0] == 5 && p->lapStartedFlag != 0) {
-            if ((time = gModule_LapMin[0] * 60000 + gModule_LapSec[0] * 1000 + gModule_LapMs[0]) < p->finishTime)
-                p->finishTime = gModule_LapMin[0] * 60000 + gModule_LapSec[0] * 1000 + gModule_LapMs[0];
-        }
-        if (*(s8 *)&p->lap == gUnk_02039194) {
-            if (gModule_GameMode[0] == 0 || gModule_GameMode[0] == 6 || gModule_GameMode[0] == 1)
-                p->finishTime = gModule_RaceMin[0] * 60000 + gModule_RaceSec[0] * 1000 + gModule_RaceMs[0];
-            if (carIdx == v6C && p->lapStartedFlag != 0)
-                ModuleDrawLapTime(gModule_LapMin[0], gModule_LapSec[0], gModule_LapMs[0]);
-            if (gModule_GameMode[0] != 2) {
-                ModuleRecordFinishTime((u16 *)p);
-                gModule_FinishedCarOrder[gModule_NumFinishedCars] = carIdx;
-                gModule_NumFinishedCars = gModule_NumFinishedCars + 1;
-                if ((u8)(gModule_GameMode[0] - 3) <= 1)
+        s32 t = e->unk10;
+        if (t == 1) {
+            if (gModule_GameMode[0] == 0x0C) {
+                if ((time = gModule_LapMin[0] * 60000 + gModule_LapSec[0] * 1000 + gModule_LapMs[0]) < gUnk_0203DFC4)
+                    gUnk_0203E104 = t;
+            }
+            if (carIdx == v6C && gModule_GameMode[0] != 0x0C && p->ledLapFlag != 0) {
+                p->lapLedTimer = 0x1E;
+                p->lapsLed = p->lapsLed + 1;
+            }
+            p->lap = p->lap + 1;
+            {
+                s32 z = 0;
+                s32 m = z - 1;
+                p->waypoint = m;
+            }
+            p->subStep = 0;
+            p->progress = ((s8)p->lap << 16) + p->waypoint * 16;
+            if (carIdx == v6C) {
+                if (gUnk_0203E1E0[0] != 0 && p->lapStartedFlag != 0)
+                    ModuleCheckTrackRecord(gModule_LapMin[0], gModule_LapSec[0], gModule_LapMs[0]);
+            }
+            p->ledLapFlag = 1;
+            if (p == gModule_Cars && gModule_GameMode[0] == 5 && p->lapStartedFlag != 0) {
+                if ((time = gModule_LapMin[0] * 60000 + gModule_LapSec[0] * 1000 + gModule_LapMs[0]) < p->finishTime)
+                    p->finishTime = gModule_LapMin[0] * 60000 + gModule_LapSec[0] * 1000 + gModule_LapMs[0];
+            }
+            if (*(s8 *)&p->lap == gUnk_02039194) {
+                if (gModule_GameMode[0] == 0 || gModule_GameMode[0] == 6 || gModule_GameMode[0] == 1)
                     p->finishTime = gModule_RaceMin[0] * 60000 + gModule_RaceSec[0] * 1000 + gModule_RaceMs[0];
-                if (gModule_NumFinishedCars == v68) {
-                    if (gModule_GameMode[0] != 0x10) {
-                        if (gModule_GameMode[0] != 0xF) {
-                            if (gModule_GameMode[0] != 2) {
-                                if (gModule_GameMode[0] != 0xE)
-                                    ModuleEndRace();
+                if (carIdx == v6C && p->lapStartedFlag != 0)
+                    ModuleDrawLapTime(gModule_LapMin[0], gModule_LapSec[0], gModule_LapMs[0]);
+                if (gModule_GameMode[0] != 2) {
+                    ModuleRecordFinishTime((u16 *)p);
+                    gModule_FinishedCarOrder[gModule_NumFinishedCars] = carIdx;
+                    gModule_NumFinishedCars = gModule_NumFinishedCars + 1;
+                    if ((u8)(gModule_GameMode[0] - 3) <= 1)
+                        p->finishTime = gModule_RaceMin[0] * 60000 + gModule_RaceSec[0] * 1000 + gModule_RaceMs[0];
+                    if (gModule_NumFinishedCars == v68) {
+                        if (gModule_GameMode[0] != 0x10) {
+                            if (gModule_GameMode[0] != 0xF) {
+                                if (gModule_GameMode[0] != 2) {
+                                    if (gModule_GameMode[0] != 0xE)
+                                        ModuleEndRace();
+                                }
                             }
                         }
                     }
                 }
+            } else {
+                if (carIdx == v6C && p->lapStartedFlag != 0)
+                    ModuleDrawLapTime(gModule_LapMin[0], gModule_LapSec[0], gModule_LapMs[0]);
             }
-        } else {
-            if (carIdx == v6C && p->lapStartedFlag != 0)
-                ModuleDrawLapTime(gModule_LapMin[0], gModule_LapSec[0], gModule_LapMs[0]);
+            if (carIdx == v6C)
+                ModuleResetLapTimer();
         }
-        if (carIdx == v6C)
-            ModuleResetLapTimer();
-    }
     }
 
     if ((u16)(e->unk10 - 1) <= 1) {
@@ -164,12 +162,12 @@ u8 ModuleUpdateLapProgress(struct Car *p, u8 carIdx)
             }
         }
         {
-        s32 t2 = e->unk10;
-        if (t2 == 1 && p->lapStartedFlag == 0) {
-            if (p == gModule_Cars)
-                ModuleStartRace();
-            p->lapStartedFlag = t2;
-        }
+            s32 t2 = e->unk10;
+            if (t2 == 1 && p->lapStartedFlag == 0) {
+                if (p == gModule_Cars)
+                    ModuleStartRace();
+                p->lapStartedFlag = t2;
+            }
         }
     }
     p->waypoint = p->waypoint + 1;

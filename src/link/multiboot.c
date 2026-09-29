@@ -25,7 +25,6 @@ extern u8 gText_BlankRow28_2[];
 extern u8 gUnk_08363EE8[];
 extern u8 gUnk_08364AC8[];
 
-
 void DrawMultibootProgressMarker(u32 x, u32 y)
 {
     s16 *oam = gOamBuffer;
@@ -36,7 +35,6 @@ void DrawMultibootProgressMarker(u32 x, u32 y)
     ((u8 *)oam)[0x13] = (((u8 *)oam)[0x13] & 0x3F) | 0x80;
     oam[10] &= ~0x3FF;
 }
-
 
 void DrawLinkProgressBar(u16 progress, u16 y)
 {
@@ -83,12 +81,8 @@ void DrawLinkProgressBar(u16 progress, u16 y)
     oam[0x42] = (oam[0x42] & ~0x3FF) | 0x20;
 }
 
-
 void MultibootVBlankIntr(void)
-{
-    gIntrCheck = 1;
-}
-
+{ gIntrCheck = 1; }
 
 void InitSinglePakLinkScreen(void)
 {
@@ -98,14 +92,13 @@ void InitSinglePakLinkScreen(void)
     entryIdx = 0;
     fontTable = gUiFontTable;
     do {
-        *(u16 *)(*(volatile u32 *)&gTextLayerMapPtr[0] + 2 * entryIdx) = 0;  /* per-iteration reload, as the ROM loop */
+        *(u16 *)(*(volatile u32 *)&gTextLayerMapPtr[0] + 2 * entryIdx) = 0; /* per-iteration reload, as the ROM loop */
         entryIdx++;
     } while (entryIdx != 0x380);
     DummyUiFontLoad(fontTable[0]);
     GetString(0x52);
     ((void (*)(void))DrawBigText)();
 }
-
 
 u32 SendMultibootPayload(void)
 {
@@ -160,7 +153,6 @@ done:
     return 0;
 }
 
-
 u32 SendMultibootIsland(void)
 {
     u8 work[0x24C];
@@ -210,95 +202,80 @@ loop:
             register u32 bit2 __asm__("r1");
             register u32 shifted __asm__("r0");
             shifted = a[0x1D] >> i;
-            __asm__ volatile ("" : "=r" (bit1) : "0" (one));
+            __asm__ volatile("" : "=r"(bit1) : "0"(one));
             if ((shifted & bit1) == 0)
                 goto show0;
             shifted = a[0x1E] >> i;
-            __asm__ volatile ("" : "=r" (bit2) : "0" (one));
+            __asm__ volatile("" : "=r"(bit2) : "0"(one));
             if ((shifted & bit2) != 0)
                 goto show1;
-show0:
-/* old prototype u32 GetString(u32): the canonical u16 parameter would
-            narrow x with an extra lsls/lsrs pair */
+        show0:
+            /* old prototype u32 GetString(u32): the canonical u16 parameter would
+                        narrow x with an extra lsls/lsrs pair */
             DrawTextCenteredHighlight((u8 *)((u32 (*)(u32))GetString)(x), y, 0);
             goto pnext;
-show1:
+        show1:
             DrawTextCenteredHighlight((u8 *)((u32 (*)(u32))GetString)(x), y, 1);
-pnext:
-            ;
+        pnext:;
             y = y + 1;
             x = x + 1;
             i = i + 1;
         } while (i <= 3);
-        if (work[0x1E] & 0x0E)
-        {
-            if (work[0x18] == 0)
-            {
+        if (work[0x1E] & 0x0E) {
+            if (work[0x18] == 0) {
                 register u32 value __asm__("r2") = 0x0F;
-                __asm__ volatile ("" : : "r" (value));
+                __asm__ volatile("" : : "r"(value));
                 icon = value;
-            }
-            else if (work[0x18] != 0xD1)
-            {
+            } else if (work[0x18] != 0xD1) {
                 register u32 value __asm__("r0") = 0;
-                __asm__ volatile ("" : : "r" (value));
+                __asm__ volatile("" : : "r"(value));
                 icon = value;
             }
-            if (work[0x18] > 0xDF)
-            {
+            if (work[0x18] > 0xDF) {
                 register u32 value __asm__("r1") = 0x58;
-                __asm__ volatile ("" : : "r" (value));
+                __asm__ volatile("" : : "r"(value));
                 icon = value;
                 goto show_icon;
             }
-        }
-        else
-        {
+        } else {
             register u32 value __asm__("r2") = 0;
-            __asm__ volatile ("" : : "r" (value));
+            __asm__ volatile("" : : "r"(value));
             icon = value;
         }
         if (icon == 0)
             goto show_empty;
-show_icon:
-        __asm__ volatile ("" : : : "r0");
+    show_icon:
+        __asm__ volatile("" : : : "r0");
         DrawTextCenteredHighlight((u8 *)((u32 (*)(u32))GetString)(icon), 0x0E, 1);
         goto shown;
-show_empty:
+    show_empty:
         DrawTextCenteredHighlight(gText_BlankRow28_2, 0x0E, 1);
-shown:
+    shown:
         ReadKeys();
-        if (gKeysPressed & 8)
-        {
-            if (work[0x18] == 0 && work[0x1E] != 0)
-            {
-                sub_0800EEFC(work,(u32)(start + 0xC0),(void *)(len - 0xC0), 4, 1);
+        if (gKeysPressed & 8) {
+            if (work[0x18] == 0 && work[0x1E] != 0) {
+                sub_0800EEFC(work, (u32)(start + 0xC0), (void *)(len - 0xC0), 4, 1);
                 {
                     register u32 value __asm__("r1");
-                    __asm__ volatile ("" : "=r" (value) : "0" (1));
+                    __asm__ volatile("" : "=r"(value) : "0"(1));
                     flag = value;
                 }
             }
         }
-        if (sub_0800EAA0(work) != 0)
-        {
+        if (sub_0800EAA0(work) != 0) {
             register u32 value __asm__("r2") = flag;
-            __asm__ volatile ("" : : "r" (value));
+            __asm__ volatile("" : : "r"(value));
             if (value == 1)
                 return 1;
         }
-        if (sub_0800EFC0(work) == 0)
-        {
-            if ((gKeysPressed & 2) != 0)
-            {
+        if (sub_0800EFC0(work) == 0) {
+            if ((gKeysPressed & 2) != 0) {
                 register u32 value __asm__("r0") = flag;
-                __asm__ volatile ("" : : "r" (value));
+                __asm__ volatile("" : : "r"(value));
                 if (value != 1)
                     return 1;
             }
-        }
-        else
-        {
+        } else {
             InitSinglePakLinkScreen();
             SendMultibootPayload();
             return 0;
@@ -307,4 +284,3 @@ shown:
     }
     return 1;
 }
-

@@ -4,7 +4,6 @@
 
 #include "variables.h"
 
-
 void DrawSingleRaceRetryMenu(u8 cursor)
 {
     u8 cursorCopy;
@@ -18,7 +17,6 @@ void DrawSingleRaceRetryMenu(u8 cursor)
     DrawTextCenteredHighlight(GetString(0x9D), 0xB, cursor == 2);
     DrawTextCenteredHighlight(GetString(8), 0xD, cursorCopy == 3);
 }
-
 
 u8 SingleRaceRetryMenu(void)
 {
@@ -41,4 +39,3 @@ u8 SingleRaceRetryMenu(void)
     FadeToColor(0, 0x0F);
     return selection;
 }
-

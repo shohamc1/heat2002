@@ -1,7 +1,6 @@
 #include "global.h"
 #include "data.h"
 
-
 void ZeroTextLayer(void)
 {
     u32 *dest = (u32 *)*(u32 *)&gTextLayerMapPtr[0];
@@ -9,8 +8,7 @@ void ZeroTextLayer(void)
     u32 val = 0;
     u32 r2 = 0xA0 << 1;
 
-    do
-    {
+    do {
         *dest = val;
         dest++;
         r1++;

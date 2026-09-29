@@ -10,6 +10,4 @@ extern const u8 gUnk_0830E70C[];
 extern const u8 gUnk_0831C850[];
 
 const u32 gChampionshipTrophyGfx = (u32)gUnk_0830E70C;
-const u8 *const gLineMarkerSpriteGfxTable[] = {
-    gUnk_0831C850
-};
+const u8 *const gLineMarkerSpriteGfxTable[] = { gUnk_0831C850 };

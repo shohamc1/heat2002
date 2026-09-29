@@ -8,7 +8,6 @@ extern u16 gUnk_0203AAD0[];
 #include "gba/compat.h"
 void ModuleUpdatePaletteFade(void);
 
-
 void ModuleFillFadePalette(u32 color)
 {
     u32 shifted = color << 16;
@@ -29,7 +28,6 @@ void ModuleFillFadePalette(u32 color)
         i++;
     } while (i != 0x100);
 }
-
 
 void ModuleBeginFadeToColor(u32 steps, u32 color)
 {
@@ -55,8 +53,7 @@ void ModuleBeginFadeToColor(u32 steps, u32 color)
     i = 0;
     colors = gModule_PaletteFadeColors;
     deltas = gModule_PaletteFadeDeltas;
-    do
-    {
+    do {
         deltas[0] = sub_08344BB8(red - colors[0], steps);
         deltas[1] = sub_08344BB8(green - colors[1], steps);
         deltas[2] = sub_08344BB8(blue - colors[2], steps);
@@ -70,7 +67,6 @@ void ModuleBeginFadeToColor(u32 steps, u32 color)
         gModule_PaletteFadeActive = active;
     }
 }
-
 
 void ModuleBeginFadeToBrightenedPalette(s32 steps, u16 *src)
 {
@@ -118,7 +114,6 @@ void ModuleBeginFadeToBrightenedPalette(s32 steps, u16 *src)
     }
 }
 
-
 void ModuleSetFadeDeltasColors240To255(s32 steps)
 {
     u32 white;
@@ -136,7 +131,7 @@ void ModuleSetFadeDeltasColors240To255(s32 steps)
     colors = (s32 *)((u32)colorBase + off);
     deltas = (s32 *)((u32)deltaBase + off);
     do {
-loop:
+    loop:
         white = 0x1F0000;
         deltas[0] = sub_08344BB8(white - colors[0], steps);
         deltas[1] = sub_08344BB8(white - colors[1], steps);
@@ -152,7 +147,6 @@ loop:
     }
 }
 
-
 void ModuleUpdatePaletteFade(void)
 {
     int steps;
@@ -164,8 +158,7 @@ void ModuleUpdatePaletteFade(void)
     steps = *(s16 *)&gModule_PaletteFadeSteps;
     if (steps == 0)
         gModule_PaletteFadeActive = steps;
-    if (gModule_PaletteFadeActive != 0)
-    {
+    if (gModule_PaletteFadeActive != 0) {
         ModulePackFadePalette();
         i = 0;
         n = 0x300;
@@ -180,7 +173,6 @@ void ModuleUpdatePaletteFade(void)
     gUnk_020392C0 = 1;
 }
 
-
 void ModulePackFadePalette(void)
 {
     u32 i;
@@ -192,8 +184,7 @@ void ModulePackFadePalette(void)
 
     src = (s32 *)gModule_PaletteFadeColors;
     dst = gUnk_0203AAD0;
-    for (i = 0; i != 0x100; i++)
-    {
+    for (i = 0; i != 0x100; i++) {
         r = *src++;
         g = *src++;
         b = *src++;
@@ -207,7 +198,6 @@ void ModulePackFadePalette(void)
     }
 }
 
-
 void ModuleFlushPaletteBuffer(void)
 {
     if (gUnk_020392C0 != 0) {
@@ -216,17 +206,14 @@ void ModuleFlushPaletteBuffer(void)
     }
 }
 
-
 void ModuleFadeToColor(u32 color, u32 steps)
 {
     u16 color16 = (u16)color;
     u32 i;
 
     ModuleBeginFadeToColor(steps, color16);
-    for (i = 0; i != steps; i++)
-    {
+    for (i = 0; i != steps; i++) {
         ModuleWaitForVBlank();
         ModuleUpdatePaletteFade();
     }
 }
-

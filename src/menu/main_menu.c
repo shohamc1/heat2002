@@ -7,7 +7,6 @@ extern u16 gUnk_083FDE5E[];
 void LoadMainMenuBackdrop(void);
 void DrawMainMenuItems(u8 a);
 
-
 void DrawMainMenuItems(u8 selected)
 {
     u8 *d;
@@ -33,10 +32,8 @@ void DrawMainMenuItems(u8 selected)
     } while (i != 7);
 }
 
-
 void DrawMainMenu(u8 selected)
 {
     LoadMainMenuBackdrop();
     DrawMainMenuItems(selected);
 }
-

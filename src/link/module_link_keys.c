@@ -1,6 +1,5 @@
 #include "global.h"
 
-
 u16 ModulePackLinkKeys(u16 keys)
 {
     u16 r;
@@ -8,15 +7,20 @@ u16 ModulePackLinkKeys(u16 keys)
 
     t = keys & 8;
     r = t != 0;
-    if (keys & 2) r = r | 2;
-    if (keys & 1) r = r | 4;
-    if (keys & 0x10) r = r | 8;
-    if (keys & 0x20) r = r | 0x10;
-    if (keys & 0x80) r = r | 0x20;
-    if (keys & 0x40) r = r | 0x40;
+    if (keys & 2)
+        r = r | 2;
+    if (keys & 1)
+        r = r | 4;
+    if (keys & 0x10)
+        r = r | 8;
+    if (keys & 0x20)
+        r = r | 0x10;
+    if (keys & 0x80)
+        r = r | 0x20;
+    if (keys & 0x40)
+        r = r | 0x40;
     return r;
 }
-
 
 u16 ModuleUnpackLinkKeys(u16 packed)
 {
@@ -37,4 +41,3 @@ u16 ModuleUnpackLinkKeys(u16 packed)
         r |= 0x40;
     return r;
 }
-

@@ -2,7 +2,6 @@
 #include "variables.h"
 #include "car.h"
 
-
 void ModuleSortLinkCarsByTime(void)
 {
     u8 i;
@@ -22,7 +21,7 @@ void ModuleSortLinkCarsByTime(void)
             register u8 current asm("r0");
             do {
                 register u32 *slot asm("r0") = (u32 *)(((u32)i << 2) + (u32)dst);
-                    *slot = (u32)&((u8 (*)[0x190])gModule_Cars)[i][0];
+                *slot = (u32) & ((u8(*)[0x190])gModule_Cars)[i][0];
                 i++;
                 current = *countTemp;
             } while (i != current);

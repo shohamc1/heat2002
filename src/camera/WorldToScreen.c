@@ -1,7 +1,6 @@
 #include "global.h"
 #include "variables.h"
 
-
 u32 WorldToScreen(s32 x, s32 y, s32 *out)
 {
     s32 dx = x - gCamera[0];

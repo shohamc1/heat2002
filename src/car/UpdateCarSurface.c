@@ -54,8 +54,8 @@ void UpdateCarSurface(struct Car *car)
                 car->pitExitPending = 0;
         }
     }
-    if (pitTileCount > 4 || (pitTileCount != 0 && (gTrackId == 3 || gTrackId == 5
-            || gTrackId == 8 || gTrackId == 0xB || gTrackId == 2))) {
+    if (pitTileCount > 4 ||
+        (pitTileCount != 0 && (gTrackId == 3 || gTrackId == 5 || gTrackId == 8 || gTrackId == 0xB || gTrackId == 2))) {
         if (gIsLinkRace == 0 && car == gCars)
             EnterPit((u8 *)car, 0);
     }
@@ -63,13 +63,13 @@ void UpdateCarSurface(struct Car *car)
     if ((u8)(gGameMode[0] - 0xF) <= 1 && gChallengeIndex == 0xC)
         muteGrassSound = 1;
     if (car == &gCars[playerIdx]) {
-        if (car->onGrass != 0 && car->wasOnGrass == 0 && muteGrassSound == 0 && gOptions[3] != 0
-            && gIsDemo == 0 && gRaceEndState == 0)
+        if (car->onGrass != 0 && car->wasOnGrass == 0 && muteGrassSound == 0 && gOptions[3] != 0 && gIsDemo == 0 &&
+            gRaceEndState == 0)
             m4aSongNumStart(0x1C);
     }
     if (car == &gCars[playerIdx]) {
-        if (car->onGrass != 0 && (Random8() & 0x1F) == 0 && gOptions[3] != 0
-            && gIsDemo == 0 && gRaceEndState == 0 && muteGrassSound == 0)
+        if (car->onGrass != 0 && (Random8() & 0x1F) == 0 && gOptions[3] != 0 && gIsDemo == 0 && gRaceEndState == 0 &&
+            muteGrassSound == 0)
             m4aSongNumStart(0x1D);
     }
     if (car == &gCars[playerIdx]) {

@@ -4,7 +4,8 @@
 
 s16 ModuleGetGearForSpeed(struct Car *a);
 void ModuleStopCar(struct Car *a);
-struct Unk08341DA0 {
+struct Unk08341DA0
+{
     u32 unk0;
     u32 unk4;
     u32 unk8;
@@ -31,7 +32,6 @@ struct Unk08341DA0 {
 };
 extern s32 gUnk_020277B4[]; /* 0x020277B4 */
 extern s32 gUnk_020277C4[]; /* 0x020277C4 */
-
 
 void ModuleUpdateEngine(struct Car *car, s32 mode)
 {
@@ -101,7 +101,6 @@ void ModuleUpdateEngine(struct Car *car, s32 mode)
     }
 }
 
-
 void ModuleComputeForwardSpeed(u8 *car)
 {
     s32 i;
@@ -119,7 +118,6 @@ void ModuleComputeForwardSpeed(u8 *car)
     y = *(s32 *)(car + 0x14);
     *(s32 *)(car + 0x2C) = (x * dx + y * dy) >> 8;
 }
-
 
 void ModuleComputeCarCorners(struct Unk08341DA0 *car)
 {
@@ -154,4 +152,3 @@ void ModuleComputeCarCorners(struct Unk08341DA0 *car)
         car->nextCornerZ[i] += car->unk8 + car->unk14;
     }
 }
-

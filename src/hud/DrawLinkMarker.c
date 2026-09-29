@@ -3,8 +3,6 @@
 #include "functions.h"
 #include "variables.h"
 
-
-
 void DrawLinkMarker(u32 x, u32 y, u32 carIdx)
 {
     u32 *frames = (u32 *)gLinkMarkerFrameLists[carIdx];

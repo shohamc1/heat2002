@@ -4,7 +4,6 @@
 
 void ModuleResetSpriteQueues(void);
 
-
 void ModuleResetSpriteQueues(void)
 {
     gUnk_0203ACD8 = (u32 *)(EWRAM_START + 0x3ACE0);
@@ -14,7 +13,6 @@ void ModuleResetSpriteQueues(void)
     gUnk_0203B604 = 0;
     gUnk_0203ACD4 = 0;
 }
-
 
 void ModuleClearOamBuffer(void)
 {
@@ -30,7 +28,6 @@ void ModuleClearOamBuffer(void)
     ModuleResetSpriteQueues();
 }
 
-
 u32 ModuleAddOamEntry(u32 attr01, u32 attr2)
 {
     u32 *ptr;
@@ -44,7 +41,6 @@ u32 ModuleAddOamEntry(u32 attr01, u32 attr2)
     gUnk_0203B600 = gUnk_0203B600 + 1;
     return 1;
 }
-
 
 u32 ModuleAddDepthSortedSprite(u32 attr01, u32 attr2, u16 depth)
 {
@@ -60,4 +56,3 @@ u32 ModuleAddDepthSortedSprite(u32 attr01, u32 attr2, u16 depth)
     gUnk_0203ACD4 = newCount;
     return newCount;
 }
-

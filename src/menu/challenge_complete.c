@@ -4,7 +4,6 @@
 
 #include "variables.h"
 
-
 void DrawChallengeCategoryComplete(u8 category)
 {
     DummyUiFontLoad(gUiFontTable[0]);
@@ -17,7 +16,6 @@ void DrawChallengeCategoryComplete(u8 category)
     else
         DrawTextCenteredHighlight(GetString(0xB3), 0xA, 1);
 }
-
 
 u8 ShowChallengeCategoryComplete(u8 category)
 {
@@ -39,4 +37,3 @@ u8 ShowChallengeCategoryComplete(u8 category)
     FadeToColor(0, 0x0F);
     return done;
 }
-

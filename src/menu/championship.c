@@ -16,7 +16,6 @@ extern const u8 gText_ChooseANewTeam[];
 extern u8 gChampionshipRequiredFinish[];
 extern u8 gChampionshipTeamTiers[];
 
-
 u8 FindDriverByTeam(u8 teamId)
 {
     u8 driverIdx;
@@ -27,7 +26,6 @@ u8 FindDriverByTeam(u8 teamId)
     }
     return 0;
 }
-
 
 void UnlockChampionshipTier(u8 tier)
 {
@@ -61,7 +59,6 @@ void UnlockChampionshipTier(u8 tier)
     }
 }
 
-
 u32 IsAnyChampionshipTeamAvailable(void)
 {
     u8 teamIdx;
@@ -73,18 +70,11 @@ u32 IsAnyChampionshipTeamAvailable(void)
     return 0;
 }
 
-
 void ShowKickedFromTeamMessage(void)
-{
-    MessageBox(gText_BadLuck, gText_YouVeBeenKicked, gText_OffTheTeam);
-}
-
+{ MessageBox(gText_BadLuck, gText_YouVeBeenKicked, gText_OffTheTeam); }
 
 void ShowStayOnTeamMessage(void)
-{
-    MessageBox(gText_Congratulations, gText_YouAreAllowedTo, gText_StayOnThisTeam);
-}
-
+{ MessageBox(gText_Congratulations, gText_YouAreAllowedTo, gText_StayOnThisTeam); }
 
 void DrawCareerDecision(u8 selected)
 {
@@ -96,7 +86,6 @@ void DrawCareerDecision(u8 selected)
     text = gText_ChooseANewTeam;
     DrawTextCenteredHighlight(text, 0xA, selected == 1);
 }
-
 
 u8 CareerDecisionMenu(void)
 {
@@ -124,7 +113,6 @@ u8 CareerDecisionMenu(void)
     return choice;
 }
 
-
 u8 ResolveSeasonResult(u8 championshipIndex, u8 finishPos)
 {
     u8 team;
@@ -143,4 +131,3 @@ u8 ResolveSeasonResult(u8 championshipIndex, u8 finishPos)
     UnlockChampionshipTier(gChampionshipTeamTiers[championshipIndex]);
     return 0;
 }
-

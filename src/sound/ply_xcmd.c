@@ -32,7 +32,6 @@ extern MPlayFunc gUnk_0801D230[];
 /* ply_xleng */
 /* ply_xswee */
 
-
 void ply_memacc(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
 {
     u32 op;
@@ -49,62 +48,62 @@ void ply_memacc(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *trac
     track->cmdPtr++;
 
     switch (op) {
-    case 0:
-        *addr = data;
-        return;
-    case 1:
-        *addr += data;
-        return;
-    case 2:
-        *addr -= data;
-        return;
-    case 3:
-        *addr = mplayInfo->memAccArea[data];
-        return;
-    case 4:
-        *addr += mplayInfo->memAccArea[data];
-        return;
-    case 5:
-        *addr -= mplayInfo->memAccArea[data];
-        return;
-    case 6:
-        MEMACC_COND_JUMP(*addr == data)
-        return;
-    case 7:
-        MEMACC_COND_JUMP(*addr != data)
-        return;
-    case 8:
-        MEMACC_COND_JUMP(*addr > data)
-        return;
-    case 9:
-        MEMACC_COND_JUMP(*addr >= data)
-        return;
-    case 10:
-        MEMACC_COND_JUMP(*addr <= data)
-        return;
-    case 11:
-        MEMACC_COND_JUMP(*addr < data)
-        return;
-    case 12:
-        MEMACC_COND_JUMP(*addr == mplayInfo->memAccArea[data])
-        return;
-    case 13:
-        MEMACC_COND_JUMP(*addr != mplayInfo->memAccArea[data])
-        return;
-    case 14:
-        MEMACC_COND_JUMP(*addr > mplayInfo->memAccArea[data])
-        return;
-    case 15:
-        MEMACC_COND_JUMP(*addr >= mplayInfo->memAccArea[data])
-        return;
-    case 16:
-        MEMACC_COND_JUMP(*addr <= mplayInfo->memAccArea[data])
-        return;
-    case 17:
-        MEMACC_COND_JUMP(*addr < mplayInfo->memAccArea[data])
-        return;
-    default:
-        return;
+        case 0:
+            *addr = data;
+            return;
+        case 1:
+            *addr += data;
+            return;
+        case 2:
+            *addr -= data;
+            return;
+        case 3:
+            *addr = mplayInfo->memAccArea[data];
+            return;
+        case 4:
+            *addr += mplayInfo->memAccArea[data];
+            return;
+        case 5:
+            *addr -= mplayInfo->memAccArea[data];
+            return;
+        case 6:
+            MEMACC_COND_JUMP(*addr == data)
+            return;
+        case 7:
+            MEMACC_COND_JUMP(*addr != data)
+            return;
+        case 8:
+            MEMACC_COND_JUMP(*addr > data)
+            return;
+        case 9:
+            MEMACC_COND_JUMP(*addr >= data)
+            return;
+        case 10:
+            MEMACC_COND_JUMP(*addr <= data)
+            return;
+        case 11:
+            MEMACC_COND_JUMP(*addr < data)
+            return;
+        case 12:
+            MEMACC_COND_JUMP(*addr == mplayInfo->memAccArea[data])
+            return;
+        case 13:
+            MEMACC_COND_JUMP(*addr != mplayInfo->memAccArea[data])
+            return;
+        case 14:
+            MEMACC_COND_JUMP(*addr > mplayInfo->memAccArea[data])
+            return;
+        case 15:
+            MEMACC_COND_JUMP(*addr >= mplayInfo->memAccArea[data])
+            return;
+        case 16:
+            MEMACC_COND_JUMP(*addr <= mplayInfo->memAccArea[data])
+            return;
+        case 17:
+            MEMACC_COND_JUMP(*addr < mplayInfo->memAccArea[data])
+            return;
+        default:
+            return;
     }
 
 cond_true:
@@ -115,7 +114,6 @@ cond_false:
     track->cmdPtr += 4;
 }
 
-
 void ply_xcmd(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
 {
     u32 n = *track->cmdPtr;
@@ -124,12 +122,8 @@ void ply_xcmd(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
     gUnk_0801D230[n](mplayInfo, track);
 }
 
-
 void ply_xxx(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
-{
-    gMPlayJumpTable[0](mplayInfo, track);
-}
-
+{ gMPlayJumpTable[0](mplayInfo, track); }
 
 void ply_xwave(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
 {
@@ -144,13 +138,11 @@ void ply_xwave(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track
     track->cmdPtr += 4;
 }
 
-
 void ply_xtype(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
 {
     track->tone.type = *track->cmdPtr;
     track->cmdPtr++;
 }
-
 
 void ply_xatta(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
 {
@@ -158,13 +150,11 @@ void ply_xatta(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track
     track->cmdPtr++;
 }
 
-
 void ply_xdeca(u32 mplayInfo, struct MusicPlayerTrack *track)
 {
     track->tone.decay = *track->cmdPtr;
     track->cmdPtr++;
 }
-
 
 void ply_xsust(u32 mplayInfo, struct MusicPlayerTrack *track)
 {
@@ -172,13 +162,11 @@ void ply_xsust(u32 mplayInfo, struct MusicPlayerTrack *track)
     track->cmdPtr++;
 }
 
-
 void ply_xrele(u32 mplayInfo, struct MusicPlayerTrack *track)
 {
     track->tone.release = *track->cmdPtr;
     track->cmdPtr++;
 }
-
 
 void ply_xiecv(u32 mplayInfo, struct MusicPlayerTrack *track)
 {
@@ -186,13 +174,11 @@ void ply_xiecv(u32 mplayInfo, struct MusicPlayerTrack *track)
     track->cmdPtr++;
 }
 
-
 void ply_xiecl(u32 mplayInfo, struct MusicPlayerTrack *track)
 {
     track->pseudoEchoLength = *track->cmdPtr;
     track->cmdPtr++;
 }
-
 
 void ply_xleng(u32 mplayInfo, struct MusicPlayerTrack *track)
 {
@@ -200,10 +186,8 @@ void ply_xleng(u32 mplayInfo, struct MusicPlayerTrack *track)
     track->cmdPtr++;
 }
 
-
 void ply_xswee(u32 mplayInfo, struct MusicPlayerTrack *track)
 {
     track->tone.pan_sweep = *track->cmdPtr;
     track->cmdPtr++;
 }
-

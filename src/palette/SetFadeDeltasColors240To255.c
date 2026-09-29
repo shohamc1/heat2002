@@ -2,8 +2,6 @@
 #include "functions.h"
 #include "variables.h"
 
-
-
 void SetFadeDeltasColors240To255(u32 frames)
 {
     register u32 *colorBase asm("r1");

@@ -6,7 +6,6 @@ void ModuleAddTask(u32 r0);
 void ModuleDelayTask(u32 task);
 #include "functions.h"
 
-
 void ModuleAddTrackRecordTasks(void)
 {
     u32 row;
@@ -14,8 +13,7 @@ void ModuleAddTrackRecordTasks(void)
     row = 0;
     do {
         u32 *task = ModuleAllocTask();
-        if (task != 0)
-        {
+        if (task != 0) {
             task[6] = 0x60;
             task[7] = row * 32;
             task[0] = gUnk_020277F4[row];
@@ -27,13 +25,10 @@ void ModuleAddTrackRecordTasks(void)
     } while (row != 12);
 }
 
-
 void ModuleDelayTask(u32 task)
 {
-    if (--*(u32 *)(task + 0x18) == 0)
-    {
+    if (--*(u32 *)(task + 0x18) == 0) {
         ModuleRemoveTask(task);
         ModuleFreeTask(task);
     }
 }
-

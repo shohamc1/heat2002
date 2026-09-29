@@ -4,11 +4,11 @@
 
 #include "variables.h"
 
-
 void DrawLinkPostRaceMenu(u8 selected)
 {
     u8 cur = selected;
-    const u8 *text; DummyUiFontLoad(gUiFontTable[0]);
+    const u8 *text;
+    DummyUiFontLoad(gUiFontTable[0]);
     GetString(0x5A);
     ((void (*)(void))DrawBigText)();
     text = GetString(0x05);
@@ -20,7 +20,6 @@ void DrawLinkPostRaceMenu(u8 selected)
     text = GetString(0x08);
     DrawTextCenteredHighlight(text, 0xD, cur == 3);
 }
-
 
 u8 LinkPostRaceMenu(void)
 {
@@ -36,15 +35,11 @@ u8 LinkPostRaceMenu(void)
     DrawLinkPostRaceMenu(0);
     FadeToBrightenedPalette((u32)palette, 0x0F);
     choice = 0x40;
-    do
-    {
+    do {
         old = gPlayerKeys[0];
-        if (ExchangeLinkInput() != 0)
-        {
+        if (ExchangeLinkInput() != 0) {
             choice = 5;
-        }
-        else
-        {
+        } else {
             keys = (gPlayerKeys[0] ^ old) & gPlayerKeys[0];
             if (keys & 9)
                 choice = cursor;
@@ -56,4 +51,3 @@ u8 LinkPostRaceMenu(void)
     FadeToColor(0, 0x0F);
     return choice;
 }
-

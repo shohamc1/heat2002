@@ -1,7 +1,6 @@
 #include "global.h"
 #include "variables.h"
 
-
 void ModuleRecordFinishTime(u16 *car)
 {
     u16 *finishWords = car;

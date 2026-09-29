@@ -11,7 +11,6 @@ struct SlotFF44
 extern u32 gUnk_0203D490;
 void _08344B80(u32 arg0, u32 arg1);
 
-
 void ModuleInitTasks(void)
 {
     u32 i;
@@ -19,7 +18,6 @@ void ModuleInitTasks(void)
         gUnk_0203C340[i] = 0;
     gUnk_0203C380 = 0;
 }
-
 
 void *ModuleAllocTask(void)
 {
@@ -30,10 +28,8 @@ void *ModuleAllocTask(void)
     u32 off = 0;
     u32 q = (u32)&p[0].b;
 
-    while (i != 0x40)
-    {
-        if (*(u8 *)(i + flagsAddr) == 0)
-        {
+    while (i != 0x40) {
+        if (*(u8 *)(i + flagsAddr) == 0) {
             *(u8 *)(i + flagsAddr) = one;
             *(u32 *)(off + q) = i;
             return p;
@@ -45,12 +41,8 @@ void *ModuleAllocTask(void)
     return 0;
 }
 
-
 void ModuleFreeTask(u32 p)
-{
-    gUnk_0203C340[*(u32 *)(p + 0x3C)] = 0;
-}
-
+{ gUnk_0203C340[*(u32 *)(p + 0x3C)] = 0; }
 
 void ModuleAddTask(u32 task)
 {
@@ -61,7 +53,6 @@ void ModuleAddTask(u32 task)
     gUnk_0203C380 = task;
 }
 
-
 void ModuleRemoveTask(u32 p)
 {
     u32 next;
@@ -69,20 +60,15 @@ void ModuleRemoveTask(u32 p)
 
     next = *(u32 *)(p + 0x14);
     prev = *(u32 *)(p + 0x10);
-    if (prev != 0)
-    {
+    if (prev != 0) {
         *(u32 *)(prev + 0x14) = next;
-    }
-    else
-    {
+    } else {
         gUnk_0203C380 = next;
     }
-    if (next != 0)
-    {
+    if (next != 0) {
         *(u32 *)(next + 0x10) = prev;
     }
 }
-
 
 void ModuleRunTasks(void)
 {
@@ -90,8 +76,7 @@ void ModuleRunTasks(void)
 
     gUnk_0203D490 = 0;
     node = gUnk_0203C380;
-    if (node != 0)
-    {
+    if (node != 0) {
         do {
             gUnk_0203D490 = gUnk_0203D490 + 1;
             _08344B80(node, *(u32 *)(node + 0x0C));
@@ -99,4 +84,3 @@ void ModuleRunTasks(void)
         } while (node != 0);
     }
 }
-
