@@ -37,13 +37,196 @@ gUnk_0201AA54:
 	.incbin "build/assets/unknown/data_083534D4.bin"
 	.global gUnk_0201B590
 gUnk_0201B590:
-	.incbin "build/assets/unknown/data_08354010.bin"
+	.incbin "build/assets/graphics/palettes/driver_number.pal.bin"
+	.incbin "build/assets/graphics/rl_0832975C.bin"
+	.space 1
+	.incbin "build/assets/graphics/rl_08329890.bin"
+	.space 3
+	.incbin "build/assets/graphics/rl_083299BC.bin"
+	.space 2
+	.incbin "build/assets/graphics/rl_08329AF4.bin"
+	.space 1
+	.incbin "build/assets/graphics/rl_08329C28.bin"
+	.space 3
+	.incbin "build/assets/graphics/rl_08329D4C.bin"
+	.space 3
+	.incbin "build/assets/graphics/rl_08329E6C.bin"
+	.space 2
+	.incbin "build/assets/graphics/rl_08329F78.bin"
+	.space 2
+	.incbin "build/assets/graphics/rl_0832A084.bin"
+	.space 3
+	.incbin "build/assets/graphics/rl_0832A198.bin"
+	.space 1
+	.incbin "build/assets/graphics/rl_0832A2AC.bin"
+	.space 3
+	.incbin "build/assets/graphics/rl_0832A3BC.bin"
+	.space 2
+	.incbin "build/assets/graphics/rl_0832A4C8.bin"
+	.space 1
+	.incbin "build/assets/graphics/rl_0832A5D4.bin"
+	.space 3
+	.incbin "build/assets/graphics/rl_0832A6E0.bin"
+	.incbin "build/assets/graphics/rl_0832A7E8.bin"
+	.space 1
+	.incbin "build/assets/graphics/rl_0832A8F0.bin"
+	.incbin "build/assets/graphics/rl_0832A9F8.bin"
+	.space 1
+	.incbin "build/assets/graphics/rl_0832AAFC.bin"
+	.space 3
+	.incbin "build/assets/graphics/rl_0832AC04.bin"
+	.space 3
+	.incbin "build/assets/graphics/rl_0832AD18.bin"
+	.space 3
+	.incbin "build/assets/graphics/rl_0832AE30.bin"
+	.space 2
+	.incbin "build/assets/graphics/rl_0832AF40.bin"
+	.space 2
+	.incbin "build/assets/graphics/rl_0832B050.bin"
+	.incbin "build/assets/graphics/rl_0832B168.bin"
+	.incbin "build/assets/graphics/rl_0832B27C.bin"
+	.incbin "build/assets/graphics/rl_0832B390.bin"
+	.space 2
+	.incbin "build/assets/graphics/rl_0832B4A0.bin"
+	.incbin "build/assets/graphics/rl_0832B5A4.bin"
+	.incbin "build/assets/graphics/rl_0832B6A4.bin"
+	.space 3
+	.incbin "build/assets/graphics/rl_0832B7A4.bin"
+	.incbin "build/assets/graphics/rl_0832B89C.bin"
+	.space 3
+	.incbin "build/assets/graphics/rl_0832B994.bin"
+	.space 2
+	.incbin "build/assets/graphics/palettes/pal_0832BA88.pal.bin"
+	.incbin "build/assets/graphics/rl_0832BAA8.bin"
+	.space 2
+	.incbin "build/assets/graphics/rl_0832BB04.bin"
+	.space 1
+	.incbin "build/assets/graphics/rl_0832BB50.bin"
+	.space 3
+	.incbin "build/assets/graphics/rl_0832BBA0.bin"
+	.space 1
+	.incbin "build/assets/graphics/rl_0832BBF4.bin"
+	.space 3
+	.incbin "build/assets/graphics/rl_0832BC58.bin"
+	.space 3
+	.incbin "build/assets/graphics/rl_0832BCE0.bin"
+	.space 3
+	.incbin "build/assets/graphics/rl_0832BD74.bin"
+	.space 3
+	.incbin "build/assets/graphics/rl_0832BE08.bin"
+	.space 3
+	.incbin "build/assets/graphics/rl_0832BE9C.bin"
+	.space 2
+	.incbin "build/assets/graphics/rl_0832BF30.bin"
+	.space 2
+	.incbin "build/assets/graphics/rl_0832BFC4.bin"
+	.space 3
+	.incbin "build/assets/graphics/rl_0832C054.bin"
+	.incbin "build/assets/graphics/rl_0832C0E0.bin"
+	.space 1
+	.incbin "build/assets/graphics/rl_0832C168.bin"
+	.space 1
+	.incbin "build/assets/graphics/rl_0832C1EC.bin"
+	.space 3
+	.incbin "build/assets/graphics/rl_0832C270.bin"
+	.space 3
+	.incbin "build/assets/graphics/rl_0832C2F0.bin"
+	.incbin "build/assets/graphics/rl_0832C36C.bin"
+	.space 2
+	.incbin "build/assets/graphics/rl_0832C3EC.bin"
+	.incbin "build/assets/graphics/rl_0832C464.bin"
+	.space 3
+	.incbin "build/assets/graphics/rl_0832C4DC.bin"
+	.space 1
+	.incbin "build/assets/graphics/rl_0832C550.bin"
+	.space 1
+	.incbin "build/assets/graphics/rl_0832C5BC.bin"
+	.space 2
+	.incbin "build/assets/graphics/rl_0832C628.bin"
+	.incbin "build/assets/graphics/rl_0832C690.bin"
+	.space 1
+	.incbin "build/assets/graphics/rl_0832C6F0.bin"
+	.space 1
+	.incbin "build/assets/graphics/rl_0832C734.bin"
+	.space 2
+	.incbin "build/assets/graphics/rl_0832C778.bin"
+	.space 3
+	.incbin "build/assets/graphics/rl_0832C7BC.bin"
+	.incbin "build/assets/graphics/rl_0832C7FC.bin"
+	.space 1
+	.incbin "build/assets/graphics/rl_0832C83C.bin"
+	.space 2
+	.incbin "build/assets/graphics/rl_0832C890.bin"
+	.space 2
+	.incbin "build/assets/graphics/palettes/pal_0832C8D4.pal.bin"
+	.incbin "build/assets/graphics/palettes/pal_08330D38.pal.bin"
+	.incbin "build/assets/graphics/rl_08331380.bin"
+	.space 2
+	.incbin "build/assets/graphics/rl_083313A0.bin"
+	.space 1
+	.incbin "build/assets/graphics/rl_083313C8.bin"
+	.space 1
+	.incbin "build/assets/graphics/rl_083313F8.bin"
+	.space 3
+	.incbin "build/assets/graphics/rl_08331438.bin"
+	.space 3
+	.incbin "build/assets/graphics/rl_08331480.bin"
+	.space 2
+	.incbin "build/assets/graphics/rl_083314CC.bin"
+	.space 3
+	.incbin "build/assets/graphics/rl_08331520.bin"
+	.space 2
+	.incbin "build/assets/graphics/rl_08331574.bin"
+	.space 2
+	.incbin "build/assets/graphics/rl_083315D0.bin"
+	.space 1
+	.incbin "build/assets/graphics/rl_08331638.bin"
+	.space 1
+	.incbin "build/assets/graphics/rl_083316A8.bin"
+	.space 1
+	.incbin "build/assets/graphics/rl_0833171C.bin"
+	.space 1
+	.incbin "build/assets/graphics/rl_08331798.bin"
+	.space 1
+	.incbin "build/assets/graphics/rl_0833181C.bin"
+	.space 1
+	.incbin "build/assets/graphics/rl_083318A0.bin"
+	.space 3
+	.incbin "build/assets/graphics/rl_08331924.bin"
+	.space 2
+	.incbin "build/assets/graphics/rl_083319A8.bin"
+	.space 2
+	.incbin "build/assets/graphics/rl_08331A28.bin"
+	.space 3
+	.incbin "build/assets/graphics/rl_08331AA8.bin"
+	.space 1
+	.incbin "build/assets/graphics/rl_08331B20.bin"
+	.incbin "build/assets/graphics/rl_08331B94.bin"
+	.incbin "build/assets/graphics/rl_08331C08.bin"
+	.space 1
+	.incbin "build/assets/graphics/rl_08331C7C.bin"
+	.space 3
+	.incbin "build/assets/graphics/rl_08331CEC.bin"
+	.incbin "build/assets/graphics/rl_08331D54.bin"
+	.space 3
+	.incbin "build/assets/graphics/rl_08331DBC.bin"
+	.space 1
+	.incbin "build/assets/graphics/rl_08331E1C.bin"
+	.space 1
+	.incbin "build/assets/graphics/rl_08331E74.bin"
+	.space 2
+	.incbin "build/assets/graphics/rl_08331EC4.bin"
+	.space 2
+	.incbin "build/assets/graphics/rl_08331F0C.bin"
+	.space 2
+	.incbin "build/assets/graphics/rl_08331F4C.bin"
+	.space 1
 	.global gUnk_0201F370
 gUnk_0201F370:
-	.incbin "build/assets/unknown/data_08357DF0.bin"
+	.incbin "build/assets/graphics/palettes/skid_smoke.pal.bin"
 	.global gUnk_0201F390
 gUnk_0201F390:
-	.incbin "build/assets/unknown/data_08357E10.bin"
+	.incbin "build/assets/graphics/palettes/font.pal.bin"
 	.global gUnk_0201F550
 gUnk_0201F550:
 	.incbin "build/assets/unknown/data_08357FD0.bin"
@@ -56,11 +239,11 @@ gModule_TextGlyphTileIndices:
 	.incbin "build/assets/unknown/data_08358450.bin"
 	.global gUnk_0201FB54
 gUnk_0201FB54:
-	.incbin "build/assets/unknown/data_083585D4.bin"
-	.incbin "build/assets/unknown/data_08359780.bin"
+	.incbin "build/assets/graphics/tiles/text_layer.tiles.bin", 0, 4524
+	.incbin "build/assets/graphics/tiles/text_layer.tiles.bin", 4524, 1684
 	.global gUnk_02021394
 gUnk_02021394:
-	.incbin "build/assets/unknown/data_08359E14.bin"
+	.incbin "build/assets/graphics/palettes/race_hud_bg.pal.bin"
 	.global gUnk_02021594
 gUnk_02021594:
 	.incbin "build/assets/unknown/data_0835A014.bin"
@@ -81,16 +264,47 @@ gModule_FontTileEntries:
 	.incbin "build/assets/unknown/data_0835ACD4.bin"
 	.global gUnk_02022428
 gUnk_02022428:
-	.incbin "build/assets/unknown/data_0835AEA8.bin"
+	.incbin "build/assets/graphics/tiles/race_hud_bg.tiles.bin"
+	.incbin "build/assets/graphics/rl_083378A0.bin"
+	.incbin "build/assets/graphics/rl_08337920.bin"
+	.incbin "build/assets/graphics/rl_083379A0.bin"
+	.incbin "build/assets/graphics/rl_08337A20.bin"
+	.incbin "build/assets/graphics/rl_08337AA0.bin"
+	.incbin "build/assets/graphics/rl_08337B20.bin"
+	.incbin "build/assets/graphics/rl_08337BA0.bin"
 	.global gUnk_020243E8
 gUnk_020243E8:
-	.incbin "build/assets/unknown/data_0835CE68.bin"
+	.incbin "build/assets/graphics/palettes/link_marker.pal.bin"
+	.incbin "build/assets/graphics/rl_08337C40.bin"
+	.incbin "build/assets/graphics/rl_08337CC0.bin"
+	.incbin "build/assets/graphics/rl_08337D40.bin"
+	.incbin "build/assets/graphics/rl_08337DC0.bin"
+	.incbin "build/assets/graphics/rl_08337E40.bin"
+	.incbin "build/assets/graphics/rl_08337EC0.bin"
+	.incbin "build/assets/graphics/rl_08337F40.bin"
+	.incbin "build/assets/graphics/palettes/pal_08337FC0.pal.bin"
+	.incbin "build/assets/graphics/rl_08337FE0.bin"
+	.incbin "build/assets/graphics/rl_08338060.bin"
+	.incbin "build/assets/graphics/rl_083380E0.bin"
+	.incbin "build/assets/graphics/rl_08338160.bin"
+	.incbin "build/assets/graphics/rl_083381E0.bin"
+	.incbin "build/assets/graphics/rl_08338260.bin"
+	.incbin "build/assets/graphics/rl_083382E0.bin"
+	.incbin "build/assets/graphics/palettes/pal_08338360.pal.bin"
+	.incbin "build/assets/graphics/rl_08338380.bin"
+	.incbin "build/assets/graphics/rl_08338400.bin"
+	.incbin "build/assets/graphics/rl_08338480.bin"
+	.incbin "build/assets/graphics/rl_08338500.bin"
+	.incbin "build/assets/graphics/rl_08338580.bin"
+	.incbin "build/assets/graphics/rl_08338600.bin"
+	.incbin "build/assets/graphics/rl_08338680.bin"
+	.incbin "build/assets/graphics/palettes/pal_08338700.pal.bin"
 	.global gUnk_02024EE8
 gUnk_02024EE8:
-	.incbin "build/assets/unknown/data_0835D968.bin"
+	.incbin "build/assets/graphics/rl_08338720.bin"
 	.global gUnk_02024F50
 gUnk_02024F50:
-	.incbin "build/assets/unknown/data_0835D9D0.bin"
+	.incbin "build/assets/graphics/palettes/track_select_arrow.pal.bin"
 	.global gUnk_02024F70
 gUnk_02024F70:
 	.incbin "build/assets/unknown/data_0835D9F0.bin"

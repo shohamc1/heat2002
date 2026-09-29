@@ -67,6 +67,15 @@ The picture's palette is the 512 bytes before the stream and stays a
 separate asset (a "pal", or raw when it uses bit 15): the .png's
 colours are a preview.
 
+A "copy" asset is one blob of the high module (or island) that the ROM
+also holds in the main program: its data/*.s fragment `.incbin`s the
+original's build output directly, with an offset and length when the
+module holds a slice of it, and `.space` for the zero padding between
+two blobs. One edit to a shared file changes both GBAs; there is
+nothing to extract — the entry exists to mask its range and to
+zero-fill it in CI. Its `options.sources` list records the chain
+(path, or path@offset@length, or null for padding) for the reader.
+
 `convert` writes an editable .png next to each "rl"/"lz" graphics .bin
 (gbagfx), then converts it back and checks that the result matches the
 .bin byte for byte. It needs the tools from `make tools`; `make convert`
@@ -562,7 +571,7 @@ def extract():
     rom = BASEROM.read_bytes()
     for asset in assets():
         kind = asset.get("type")
-        if kind in ("midi", "aif"):
+        if kind in ("midi", "aif", "copy"):
             continue
         if kind == "screen":
             # The .png is the source: unpack it if a fresh clone doesn't
@@ -672,6 +681,8 @@ def list_editable():
 def blank():
     """Zero-fill every asset at its listed size, for a build with no ROM."""
     for asset in assets():
+        if asset.get("type") == "copy":
+            continue  # the fragment incbins the source's own zero fill
         if asset.get("type") == "screen":
             for part, size in screen_blob_sizes(asset).items():
                 path = screen_part(asset, part)

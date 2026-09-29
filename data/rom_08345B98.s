@@ -43,4 +43,6 @@ gUnk_0200D118:
 	.incbin "build/assets/unknown/data_08350834.bin"
 	.incbin "build/assets/unknown/data_0835085C.bin"
 	.incbin "build/assets/unknown/data_08350C20.bin"
-	.incbin "build/assets/unknown/data_08351780.bin"
+	.incbin "build/assets/unknown/data_081C7EA8.bin", 7296, 160
+	.incbin "build/assets/unknown/data_081C9BC8.bin"
+	.incbin "build/assets/unknown/data_08353260.bin"
