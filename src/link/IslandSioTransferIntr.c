@@ -12,7 +12,7 @@ struct CommRegs
     u8 flag;   /* +3 */
     u32 data;  /* +4 */
     s32 count; /* +8 */
-    u32 fC;    /* +0xC */
+    u32 checksum;    /* +0xC */
     u32 crc;   /* +0x10 */
     s32 index; /* +0x14 */
 };
@@ -40,7 +40,7 @@ void IslandSioTransferIntr(void)
         else if (n <= 0x1FFF)
             *sio = ((u32 *)p->data)[n];
         else
-            *sio = p->fC;
+            *sio = p->checksum;
         goto Ltail;
     }
 Lneg:
@@ -51,7 +51,7 @@ Lpos:
     if (cnt <= 0x1FFF)
         ((u32 *)p->data)[cnt] = v;
     else
-        p->fC = v;
+        p->checksum = v;
 Ltail:
     n = p->count;
     if (n <= 0x2002) {

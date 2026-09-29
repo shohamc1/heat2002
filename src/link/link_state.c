@@ -5,12 +5,12 @@
 #include "gba/defines.h"
 #include "gba/syscall.h"
 
-struct Unk_0202EFA0
+struct LinkPlayerSlot
 {
-    u8 unk0;
-    u8 unk1;
-    u8 unk2;
-    u8 unk3;
+    u8 unk00;
+    u8 unk01;
+    u8 status; /* -1 empty, 0 waiting, 1 ok (read as s8 in DrawLinkLobby) */
+    u8 unk03;
 };
 
 extern u32 gUnk_0202EDBC;
@@ -23,9 +23,9 @@ void ResetLinkState(void)
     REG_SIOCNT = 0;
     i = 0;
     do {
-        ((struct Unk_0202EFA0 *)gLinkPlayerSlots)[i].unk0 |= 0xFF;
-        ((struct Unk_0202EFA0 *)gLinkPlayerSlots)[i].unk1 |= 0xFF;
-        ((struct Unk_0202EFA0 *)gLinkPlayerSlots)[i].unk2 |= 0xFF;
+        ((struct LinkPlayerSlot *)gLinkPlayerSlots)[i].unk00 |= 0xFF;
+        ((struct LinkPlayerSlot *)gLinkPlayerSlots)[i].unk01 |= 0xFF;
+        ((struct LinkPlayerSlot *)gLinkPlayerSlots)[i].status |= 0xFF;
         i++;
     } while (i != 4);
     gUnk_0202EDBC = 0;

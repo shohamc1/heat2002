@@ -3,6 +3,7 @@
 #include "gba/io_reg.h"
 #include "functions.h"
 #include "m4a.h"
+#include "variables.h"
 
 void m4aSoundVSyncOff(void);
 
@@ -19,13 +20,13 @@ void WaitForLinkRestart(void)
             m4aMPlayStop((struct MusicPlayerInfo *)0x02001F60);
             m4aSoundVSyncOff();
             while (1) {
-                u32 playerId = *(u8 *)(EWRAM_START + 0x2EF90);
+                u32 playerId = gLinkPlayerId[0];
                 if (playerId == 0)
                     playerId = REG_KEYINPUT;
                 ((void (*)(u32))VBlankIntrWait)(playerId);
             }
         }
-        if (*(u8 *)(EWRAM_START + 0x2EF90) != 0)
+        if (gLinkPlayerId[0] != 0)
             DrawTextCentered(GetString(0x58), 0x0E, 1);
         else
             DrawTextCentered(GetString(0x0F), 0x0E, 1);

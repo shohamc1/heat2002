@@ -6,26 +6,26 @@
 #include "data.h"
 #include "m4a.h"
 
-struct UnkEFA0
+struct LinkPlayerSlot
 {
-    u8 unk0;
-    u8 unk1;
-    u8 unk2;
-    u8 unk3;
+    u8 unk00;
+    u8 unk01;
+    u8 status;
+    u8 unk03;
 };
-struct EFA0s4
-{ struct UnkEFA0 r[4]; };
-struct EntEFA0
+struct LinkPlayerSlotTable
+{ struct LinkPlayerSlot r[4]; };
+struct LinkLobbySlot
 {
-    u8 f0;
-    u8 f1;
-    s8 f2;
-    u8 f3;
+    u8 unk00;
+    u8 unk01;
+    s8 status; /* -1 empty, 0 waiting, 1 ok */
+    u8 unk03;
 };
 /* gLinkPlayerSlots is u8[] in variables.h; the wrapper keeps the array
    subscript expansion for the order-sensitive uses below. */
 struct LinkLobbySlots
-{ struct EntEFA0 r[4]; };
+{ struct LinkLobbySlot r[4]; };
 
 extern u8 gText_BlankRowLinkLobby[];
 extern u8 gText_EmptySlot[];
@@ -57,10 +57,10 @@ s32 UpdateLinkLobby(void)
     z = 0;
     *ed = t;
     SioSendWord(*ed);
-    ((struct EFA0s4 *)gLinkPlayerSlots)->r[0].unk2 |= 0xFF;
-    ((struct EFA0s4 *)gLinkPlayerSlots)->r[1].unk2 |= 0xFF;
-    ((struct EFA0s4 *)gLinkPlayerSlots)->r[2].unk2 |= 0xFF;
-    ((struct EFA0s4 *)gLinkPlayerSlots)->r[3].unk2 |= 0xFF;
+    ((struct LinkPlayerSlotTable *)gLinkPlayerSlots)->r[0].status |= 0xFF;
+    ((struct LinkPlayerSlotTable *)gLinkPlayerSlots)->r[1].status |= 0xFF;
+    ((struct LinkPlayerSlotTable *)gLinkPlayerSlots)->r[2].status |= 0xFF;
+    ((struct LinkPlayerSlotTable *)gLinkPlayerSlots)->r[3].status |= 0xFF;
     gLinkPlayerCount = z;
     i = 0;
     do {
@@ -69,16 +69,16 @@ s32 UpdateLinkLobby(void)
     } while (i < 4);
     if (((buf[0] >> 8) & 0xF) == 1) {
         if ((buf[0] >> 12) == 1) {
-            ((struct EFA0s4 *)gLinkPlayerSlots)->r[0].unk2 = buf[0] >> 12;
+            ((struct LinkPlayerSlotTable *)gLinkPlayerSlots)->r[0].status = buf[0] >> 12;
             gLinkPlayerCount++;
             if ((buf[1] >> 12) == 2) {
-                ((struct EFA0s4 *)gLinkPlayerSlots)->r[1].unk2 = buf[0] >> 12;
+                ((struct LinkPlayerSlotTable *)gLinkPlayerSlots)->r[1].status = buf[0] >> 12;
                 gLinkPlayerCount++;
                 if ((buf[2] >> 12) == 3) {
-                    ((struct EFA0s4 *)gLinkPlayerSlots)->r[2].unk2 = buf[0] >> 12;
+                    ((struct LinkPlayerSlotTable *)gLinkPlayerSlots)->r[2].status = buf[0] >> 12;
                     gLinkPlayerCount++;
                     if ((buf[3] >> 12) == 4) {
-                        ((struct EFA0s4 *)gLinkPlayerSlots)->r[3].unk2 = buf[0] >> 12;
+                        ((struct LinkPlayerSlotTable *)gLinkPlayerSlots)->r[3].status = buf[0] >> 12;
                         gLinkPlayerCount++;
                     }
                 }
@@ -115,9 +115,9 @@ void DrawLinkLobby(u8 unused)
     GetString(0xC4);
     ((void (*)(void))DrawBigText)();
     for (i = 0; i != 4; i++) {
-        flag = ((struct LinkLobbySlots *)gLinkPlayerSlots)->r[i].f2 != -1;
+        flag = ((struct LinkLobbySlots *)gLinkPlayerSlots)->r[i].status != -1;
         DrawText(GetString(i + 0x53), 1, 2 * i + 7, flag);
-        v = ((struct LinkLobbySlots *)gLinkPlayerSlots)->r[i].f2;
+        v = ((struct LinkLobbySlots *)gLinkPlayerSlots)->r[i].status;
         if (v == 0) {
             DrawText(GetString(0x58), 0x14, 2 * i + 7, flag);
         } else if (v == 1) {

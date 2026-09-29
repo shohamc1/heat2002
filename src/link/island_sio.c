@@ -10,7 +10,7 @@ struct CommRegs
     u8 flag;   /* +3 */
     u32 data;  /* +4 */
     s32 count; /* +8 */
-    u32 fC;    /* +0xC */
+    u32 checksum;    /* +0xC */
     u32 crc;   /* +0x10 */
     s32 index; /* +0x14 */
 };
@@ -113,8 +113,8 @@ u32 IslandSioTransferUpdate(u32 *chunkSize)
                     }
                 }
                 if (count > 0x2000) {
-                    u32 t = gIsland_SioTransfer.fC + gIsland_SioTransfer.crc;
-                    gIsland_SioTransfer.fC = t;
+                    u32 t = gIsland_SioTransfer.checksum + gIsland_SioTransfer.crc;
+                    gIsland_SioTransfer.checksum = t;
                     if (t == -1)
                         gIsland_SioTransfer.flag = 1;
                 }
