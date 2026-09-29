@@ -156,7 +156,7 @@ void ModuleUpdatePaletteFade(void)
     u32 *colors;
     u32 *deltas;
 
-    steps = *(s16 *)&gModule_PaletteFadeSteps;
+    steps = gModule_PaletteFadeSteps;
     if (steps == 0)
         gModule_PaletteFadeActive = steps;
     if (gModule_PaletteFadeActive != 0) {

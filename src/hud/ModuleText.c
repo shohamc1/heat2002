@@ -24,7 +24,7 @@ void ModuleDrawTextCenteredHighlight(u8 *str, u32 y)
         len++;
     }
     w = (u8)((30 - len) / 2);
-    dest = (u16 *)(*(u32 *)&gModule_TextLayerMapPtr);
+    dest = (u16 *)gModule_TextLayerMapPtr[0];
     dest = (u16 *)((u32)dest + (((y << 5) + w) << 1));
     e = 0xE0 << 8;
     t = 0x47;
@@ -50,7 +50,7 @@ void ModuleDrawText(const u8 *text, u32 x, u32 y)
     u32 v;
     u32 w;
 
-    dest = (u16 *)*(u32 *)&gModule_TextLayerMapPtr;
+    dest = (u16 *)gModule_TextLayerMapPtr[0];
     dest += y * 32 + x;
     color = 0xE0 << 8; /* tilemap entry: palette bank 14 */
     w = 0x47;

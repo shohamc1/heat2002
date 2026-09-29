@@ -234,8 +234,8 @@ void UpdateAiDriver(struct Car *ent, u8 param)
     result = ((s32 (*)(u32, u32))FindClosestLaneSegment)((u32)ent, param);
     if (result == -1)
         return;
-    diff = WorldToLaneDistance((*(u32 *)&gClosestLanePointX), (*(u32 *)&gClosestLanePointZ), ent->lanePoints,
-                               gClosestLaneSegment[0], (*(u32 *)&gClosestLaneSegmentIndex));
+    diff = WorldToLaneDistance(gClosestLanePointX[0], gClosestLanePointZ[0], ent->lanePoints, gClosestLaneSegment[0],
+                               gClosestLaneSegmentIndex[0]);
     diff = diff + 0x40;
     if (diff >= ent->laneLength)
         diff = diff - ent->laneLength;

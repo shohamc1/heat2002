@@ -14,7 +14,7 @@ extern s32 gChallengeStartOffsetPercents[];
 
 u8 IsProgressPointCrossed(s32 point)
 {
-    if ((*(s32 *)&gUnk_0202CB14) > point)
+    if (gUnk_0202CB14 > point)
         return 0;
     if ((((volatile struct Car *)gCars)[0].progress & 0xFFFF) < (u32)point)
         return 0;
@@ -23,7 +23,7 @@ u8 IsProgressPointCrossed(s32 point)
 
 u8 IsChallengeTimeWithin(s32 limitMs)
 {
-    if ((*(s32 *)&gChallengeTimerSec) * 1000 + (*(s32 *)&gChallengeTimerMs) <= limitMs)
+    if ((*(s32 *)&gChallengeTimerSec) * 1000 + gChallengeTimerMs <= limitMs)
         return 1;
     return 0;
 }
@@ -33,22 +33,22 @@ void DrawChallengeTimer(void)
     u32 tilemap;
     u32 *dest;
 
-    tilemap = *(u32 *)&gTextLayerMapPtr;
+    tilemap = gTextLayerMapPtr[0];
     dest = tilemap + 0x250;
     DrawTextAt(gText_Timer, 8, 8);
     /* DrawBigDigit: this file's old prototype took (u32 *, u32); the matched definition takes (u16 *, u8); call through
      * a function pointer with the old signature. */
     ((void (*)(u32 *, u32))DrawBigDigit)(dest, 0);
     dest = tilemap + 0x254;
-    ((void (*)(u32 *, u32))DrawBigDigit)(dest, (*(s32 *)&gUnk_0202CAE4));
+    ((void (*)(u32 *, u32))DrawBigDigit)(dest, gUnk_0202CAE4);
     dest = tilemap + 0x25A;
     ((void (*)(u32 *, u32))DrawBigDigit)(dest, (*(s32 *)&gChallengeTimerSec) / 10);
     dest = tilemap + 0x25E;
     ((void (*)(u32 *, u32))DrawBigDigit)(dest, (*(s32 *)&gChallengeTimerSec) % 10);
     dest = tilemap + 0x264;
-    ((void (*)(u32 *, u32))DrawBigDigit)(dest, (*(s32 *)&gChallengeTimerMs) / 100 % 10);
+    ((void (*)(u32 *, u32))DrawBigDigit)(dest, gChallengeTimerMs / 100 % 10);
     dest = tilemap + 0x268;
-    ((void (*)(u32 *, u32))DrawBigDigit)(dest, (*(s32 *)&gChallengeTimerMs) / 10 % 10);
+    ((void (*)(u32 *, u32))DrawBigDigit)(dest, gChallengeTimerMs / 10 % 10);
 }
 
 void DrawChallengeSpeed(s32 mph)
@@ -57,7 +57,7 @@ void DrawChallengeSpeed(s32 mph)
     u32 *dest;
     u32 label;
 
-    tilemap = (u32 *)*(u32 *)&gTextLayerMapPtr;
+    tilemap = (u32 *)gTextLayerMapPtr[0];
     dest = tilemap + 0xE5;
     /* DrawBigDigit: this file's old prototype took (u32 *, u32); the matched definition takes (u16 *, u8); call through
      * a function pointer with the old signature. */
@@ -195,21 +195,21 @@ void UpdateChallenge(void)
                 speed = GetAverageWaypointSpeed();
                 if (speed < 0)
                     speed = 0;
-                if (speed > (*(s32 *)&gChallengeBestValue))
-                    (*(s32 *)&gChallengeBestValue) = speed;
-                if ((*(s32 *)&gChallengeBestValue) > 0x76) {
+                if (speed > gChallengeBestValue)
+                    gChallengeBestValue = speed;
+                if (gChallengeBestValue > 0x76) {
                     gChallengeResult = 1;
                     EndRace();
                 }
-                if ((*(s32 *)&gChallengeBestValue) > 0x79) {
+                if (gChallengeBestValue > 0x79) {
                     if (gChallengeEndDelay & 8)
-                        DrawChallengeSpeed((*(s32 *)&gChallengeBestValue));
+                        DrawChallengeSpeed(gChallengeBestValue);
                     else
                         ClearChallengeSpeed();
                     gChallengeEndDelay++;
                     if (gChallengeEndDelay > 0x40)
                         EndRace();
-                } else if ((*(s32 *)&gChallengeBestValue) != 0) {
+                } else if (gChallengeBestValue != 0) {
                     DrawChallengeSpeed(speed);
                 }
                 break;

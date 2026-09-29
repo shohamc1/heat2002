@@ -18,7 +18,7 @@ void ModuleInitCar(u8 a, u32 b, u32 c, u32 d, u32 e, u32 f);
 
 u8 ModuleIsProgressPointCrossed(s32 point)
 {
-    if ((*(s32 *)&gUnk_0203DD34) > point)
+    if (gUnk_0203DD34 > point)
         return 0;
     if ((gModule_Cars[0].progress & 0xFFFF) < (u32)point)
         return 0;
@@ -27,7 +27,7 @@ u8 ModuleIsProgressPointCrossed(s32 point)
 
 u8 ModuleIsChallengeTimeWithin(s32 limitMs)
 {
-    if ((*(s32 *)&gUnk_0203DCFC) * 1000 + (*(s32 *)&gUnk_0203D500) <= limitMs)
+    if (gUnk_0203DCFC * 1000 + gUnk_0203D500 <= limitMs)
         return 1;
     return 0;
 }
@@ -66,7 +66,7 @@ void ModuleDrawChallengeSpeed(u32 mph)
     u16 *tilemap;
     u16 *dest;
 
-    tilemap = (u16 *)*(u32 *)&gModule_TextLayerMapPtr;
+    tilemap = (u16 *)gModule_TextLayerMapPtr[0];
     dest = tilemap + 0x1CA;
     /* ModuleDrawBigDigit: this file's old prototype took
        (u16 *, u32); the matched definition narrows idx
@@ -93,9 +93,9 @@ void ModuleUpdateChallengeTimer(void)
     if ((s32)val <= 999)
         return;
     gUnk_0203D500 -= 1000;
-    val = ++(*(s32 *)&gUnk_0203DCFC);
+    val = ++gUnk_0203DCFC;
     if ((s32)val > 59) {
-        (*(s32 *)&gUnk_0203DCFC) = val - 60;
+        gUnk_0203DCFC = val - 60;
         gUnk_0203DD04++;
     }
 }

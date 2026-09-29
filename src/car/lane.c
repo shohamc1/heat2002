@@ -229,8 +229,8 @@ void PlaceCarsAlongLane(struct Car **carOrder, s32 unused1, s32 unused2, s32 spa
     car->predictedPosZ = car->posZ;
     if (FindClosestLaneSegment(car, 0) == -1)
         return;
-    dist = WorldToLaneDistance(*(s32 *)&gClosestLanePointX, *(s32 *)&gClosestLanePointZ, car->lanePoints,
-                               gClosestLaneSegment[0], *(s32 *)&gClosestLaneSegmentIndex);
+    dist = WorldToLaneDistance(gClosestLanePointX[0], gClosestLanePointZ[0], car->lanePoints, gClosestLaneSegment[0],
+                               gClosestLaneSegmentIndex[0]);
     dist -= 5000;
     if (dist < 0)
         dist += car->laneLength;

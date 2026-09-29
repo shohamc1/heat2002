@@ -161,7 +161,7 @@ void LoadTrack(u32 idx)
     gUnk_02002210 = (u8 *)gTrackData[idx].bg2Metatiles;
     gUnk_02022DF0 = gTrackData[idx].unk3C;
     gUnk_0201567C = gTrackData[idx].unk40;
-    *(u32 *)&gUnk_0200BC50 = (u32)gUnk_02015690;
+    gUnk_0200BC50[0] = (u32)gUnk_02015690;
     RleDecode16(gTrackData[idx].cellMap, gUnk_02015690, gTrackData[idx].cellMapLen);
     gUnk_02022DEC[0] = gTrackData[idx].surfaceTable;
     if (idx == 0)

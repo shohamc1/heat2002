@@ -37,7 +37,7 @@ u8 LinkTrackSelect(void)
     WaitForVBlank();
     REG_DISPCNT = 0xAA << 5;
     sel = 0x40;
-    (*(s8 *)&gTrackSelectCursor) = 0;
+    gTrackSelectCursor = 0;
     prev = 0;
     do {
         ClearOamBuffer();
@@ -49,33 +49,33 @@ u8 LinkTrackSelect(void)
         }
         k = (k ^ gPlayerKeys[0]) & gPlayerKeys[0];
         if (k & DPAD_RIGHT) {
-            (*(s8 *)&gTrackSelectCursor)++;
-            if ((*(s8 *)&gTrackSelectCursor) == 7)
-                (*(s8 *)&gTrackSelectCursor) = 8;
-            if ((*(s8 *)&gTrackSelectCursor) > 0x0B)
-                (*(s8 *)&gTrackSelectCursor) = 0x0B;
+            gTrackSelectCursor++;
+            if (gTrackSelectCursor == 7)
+                gTrackSelectCursor = 8;
+            if (gTrackSelectCursor > 0x0B)
+                gTrackSelectCursor = 0x0B;
         }
         if (k & DPAD_LEFT) {
-            (*(s8 *)&gTrackSelectCursor)--;
-            if ((*(s8 *)&gTrackSelectCursor) == 7)
-                (*(s8 *)&gTrackSelectCursor) = 6;
-            if ((*(s8 *)&gTrackSelectCursor) == -1)
-                (*(s8 *)&gTrackSelectCursor) = 0;
+            gTrackSelectCursor--;
+            if (gTrackSelectCursor == 7)
+                gTrackSelectCursor = 6;
+            if (gTrackSelectCursor == -1)
+                gTrackSelectCursor = 0;
         }
-        if ((*(s8 *)&gTrackSelectCursor) != prev) {
+        if (gTrackSelectCursor != prev) {
             m4aSongNumStart(8);
-            prev = (*(s8 *)&gTrackSelectCursor);
+            prev = gTrackSelectCursor;
         }
         WaitForVBlank();
         if (gLinkPlayerId[0] == 0)
             /* old prototype u8 DrawTrackSelect(s8, u8): the s8 parameter keeps the
                          sign-extending ldrsb of gTrackSelectCursor */
-            ((u8 (*)(s8, u8))DrawTrackSelect)((s8)(*(s8 *)&gTrackSelectCursor), 1);
+            ((u8 (*)(s8, u8))DrawTrackSelect)(gTrackSelectCursor, 1);
         else
-            ((u8 (*)(s8, u8))DrawTrackSelect)((s8)(*(s8 *)&gTrackSelectCursor), 1);
+            ((u8 (*)(s8, u8))DrawTrackSelect)(gTrackSelectCursor, 1);
         if (k & A_BUTTON) {
             m4aSongNumStart(9);
-            (*(s8 *)&gTrackSelectCursor) = gLinkTrackSelectTrackIds[(*(s8 *)&gTrackSelectCursor)];
+            gTrackSelectCursor = gLinkTrackSelectTrackIds[gTrackSelectCursor];
             sel = 1;
         }
         if (k & B_BUTTON)

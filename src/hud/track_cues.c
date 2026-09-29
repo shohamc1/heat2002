@@ -72,7 +72,7 @@ void LoadTrackCues(u8 trackIdx)
 {
     gUnk_02025244 = 1;
     gTrackCueList = gUnk_0836524C[trackIdx];
-    (*(s8 *)&gTrackCueId) = -1;
+    gTrackCueId = -1;
     if (gTrackCueList == 0)
         gUnk_02025244 = gTrackCueList;
 }
@@ -90,7 +90,7 @@ void UpdateTrackCues(struct Car *car)
     progress = (u32)car->progress & 0xFFFF;
     cueEnd = gUnk_02025254;
     if (progress <= cueEnd || cueEnd == 0) {
-        if (*(s8 *)&gTrackCueId != -1 && gRaceEndState == 0)
+        if (gTrackCueId != -1 && gRaceEndState == 0)
             DrawTrackCueIcon(gTrackCueId, gUnk_020251F8);
     }
     progress = (u32)car->progress & 0xFFFF;

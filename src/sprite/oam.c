@@ -48,7 +48,7 @@ u32 AddOamEntry(u32 a, u32 b)
     p = *(u32 **)&gUnk_02024828;
     p[0] = a;
     p[1] = b;
-    *(u32 *)&gUnk_02024828 = p + 2;
+    gUnk_02024828 = p + 2;
     gOamEntryCount = gOamEntryCount + 1;
     return 1;
 }

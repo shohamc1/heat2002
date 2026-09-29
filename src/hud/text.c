@@ -8,7 +8,7 @@ void ClearRaceTextLayer(void)
 
 void DrawText(const u8 *text, u32 x, u32 y, u8 highlight)
 {
-    u16 *out = (u16 *)*(u32 *)&gTextLayerMapPtr;
+    u16 *out = (u16 *)gTextLayerMapPtr[0];
     u16 color;
     u32 c;
 

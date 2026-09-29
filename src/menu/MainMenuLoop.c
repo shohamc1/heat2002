@@ -146,7 +146,7 @@ u32 MainMenuLoop(void)
     gFrontTireGripFast = 0xB6;
     gTireGripSlow = 0xA0;
     gFrontTireGripSlow = 0xFF;
-    *(u32 *)&gTireSlipLimitBase = 0x8950;
+    gTireSlipLimitBase = 0x8950;
     InitTuneSettings();
     gRngState = 0x009F9AC4;
 
@@ -206,8 +206,8 @@ u32 MainMenuLoop(void)
         }
 
         if ((*(u8 *)REG_ADDR_SIOCNT & 0x30) == 0) {
-            *(u16 *)&gLinkSendWords = (((*(u32 *)REG_ADDR_SIOCNT << 26) >> 30) + 1) << 12 | 1;
-            SioSendWord(*(u16 *)&gLinkSendWords);
+            gLinkSendWords[0] = (((*(u32 *)REG_ADDR_SIOCNT << 26) >> 30) + 1) << 12 | 1;
+            SioSendWord(gLinkSendWords[0]);
         }
 
         if (gMainMenuCursor == 3 && (keys & 9) != 0) {
