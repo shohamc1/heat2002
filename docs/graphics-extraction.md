@@ -7,10 +7,12 @@ commit.
 
 Status: steps 1 and 2 of the plan are done (`8641006`, `bc0be13`). The
 PNGs they produce are greyscale and, for most blobs, not arranged the way
-the game draws them. Step 3 fixes that. The nine full-screen metatile
-backgrounds are no longer part of this brief: they build from editable
-`assets/graphics/screens/*.png` (`"screen"` entries; see "Extracted data
-assets" in `docs/learnings/parked.md`).
+the game draws them. Step 3 fixes that. The whole screens-and-sprites region
+(0x0829F954-0x08339780) is no longer part of this brief: its
+backgrounds, tile sheets and palettes build from editable files, and
+every stream names its palette ("Extracted data assets" in
+`docs/learnings/parked.md` has the model). What remains here is the
+compressed data outside that region.
 
 ## Read first
 

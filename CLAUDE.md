@@ -50,16 +50,18 @@ SHA1 is wrong, no matter how clean the C looks. Never edit `baserom.gba`,
   only when it's missing, so edits survive `make` and `make clean`. Delete a
   file to get the ROM's version back. `assets/*/` is gitignored: never
   commit the editable files. Without a ROM, none of this runs.
-  Nine full-screen backgrounds (the `"screen"` entries in
-  `assets/graphics.json`) build from editable pictures the same way:
-  `assets/graphics/screens/NAME.png`, indexed, 256 colours. `unpack`
-  writes each picture from the ROM only when it's missing, and `extract`
-  rebuilds its palette, metatile map, metatile table and 8bpp tiles from
-  the picture alone (the original converter's dedupe: scan the 2x2
-  metatiles row by row, index each new one and each new tile within it),
-  so editing a picture edits the ROM. The entry's metatile/tile counts
-  fix the blob sizes, so an edit that adds unique metatiles or tiles
-  fails the build instead of shifting the ROM.
+  Graphics build from editable files the same way (`scripts/assets.py`'s
+  docstring is the reference): full-screen backgrounds as indexed PNGs
+  under `assets/graphics/screens/` (`"screen"` metatile pictures and
+  `"bitmap"` mode-4 ones), tile sheets under `assets/graphics/tiles/`
+  (`"tiles"`), and palettes as JASC `.pal` text files under
+  `assets/graphics/palettes/` (`"pal"`). Every blob's size is fixed by
+  its entry, so an edit that outgrows it fails the build instead of
+  shifting the ROM; the few palettes whose colours set the GBA's unused
+  bit 15 stay raw, recorded in `docs/learnings/parked.md`. A high-module
+  blob the ROM also holds in the main program is a `"copy"`: its
+  fragment incbins the original's build output, so one edit changes
+  both GBAs.
   Compressed graphics are typed and convert to `.png` with `make convert`;
   the rest of the data is untyped raw blobs (`assets/unknown.json`).
   See "Extracted data assets" in `docs/learnings/parked.md`.

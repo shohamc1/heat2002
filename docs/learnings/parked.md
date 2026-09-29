@@ -336,7 +336,8 @@ Since 2026-09-29 the nine full-screen metatile backgrounds build from
 editable pictures, the same model as the sound (issue #2). Each is one
 `"screen"` entry in `assets/graphics.json` covering its whole ROM range
 (palette, metatile map, metatile table, tiles; the Licensed By Nintendo
-screen keeps the 32 bytes past its tiles as `data_082B86F0.bin`): `assets.py unpack` writes
+screen keeps the 32 dead bytes past its tiles as a `tail` part copied
+from the ROM): `assets.py unpack` writes
 `assets/graphics/screens/NAME.png` (indexed, 256 colours) from the ROM only
 when it's missing, and `extract` regenerates the four blobs from the
 picture alone with the original converter's dedupe — scan the 2x2
@@ -348,6 +349,51 @@ and editing one changes the ROM. The `metatiles_*` entries and the 46
 `data/rom_082A0820.s`, `data/rom_082B0028.s` and `data/rom_082F0000.s`
 (the last truncated to `rom_082F7EE0.s`), so the `src/data/*.c` files hold
 whole screens.
+
+The rest of the screens-and-sprites region (`0x0829F954`-`0x08339780`)
+followed, in five more asset types, each in `scripts/assets.py`'s
+docstring:
+
+- `"pal"`: 133 palette blobs as JASC `.pal` text files under
+  `assets/graphics/palettes/` (the named OBJ palettes, the 60
+  driver-select car palettes, the 29-driver in-race bank, the 12
+  track-select previews, the trailing per-sheet palettes). Two 512-byte
+  palettes the old extractor split on false-positive pointers merged
+  back (`0x082C0454`, `0x082DAFB4`).
+- `"tiles"`: the four uncompressed sheets as indexed PNGs under
+  `assets/graphics/tiles/` — the text layer's 194 glyphs, the race
+  HUD's 96 OBJ tiles, the 112 driver-select car tiles, and
+  `gTrackBgTilemap`, which is no tilemap but the race HUD's 226-tile
+  4bpp BG character sheet (renamed `gRaceHudBgTiles`, its palette
+  `gRaceHudBgPalette`; the seven rl streams after it at `0x083378A0`
+  stay streams, the ROM stores them compressed).
+- `"bitmap"`: the two mode-4 boot splashes (`ShowBootSplash2/3` set
+  DISPCNT to mode 4 and RLUnCompVram the stream into the framebuffer)
+  as editable PNGs; `assets.py` carries the original RL compressor,
+  which reproduces 653 of the ROM's 672 streams byte for byte — the 19
+  it cannot are exactly the documented "overrun" and "raw" ones. Both
+  splash streams sit at their exact ROM budget, so an edit that
+  recompresses bigger fails the build.
+- `"copy"`: eleven high-module blobs that the ROM also holds in the
+  main program; the module fragments `.incbin` the original's build
+  output directly (slices with offset and length, `.space` for the
+  zero padding), so one edit changes both GBAs. This decomposed the
+  two blobs the issue listed as unmatched: `0x08354010` is the
+  driver-number palette, 66 car-sprite streams and a driver palette
+  bank; `0x08351780` is track 7's BG graphics plus 592 bytes of the
+  `game_text` strings.
+- Every `rl`/`lz` entry in the region names its palette in `options`
+  now, so `make convert` writes colour PNGs for all of them.
+
+Two palettes stay raw because 29+1 of their colours set the GBA's
+unused bit 15, which no editable colour format holds:
+boot splash 2's palette (`0x0830EC78`) and `gDamageSmokePalettes`
+(`0x08331F88`). Three module blobs also stay raw: `gFontTileEntries`'
+copy and the 592-byte string tail (their editable is the C source),
+and the module's own variant of the HUD glyph grid (`0x0835A06A`,
+which replaces part of `gFontGlyphGrid` with big-digit glyphs).
+Everything else between `0x0829F954` and `0x08339780` is editable or
+typed.
 
 ## ROM data defined in C
 
