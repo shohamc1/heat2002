@@ -1,14 +1,16 @@
 #include "global.h"
 #include "data.h"
 
-/* Driver-select screen data (0x082B731C-0x082BA310), built from the
- * editable assets/graphics/screens/driver_select.png: 256-color palette,
- * 15x10 metatile map, metatile tile-index table, and the raw BG data
- * sub_0801037C copies to VRAM (the blob keeps the 32 bytes past the 64
- * tiles that the ROM holds between it and the driver car sprites). */
-const u32 gDriverSelectPalette[] = INCBIN_U32("build/assets/graphics/screens/driver_select.pal.bin");
-const u16 gDriverSelectMetatileMap[150] = INCBIN_U16("build/assets/graphics/screens/driver_select.map.bin");
+/* "Licensed By Nintendo" boot screen data (0x082B731C-0x082BA310), built
+ * from the editable assets/graphics/screens/licensed_by_nintendo.png:
+ * 256-color palette, 15x10 metatile map, metatile tile-index table, and
+ * the raw BG data (the blob keeps the 32 bytes past the 64 tiles that the
+ * ROM holds between it and the driver car sprites). The dead pair
+ * sub_0801037C/sub_08010714 draws it: gfx and palette into VRAM, then the
+ * map, then 180 frames and a fade. */
+const u32 gLicensedByNintendoPalette[] = INCBIN_U32("build/assets/graphics/screens/licensed_by_nintendo.pal.bin");
+const u16 gLicensedByNintendoMetatileMap[150] = INCBIN_U16("build/assets/graphics/screens/licensed_by_nintendo.map.bin");
 // Its users declare it as u16 x[][4] (21 rows of 4).
-const u16 gDriverSelectMetatileTable[84] = INCBIN_U16("build/assets/graphics/screens/driver_select.table.bin");
-const u32 gDriverSelectBgGfx[] = INCBIN_U32("build/assets/graphics/screens/driver_select.tiles.bin", "build/assets/unknown/data_082B86F0.bin");
+const u16 gLicensedByNintendoMetatileTable[84] = INCBIN_U16("build/assets/graphics/screens/licensed_by_nintendo.table.bin");
+const u32 gLicensedByNintendoBgGfx[] = INCBIN_U32("build/assets/graphics/screens/licensed_by_nintendo.tiles.bin", "build/assets/unknown/data_082B86F0.bin");
 const u8 gDriverSelectTiles[] = INCBIN_U8("build/assets/unknown/data_082B8710.bin");

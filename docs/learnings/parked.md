@@ -335,8 +335,8 @@ the 3 bytes between `0x0833967D` and `0x08339680`.
 Since 2026-09-29 the nine full-screen metatile backgrounds build from
 editable pictures, the same model as the sound (issue #2). Each is one
 `"screen"` entry in `assets/graphics.json` covering its whole ROM range
-(palette, metatile map, metatile table, tiles; driver select keeps the 32
-bytes past its tiles as `data_082B86F0.bin`): `assets.py unpack` writes
+(palette, metatile map, metatile table, tiles; the Licensed By Nintendo
+screen keeps the 32 bytes past its tiles as `data_082B86F0.bin`): `assets.py unpack` writes
 `assets/graphics/screens/NAME.png` (indexed, 256 colours) from the ROM only
 when it's missing, and `extract` regenerates the four blobs from the
 picture alone with the original converter's dedupe — scan the 2x2

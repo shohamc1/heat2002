@@ -6,7 +6,7 @@
   {"path": "graphics/screens/title_screen.png", "start": "0x0829F954", "size": 40412, "type": "screen", "options": {"metatiles": 150, "tiles": 600}},
   {"path": "graphics/screens/main_menu.png", "start": "0x082A9730", "size": 40412, "type": "screen", "options": {"metatiles": 150, "tiles": 600}},
   {"path": "graphics/rl_082B370C.bin", "start": "0x082B370C", "size": 8354, "type": "rl", "options": {"bitDepth": 8, "width": 30, "bitmap": true, "palette": "0x082B350C"}},
-  {"path": "graphics/screens/driver_select.png", "start": "0x082B731C", "size": 5076, "type": "screen", "options": {"metatiles": 21, "tiles": 64}},
+  {"path": "graphics/screens/licensed_by_nintendo.png", "start": "0x082B731C", "size": 5076, "type": "screen", "options": {"metatiles": 21, "tiles": 64}},
   {"path": "graphics/rl_082BA310.bin", "start": "0x082BA310", "size": 1989, "type": "rl", "options": {"bitDepth": 8, "width": 8, "palette": "0x082CC5D8"}},
   {"path": "graphics/rl_082BACD8.bin", "start": "0x082BACD8", "size": 2402, "type": "rl", "options": {"bitDepth": 8, "width": 8, "palette": "0x082CC5D8"}},
   {"path": "graphics/rl_082BB83C.bin", "start": "0x082BB83C", "size": 2564, "type": "rl", "options": {"bitDepth": 8, "width": 8, "palette": "0x082CC5D8"}},
