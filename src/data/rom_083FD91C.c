@@ -217,18 +217,18 @@ extern const u32 gUnk_083FEE28[];
 extern const u32 gUnk_083FEE2C[];
 extern const u32 gUnk_083FEE30[];
 extern const u32 gUnk_083FEE34[];
-extern const struct TrackPreviewGfx gUnk_083FEE38[];
-extern const struct TrackPreviewGfx gUnk_083FEE48[];
-extern const struct TrackPreviewGfx gUnk_083FEE58[];
-extern const struct TrackPreviewGfx gUnk_083FEE68[];
-extern const struct TrackPreviewGfx gUnk_083FEE78[];
-extern const struct TrackPreviewGfx gUnk_083FEE88[];
-extern const struct TrackPreviewGfx gUnk_083FEE98[];
-extern const struct TrackPreviewGfx gUnk_083FEEA8[];
-extern const struct TrackPreviewGfx gUnk_083FEEB8[];
-extern const struct TrackPreviewGfx gUnk_083FEEC8[];
-extern const struct TrackPreviewGfx gUnk_083FEED8[];
-extern const struct TrackPreviewGfx gUnk_083FEEE8[];
+extern const struct TrackPreviewGfx gTrackPreviewGfx_Track2[];
+extern const struct TrackPreviewGfx gTrackPreviewGfx_Track3[];
+extern const struct TrackPreviewGfx gTrackPreviewGfx_Track5[];
+extern const struct TrackPreviewGfx gTrackPreviewGfx_Track1[];
+extern const struct TrackPreviewGfx gTrackPreviewGfx_Track4[];
+extern const struct TrackPreviewGfx gTrackPreviewGfx_Track0[];
+extern const struct TrackPreviewGfx gTrackPreviewGfx_Track6[];
+extern const struct TrackPreviewGfx gTrackPreviewGfx_Track7[];
+extern const struct TrackPreviewGfx gTrackPreviewGfx_Track8[];
+extern const struct TrackPreviewGfx gTrackPreviewGfx_Track10[];
+extern const struct TrackPreviewGfx gTrackPreviewGfx_Track11[];
+extern const struct TrackPreviewGfx gTrackPreviewGfx_Track9[];
 
 // Its users declare it as struct TrackWalls x[].
 // Stays flat: twelve rows of (table, table, count, table, table) in
@@ -264,18 +264,18 @@ const u8 gOptionsMenuMinValues[7] = { 0, 0, 0, 0, 0, 0, 0 };
 const u8 gOptionsMenuMaxValues[7] = { 1, 6, 1, 1, 1, 1, 0 };
 const u8 gLapsPerOption[10] = { 5, 10, 15, 20, 30, 50, 100, 0, 0, 0 };
 const struct TrackSelectEntry gTrackSelectEntries[12] = {
-    { 0x1, gText_TrackLen1567, gText_TrackNum22, gText_HooleyDowns, gUnk_083FEE88, gUnk_08302E00 },
-    { 0x1, gText_TrackLen3044, gText_TrackNum15, gText_DarlingtonRaceway, gUnk_083FEE68, gUnk_082FF41C },
-    { 0x1, gText_TrackLen243, gText_TrackNum14, gText_GreenValley, gUnk_083FEE38, gUnk_082F98C0 },
-    { 0x1, gText_TrackLen1054, gText_TrackNum20, gText_MichiganInternationalSpeedway, gUnk_083FEE48, gUnk_082FB6AC },
-    { 0x1, gText_TrackLen2231, gText_TrackNum19, gText_GreatCanyon, gUnk_083FEE78, gUnk_08300BCC },
-    { 0x1, gText_TrackLen1899, gText_TrackNum14, gText_FujiPort, gUnk_083FEE58, gUnk_082FD0F8 },
-    { 0x1, gText_TrackLen2033, gText_TrackNum17, gText_CrawfishRaceway, gUnk_083FEE98, gUnk_083049FC },
-    { 0x1, gText_TrackLen3723, gText_TrackNum10, gText_PurleyPark, gUnk_083FEEA8, gUnk_08306238 },
-    { 0, gText_TrackLen066, gText_TrackNum3, gText_KansasSpeedway, gUnk_083FEEB8, gUnk_0830877C },
-    { 0, gText_TrackLen1950, gText_TrackNum8, gText_AsphaltCity, gUnk_083FEEE8, gUnk_0830E418 },
-    { 0, gText_TrackLen2555, gText_TrackNum9, gText_PhoenixInternationalRaceway, gUnk_083FEEC8, gUnk_0830AB68 },
-    { 0, gText_TrackLen1357, gText_TrackNum11, gText_InfogramesSuperSpeedway, gUnk_083FEED8, gUnk_0830CA10 },
+    { 0x1, gText_TrackLen1567, gText_TrackNum22, gText_HooleyDowns, gTrackPreviewGfx_Track0, gUnk_08302E00 },
+    { 0x1, gText_TrackLen3044, gText_TrackNum15, gText_DarlingtonRaceway, gTrackPreviewGfx_Track1, gUnk_082FF41C },
+    { 0x1, gText_TrackLen243, gText_TrackNum14, gText_GreenValley, gTrackPreviewGfx_Track2, gUnk_082F98C0 },
+    { 0x1, gText_TrackLen1054, gText_TrackNum20, gText_MichiganInternationalSpeedway, gTrackPreviewGfx_Track3, gUnk_082FB6AC },
+    { 0x1, gText_TrackLen2231, gText_TrackNum19, gText_GreatCanyon, gTrackPreviewGfx_Track4, gUnk_08300BCC },
+    { 0x1, gText_TrackLen1899, gText_TrackNum14, gText_FujiPort, gTrackPreviewGfx_Track5, gUnk_082FD0F8 },
+    { 0x1, gText_TrackLen2033, gText_TrackNum17, gText_CrawfishRaceway, gTrackPreviewGfx_Track6, gUnk_083049FC },
+    { 0x1, gText_TrackLen3723, gText_TrackNum10, gText_PurleyPark, gTrackPreviewGfx_Track7, gUnk_08306238 },
+    { 0, gText_TrackLen066, gText_TrackNum3, gText_KansasSpeedway, gTrackPreviewGfx_Track8, gUnk_0830877C },
+    { 0, gText_TrackLen1950, gText_TrackNum8, gText_AsphaltCity, gTrackPreviewGfx_Track9, gUnk_0830E418 },
+    { 0, gText_TrackLen2555, gText_TrackNum9, gText_PhoenixInternationalRaceway, gTrackPreviewGfx_Track10, gUnk_0830AB68 },
+    { 0, gText_TrackLen1357, gText_TrackNum11, gText_InfogramesSuperSpeedway, gTrackPreviewGfx_Track11, gUnk_0830CA10 },
 };
 // The 30-driver roster (struct DriverRosterEntry, structs.h): name and
 // team id, rows in teammate pairs sharing the id.

@@ -111,10 +111,10 @@ u8 DrawTrackSelect(u8 a, u8 b)
     }
     CpuCopy16((u32)gTrackSelectEntries[a].previewPalette, OBJ_PLTT, OBJ_PLTT_SIZE);
     CpuCopy16((u32)gTrackSelectArrowPalette, OBJ_PLTT + 0x1E0, 0x20);
-    RLUnCompVram(gTrackSelectEntries[a].previewGfx->unk0, OBJ_VRAM0);
-    RLUnCompVram(gTrackSelectEntries[a].previewGfx->unk4, OBJ_VRAM0 + 0x1000);
-    RLUnCompVram(gTrackSelectEntries[a].previewGfx->unk8, OBJ_VRAM0 + 0x2000);
-    RLUnCompVram(gTrackSelectEntries[a].previewGfx->unkC, OBJ_VRAM0 + 0x3000);
+    RLUnCompVram(gTrackSelectEntries[a].previewGfx->topLeftGfx, OBJ_VRAM0);
+    RLUnCompVram(gTrackSelectEntries[a].previewGfx->topRightGfx, OBJ_VRAM0 + 0x1000);
+    RLUnCompVram(gTrackSelectEntries[a].previewGfx->bottomLeftGfx, OBJ_VRAM0 + 0x2000);
+    RLUnCompVram(gTrackSelectEntries[a].previewGfx->bottomRightGfx, OBJ_VRAM0 + 0x3000);
     Draw64x64Sprite(0x38, 0x20, 0);
     Draw64x64Sprite(0x78, 0x20, 0x80);
     Draw64x64Sprite(0x38, 0x60, 0x80 << 1);

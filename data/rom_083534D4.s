@@ -124,8 +124,8 @@ gUnk_02025230:
 	.global gUnk_02025234
 gUnk_02025234:
 	.incbin "build/assets/unknown/data_0835DCB4.bin"
-	.global gUnk_020269C0
-gUnk_020269C0:
+	.global gModule_TrackSegTables
+gModule_TrackSegTables:
 	.incbin "build/assets/unknown/data_0835F440.bin"
 	.global gUnk_020269C4
 gUnk_020269C4:

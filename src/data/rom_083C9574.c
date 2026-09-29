@@ -45,104 +45,104 @@ extern const u8 gUnk_083C639C[];
 extern const u8 gUnk_083C8362[];
 
 extern const u16 gUnk_083682BC[];
-extern const struct LaneSeg gUnk_0836844C[];
+extern const struct LaneSeg gLaneSegs_Track0_Lane00[];
 extern const u8 gUnk_08368C1C[];
 extern const u16 gUnk_0836A1B0[];
-extern const struct LaneSeg gUnk_0836A318[];
+extern const struct LaneSeg gLaneSegs_Track0_Lane04[];
 extern const u8 gUnk_0836AA20[];
 extern const u16 gUnk_0836BFC4[];
-extern const struct LaneSeg gUnk_0836C128[];
+extern const struct LaneSeg gLaneSegs_Track0_Lane07[];
 extern const u8 gUnk_0836C81C[];
 extern const u8 gUnk_0836DD42[];
 extern const u8 gUnk_0836DD4A[];
 extern const u8 gUnk_0836DD4E[];
 extern const u16 gUnk_0836DD50[];
-extern const struct LaneSeg gUnk_0836DE3C[];
+extern const struct LaneSeg gLaneSegs_Track1_Lane00[];
 extern const u8 gUnk_0836E2D8[];
 extern const u16 gUnk_0836F6DC[];
-extern const struct LaneSeg gUnk_0836F79C[];
+extern const struct LaneSeg gLaneSegs_Track1_Lane01[];
 extern const u8 gUnk_0836FB5C[];
 extern const u16 gUnk_08370F0C[];
-extern const struct LaneSeg gUnk_08370FD4[];
+extern const struct LaneSeg gLaneSegs_Track1_Lane04[];
 extern const u8 gUnk_083713BC[];
 extern const u8 gUnk_0837401C[];
 extern const u8 gUnk_0837401E[];
 extern const u8 gUnk_08374026[];
 extern const u16 gUnk_0837402C[];
-extern const struct LaneSeg gUnk_08374234[];
+extern const struct LaneSeg gLaneSegs_Track2_Lane00[];
 extern const u8 gUnk_08374C5C[];
 extern const u16 gUnk_08376388[];
-extern const struct LaneSeg gUnk_08376574[];
+extern const struct LaneSeg gLaneSegs_Track2_Lane01[];
 extern const u8 gUnk_08376F10[];
 extern const u16 gUnk_0837EE98[];
-extern const struct LaneSeg gUnk_0837F090[];
+extern const struct LaneSeg gLaneSegs_Track2_Lane04[];
 extern const u8 gUnk_0837FA68[];
 extern const u16 gUnk_08383430[];
-extern const struct LaneSeg gUnk_0838361C[];
+extern const struct LaneSeg gLaneSegs_Track2_Lane07[];
 extern const u8 gUnk_08383FB8[];
 extern const u8 gUnk_0838569E[];
 extern const u8 gUnk_083856A0[];
 extern const u8 gUnk_083856A8[];
 extern const u8 gUnk_083856AC[];
 extern const u16 gUnk_083856B0[];
-extern const struct LaneSeg gUnk_08385810[];
+extern const struct LaneSeg gLaneSegs_Track3_Lane00[];
 extern const u8 gUnk_08385EF0[];
 extern const u16 gUnk_08387438[];
-extern const struct LaneSeg gUnk_08387580[];
+extern const struct LaneSeg gLaneSegs_Track3_Lane01[];
 extern const u8 gUnk_08387BE8[];
 extern const u16 gUnk_083890E0[];
-extern const struct LaneSeg gUnk_08389238[];
+extern const struct LaneSeg gLaneSegs_Track3_Lane04[];
 extern const u8 gUnk_083898F0[];
 extern const u16 gUnk_0838ADD4[];
-extern const struct LaneSeg gUnk_0838AF50[];
+extern const struct LaneSeg gLaneSegs_Track3_Lane07[];
 extern const u8 gUnk_0838B6BC[];
 extern const u8 gUnk_0838CC2E[];
 extern const u8 gUnk_0838CC30[];
 extern const u8 gUnk_0838CC38[];
 extern const u8 gUnk_0838CC3C[];
 extern const u16 gUnk_0838CC40[];
-extern const struct LaneSeg gUnk_0838CEA0[];
+extern const struct LaneSeg gLaneSegs_Track4_Lane00[];
 extern const u8 gUnk_0838DA6C[];
 extern const u16 gUnk_0838F228[];
-extern const struct LaneSeg gUnk_0838F47C[];
+extern const struct LaneSeg gLaneSegs_Track4_Lane01[];
 extern const u8 gUnk_08390020[];
 extern const u16 gUnk_083917EC[];
-extern const struct LaneSeg gUnk_08391A6C[];
+extern const struct LaneSeg gLaneSegs_Track4_Lane04[];
 extern const u8 gUnk_083926EC[];
 extern const u16 gUnk_08393EEC[];
-extern const struct LaneSeg gUnk_08394140[];
+extern const struct LaneSeg gLaneSegs_Track4_Lane07[];
 extern const u8 gUnk_08394CE4[];
 extern const u8 gUnk_0839643A[];
 extern const u8 gUnk_0839643C[];
 extern const u8 gUnk_08396444[];
 extern const u8 gUnk_08396448[];
 extern const u16 gUnk_0839644C[];
-extern const struct LaneSeg gUnk_08396630[];
+extern const struct LaneSeg gLaneSegs_Track5_Lane00[];
 extern const u8 gUnk_08396FA4[];
 extern const u16 gUnk_08398638[];
-extern const struct LaneSeg gUnk_08398824[];
+extern const struct LaneSeg gLaneSegs_Track5_Lane01[];
 extern const u8 gUnk_083991C0[];
 extern const u16 gUnk_0839A888[];
-extern const struct LaneSeg gUnk_0839AA4C[];
+extern const struct LaneSeg gLaneSegs_Track5_Lane04[];
 extern const u8 gUnk_0839B320[];
 extern const u16 gUnk_0839C988[];
-extern const struct LaneSeg gUnk_0839CB7C[];
+extern const struct LaneSeg gLaneSegs_Track5_Lane07[];
 extern const u8 gUnk_0839D540[];
 extern const u8 gUnk_0839EC64[];
 extern const u8 gUnk_0839EC66[];
 extern const u8 gUnk_0839EC6E[];
 extern const u8 gUnk_0839EC72[];
 extern const u16 gUnk_0839EC74[];
-extern const struct LaneSeg gUnk_0839ED64[];
+extern const struct LaneSeg gLaneSegs_Track6_Lane00[];
 extern const u8 gUnk_0839F214[];
 extern const u16 gUnk_083A05A8[];
-extern const struct LaneSeg gUnk_083A06A4[];
+extern const struct LaneSeg gLaneSegs_Track6_Lane01[];
 extern const u8 gUnk_083A0B90[];
 extern const u16 gUnk_083A1FA4[];
-extern const struct LaneSeg gUnk_083A20D0[];
+extern const struct LaneSeg gLaneSegs_Track6_Lane04[];
 extern const u8 gUnk_083A26AC[];
 extern const u16 gUnk_083A3B64[];
-extern const struct LaneSeg gUnk_083A3C7C[];
+extern const struct LaneSeg gLaneSegs_Track6_Lane07[];
 extern const u8 gUnk_083A41F4[];
 extern const u8 gUnk_083A5658[];
 extern const u8 gUnk_083A565A[];
@@ -150,64 +150,64 @@ extern const u8 gUnk_083A565C[];
 extern const u8 gUnk_083A5662[];
 extern const u8 gUnk_083A5666[];
 extern const u16 gUnk_083A5668[];
-extern const struct LaneSeg gUnk_083A5784[];
+extern const struct LaneSeg gLaneSegs_Track8_Lane00[];
 extern const u8 gUnk_083A5D10[];
 extern const u16 gUnk_083A7140[];
-extern const struct LaneSeg gUnk_083A7270[];
+extern const struct LaneSeg gLaneSegs_Track8_Lane01[];
 extern const u8 gUnk_083A7860[];
 extern const u16 gUnk_083A8D28[];
-extern const struct LaneSeg gUnk_083A8E60[];
+extern const struct LaneSeg gLaneSegs_Track8_Lane04[];
 extern const u8 gUnk_083A9478[];
 extern const u16 gUnk_083AA910[];
-extern const struct LaneSeg gUnk_083AAA50[];
+extern const struct LaneSeg gLaneSegs_Track8_Lane07[];
 extern const u8 gUnk_083AB090[];
 extern const u8 gUnk_083AC56C[];
 extern const u8 gUnk_083AC56E[];
 extern const u8 gUnk_083AC576[];
 extern const u8 gUnk_083AC57A[];
 extern const u16 gUnk_083AC57C[];
-extern const struct LaneSeg gUnk_083AC780[];
+extern const struct LaneSeg gLaneSegs_Track9_Lane00[];
 extern const u8 gUnk_083AD194[];
 extern const u16 gUnk_083AE87C[];
-extern const struct LaneSeg gUnk_083AEA88[];
+extern const struct LaneSeg gLaneSegs_Track9_Lane01[];
 extern const u8 gUnk_083AF4C4[];
 extern const u16 gUnk_083B73C0[];
-extern const struct LaneSeg gUnk_083B75C4[];
+extern const struct LaneSeg gLaneSegs_Track9_Lane04[];
 extern const u8 gUnk_083B7FD8[];
 extern const u16 gUnk_083B96C4[];
-extern const struct LaneSeg gUnk_083B98C0[];
+extern const struct LaneSeg gLaneSegs_Track9_Lane07[];
 extern const u8 gUnk_083BA2AC[];
 extern const u8 gUnk_083BB98E[];
 extern const u8 gUnk_083BB990[];
 extern const u8 gUnk_083BB998[];
 extern const u8 gUnk_083BB99C[];
 extern const u16 gUnk_083BB9A0[];
-extern const struct LaneSeg gUnk_083BBA60[];
+extern const struct LaneSeg gLaneSegs_Track10_Lane00[];
 extern const u8 gUnk_083BBE20[];
 extern const u16 gUnk_083BD198[];
-extern const struct LaneSeg gUnk_083BD254[];
+extern const struct LaneSeg gLaneSegs_Track10_Lane01[];
 extern const u8 gUnk_083BD600[];
 extern const u16 gUnk_083BE97C[];
-extern const struct LaneSeg gUnk_083BEA28[];
+extern const struct LaneSeg gLaneSegs_Track10_Lane04[];
 extern const u8 gUnk_083BED84[];
 extern const u16 gUnk_083C00D8[];
-extern const struct LaneSeg gUnk_083C01B4[];
+extern const struct LaneSeg gLaneSegs_Track10_Lane07[];
 extern const u8 gUnk_083C0600[];
 extern const u8 gUnk_083C19C2[];
 extern const u8 gUnk_083C19C4[];
 extern const u8 gUnk_083C19CC[];
 extern const u8 gUnk_083C19D0[];
 extern const u16 gUnk_083C19D4[];
-extern const struct LaneSeg gUnk_083C1B5C[];
+extern const struct LaneSeg gLaneSegs_Track11_Lane00[];
 extern const u8 gUnk_083C2304[];
 extern const u16 gUnk_083C3880[];
-extern const struct LaneSeg gUnk_083C3A08[];
+extern const struct LaneSeg gLaneSegs_Track11_Lane01[];
 extern const u8 gUnk_083C41B0[];
 extern const u16 gUnk_083C5724[];
-extern const struct LaneSeg gUnk_083C58A4[];
+extern const struct LaneSeg gLaneSegs_Track11_Lane04[];
 extern const u8 gUnk_083C6024[];
 extern const u16 gUnk_083C759C[];
-extern const struct LaneSeg gUnk_083C7740[];
+extern const struct LaneSeg gLaneSegs_Track11_Lane07[];
 extern const u8 gUnk_083C7F74[];
 extern const u8 gUnk_083C9562[];
 extern const u8 gUnk_083C9564[];
@@ -238,27 +238,27 @@ const u16 *const gLanePointTables[] = {
     gUnk_083C19D4, gUnk_083C19D4, gUnk_083C19D4, gUnk_083C19D4
 };
 const struct LaneSeg *const gLaneSegmentTables[] = {
-    gUnk_0836844C, gUnk_0836844C, gUnk_0836844C, gUnk_0836844C, gUnk_0836A318, gUnk_0836A318, gUnk_0836A318,
-    gUnk_0836C128, gUnk_0836844C, gUnk_0836844C, gUnk_0836844C, gUnk_0836844C, gUnk_0836DE3C, gUnk_0836F79C,
-    gUnk_0836F79C, gUnk_0836F79C, gUnk_08370FD4, gUnk_08370FD4, gUnk_08370FD4, gUnk_0836DE3C, gUnk_0836DE3C,
-    gUnk_0836DE3C, gUnk_0836DE3C, gUnk_0836DE3C, gUnk_08374234, gUnk_08376574, gUnk_08376574, gUnk_08376574,
-    gUnk_0837F090, gUnk_0837F090, gUnk_0837F090, gUnk_0838361C, gUnk_08374234, gUnk_08374234, gUnk_08374234,
-    gUnk_08374234, gUnk_08385810, gUnk_08387580, gUnk_08387580, gUnk_08387580, gUnk_08389238, gUnk_08389238,
-    gUnk_08389238, gUnk_0838AF50, gUnk_08385810, gUnk_08385810, gUnk_08385810, gUnk_08385810, gUnk_0838CEA0,
-    gUnk_0838F47C, gUnk_0838F47C, gUnk_0838F47C, gUnk_08391A6C, gUnk_08391A6C, gUnk_08391A6C, gUnk_08394140,
-    gUnk_0838CEA0, gUnk_0838CEA0, gUnk_0838CEA0, gUnk_0838CEA0, gUnk_08396630, gUnk_08398824, gUnk_08398824,
-    gUnk_08398824, gUnk_0839AA4C, gUnk_0839AA4C, gUnk_0839AA4C, gUnk_0839CB7C, gUnk_08396630, gUnk_08396630,
-    gUnk_08396630, gUnk_08396630, gUnk_0839ED64, gUnk_083A06A4, gUnk_083A06A4, gUnk_083A06A4, gUnk_083A20D0,
-    gUnk_083A20D0, gUnk_083A20D0, gUnk_083A3C7C, gUnk_0839ED64, gUnk_0839ED64, gUnk_0839ED64, gUnk_0839ED64,
-    gUnk_0839ED64, gUnk_0839ED64, gUnk_0839ED64, gUnk_0839ED64, gUnk_0839ED64, gUnk_083A20D0, gUnk_0839ED64,
-    gUnk_083A3C7C, gUnk_0839ED64, gUnk_0839ED64, gUnk_0839ED64, gUnk_0839ED64, gUnk_083A5784, gUnk_083A7270,
-    gUnk_083A7270, gUnk_083A7270, gUnk_083A8E60, gUnk_083A8E60, gUnk_083A8E60, gUnk_083AAA50, gUnk_083A5784,
-    gUnk_083A5784, gUnk_083A5784, gUnk_083A5784, gUnk_083AC780, gUnk_083AEA88, gUnk_083AEA88, gUnk_083AEA88,
-    gUnk_083B75C4, gUnk_083B75C4, gUnk_083B75C4, gUnk_083B98C0, gUnk_083AC780, gUnk_083AC780, gUnk_083AC780,
-    gUnk_083AC780, gUnk_083BBA60, gUnk_083BD254, gUnk_083BD254, gUnk_083BD254, gUnk_083BEA28, gUnk_083BEA28,
-    gUnk_083BEA28, gUnk_083C01B4, gUnk_083BBA60, gUnk_083BBA60, gUnk_083BBA60, gUnk_083BBA60, gUnk_083C1B5C,
-    gUnk_083C3A08, gUnk_083C3A08, gUnk_083C3A08, gUnk_083C58A4, gUnk_083C58A4, gUnk_083C58A4, gUnk_083C7740,
-    gUnk_083C1B5C, gUnk_083C1B5C, gUnk_083C1B5C, gUnk_083C1B5C
+    gLaneSegs_Track0_Lane00, gLaneSegs_Track0_Lane00, gLaneSegs_Track0_Lane00, gLaneSegs_Track0_Lane00, gLaneSegs_Track0_Lane04, gLaneSegs_Track0_Lane04, gLaneSegs_Track0_Lane04,
+    gLaneSegs_Track0_Lane07, gLaneSegs_Track0_Lane00, gLaneSegs_Track0_Lane00, gLaneSegs_Track0_Lane00, gLaneSegs_Track0_Lane00, gLaneSegs_Track1_Lane00, gLaneSegs_Track1_Lane01,
+    gLaneSegs_Track1_Lane01, gLaneSegs_Track1_Lane01, gLaneSegs_Track1_Lane04, gLaneSegs_Track1_Lane04, gLaneSegs_Track1_Lane04, gLaneSegs_Track1_Lane00, gLaneSegs_Track1_Lane00,
+    gLaneSegs_Track1_Lane00, gLaneSegs_Track1_Lane00, gLaneSegs_Track1_Lane00, gLaneSegs_Track2_Lane00, gLaneSegs_Track2_Lane01, gLaneSegs_Track2_Lane01, gLaneSegs_Track2_Lane01,
+    gLaneSegs_Track2_Lane04, gLaneSegs_Track2_Lane04, gLaneSegs_Track2_Lane04, gLaneSegs_Track2_Lane07, gLaneSegs_Track2_Lane00, gLaneSegs_Track2_Lane00, gLaneSegs_Track2_Lane00,
+    gLaneSegs_Track2_Lane00, gLaneSegs_Track3_Lane00, gLaneSegs_Track3_Lane01, gLaneSegs_Track3_Lane01, gLaneSegs_Track3_Lane01, gLaneSegs_Track3_Lane04, gLaneSegs_Track3_Lane04,
+    gLaneSegs_Track3_Lane04, gLaneSegs_Track3_Lane07, gLaneSegs_Track3_Lane00, gLaneSegs_Track3_Lane00, gLaneSegs_Track3_Lane00, gLaneSegs_Track3_Lane00, gLaneSegs_Track4_Lane00,
+    gLaneSegs_Track4_Lane01, gLaneSegs_Track4_Lane01, gLaneSegs_Track4_Lane01, gLaneSegs_Track4_Lane04, gLaneSegs_Track4_Lane04, gLaneSegs_Track4_Lane04, gLaneSegs_Track4_Lane07,
+    gLaneSegs_Track4_Lane00, gLaneSegs_Track4_Lane00, gLaneSegs_Track4_Lane00, gLaneSegs_Track4_Lane00, gLaneSegs_Track5_Lane00, gLaneSegs_Track5_Lane01, gLaneSegs_Track5_Lane01,
+    gLaneSegs_Track5_Lane01, gLaneSegs_Track5_Lane04, gLaneSegs_Track5_Lane04, gLaneSegs_Track5_Lane04, gLaneSegs_Track5_Lane07, gLaneSegs_Track5_Lane00, gLaneSegs_Track5_Lane00,
+    gLaneSegs_Track5_Lane00, gLaneSegs_Track5_Lane00, gLaneSegs_Track6_Lane00, gLaneSegs_Track6_Lane01, gLaneSegs_Track6_Lane01, gLaneSegs_Track6_Lane01, gLaneSegs_Track6_Lane04,
+    gLaneSegs_Track6_Lane04, gLaneSegs_Track6_Lane04, gLaneSegs_Track6_Lane07, gLaneSegs_Track6_Lane00, gLaneSegs_Track6_Lane00, gLaneSegs_Track6_Lane00, gLaneSegs_Track6_Lane00,
+    gLaneSegs_Track6_Lane00, gLaneSegs_Track6_Lane00, gLaneSegs_Track6_Lane00, gLaneSegs_Track6_Lane00, gLaneSegs_Track6_Lane00, gLaneSegs_Track6_Lane04, gLaneSegs_Track6_Lane00,
+    gLaneSegs_Track6_Lane07, gLaneSegs_Track6_Lane00, gLaneSegs_Track6_Lane00, gLaneSegs_Track6_Lane00, gLaneSegs_Track6_Lane00, gLaneSegs_Track8_Lane00, gLaneSegs_Track8_Lane01,
+    gLaneSegs_Track8_Lane01, gLaneSegs_Track8_Lane01, gLaneSegs_Track8_Lane04, gLaneSegs_Track8_Lane04, gLaneSegs_Track8_Lane04, gLaneSegs_Track8_Lane07, gLaneSegs_Track8_Lane00,
+    gLaneSegs_Track8_Lane00, gLaneSegs_Track8_Lane00, gLaneSegs_Track8_Lane00, gLaneSegs_Track9_Lane00, gLaneSegs_Track9_Lane01, gLaneSegs_Track9_Lane01, gLaneSegs_Track9_Lane01,
+    gLaneSegs_Track9_Lane04, gLaneSegs_Track9_Lane04, gLaneSegs_Track9_Lane04, gLaneSegs_Track9_Lane07, gLaneSegs_Track9_Lane00, gLaneSegs_Track9_Lane00, gLaneSegs_Track9_Lane00,
+    gLaneSegs_Track9_Lane00, gLaneSegs_Track10_Lane00, gLaneSegs_Track10_Lane01, gLaneSegs_Track10_Lane01, gLaneSegs_Track10_Lane01, gLaneSegs_Track10_Lane04, gLaneSegs_Track10_Lane04,
+    gLaneSegs_Track10_Lane04, gLaneSegs_Track10_Lane07, gLaneSegs_Track10_Lane00, gLaneSegs_Track10_Lane00, gLaneSegs_Track10_Lane00, gLaneSegs_Track10_Lane00, gLaneSegs_Track11_Lane00,
+    gLaneSegs_Track11_Lane01, gLaneSegs_Track11_Lane01, gLaneSegs_Track11_Lane01, gLaneSegs_Track11_Lane04, gLaneSegs_Track11_Lane04, gLaneSegs_Track11_Lane04, gLaneSegs_Track11_Lane07,
+    gLaneSegs_Track11_Lane00, gLaneSegs_Track11_Lane00, gLaneSegs_Track11_Lane00, gLaneSegs_Track11_Lane00
 };
 const u8 *const gLaneCellLists[] = {
     gUnk_08368C1C, gUnk_08368C1C, gUnk_08368C1C, gUnk_08368C1C, gUnk_0836AA20, gUnk_0836AA20, gUnk_0836AA20,

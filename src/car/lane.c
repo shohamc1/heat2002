@@ -97,11 +97,11 @@ s32 FindWaypointCrossing(const u16 *points, const struct LaneSeg *laneSeg)
     reachedLast = 0;
     i = 0;
     do {
-        segX1 = trackSeg->f0;
-        segZ1 = trackSeg->f4;
-        segX2 = trackSeg->f8;
-        segZ2 = trackSeg->fC;
-        if (trackSeg->unk10 == 1)
+        segX1 = trackSeg->corner1X;
+        segZ1 = trackSeg->corner1Z;
+        segX2 = trackSeg->corner2X;
+        segZ2 = trackSeg->corner2Z;
+        if (trackSeg->kind == 1)
             reachedLast = 1;
         cross = (x2 - x1) * (segZ2 - segZ1) - (y2 - y1) * (segX2 - segX1);
         if (cross == 0)

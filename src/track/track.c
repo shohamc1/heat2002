@@ -53,85 +53,85 @@ void LoadTrackTiles(u8 idx)
 {
     switch (idx) {
         case 0:
-            CpuCopy16(gTrackData[idx].unk04, VRAM, 0x8000);
-            CpuCopy16(gTrackData[idx].unk00, BG_CHAR_ADDR(2), 0x4000);
+            CpuCopy16(gTrackData[idx].bg2Tiles, VRAM, 0x8000);
+            CpuCopy16(gTrackData[idx].bg3Tiles, BG_CHAR_ADDR(2), 0x4000);
             gUnk_02022DE4 = 0;
             gUnk_0200BC34 = 0;
             gUnk_02022DF4 = 0;
             break;
         case 1:
-            CpuCopy16(gTrackData[idx].unk04, VRAM, 0x8000);
-            CpuCopy16(gTrackData[idx].unk00, BG_CHAR_ADDR(2), 0x4000);
+            CpuCopy16(gTrackData[idx].bg2Tiles, VRAM, 0x8000);
+            CpuCopy16(gTrackData[idx].bg3Tiles, BG_CHAR_ADDR(2), 0x4000);
             gUnk_02022DE4 = 0;
             gUnk_0200BC34 = 0;
             gUnk_02022DF4 = 0;
             break;
         case 2:
-            CpuCopy16(gTrackData[idx].unk04, VRAM, 0x8000);
-            CpuCopy16(gTrackData[idx].unk00, BG_CHAR_ADDR(2), 0x4000);
+            CpuCopy16(gTrackData[idx].bg2Tiles, VRAM, 0x8000);
+            CpuCopy16(gTrackData[idx].bg3Tiles, BG_CHAR_ADDR(2), 0x4000);
             gUnk_02022DE4 = 0;
             gUnk_0200BC34 = 0;
             gUnk_02022DF4 = 0;
             break;
         case 3:
-            CpuCopy16(gTrackData[idx].unk04, VRAM, 0x8000);
-            CpuCopy16(gTrackData[idx].unk00, BG_CHAR_ADDR(2), 0x4000);
+            CpuCopy16(gTrackData[idx].bg2Tiles, VRAM, 0x8000);
+            CpuCopy16(gTrackData[idx].bg3Tiles, BG_CHAR_ADDR(2), 0x4000);
             gUnk_02022DE4 = 0;
             gUnk_0200BC34 = 0;
             gUnk_02022DF4 = 0;
             break;
         case 4:
-            CpuCopy16(gTrackData[idx].unk04, VRAM, 0x8000);
-            CpuCopy16(gTrackData[idx].unk00, BG_CHAR_ADDR(2), 0x4000);
+            CpuCopy16(gTrackData[idx].bg2Tiles, VRAM, 0x8000);
+            CpuCopy16(gTrackData[idx].bg3Tiles, BG_CHAR_ADDR(2), 0x4000);
             gUnk_02022DE4 = 0;
             gUnk_0200BC34 = 0;
             gUnk_02022DF4 = 0;
             break;
         case 5:
-            CpuCopy16(gTrackData[idx].unk04, VRAM, 0x8000);
-            CpuCopy16(gTrackData[idx].unk00, BG_CHAR_ADDR(2), 0x4000);
+            CpuCopy16(gTrackData[idx].bg2Tiles, VRAM, 0x8000);
+            CpuCopy16(gTrackData[idx].bg3Tiles, BG_CHAR_ADDR(2), 0x4000);
             gUnk_02022DE4 = 0;
             gUnk_0200BC34 = 0;
             gUnk_02022DF4 = 0;
             break;
         case 6:
-            CpuCopy16(gTrackData[idx].unk04, VRAM, 0x8000);
-            CpuCopy16(gTrackData[idx].unk00, BG_CHAR_ADDR(2), 0x4000);
+            CpuCopy16(gTrackData[idx].bg2Tiles, VRAM, 0x8000);
+            CpuCopy16(gTrackData[idx].bg3Tiles, BG_CHAR_ADDR(2), 0x4000);
             gUnk_02022DE4 = 0;
             gUnk_0200BC34 = 0;
             gUnk_02022DF4 = 0;
             break;
         case 7:
-            CpuCopy16(gTrackData[idx].unk04, VRAM, 0x8000);
-            CpuCopy16(gTrackData[idx].unk00, BG_CHAR_ADDR(2), 0x4000);
+            CpuCopy16(gTrackData[idx].bg2Tiles, VRAM, 0x8000);
+            CpuCopy16(gTrackData[idx].bg3Tiles, BG_CHAR_ADDR(2), 0x4000);
             gUnk_02022DE4 = 0;
             gUnk_0200BC34 = 0;
             gUnk_02022DF4 = 0;
             break;
         case 8:
-            CpuCopy16(gTrackData[idx].unk04, VRAM, 0x8000);
-            CpuCopy16(gTrackData[idx].unk00, BG_CHAR_ADDR(2), 0x4000);
+            CpuCopy16(gTrackData[idx].bg2Tiles, VRAM, 0x8000);
+            CpuCopy16(gTrackData[idx].bg3Tiles, BG_CHAR_ADDR(2), 0x4000);
             gUnk_02022DE4 = 0;
             gUnk_0200BC34 = 0;
             gUnk_02022DF4 = 0;
             break;
         case 9:
-            CpuCopy16(gTrackData[idx].unk04, VRAM, 0x8000);
-            CpuCopy16(gTrackData[idx].unk00, BG_CHAR_ADDR(2), 0x4000);
+            CpuCopy16(gTrackData[idx].bg2Tiles, VRAM, 0x8000);
+            CpuCopy16(gTrackData[idx].bg3Tiles, BG_CHAR_ADDR(2), 0x4000);
             gUnk_02022DE4 = 0;
             gUnk_0200BC34 = 0;
             gUnk_02022DF4 = 0;
             break;
         case 10:
-            CpuCopy16(gTrackData[idx].unk04, VRAM, 0x8000);
-            CpuCopy16(gTrackData[idx].unk00, BG_CHAR_ADDR(2), 0x4000);
+            CpuCopy16(gTrackData[idx].bg2Tiles, VRAM, 0x8000);
+            CpuCopy16(gTrackData[idx].bg3Tiles, BG_CHAR_ADDR(2), 0x4000);
             gUnk_02022DE4 = 0;
             gUnk_0200BC34 = 0;
             gUnk_02022DF4 = 0;
             break;
         case 11:
-            CpuCopy16(gTrackData[idx].unk04, VRAM, 0x8000);
-            CpuCopy16(gTrackData[idx].unk00, BG_CHAR_ADDR(2), 0x4000);
+            CpuCopy16(gTrackData[idx].bg2Tiles, VRAM, 0x8000);
+            CpuCopy16(gTrackData[idx].bg3Tiles, BG_CHAR_ADDR(2), 0x4000);
             gUnk_02022DE4 = 0;
             gUnk_0200BC34 = 0;
             gUnk_02022DF4 = 0;
@@ -148,22 +148,22 @@ void LoadTrack(u32 idx)
     LoadTrackTiles(idx);
     t = gTrackBgTilemap;
     CpuCopy16(t, BG_SCREEN_ADDR(24), 0x2000);
-    CpuCopy16(gTrackData[idx].unk18, (u32)a, 0x200);
+    CpuCopy16(gTrackData[idx].palette, (u32)a, 0x200);
     CpuCopy16(t = gTrackBgPalette, (u32)b, 0x20);
     BeginFadeToBrightenedPalette(0x1E, a);
-    gBgMapWidth = gTrackData[idx].unk2C;
+    gBgMapWidth = gTrackData[idx].mapWidth;
     gUnk_02022DD8 = gTrackData[idx].unk34;
     gUnk_02002208 = (u8 *)gUnk_02002220;
     gUnk_0200BC54 = (u8 *)gUnk_0200BC70;
-    RleDecode16(gTrackData[idx].unk20, gUnk_02002220, gTrackData[idx].unk5C);
-    RleDecode16(gTrackData[idx].unk24, gUnk_0200BC70, gTrackData[idx].unk5E);
-    gUnk_0200221C = (u8 *)gTrackData[idx].unk0C;
-    gUnk_02002210 = (u8 *)gTrackData[idx].unk10;
+    RleDecode16(gTrackData[idx].bg3Map, gUnk_02002220, gTrackData[idx].bg3MapLen);
+    RleDecode16(gTrackData[idx].bg2Map, gUnk_0200BC70, gTrackData[idx].bg2MapLen);
+    gUnk_0200221C = (u8 *)gTrackData[idx].bg3Metatiles;
+    gUnk_02002210 = (u8 *)gTrackData[idx].bg2Metatiles;
     gUnk_02022DF0 = gTrackData[idx].unk3C;
     gUnk_0201567C = gTrackData[idx].unk40;
     *(u32 *)&gUnk_0200BC50 = (u32)gUnk_02015690;
-    RleDecode16(gTrackData[idx].unk44, gUnk_02015690, gTrackData[idx].unk60);
-    gUnk_02022DEC[0] = gTrackData[idx].unk48;
+    RleDecode16(gTrackData[idx].cellMap, gUnk_02015690, gTrackData[idx].cellMapLen);
+    gUnk_02022DEC[0] = gTrackData[idx].surfaceTable;
     if (idx == 0)
         gTrackMapWidth[0] = 0x7D;
     if (idx == 1)

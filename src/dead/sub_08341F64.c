@@ -39,11 +39,11 @@ void sub_08341F64(struct Car *p)
     struct TrackSeg *e;
 
     e = &((struct TrackSeg *)gModule_TrackSegs)[p->respawnWaypoint];
-    p->unk00 = (e->f0 + e->f8) << 15;
-    p->unk08 = (e->f4 + e->fC) << 15;
+    p->unk00 = (e->corner1X + e->corner2X) << 15;
+    p->unk08 = (e->corner1Z + e->corner2Z) << 15;
     /* Dead since this revision dropped sub_0800A4D4's delta block, but the
        branch still splits the blocks that local-alloc and reload see. */
-    if (e->unk10 == 1)
+    if (e->kind == 1)
         e = (struct TrackSeg *)gModule_TrackSegs;
     else
         e = e + 1;
@@ -58,7 +58,7 @@ void sub_08341F64(struct Car *p)
     p->unk130 = 0;
     p->unk4E = 1;
     e = &((struct TrackSeg *)gModule_TrackSegs)[p->respawnWaypoint];
-    if (e->unk10 == 1)
+    if (e->kind == 1)
         p->unk4D = 0;
     else
         p->unk4D = p->respawnWaypoint + 1;

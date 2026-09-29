@@ -212,74 +212,74 @@ gUnk_083FEE30:
 	.global gUnk_083FEE34
 gUnk_083FEE34:
 	.4byte gUnk_082E3840
-	.global gUnk_083FEE38
-gUnk_083FEE38:
+	.global gTrackPreviewGfx_Track2
+gTrackPreviewGfx_Track2:
 	.4byte gUnk_082F7EE0
 	.4byte gUnk_082F8828
 	.4byte gUnk_082F8F6C
 	.4byte gUnk_082F9360
-	.global gUnk_083FEE48
-gUnk_083FEE48:
+	.global gTrackPreviewGfx_Track3
+gTrackPreviewGfx_Track3:
 	.4byte gUnk_082F9AC0
 	.4byte gUnk_082FA444
 	.4byte gUnk_082FAE24
 	.4byte gUnk_082FB3FC
-	.global gUnk_083FEE58
-gUnk_083FEE58:
+	.global gTrackPreviewGfx_Track5
+gTrackPreviewGfx_Track5:
 	.4byte gUnk_082FB8AC
 	.4byte gUnk_082FC150
 	.4byte gUnk_082FCA94
 	.4byte gUnk_082FCAD8
-	.global gUnk_083FEE68
-gUnk_083FEE68:
+	.global gTrackPreviewGfx_Track1
+gTrackPreviewGfx_Track1:
 	.4byte gUnk_082FD2F8
 	.4byte gUnk_082FDFE0
 	.4byte gUnk_082FEB60
 	.4byte gUnk_082FEDC4
-	.global gUnk_083FEE78
-gUnk_083FEE78:
+	.global gTrackPreviewGfx_Track4
+gTrackPreviewGfx_Track4:
 	.4byte gUnk_082FF61C
 	.4byte gUnk_082FFD38
 	.4byte gUnk_083004A4
 	.4byte gUnk_0830076C
-	.global gUnk_083FEE88
-gUnk_083FEE88:
+	.global gTrackPreviewGfx_Track0
+gTrackPreviewGfx_Track0:
 	.4byte gUnk_08300DCC
 	.4byte gUnk_083017E8
 	.4byte gUnk_083024A8
 	.4byte gUnk_08302764
-	.global gUnk_083FEE98
-gUnk_083FEE98:
+	.global gTrackPreviewGfx_Track6
+gTrackPreviewGfx_Track6:
 	.4byte gUnk_08303000
 	.4byte gUnk_08303638
 	.4byte gUnk_083040FC
 	.4byte gUnk_08304558
-	.global gUnk_083FEEA8
-gUnk_083FEEA8:
+	.global gTrackPreviewGfx_Track7
+gTrackPreviewGfx_Track7:
 	.4byte gUnk_08304BFC
 	.4byte gUnk_0830531C
 	.4byte gUnk_08305A8C
 	.4byte gUnk_08305D8C
-	.global gUnk_083FEEB8
-gUnk_083FEEB8:
+	.global gTrackPreviewGfx_Track8
+gTrackPreviewGfx_Track8:
 	.4byte gUnk_08306438
 	.4byte gUnk_08306D38
 	.4byte gUnk_08307ACC
 	.4byte gUnk_08308110
-	.global gUnk_083FEEC8
-gUnk_083FEEC8:
+	.global gTrackPreviewGfx_Track10
+gTrackPreviewGfx_Track10:
 	.4byte gUnk_0830897C
 	.4byte gUnk_083091D8
 	.4byte gUnk_08309D28
 	.4byte gUnk_0830A550
-	.global gUnk_083FEED8
-gUnk_083FEED8:
+	.global gTrackPreviewGfx_Track11
+gTrackPreviewGfx_Track11:
 	.4byte gUnk_0830AD68
 	.4byte gUnk_0830B484
 	.4byte gUnk_0830BDF0
 	.4byte gUnk_0830C23C
-	.global gUnk_083FEEE8
-gUnk_083FEEE8:
+	.global gTrackPreviewGfx_Track9
+gTrackPreviewGfx_Track9:
 	.4byte gUnk_0830CC10
 	.4byte gUnk_0830D358
 	.4byte gUnk_0830DE8C

@@ -39,7 +39,7 @@ u32 ComputeLaneSegmentDistSq(s32 posX, s32 posZ, const u16 *points, const struct
     closestX = endPt[1];
     dx = posZ - az;
     proj = proj + dx * (closestX - az);
-    proj *= seg->unk2;
+    proj *= seg->projScale;
     if (proj < 0)
         proj = 0;
     if (proj > 0xFFFF)

@@ -6,7 +6,7 @@
 // gUnk_0200BC50[0] points at the track's u16 cell map (RLE-decoded into
 // EWRAM at track load); gTrackMapWidth[0] is its width in cells. One cell
 // covers a 4x4 area and holds an index into the per-track surface table at
-// gUnk_02022DEC[0] (gTrackData[idx].unk48): 16 bytes per cell value, one
+// gUnk_02022DEC[0] (gTrackData[idx].surfaceTable): 16 bytes per cell value, one
 // byte per 4x4 sub-position. Callers read the result as a surface code:
 // bit 0 = draw behind the background, 2/3 = apron.
 // The r3/r2 pins, the inX = inY copy, and the operand order of the last

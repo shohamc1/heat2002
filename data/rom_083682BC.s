@@ -35,8 +35,8 @@
 	.global gUnk_083682BC
 gUnk_083682BC:
 	.incbin "build/assets/unknown/data_083682BC.bin"
-	.global gUnk_0836844C
-gUnk_0836844C:
+	.global gLaneSegs_Track0_Lane00
+gLaneSegs_Track0_Lane00:
 	.incbin "build/assets/unknown/data_0836844C.bin"
 	.global gUnk_08368C1C
 gUnk_08368C1C:
@@ -48,8 +48,8 @@ gUnk_08368FAE:
 	.global gUnk_0836A1B0
 gUnk_0836A1B0:
 	.incbin "build/assets/unknown/data_0836A1B0.bin"
-	.global gUnk_0836A318
-gUnk_0836A318:
+	.global gLaneSegs_Track0_Lane04
+gLaneSegs_Track0_Lane04:
 	.incbin "build/assets/unknown/data_0836A318.bin"
 	.global gUnk_0836AA20
 gUnk_0836AA20:
@@ -60,8 +60,8 @@ gUnk_0836ADC2:
 	.global gUnk_0836BFC4
 gUnk_0836BFC4:
 	.incbin "build/assets/unknown/data_0836BFC4.bin"
-	.global gUnk_0836C128
-gUnk_0836C128:
+	.global gLaneSegs_Track0_Lane07
+gLaneSegs_Track0_Lane07:
 	.incbin "build/assets/unknown/data_0836C128.bin"
 	.global gUnk_0836C81C
 gUnk_0836C81C:
@@ -81,8 +81,8 @@ gUnk_0836DD4E:
 	.global gUnk_0836DD50
 gUnk_0836DD50:
 	.incbin "build/assets/unknown/data_0836DD50.bin"
-	.global gUnk_0836DE3C
-gUnk_0836DE3C:
+	.global gLaneSegs_Track1_Lane00
+gLaneSegs_Track1_Lane00:
 	.incbin "build/assets/unknown/data_0836DE3C.bin"
 	.global gUnk_0836E2D8
 gUnk_0836E2D8:
@@ -93,8 +93,8 @@ gUnk_0836E4DA:
 	.global gUnk_0836F6DC
 gUnk_0836F6DC:
 	.incbin "build/assets/unknown/data_0836F6DC.bin"
-	.global gUnk_0836F79C
-gUnk_0836F79C:
+	.global gLaneSegs_Track1_Lane01
+gLaneSegs_Track1_Lane01:
 	.incbin "build/assets/unknown/data_0836F79C.bin"
 	.global gUnk_0836FB5C
 gUnk_0836FB5C:
@@ -110,8 +110,8 @@ gUnk_0836FD0A:
 	.global gUnk_08370F0C
 gUnk_08370F0C:
 	.incbin "build/assets/unknown/data_08370F0C.bin"
-	.global gUnk_08370FD4
-gUnk_08370FD4:
+	.global gLaneSegs_Track1_Lane04
+gLaneSegs_Track1_Lane04:
 	.incbin "build/assets/unknown/data_08370FD4.bin"
 	.global gUnk_083713BC
 gUnk_083713BC:
@@ -131,8 +131,8 @@ gUnk_08374026:
 	.global gUnk_0837402C
 gUnk_0837402C:
 	.incbin "build/assets/unknown/data_0837402C.bin"
-	.global gUnk_08374234
-gUnk_08374234:
+	.global gLaneSegs_Track2_Lane00
+gLaneSegs_Track2_Lane00:
 	.incbin "build/assets/unknown/data_08374234.bin"
 	.global gUnk_08374C5C
 gUnk_08374C5C:
@@ -143,8 +143,8 @@ gUnk_08375188:
 	.global gUnk_08376388
 gUnk_08376388:
 	.incbin "build/assets/unknown/data_08376388.bin"
-	.global gUnk_08376574
-gUnk_08376574:
+	.global gLaneSegs_Track2_Lane01
+gLaneSegs_Track2_Lane01:
 	.incbin "build/assets/unknown/data_08376574.bin"
 	.global gUnk_08376F10
 gUnk_08376F10:
@@ -155,8 +155,8 @@ gUnk_08377408:
 	.global gUnk_0837EE98
 gUnk_0837EE98:
 	.incbin "build/assets/unknown/data_0837EE98.bin"
-	.global gUnk_0837F090
-gUnk_0837F090:
+	.global gLaneSegs_Track2_Lane04
+gLaneSegs_Track2_Lane04:
 	.incbin "build/assets/unknown/data_0837F090.bin"
 	.global gUnk_0837FA68
 gUnk_0837FA68:
@@ -167,8 +167,8 @@ gUnk_0837FF6C:
 	.global gUnk_08383430
 gUnk_08383430:
 	.incbin "build/assets/unknown/data_08383430.bin"
-	.global gUnk_0838361C
-gUnk_0838361C:
+	.global gLaneSegs_Track2_Lane07
+gLaneSegs_Track2_Lane07:
 	.incbin "build/assets/unknown/data_0838361C.bin"
 	.global gUnk_08383FB8
 gUnk_08383FB8:
@@ -191,8 +191,8 @@ gUnk_083856AC:
 	.global gUnk_083856B0
 gUnk_083856B0:
 	.incbin "build/assets/unknown/data_083856B0.bin"
-	.global gUnk_08385810
-gUnk_08385810:
+	.global gLaneSegs_Track3_Lane00
+gLaneSegs_Track3_Lane00:
 	.incbin "build/assets/unknown/data_08385810.bin"
 	.global gUnk_08385EF0
 gUnk_08385EF0:
@@ -203,8 +203,8 @@ gUnk_08386238:
 	.global gUnk_08387438
 gUnk_08387438:
 	.incbin "build/assets/unknown/data_08387438.bin"
-	.global gUnk_08387580
-gUnk_08387580:
+	.global gLaneSegs_Track3_Lane01
+gLaneSegs_Track3_Lane01:
 	.incbin "build/assets/unknown/data_08387580.bin"
 	.global gUnk_08387BE8
 gUnk_08387BE8:
@@ -215,8 +215,8 @@ gUnk_08387EDE:
 	.global gUnk_083890E0
 gUnk_083890E0:
 	.incbin "build/assets/unknown/data_083890E0.bin"
-	.global gUnk_08389238
-gUnk_08389238:
+	.global gLaneSegs_Track3_Lane04
+gLaneSegs_Track3_Lane04:
 	.incbin "build/assets/unknown/data_08389238.bin"
 	.global gUnk_083898F0
 gUnk_083898F0:
@@ -227,8 +227,8 @@ gUnk_08389BD2:
 	.global gUnk_0838ADD4
 gUnk_0838ADD4:
 	.incbin "build/assets/unknown/data_0838ADD4.bin"
-	.global gUnk_0838AF50
-gUnk_0838AF50:
+	.global gLaneSegs_Track3_Lane07
+gLaneSegs_Track3_Lane07:
 	.incbin "build/assets/unknown/data_0838AF50.bin"
 	.global gUnk_0838B6BC
 gUnk_0838B6BC:
@@ -251,8 +251,8 @@ gUnk_0838CC3C:
 	.global gUnk_0838CC40
 gUnk_0838CC40:
 	.incbin "build/assets/unknown/data_0838CC40.bin"
-	.global gUnk_0838CEA0
-gUnk_0838CEA0:
+	.global gLaneSegs_Track4_Lane00
+gLaneSegs_Track4_Lane00:
 	.incbin "build/assets/unknown/data_0838CEA0.bin"
 	.global gUnk_0838DA6C
 gUnk_0838DA6C:
@@ -264,8 +264,8 @@ gUnk_0838E028:
 	.global gUnk_0838F228
 gUnk_0838F228:
 	.incbin "build/assets/unknown/data_0838F228.bin"
-	.global gUnk_0838F47C
-gUnk_0838F47C:
+	.global gLaneSegs_Track4_Lane01
+gLaneSegs_Track4_Lane01:
 	.incbin "build/assets/unknown/data_0838F47C.bin"
 	.global gUnk_08390020
 gUnk_08390020:
@@ -284,8 +284,8 @@ gUnk_083905EC:
 	.global gUnk_083917EC
 gUnk_083917EC:
 	.incbin "build/assets/unknown/data_083917EC.bin"
-	.global gUnk_08391A6C
-gUnk_08391A6C:
+	.global gLaneSegs_Track4_Lane04
+gLaneSegs_Track4_Lane04:
 	.incbin "build/assets/unknown/data_08391A6C.bin"
 	.incbin "build/assets/unknown/data_08391FE0.bin"
 	.global gUnk_083926EC
@@ -297,8 +297,8 @@ gUnk_08392CEA:
 	.global gUnk_08393EEC
 gUnk_08393EEC:
 	.incbin "build/assets/unknown/data_08393EEC.bin"
-	.global gUnk_08394140
-gUnk_08394140:
+	.global gLaneSegs_Track4_Lane07
+gLaneSegs_Track4_Lane07:
 	.incbin "build/assets/unknown/data_08394140.bin"
 	.global gUnk_08394CE4
 gUnk_08394CE4:
@@ -321,8 +321,8 @@ gUnk_08396448:
 	.global gUnk_0839644C
 gUnk_0839644C:
 	.incbin "build/assets/unknown/data_0839644C.bin"
-	.global gUnk_08396630
-gUnk_08396630:
+	.global gLaneSegs_Track5_Lane00
+gLaneSegs_Track5_Lane00:
 	.incbin "build/assets/unknown/data_08396630.bin"
 	.global gUnk_08396FA4
 gUnk_08396FA4:
@@ -333,8 +333,8 @@ gUnk_08397436:
 	.global gUnk_08398638
 gUnk_08398638:
 	.incbin "build/assets/unknown/data_08398638.bin"
-	.global gUnk_08398824
-gUnk_08398824:
+	.global gLaneSegs_Track5_Lane01
+gLaneSegs_Track5_Lane01:
 	.incbin "build/assets/unknown/data_08398824.bin"
 	.global gUnk_083991C0
 gUnk_083991C0:
@@ -345,8 +345,8 @@ gUnk_08399686:
 	.global gUnk_0839A888
 gUnk_0839A888:
 	.incbin "build/assets/unknown/data_0839A888.bin"
-	.global gUnk_0839AA4C
-gUnk_0839AA4C:
+	.global gLaneSegs_Track5_Lane04
+gLaneSegs_Track5_Lane04:
 	.incbin "build/assets/unknown/data_0839AA4C.bin"
 	.global gUnk_0839B320
 gUnk_0839B320:
@@ -357,8 +357,8 @@ gUnk_0839B788:
 	.global gUnk_0839C988
 gUnk_0839C988:
 	.incbin "build/assets/unknown/data_0839C988.bin"
-	.global gUnk_0839CB7C
-gUnk_0839CB7C:
+	.global gLaneSegs_Track5_Lane07
+gLaneSegs_Track5_Lane07:
 	.incbin "build/assets/unknown/data_0839CB7C.bin"
 	.global gUnk_0839D540
 gUnk_0839D540:
@@ -381,8 +381,8 @@ gUnk_0839EC72:
 	.global gUnk_0839EC74
 gUnk_0839EC74:
 	.incbin "build/assets/unknown/data_0839EC74.bin"
-	.global gUnk_0839ED64
-gUnk_0839ED64:
+	.global gLaneSegs_Track6_Lane00
+gLaneSegs_Track6_Lane00:
 	.incbin "build/assets/unknown/data_0839ED64.bin"
 	.global gUnk_0839F214
 gUnk_0839F214:
@@ -393,8 +393,8 @@ gUnk_0839F3A6:
 	.global gUnk_083A05A8
 gUnk_083A05A8:
 	.incbin "build/assets/unknown/data_083A05A8.bin"
-	.global gUnk_083A06A4
-gUnk_083A06A4:
+	.global gLaneSegs_Track6_Lane01
+gLaneSegs_Track6_Lane01:
 	.incbin "build/assets/unknown/data_083A06A4.bin"
 	.incbin "build/assets/unknown/data_083A082C.bin"
 	.global gUnk_083A0B90
@@ -406,8 +406,8 @@ gUnk_083A0DA4:
 	.global gUnk_083A1FA4
 gUnk_083A1FA4:
 	.incbin "build/assets/unknown/data_083A1FA4.bin"
-	.global gUnk_083A20D0
-gUnk_083A20D0:
+	.global gLaneSegs_Track6_Lane04
+gLaneSegs_Track6_Lane04:
 	.incbin "build/assets/unknown/data_083A20D0.bin"
 	.global gUnk_083A26AC
 gUnk_083A26AC:
@@ -418,8 +418,8 @@ gUnk_083A2964:
 	.global gUnk_083A3B64
 gUnk_083A3B64:
 	.incbin "build/assets/unknown/data_083A3B64.bin"
-	.global gUnk_083A3C7C
-gUnk_083A3C7C:
+	.global gLaneSegs_Track6_Lane07
+gLaneSegs_Track6_Lane07:
 	.incbin "build/assets/unknown/data_083A3C7C.bin"
 	.global gUnk_083A41F4
 gUnk_083A41F4:
@@ -445,8 +445,8 @@ gUnk_083A5666:
 	.global gUnk_083A5668
 gUnk_083A5668:
 	.incbin "build/assets/unknown/data_083A5668.bin"
-	.global gUnk_083A5784
-gUnk_083A5784:
+	.global gLaneSegs_Track8_Lane00
+gLaneSegs_Track8_Lane00:
 	.incbin "build/assets/unknown/data_083A5784.bin"
 	.global gUnk_083A5D10
 gUnk_083A5D10:
@@ -457,8 +457,8 @@ gUnk_083A5F3E:
 	.global gUnk_083A7140
 gUnk_083A7140:
 	.incbin "build/assets/unknown/data_083A7140.bin"
-	.global gUnk_083A7270
-gUnk_083A7270:
+	.global gLaneSegs_Track8_Lane01
+gLaneSegs_Track8_Lane01:
 	.incbin "build/assets/unknown/data_083A7270.bin"
 	.global gUnk_083A7860
 gUnk_083A7860:
@@ -469,8 +469,8 @@ gUnk_083A7B28:
 	.global gUnk_083A8D28
 gUnk_083A8D28:
 	.incbin "build/assets/unknown/data_083A8D28.bin"
-	.global gUnk_083A8E60
-gUnk_083A8E60:
+	.global gLaneSegs_Track8_Lane04
+gLaneSegs_Track8_Lane04:
 	.incbin "build/assets/unknown/data_083A8E60.bin"
 	.global gUnk_083A9478
 gUnk_083A9478:
@@ -481,8 +481,8 @@ gUnk_083A9710:
 	.global gUnk_083AA910
 gUnk_083AA910:
 	.incbin "build/assets/unknown/data_083AA910.bin"
-	.global gUnk_083AAA50
-gUnk_083AAA50:
+	.global gLaneSegs_Track8_Lane07
+gLaneSegs_Track8_Lane07:
 	.incbin "build/assets/unknown/data_083AAA50.bin"
 	.global gUnk_083AB090
 gUnk_083AB090:
@@ -505,8 +505,8 @@ gUnk_083AC57A:
 	.global gUnk_083AC57C
 gUnk_083AC57C:
 	.incbin "build/assets/unknown/data_083AC57C.bin"
-	.global gUnk_083AC780
-gUnk_083AC780:
+	.global gLaneSegs_Track9_Lane00
+gLaneSegs_Track9_Lane00:
 	.incbin "build/assets/unknown/data_083AC780.bin"
 	.global gUnk_083AD194
 gUnk_083AD194:
@@ -517,8 +517,8 @@ gUnk_083AD67A:
 	.global gUnk_083AE87C
 gUnk_083AE87C:
 	.incbin "build/assets/unknown/data_083AE87C.bin"
-	.global gUnk_083AEA88
-gUnk_083AEA88:
+	.global gLaneSegs_Track9_Lane01
+gLaneSegs_Track9_Lane01:
 	.incbin "build/assets/unknown/data_083AEA88.bin"
 	.global gUnk_083AF4C4
 gUnk_083AF4C4:
@@ -532,8 +532,8 @@ gUnk_083AF9AC:
 	.global gUnk_083B73C0
 gUnk_083B73C0:
 	.incbin "build/assets/unknown/data_083B73C0.bin"
-	.global gUnk_083B75C4
-gUnk_083B75C4:
+	.global gLaneSegs_Track9_Lane04
+gLaneSegs_Track9_Lane04:
 	.incbin "build/assets/unknown/data_083B75C4.bin"
 	.global gUnk_083B7FD8
 gUnk_083B7FD8:
@@ -544,8 +544,8 @@ gUnk_083B84C4:
 	.global gUnk_083B96C4
 gUnk_083B96C4:
 	.incbin "build/assets/unknown/data_083B96C4.bin"
-	.global gUnk_083B98C0
-gUnk_083B98C0:
+	.global gLaneSegs_Track9_Lane07
+gLaneSegs_Track9_Lane07:
 	.incbin "build/assets/unknown/data_083B98C0.bin"
 	.global gUnk_083BA2AC
 gUnk_083BA2AC:
@@ -568,8 +568,8 @@ gUnk_083BB99C:
 	.global gUnk_083BB9A0
 gUnk_083BB9A0:
 	.incbin "build/assets/unknown/data_083BB9A0.bin"
-	.global gUnk_083BBA60
-gUnk_083BBA60:
+	.global gLaneSegs_Track10_Lane00
+gLaneSegs_Track10_Lane00:
 	.incbin "build/assets/unknown/data_083BBA60.bin"
 	.global gUnk_083BBE20
 gUnk_083BBE20:
@@ -580,8 +580,8 @@ gUnk_083BBF98:
 	.global gUnk_083BD198
 gUnk_083BD198:
 	.incbin "build/assets/unknown/data_083BD198.bin"
-	.global gUnk_083BD254
-gUnk_083BD254:
+	.global gLaneSegs_Track10_Lane01
+gLaneSegs_Track10_Lane01:
 	.incbin "build/assets/unknown/data_083BD254.bin"
 	.global gUnk_083BD600
 gUnk_083BD600:
@@ -592,8 +592,8 @@ gUnk_083BD77A:
 	.global gUnk_083BE97C
 gUnk_083BE97C:
 	.incbin "build/assets/unknown/data_083BE97C.bin"
-	.global gUnk_083BEA28
-gUnk_083BEA28:
+	.global gLaneSegs_Track10_Lane04
+gLaneSegs_Track10_Lane04:
 	.incbin "build/assets/unknown/data_083BEA28.bin"
 	.global gUnk_083BED84
 gUnk_083BED84:
@@ -605,8 +605,8 @@ gUnk_083BEED8:
 	.global gUnk_083C00D8
 gUnk_083C00D8:
 	.incbin "build/assets/unknown/data_083C00D8.bin"
-	.global gUnk_083C01B4
-gUnk_083C01B4:
+	.global gLaneSegs_Track10_Lane07
+gLaneSegs_Track10_Lane07:
 	.incbin "build/assets/unknown/data_083C01B4.bin"
 	.global gUnk_083C0600
 gUnk_083C0600:
@@ -630,8 +630,8 @@ gUnk_083C19D0:
 	.global gUnk_083C19D4
 gUnk_083C19D4:
 	.incbin "build/assets/unknown/data_083C19D4.bin"
-	.global gUnk_083C1B5C
-gUnk_083C1B5C:
+	.global gLaneSegs_Track11_Lane00
+gLaneSegs_Track11_Lane00:
 	.incbin "build/assets/unknown/data_083C1B5C.bin"
 	.global gUnk_083C2304
 gUnk_083C2304:
@@ -644,8 +644,8 @@ gUnk_083C267E:
 	.global gUnk_083C3880
 gUnk_083C3880:
 	.incbin "build/assets/unknown/data_083C3880.bin"
-	.global gUnk_083C3A08
-gUnk_083C3A08:
+	.global gLaneSegs_Track11_Lane01
+gLaneSegs_Track11_Lane01:
 	.incbin "build/assets/unknown/data_083C3A08.bin"
 	.global gUnk_083C41B0
 gUnk_083C41B0:
@@ -656,8 +656,8 @@ gUnk_083C4524:
 	.global gUnk_083C5724
 gUnk_083C5724:
 	.incbin "build/assets/unknown/data_083C5724.bin"
-	.global gUnk_083C58A4
-gUnk_083C58A4:
+	.global gLaneSegs_Track11_Lane04
+gLaneSegs_Track11_Lane04:
 	.incbin "build/assets/unknown/data_083C58A4.bin"
 	.global gUnk_083C6024
 gUnk_083C6024:
@@ -668,8 +668,8 @@ gUnk_083C639C:
 	.global gUnk_083C759C
 gUnk_083C759C:
 	.incbin "build/assets/unknown/data_083C759C.bin"
-	.global gUnk_083C7740
-gUnk_083C7740:
+	.global gLaneSegs_Track11_Lane07
+gLaneSegs_Track11_Lane07:
 	.incbin "build/assets/unknown/data_083C7740.bin"
 	.global gUnk_083C7F74
 gUnk_083C7F74:

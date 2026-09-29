@@ -19,29 +19,29 @@
 // docs/extern-headers-plan.md).
 struct Track
 {
-    /* 0x00 */ u32 unk00;
-    /* 0x04 */ u32 unk04;
+    /* 0x00 */ u32 bg3Tiles;      /* 4bpp tiles copied to char block 2 (BG3) */
+    /* 0x04 */ u32 bg2Tiles;      /* 4bpp tiles copied to char block 0 (BG2) */
     /* 0x08 */ u32 unk08;
-    /* 0x0C */ u16 *unk0C;
-    /* 0x10 */ u16 *unk10;
+    /* 0x0C */ u16 *bg3Metatiles; /* 32 bytes per metatile, 4x4 tilemap entries */
+    /* 0x10 */ u16 *bg2Metatiles;
     /* 0x14 */ u32 unk14;
-    /* 0x18 */ u32 unk18;
+    /* 0x18 */ u32 palette; /* 256-colour palette, 0x200 bytes */
     /* 0x1C */ u32 unk1C;
-    /* 0x20 */ u16 *unk20;
-    /* 0x24 */ u16 *unk24;
+    /* 0x20 */ u16 *bg3Map; /* RLE-compressed u16 map of metatile indices */
+    /* 0x24 */ u16 *bg2Map;
     /* 0x28 */ u32 unk28;
-    /* 0x2C */ u32 unk2C;
+    /* 0x2C */ u32 mapWidth; /* the gBgMapWidth stride */
     /* 0x30 */ u32 unk30;
     /* 0x34 */ u32 unk34;
     /* 0x38 */ u32 unk38;
     /* 0x3C */ u32 unk3C;
     /* 0x40 */ u32 unk40;
-    /* 0x44 */ u16 *unk44;
-    /* 0x48 */ u32 unk48;
+    /* 0x44 */ u16 *cellMap; /* RLE-compressed u16 collision cell map */
+    /* 0x48 */ u32 surfaceTable; /* 16 bytes per cell value: surface code per 4x4 sub-position */
     /* 0x4C */ u8 pad4C[0x5C - 0x4C];
-    /* 0x5C */ u16 unk5C;
-    /* 0x5E */ u16 unk5E;
-    /* 0x60 */ u16 unk60;
+    /* 0x5C */ u16 bg3MapLen; /* RLE source word count of bg3Map */
+    /* 0x5E */ u16 bg2MapLen;
+    /* 0x60 */ u16 cellMapLen;
     /* 0x62 */ u8 pad62[0x64 - 0x62];
 };
 
@@ -53,19 +53,19 @@ extern const struct Track gTrackData[];
 // One waypoint quad of a track's segment list: the 0x18-byte record
 // gTrackSegs points at after LoadTrackSegs loads the row from
 // gTrackSegTables (race_setup.c, one row per track). ModuleUpdateLapProgress and
-// race/UpdateLapProgress.c read unk10 (the segment kind) against the
+// race/UpdateLapProgress.c read kind (the segment kind) against the
 // quad's corners; FindWaypointCrossing crosses the quad with a vertex pair.
 // Its old local tags (this struct, plus the coarser `struct SegBC4C`
 // prefix view) were merged here unchanged.
 struct TrackSeg
 {
-    /* 0x00 */ s32 f0;
-    /* 0x04 */ s32 f4;
-    /* 0x08 */ s32 f8;
-    /* 0x0C */ s32 fC;
-    /* 0x10 */ u16 unk10;
+    /* 0x00 */ s32 corner1X; /* one edge of the waypoint quad; the quad spans */
+    /* 0x04 */ s32 corner1Z; /* consecutive records */
+    /* 0x08 */ s32 corner2X;
+    /* 0x0C */ s32 corner2Z;
+    /* 0x10 */ u16 kind; /* 1 = start/finish wrap; 1-2 gate the lap block */
     /* 0x12 */ u8 pad12[2];
-    /* 0x14 */ u8 unk14;
+    /* 0x14 */ u8 countdownSeconds; /* feeds SetCountdownSeconds */
     /* 0x15 */ u8 pad15[3];
 };
 
@@ -75,7 +75,7 @@ struct LaneSeg
 {
     /* 0x00 */ u8 pointA;
     /* 0x01 */ u8 pointB; /* 0xFF ends the table */
-    /* 0x02 */ u8 unk2;
+    /* 0x02 */ u8 projScale; /* scales the dot product into the 16.16 segment parameter */
     /* 0x03 */ u8 unk3;
     /* 0x04 */ u16 startDist;
     /* 0x06 */ u16 endDist;
@@ -170,10 +170,10 @@ struct DriverRosterEntry
 // the preview graphic, and its palette. DrawTrackSelect reads a row.
 struct TrackPreviewGfx
 {
-    /* 0x00 */ const u8 *unk0;
-    /* 0x04 */ const u8 *unk4;
-    /* 0x08 */ const u8 *unk8;
-    /* 0x0C */ const u8 *unkC;
+    /* 0x00 */ const u8 *topLeftGfx;     /* RL streams for the 2x2 preview's */
+    /* 0x04 */ const u8 *topRightGfx;    /* four 64x64 sprites */
+    /* 0x08 */ const u8 *bottomLeftGfx;
+    /* 0x0C */ const u8 *bottomRightGfx;
 };
 
 struct TrackSelectEntry

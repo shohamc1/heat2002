@@ -44,7 +44,7 @@ u8 ModuleUpdateLapProgress(struct Car *p, u8 carIdx)
 
     e = &gModule_TrackSegs[p->waypoint];
     b = e + 1;
-    if (e->unk10 == 1)
+    if (e->kind == 1)
         b = gModule_TrackSegs;
 
     corners[0] = p->posX >> 16;
@@ -52,14 +52,14 @@ u8 ModuleUpdateLapProgress(struct Car *p, u8 carIdx)
     corners[2] = (p->posX + p->velX) >> 16;
     corners[3] = (p->posZ + p->velZ) >> 16;
 
-    x0 = e->f0;
-    x1 = e->f4;
-    x2 = e->f8;
-    x3 = e->fC;
-    y0 = b->f0;
-    y1 = b->f4;
-    y2 = b->f8;
-    y3 = b->fC;
+    x0 = e->corner1X;
+    x1 = e->corner1Z;
+    x2 = e->corner2X;
+    x3 = e->corner2Z;
+    y0 = b->corner1X;
+    y1 = b->corner1Z;
+    y2 = b->corner2X;
+    y3 = b->corner2Z;
 
     l0 = (x0 * (16 - p->subStep) + y0 * p->subStep) >> 4;
     l8 = (x2 * (16 - p->subStep) + y2 * p->subStep) >> 4;
@@ -93,7 +93,7 @@ u8 ModuleUpdateLapProgress(struct Car *p, u8 carIdx)
     p->respawnHeading = p->heading;
     p->respawnWaypoint = p->waypoint;
     {
-        s32 t = e->unk10;
+        s32 t = e->kind;
         if (t == 1) {
             if (gModule_GameMode[0] == 0x0C) {
                 if ((time = gModule_LapMin[0] * 60000 + gModule_LapSec[0] * 1000 + gModule_LapMs[0]) < gUnk_0203DFC4)
@@ -151,18 +151,18 @@ u8 ModuleUpdateLapProgress(struct Car *p, u8 carIdx)
         }
     }
 
-    if ((u16)(e->unk10 - 1) <= 1) {
+    if ((u16)(e->kind - 1) <= 1) {
         if (carIdx == v6C) {
             gUnk_0203DE40 = p->tickCount;
-            if (e->unk10 != 1)
+            if (e->kind != 1)
                 ModuleSaveLapTime();
             if (carIdx == v6C && gModule_GameMode[0] != 0xA) {
                 s32 inner = v58 / 2 + 6;
-                ModuleSetCountdownSeconds(e->unk14 + inner);
+                ModuleSetCountdownSeconds(e->countdownSeconds + inner);
             }
         }
         {
-            s32 t2 = e->unk10;
+            s32 t2 = e->kind;
             if (t2 == 1 && p->lapStartedFlag == 0) {
                 if (p == gModule_Cars)
                     ModuleStartRace();

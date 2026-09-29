@@ -9,7 +9,7 @@
  *     function start through the fallthrough arm) hoists the +24 above the
  *     branch -- a speculated if/else -- and store-forwards p->unk00/p->unk08
  *     into the dx/dy subtraction (keeps two extra values alive, push grows to
- *     {r4,r5,r6,r7}). e = e + 1 cannot be hoisted above the e->unk10 test, so
+ *     {r4,r5,r6,r7}). e = e + 1 cannot be hoisted above the e->kind test, so
  *     the branchy if/else, the real ldr [r4,#0/8] reloads and push {r4,r5,lr}
  *     all fall out. -O1 gives the branchy shape for both spellings; this
  *     separates -O2's cse path following.
@@ -113,17 +113,17 @@ void sub_0800A4D4(struct Car *p)
     v = *pv;
     pt = (struct TrackSeg *volatile *)&gTrackSegs;
     e = &(*pt)[p->respawnWaypoint];
-    p->unk00 = (e->f0 + e->f8) << 15;
-    p->unk08 = (e->f4 + e->fC) << 15;
-    if (e->unk10 == 1) {
+    p->unk00 = (e->corner1X + e->corner2X) << 15;
+    p->unk08 = (e->corner1Z + e->corner2Z) << 15;
+    if (e->kind == 1) {
         e = (struct TrackSeg *)gTrackSegs;
     } else {
         e = e + 1;
     }
-    dx = (e->f0 + e->f8) << 15;
+    dx = (e->corner1X + e->corner2X) << 15;
     nx = dx;
-    f4t = e->f4;
-    fCt = e->fC;
+    f4t = e->corner1Z;
+    fCt = e->corner2Z;
     s = f4t + fCt;
     ny = s << 15;
     dx = nx - p->unk00;
@@ -147,7 +147,7 @@ void sub_0800A4D4(struct Car *p)
         register struct TrackSeg *volatile *pt2 asm("r1") = (struct TrackSeg *volatile *)&gTrackSegs;
         e = &(*pt2)[p->respawnWaypoint];
     }
-    if (e->unk10 == 1) {
+    if (e->kind == 1) {
         p->unk4D = 0;
     } else {
         p->unk4D = p->respawnWaypoint + 1;

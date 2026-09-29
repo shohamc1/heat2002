@@ -46,19 +46,19 @@ void ModuleLoadTrack(u32 idx)
     ModuleLoadTrackTiles(idx);
     t = gUnk_02022428;
     CpuCopy16(t, BG_SCREEN_ADDR(24), 0x2000);
-    CpuCopy16(gModule_TrackData[idx].unk18, (u32)fadePalette, 0x200);
+    CpuCopy16(gModule_TrackData[idx].palette, (u32)fadePalette, 0x200);
     CpuCopy16(t = gUnk_02021394, (u32)paletteCopy, 0x20);
     ModuleBeginFadeToBrightenedPalette(0x1E, fadePalette);
-    gUnk_02039244 = gModule_TrackData[idx].unk2C;
+    gUnk_02039244 = gModule_TrackData[idx].mapWidth;
     gUnk_02039288 = gModule_TrackData[idx].unk34;
-    gUnk_02039228 = gModule_TrackData[idx].unk20;
-    gUnk_02039268 = gModule_TrackData[idx].unk24;
+    gUnk_02039228 = gModule_TrackData[idx].bg3Map;
+    gUnk_02039268 = gModule_TrackData[idx].bg2Map;
     gUnk_02039224 = gModule_TrackData[idx].unk28;
-    gUnk_02039238 = gModule_TrackData[idx].unk0C;
-    gUnk_0203922C = gModule_TrackData[idx].unk10;
+    gUnk_02039238 = gModule_TrackData[idx].bg3Metatiles;
+    gUnk_0203922C = gModule_TrackData[idx].bg2Metatiles;
     gUnk_020392A0 = gModule_TrackData[idx].unk3C;
     gUnk_02039280 = gModule_TrackData[idx].unk40;
-    gUnk_0203929C = (u8 *)gModule_TrackData[idx].unk48;
+    gUnk_0203929C = (u8 *)gModule_TrackData[idx].surfaceTable;
     if (idx == 0)
         gModule_TrackMapWidth[0] = 0x7D;
     if (idx == 1)

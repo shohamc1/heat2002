@@ -39,18 +39,18 @@ extern const u8 gUnk_08331058[];
 extern const u8 gUnk_08331078[];
 extern const u8 gUnk_083311A8[];
 extern const u8 gUnk_083311C8[];
-extern const struct TrackSeg gUnk_08365348[];
-extern const struct TrackSeg gUnk_08365618[];
-extern const struct TrackSeg gUnk_08365798[];
-extern const struct TrackSeg gUnk_08365A38[];
-extern const struct TrackSeg gUnk_08365CC0[];
-extern const struct TrackSeg gUnk_08366140[];
-extern const struct TrackSeg gUnk_08366470[];
-extern const struct TrackSeg gUnk_08366620[];
-extern const struct TrackSeg gUnk_083668A8[];
-extern const struct TrackSeg gUnk_08366A58[];
-extern const struct TrackSeg gUnk_08366DE8[];
-extern const struct TrackSeg gUnk_08366F38[];
+extern const struct TrackSeg gTrackSegs_Track0[];
+extern const struct TrackSeg gTrackSegs_Track1[];
+extern const struct TrackSeg gTrackSegs_Track2[];
+extern const struct TrackSeg gTrackSegs_Track3[];
+extern const struct TrackSeg gTrackSegs_Track4[];
+extern const struct TrackSeg gTrackSegs_Track5[];
+extern const struct TrackSeg gTrackSegs_Track6[];
+extern const struct TrackSeg gTrackSegs_Track7[];
+extern const struct TrackSeg gTrackSegs_Track8[];
+extern const struct TrackSeg gTrackSegs_Track9[];
+extern const struct TrackSeg gTrackSegs_Track10[];
+extern const struct TrackSeg gTrackSegs_Track11[];
 extern const u32 gUnk_083FEF80[];
 extern const u32 gUnk_083FF004[];
 extern const u32 gUnk_083FF088[];
@@ -64,9 +64,9 @@ extern const u32 gUnk_083FF424[];
 extern const u32 gUnk_083FF4A8[];
 extern const u32 gUnk_083FF52C[];
 
-const struct TrackSeg *const gTrackSegTables[] = { gUnk_08365348, gUnk_08365618, gUnk_08365798, gUnk_08365A38,
-                                                   gUnk_08365CC0, gUnk_08366140, gUnk_08366470, gUnk_08366620,
-                                                   gUnk_083668A8, gUnk_08366A58, gUnk_08366DE8, gUnk_08366F38 };
+const struct TrackSeg *const gTrackSegTables[] = { gTrackSegs_Track0, gTrackSegs_Track1, gTrackSegs_Track2, gTrackSegs_Track3,
+                                                   gTrackSegs_Track4, gTrackSegs_Track5, gTrackSegs_Track6, gTrackSegs_Track7,
+                                                   gTrackSegs_Track8, gTrackSegs_Track9, gTrackSegs_Track10, gTrackSegs_Track11 };
 // The sprite caches' OBJ VRAM tile numbers. Each array holds u16 tile
 // indices that InitObjTileCache reads one by one (turning each into an
 // OBJ_VRAM0 offset with t << 5); the words below just pair them.
