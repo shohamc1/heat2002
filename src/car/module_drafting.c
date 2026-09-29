@@ -56,3 +56,9 @@ u8 ModuleCheckDrafting(struct Car *car)
     }
     return 0;
 }
+
+void ModuleInitCarSteering(s32 *steer, u32 heading)
+{
+    steer[1] = heading;
+    steer[0] = heading;
+}

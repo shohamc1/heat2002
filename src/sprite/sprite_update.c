@@ -1,7 +1,7 @@
 #include "global.h"
+#include "variables.h"
 #include "data.h"
 #include "functions.h"
-#include "variables.h"
 
 typedef struct
 {
@@ -16,7 +16,79 @@ typedef struct
         } h;
     } u;
 } Ent;
+
+u32 SortSpritesByDepth(void);
 void SetSpriteRotMatrices(void);
+
+void ResetSpriteOrderTable(void)
+{
+    u32 i = 0;
+    u16 *orderEntry = gSpriteOrderTable;
+
+    while (i != 0x40) {
+        *orderEntry = i;
+        orderEntry += 1;
+        i++;
+    }
+}
+
+u32 SortSpritesByDepth(void)
+{
+    u8 swapped;
+    u32 i;
+    u16 a;
+    u16 b;
+    u8 *ea;
+    u8 *eb;
+
+outer:
+    swapped = 0;
+    i = 0;
+    do {
+        a = gSpriteOrderTable[i];
+        b = gSpriteOrderTable[i + 1];
+        ea = gUnk_02024C40 + a * 12;
+        eb = gUnk_02024C40 + b * 12;
+        if (*(u16 *)(ea + 8) < *(u16 *)(eb + 8)) {
+            gSpriteOrderTable[i] = b;
+            gSpriteOrderTable[i + 1] = a;
+            swapped = 1;
+        }
+        i++;
+    } while (i != 0x3F);
+    if (swapped)
+        goto outer;
+}
+
+void FlushSortedSprites(void)
+{
+    register u32 p asm("r0");
+    u32 i;
+    u32 e;
+    u32 base;
+    u16 *tbl;
+
+    for (i = gUnk_02024824; i != 0x3F; i++) {
+        p = gUnk_02024820;
+        *(u16 *)(p + 8) = 0;
+        *(s32 *)(p + 4) = -1;
+        p += 0xC;
+        gUnk_02024820 = p;
+    }
+    SortSpritesByDepth();
+    tbl = gSpriteOrderTable;
+    for (i = 0; i != gUnk_02024824; tbl++, i++) {
+        base = (u32)gUnk_02024C40;
+        e = base + *tbl * 12;
+        if (*(s32 *)(e + 4) != -1) {
+            p = gUnk_02024828;
+            *(u32 *)(p) = *(u32 *)(e);
+            *(u32 *)(p + 4) = *(s32 *)(e + 4);
+            p += 8;
+            gUnk_02024828 = p;
+        }
+    }
+}
 
 void SetSpriteRotMatrices(void)
 {

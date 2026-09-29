@@ -1,13 +1,8 @@
 #include "global.h"
 #include "gba/defines.h"
 #include "variables.h"
-
-extern u16 gObjTileCache64Tiles[];
-extern u16 gObjTileCache16Tiles[];
-extern u16 gObjTileCache2Tiles[];
-extern u16 gObjTileCache8Tiles[];
-extern u16 gObjTileCache4Tiles[];
-extern u16 gObjTileCache1Tiles[];
+#include "functions.h"
+#include "gba/syscall.h"
 
 struct Unk080072F4
 {
@@ -28,6 +23,15 @@ struct unk_07304
     u32 fC;
     u32 f10;
 };
+
+extern u16 gObjTileCache64Tiles[];
+extern u16 gObjTileCache16Tiles[];
+extern u16 gObjTileCache2Tiles[];
+extern u16 gObjTileCache8Tiles[];
+extern u16 gObjTileCache4Tiles[];
+extern u16 gObjTileCache1Tiles[];
+extern s32 gObjPalBytesCopiedThisFrame;
+extern s32 gObjPalBytesPeak;
 
 void InitObjPaletteCacheEntry(struct Unk080072F4 *entry)
 {
@@ -348,4 +352,144 @@ u32 *RequestObjTiles1Compressed(u32 gfx)
         }
     }
     return 0;
+}
+
+u8 RequestObjPalette(u32 a)
+{
+    u32 *p;
+    u32 *q;
+    u32 i;
+
+    p = gObjPaletteCache;
+    i = 0;
+    q = p;
+    for (; i != 16; i++, p += 3) {
+        if (p[1] == a) {
+            *((u8 *)p + 0) = 1;
+            *((u8 *)p + 1) = 1;
+            return (u8)i;
+        }
+    }
+    p = q;
+    for (i = 0; i != 16; i++, p += 3) {
+        if (*(u8 *)p == 0) {
+            *(u8 *)p = 1;
+            *((u8 *)p + 1) = 1;
+            p[1] = a;
+            return (u8)i;
+        }
+    }
+    return 0;
+}
+
+void UploadPendingGfx(void)
+{
+    u8 buf[0x200];
+    u8 *p;
+    u32 i;
+    s32 src;
+    s32 len;
+    s32 *q;
+
+    gObjPalBytesCopiedThisFrame = 0;
+
+    p = (u8 *)gObjTileCache64;
+    i = 0;
+    do {
+        if (p[4] != 0) {
+            src = *(s32 *)(p + 8);
+            len = *(s32 *)(p + 0xC);
+            RLUnCompVram(src, len);
+            p[4] = 0;
+        }
+        i++;
+        p += 0x14;
+    } while (i != 4);
+
+    p = (u8 *)gObjTileCache16;
+    i = 0;
+    do {
+        if (p[4] != 0) {
+            src = *(s32 *)(p + 8);
+            len = *(s32 *)(p + 0xC);
+            RLUnCompVram(src, len);
+            p[4] = 0;
+        }
+        i++;
+        p += 0x14;
+    } while (i != 0x18);
+
+    p = (u8 *)gObjTileCache2;
+    i = 0;
+    do {
+        if (p[4] != 0) {
+            src = *(s32 *)(p + 8);
+            len = *(s32 *)(p + 0xC);
+            RLUnCompVram((const void *)src, buf);
+            CpuSet(buf, (void *)len, 0x20);
+            p[4] = 0;
+        }
+        i++;
+        p += 0x14;
+    } while (i != 0x20);
+
+    p = (u8 *)gObjTileCache8;
+    i = 0;
+    do {
+        if (p[4] != 0) {
+            src = *(s32 *)(p + 8);
+            len = *(s32 *)(p + 0xC);
+            RLUnCompVram(src, len);
+            p[4] = 0;
+        }
+        i++;
+        p += 0x14;
+    } while (i != 0x14);
+
+    p = (u8 *)gObjTileCache4;
+    i = 0;
+    do {
+        if (p[4] != 0) {
+            src = *(s32 *)(p + 8);
+            len = *(s32 *)(p + 0xC);
+            RLUnCompVram(src, len);
+            p[4] = 0;
+        }
+        i++;
+        p += 0x14;
+    } while (i != 0x10);
+
+    p = (u8 *)gObjTileCache1;
+    i = 0;
+    do {
+        if (p[4] != 0) {
+            src = *(s32 *)(p + 8);
+            len = *(s32 *)(p + 0xC);
+            if (p[4] == 1)
+                CpuSet(src, len, 0x10);
+            else
+                RLUnCompVram(src, len);
+            p[4] = 0;
+        }
+        i++;
+        p += 0x14;
+    } while (i != 0x20);
+
+    p = (u8 *)gObjPaletteCache;
+    i = 0;
+    q = &gObjPalBytesCopiedThisFrame;
+    do {
+        if (p[1] != 0) {
+            src = *(s32 *)(p + 4);
+            len = *(s32 *)(p + 8);
+            CpuSet(src, len, 0x10);
+            p[1] = 0;
+            *q += 0x20;
+        }
+        i++;
+        p += 0xC;
+    } while (i != 0x10);
+
+    if (gObjPalBytesCopiedThisFrame > gObjPalBytesPeak)
+        gObjPalBytesPeak = gObjPalBytesCopiedThisFrame;
 }

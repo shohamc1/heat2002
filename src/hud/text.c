@@ -1,6 +1,11 @@
 #include "global.h"
 #include "data.h"
 
+void ClearTextLayer(void);
+
+void ClearRaceTextLayer(void)
+{ ClearTextLayer(); }
+
 void DrawText(const u8 *text, u32 x, u32 y, u8 highlight)
 {
     u16 *out = (u16 *)*(u32 *)&gTextLayerMapPtr;

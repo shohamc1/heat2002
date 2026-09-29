@@ -11,6 +11,15 @@ struct Unk0833E528Ent
     u8 field_0C[4];
     u32 field_10;
 };
+struct Car
+{
+    u8 pad00[0x8C];
+    s32 tireWear0;
+    s32 tireWear1;
+    s32 tireWear2;
+    s32 tireWear3;
+};
+
 extern u32 gUnk_02024EE8[];
 struct Unk0833E528Ent *ModuleRequestObjTiles16(void *a, u16 *b);
 u32 ModuleRequestObjPalette(u32 a);
@@ -29,14 +38,6 @@ void ModuleM4aSongNumStart(u32 r0);
 extern u8 gModule_Pos[];
 extern u8 gModule_BlankRow16[];
 extern u8 gModule_Lap[];
-struct Car
-{
-    u8 pad00[0x8C];
-    s32 tireWear0;
-    s32 tireWear1;
-    s32 tireWear2;
-    s32 tireWear3;
-};
 extern u8 gUnk_0203B6A4;
 
 void ModuleDrawSpeedNeedle(u32 speed)

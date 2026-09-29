@@ -3,9 +3,10 @@
 #include "functions.h"
 #include "gba/compat.h"
 
+#define GBA_CPUSET sub_08344B64
+
 void ModulePackFadePalette(void);
 extern u16 gUnk_0203AAD0[];
-#define GBA_CPUSET sub_08344B64
 void ModuleUpdatePaletteFade(void);
 
 void ModuleFillFadePalette(u32 color)

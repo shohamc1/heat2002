@@ -15,7 +15,6 @@ struct UnkEFA0
 };
 struct EFA0s4
 { struct UnkEFA0 r[4]; };
-extern u8 gText_BlankRowLinkLobby[];
 struct EntEFA0
 {
     u8 f0;
@@ -27,6 +26,8 @@ struct EntEFA0
    subscript expansion for the order-sensitive uses below. */
 struct LinkLobbySlots
 { struct EntEFA0 r[4]; };
+
+extern u8 gText_BlankRowLinkLobby[];
 extern u8 gText_EmptySlot[];
 extern u16 gUnk_020020B8;
 

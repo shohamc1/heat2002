@@ -3,14 +3,15 @@
 #include "functions.h"
 #include "variables.h"
 
-void LapTimeTask(u32 task);
-u32 AllocTask(void);
-void AddTask(u32 a);
 struct Unk0800B46C
 {
     u8 pad00[0x18];
     s32 f18;
 };
+
+void LapTimeTask(u32 task);
+u32 AllocTask(void);
+void AddTask(u32 a);
 void LapSnapshotTask(struct Unk0800B46C *);
 
 void LapTimeTask(u32 task)

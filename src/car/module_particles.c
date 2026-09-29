@@ -4,11 +4,6 @@
 #include "car.h"
 
 struct Unk08342FF0;
-
-void *ModuleAllocTask(void);
-void ModuleAddTask(u32);
-void ModuleDraftStreakTask(u32 task);
-u8 ModuleWorldToScreen(s32 x, s32 y, s32 *out);
 struct Tbl
 {
     u8 pad[0xC4];
@@ -16,15 +11,6 @@ struct Tbl
     s32 nextCornerZ[4];
     u8 pad2[0x190 - 0xE4];
 };
-void ModuleSkidSmokeTask(u32 e);
-void ModuleAddTask(u32 a);
-void ModuleDamageSmokeTask(struct Unk08342FF0 *e);
-extern u32 gUnk_0202B370[];
-extern u8 gUnk_0201F370[];
-u32 *ModuleRequestObjTiles16(u32 a);
-u32 ModuleGetTrackTileType(s32 x, s32 y);
-s32 ModuleRequestObjPalette(u32 a);
-u32 ModuleAddOamEntry(u32 a, u32 b);
 struct Unk08342FF0
 {
     s32 f00;
@@ -43,6 +29,20 @@ struct Unk08342FF0Sprite
     u8 pad00[0x10];
     u32 f10;
 };
+
+void *ModuleAllocTask(void);
+void ModuleAddTask(u32);
+void ModuleDraftStreakTask(u32 task);
+u8 ModuleWorldToScreen(s32 x, s32 y, s32 *out);
+void ModuleSkidSmokeTask(u32 e);
+void ModuleAddTask(u32 a);
+void ModuleDamageSmokeTask(struct Unk08342FF0 *e);
+extern u32 gUnk_0202B370[];
+extern u8 gUnk_0201F370[];
+u32 *ModuleRequestObjTiles16(u32 a);
+u32 ModuleGetTrackTileType(s32 x, s32 y);
+s32 ModuleRequestObjPalette(u32 a);
+u32 ModuleAddOamEntry(u32 a, u32 b);
 
 void ModuleDummyWallHitHook(s32 cornerX, s32 cornerZ)
 {}

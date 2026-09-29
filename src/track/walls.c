@@ -3,7 +3,6 @@
 
 struct WallRec;
 struct Pt;
-extern u32 gUnk_0202CC48;
 struct tbl_0800CCE0
 {
     u32 f0;
@@ -12,6 +11,8 @@ struct tbl_0800CCE0
     u32 fC;
     u32 f10;
 };
+
+extern u32 gUnk_0202CC48;
 extern struct tbl_0800CCE0 gUnk_083FD91C[];
 
 u16 *GetWallListAt(s32 x, s32 y)

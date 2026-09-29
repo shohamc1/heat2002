@@ -4,9 +4,6 @@
 #include "data.h"
 #include "m4a.h"
 
-extern u8 gText_HudPosLabel[];
-extern u8 gText_BlankRow16_2[];
-extern u8 gText_Lap[];
 struct Car
 {
     u8 pad00[0x8C];
@@ -15,6 +12,10 @@ struct Car
     s32 tireWear2;
     s32 tireWear3;
 };
+
+extern u8 gText_HudPosLabel[];
+extern u8 gText_BlankRow16_2[];
+extern u8 gText_Lap[];
 extern u8 gTireWearBlinkCounter;
 
 extern u8 gUnk_08338720[];

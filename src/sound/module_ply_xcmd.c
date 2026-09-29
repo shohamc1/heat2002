@@ -8,21 +8,11 @@
  * addresses (module linked to run from 0x02000000), so under match.py's
  * ROM-address link the 18 table words plus the pool word that feeds
  * ldr r1 cannot match; everything else is byte-identical. */
-void _08344B84(u32 arg0, u32 arg1, u32 arg2);
 #define MEMACC_COND_JUMP(cond) \
     if (cond)                  \
         goto cond_true;        \
     else                       \
         goto cond_false;
-/* ply_xcmd, high-module copy. Its xcmd table lives at 0x0200C910 and the
- * indirect call goes through the high module's _call_via_r2 stub at
- * 0x08344B84: calling _08344B84(a, b, target) leaves a in r0, b in r1 and
- * jumps to the address in r2. */
-extern MPlayFunc gUnk_0200C910[];
-/* ply_xxx (high copy). The high module links its own libgcc copy, so the
-   indirect call routes through _08344B84, its _call_via_r2, not the low
-   copy's _call_via_r2 (same pattern as ModuleClearChain with _08344B80). */
-/* ply_xwave, high-module copy. */
 #define READ_XCMD_BYTE(var, n)         \
     {                                  \
         u32 byte = track->cmdPtr[(n)]; \
@@ -30,6 +20,18 @@ extern MPlayFunc gUnk_0200C910[];
         (var) &= ~(0xFF << (n * 8));   \
         (var) |= byte;                 \
     }
+
+void _08344B84(u32 arg0, u32 arg1, u32 arg2);
+/* ply_xcmd, high-module copy. Its xcmd table lives at 0x0200C910 and the
+ * indirect call goes through the high module's _call_via_r2 stub at
+ * 0x08344B84: calling _08344B84(a, b, target) leaves a in r0, b in r1 and
+ * jumps to the address in r2. */
+extern MPlayFunc gUnk_0200C910[];
+
+/* ply_xxx (high copy). The high module links its own libgcc copy, so the
+   indirect call routes through _08344B84, its _call_via_r2, not the low
+   copy's _call_via_r2 (same pattern as ModuleClearChain with _08344B80). */
+/* ply_xwave, high-module copy. */
 /* ply_xtype (high copy) */
 /* ply_xatta (high copy) */
 /* ply_xdeca (high copy) */
@@ -39,7 +41,6 @@ extern MPlayFunc gUnk_0200C910[];
 /* ply_xiecl (high copy) */
 /* ply_xleng (high copy) */
 /* ply_xswee (high copy) */
-
 void ModulePlyMemacc(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
 {
     u32 op;
@@ -199,3 +200,6 @@ void ModulePlyXswee(u32 mplayInfo, struct MusicPlayerTrack *track)
     track->tone.pan_sweep = *track->cmdPtr;
     track->cmdPtr++;
 }
+
+void ModuleDummyCgbSound(void)
+{}

@@ -2,11 +2,6 @@
 #include "gba/m4a_internal.h"
 #include "functions.h"
 
-/* MidiKeyToCgbFreq. Tables: gCgbScaleTable = gCgbScaleTable (u8),
- * gCgbFreqTable = gCgbFreqTable (s16), gNoiseTable = gNoiseTable (u8). */
-extern const u8 gCgbScaleTable[];
-extern const s16 gCgbFreqTable[];
-extern const u8 gNoiseTable[];
 /* CgbOscOff */
 struct Unk1C20
 {
@@ -23,6 +18,12 @@ struct Unk1C20
     u8 unk1B;
     u8 unk1C;
 };
+
+/* MidiKeyToCgbFreq. Tables: gCgbScaleTable = gCgbScaleTable (u8),
+ * gCgbFreqTable = gCgbFreqTable (s16), gNoiseTable = gNoiseTable (u8). */
+extern const u8 gCgbScaleTable[];
+extern const s16 gCgbFreqTable[];
+extern const u8 gNoiseTable[];
 /* CgbSound, an older m4a revision than pokeemerald's and tmc's: no NR52
  * channel-status check, no pseudo-echo envelope write, and
  * envelopeStepTimeAndDir is a u8 kept across channels. */

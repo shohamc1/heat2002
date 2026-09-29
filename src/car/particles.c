@@ -6,10 +6,6 @@
 struct EntityB658;
 struct EntityB7E0;
 struct Unk0800B8EC;
-
-void DraftStreakTask(struct EntityB658 *);
-u32 AllocTask(void);
-void AddTask(u32 a);
 struct EntityB658
 {
     u8 pad00[0x08];
@@ -20,11 +16,6 @@ struct EntityB658
     u8 pad20[0x34 - 0x20];
     u8 unk34;
 };
-extern const u8 *const gDraftStreakFrames[];
-extern u8 gDraftStreakPalette[];
-u32 WorldToScreen(s32 x, s32 y, s32 *out);
-u32 *RequestObjTiles1Compressed(u32 a);
-void SkidSmokeTask(struct EntityB7E0 *);
 struct EntityB7E0
 {
     /* 0x00 */ s32 unk00;
@@ -37,12 +28,6 @@ struct EntityB7E0
     /* 0x2C */ u8 pad2C[4];
     /* 0x30 */ s32 unk30;
 };
-extern const u8 *const gSkidSmokeFrames[]; /* 0x083FF60C */
-extern u8 gSkidSmokePalette[];             /* 0x08330D18 */
-void DamageSmokeTask(struct Unk0800B8EC *);
-extern const u8 *const gDamageSmokeFrames[];
-extern u8 gDamageSmokePalettes[];
-u32 GetTrackTileType(s32 x, s32 y);
 struct Unk0800B8EC
 {
     s32 f00;
@@ -61,6 +46,21 @@ struct Unk0800B8ECSprite
     u8 pad00[0x10];
     u32 f10;
 };
+
+void DraftStreakTask(struct EntityB658 *);
+u32 AllocTask(void);
+void AddTask(u32 a);
+extern const u8 *const gDraftStreakFrames[];
+extern u8 gDraftStreakPalette[];
+u32 WorldToScreen(s32 x, s32 y, s32 *out);
+u32 *RequestObjTiles1Compressed(u32 a);
+void SkidSmokeTask(struct EntityB7E0 *);
+extern const u8 *const gSkidSmokeFrames[]; /* 0x083FF60C */
+extern u8 gSkidSmokePalette[];             /* 0x08330D18 */
+void DamageSmokeTask(struct Unk0800B8EC *);
+extern const u8 *const gDamageSmokeFrames[];
+extern u8 gDamageSmokePalettes[];
+u32 GetTrackTileType(s32 x, s32 y);
 
 void DummyWallHitHook(void)
 {}

@@ -9,13 +9,14 @@ struct Unk08342BA4
     u8 filler10[0x18 - 0x10];
     u32 field18;
 };
-void ModuleLapTimeTask(u32 task);
-void *ModuleAllocTask(void);
 struct Unk08342C3C
 {
     u8 pad00[0x18];
     s32 f18;
 };
+
+void ModuleLapTimeTask(u32 task);
+void *ModuleAllocTask(void);
 void ModuleLapSnapshotTask(struct Unk08342C3C *e);
 void ModuleAddTask(u32 a);
 

@@ -11,10 +11,6 @@
         goto cond_true;        \
     else                       \
         goto cond_false;
-/* ply_xcmd */
-extern MPlayFunc gUnk_0801D230[];
-/* ply_xxx */
-/* ply_xwave */
 #define READ_XCMD_BYTE(var, n)         \
     {                                  \
         u32 byte = track->cmdPtr[(n)]; \
@@ -22,6 +18,12 @@ extern MPlayFunc gUnk_0801D230[];
         (var) &= ~(0xFF << (n * 8));   \
         (var) |= byte;                 \
     }
+
+/* ply_xcmd */
+extern MPlayFunc gUnk_0801D230[];
+
+/* ply_xxx */
+/* ply_xwave */
 /* ply_xtype */
 /* ply_xatta */
 /* ply_xdeca */
@@ -31,7 +33,6 @@ extern MPlayFunc gUnk_0801D230[];
 /* ply_xiecl */
 /* ply_xleng */
 /* ply_xswee */
-
 void ply_memacc(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
 {
     u32 op;
@@ -191,3 +192,6 @@ void ply_xswee(u32 mplayInfo, struct MusicPlayerTrack *track)
     track->tone.pan_sweep = *track->cmdPtr;
     track->cmdPtr++;
 }
+
+void DummyCgbSound(void)
+{}

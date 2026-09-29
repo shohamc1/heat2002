@@ -1,10 +1,9 @@
 #include "global.h"
+#include "car.h"
 #include "functions.h"
 #include "variables.h"
-#include "car.h"
 #include "data.h"
 
-s16 GetGearForSpeed(struct Car *a);
 struct Unk0800A310
 {
     u32 posX;
@@ -31,8 +30,31 @@ struct Unk0800A310
     s32 nextCornerX[4];
     s32 nextCornerZ[4];
 };
+
+s32 GetGearForSpeed(struct Car *car, s32 speed);
 extern s32 gCornerOffsetX[]; /* 0x08368270 */
 extern s32 gCornerOffsetZ[]; /* 0x08368280 */
+
+s32 GetGearForSpeed(struct Car *car, s32 speed)
+{
+    u16 *rpmPerSpeedTable;
+    u16 nextGear;
+    s16 gear;
+    s32 rpm;
+
+    nextGear = 0;
+    rpmPerSpeedTable = (u16 *)car->rpmPerSpeedTable;
+    do {
+        gear = nextGear;
+        rpm = (-(s32)rpmPerSpeedTable[gear] * speed) >> 8;
+        if ((u32)(rpm - 2001) <= 0x2326)
+            return gear;
+        nextGear = gear + 1;
+    } while ((s16)nextGear != 5);
+    if (speed > -150000)
+        return 0;
+    return 4;
+}
 
 void UpdateEngine(struct Car *car, s32 mode)
 {
@@ -89,7 +111,7 @@ void UpdateEngine(struct Car *car, s32 mode)
     }
     t3 = car->speed;
     if (t3 <= 0)
-        r = GetGearForSpeed(car);
+        r = ((s16 (*)(struct Car *))GetGearForSpeed)(car);
     else
         r = 0;
     car->engineForce = -((-car->gearRatioTable[car->gear]) * v) >> 8;

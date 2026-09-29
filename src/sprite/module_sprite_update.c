@@ -16,10 +16,6 @@ struct Unk0833D848
     u16 c;
     u16 d;
 };
-u32 ModuleSortSpritesByDepth(void);
-extern u16 gUnk_0203B6A0;
-extern u8 gUnk_0203B854;
-extern u8 gUnk_0203B6EC;
 typedef struct
 {
     u32 a;
@@ -33,6 +29,11 @@ typedef struct
         } h;
     } u;
 } Ent;
+
+u32 ModuleSortSpritesByDepth(void);
+extern u16 gUnk_0203B6A0;
+extern u8 gUnk_0203B854;
+extern u8 gUnk_0203B6EC;
 void ModuleSetSpriteRotMatrices(void);
 void ModuleUpdateSprites(void);
 

@@ -77,16 +77,12 @@ SECTIONS
         build/src/system/AgbMain.o(.text*);
         build/src/dead/sub_08000214.o(.text*);
         build/src/link/SetLinkSerialIntr.o(.text*);
-        build/src/system/InitIntrHandlers.o(.text*);
-        build/src/system/SetVBlankCallback.o(.text*);
         build/src/system/vblank.o(.text*);
         build/src/dead/sub_08000478.o(.text*);
         build/src/system/ReadKeys.o(.text*);
         build/lib/m4a/m4a_1.o(.text);
         build/src/sound/MidiKeyToFreq.o(.text*);
         build/src/dead/sub_08001130.o(.text*);
-        build/src/sound/MPlayFadeOut.o(.text*);
-        build/src/sound/m4aSoundInit.o(.text*);
         build/src/sound/m4a_main.o(.text*);
         build/src/dead/sub_08001234.o(.text*);
         build/src/sound/m4a_song.o(.text*);
@@ -107,7 +103,6 @@ SECTIONS
         build/src/sound/m4aMPlayPitchControl.o(.text*);
         build/src/dead/sub_080021D0.o(.text*);
         build/src/sound/ply_xcmd.o(.text*);
-        build/src/sound/DummyCgbSound.o(.text*);
         build/src/system/random.o(.text*);
         build/src/dead/sub_08002618.o(.text*);
         build/src/system/GameMain.o(.text*);
@@ -121,24 +116,18 @@ SECTIONS
         build/src/dead/sub_080032AC.o(.text*);
         build/src/link/ExchangeLinkInput.o(.text*);
         build/src/link/StartSinglePakLink.o(.text*);
-        build/src/track/RleDecode16.o(.text*);
         build/src/track/track.o(.text*);
-        build/src/track/DrawTrackMapWindow.o(.text*);
         build/src/dead/sub_08003C78.o(.text*);
         build/src/track/FlushTilemapBuffer.o(.text*);
         build/src/dead/sub_08003D6C.o(.text*);
         build/src/track/FlushTrackBgBuffers.o(.text*);
         build/src/dead/LoadFadePalette.o(.text*);
         build/src/palette/fade_begin.o(.text*);
-        build/src/palette/SetFadeDeltasColors240To255.o(.text*);
         build/src/palette/fade.o(.text*);
         build/src/camera/camera.o(.text*);
         build/src/sprite/oam.o(.text*);
         build/src/dead/sub_08004504.o(.text*);
         build/src/dead/sub_08004568.o(.text*);
-        build/src/sprite/ResetSpriteOrderTable.o(.text*);
-        build/src/sprite/SortSpritesByDepth.o(.text*);
-        build/src/sprite/FlushSortedSprites.o(.text*);
         build/src/sprite/sprite_update.o(.text*);
         build/src/hud/track_cues.o(.text*);
         build/src/menu/ClearPauseMenuBox.o(.text*);
@@ -156,7 +145,6 @@ SECTIONS
         build/src/hud/DrawLinkFinishTimes.o(.text*);
         build/src/race/timers.o(.text*);
         build/src/race/records.o(.text*);
-        build/src/race/UpdateRaceTimers.o(.text*);
         build/src/dead/sub_080057E8.o(.text*);
         build/src/hud/digits.o(.text*);
         build/src/dead/sub_080058FC.o(.text*);
@@ -166,7 +154,6 @@ SECTIONS
         build/src/hud/ClearTextLayer.o(.text*);
         build/src/hud/InitRaceHud.o(.text*);
         build/src/dead/sub_080063AC.o(.text*);
-        build/src/hud/ClearRaceTextLayer.o(.text*);
         build/src/hud/text.o(.text*);
         build/src/dead/sub_080064F8.o(.text*);
         build/src/hud/DrawBigText.o(.text*);
@@ -177,8 +164,6 @@ SECTIONS
         build/src/track/LoadTrackSegs.o(.text*);
         build/src/race/UpdateLapProgress.o(.text*);
         build/src/sprite/gfx_cache.o(.text*);
-        build/src/sprite/RequestObjPalette.o(.text*);
-        build/src/sprite/UploadPendingGfx.o(.text*);
         build/src/task/task.o(.text*);
         build/src/dead/sub_080079A0.o(.text*);
         build/src/race/pit.o(.text*);
@@ -194,7 +179,6 @@ SECTIONS
         build/src/dead/sub_080089EC.o(.text*);
         build/src/race/drivers.o(.text*);
         build/src/race/challenge.o(.text*);
-        build/src/race/InitRaceCars.o(.text*);
         build/src/race/pitstop.o(.text*);
         build/src/car/InitCar.o(.text*);
         build/src/dead/sub_08009B1C.o(.text*);
@@ -206,7 +190,6 @@ SECTIONS
         build/src/car/DrawAllCars.o(.text*);
         build/src/hud/DrawLinkMarker.o(.text*);
         build/src/dead/sub_0800A008.o(.text*);
-        build/src/car/GetGearForSpeed.o(.text*);
         build/src/car/engine.o(.text*);
         build/src/race/RecordFinishTime.o(.text*);
         build/src/dead/sub_0800A470.o(.text*);
@@ -236,9 +219,6 @@ SECTIONS
         build/src/car/CheckDrafting.o(.text*);
         build/src/dead/sub_0800C21C.o(.text*);
         build/src/car/ai_driver.o(.text*);
-        build/src/car/ComputePitStallDistance.o(.text*);
-        build/src/car/UpdateAiDriver.o(.text*);
-        build/src/car/InitCarSteering.o(.text*);
         build/src/dead/sub_0800C98C.o(.text*);
         build/src/system/Atan2.o(.text*);
         build/src/dead/sub_0800CB5C.o(.text*);
@@ -250,7 +230,6 @@ SECTIONS
         build/src/dead/BounceOffWalls.o(.text*);
         build/src/car/CollideCarWithWalls.o(.text*);
         build/src/car/collide.o(.text*);
-        build/src/car/CollideCars.o(.text*);
         build/src/dead/CallFunc.o(.text*);
         build/src/link/multiboot.o(.text*);
         build/src/link/sio.o(.text*);
@@ -267,9 +246,7 @@ SECTIONS
         build/src/hud/ZeroTextLayer.o(.text*);
         build/src/race/SortCarsByTime.o(.text*);
         build/src/menu/backdrop.o(.text*);
-        build/src/menu/ShowBootSplash1.o(.text*);
         build/src/menu/credits.o(.text*);
-        build/src/link/InitMultiplayerSio.o(.text*);
         build/src/link/serial.o(.text*);
         build/src/dead/sub_0800F8CC.o(.text*);
         build/src/race/SetupChallenge.o(.text*);
@@ -282,7 +259,6 @@ SECTIONS
         build/src/system/wait.o(.text*);
         build/src/menu/boot_splash.o(.text*);
         build/src/dead/sub_0801037C.o(.text*);
-        build/src/menu/TitleScreen.o(.text*);
         build/src/menu/main_menu.o(.text*);
         build/src/dead/sub_0801067C.o(.text*);
         build/src/menu/metatile.o(.text*);
@@ -293,12 +269,8 @@ SECTIONS
         build/src/dead/sub_080109C0.o(.text*);
         build/src/menu/team_select.o(.text*);
         build/src/menu/driver_select.o(.text*);
-        build/src/menu/DrawTrackSelect.o(.text*);
-        build/src/menu/TrackSelectMenu.o(.text*);
-        build/src/link/SortLinkCarsByTime.o(.text*);
         build/src/link/race_summary.o(.text*);
         build/src/link/post_race_menu.o(.text*);
-        build/src/link/LinkDriverSelect.o(.text*);
         build/src/link/link_state.o(.text*);
         build/src/palette/RgbFromPercent.o(.text*);
         build/src/menu/LoadMenuScreen.o(.text*);
@@ -315,7 +287,6 @@ SECTIONS
         build/src/menu/challenge_complete.o(.text*);
         build/src/menu/message_box.o(.text*);
         build/src/menu/challenge_result.o(.text*);
-        build/src/menu/ChallengeFailedScreen.o(.text*);
         build/src/race/GetPlayerStanding.o(.text*);
         build/src/menu/trophy.o(.text*);
         build/src/dead/sub_08012DE4.o(.text*);
@@ -342,7 +313,6 @@ SECTIONS
         build/src/link/LinkFailScreen.o(.text*);
         build/src/hud/GetString.o(.text*);
         build/src/dead/sub_08016568.o(.text*);
-        build/src/save/WriteSaveBlocks.o(.text*);
         build/src/save/eeprom.o(.text*);
         build/src/save/save.o(.text*);
         build/src/system/RandomInRange.o(.text*);
@@ -507,7 +477,6 @@ SECTIONS
         build/src/sound/ModuleM4aMPlayPitchControl.o(.text*);
         build/src/dead/sub_0833B890.o(.text*);
         build/src/sound/module_ply_xcmd.o(.text*);
-        build/src/sound/ModuleDummyCgbSound.o(.text*);
         build/src/dead/sub_0833BC7C.o(.text*);
         build/src/dead/sub_0833BCBC.o(.text*);
         build/src/link/ModuleSortLinkCarsByTime.o(.text*);
@@ -522,7 +491,6 @@ SECTIONS
         build/src/link/module_link_keys.o(.text*);
         build/src/dead/sub_0833C7F0.o(.text*);
         build/src/link/module_link_predicates.o(.text*);
-        build/src/link/ModuleExchangeLinkInput.o(.text*);
         build/src/dead/sub_0833CC7C.o(.text*);
         build/src/track/module_track.o(.text*);
         build/src/dead/sub_0833D070.o(.text*);
@@ -550,14 +518,11 @@ SECTIONS
         build/src/hud/ModuleDrawLinkFinishTimes.o(.text*);
         build/src/race/module_timers.o(.text*);
         build/src/race/module_records.o(.text*);
-        build/src/race/ModuleUpdateRaceTimers.o(.text*);
         build/src/dead/sub_0833E2E4.o(.text*);
         build/src/hud/module_digits.o(.text*);
         build/src/dead/sub_0833E3F8.o(.text*);
         build/src/hud/module_hud.o(.text*);
         build/src/dead/sub_0833EAA4.o(.text*);
-        build/src/hud/ModuleUpdateRaceHud.o(.text*);
-        build/src/hud/ModuleClearTextLayer.o(.text*);
         build/src/hud/module_init_race_hud.o(.text*);
         build/src/dead/sub_0833EE1C.o(.text*);
         build/src/hud/ModuleClearRaceTextLayer.o(.text*);
@@ -584,7 +549,6 @@ SECTIONS
         build/src/car/module_tire_forces.o(.text*);
         build/src/dead/sub_08340B5C.o(.text*);
         build/src/race/module_challenge.o(.text*);
-        build/src/race/ModuleInitRaceCars.o(.text*);
         build/src/dead/sub_0834116C.o(.text*);
         build/src/race/ModuleEnterPit.o(.text*);
         build/src/dead/sub_08341284.o(.text*);
@@ -597,7 +561,6 @@ SECTIONS
         build/src/car/module_draw.o(.text*);
         build/src/hud/ModuleDrawLinkMarker.o(.text*);
         build/src/dead/sub_08341A98.o(.text*);
-        build/src/car/ModuleGetGearForSpeed.o(.text*);
         build/src/car/module_engine.o(.text*);
         build/src/race/ModuleRecordFinishTime.o(.text*);
         build/src/dead/sub_08341F00.o(.text*);
@@ -620,7 +583,6 @@ SECTIONS
         build/src/dead/sub_0834313C.o(.text*);
         build/src/hud/ModuleDrawSpriteText.o(.text*);
         build/src/car/module_drafting.o(.text*);
-        build/src/car/ModuleInitCarSteering.o(.text*);
         build/src/dead/sub_083432F4.o(.text*);
         build/src/track/ModuleGetTrackTileType.o(.text*);
         build/src/dead/sub_083434AC.o(.text*);
@@ -663,7 +625,6 @@ SECTIONS
         build/data/rom_08363EE8.o(.text*);
         build/lib/crt0_island.o(.text);
         build/src/link/island_intr.o(.text*);
-        build/src/link/IslandDrawMultibootProgressMarker.o(.text*);
         build/src/link/island_multiboot.o(.text*);
         build/src/link/island_sio.o(.text*);
         build/src/link/IslandSioTransferIntr.o(.text*);

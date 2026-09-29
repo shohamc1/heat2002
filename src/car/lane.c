@@ -15,8 +15,6 @@ struct OutBD98
     s32 x;
     s32 y;
 };
-extern const u8 *const gLaneCellLists[];
-extern const u8 *const gLaneCellGrids[];
 struct Car
 {
     s32 posX;
@@ -37,6 +35,9 @@ struct Car
     u8 padFC[0x154 - 0xFC];
     s32 laneLength;
 };
+
+extern const u8 *const gLaneCellLists[];
+extern const u8 *const gLaneCellGrids[];
 void UpdateCarPredictedPos(struct Car *a);
 s32 FindClosestLaneSegment(struct Car *a, s32 b);
 s32 Atan2(s32 a, s32 b);

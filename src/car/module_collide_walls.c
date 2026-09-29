@@ -28,22 +28,6 @@
  *   slots come out permuted.
  */
 
-inline s32 min_08343DE0(s32 a, s32 b)
-{
-    s32 r = b;
-    if (a < b)
-        r = a;
-    return r;
-}
-
-inline s32 max_08343DEC(s32 a, s32 b)
-{
-    s32 r = b;
-    if (a > b)
-        r = a;
-    return r;
-}
-
 struct Ent
 {
     u8 pad00[0x0C];
@@ -98,6 +82,22 @@ extern s32 gUnk_0203DE90;
 u16 *ModuleGetWallListAt(s16 x, s16 y);
 void ModuleTestCornersVsWalls(struct Corner *a1, struct Box *a2, struct Box *a3, struct Res *a4, u16 *a5, s32 *a6);
 void ModuleDummyWallHitHook(s32 a, s32 b);
+
+inline s32 min_08343DE0(s32 a, s32 b)
+{
+    s32 r = b;
+    if (a < b)
+        r = a;
+    return r;
+}
+
+inline s32 max_08343DEC(s32 a, s32 b)
+{
+    s32 r = b;
+    if (a > b)
+        r = a;
+    return r;
+}
 
 s32 ModuleCollideCarWithWalls(struct Ent *a)
 {

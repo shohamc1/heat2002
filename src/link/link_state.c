@@ -5,7 +5,6 @@
 #include "gba/defines.h"
 #include "gba/syscall.h"
 
-extern u32 gUnk_0202EDBC;
 struct Unk_0202EFA0
 {
     u8 unk0;
@@ -13,6 +12,8 @@ struct Unk_0202EFA0
     u8 unk2;
     u8 unk3;
 };
+
+extern u32 gUnk_0202EDBC;
 
 void ResetLinkState(void)
 {

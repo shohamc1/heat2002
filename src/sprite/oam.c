@@ -2,13 +2,14 @@
 #include "gba/defines.h"
 #include "variables.h"
 
-void ResetSpriteQueues(void);
 struct UnkStruct080044DC
 {
     u32 unk0;
     u32 unk4;
     u16 unk8;
 };
+
+void ResetSpriteQueues(void);
 
 void ResetSpriteQueues(void)
 {

@@ -1,9 +1,7 @@
 #include "global.h"
-#include "variables.h"
 #include "car.h"
+#include "variables.h"
 
-s16 ModuleGetGearForSpeed(struct Car *a);
-void ModuleStopCar(struct Car *a);
 struct Unk08341DA0
 {
     u32 unk0;
@@ -30,8 +28,30 @@ struct Unk08341DA0
     s32 nextCornerX[4];
     s32 nextCornerZ[4];
 };
+
+u32 ModuleGetGearForSpeed(struct Car *car, s32 speed);
+void ModuleStopCar(struct Car *a);
 extern s32 gUnk_020277B4[]; /* 0x020277B4 */
 extern s32 gUnk_020277C4[]; /* 0x020277C4 */
+
+u32 ModuleGetGearForSpeed(struct Car *car, s32 speed)
+{
+    u16 *rpmPerSpeedTable;
+    s16 gear;
+    s32 rpm;
+
+    gear = 0;
+    rpmPerSpeedTable = (u16 *)car->rpmPerSpeedTable;
+    do {
+        rpm = -(s32)rpmPerSpeedTable[gear] * speed >> 8;
+        if ((u32)(rpm - 2001) <= 8998)
+            return gear;
+        gear++;
+    } while (gear != 5);
+    if (speed > -150000)
+        return 0;
+    return 4;
+}
 
 void ModuleUpdateEngine(struct Car *car, s32 mode)
 {
@@ -88,7 +108,7 @@ void ModuleUpdateEngine(struct Car *car, s32 mode)
     }
     t3 = car->speed;
     if (t3 <= 0)
-        r = ModuleGetGearForSpeed(car);
+        r = ((s16 (*)(struct Car *))ModuleGetGearForSpeed)(car);
     else
         r = 0;
     car->engineForce = -((-car->gearRatioTable[car->gear]) * v) >> 8;

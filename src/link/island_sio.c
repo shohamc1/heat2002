@@ -2,7 +2,6 @@
 #include "variables.h"
 #include "gba/io_reg.h"
 
-void sub_083647FC(const void *src, void *dest, u32 control);
 struct CommRegs
 {
     u8 mode;   /* +0 */
@@ -15,6 +14,8 @@ struct CommRegs
     u32 crc;   /* +0x10 */
     s32 index; /* +0x14 */
 };
+
+void sub_083647FC(const void *src, void *dest, u32 control);
 
 void IslandSioTransferInit(u32 send, u32 chunk)
 {

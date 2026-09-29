@@ -4,15 +4,15 @@
 #include "gba/compat.h"
 #include "variables.h"
 
-/* Defined here (not symbols.ld): the first RAM variable moved into C,
-   per the phase-6 mechanism proof in docs/extern-headers-plan.md. */
-EWRAM_DATA u8 gVBlankWorkPhase = 0;
-
 void m4aSoundVSync(void);
 void FlushTrackBgBuffers(void);
 void UploadPendingGfx(void);
 void FlushPaletteBuffer(void);
 void m4aSoundMain(void);
+
+/* Defined here (not symbols.ld): the first RAM variable moved into C,
+   per the phase-6 mechanism proof in docs/extern-headers-plan.md. */
+EWRAM_DATA u8 gVBlankWorkPhase = 0;
 
 void MainVBlankCallback(void)
 {

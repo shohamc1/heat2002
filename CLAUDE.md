@@ -476,6 +476,18 @@ keeping `scripts/dead_code.py --check` passing.
 
 - A file can hold any number of functions, but `ldscript.ld` places the
   whole object, so they must be contiguous in the ROM and in ROM order.
+- Order a C file's top level as the SDK-era code did: `#include` lines,
+  `#define`s, type definitions (`struct`, `typedef`, `enum`), `extern`
+  declarations and function prototypes, file-scope globals, prototypes of
+  `static` functions, then function definitions in ROM order. A header comment
+  sits directly above the first function it describes. Hoisting a struct above
+  an `extern` is byte-neutral (`make check` verifies it).
+- A lone-function file (named for its function) merges into the module file
+  beside it in ROM order. Two things stop that, on top of the CFLAGS and
+  struct-view blockers above: a non-static `inline` helper (agbcc emits its
+  out-of-line copy at the end of the translation unit, so
+  `CollideCarWithWalls` must stay apart from `CollideCars`), and a local
+  struct whose layout differs from the module's (`FadeOutBody`, `TrkVolPitSet`).
 - Folders can nest to any depth under `src/`. The object lands at the same
   path under `build/src/`.
 - `match.py NAME` finds the file that defines `NAME` and builds only that

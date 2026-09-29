@@ -2,33 +2,6 @@
 #include "variables.h"
 #include "car.h"
 
-/*
- * Car-vs-track box collision: the high-region (0x0834 module) copy of
- * sub_0800D248, instruction-identical, ported from that matched source.
- * Its `__muldi3` libcalls resolve to the module copy through the Makefile
- * rename for src/sub_083[3-9]*.c objects.
- * Builds the four corner boxes and their union,
- * runs the tile test, then applies the impulse and steering correction.
- *
- * Shapes the retail bytes depend on:
- * - min_08343DE0/max_08343DEC are `inline` min/max helpers written as
- *   `r = b; if (a < b) r = a;` (the ternary folds to MIN_EXPR and flips the
- *   compare). Being non-static inline, GCC also emits them out of line
- *   after the function: the 24 bytes at 0x08343DE0..0x08343DF8.
- * - `total` is a separate struct, not boxes[4]: its address is a PRE'd
- *   pseudo with no register, so reload keeps it in r7 across the chains.
- * - `d0`/`d1` are long long: the dead high half of each product keeps r5
- *   busy through the global stores, which is what pushes reload to r6/r7.
- * - `v` is assigned after the table lookups (CSE reuses the byte load), and
- *   the steering delta is computed in `v` itself with `<< 16` then `>>= 20`.
- * - gcse's PRE pass numbers the 16 hoisted address pseudos in hash-bucket
- *   order, and the table size is (real insns / 2) | 1. The spill-slot order
- *   therefore depends on the pre-gcse insn count: 358 or 359 here. The
- *   early `return 0`, the `u8 ang`, and the `s16` parameters on
- *   ModuleGetWallListAt each add two insns that vanish later; without them the
- *   slots come out permuted.
- */
-
 struct Ent
 {
     u8 pad00[0x0C];
@@ -71,9 +44,6 @@ struct Res
     u8 unk0F;
     s32 unk10;
 };
-u16 *ModuleGetWallListAt(s16 x, s16 y);
-void ModuleTestCornersVsWalls(struct Corner *a1, struct Box *a2, struct Box *a3, struct Res *a4, u16 *a5, s32 *a6);
-void ModuleDummyWallHitHook(s32 a, s32 b);
 struct Unk08343DF8
 {
     s32 unk00;
@@ -111,6 +81,10 @@ struct Pt2
     s32 f0;
     s32 f1;
 };
+
+u16 *ModuleGetWallListAt(s16 x, s16 y);
+void ModuleTestCornersVsWalls(struct Corner *a1, struct Box *a2, struct Box *a3, struct Res *a4, u16 *a5, s32 *a6);
+void ModuleDummyWallHitHook(s32 a, s32 b);
 extern s32 gModule_CarCollFrameSelf[8];
 extern s32 gModule_CarCollFrameOther[8];
 extern struct Coll gUnk_0203DEB0;

@@ -1,6 +1,8 @@
 #include "global.h"
 #include "variables.h"
 #include "car.h"
+#include "data.h"
+#include "functions.h"
 
 struct Unk0800C28C
 {
@@ -28,6 +30,12 @@ struct Unk0800C358
     u32 *unkFC;
     u16 *unk100;
 };
+
+void SetAiDriverGearTables(struct Car *car);
+void FindCarAhead(struct Car *car);
+u32 FindClosestLaneSegment(struct Unk0800C358 *car);
+void UpdateCarPredictedPos(struct Unk0800C28C *car);
+s32 Atan2(s32 a, s32 b);
 
 void UpdateCarPredictedPos(struct Unk0800C28C *car)
 {
@@ -171,4 +179,179 @@ void FindCarAhead(struct Car *car)
         else
             *side = 2;
     } while (++carIdx, other++, carIdx != gNumCars[0]);
+}
+
+s32 ComputePitStallDistance(struct Car *car)
+{
+    s32 *stalls;
+    s32 *stallZPtr;
+    s32 stallIdx;
+    s32 dx;
+    s32 dz;
+    s32 carX;
+    s32 carZ;
+
+    stalls = (s32 *)gPitStallPositions;
+    stallIdx = gTrackId * 8 + car->pitStall;
+    dx = stalls[stallIdx * 2];
+    stallZPtr = (s32 *)((stallIdx * 2 + 1) * 4 + (u32)stalls);
+    dz = *stallZPtr;
+    carX = ((s16 *)&car->posX)[1]; /* high half of posX */
+    carZ = ((s16 *)&car->posZ)[1]; /* high half of posZ */
+    dx = dx - carX;
+    if (dx < 0)
+        dx = -dx;
+    carZ = dz - carZ;
+    if (carZ < 0)
+        carZ = -carZ;
+    if (dx > carZ)
+        carZ = dx;
+    return carZ;
+}
+
+void UpdateAiDriver(struct Car *ent, u8 param)
+{
+    register u8 stv;
+    u32 pad[10];
+    u32 buf[2];
+    s32 angle;
+    u16 *pA0;
+    register s32 result asm("r8");
+    register s32 zero asm("r9");
+    u32 *bufp;
+    u8 *ps;
+
+    s32 diff;
+    s32 angl;
+    s32 diffxy;
+    s32 limit;
+    s32 d34;
+    s32 d2;
+    s32 dya;
+    s32 t1;
+    s32 t2;
+    s32 t3;
+
+    SetAiDriverGearTables(ent);
+    FindCarAhead(ent);
+    zero = 0;
+    if (gAiCarAheadSide == 0 || gGameMode[0] == 9 || gGameMode[0] == 0xD || gGameMode[0] == 0xE ||
+        gGameMode[0] == 0xF || gGameMode[0] == 0x11) {
+        ent->aiInput = 1;
+        gAiCarAheadSide = 0;
+        pA0 = &ent->aiInput;
+    } else {
+        if (ent->pitState == 0 && (-ent->speed) >> 12 > 0x28)
+            ent->aiInput = ent->aiInput & 0xFFFE;
+        else
+            ent->aiInput = 1;
+        pA0 = &ent->aiInput;
+        if (ent->pitState == 0) {
+            if (gUnk_0202CC2C != 0)
+                *pA0 = 2;
+            if (gAiCarAheadSide != 0) {
+                ent->lanePosition = (ent->lanePosition - 0x20) & 0x7FF;
+                if (ent->lanePosition <= 0x100)
+                    ent->lanePosition = 0x6FF;
+                SetCarLane(ent, ent->lanePosition);
+            }
+        }
+    }
+    ((void (*)(struct Car *))UpdateCarPredictedPos)(ent);
+    result = ((s32 (*)(u32, u32))FindClosestLaneSegment)((u32)ent, param);
+    if (result == -1)
+        return;
+    diff = WorldToLaneDistance((*(u32 *)&gClosestLanePointX), (*(u32 *)&gClosestLanePointZ), ent->lanePoints,
+                               gClosestLaneSegment[0], (*(u32 *)&gClosestLaneSegmentIndex));
+    diff = diff + 0x40;
+    if (diff >= ent->laneLength)
+        diff = diff - ent->laneLength;
+    GetLanePositionAtDistance(diff, (struct OutBD98 *)buf, ent->lanePoints, ent->laneSegments);
+    ps = &ent->pitState;
+    stv = 0;
+    stv = *ps;
+    bufp = buf;
+    if (stv != 0) {
+        if (stv == 1) {
+            if (ComputePitStallDistance(ent) <= 0x63 || (gTrackId == 3 && ComputePitStallDistance(ent) <= 0xC7))
+                *ps = 2;
+        }
+        if (ent->pitState == 2) {
+            if (ComputePitStallDistance(ent) <= 0x13 || gDamagePitsEnabled == 0 ||
+                (ent == gCars && gPitMenuActive == 0 && gPitServiceEnabled == 0))
+                ent->pitState = 3;
+            buf[0] = gPitStallPositions[(gTrackId * 8 + ent->pitStall) * 2];
+            bufp[1] = gPitStallPositions[(gTrackId * 8 + ent->pitStall) * 2 + 1];
+        }
+        if (ent->pitState == 3) {
+            if (gDamagePitsEnabled == 0)
+                ent->pitState = 4;
+            t1 = gPitStallPositions[(gTrackId * 8 + 6) * 2];
+            t2 = gPitStallPositions[(gTrackId * 8 + 6) * 2 + 1];
+            t3 = gPitStallPositions[(gTrackId * 8 + 7) * 2];
+            angle = -(Atan2(t1 - t3, t2 - gPitStallPositions[(gTrackId * 8 + 7) * 2 + 1]) << 8) + 0x8400;
+        }
+    }
+    limit = 4;
+    if (gGameMode[0] == 9 || gGameMode[0] == 0xD || gGameMode[0] == 0xE || gGameMode[0] == 0xF || gGameMode[0] == 0x11)
+        limit = -99;
+    if (result > limit || ent->pitState != 0) {
+        diffxy = (buf[0] << 16) - ent->posX;
+        dya = (bufp[1] << 16) - ent->posZ;
+        angl = 0x8400 - (Atan2(diffxy >> 5, dya >> 5) << 8);
+        if (ent->pitState != 0) {
+            d34 = angl - ent->heading;
+            if (d34 < 0)
+                d34 = -d34;
+            if (d34 > 0x4000) {
+                ent->heading = angl;
+                ent->steerHeading = angl;
+            }
+        }
+        if (ent->pitState == 3)
+            diffxy = angle - ent->steerHeading;
+        else
+            diffxy = angl - ent->steerHeading;
+        diffxy = diffxy << 16;
+        diffxy = diffxy >> 16;
+        if (ent->pitState == 3) {
+            d2 = angle - ent->heading;
+            d2 = d2 << 16;
+            d2 = d2 >> 16;
+            if ((d2 < 0 ? -d2 : d2) <= 0x3FF || gTrackId == 3 || gTrackId == 1 || gTrackId == 9 ||
+                ((d2 < 0 ? -d2 : d2) <= 0xFFF && (gTrackId == 4 || gTrackId == 2)))
+                ent->pitState = 4;
+        }
+        if (ent->pitState == 0 && gAiCarAheadSide == 0)
+            diffxy = diffxy / 8;
+        if (gAiCarAheadSide != 0)
+            diffxy = diffxy * 4;
+        if (ent->speed > 0)
+            ent->steerHeading = -angl;
+        else
+            ent->steerHeading = ent->steerHeading + diffxy;
+        if ((diffxy < 0 ? -diffxy : diffxy) > 0x1F4 && (-ent->speed) >> 12 > 0x28)
+            *pA0 = *pA0 & 0xFFFE;
+        if ((diffxy < 0 ? -diffxy : diffxy) > 0x28A && (-ent->speed) >> 12 > 0x28)
+            *pA0 = 2;
+    }
+    if (ent->pitState == 1 && (-ent->speed) >> 12 > 0x50)
+        *pA0 = 2;
+    {
+        u8 st2 = ent->pitState;
+        if (st2 == 2 && (-ent->speed) >> 12 > 0x28)
+            *pA0 = st2;
+    }
+    if (ent->pitState == 3 && (-ent->speed) >> 12 > 0xA)
+        *pA0 = 2;
+    if (zero != 0) {
+        zero = (s16)zero;
+        ent->steerHeading = ent->steerHeading + zero;
+    }
+}
+
+void InitCarSteering(s32 *steer, u32 heading)
+{
+    steer[1] = heading;
+    steer[0] = heading;
 }

@@ -8,8 +8,6 @@ struct Slot78E4
     u32 c;
 };
 
-extern struct Slot78E4 gUnk_02025FE0;
-
 struct Node0800796C
 {
     u32 f0[3];
@@ -17,6 +15,8 @@ struct Node0800796C
     u32 f10;
     struct Node0800796C *next;
 };
+
+extern struct Slot78E4 gUnk_02025FE0;
 
 extern u32 gUnk_0202A3E0;
 
