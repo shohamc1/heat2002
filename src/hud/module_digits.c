@@ -17,7 +17,7 @@ struct BigDigitGlyph
     u16 bottomRight;
 };
 extern struct BigDigitGlyphRow gModule_BigDigitGlyphs[];
-extern u16 gUnk_020215D2[];
+extern u16 gModule_SmallDigitGlyphs[];
 
 void ModuleDrawBigDigit(u16 *dest, u8 idx)
 {
@@ -34,7 +34,7 @@ void ModuleDrawSmallDigit(u16 *dest, s32 idx)
     u32 glyphAddr;
     u16 tile;
 
-    glyphAddr = (u8)idx * 2 + (u32)gUnk_020215D2;
+    glyphAddr = (u8)idx * 2 + (u32)gModule_SmallDigitGlyphs;
     tile = (gModule_FontTileEntries[*(u16 *)glyphAddr] & 0xFFF) | 0xE000;
     *dest = tile;
 }

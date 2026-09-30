@@ -93,14 +93,14 @@ void ModuleDrawLowFuelWarning(s32 fuel)
     dest = (u16 *)(gModule_TextLayerMapPtr[0] + 0x4EE);
     if (fuel <= 0x31FF && ((*(u32 *)&gModule_FrameCounter) & 0x10) != 0) {
         glyphOff = 0x5B2;
-        *dest = 0xE000 | gModule_FontTileEntries[*(u16 *)&gUnk_02021594[glyphOff]];
+        *dest = 0xE000 | gModule_FontTileEntries[*(u16 *)&gModule_FontGlyphGrid[glyphOff]];
         if (gModule_Options[3] != 0) {
             if (gModule_IsDemo[0] == 0)
                 ModuleM4aSongNumStart(0x1B);
         }
     } else {
         glyphOff = 0x5B4;
-        *dest = 0xE000 | gModule_FontTileEntries[*(u16 *)&gUnk_02021594[glyphOff]];
+        *dest = 0xE000 | gModule_FontTileEntries[*(u16 *)&gModule_FontGlyphGrid[glyphOff]];
     }
 }
 
@@ -212,31 +212,31 @@ void ModuleDrawTireWear(struct Car *p)
     dest = (u16 *)(gModule_TextLayerMapPtr[0] + 0x4A4);
     if (p->tireWear0 <= 0x7CFFF || (gUnk_0203B6A4 & 8) != 0) {
         off = 0x6C2;
-        *dest = (0xE0 << 8) | gModule_FontTileEntries[*(u16 *)&gUnk_02021594[off]];
+        *dest = (0xE0 << 8) | gModule_FontTileEntries[*(u16 *)&gModule_FontGlyphGrid[off]];
     } else {
         off = 0x6BE;
-        *dest = (0xE0 << 8) | gModule_FontTileEntries[*(u16 *)&gUnk_02021594[off]];
+        *dest = (0xE0 << 8) | gModule_FontTileEntries[*(u16 *)&gModule_FontGlyphGrid[off]];
     }
     if (p->tireWear1 <= 0x7CFFF || (gUnk_0203B6A4 & 8) != 0) {
         off = 0x6C4;
-        dest[1] = (0xE0 << 8) | gModule_FontTileEntries[*(u16 *)&gUnk_02021594[off]];
+        dest[1] = (0xE0 << 8) | gModule_FontTileEntries[*(u16 *)&gModule_FontGlyphGrid[off]];
     } else {
         off = 0x6C0;
-        dest[1] = (0xE0 << 8) | gModule_FontTileEntries[*(u16 *)&gUnk_02021594[off]];
+        dest[1] = (0xE0 << 8) | gModule_FontTileEntries[*(u16 *)&gModule_FontGlyphGrid[off]];
     }
     if (p->tireWear2 <= 0x7CFFF || (gUnk_0203B6A4 & 8) != 0) {
         off = 0x74A;
-        dest[0x20] = (0xE0 << 8) | gModule_FontTileEntries[*(u16 *)&gUnk_02021594[off]];
+        dest[0x20] = (0xE0 << 8) | gModule_FontTileEntries[*(u16 *)&gModule_FontGlyphGrid[off]];
     } else {
         off = 0x746;
-        dest[0x20] = (0xE0 << 8) | gModule_FontTileEntries[*(u16 *)&gUnk_02021594[off]];
+        dest[0x20] = (0xE0 << 8) | gModule_FontTileEntries[*(u16 *)&gModule_FontGlyphGrid[off]];
     }
     if (p->tireWear3 <= 0x7CFFF || (gUnk_0203B6A4 & 8) != 0) {
         off = 0x74C;
-        dest[0x21] = (0xE0 << 8) | gModule_FontTileEntries[*(u16 *)&gUnk_02021594[off]];
+        dest[0x21] = (0xE0 << 8) | gModule_FontTileEntries[*(u16 *)&gModule_FontGlyphGrid[off]];
     } else {
         off = 0x748;
-        dest[0x21] = (0xE0 << 8) | gModule_FontTileEntries[*(u16 *)&gUnk_02021594[off]];
+        dest[0x21] = (0xE0 << 8) | gModule_FontTileEntries[*(u16 *)&gModule_FontGlyphGrid[off]];
     }
     gUnk_0203B6A4++;
 }

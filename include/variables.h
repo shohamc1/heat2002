@@ -19,7 +19,7 @@ struct WallRec;
 
 // Main program
 
-extern u16 gUnk_02021D04[];
+extern u16 gModule_FontCharToGlyphTable[];
 extern s32 gUnk_02000478;
 extern u8 gLinkPlayerSlots[];
 extern const struct MusicPlayer gModule_MPlayTable[];
@@ -205,7 +205,7 @@ extern u16 gTrackRecordMin[];
 extern const u16 gModule_AiDriverRpmPerSpeedTable[];
 extern u8 gFrontTireGripSlow;
 extern s32 gAxleTireGrip;
-extern u8 gUnk_02021594[];
+extern u8 gModule_FontGlyphGrid[];
 extern s16 gUnk_0202E930;
 extern u16 gTrackRecordMs[];
 extern u8 gCheatCodeWasValid;

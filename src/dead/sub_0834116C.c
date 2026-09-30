@@ -34,7 +34,7 @@ void sub_08341180(u8 arg)
 
     dest = (u16 *)(gModule_TextLayerMapPtr[0] + 0x290);
     off = 0x730;
-    *dest = (0xE0 << 8) | gModule_FontTileEntries[*(u16 *)((u8 *)gUnk_02021594 + off)];
+    *dest = (0xE0 << 8) | gModule_FontTileEntries[*(u16 *)((u8 *)gModule_FontGlyphGrid + off)];
     dest = (u16 *)(gModule_TextLayerMapPtr[0] + 0x292);
     row = 0;
     ctr = 0;
@@ -42,21 +42,21 @@ void sub_08341180(u8 arg)
         lim = row + 7;
         if (arg > lim) {
             off = 0x742;
-            *dest = (0xE0 << 8) | gModule_FontTileEntries[*(u16 *)((u8 *)gUnk_02021594 + off)];
+            *dest = (0xE0 << 8) | gModule_FontTileEntries[*(u16 *)((u8 *)gModule_FontGlyphGrid + off)];
             dest++;
         }
         if (arg < row) {
             off = 0x732;
-            *dest = (0xE0 << 8) | gModule_FontTileEntries[*(u16 *)((u8 *)gUnk_02021594 + off)];
+            *dest = (0xE0 << 8) | gModule_FontTileEntries[*(u16 *)((u8 *)gModule_FontGlyphGrid + off)];
             dest++;
         } else if (arg <= lim) {
             off = 0x734 + 2 * (u8)(arg - row);
-            *dest = (0xE0 << 8) | gModule_FontTileEntries[*(u16 *)((u8 *)gUnk_02021594 + off)];
+            *dest = (0xE0 << 8) | gModule_FontTileEntries[*(u16 *)((u8 *)gModule_FontGlyphGrid + off)];
             dest++;
         }
         row += 8;
         ctr++;
     } while (ctr != 0x0C);
     off = 0x744;
-    *dest = (0xE0 << 8) | gModule_FontTileEntries[*(u16 *)((u8 *)gUnk_02021594 + off)];
+    *dest = (0xE0 << 8) | gModule_FontTileEntries[*(u16 *)((u8 *)gModule_FontGlyphGrid + off)];
 }

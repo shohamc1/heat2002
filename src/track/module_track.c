@@ -8,7 +8,7 @@
 /* struct Track comes from include/structs.h via variables.h; it is the
    record type of gModule_TrackData, also from variables.h. */
 extern u16 gUnk_02022428[];
-extern u16 gUnk_02021394[];
+extern u16 gModule_RaceHudBgPalette[];
 extern u32 gUnk_02039288;
 extern u32 gUnk_02039224;
 extern u32 gUnk_020392A0;
@@ -47,7 +47,7 @@ void ModuleLoadTrack(u32 idx)
     t = gUnk_02022428;
     CpuCopy16(t, BG_SCREEN_ADDR(24), 0x2000);
     CpuCopy16(gModule_TrackData[idx].palette, (u32)fadePalette, 0x200);
-    CpuCopy16(t = gUnk_02021394, (u32)paletteCopy, 0x20);
+    CpuCopy16(t = gModule_RaceHudBgPalette, (u32)paletteCopy, 0x20);
     ModuleBeginFadeToBrightenedPalette(0x1E, fadePalette);
     gUnk_02039244 = gModule_TrackData[idx].mapWidth;
     gUnk_02039288 = gModule_TrackData[idx].mapWidth2;

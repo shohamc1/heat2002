@@ -32,9 +32,6 @@
 	.size \name, .-\name
 	.endm
 @ End embedded Luvdis macros
-	.global gModule_FontTileEntries
-gModule_FontTileEntries:
-	.incbin "build/assets/unknown/data_0835ACD4.bin"
 	.global gUnk_02022428
 gUnk_02022428:
 	.incbin "build/assets/graphics/tiles/race_hud_bg.tiles.bin", 0, 7232

@@ -2,7 +2,7 @@
 #include "variables.h"
 
 extern u16 gUnk_0201F550[];
-extern u8 gUnk_0201FB54[];
+extern u8 gModule_TextLayerTiles[];
 extern u8 gUnk_0201F390[];
 
 struct ObjTileCacheEntry *ModuleRequestObjTiles1(void *a);
@@ -32,7 +32,7 @@ void ModuleDrawSpriteText(const u8 *text, u32 startX, u32 pal)
             if (ch != 0x20) {
                 ctrlCode = *(u16 *)((ch << 1) + (u32)gUnk_0201F550);
                 glyphTile = gModule_TextGlyphTileIndices[ctrlCode];
-                sprite = ModuleRequestObjTiles1(&gUnk_0201FB54[glyphTile << 5]);
+                sprite = ModuleRequestObjTiles1(&gModule_TextLayerTiles[glyphTile << 5]);
                 if (sprite != 0) {
                     attr = (xPos & 0x1FF) << 16;
                     attr = attr | palBits;

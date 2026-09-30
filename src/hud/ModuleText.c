@@ -32,7 +32,7 @@ void ModuleDrawTextCenteredHighlight(u8 *str, u32 y)
     while (c != 0) {
         if (c != 0x20) {
             v = e;
-            v |= gModule_FontTileEntries[gUnk_02021D04[(u8)(c - '!')]];
+            v |= gModule_FontTileEntries[gModule_FontCharToGlyphTable[(u8)(c - '!')]];
             *dest++ = v;
         } else {
             t = 0x47;
@@ -58,7 +58,7 @@ void ModuleDrawText(const u8 *text, u32 x, u32 y)
     while (c != 0) {
         if (c != ' ') {
             v = color;
-            v |= gModule_FontTileEntries[gUnk_02021D04[(u8)(c - '!')]];
+            v |= gModule_FontTileEntries[gModule_FontCharToGlyphTable[(u8)(c - '!')]];
             *dest++ = v;
         } else {
             w = 0x47;

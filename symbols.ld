@@ -527,6 +527,9 @@ gUnk_0203DD40 = 0x0203DD40;
 gUnk_0203DDE0 = 0x0203DDE0;
 gUnk_0203E140 = 0x0203E140;
 gUnk_08334E22 = gFontGlyphGrid + 0x56;
+gModule_BigDigitGlyphs = gModule_FontGlyphGrid + 0x16;
+gModule_SmallDigitGlyphs = gModule_FontGlyphGrid + 0x3E;
+gUnk_020215EA = gModule_FontGlyphGrid + 0x56;
 gUnk_0200C910 = gUnk_08345390;
 /* Rows inside gModule_PitLabelBlock (src/data/high_module_text.c) the
  * module's pit-menu option tables name (src/data/module_race_setup.c). */

@@ -81,7 +81,7 @@ void ModuleDrawHudLabels(void)
         rowStride = (row + 8) * 68;
         for (col = 0; col != 10; col++) {
             glyphOff = 2 * (((row + 8) * 68) + col + 0x33);
-            *dst = gModule_FontTileEntries[*(u16 *)((u8 *)gUnk_02021594 + glyphOff)] | 0xE000;
+            *dst = gModule_FontTileEntries[*(u16 *)((u8 *)gModule_FontGlyphGrid + glyphOff)] | 0xE000;
             dst++;
         }
 
