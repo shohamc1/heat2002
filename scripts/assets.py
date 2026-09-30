@@ -1009,7 +1009,7 @@ def unpack_track_geometry(meta, blobs):
                              blobs[f"lane_points_{slot}"])
         pts = list(zip(flat[::2], flat[1::2]))
         segs = blobs[f"lane_segs_{slot}"]
-        nrec = len(segs) // 0x14
+        nrec = len(segs) // 0x14 - 1  # the terminator record links nothing
         pairs = [struct.unpack_from("<2B", segs, i * 0x14)
                  for i in range(nrec)]
         skips = [(a, b) for a, b in pairs if b != a + 1 and b != 0]
@@ -1076,6 +1076,23 @@ def read_lane_fixups(folder):
     return out
 
 
+def check_lane(folder, slot, pts, skips):
+    """Stop with a message on a lane the records can't hold: u16 point
+    coordinates, u8 point indices, and no zero-length segment (its
+    length divides the per-segment scales)."""
+    if len(pts) > 256:
+        sys.exit(f"{folder}: lane {slot} has {len(pts)} points; its records "
+                 "hold u8 point indices, so 256 is the most")
+    for i, (x, y) in enumerate(pts):
+        if not (0 <= x <= 0xFFFF and 0 <= y <= 0xFFFF):
+            sys.exit(f"{folder}: lane {slot} point {i} at ({x}, {y}) is "
+                     "outside 0-65535; lane points are u16")
+    for a, b in geo.lane_chain(len(pts), skips):
+        if pts[a] == pts[b]:
+            sys.exit(f"{folder}: lane {slot} links two identical points "
+                     f"(points {a} and {b}, at {pts[a]}); remove one")
+
+
 def read_index_crc(folder):
     """{"walls" or "lane_N": CRC-32} from cell_index_crc: the geometry
     bytes (vertices and records, or points and segment records) each
@@ -1116,6 +1133,11 @@ def build_track_geometry(meta, folder, paths, sizes, objects):
             if len(steer) != len(pts) - 1:
                 sys.exit(f"{folder}: wall {name} has {len(pts) - 1} records "
                          f"but {len(steer)} steer bytes")
+            for i in range(len(pts) - 1):
+                if pts[i] == pts[i + 1]:
+                    sys.exit(f"{folder}: wall {name} has two identical points "
+                             f"in a row (points {i} and {i + 1}, at "
+                             f"{pts[i]}); remove one")
             chains.append((pts, steer))
         verts, recs = bytearray(), bytearray()
         for chain, steer in chains:
@@ -1158,6 +1180,8 @@ def build_track_geometry(meta, folder, paths, sizes, objects):
         if str(slot) not in objs:
             sys.exit(f"{folder}: no lane object named {slot}")
         pts = objs[str(slot)][1]
+        check_lane(folder, slot, pts,
+                   parse_skips(dict(objs[str(slot)][2]).get("skips", "")))
         segs, totals[g["lengthAt"]] = geo.pack_lane_segs(
             pts, parse_skips(dict(objs[str(slot)][2]).get("skips", "")),
             by_lane.get(slot, {}), terms[gi])
