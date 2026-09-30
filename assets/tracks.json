@@ -9,29 +9,21 @@
      "stride": 125,
      "count": 12499,
      "size": 8124,
-     "len": 4062,
-     "pad": [],
-     "tail": null
+     "len": 4062
     },
     "bg2Map": {
      "stride": 125,
      "count": 12499,
      "size": 6828,
-     "len": 3414,
-     "pad": [],
-     "tail": null
+     "len": 3414
     },
     "cellMap": {
      "stride": 125,
      "count": 15624,
      "size": 6564,
-     "len": 3282,
-     "pad": [],
-     "tail": null
+     "len": 3282
     }
    },
-   "tiles0Max": 1024,
-   "tiles2Max": 512,
    "lanes": [
     {
      "slot": 0,
@@ -49,33 +41,11 @@
      "lengthAt": 12
     }
    ],
-   "terms": [
-    4628624,
-    4692464,
-    4724448
-   ],
-   "fixups": [
-    [
-     7,
-     87,
-     1
-    ]
-   ],
    "orphanParts": [
     0,
     1,
     2
-   ],
-   "geometrySizes": {
-    "wall_cells": 7868,
-    "lane_cells_0": 5522,
-    "lane_cells_4": 5538,
-    "lane_cells_7": 5412,
-    "lane_lengths": 14,
-    "lane_orphan_0": 2,
-    "lane_orphan_1": 2,
-    "lane_orphan_2": 2
-   }
+   ]
   },
   "darlington_raceway": {
    "name": "darlington_raceway",
@@ -86,41 +56,21 @@
      "stride": 125,
      "count": 12499,
      "size": 4156,
-     "len": 2077,
-     "pad": [
-      0,
-      0
-     ],
-     "tail": null
+     "len": 2077
     },
     "bg2Map": {
      "stride": 125,
      "count": 8848,
      "size": 3776,
-     "len": 1884,
-     "pad": [
-      0,
-      0,
-      0,
-      0,
-      65,
-      14,
-      0,
-      0
-     ],
-     "tail": null
+     "len": 1884
     },
     "cellMap": {
      "stride": 112,
      "count": 10415,
      "size": 1084,
-     "len": 542,
-     "pad": [],
-     "tail": null
+     "len": 542
     }
    },
-   "tiles0Max": 1024,
-   "tiles2Max": 512,
    "lanes": [
     {
      "slot": 0,
@@ -138,27 +88,11 @@
      "lengthAt": 10
     }
    ],
-   "terms": [
-    4611968,
-    4627792,
-    4691824
-   ],
-   "fixups": [],
    "orphanParts": [
     3,
     4,
     5
-   ],
-   "geometrySizes": {
-    "wall_cells": 6392,
-    "lane_cells_0": 5122,
-    "lane_cells_1": 5038,
-    "lane_cells_4": 5054,
-    "lane_lengths": 16,
-    "lane_orphan_3": 2,
-    "lane_orphan_4": 2,
-    "lane_orphan_5": 6306
-   }
+   ]
   },
   "green_valley": {
    "name": "green_valley",
@@ -169,35 +103,21 @@
      "stride": 125,
      "count": 12499,
      "size": 6844,
-     "len": 3421,
-     "pad": [
-      0,
-      0
-     ],
-     "tail": null
+     "len": 3421
     },
     "bg2Map": {
      "stride": 125,
      "count": 12500,
      "size": 14368,
-     "len": 7184,
-     "pad": [],
-     "tail": null
+     "len": 7184
     },
     "cellMap": {
      "stride": 168,
      "count": 27047,
      "size": 7532,
-     "len": 3765,
-     "pad": [
-      0,
-      0
-     ],
-     "tail": null
+     "len": 3765
     }
    },
-   "tiles0Max": 1024,
-   "tiles2Max": 512,
    "lanes": [
     {
      "slot": 0,
@@ -220,27 +140,10 @@
      "lengthAt": 14
     }
    ],
-   "terms": [
-    4613104,
-    4628992,
-    4693040,
-    4724992
-   ],
-   "fixups": [],
    "orphanParts": [
     6,
     7
-   ],
-   "geometrySizes": {
-    "wall_cells": 8312,
-    "lane_cells_0": 5932,
-    "lane_cells_1": 5880,
-    "lane_cells_4": 5892,
-    "lane_cells_7": 5862,
-    "lane_lengths": 18,
-    "lane_orphan_6": 26768,
-    "lane_orphan_7": 8900
-   }
+   ]
   },
   "michigan_international_speedway": {
    "name": "michigan_international_speedway",
@@ -251,38 +154,21 @@
      "stride": 125,
      "count": 12499,
      "size": 8044,
-     "len": 4021,
-     "pad": [
-      0,
-      0
-     ],
-     "tail": null
+     "len": 4021
     },
     "bg2Map": {
      "stride": 125,
      "count": 12499,
      "size": 12340,
-     "len": 6169,
-     "pad": [
-      0,
-      0
-     ],
-     "tail": null
+     "len": 6169
     },
     "cellMap": {
      "stride": 107,
      "count": 13588,
      "size": 7868,
-     "len": 3933,
-     "pad": [
-      0,
-      0
-     ],
-     "tail": null
+     "len": 3933
     }
    },
-   "tiles0Max": 1024,
-   "tiles2Max": 512,
    "lanes": [
     {
      "slot": 0,
@@ -305,27 +191,10 @@
      "lengthAt": 14
     }
    ],
-   "terms": [
-    4616528,
-    4664432,
-    4696496,
-    4728640
-   ],
-   "fixups": [],
    "orphanParts": [
     8,
     9
-   ],
-   "geometrySizes": {
-    "wall_cells": 6992,
-    "lane_cells_0": 5448,
-    "lane_cells_1": 5366,
-    "lane_cells_4": 5346,
-    "lane_cells_7": 5490,
-    "lane_lengths": 18,
-    "lane_orphan_8": 2,
-    "lane_orphan_9": 2
-   }
+   ]
   },
   "great_canyon": {
    "name": "great_canyon",
@@ -336,47 +205,21 @@
      "stride": 125,
      "count": 12499,
      "size": 7916,
-     "len": 3957,
-     "pad": [
-      0,
-      0
-     ],
-     "tail": null
+     "len": 3957
     },
     "bg2Map": {
      "stride": 125,
      "count": 12461,
      "size": 12968,
-     "len": 6477,
-     "pad": [
-      153,
-      4,
-      19,
-      12,
-      178,
-      2,
-      20,
-      12,
-      0,
-      0,
-      0,
-      0,
-      32,
-      0
-     ],
-     "tail": null
+     "len": 6477
     },
     "cellMap": {
      "stride": 163,
      "count": 26242,
      "size": 8940,
-     "len": 4470,
-     "pad": [],
-     "tail": null
+     "len": 4470
     }
    },
-   "tiles0Max": 1024,
-   "tiles2Max": 512,
    "lanes": [
     {
      "slot": 0,
@@ -399,25 +242,9 @@
      "lengthAt": 14
     }
    ],
-   "terms": [
-    4616352,
-    4632320,
-    4696496,
-    4728320
-   ],
-   "fixups": [],
    "orphanParts": [
     10
-   ],
-   "geometrySizes": {
-    "wall_cells": 7952,
-    "lane_cells_0": 6076,
-    "lane_cells_1": 6092,
-    "lane_cells_4": 6142,
-    "lane_cells_7": 5974,
-    "lane_lengths": 18,
-    "lane_orphan_10": 2
-   }
+   ]
   },
   "fuji_port": {
    "name": "fuji_port",
@@ -428,32 +255,21 @@
      "stride": 155,
      "count": 13949,
      "size": 14028,
-     "len": 7014,
-     "pad": [],
-     "tail": null
+     "len": 7014
     },
     "bg2Map": {
      "stride": 155,
      "count": 13949,
      "size": 10120,
-     "len": 5059,
-     "pad": [
-      0,
-      0
-     ],
-     "tail": null
+     "len": 5059
     },
     "cellMap": {
      "stride": 166,
      "count": 27555,
      "size": 8052,
-     "len": 4026,
-     "pad": [],
-     "tail": null
+     "len": 4026
     }
    },
-   "tiles0Max": 1024,
-   "tiles2Max": 512,
    "lanes": [
     {
      "slot": 0,
@@ -476,27 +292,10 @@
      "lengthAt": 14
     }
    ],
-   "terms": [
-    4616064,
-    4632096,
-    4695936,
-    4728128
-   ],
-   "fixups": [],
    "orphanParts": [
     11,
     12
-   ],
-   "geometrySizes": {
-    "wall_cells": 8336,
-    "lane_cells_0": 5778,
-    "lane_cells_1": 5830,
-    "lane_cells_4": 5736,
-    "lane_cells_7": 5924,
-    "lane_lengths": 16,
-    "lane_orphan_11": 2,
-    "lane_orphan_12": 2
-   }
+   ]
   },
   "crawfish_raceway": {
    "name": "crawfish_raceway",
@@ -507,34 +306,21 @@
      "stride": 125,
      "count": 12499,
      "size": 5808,
-     "len": 2904,
-     "pad": [],
-     "tail": null
+     "len": 2904
     },
     "bg2Map": {
      "stride": 125,
      "count": 10450,
      "size": 9692,
-     "len": 4844,
-     "pad": [
-      0,
-      0,
-      0,
-      8
-     ],
-     "tail": null
+     "len": 4844
     },
     "cellMap": {
      "stride": 125,
      "count": 15624,
      "size": 3832,
-     "len": 1916,
-     "pad": [],
-     "tail": null
+     "len": 1916
     }
    },
-   "tiles0Max": 1024,
-   "tiles2Max": 512,
    "lanes": [
     {
      "slot": 0,
@@ -557,25 +343,9 @@
      "lengthAt": 14
     }
    ],
-   "terms": [
-    4615280,
-    4647328,
-    4695520,
-    4727440
-   ],
-   "fixups": [],
    "orphanParts": [
     13
-   ],
-   "geometrySizes": {
-    "wall_cells": 6836,
-    "lane_cells_0": 5010,
-    "lane_cells_1": 5140,
-    "lane_cells_4": 5304,
-    "lane_cells_7": 5220,
-    "lane_lengths": 16,
-    "lane_orphan_13": 2
-   }
+   ]
   },
   "purley_park": {
    "name": "purley_park",
@@ -586,37 +356,23 @@
      "stride": 125,
      "count": 12499,
      "size": 25240,
-     "len": 12620,
-     "pad": [],
-     "tail": 2
+     "len": 12620
     },
     "bg2Map": {
      "stride": 125,
      "count": 12499,
      "size": 4556,
-     "len": 2278,
-     "pad": [],
-     "tail": 0
+     "len": 2278
     },
     "cellMap": {
      "stride": 0,
      "count": 0,
      "size": 0,
-     "len": 0,
-     "pad": [],
-     "tail": null
+     "len": 0
     }
    },
-   "tiles0Max": 1024,
-   "tiles2Max": 512,
-   "module": true,
    "lanes": [],
-   "terms": [],
-   "fixups": [],
-   "orphanParts": [],
-   "geometrySizes": {
-    "wall_cells": 6884
-   }
+   "orphanParts": []
   },
   "kansas_speedway": {
    "name": "kansas_speedway",
@@ -627,38 +383,21 @@
      "stride": 125,
      "count": 12499,
      "size": 9824,
-     "len": 4911,
-     "pad": [
-      0,
-      0
-     ],
-     "tail": null
+     "len": 4911
     },
     "bg2Map": {
      "stride": 125,
      "count": 12499,
      "size": 10460,
-     "len": 5229,
-     "pad": [
-      0,
-      0
-     ],
-     "tail": null
+     "len": 5229
     },
     "cellMap": {
      "stride": 125,
      "count": 15624,
      "size": 7800,
-     "len": 3899,
-     "pad": [
-      0,
-      0
-     ],
-     "tail": null
+     "len": 3899
     }
    },
-   "tiles0Max": 1024,
-   "tiles2Max": 512,
    "lanes": [
     {
      "slot": 0,
@@ -681,31 +420,9 @@
      "lengthAt": 14
     }
    ],
-   "terms": [
-    4611552,
-    4627632,
-    4691664,
-    4723696
-   ],
-   "fixups": [
-    [
-     0,
-     69,
-     1
-    ]
-   ],
    "orphanParts": [
     14
-   ],
-   "geometrySizes": {
-    "wall_cells": 6628,
-    "lane_cells_0": 5166,
-    "lane_cells_1": 5320,
-    "lane_cells_4": 5272,
-    "lane_cells_7": 5340,
-    "lane_lengths": 16,
-    "lane_orphan_14": 2
-   }
+   ]
   },
   "asphalt_city": {
    "name": "asphalt_city",
@@ -716,29 +433,21 @@
      "stride": 186,
      "count": 19715,
      "size": 13264,
-     "len": 6632,
-     "pad": [],
-     "tail": null
+     "len": 6632
     },
     "bg2Map": {
      "stride": 186,
      "count": 19715,
      "size": 14252,
-     "len": 7126,
-     "pad": [],
-     "tail": null
+     "len": 7126
     },
     "cellMap": {
      "stride": 125,
      "count": 19499,
      "size": 8628,
-     "len": 4314,
-     "pad": [],
-     "tail": null
+     "len": 4314
     }
    },
-   "tiles0Max": 1024,
-   "tiles2Max": 512,
    "lanes": [
     {
      "slot": 0,
@@ -761,33 +470,10 @@
      "lengthAt": 14
     }
    ],
-   "terms": [
-    4613088,
-    4629120,
-    4693088,
-    4725056
-   ],
-   "fixups": [
-    [
-     4,
-     127,
-     1
-    ]
-   ],
    "orphanParts": [
     15,
     16
-   ],
-   "geometrySizes": {
-    "wall_cells": 8672,
-    "lane_cells_0": 5862,
-    "lane_cells_1": 5864,
-    "lane_cells_4": 5868,
-    "lane_cells_7": 5858,
-    "lane_lengths": 18,
-    "lane_orphan_15": 2,
-    "lane_orphan_16": 26644
-   }
+   ]
   },
   "phoenix_international_raceway": {
    "name": "phoenix_international_raceway",
@@ -798,35 +484,21 @@
      "stride": 125,
      "count": 12499,
      "size": 5672,
-     "len": 2836,
-     "pad": [],
-     "tail": null
+     "len": 2836
     },
     "bg2Map": {
      "stride": 125,
      "count": 12499,
      "size": 7548,
-     "len": 3773,
-     "pad": [
-      0,
-      0
-     ],
-     "tail": null
+     "len": 3773
     },
     "cellMap": {
      "stride": 94,
      "count": 8835,
      "size": 5424,
-     "len": 2711,
-     "pad": [
-      0,
-      0
-     ],
-     "tail": null
+     "len": 2711
     }
    },
-   "tiles0Max": 1024,
-   "tiles2Max": 512,
    "lanes": [
     {
      "slot": 0,
@@ -849,25 +521,9 @@
      "lengthAt": 14
     }
    ],
-   "terms": [
-    4611792,
-    4659776,
-    4691712,
-    4723904
-   ],
-   "fixups": [],
    "orphanParts": [
     17
-   ],
-   "geometrySizes": {
-    "wall_cells": 6400,
-    "lane_cells_0": 4984,
-    "lane_cells_1": 4986,
-    "lane_cells_4": 4948,
-    "lane_cells_7": 5058,
-    "lane_lengths": 18,
-    "lane_orphan_17": 2
-   }
+   ]
   },
   "infogrames_super_speedway": {
    "name": "infogrames_super_speedway",
@@ -878,38 +534,21 @@
      "stride": 125,
      "count": 13249,
      "size": 7084,
-     "len": 3541,
-     "pad": [
-      0,
-      0
-     ],
-     "tail": null
+     "len": 3541
     },
     "bg2Map": {
      "stride": 125,
      "count": 13249,
      "size": 8664,
-     "len": 4331,
-     "pad": [
-      0,
-      0
-     ],
-     "tail": null
+     "len": 4331
     },
     "cellMap": {
      "stride": 125,
      "count": 15624,
      "size": 5116,
-     "len": 2557,
-     "pad": [
-      0,
-      0
-     ],
-     "tail": null
+     "len": 2557
     }
    },
-   "tiles0Max": 1024,
-   "tiles2Max": 512,
    "lanes": [
     {
      "slot": 0,
@@ -932,25 +571,9 @@
      "lengthAt": 14
     }
    ],
-   "terms": [
-    4612592,
-    4628592,
-    4676560,
-    4724704
-   ],
-   "fixups": [],
    "orphanParts": [
     18
-   ],
-   "geometrySizes": {
-    "wall_cells": 7464,
-    "lane_cells_0": 5498,
-    "lane_cells_1": 5492,
-    "lane_cells_4": 5496,
-    "lane_cells_7": 5614,
-    "lane_lengths": 18,
-    "lane_orphan_18": 2
-   }
+   ]
   }
  },
  "assets": [

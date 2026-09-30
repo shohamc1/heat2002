@@ -207,10 +207,10 @@ def assets():
 def tracks_meta():
     """{folder name: track metadata} from the dict-shaped asset config.
     Each track's metadata names it, sizes its three map layers (the
-    stride and cell count the .tmx layer holds, the ROM blob's size and
-    halfword length, the dead tail bytes past the stream, and the true
-    final entry where the module's raw maps carry it), and caps its two
-    tile sheets at what LoadTrackTiles copies."""
+    stride and cell count the .tmx layer holds, and the ROM slot's size
+    and the stream's halfword length), and lists its lanes (slot, point
+    count, and the offset of its word in lane_lengths) and the orphan
+    lane parts."""
     out = {}
     for config in sorted((ROOT / "assets").glob("*.json")):
         data = json.loads(config.read_text())
@@ -854,7 +854,7 @@ def track_layer_files(meta, parts):
         files.append("surfaces")
     if "wall_recs" in parts:
         files.append("wall_cells")
-    files += ["lane_terms", "lane_fixups", "cell_index_crc"]
+    files += ["stream_tails", "lane_terms", "lane_fixups", "cell_index_crc"]
     if "lane_lengths" in parts:
         files.append("lane_lengths")
     files += [f"lane_cells_{g['slot']}" for g in meta["lanes"]]
@@ -862,12 +862,31 @@ def track_layer_files(meta, parts):
     return files
 
 
+STREAMS = ("bg3Map", "bg2Map", "cellMap")
+
+
+def pack_stream_tails(tails):
+    """stream_tails: the bytes each map layer's ROM slot holds past its
+    RLE stream (dead bytes the build copies after the stream, non-zero
+    on three layers), per layer in STREAMS order as u8 count + bytes."""
+    return b"".join(bytes([len(tails.get(p, b""))]) + tails.get(p, b"")
+                    for p in STREAMS)
+
+
+def read_stream_tails(folder):
+    raw, out, pos = (folder / "stream_tails").read_bytes(), {}, 0
+    for part in STREAMS:
+        out[part] = raw[pos + 1:pos + 1 + raw[pos]]
+        pos += 1 + raw[pos]
+    return out
+
+
 def track_parts_blobs(meta, blobs):
     """The whole track from its part blobs, as the editable .tmx holds it:
     each map layer's values padded to its rectangle. The cells past the
     ROM's stream are display-only (the build encodes the recorded count);
-    a layer whose true final entry is known — the module's raw track-7
-    maps carry it — pads with that value."""
+    a layer the module's raw track-7 maps also hold takes its padding
+    cells from them (they reach the ROM there)."""
     layers = {}
     for part, lname in (("bg3Map", "A"), ("bg2Map", "B"),
                         ("cellMap", "cells")):
@@ -878,8 +897,12 @@ def track_parts_blobs(meta, blobs):
         # would decode as one more (huge) run
         values = rle16_values(blobs[part][:2 * m["len"]])
         width, height = m["stride"], -(-m["count"] // m["stride"])
-        pad = m["tail"] if m["tail"] is not None else values[-1]
-        layers[lname] = values + [pad] * (width * height - len(values))
+        rect = width * height
+        module = blobs.get("module_" + part)
+        if module:  # the module's raw map holds the whole rectangle
+            layers[lname] = values + list(module[len(values):rect])
+        else:
+            layers[lname] = values + [values[-1]] * (rect - len(values))
     return layers
 
 
@@ -933,6 +956,11 @@ def unpack_track(meta, blobs, out):
             if part in blobs and not (out / fname).exists():
                 (tmp / fname).write_bytes(blobs[part])
                 done.append(fname)
+        if not (out / "stream_tails").exists():
+            (tmp / "stream_tails").write_bytes(pack_stream_tails(
+                {part: blobs[part][2 * meta["layers"][part]["len"]:]
+                 for part in STREAMS if part in blobs}))
+            done.append("stream_tails")
         for fname in done:
             (tmp / fname).rename(out / fname)
 
@@ -1206,6 +1234,7 @@ def build_track(meta, folder, paths, sizes):
     name = meta["name"]
     layers, objects = read_tmx(folder / f"{name}.tmx")
     build_track_geometry(meta, folder, paths, sizes, objects)
+    tails = read_stream_tails(folder)
     for part, lname in (("bg3Map", "A"), ("bg2Map", "B"),
                         ("cellMap", "cells")):
         if part not in paths:
@@ -1232,11 +1261,12 @@ def build_track(meta, folder, paths, sizes):
                      f"index {max(values)}, the table holds {values_allowed}")
         stream = rle16_encode(values[:m["count"]])
         room = m["size"]
-        if len(stream) + len(m["pad"]) > room:
-            room += -(-(len(stream) + len(m["pad"]) - room) // 4) * 4
+        tail = tails[part]
+        if len(stream) + len(tail) > room:
+            room += -(-(len(stream) + len(tail) - room) // 4) * 4
         paths[part].parent.mkdir(parents=True, exist_ok=True)
-        paths[part].write_bytes(stream + bytes(m["pad"])
-                                + bytes(room - len(stream) - len(m["pad"])))
+        paths[part].write_bytes(stream + tail
+                                + bytes(room - len(stream) - len(tail)))
         paths[part].with_suffix(".len").write_bytes(
             struct.pack("<H", len(stream) // 2))
     for part in ("module_bg3Map", "module_bg2Map"):
@@ -1612,23 +1642,6 @@ def blank():
         folder.mkdir(parents=True, exist_ok=True)
         for part, m in meta["layers"].items():
             (folder / f"{part}.len").write_bytes(struct.pack("<H", m["len"]))
-        # the geometry side files carry real bytes in CI too: the lanes
-        # build from them, and the region's pointer tables are C, so the
-        # parts must link at their retail sizes
-        (folder / "lane_terms").write_bytes(b"".join(
-            struct.pack("<I", t) for t in meta.get("terms", [])))
-        fixups = bytearray([len(meta.get("lanes", []))])
-        lanes_with = {}
-        for slot, rec, value in meta.get("fixups", []):
-            lanes_with.setdefault(slot, []).append((rec, value))
-        for g in meta.get("lanes", []):
-            fx = lanes_with.get(g["slot"], [])
-            fixups += struct.pack("<BB", g["slot"], len(fx))
-            for rec, value in fx:
-                fixups += struct.pack("<HB", rec, value)
-        (folder / "lane_fixups").write_bytes(bytes(fixups))
-        for fname, size in meta.get("geometrySizes", {}).items():
-            (folder / fname).write_bytes(bytes(size))
     # the wall counts gTrackWallTables INCBINs, from the retail record
     # sizes, and the sheet tails the module's copy fragment incbins
     for name, parts in track_entries().items():

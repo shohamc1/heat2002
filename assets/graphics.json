@@ -7855,24 +7855,6 @@
   "type": "pal"
  },
  {
-  "path": "module/track7_bg_copy.bin",
-  "start": "0x08351780",
-  "size": 6880,
-  "type": "copy",
-  "options": {
-   "sources": [
-    [
-     "build/assets/unknown/data_081C7EA8.bin@7296@160",
-     160
-    ],
-    [
-     "build/assets/unknown/data_081C9BC8.bin",
-     6720
-    ]
-   ]
-  }
- },
- {
   "path": "module/driver_number_copy.bin",
   "start": "0x08354010",
   "size": 15840,
