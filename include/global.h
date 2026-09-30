@@ -19,27 +19,6 @@ typedef void (*IntrFunc)(void);
 #define FALSE 0
 #define NULL ((void *)0)
 
-// The usual convention casts this to size_t; this repo has no <stddef.h>
-// on its include path, so u32 stands in (GBA is a 32-bit target, so they
-// agree).
-#define ARRAY_COUNT(array) (u32)(sizeof(array) / sizeof((array)[0]))
-
-#define min(a, b) ((a) < (b) ? (a) : (b))
-#define max(a, b) ((a) >= (b) ? (a) : (b))
-
-// Converts a number to Q8.8 fixed-point format
-#define Q_8_8(n) ((s16)((n) * 256))
-
-// Converts a number to Q4.12 fixed-point format
-#define Q_4_12(n)  ((s16)((n) * 4096))
-
-// Converts a number to Q24.8 fixed-point format
-#define Q_24_8(n)  ((s32)((n) << 8))
-
-// Reads an unaligned little-endian value out of a byte pointer.
-#define T1_READ_16(ptr) ((ptr)[0] | ((ptr)[1] << 8))
-#define T1_READ_32(ptr) ((ptr)[0] | ((ptr)[1] << 8) | ((ptr)[2] << 16) | ((ptr)[3] << 24))
-
 // INCBIN_U8("build/assets/...") and its siblings expand to the file's contents
 // as an array initialiser, as in pokeemerald. The build's cpp runs with
 // -undef, so these stay undefined there and tools/bin/preproc expands each
