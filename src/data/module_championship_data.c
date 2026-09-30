@@ -18,17 +18,6 @@ extern struct WallRec gUnk_02027DB0[];
 extern u16 gUnk_020293F0[];
 extern u16 gUnk_02029CD4[];
 
-/* High module (link slave) wall and tyre-name tables (ROM
- * 0x08363954-0x08363988, EWRAM 0x0202AF44-0x0202AF78). */
-
-/* High module (link slave) collision response normals (ROM
- * 0x08363988-0x083639A8, EWRAM 0x0202AF08-0x0202AF28), byte-identical
- * to the main program's gCarCollisionNormals (src/data/rom_083FD91C.c,
- * which says what they are for): the ROM holds them twice, once per
- * GBA. collision_normals.h shares the initialisers, so one edit changes
- * both copies. module_collide.c reads them through its own view
- * (struct CollisionNormal x[]). */
-
 extern const u8 gModule_AndylandRacing[];
 extern const u8 gModule_ChipGanassi[];
 extern const u8 gModule_DalyEnterprises[];
@@ -246,33 +235,42 @@ extern const u8 gModule_02024D48[];
 extern const u8 gModule_02024DC8[];
 extern const u8 gModule_02024E48[];
 
-/* High module (link slave) option, championship and sprite-frame tables
- * (ROM 0x083639A8-0x08363EE8, EWRAM 0x0202AF28-0x0202B468). The numbers
- * are byte-identical to the main program's tables of the same names in
- * src/data/rom_083FD91C.c (which say what each is for), shared through
- * championship_tables.h; the pointer tables are the same shape and point
- * at the module's own strings and sprite frames. The main program's
- * gUnk_083FDA50, gUnk_083FDA5C, gTrackSelectEntries, gUnk_083FDE3E,
- * gUnk_083FDE5E and the tables after gUnk_083FDE72 have no copy here. */
+/* High module (link slave) wall and tyre-name tables (ROM
+ * 0x08363954-0x08363988, EWRAM 0x0202AED4-0x0202AF08). */
 
-/* The link track's walls (struct TrackWalls, structs.h): the wall
- * vertices, wall records and the 48x48 cell grid module_walls.c walks.
- * The main program's twelve-row gTrackWallTables
- * (src/data/rom_083FD91C.c) says what each field is; this one row's
- * blobs are a copy of track 7's (data/rom_08360290.s), labelled by
- * their EWRAM addresses. */
+/* The link track's walls (struct TrackWalls, structs.h): the wall vertices,
+ * wall records and the 48x48 cell grid module_walls.c walks. The main
+ * program's twelve-row gTrackWallTables (src/data/championship_data.c) says
+ * what each field is; this one row's blobs are a copy of track 7's
+ * (data/rom_08360290.s), labelled by their EWRAM addresses. */
 const struct TrackWalls gModule_TrackWallTables[1] = {
     { gUnk_02027810, gUnk_02027DB0, 0xB2, gUnk_020293F0, gUnk_02029CD4 },
 };
 
 /* The eight tyre-position names in the pit menu's order, the twin of
- * the main program's gUnk_083FDA0C (src/data/rom_083FD91C.c); the
+ * the main program's gUnk_083FDA0C (src/data/championship_data.c); the
  * strings are high_module_text.c's tyre block. */
 const u8 *const gModule_TirePositionTexts[8] = { gModule_Frontleft, gModule_Frontright, gModule_Rearleft,
                                                  gModule_Rearright, gModule_Back,      gModule_Front,
                                                  gModule_Left,      gModule_Right };
 
+/* High module (link slave) collision response normals (ROM
+ * 0x08363988-0x083639A8, EWRAM 0x0202AF08-0x0202AF28), byte-identical to the
+ * main program's gCarCollisionNormals (src/data/championship_data.c, which
+ * says what they are for): the ROM holds them twice, once per GBA.
+ * collision_normals.h shares the initialisers, so one edit changes both
+ * copies. module_collide.c reads them through its own view (struct
+ * CollisionNormal x[]). */
 const s32 gModule_CarCollisionNormals[8] = CAR_COLLISION_NORMALS;
+
+/* High module (link slave) option, championship and sprite-frame tables (ROM
+ * 0x083639A8-0x08363EE8, EWRAM 0x0202AF28-0x0202B468). The numbers are
+ * byte-identical to the main program's tables of the same names in
+ * src/data/championship_data.c (which say what each is for), shared through
+ * championship_tables.h; the pointer tables are the same shape and point at
+ * the module's own strings and sprite frames. The main program's
+ * gUnk_083FDA50, gUnk_083FDA5C, gTrackSelectEntries, gUnk_083FDE3E,
+ * gUnk_083FDE5E and the tables after gUnk_083FDE72 have no copy here. */
 
 // No module code reads these yet.
 const s32 gModule_0202AF28[1] = UNK_083FDA4C;
@@ -367,12 +365,11 @@ const u8 gModule_ChampionshipTrackOrder[33] = { CHAMPIONSHIP_TRACK_ORDER };
 const u8 gModule_0202B1E9[6] = UNK_083FDE72;
 
 /* The sprite frame lists, the twins of the main program's in
- * data/rom_083FEF08.s and data/rom_083FF724.s: one number frame per
- * driver (reached through gModule_DriverNumberFrameLists, module_draw.c),
- * the two car sprite halves (gModule_DriverCarSpriteHalfATables/BTables), the damage
+ * data/rom_083FEF08.s and data/rom_083FF724.s: one number frame per driver
+ * (reached through gModule_DriverNumberFrameLists, module_draw.c), the two
+ * car sprite halves (gModule_DriverCarSpriteHalfATables/BTables), the damage
  * smoke (module_particles.c), and one link-marker list per player
- * (gModule_LinkMarkerFrameLists, module_draw.c and
- * ModuleDrawLinkMarker.c). */
+ * (gModule_LinkMarkerFrameLists, module_draw.c and ModuleDrawLinkMarker.c). */
 const u8 *const gModule_DriverSteveParkNumberFrames[1] = { gModule_0201AD3C };
 const u8 *const gModule_DriverDaleEarnhardtJRNumberFrames[1] = { gModule_0201AD78 };
 const u8 *const gModule_DriverKevinHarvickNumberFrames[1] = { gModule_0201ADBC };

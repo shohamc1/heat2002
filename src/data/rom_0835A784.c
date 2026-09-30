@@ -5,7 +5,7 @@
    readers' bytes need; this file needs nothing else from it. */
 
 /* High module (link slave) font character map (ROM 0x0835A784-0x0835ACD4,
- * EWRAM 0x02021D04-0x02021F54), byte-identical to the main program's
+ * EWRAM 0x02021D04-0x02022254), byte-identical to the main program's
  * gFontCharToGlyphTable (src/data/rom_08332BC8.c, which says what it is
  * for): the ROM holds it twice, once per GBA. font_text_tables.h shares
  * the initialisers, so one edit changes both copies. ModuleText indexes

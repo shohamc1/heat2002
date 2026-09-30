@@ -5,7 +5,7 @@
    readers' bytes need; this file needs nothing else from it. */
 
 /* High module (link slave) m4a data (ROM 0x08344E68-0x08345178, EWRAM
- * 0x0200C3E8-0x0200C668). gModule_SinTable is the game's sine lookup,
+ * 0x0200C3E8-0x0200C6F8). gModule_SinTable is the game's sine lookup,
  * byte-identical to the main program's gSinTable (src/data/rom_0801CD08.c,
  * which says what it is for): the ROM holds it twice, once per GBA.
  * sin_table.h shares the initialisers, so one edit changes both copies.

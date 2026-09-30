@@ -5,7 +5,7 @@
    readers' bytes need; this file needs nothing else from it. */
 
 /* High module (link slave) font and text character-code tables (ROM
- * 0x08357FD0-0x08358450, EWRAM 0x0201F550-0x0201F970), byte-identical to
+ * 0x08357FD0-0x08358450, EWRAM 0x0201F550-0x0201F9D0), byte-identical to
  * the main program's gSpriteTextControlCharCodes and gTextCharMap
  * (src/data/rom_08332BC8.c, which says what each table is for): the ROM
  * holds them twice, one set per GBA. font_text_tables.h shares the

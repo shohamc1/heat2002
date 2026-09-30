@@ -72,9 +72,6 @@ extern const u8 gUnk_0200CFA4[]; /* a blank row of 32 */
    gModule_TrackData as non-const struct Track, which the readers' bytes
    need; this file needs nothing else from it. */
 
-/* High module (link slave) fixed HUD and track data (ROM
- * 0x0835DC38-0x0835DCA0, EWRAM 0x02025158-0x020251C0). */
-
 /* ROM 0x0835DB58-0x0835DB70, EWRAM 0x020250D8-0x020250F0: the twins of
  * the main program's gUnk_08364AC8 (the place names, 1ST to 5TH) and
  * gUnk_08364ADC (src/data/race_data.c). ModuleRunRace writes
@@ -85,7 +82,7 @@ const u32 gModule_020250D8[5] = { (u32)gModule_Text_1st, (u32)gModule_Text_2nd, 
 const u8 gUnk_020250EC[4] = UNK_08364ADC;
 
 /* High module (link slave) localized message table (ROM
- * 0x0835DB70-0x0835DC10, EWRAM 0x02025090-0x02025130): eight messages
+ * 0x0835DB70-0x0835DC10, EWRAM 0x020250F0-0x02025190): eight messages
  * (include/functions.h's MODULE_MSG_*) in the five languages the link
  * handshake negotiates (gModule_Language: EN, FR, DE, ES, IT).
  * ModuleGetString returns row[id][language]. The strings live in
@@ -111,6 +108,9 @@ const u32 gModule_EngineSoundFreqBases[5] = ENGINE_SOUND_FREQ_BASES;
 const u8 gModule_EngineSoundRpmMultipliers[5] = ENGINE_SOUND_RPM_MULTIPLIERS;
 // No module code reads these bytes yet.
 const u8 gModule_020251A9[15] = UNK_08364AF9;
+
+/* High module (link slave) fixed HUD and track data (ROM
+ * 0x0835DC38-0x0835DCA0, EWRAM 0x020251B8-0x02025220). */
 
 /* The text layer's BG map base in VRAM, the twin of the main program's
  * gTextLayerMapPtr (src/data/race_data.c): the module's HUD draws

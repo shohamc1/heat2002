@@ -13,32 +13,9 @@ extern const u8 *const gModule_CarSpriteHalfAFrames[];
 extern const u8 *const gModule_CarSpriteHalfBFrames[];
 extern const u8 gModule_0201E748[];
 
-/* High module (link slave) track-segment table (ROM 0x0835F440,
- * EWRAM 0x02025E60): the one row ModuleLoadTrackSegs loads its
- * gModule_TrackSegs from: gUnk_02025E20, track 7's records in the
- * module's copy of tracks 3-11's segs parts (data/rom_0835DCB8.s). */
-
-/* High module (link slave) tire-grip setups (ROM 0x0835F8A0-0x0835FB0C,
- * EWRAM 0x02026E20-0x0202708C), byte-identical to the main program's
- * gTireGripDefaults (src/data/race_setup.c, which says what each row is
- * for): the ROM holds them twice, once per GBA. race_setup_tables.h
- * shares the initialisers, so one edit changes both copies.
- * ModuleSetTireGrip.c loads row 0 for every car in a link race. */
-
 /* no variables.h needed: ModuleInitCar.c declares the three pointer
    tables locally (as u32 x[], entry 31's view), and this file needs
    nothing else from it. */
-
-/* High module (link slave) driver engine parameters (ROM
- * 0x0835FBFC-0x083600E8, EWRAM 0x0202767C-0x02027B68): one 5-entry u16
- * row per driver, 30 drivers in gDriverRoster order, then the three
- * pointer tables ModuleInitCar loads a car's gear/power rows through.
- * Byte-identical to the main program's gDriver*Power/GearRatio/
- * RpmPerSpeed rows and gDriverGearPowerTables/gDriverGearRatioTables/
- * gDriverRpmPerSpeedTables (src/data/race_setup.c, which says what each
- * row is for): the ROM holds them twice, once per GBA.
- * race_setup_tables.h shares the row initialisers, so one edit changes
- * both copies. */
 
 /* The pit-menu label rows inside gModule_PitLabelBlock
  * (src/data/high_module_text.c), named by their EWRAM addresses in
@@ -99,14 +76,10 @@ extern const u8 *const gModule_DriverDarrenJacksonNumberFrames[];
 extern const u8 *const gModule_DriverMikeMerrenNumberFrames[];
 extern const u8 *const gModule_DriverCameronSheppardNumberFrames[];
 
-/* High module (link slave) pit-menu option text tables (ROM
- * 0x08360100-0x0836012C, EWRAM 0x02027680-0x020276AC): the fixed row
- * labels and the tyre and fuel option rows, in the main program's order sub_083402D8.c draws, the
- * twins of the main program's gPitMenuRowLabelTexts /
- * gPitMenuTireOptionTexts / gPitMenuFuelOptionTexts
- * (src/data/race_setup.c). Each entry points into
- * gModule_PitLabelBlock's packed strings. */
-
+/* High module (link slave) track-segment table (ROM 0x0835F440,
+ * EWRAM 0x020269C0): the one row ModuleLoadTrackSegs loads its
+ * gModule_TrackSegs from: gUnk_02025E20, track 7's records in the
+ * module's copy of tracks 3-11's segs parts (data/rom_0835DCB8.s). */
 const struct TrackSeg *const gModule_TrackSegTables[1] = { gUnk_02025E20 };
 
 /* High module (link slave) sprite-cache slots, pit and points tables
@@ -130,6 +103,12 @@ const u8 *const *const gModule_DriverCarSpriteHalfATables[1] = { gModule_CarSpri
 const u8 *const *const gModule_DriverCarSpriteHalfBTables[1] = { gModule_CarSpriteHalfBFrames };
 const u8 *const gModule_DriverPalettes[1] = { gModule_0201E748 };
 
+/* High module (link slave) tire-grip setups (ROM 0x0835F8A0-0x0835FB0C,
+ * EWRAM 0x02026E20-0x0202708C), byte-identical to the main program's
+ * gTireGripDefaults (src/data/race_setup.c, which says what each row is
+ * for): the ROM holds them twice, once per GBA. race_setup_tables.h
+ * shares the initialisers, so one edit changes both copies.
+ * ModuleSetTireGrip.c loads row 0 for every car in a link race. */
 const struct TireGripSetup gModule_TireGripDefaults[31] = TIRE_GRIP_DEFAULTS;
 
 /* The rest of the car setup tables (ROM 0x0835FB0C-0x0835FBFC, EWRAM
@@ -162,6 +141,16 @@ const u16 gModule_0202715E[5] = UNK_08367C1A;
 const u16 gModule_02027168[5] = UNK_08367C24;
 const u16 gModule_02027172[5] = UNK_08367C2E;
 
+/* High module (link slave) driver engine parameters (ROM
+ * 0x0835FBFC-0x083600E8, EWRAM 0x0202717C-0x02027668): one 5-entry u16
+ * row per driver, 30 drivers in gDriverRoster order, then the three
+ * pointer tables ModuleInitCar loads a car's gear/power rows through.
+ * Byte-identical to the main program's gDriver*Power/GearRatio/
+ * RpmPerSpeed rows and gDriverGearPowerTables/gDriverGearRatioTables/
+ * gDriverRpmPerSpeedTables (src/data/race_setup.c, which says what each
+ * row is for): the ROM holds them twice, once per GBA.
+ * race_setup_tables.h shares the row initialisers, so one edit changes
+ * both copies. */
 const u16 gModule_DriverSteveParkPower[5] = DRIVER_STEVE_PARK_POWER;
 const u16 gModule_DriverDaleEarnhardtJRPower[5] = DRIVER_DALE_EARNHARDT_J_R_POWER;
 const u16 gModule_DriverKevinHarvickPower[5] = DRIVER_KEVIN_HARVICK_POWER;
@@ -291,6 +280,13 @@ const u16 *const gModule_DriverRpmPerSpeedTables[30] = {
 const u32 gModule_PitStopTireServiceTimes[4] = PIT_STOP_TIRE_SERVICE_TIMES;
 const u32 gModule_PitStopRepairTimes[2] = PIT_STOP_REPAIR_TIMES;
 
+/* High module (link slave) pit-menu option text tables (ROM
+ * 0x08360100-0x0836012C, EWRAM 0x02027680-0x020276AC): the fixed row labels
+ * and the tyre and fuel option rows, in the main program's order
+ * sub_083402D8.c draws, the twins of the main program's
+ * gPitMenuRowLabelTexts / gPitMenuTireOptionTexts / gPitMenuFuelOptionTexts
+ * (src/data/race_setup.c). Each entry points into gModule_PitLabelBlock's
+ * packed strings. */
 const u8 *const gModule_PitMenuRowLabelTexts[4] = { gUnk_0200CFD8, gUnk_0200CFD0, gUnk_0200CFC8, gUnk_0200CFC4 };
 const u8 *const gModule_PitMenuTireOptionTexts[4] = { gUnk_0200D004, gUnk_0200CFF8, gUnk_0200CFEC, gUnk_0200CFE0 };
 const u8 *const gModule_PitMenuFuelOptionTexts[3] = { gUnk_0200D030, gUnk_0200D020, gUnk_0200D010 };
