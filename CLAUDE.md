@@ -86,7 +86,13 @@ SHA1 is wrong, no matter how clean the C looks. Never edit `baserom.gba`,
   build re-encodes them into the part files `data/rom_0807CE30.s`
   incbins, with the stream lengths reaching `gTrackData` through the
   `.len` files it `INCBIN_U16`s. The high module's track-7 copy builds
-  from the same files. `assets.py`'s docstring is the reference.
+  from the same files. The folders also hold the track GEOMETRY (issue
+  #4 part 2): lanes, waypoints and walls as object layers of the `.tmx`,
+  whose derived records (`scripts/track_geometry.py` holds the
+  byte-exact formulas and a `verify` mode) rebuild three more regions
+  (`data/rom_08365348.s`, `data/rom_083682BC.s`, `data/rom_083CA0C4.s`)
+  beside the spatial indexes, kept binary. `assets.py`'s docstring is
+  the reference.
   Compressed graphics are typed and convert to `.png` with `make convert`;
   the rest of the data is untyped raw blobs (`assets/unknown.json`).
   See "Extracted data assets" in `docs/learnings/parked.md`.

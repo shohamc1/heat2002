@@ -113,6 +113,19 @@ follow the stream as metadata. LoadTrackTiles copies fixed 0x8000/0x4000
 bytes and over-reads into the following blobs on many tracks, so the
 part files keep the ROM's blob order.
 
+The same folders hold each track's GEOMETRY (the lanes, waypoints and
+walls of issue #4 part 2): three object layers in the .tmx (lanes as
+polylines per distinct lane, walls as one polyline per wall chain with
+its per-record steerAngle bytes as a "steer" property, waypoints as
+2-point lines with "kind"/"countdown"), the binary side files
+scripts/track_geometry.py documents (wall_cells, lane_cells_N,
+lane_terms, lane_fixups, lane_lengths, lane_orphan_N), and the
+derivations that module verifies against the ROM at build inputs: the
+WallRec normals, AABBs and angle bytes, and the LaneSeg chain and
+distance arithmetic regenerate from the object layers; the spatial
+indexes do not (their membership rule was never recovered) and stay
+binary.
+
 A "gen" asset's bytes come from a script, not the ROM:
 `options.generator` names a host script that `extract` and `blank`
 both run (usage `SCRIPT OUT.bin`). It needs no baserom.gba, so CI
@@ -162,6 +175,11 @@ import sys
 import tempfile
 import zlib
 from pathlib import Path
+
+# the lane/wall/waypoint derivations live beside this file; assets.py
+# drives the pack/unpack, track_geometry holds the byte-exact formulas
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import track_geometry as geo
 
 ROOT = Path(__file__).resolve().parent.parent
 ROM_BASE = 0x08000000
@@ -691,7 +709,7 @@ def render_metatile_sheet(metatiles, tiles, palette, columns=16):
     return bytes(px), w, h, palette
 
 
-def write_tmx(path, name, layers, tilesets):
+def write_tmx(path, name, layers, tilesets, objects=()):
     """The track's editable Tiled map: one CSV layer per entry of `layers`
     (name, tileset, values, width, height; row-major, `width` to a row —
     each layer carries its own size, the cell map is taller than the
@@ -732,6 +750,26 @@ def write_tmx(path, name, layers, tilesets):
         lines += [",\n".join(rows)]
         lines.append('  </data>')
         lines.append(' </layer>')
+    # the geometry: one object group per entry of `objects` (name,
+    # objects); each object is (name, points, props) — a polyline in
+    # world coordinates (one unit = one pixel), its points absolute
+    for gi, (gname, objs) in enumerate(objects):
+        lines.append(f' <objectgroup id="{len(layers) + gi + 1}" '
+                     f'name="{gname}">')
+        for oi, (oname, points, props) in enumerate(objs):
+            x, y = points[0]
+            rel = " ".join(f"{px - x},{py - y}" for px, py in points)
+            lines.append(f'  <object id="{oi + 1}" name="{oname}" '
+                         f'x="{x}" y="{y}">')
+            lines.append(f'   <polyline points="{rel}"/>')
+            if props:
+                lines.append('   <properties>')
+                for key, value in props:
+                    lines.append(f'    <property name="{key}" '
+                                 f'value="{value}"/>')
+                lines.append('   </properties>')
+            lines.append('  </object>')
+        lines.append(' </objectgroup>')
     lines.append('</map>')
     path.write_text("\n".join(lines) + "\n")
 
@@ -776,14 +814,41 @@ def read_tmx(path):
     if missing:
         # the cell layer is a track's to have or not (track 7 has none)
         sys.exit(f"{path}: no layer named {', '.join(sorted(missing))}")
-    return layers
+    objects = {}
+    for group in root.findall("objectgroup"):
+        objs = []
+        for obj in group.findall("object"):
+            poly = obj.find("polyline")
+            if poly is None:
+                sys.exit(f"{path}: object {obj.get('name')} in "
+                         f"{group.get('name')} is not a polyline")
+            x, y = float(obj.get("x")), float(obj.get("y"))
+            pts = []
+            for pair in poly.get("points").split():
+                dx, dy = (float(v) for v in pair.split(","))
+                pts.append((int(x + dx), int(y + dy)))
+            props = {pr.get("name"): pr.get("value")
+                     for pr in obj.findall("./properties/property")}
+            objs.append((obj.get("name"), pts, props))
+        objects[group.get("name")] = objs
+    return layers, objects
 
 
-def track_layer_files(name):
-    """A track's editable files, in a fixed order: the .tmx, the two tile
-    sheets, the two metatile tables and the surface table."""
-    return [f"{name}.tmx", "tiles_0.png", "tiles_2.png",
-            "metatiles_a", "metatiles_b", "surfaces"]
+def track_layer_files(name, meta=None):
+    """A track's editable files, in a fixed order: the .tmx (tile layers
+    and geometry object layers), the two tile sheets, the two metatile
+    tables, the surface table, and the geometry's binary side files (the
+    spatial indexes, the lane terminator pointers and projScale fixups,
+    the wall cell pool, and the unreferenced authoring leftovers)."""
+    files = [f"{name}.tmx", "tiles_0.png", "tiles_2.png",
+             "metatiles_a", "metatiles_b", "surfaces"]
+    if meta:
+        files += ["wall_cells", "lane_terms", "lane_fixups",
+                  "lane_lengths"]
+        files += [f"lane_cells_{g['slot']}" for g in meta["lanes"]]
+        files += [f"lane_orphan_{i}"
+                  for i in meta.get("orphanParts", [])]
+    return files
 
 
 def track_parts_blobs(meta, blobs):
@@ -818,6 +883,14 @@ def unpack_track(meta, blobs, out):
     with tempfile.TemporaryDirectory(dir=out) as t:
         tmp, done = Path(t), []
         tmx = f"{name}.tmx"
+        geo_layers, geo_files = unpack_track_geometry(meta, blobs)
+        for fname, data in geo_files.items():
+            if not (out / fname).exists():
+                (tmp / fname).write_bytes(data)
+                done.append(fname)
+        if "lane_lengths" in blobs and not (out / "lane_lengths").exists():
+            (tmp / "lane_lengths").write_bytes(blobs["lane_lengths"])
+            done.append("lane_lengths")
         if not (out / tmx).exists():
             layers = track_parts_blobs(meta, blobs)
             counts = {"metatiles_a": len(blobs["bg3Metatiles"]) // 32,
@@ -837,7 +910,7 @@ def unpack_track(meta, blobs, out):
                                    -(-m["count"] // stride)))
             if "cells" in layers:
                 tilesets.append(("cells", counts["cells"], "cells.png"))
-            write_tmx(tmp / tmx, name, tmx_layers, tilesets)
+            write_tmx(tmp / tmx, name, tmx_layers, tilesets, geo_layers)
             done.append(tmx)
         for part, fname in (("bg2Tiles", "tiles_0.png"),
                             ("bg3Tiles", "tiles_2.png")):
@@ -879,6 +952,187 @@ def unpack_track(meta, blobs, out):
                               bytes(colors))
 
 
+
+
+# --- Track geometry -------------------------------------------------------
+
+def unpack_track_geometry(meta, blobs):
+    """The geometry object layers (waypoints, lanes, walls) and the
+    binary side files' contents, from the track's geometry part blobs.
+    Returns (object layers for the .tmx, {file name: bytes})."""
+    obj_layers, files = [], {}
+    if "segs" in blobs:  # the waypoint gates, one 2-point line each
+        objs = []
+        for i in range(len(blobs["segs"]) // 0x18):
+            w = blobs["segs"][i * 0x18:(i + 1) * 0x18]
+            objs.append((str(i),
+                         [struct.unpack_from("<2i", w, 0),
+                          struct.unpack_from("<2i", w, 8)],
+                         [("kind", struct.unpack_from("<H", w, 16)[0]),
+                          ("countdown", w[0x14])]))
+        obj_layers.append(("waypoints", objs))
+    if "wall_recs" in blobs:  # one polyline per wall chain
+        nv = len(blobs["wall_verts"]) // 8
+        words = struct.unpack_from(f"<{nv * 2}i", blobs["wall_verts"])
+        verts = list(zip(words[::2], words[1::2]))
+        nc = len(blobs["wall_recs"]) // 0x20
+        pairs = [struct.unpack_from("<2H", blobs["wall_recs"], i * 0x20)
+                 for i in range(nc)]
+        chains, cur = [], [pairs[0][0], pairs[0][1]]
+        for i in range(1, nc):
+            if pairs[i][0] == cur[-1]:
+                cur.append(pairs[i][1])
+            else:
+                chains.append(cur)
+                cur = [pairs[i][0], pairs[i][1]]
+        chains.append(cur)
+        objs, idx = [], 0
+        for ci, ch in enumerate(chains):
+            nrec = len(ch) - 1
+            steer = ",".join(str(blobs["wall_recs"][(idx + r) * 0x20 + 0x1C])
+                             for r in range(nrec))
+            idx += nrec
+            objs.append((str(ci), [verts[i] for i in ch],
+                         [("steer", steer)]))
+        obj_layers.append(("walls", objs))
+        files["wall_cells"] = blobs["wall_lists"] + blobs["wall_grid"]
+    lanes = []
+    for g in meta["lanes"]:
+        slot = g["slot"]
+        flat = struct.unpack(f"<{g['points'] * 2}H",
+                             blobs[f"lane_points_{slot}"])
+        pts = list(zip(flat[::2], flat[1::2]))
+        segs = blobs[f"lane_segs_{slot}"]
+        nrec = len(segs) // 0x14
+        pairs = [struct.unpack_from("<2B", segs, i * 0x14)
+                 for i in range(nrec)]
+        skips = [(a, b) for a, b in pairs if b != a + 1 and b != 0]
+        props = ([("skips", " ".join(f"{a}-{b}" for a, b in skips))]
+                 if skips else [])
+        lanes.append((str(slot), pts, props))
+        files[f"lane_cells_{slot}"] = blobs[f"lane_cells_{slot}"]
+    if lanes:
+        obj_layers.append(("lanes", lanes))
+    # per lane: the terminator u32, and the projScale bytes the tool
+    # wrote against its own formula (kept so the build reproduces them)
+    terms, fixups = [], bytearray()
+    fixups += struct.pack("<B", len(meta["lanes"]))
+    for g in meta["lanes"]:
+        slot = g["slot"]
+        segs = blobs[f"lane_segs_{slot}"]
+        terms.append(struct.unpack_from("<I", segs, len(segs) - 4)[0])
+        nrec = len(segs) // 0x14
+        pairs = [struct.unpack_from("<2B", segs, i * 0x14)
+                 for i in range(nrec)]
+        skips = [(a, b) for a, b in pairs if b != a + 1 and b != 0]
+        flat = struct.unpack(f"<{g['points'] * 2}H",
+                             blobs[f"lane_points_{slot}"])
+        pts = list(zip(flat[::2], flat[1::2]))
+        got, _ = geo.pack_lane_segs(pts, skips, {}, 0)
+        lane_fix = [struct.pack("<HB", i, segs[i * 0x14 + 2])
+                    for i in range(nrec)
+                    if segs[i * 0x14 + 2] != got[i * 0x14 + 2]]
+        fixups += struct.pack("<BB", slot, len(lane_fix)) + b"".join(lane_fix)
+    files["lane_terms"] = b"".join(struct.pack("<I", t) for t in terms)
+    files["lane_fixups"] = bytes(fixups)
+    for i in meta.get("orphanParts", []):
+        files[f"lane_orphan_{i}"] = blobs[f"lane_orphan_{i}"]
+    return obj_layers, files
+
+
+def parse_skips(value):
+    """A "skips" property ("101-103 17-19") back to (from, to) pairs."""
+    if not value:
+        return []
+    return [tuple(int(v) for v in link.split("-"))
+            for link in value.split()]
+
+
+def read_lane_fixups(folder):
+    """The projScale fixups {slot: {record: value}} from lane_fixups:
+    u8 lane count, then per lane (u8 slot, u8 n, (u16 record, u8 value)*)
+    with record indices local to the lane."""
+    raw = (folder / "lane_fixups").read_bytes()
+    out, pos = {}, 1
+    for _ in range(raw[0]):
+        slot, n = raw[pos], raw[pos + 1]
+        pos += 2
+        out[slot] = {struct.unpack_from("<HB", raw, pos + 3 * i)[0]:
+                     raw[pos + 3 * i + 2] for i in range(n)}
+        pos += 3 * n
+    return out
+
+
+def build_track_geometry(meta, folder, paths, sizes, objects):
+    """Build the geometry part blobs from the .tmx's object layers and
+    the binary side files: every derived field through track_geometry's
+    formulas, the steer bytes, terminator pointers and cell pools from
+    the editable files."""
+    for oname in objects:
+        if oname not in ("waypoints", "walls", "lanes"):
+            sys.exit(f"{folder}: unknown object layer {oname}")
+    if "segs" in paths:
+        segs = b""
+        for name, pts, props in objects.get("waypoints", []):
+            if len(pts) != 2:
+                sys.exit(f"{folder}: waypoint {name} is not a 2-point line")
+            segs += geo.pack_seg(pts[0], pts[1], int(props.get("kind", 0)),
+                                 int(props.get("countdown", 0)))
+        paths["segs"].write_bytes(segs)
+    if "wall_verts" in paths:
+        chains = []
+        for name, pts, props in objects.get("walls", []):
+            if len(pts) < 2:
+                sys.exit(f"{folder}: wall chain {name} needs 2+ points")
+            steer = [int(v) & 0xFF
+                     for v in props.get("steer", "").split(",") if v != ""]
+            if len(steer) != len(pts) - 1:
+                sys.exit(f"{folder}: wall {name} has {len(pts) - 1} records "
+                         f"but {len(steer)} steer bytes")
+            chains.append((pts, steer))
+        verts, recs = bytearray(), bytearray()
+        for chain, steer in chains:
+            base = len(verts) // 8
+            for x, z in chain:
+                verts += struct.pack("<2i", x, z)
+            for i, st in enumerate(steer):
+                v0, v1 = chain[i], chain[i + 1]
+                nx, nz = geo.wall_normal(v0, v1, st)
+                recs += geo.pack_wall_rec(base + i, base + i + 1,
+                                          v0, v1, st, nx, nz)
+        paths["wall_verts"].write_bytes(verts)
+        paths["wall_recs"].write_bytes(recs)
+        cells = (folder / "wall_cells").read_bytes()
+        grid = sizes["wall_grid"]
+        paths["wall_lists"].write_bytes(cells[:len(cells) - grid])
+        paths["wall_grid"].write_bytes(cells[len(cells) - grid:])
+    terms = list(struct.unpack(
+        f"<{len((folder / 'lane_terms').read_bytes()) // 4}I",
+        (folder / "lane_terms").read_bytes()))
+    by_lane = read_lane_fixups(folder)
+    for gi, g in enumerate(meta["lanes"]):
+        slot = g["slot"]
+        objs = {o[0]: o for o in objects.get("lanes", [])}
+        if str(slot) not in objs:
+            sys.exit(f"{folder}: no lane object named {slot}")
+        pts = objs[str(slot)][1]
+        segs, _ = geo.pack_lane_segs(
+            pts, parse_skips(dict(objs[str(slot)][2]).get("skips", "")),
+            by_lane.get(slot, {}), terms[gi])
+        paths[f"lane_points_{slot}"].write_bytes(
+            struct.pack(f"<{len(pts) * 2}H",
+                        *[c for pt in pts for c in pt]))
+        paths[f"lane_segs_{slot}"].write_bytes(segs)
+        paths[f"lane_cells_{slot}"].write_bytes(
+            (folder / f"lane_cells_{slot}").read_bytes())
+    if "lane_lengths" in paths:
+        paths["lane_lengths"].write_bytes(
+            (folder / "lane_lengths").read_bytes())
+    for i in meta.get("orphanParts", []):
+        paths[f"lane_orphan_{i}"].write_bytes(
+            (folder / f"lane_orphan_{i}").read_bytes())
+
+
 def build_track(meta, folder, paths, sizes):
     """Build a track's part blobs from its editable files alone, plus the
     three stream-length files (u16 halfword counts) that the gTrackData
@@ -889,7 +1143,8 @@ def build_track(meta, folder, paths, sizes):
     rest of the ROM, as any edit does. The module's raw maps of track 7
     are the .tmx rectangles themselves, one byte per cell."""
     name = meta["name"]
-    layers = read_tmx(folder / f"{name}.tmx")
+    layers, objects = read_tmx(folder / f"{name}.tmx")
+    build_track_geometry(meta, folder, paths, sizes, objects)
     for part, lname in (("bg3Map", "A"), ("bg2Map", "B"),
                         ("cellMap", "cells")):
         if part not in paths:
@@ -1268,6 +1523,23 @@ def blank():
         folder.mkdir(parents=True, exist_ok=True)
         for part, m in meta["layers"].items():
             (folder / f"{part}.len").write_bytes(struct.pack("<H", m["len"]))
+        # the geometry side files carry real bytes in CI too: the lanes
+        # build from them, and the region's pointer tables are C, so the
+        # parts must link at their retail sizes
+        (folder / "lane_terms").write_bytes(b"".join(
+            struct.pack("<I", t) for t in meta.get("terms", [])))
+        fixups = bytearray([len(meta.get("lanes", []))])
+        lanes_with = {}
+        for slot, rec, value in meta.get("fixups", []):
+            lanes_with.setdefault(slot, []).append((rec, value))
+        for g in meta.get("lanes", []):
+            fx = lanes_with.get(g["slot"], [])
+            fixups += struct.pack("<BB", g["slot"], len(fx))
+            for rec, value in fx:
+                fixups += struct.pack("<HB", rec, value)
+        (folder / "lane_fixups").write_bytes(bytes(fixups))
+        for fname, size in meta.get("geometrySizes", {}).items():
+            (folder / fname).write_bytes(bytes(size))
 
 
 def mask(rom_in, rom_out):

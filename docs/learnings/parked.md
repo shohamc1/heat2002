@@ -2592,3 +2592,33 @@ needed a `register`-asm pin (three functions it floored on — 0CC00,
 0A4D4, 132F8 — all closed by manual pins or source shapes its parser
 cannot express); and `m2c` output never survived to a match unchanged —
 it was useful only as an operation listing.
+
+- The track geometry (0x08365348-0x083FD91C, issue #4 part 2) builds
+  from the same track folders; `scripts/track_geometry.py`'s docstring
+  and `verify` mode are the reference. What the reverse engineering
+  established:
+  - Walls are polyline CHAINS: each track's vertex list is its chains'
+    points concatenated with no dedup (first-seen dedup fails on 11 of
+    12 tracks), and the records are the chains' consecutive point pairs.
+    18 of every record's 20 bytes derive (the 1.15 normal with sqrt in
+    double and truncation toward zero, its side fixed by the authored
+    vertex order; the AABB; steer+0x80 and steer+0x40). steerAngle
+    itself is data: its quantiser was never recovered (the game's own
+    Atan2 table gets 2812/3050).
+  - Lane segment tables: the chain, cumulative isqrt distances,
+    invLen/scaleX/scaleZ (C truncation) and projScale
+    min(255, 65536//len2) all regenerate; three projScale bytes the
+    authoring tool wrote otherwise are kept as per-track fixups files.
+    Two lane length words were hand-edited, so the length blocks stay
+    binary. The terminator record's head is a constant; its last u32 is
+    an authoring-tool pointer, kept in lane_terms.
+  - The wall and lane spatial indexes (cellGrid + cellLists, ~260 KB)
+    do not regenerate: pool conventions replay byte-exactly (u16/u8
+    offsets, suffix sharing, row-major emission, a shared empty
+    terminator) but the membership rule left no recoverable trace —
+    best recovered rule 99.3% of cells, nearest-segment heuristics 27%.
+    They stay binary side files.
+  - TrackSegs are primary (their corners coincide with no lane point);
+    325 records, counted by the kind==1 start/finish record that ends
+    each track's table. 62 KB of unreferenced authoring polylines sit
+    inside the lane region (kept as lane_orphan_N parts).

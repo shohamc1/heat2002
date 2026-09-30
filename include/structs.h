@@ -79,7 +79,7 @@ struct LaneSeg
     /* 0x03 */ u8 unk3;
     /* 0x04 */ u16 startDist;
     /* 0x06 */ u16 endDist;
-    /* 0x08 */ s32 unk8;
+    /* 0x08 */ s32 invLen; /* 65536 / isqrt(len2): 16.16 of the length */
     /* 0x0C */ s32 scaleX;
     /* 0x10 */ s32 scaleZ;
 };
@@ -103,7 +103,7 @@ struct WallRec
     s32 maxZ;         /* 0x18 */
     u8 steerAngle;    /* 0x1C: post-hit steer heading, gSinTable index */
     u8 steerAngleOpp; /* 0x1D: +0x80, used when heading opposes it */
-    u8 unk1E;         /* 0x1E */
+    u8 edgeAngle;     /* 0x1E: steerAngle + 0x40, the wall's own heading */
 };
 // One row of gTrackWallTables, per track.
 struct TrackWalls

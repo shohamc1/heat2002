@@ -111,7 +111,7 @@ s32 ModuleTestCornersVsWalls(struct Corner *corn, struct Box *box, struct Box *c
                 out->normalZ = (wall->normalZ * 0x104) >> 8;
                 out->steerAngle = wall->steerAngle;
                 out->steerAngleOpp = wall->steerAngleOpp;
-                out->unk0F = wall->unk1E;
+                out->unk0F = wall->edgeAngle;
                 out->unk10 = *w;
                 out->cornerIndex = (u8)i;
             }
