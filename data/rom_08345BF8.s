@@ -32,10 +32,7 @@
 	.size \name, .-\name
 	.endm
 @ End embedded Luvdis macros
-	.thumb
-	.global gUnk_0200D118
-gUnk_0200D118:
-	.incbin "build/assets/unknown/data_08345B98.bin"
+	.incbin "build/assets/unknown/data_08345BF8.bin"
 	.global gUnk_0200D378
 gUnk_0200D378:
 	.incbin "build/assets/tracks/purley_park/module_bg3Map.bin"

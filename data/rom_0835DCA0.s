@@ -32,8 +32,18 @@
 	.size \name, .-\name
 	.endm
 @ End embedded Luvdis macros
-	.thumb
-	@ 0x08345730-0x08345940: the high module's multilingual race text
-	@ (placings, out-of-time and pause strings), still a raw blob behind
-	@ the sound data; src/data/high_module_text.c's text follows it.
-	.incbin "build/assets/unknown/data_08345730.bin"
+	.global gModule_02025220
+gModule_02025220:
+	.incbin "build/assets/unknown/data_0835DCA0.bin"
+	.global gModule_0202522C
+gModule_0202522C:
+	.incbin "build/assets/unknown/data_0835DCAC.bin"
+	.global gUnk_02025230
+gUnk_02025230:
+	.incbin "build/assets/unknown/data_0835DCB0.bin"
+	.global gUnk_02025234
+gUnk_02025234:
+	.incbin "build/assets/unknown/data_0835DCB4.bin", 0, 0xBEC
+	.global gUnk_02025E20
+gUnk_02025E20:
+	.incbin "build/assets/unknown/data_0835DCB4.bin", 0xBEC, 0xBA0

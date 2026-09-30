@@ -1,5 +1,6 @@
 #include "global.h"
 #include "data.h"
+#include "race_setup_tables.h"
 
 /* Race setup data (0x083671C0-0x083682BC): per-track object-tile VRAM
  * caches, pit stall coordinates and entry/exit progress points, race
@@ -134,19 +135,7 @@ const u8 *const gDriverPalettes[] = { gUnk_08330D38, gUnk_08330D58, gUnk_08330D7
 // rear slow/fast grip, front slow/fast grip, slip-limit base.
 // SetTireGrip (src/car/tire_grip.c) loads row 0 for link races and the
 // player's car; no decompiled code reads the other 30 rows yet.
-const struct TireGripSetup gTireGripDefaults[31] = {
-    { 180, 180, 70, 70, 80000 },   { 160, 66, 103, 103, 69632 },  { 180, 54, 180, 63, 40960 },
-    { 84, 62, 124, 108, 51536 },   { 132, 114, 100, 83, 46080 },  { 168, 154, 72, 99, 55296 },
-    { 88, 66, 140, 140, 51536 },   { 100, 100, 100, 100, 60416 }, { 200, 170, 100, 55, 48128 },
-    { 96, 70, 160, 192, 51536 },   { 128, 134, 128, 91, 33792 },  { 108, 74, 160, 192, 52560 },
-    { 84, 66, 132, 83, 71680 },    { 116, 78, 172, 200, 54608 },  { 152, 110, 140, 103, 37888 },
-    { 220, 170, 100, 83, 30720 },  { 255, 150, 120, 75, 65536 },  { 175, 130, 204, 47, 80896 },
-    { 107, 90, 236, 179, 50176 },  { 132, 102, 192, 212, 60752 }, { 88, 66, 140, 140, 51536 },
-    { 160, 66, 103, 103, 69632 },  { 180, 54, 180, 63, 40960 },   { 84, 62, 124, 108, 51536 },
-    { 132, 114, 100, 83, 46080 },  { 168, 154, 72, 99, 55296 },   { 88, 66, 140, 140, 51536 },
-    { 100, 100, 100, 100, 60416 }, { 200, 170, 100, 55, 48128 },  { 96, 70, 160, 192, 51536 },
-    { 128, 134, 128, 91, 33792 },
-};
+const struct TireGripSetup gTireGripDefaults[31] = TIRE_GRIP_DEFAULTS;
 // Starting-grid records (struct TrackGrid, structs.h), one per track;
 // BuildStartingGrid (race/grid.c) places the 24 slots from each row.
 const struct TrackGrid gTrackStartGrids[12] = {
@@ -184,96 +173,96 @@ const u16 gUnk_08367C1A[5] = { 280, 280, 320, 340, 360 };
 const u16 gUnk_08367C24[5] = { 6000, 8600, 9300, 13600, 16600 };
 const u16 gUnk_08367C2E[5] = { 10, 7, 7, 4, 3 };
 
-const u16 gDriverSteveParkPower[5] = { 680, 640, 700, 680, 720 };
-const u16 gDriverDaleEarnhardtJRPower[5] = { 560, 560, 640, 680, 720 };
-const u16 gDriverKevinHarvickPower[5] = { 480, 560, 640, 680, 680 };
-const u16 gDriverDaleJarrettPower[5] = { 480, 560, 640, 680, 680 };
-const u16 gDriverRickyRuddPower[5] = { 400, 440, 600, 640, 680 };
-const u16 gDriverJeffGordonPower[5] = { 400, 440, 600, 640, 680 };
-const u16 gDriverJasonPopePower[5] = { 400, 440, 600, 640, 720 };
-const u16 gDriverJoeFriedPower[5] = { 400, 440, 600, 640, 720 };
-const u16 gDriverRustyWallacePower[5] = { 400, 520, 600, 680, 720 };
-const u16 gDriverSterlingMarlinPower[5] = { 400, 520, 600, 680, 720 };
-const u16 gDriverBrianLockePower[5] = { 400, 440, 520, 640, 720 };
-const u16 gDriverJayMcgeePower[5] = { 440, 480, 640, 640, 680 };
-const u16 gDriverMitchellSlaterPower[5] = { 480, 520, 560, 640, 720 };
-const u16 gDriverJamesBrownPower[5] = { 480, 520, 560, 640, 720 };
-const u16 gDriverNeilWilsonPower[5] = { 400, 440, 520, 640, 720 };
-const u16 gDriverTimMunsonPower[5] = { 480, 520, 560, 680, 720 };
-const u16 gDriverAndrewBishopPower[5] = { 480, 520, 560, 600, 640 };
-const u16 gDriverDanielEvansPower[5] = { 520, 600, 640, 680, 720 };
-const u16 gDriverSeanKendrickPower[5] = { 520, 600, 680, 680, 720 };
-const u16 gDriverJakeMayPower[5] = { 520, 560, 600, 680, 720 };
-const u16 gDriverChrisWalshPower[5] = { 400, 440, 520, 640, 720 };
-const u16 gDriverJamesDalyPower[5] = { 440, 480, 640, 640, 680 };
-const u16 gDriverAdamBouskillPower[5] = { 480, 520, 560, 640, 720 };
-const u16 gDriverTimCoodePower[5] = { 480, 520, 560, 640, 720 };
-const u16 gDriverWillGreenoughPower[5] = { 400, 440, 520, 640, 720 };
-const u16 gDriverJonnieShearnPower[5] = { 480, 520, 560, 680, 720 };
-const u16 gDriverDaveMurphyPower[5] = { 480, 520, 560, 600, 640 };
-const u16 gDriverDarrenJacksonPower[5] = { 520, 600, 640, 680, 720 };
-const u16 gDriverMikeMerrenPower[5] = { 520, 600, 680, 680, 720 };
-const u16 gDriverCameronSheppardPower[5] = { 520, 560, 600, 680, 720 };
-const u16 gDriverSteveParkGearRatio[5] = { 6000, 8600, 9300, 13600, 16600 };
-const u16 gDriverDaleEarnhardtJRGearRatio[5] = { 6000, 8600, 9300, 13600, 16600 };
-const u16 gDriverKevinHarvickGearRatio[5] = { 6800, 8000, 9700, 12000, 13800 };
-const u16 gDriverDaleJarrettGearRatio[5] = { 6800, 8000, 9700, 12000, 13800 };
-const u16 gDriverRickyRuddGearRatio[5] = { 6800, 7600, 9700, 10000, 13400 };
-const u16 gDriverJeffGordonGearRatio[5] = { 6800, 7600, 9700, 10000, 13400 };
-const u16 gDriverJasonPopeGearRatio[5] = { 6800, 7600, 9700, 10000, 13400 };
-const u16 gDriverJoeFriedGearRatio[5] = { 6800, 7600, 9700, 10000, 13400 };
-const u16 gDriverRustyWallaceGearRatio[5] = { 6000, 8000, 9700, 11200, 14200 };
-const u16 gDriverSterlingMarlinGearRatio[5] = { 6000, 8000, 9700, 11200, 14200 };
-const u16 gDriverBrianLockeGearRatio[5] = { 6800, 7600, 9700, 11200, 13800 };
-const u16 gDriverJayMcgeeGearRatio[5] = { 6400, 8000, 9700, 10400, 13000 };
-const u16 gDriverMitchellSlaterGearRatio[5] = { 6800, 8400, 10100, 12000, 14000 };
-const u16 gDriverJamesBrownGearRatio[5] = { 6800, 8400, 10100, 12000, 14000 };
-const u16 gDriverNeilWilsonGearRatio[5] = { 6800, 7600, 9700, 11200, 13800 };
-const u16 gDriverTimMunsonGearRatio[5] = { 7200, 8400, 10100, 12000, 14600 };
-const u16 gDriverAndrewBishopGearRatio[5] = { 7200, 8400, 10100, 12000, 16600 };
-const u16 gDriverDanielEvansGearRatio[5] = { 6000, 8400, 10100, 12400, 15000 };
-const u16 gDriverSeanKendrickGearRatio[5] = { 6800, 8400, 10100, 12400, 15000 };
-const u16 gDriverJakeMayGearRatio[5] = { 6000, 8400, 10100, 11200, 15000 };
-const u16 gDriverChrisWalshGearRatio[5] = { 6800, 7600, 9700, 11200, 13800 };
-const u16 gDriverJamesDalyGearRatio[5] = { 6400, 8000, 9700, 10400, 13000 };
-const u16 gDriverAdamBouskillGearRatio[5] = { 6800, 8400, 10100, 12000, 14000 };
-const u16 gDriverTimCoodeGearRatio[5] = { 6800, 8400, 10100, 12000, 14000 };
-const u16 gDriverWillGreenoughGearRatio[5] = { 6800, 7600, 9700, 11200, 13800 };
-const u16 gDriverJonnieShearnGearRatio[5] = { 7200, 8400, 10100, 12000, 14600 };
-const u16 gDriverDaveMurphyGearRatio[5] = { 7200, 8400, 10100, 12000, 16600 };
-const u16 gDriverDarrenJacksonGearRatio[5] = { 6000, 8400, 10100, 12400, 15000 };
-const u16 gDriverMikeMerrenGearRatio[5] = { 6800, 8400, 10100, 12400, 15000 };
-const u16 gDriverCameronSheppardGearRatio[5] = { 6000, 8400, 10100, 11200, 15000 };
-const u16 gDriverSteveParkRpmPerSpeed[5] = { 10, 7, 7, 4, 3 };
-const u16 gDriverDaleEarnhardtJRRpmPerSpeed[5] = { 10, 7, 7, 4, 3 };
-const u16 gDriverKevinHarvickRpmPerSpeed[5] = { 9, 8, 6, 5, 4 };
-const u16 gDriverDaleJarrettRpmPerSpeed[5] = { 9, 8, 6, 5, 4 };
-const u16 gDriverRickyRuddRpmPerSpeed[5] = { 9, 8, 6, 6, 4 };
-const u16 gDriverJeffGordonRpmPerSpeed[5] = { 9, 8, 6, 6, 4 };
-const u16 gDriverJasonPopeRpmPerSpeed[5] = { 9, 8, 6, 6, 4 };
-const u16 gDriverJoeFriedRpmPerSpeed[5] = { 9, 8, 6, 6, 4 };
-const u16 gDriverRustyWallaceRpmPerSpeed[5] = { 10, 8, 6, 5, 4 };
-const u16 gDriverSterlingMarlinRpmPerSpeed[5] = { 10, 8, 6, 5, 4 };
-const u16 gDriverBrianLockeRpmPerSpeed[5] = { 9, 8, 6, 5, 4 };
-const u16 gDriverJayMcgeeRpmPerSpeed[5] = { 10, 8, 6, 6, 5 };
-const u16 gDriverMitchellSlaterRpmPerSpeed[5] = { 9, 7, 6, 5, 4 };
-const u16 gDriverJamesBrownRpmPerSpeed[5] = { 9, 7, 6, 5, 4 };
-const u16 gDriverNeilWilsonRpmPerSpeed[5] = { 9, 8, 6, 5, 4 };
-const u16 gDriverTimMunsonRpmPerSpeed[5] = { 9, 7, 6, 5, 4 };
-const u16 gDriverAndrewBishopRpmPerSpeed[5] = { 9, 7, 6, 5, 3 };
-const u16 gDriverDanielEvansRpmPerSpeed[5] = { 10, 7, 6, 5, 4 };
-const u16 gDriverSeanKendrickRpmPerSpeed[5] = { 9, 7, 6, 5, 4 };
-const u16 gDriverJakeMayRpmPerSpeed[5] = { 10, 7, 6, 5, 4 };
-const u16 gDriverChrisWalshRpmPerSpeed[5] = { 9, 8, 6, 5, 4 };
-const u16 gDriverJamesDalyRpmPerSpeed[5] = { 10, 8, 6, 6, 5 };
-const u16 gDriverAdamBouskillRpmPerSpeed[5] = { 9, 7, 6, 5, 4 };
-const u16 gDriverTimCoodeRpmPerSpeed[5] = { 9, 7, 6, 5, 4 };
-const u16 gDriverWillGreenoughRpmPerSpeed[5] = { 9, 8, 6, 5, 4 };
-const u16 gDriverJonnieShearnRpmPerSpeed[5] = { 9, 7, 6, 5, 4 };
-const u16 gDriverDaveMurphyRpmPerSpeed[5] = { 9, 7, 6, 5, 3 };
-const u16 gDriverDarrenJacksonRpmPerSpeed[5] = { 10, 7, 6, 5, 4 };
-const u16 gDriverMikeMerrenRpmPerSpeed[5] = { 9, 7, 6, 5, 4 };
-const u16 gDriverCameronSheppardRpmPerSpeed[5] = { 10, 7, 6, 5, 4 };
+const u16 gDriverSteveParkPower[5] = DRIVER_STEVE_PARK_POWER;
+const u16 gDriverDaleEarnhardtJRPower[5] = DRIVER_DALE_EARNHARDT_J_R_POWER;
+const u16 gDriverKevinHarvickPower[5] = DRIVER_KEVIN_HARVICK_POWER;
+const u16 gDriverDaleJarrettPower[5] = DRIVER_DALE_JARRETT_POWER;
+const u16 gDriverRickyRuddPower[5] = DRIVER_RICKY_RUDD_POWER;
+const u16 gDriverJeffGordonPower[5] = DRIVER_JEFF_GORDON_POWER;
+const u16 gDriverJasonPopePower[5] = DRIVER_JASON_POPE_POWER;
+const u16 gDriverJoeFriedPower[5] = DRIVER_JOE_FRIED_POWER;
+const u16 gDriverRustyWallacePower[5] = DRIVER_RUSTY_WALLACE_POWER;
+const u16 gDriverSterlingMarlinPower[5] = DRIVER_STERLING_MARLIN_POWER;
+const u16 gDriverBrianLockePower[5] = DRIVER_BRIAN_LOCKE_POWER;
+const u16 gDriverJayMcgeePower[5] = DRIVER_JAY_MCGEE_POWER;
+const u16 gDriverMitchellSlaterPower[5] = DRIVER_MITCHELL_SLATER_POWER;
+const u16 gDriverJamesBrownPower[5] = DRIVER_JAMES_BROWN_POWER;
+const u16 gDriverNeilWilsonPower[5] = DRIVER_NEIL_WILSON_POWER;
+const u16 gDriverTimMunsonPower[5] = DRIVER_TIM_MUNSON_POWER;
+const u16 gDriverAndrewBishopPower[5] = DRIVER_ANDREW_BISHOP_POWER;
+const u16 gDriverDanielEvansPower[5] = DRIVER_DANIEL_EVANS_POWER;
+const u16 gDriverSeanKendrickPower[5] = DRIVER_SEAN_KENDRICK_POWER;
+const u16 gDriverJakeMayPower[5] = DRIVER_JAKE_MAY_POWER;
+const u16 gDriverChrisWalshPower[5] = DRIVER_CHRIS_WALSH_POWER;
+const u16 gDriverJamesDalyPower[5] = DRIVER_JAMES_DALY_POWER;
+const u16 gDriverAdamBouskillPower[5] = DRIVER_ADAM_BOUSKILL_POWER;
+const u16 gDriverTimCoodePower[5] = DRIVER_TIM_COODE_POWER;
+const u16 gDriverWillGreenoughPower[5] = DRIVER_WILL_GREENOUGH_POWER;
+const u16 gDriverJonnieShearnPower[5] = DRIVER_JONNIE_SHEARN_POWER;
+const u16 gDriverDaveMurphyPower[5] = DRIVER_DAVE_MURPHY_POWER;
+const u16 gDriverDarrenJacksonPower[5] = DRIVER_DARREN_JACKSON_POWER;
+const u16 gDriverMikeMerrenPower[5] = DRIVER_MIKE_MERREN_POWER;
+const u16 gDriverCameronSheppardPower[5] = DRIVER_CAMERON_SHEPPARD_POWER;
+const u16 gDriverSteveParkGearRatio[5] = DRIVER_STEVE_PARK_GEAR_RATIO;
+const u16 gDriverDaleEarnhardtJRGearRatio[5] = DRIVER_DALE_EARNHARDT_J_R_GEAR_RATIO;
+const u16 gDriverKevinHarvickGearRatio[5] = DRIVER_KEVIN_HARVICK_GEAR_RATIO;
+const u16 gDriverDaleJarrettGearRatio[5] = DRIVER_DALE_JARRETT_GEAR_RATIO;
+const u16 gDriverRickyRuddGearRatio[5] = DRIVER_RICKY_RUDD_GEAR_RATIO;
+const u16 gDriverJeffGordonGearRatio[5] = DRIVER_JEFF_GORDON_GEAR_RATIO;
+const u16 gDriverJasonPopeGearRatio[5] = DRIVER_JASON_POPE_GEAR_RATIO;
+const u16 gDriverJoeFriedGearRatio[5] = DRIVER_JOE_FRIED_GEAR_RATIO;
+const u16 gDriverRustyWallaceGearRatio[5] = DRIVER_RUSTY_WALLACE_GEAR_RATIO;
+const u16 gDriverSterlingMarlinGearRatio[5] = DRIVER_STERLING_MARLIN_GEAR_RATIO;
+const u16 gDriverBrianLockeGearRatio[5] = DRIVER_BRIAN_LOCKE_GEAR_RATIO;
+const u16 gDriverJayMcgeeGearRatio[5] = DRIVER_JAY_MCGEE_GEAR_RATIO;
+const u16 gDriverMitchellSlaterGearRatio[5] = DRIVER_MITCHELL_SLATER_GEAR_RATIO;
+const u16 gDriverJamesBrownGearRatio[5] = DRIVER_JAMES_BROWN_GEAR_RATIO;
+const u16 gDriverNeilWilsonGearRatio[5] = DRIVER_NEIL_WILSON_GEAR_RATIO;
+const u16 gDriverTimMunsonGearRatio[5] = DRIVER_TIM_MUNSON_GEAR_RATIO;
+const u16 gDriverAndrewBishopGearRatio[5] = DRIVER_ANDREW_BISHOP_GEAR_RATIO;
+const u16 gDriverDanielEvansGearRatio[5] = DRIVER_DANIEL_EVANS_GEAR_RATIO;
+const u16 gDriverSeanKendrickGearRatio[5] = DRIVER_SEAN_KENDRICK_GEAR_RATIO;
+const u16 gDriverJakeMayGearRatio[5] = DRIVER_JAKE_MAY_GEAR_RATIO;
+const u16 gDriverChrisWalshGearRatio[5] = DRIVER_CHRIS_WALSH_GEAR_RATIO;
+const u16 gDriverJamesDalyGearRatio[5] = DRIVER_JAMES_DALY_GEAR_RATIO;
+const u16 gDriverAdamBouskillGearRatio[5] = DRIVER_ADAM_BOUSKILL_GEAR_RATIO;
+const u16 gDriverTimCoodeGearRatio[5] = DRIVER_TIM_COODE_GEAR_RATIO;
+const u16 gDriverWillGreenoughGearRatio[5] = DRIVER_WILL_GREENOUGH_GEAR_RATIO;
+const u16 gDriverJonnieShearnGearRatio[5] = DRIVER_JONNIE_SHEARN_GEAR_RATIO;
+const u16 gDriverDaveMurphyGearRatio[5] = DRIVER_DAVE_MURPHY_GEAR_RATIO;
+const u16 gDriverDarrenJacksonGearRatio[5] = DRIVER_DARREN_JACKSON_GEAR_RATIO;
+const u16 gDriverMikeMerrenGearRatio[5] = DRIVER_MIKE_MERREN_GEAR_RATIO;
+const u16 gDriverCameronSheppardGearRatio[5] = DRIVER_CAMERON_SHEPPARD_GEAR_RATIO;
+const u16 gDriverSteveParkRpmPerSpeed[5] = DRIVER_STEVE_PARK_RPM_PER_SPEED;
+const u16 gDriverDaleEarnhardtJRRpmPerSpeed[5] = DRIVER_DALE_EARNHARDT_J_R_RPM_PER_SPEED;
+const u16 gDriverKevinHarvickRpmPerSpeed[5] = DRIVER_KEVIN_HARVICK_RPM_PER_SPEED;
+const u16 gDriverDaleJarrettRpmPerSpeed[5] = DRIVER_DALE_JARRETT_RPM_PER_SPEED;
+const u16 gDriverRickyRuddRpmPerSpeed[5] = DRIVER_RICKY_RUDD_RPM_PER_SPEED;
+const u16 gDriverJeffGordonRpmPerSpeed[5] = DRIVER_JEFF_GORDON_RPM_PER_SPEED;
+const u16 gDriverJasonPopeRpmPerSpeed[5] = DRIVER_JASON_POPE_RPM_PER_SPEED;
+const u16 gDriverJoeFriedRpmPerSpeed[5] = DRIVER_JOE_FRIED_RPM_PER_SPEED;
+const u16 gDriverRustyWallaceRpmPerSpeed[5] = DRIVER_RUSTY_WALLACE_RPM_PER_SPEED;
+const u16 gDriverSterlingMarlinRpmPerSpeed[5] = DRIVER_STERLING_MARLIN_RPM_PER_SPEED;
+const u16 gDriverBrianLockeRpmPerSpeed[5] = DRIVER_BRIAN_LOCKE_RPM_PER_SPEED;
+const u16 gDriverJayMcgeeRpmPerSpeed[5] = DRIVER_JAY_MCGEE_RPM_PER_SPEED;
+const u16 gDriverMitchellSlaterRpmPerSpeed[5] = DRIVER_MITCHELL_SLATER_RPM_PER_SPEED;
+const u16 gDriverJamesBrownRpmPerSpeed[5] = DRIVER_JAMES_BROWN_RPM_PER_SPEED;
+const u16 gDriverNeilWilsonRpmPerSpeed[5] = DRIVER_NEIL_WILSON_RPM_PER_SPEED;
+const u16 gDriverTimMunsonRpmPerSpeed[5] = DRIVER_TIM_MUNSON_RPM_PER_SPEED;
+const u16 gDriverAndrewBishopRpmPerSpeed[5] = DRIVER_ANDREW_BISHOP_RPM_PER_SPEED;
+const u16 gDriverDanielEvansRpmPerSpeed[5] = DRIVER_DANIEL_EVANS_RPM_PER_SPEED;
+const u16 gDriverSeanKendrickRpmPerSpeed[5] = DRIVER_SEAN_KENDRICK_RPM_PER_SPEED;
+const u16 gDriverJakeMayRpmPerSpeed[5] = DRIVER_JAKE_MAY_RPM_PER_SPEED;
+const u16 gDriverChrisWalshRpmPerSpeed[5] = DRIVER_CHRIS_WALSH_RPM_PER_SPEED;
+const u16 gDriverJamesDalyRpmPerSpeed[5] = DRIVER_JAMES_DALY_RPM_PER_SPEED;
+const u16 gDriverAdamBouskillRpmPerSpeed[5] = DRIVER_ADAM_BOUSKILL_RPM_PER_SPEED;
+const u16 gDriverTimCoodeRpmPerSpeed[5] = DRIVER_TIM_COODE_RPM_PER_SPEED;
+const u16 gDriverWillGreenoughRpmPerSpeed[5] = DRIVER_WILL_GREENOUGH_RPM_PER_SPEED;
+const u16 gDriverJonnieShearnRpmPerSpeed[5] = DRIVER_JONNIE_SHEARN_RPM_PER_SPEED;
+const u16 gDriverDaveMurphyRpmPerSpeed[5] = DRIVER_DAVE_MURPHY_RPM_PER_SPEED;
+const u16 gDriverDarrenJacksonRpmPerSpeed[5] = DRIVER_DARREN_JACKSON_RPM_PER_SPEED;
+const u16 gDriverMikeMerrenRpmPerSpeed[5] = DRIVER_MIKE_MERREN_RPM_PER_SPEED;
+const u16 gDriverCameronSheppardRpmPerSpeed[5] = DRIVER_CAMERON_SHEPPARD_RPM_PER_SPEED;
 
 extern const u8 gText_Ok[];
 extern const u8 gText_DamageLabel[];

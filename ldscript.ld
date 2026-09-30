@@ -613,17 +613,37 @@ SECTIONS
         build/lib/libgcc/high/_muldi3.o(.text);
         build/lib/libgcc/high/_negdi2.o(.text);
         build/lib/libgcc/high/_umodsi3.o(.text);
-        build/data/rom_08344E68.o(.text*);
+        build/src/data/rom_08344E68.o(.rodata);
         build/src/sound/module_engine_tables.o(.rodata);
-        build/data/rom_08345390.o(.text*);
+        build/src/data/rom_08345390.o(.rodata);
         build/data/sound/module_sound.o(.text*);
         build/src/sound/module_tables.o(.rodata);
         build/data/sound/module_songs.o(.text*);
-        build/data/rom_08345730.o(.text*);
+        build/src/data/rom_08345730.o(.rodata);
         build/src/data/high_module_text.o(.rodata);
-        build/data/rom_08345B98.o(.text*);
+        build/data/rom_08345BF8.o(.text*);
         build/src/data/career_text.o(.rodata);
-        build/data/rom_083534D4.o(.text*);
+        build/data/rom_083537BC.o(.text*);
+        build/data/rom_08354010.o(.text*);
+        build/src/data/rom_08357FD0.o(.rodata);
+        build/data/rom_08358450.o(.text*);
+        build/src/data/rom_0835A784.o(.rodata);
+        build/data/rom_0835ACD4.o(.text*);
+        build/src/data/rom_0835DB70.o(.rodata);
+        build/data/rom_0835DC10.o(.text*);
+        build/src/data/rom_0835DC38.o(.rodata);
+        build/data/rom_0835DCA0.o(.text*);
+        build/src/data/rom_0835F440.o(.rodata);
+        build/data/rom_0835F444.o(.text*);
+        build/src/data/rom_0835F8A0.o(.rodata);
+        build/data/rom_0835FB0C.o(.text*);
+        build/src/data/rom_0835FBFC.o(.rodata);
+        build/data/rom_083600E8.o(.text*);
+        build/src/data/rom_08360100.o(.rodata);
+        build/data/rom_0836012C.o(.text*);
+        build/src/data/rom_08363954.o(.rodata);
+        build/src/data/rom_08363988.o(.rodata);
+        build/data/rom_083639A8.o(.text*);
     }
     /* The multiboot island: the image the main program sends with the
        BIOS MultiBoot call. It runs from the start of EWRAM. */

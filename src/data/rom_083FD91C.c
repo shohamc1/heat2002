@@ -1,4 +1,5 @@
 #include "global.h"
+#include "collision_normals.h"
 #include "data.h"
 
 extern const u8 gText_Rearright[];
@@ -250,8 +251,11 @@ const u8 *const gUnk_083FDA0C[] = { gText_Frontleft, gText_Frontright, gText_Rea
                                     gText_Back,      gText_Front,      gText_Left,     gText_Right };
 // Its users declare it as struct CollisionNormal x[].
 /* Collision response normals, one (x, z) pair per contact direction,
- * in 20.12 fixed point (4096 = 1). */
-const s32 gCarCollisionNormals[8] = { 0, 4096, 0, -4096, -4096, 0, 4096, 0 };
+ * in 20.12 fixed point (4096 = 1). The initialisers live in
+ * collision_normals.h, shared with the high module's byte-identical
+ * copy (src/data/rom_08363988.c): the ROM holds them twice, once per
+ * GBA. */
+const s32 gCarCollisionNormals[8] = CAR_COLLISION_NORMALS;
 // No decompiled code reads this word yet.
 const s32 gUnk_083FDA4C[1] = { 10000 };
 const u8 *const gUnk_083FDA50[3] = { gUnk_0807CA7C, gUnk_0807CAC8, gUnk_0807CB14 };

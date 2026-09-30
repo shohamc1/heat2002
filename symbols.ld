@@ -528,6 +528,19 @@ gUnk_0203DDE0 = 0x0203DDE0;
 gUnk_0203E140 = 0x0203E140;
 gUnk_08334E22 = gFontGlyphGrid + 0x56;
 gUnk_0200C910 = gUnk_08345390;
+/* Rows inside gModule_PitLabelBlock (src/data/high_module_text.c) the
+ * module's pit-menu option tables name (src/data/rom_08360100.c). */
+gUnk_0200CFC4 = gModule_PitLabelBlock + 0x34;
+gUnk_0200CFC8 = gModule_PitLabelBlock + 0x38;
+gUnk_0200CFD0 = gModule_PitLabelBlock + 0x40;
+gUnk_0200CFD8 = gModule_PitLabelBlock + 0x48;
+gUnk_0200CFE0 = gModule_PitLabelBlock + 0x50;
+gUnk_0200CFEC = gModule_PitLabelBlock + 0x5C;
+gUnk_0200CFF8 = gModule_PitLabelBlock + 0x68;
+gUnk_0200D004 = gModule_PitLabelBlock + 0x74;
+gUnk_0200D010 = gModule_PitLabelBlock + 0x80;
+gUnk_0200D020 = gModule_PitLabelBlock + 0x90;
+gUnk_0200D030 = gModule_PitLabelBlock + 0xA0;
 gUnk_0202EDCC = 0x0202EDCC;
 gUnk_0203E000 = 0x0203E000;
 gUnk_0202525C = 0x0202525C;

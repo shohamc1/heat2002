@@ -5,44 +5,14 @@
   "size": 728
  },
  {
-  "path": "unknown/data_08344E68.bin",
-  "start": "0x08344E68",
-  "size": 640
- },
- {
-  "path": "unknown/data_08345730.bin",
-  "start": "0x08345730",
-  "size": 528
- },
- {
-  "path": "unknown/data_08345B98.bin",
-  "start": "0x08345B98",
-  "size": 608
+  "path": "unknown/data_08345BF8.bin",
+  "start": "0x08345BF8",
+  "size": 512
  },
  {
   "path": "unknown/data_08353260.bin",
   "start": "0x08353260",
   "size": 592
- },
- {
-  "path": "unknown/data_083534D4.bin",
-  "start": "0x083534D4",
-  "size": 2876
- },
- {
-  "path": "unknown/data_08357FD0.bin",
-  "start": "0x08357FD0",
-  "size": 64
- },
- {
-  "path": "unknown/data_08358010.bin",
-  "start": "0x08358010",
-  "size": 96
- },
- {
-  "path": "unknown/data_08358070.bin",
-  "start": "0x08358070",
-  "size": 992
  },
  {
   "path": "unknown/data_08358450.bin",
@@ -70,11 +40,6 @@
   "size": 1818
  },
  {
-  "path": "unknown/data_0835A784.bin",
-  "start": "0x0835A784",
-  "size": 1360
- },
- {
   "path": "unknown/data_0835ACD4.bin",
   "start": "0x0835ACD4",
   "size": 468
@@ -90,11 +55,6 @@
   "size": 4
  },
  {
-  "path": "unknown/data_0835DB70.bin",
-  "start": "0x0835DB70",
-  "size": 160
- },
- {
   "path": "unknown/data_0835DC10.bin",
   "start": "0x0835DC10",
   "size": 20
@@ -103,16 +63,6 @@
   "path": "unknown/data_0835DC24.bin",
   "start": "0x0835DC24",
   "size": 20
- },
- {
-  "path": "unknown/data_0835DC38.bin",
-  "start": "0x0835DC38",
-  "size": 4
- },
- {
-  "path": "unknown/data_0835DC3C.bin",
-  "start": "0x0835DC3C",
-  "size": 100
  },
  {
   "path": "unknown/data_0835DCA0.bin",
@@ -133,11 +83,6 @@
   "path": "unknown/data_0835DCB4.bin",
   "start": "0x0835DCB4",
   "size": 6028
- },
- {
-  "path": "unknown/data_0835F440.bin",
-  "start": "0x0835F440",
-  "size": 4
  },
  {
   "path": "unknown/data_0835F444.bin",
@@ -200,11 +145,6 @@
   "size": 4
  },
  {
-  "path": "unknown/data_0835F8A0.bin",
-  "start": "0x0835F8A0",
-  "size": 620
- },
- {
   "path": "unknown/data_0835FB0C.bin",
   "start": "0x0835FB0C",
   "size": 58
@@ -235,39 +175,9 @@
   "size": 940
  },
  {
-  "path": "unknown/data_0835FF80.bin",
-  "start": "0x0835FF80",
-  "size": 120
- },
- {
-  "path": "unknown/data_0835FFF8.bin",
-  "start": "0x0835FFF8",
-  "size": 8
- },
- {
-  "path": "unknown/data_08360000.bin",
-  "start": "0x08360000",
-  "size": 112
- },
- {
-  "path": "unknown/data_08360070.bin",
-  "start": "0x08360070",
-  "size": 144
- },
- {
-  "path": "unknown/data_08360100.bin",
-  "start": "0x08360100",
-  "size": 16
- },
- {
-  "path": "unknown/data_08360110.bin",
-  "start": "0x08360110",
-  "size": 16
- },
- {
-  "path": "unknown/data_08360120.bin",
-  "start": "0x08360120",
-  "size": 12
+  "path": "unknown/data_083600E8.bin",
+  "start": "0x083600E8",
+  "size": 24
  },
  {
   "path": "unknown/data_0836012C.bin",
@@ -355,14 +265,9 @@
   "size": 8660
  },
  {
-  "path": "unknown/data_08363954.bin",
-  "start": "0x08363954",
-  "size": 52
- },
- {
-  "path": "unknown/data_08363988.bin",
-  "start": "0x08363988",
-  "size": 60
+  "path": "unknown/data_083639A8.bin",
+  "start": "0x083639A8",
+  "size": 28
  },
  {
   "path": "unknown/data_083639C4.bin",

@@ -32,21 +32,21 @@
 	.size \name, .-\name
 	.endm
 @ End embedded Luvdis macros
-	.thumb
-	@ 0x08345390-0x083453C0 (EWRAM 0x0200C910): the high module's m4a
-	@ ply_xcmd dispatch table, the twin of the low copy in rom_0801CF88.s;
-	@ module_ply_xcmd.c reads it as gUnk_0200C910 (symbols.ld alias).
-	.global gUnk_08345390
-gUnk_08345390:
-	.4byte ModulePlyXxx
-	.4byte ModulePlyXwave
-	.4byte ModulePlyXtype
-	.4byte ModulePlyXxx
-	.4byte ModulePlyXatta
-	.4byte ModulePlyXdeca
-	.4byte ModulePlyXsust
-	.4byte ModulePlyXrele
-	.4byte ModulePlyXiecv
-	.4byte ModulePlyXiecl
-	.4byte ModulePlyXleng
-	.4byte ModulePlyXswee
+	.incbin "build/assets/unknown/data_083639A8.bin"
+	.global gUnk_0202AF44
+gUnk_0202AF44:
+	.incbin "build/assets/unknown/data_083639C4.bin"
+	.global gUnk_0202B078
+gUnk_0202B078:
+	.incbin "build/assets/unknown/data_08363AF8.bin"
+	.global gUnk_0202B089
+gUnk_0202B089:
+	.incbin "build/assets/unknown/data_08363B09.bin"
+	.global gUnk_0202B370
+gUnk_0202B370:
+	.incbin "build/assets/unknown/data_08363DF0.bin"
+
+
+
+
+
