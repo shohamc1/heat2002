@@ -622,6 +622,7 @@ SECTIONS
         build/src/data/rom_08345730.o(.rodata);
         build/src/data/high_module_text.o(.rodata);
         build/data/rom_08345BF8.o(.text*);
+        build/src/data/rom_08353260.o(.rodata);
         build/src/data/career_text.o(.rodata);
         build/data/rom_083537BC.o(.text*);
         build/data/rom_08354010.o(.text*);

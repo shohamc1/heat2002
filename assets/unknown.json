@@ -10,11 +10,6 @@
   "size": 512
  },
  {
-  "path": "unknown/data_08353260.bin",
-  "start": "0x08353260",
-  "size": 592
- },
- {
   "path": "unknown/data_08358450.bin",
   "start": "0x08358450",
   "size": 388

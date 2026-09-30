@@ -1068,6 +1068,8 @@ def build_track_geometry(meta, folder, paths, sizes, objects):
     the binary side files: every derived field through track_geometry's
     formulas, the steer bytes, terminator pointers and cell pools from
     the editable files."""
+    for path in paths.values():
+        path.parent.mkdir(parents=True, exist_ok=True)
     for oname in objects:
         if oname not in ("waypoints", "walls", "lanes"):
             sys.exit(f"{folder}: unknown object layer {oname}")

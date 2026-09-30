@@ -54,4 +54,3 @@ gUnk_02017080:
 	.global gUnk_02018DA0
 gUnk_02018DA0:
 	.incbin "build/assets/tracks/purley_park/bg2Tiles.bin"
-	.incbin "build/assets/unknown/data_08353260.bin"
