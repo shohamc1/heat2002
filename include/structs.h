@@ -185,7 +185,7 @@ struct AiFinishTimeRange
     /* 0x04 */ u32 max;
 };
 
-// One driver's row of gDriverRoster (rom_083FD91C.c, 30 entries): the
+// One driver's row of gDriverRoster (championship_data.c, 30 entries): the
 // driver's name and the team id. Rows come in teammate pairs that share
 // the id; FindTeamDriverPair returns both rows matching one, and
 // FindDriverByTeam maps an id to its first row.
@@ -198,7 +198,7 @@ struct DriverRosterEntry
 
 // The four RL-compressed graphic layers of one track's select-screen
 // preview map (OBJ banks 0-3), and one row of gTrackSelectEntries
-// (rom_083FD91C.c, 12 rows): the menu's length/number/name strings,
+// (championship_data.c, 12 rows): the menu's length/number/name strings,
 // the preview graphic, and its palette. DrawTrackSelect reads a row.
 struct TrackPreviewGfx
 {

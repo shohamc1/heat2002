@@ -2,8 +2,8 @@
 #define COLLISION_NORMALS_H
 
 /* The collision response normals the ROM holds twice, byte for byte: the
- * main program's copy at 0x083FDA2C (src/data/rom_083FD91C.c) and the
- * high module's at 0x08363988 (src/data/rom_08363988.c), each linked
+ * main program's copy at 0x083FDA2C (src/data/championship_data.c) and the
+ * high module's at 0x08363988 (src/data/module_championship_data.c), each linked
  * into its own image. One macro, so one edit changes both GBAs. The
  * tables' names, comments and readers live in those two files. */
 

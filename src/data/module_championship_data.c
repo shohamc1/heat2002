@@ -1,7 +1,33 @@
 #include "global.h"
 #include "structs.h"
+#include "collision_normals.h"
 #include "variables.h"
 #include "championship_tables.h"
+
+extern const u8 gModule_Frontleft[];
+extern const u8 gModule_Frontright[];
+extern const u8 gModule_Rearleft[];
+extern const u8 gModule_Rearright[];
+extern const u8 gModule_Back[];
+extern const u8 gModule_Front[];
+extern const u8 gModule_Left[];
+extern const u8 gModule_Right[];
+/* The wall-data labels data/rom_08360290.s defines (EWRAM names). */
+extern struct Pt gUnk_02027810[];
+extern struct WallRec gUnk_02027DB0[];
+extern u16 gUnk_020293F0[];
+extern u16 gUnk_02029CD4[];
+
+/* High module (link slave) wall and tyre-name tables (ROM
+ * 0x08363954-0x08363988, EWRAM 0x0202AF44-0x0202AF78). */
+
+/* High module (link slave) collision response normals (ROM
+ * 0x08363988-0x083639A8, EWRAM 0x0202AF08-0x0202AF28), byte-identical
+ * to the main program's gCarCollisionNormals (src/data/rom_083FD91C.c,
+ * which says what they are for): the ROM holds them twice, once per
+ * GBA. collision_normals.h shares the initialisers, so one edit changes
+ * both copies. module_collide.c reads them through its own view
+ * (struct CollisionNormal x[]). */
 
 extern const u8 gModule_AndylandRacing[];
 extern const u8 gModule_ChipGanassi[];
@@ -228,6 +254,25 @@ extern const u8 gModule_02024E48[];
  * at the module's own strings and sprite frames. The main program's
  * gUnk_083FDA50, gUnk_083FDA5C, gTrackSelectEntries, gUnk_083FDE3E,
  * gUnk_083FDE5E and the tables after gUnk_083FDE72 have no copy here. */
+
+/* The link track's walls (struct TrackWalls, structs.h): the wall
+ * vertices, wall records and the 48x48 cell grid module_walls.c walks.
+ * The main program's twelve-row gTrackWallTables
+ * (src/data/rom_083FD91C.c) says what each field is; this one row's
+ * blobs are a copy of track 7's (data/rom_08360290.s), labelled by
+ * their EWRAM addresses. */
+const struct TrackWalls gModule_TrackWallTables[1] = {
+    { gUnk_02027810, gUnk_02027DB0, 0xB2, gUnk_020293F0, gUnk_02029CD4 },
+};
+
+/* The eight tyre-position names in the pit menu's order, the twin of
+ * the main program's gUnk_083FDA0C (src/data/rom_083FD91C.c); the
+ * strings are high_module_text.c's tyre block. */
+const u8 *const gModule_TirePositionTexts[8] = { gModule_Frontleft, gModule_Frontright, gModule_Rearleft,
+                                                 gModule_Rearright, gModule_Back,      gModule_Front,
+                                                 gModule_Left,      gModule_Right };
+
+const s32 gModule_CarCollisionNormals[8] = CAR_COLLISION_NORMALS;
 
 // No module code reads these yet.
 const s32 gModule_0202AF28[1] = UNK_083FDA4C;

@@ -634,9 +634,7 @@ SECTIONS
         build/data/rom_0835DCB8.o(.text*);
         build/src/data/module_race_setup.o(.rodata);
         build/data/rom_08360290.o(.text*);
-        build/src/data/rom_08363954.o(.rodata);
-        build/src/data/rom_08363988.o(.rodata);
-        build/src/data/rom_083639A8.o(.rodata);
+        build/src/data/module_championship_data.o(.rodata);
     }
     /* The multiboot island: the image the main program sends with the
        BIOS MultiBoot call. It runs from the start of EWRAM. */
@@ -678,7 +676,7 @@ SECTIONS
         build/data/rom_083682BC.o(.text*);
         build/src/data/rom_083C9574.o(.rodata);
         build/data/rom_083CA0C4.o(.text*);
-        build/src/data/rom_083FD91C.o(.rodata);
+        build/src/data/championship_data.o(.rodata);
         build/src/data/rom_083FE064.o(.rodata);
         build/data/rom_083FED48.o(.text*);
         build/src/data/rom_083FEF00.o(.rodata);

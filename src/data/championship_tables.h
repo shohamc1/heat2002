@@ -2,12 +2,13 @@
 #define CHAMPIONSHIP_TABLES_H
 
 /* The options-menu and championship tables the ROM holds twice, byte for
- * byte: the main program's copies in src/data/rom_083FD91C.c
+ * byte: the main program's copies in src/data/championship_data.c
  * (0x083FDA4C-0x083FDE78) and the high module's at 0x083639A8-0x08363C70
- * (src/data/rom_083639A8.c), each linked into its own image. One macro
- * per table, so one edit changes both GBAs. The tables' names, comments
- * and readers live in those files. The pointer tables between them point
- * at each image's own strings, so only their numbers are shared. */
+ * (src/data/module_championship_data.c), each linked into its own image.
+ * One macro per table, so one edit changes both GBAs. The tables' names,
+ * comments and readers live in those files. The pointer tables between
+ * them point at each image's own strings, so only their numbers are
+ * shared. */
 
 #define UNK_083FDA4C { 10000 }
 #define OPTIONS_MENU_MIN_VALUES { 0, 0, 0, 0, 0, 0, 0 }

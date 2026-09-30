@@ -7,7 +7,7 @@
  * segs parts (data/rom_0835DCB8.s, EWRAM name). */
 extern struct TrackSeg gUnk_02025E20[];
 
-/* The frame lists src/data/rom_083639A8.c defines, and the first
+/* The frame lists src/data/module_championship_data.c defines, and the first
  * driver palette in the module's copy fragment data/rom_08354010.s. */
 extern const u8 *const gModule_CarSpriteHalfAFrames[];
 extern const u8 *const gModule_CarSpriteHalfBFrames[];
@@ -63,7 +63,7 @@ extern const u8 gUnk_0200D04C[]; /* REPAIR    */
 extern const u8 gUnk_0200D0EC[]; /* DEMO */
 extern const u8 gUnk_0200D10C[]; /* OUT OF TIME */
 
-/* The frame lists src/data/rom_083639A8.c defines. */
+/* The frame lists src/data/module_championship_data.c defines. */
 extern const u8 *const gModule_LinkMarkerP1FrameList[];
 extern const u8 *const gModule_LinkMarkerP2FrameList[];
 extern const u8 *const gModule_LinkMarkerP3FrameList[];

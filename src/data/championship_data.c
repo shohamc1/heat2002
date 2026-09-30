@@ -254,7 +254,7 @@ const u8 *const gUnk_083FDA0C[] = { gText_Frontleft, gText_Frontright, gText_Rea
 /* Collision response normals, one (x, z) pair per contact direction,
  * in 20.12 fixed point (4096 = 1). The initialisers live in
  * collision_normals.h, shared with the high module's byte-identical
- * copy (src/data/rom_08363988.c): the ROM holds them twice, once per
+ * copy (src/data/module_championship_data.c): the ROM holds them twice, once per
  * GBA. */
 const s32 gCarCollisionNormals[8] = CAR_COLLISION_NORMALS;
 // No decompiled code reads this word yet.
