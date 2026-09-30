@@ -636,9 +636,7 @@ SECTIONS
         build/data/rom_0835DCA0.o(.text*);
         build/src/data/rom_0835F440.o(.rodata);
         build/src/data/rom_0835F8A0.o(.rodata);
-        build/data/rom_0835FB0C.o(.text*);
         build/src/data/rom_0835FBFC.o(.rodata);
-        build/data/rom_083600E8.o(.text*);
         build/src/data/rom_08360100.o(.rodata);
         build/data/rom_08360290.o(.text*);
         build/src/data/rom_08363954.o(.rodata);

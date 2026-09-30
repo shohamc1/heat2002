@@ -80,41 +80,6 @@
   "size": 6028
  },
  {
-  "path": "unknown/data_0835FB0C.bin",
-  "start": "0x0835FB0C",
-  "size": 58
- },
- {
-  "path": "unknown/data_0835FB46.bin",
-  "start": "0x0835FB46",
-  "size": 10
- },
- {
-  "path": "unknown/data_0835FB50.bin",
-  "start": "0x0835FB50",
-  "size": 110
- },
- {
-  "path": "unknown/data_0835FBBE.bin",
-  "start": "0x0835FBBE",
-  "size": 12
- },
- {
-  "path": "unknown/data_0835FBCA.bin",
-  "start": "0x0835FBCA",
-  "size": 10
- },
- {
-  "path": "unknown/data_0835FBD4.bin",
-  "start": "0x0835FBD4",
-  "size": 940
- },
- {
-  "path": "unknown/data_083600E8.bin",
-  "start": "0x083600E8",
-  "size": 24
- },
- {
   "path": "unknown/data_08363EE8.bin",
   "start": "0x08363EE8",
   "size": 172

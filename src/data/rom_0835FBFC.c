@@ -137,3 +137,10 @@ const u16 *const gModule_DriverRpmPerSpeedTables[30] = {
     gModule_DriverWillGreenoughRpmPerSpeed, gModule_DriverJonnieShearnRpmPerSpeed, gModule_DriverDaveMurphyRpmPerSpeed, gModule_DriverDarrenJacksonRpmPerSpeed,
     gModule_DriverMikeMerrenRpmPerSpeed, gModule_DriverCameronSheppardRpmPerSpeed,
 };
+
+/* The twins of the main program's pit stop service times,
+ * gPitStopTireServiceTimes and gPitStopRepairTimes (src/data/
+ * race_setup.c), at ROM 0x083600E8-0x08360100. No module code reads
+ * them. */
+const u32 gModule_PitStopTireServiceTimes[4] = PIT_STOP_TIRE_SERVICE_TIMES;
+const u32 gModule_PitStopRepairTimes[2] = PIT_STOP_REPAIR_TIMES;

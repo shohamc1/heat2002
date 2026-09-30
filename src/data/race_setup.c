@@ -120,7 +120,7 @@ const struct TireGripSetup gTireGripDefaults[31] = TIRE_GRIP_DEFAULTS;
 const struct TrackGrid gTrackStartGrids[12] = {
     { 2689, 1651, -60, -60, 40, -40, 96 }, { 1460, 1192, 60, 0, 0, -60, 192 },  { 3988, 3646, -40, 40, 56, 56, 32 },
     { 449, 1444, 0, -40, -50, 0, 128 },    { 3954, 2933, 0, -40, -50, 0, 128 }, { 1439, 2619, 0, 50, 40, 0, 0 },
-    { 1461, 1318, 0, -56, 40, 0, 128 },    { 2875, 1564, 0, 56, -40, 0, 128 },  { 3160, 2605, -56, 0, 40, 0, 0 },
+    { 1461, 1318, 0, -56, 40, 0, 128 },    TRACK_7_START_GRID,  { 3160, 2605, -56, 0, 40, 0, 0 },
     { 1178, 3161, 0, -56, -40, 0, 0 },     { 734, 1065, 56, 0, 40, 0, 128 },    { 2064, 2613, 56, 0, 0, -40, 192 },
 };
 // Seven car setups of three 5-entry rows each (gear power, gear ratio,
@@ -129,28 +129,28 @@ const struct TrackGrid gTrackStartGrids[12] = {
 // (gUnk_08367B82, gUnk_08367B8C) into the tune menu. The sixth setup is
 // the AI driver's (SetAiDriverGearTables, InitCar), with one stray u16 between
 // its power and ratio rows.
-const u16 gUnk_08367B64[5] = { 450, 420, 400, 400, 475 };
-const u16 gUnk_08367B6E[5] = { 5500, 9000, 12000, 13500, 18200 };
-const u16 gUnk_08367B78[5] = { 11, 7, 5, 4, 3 };
-const u16 gUnk_08367B82[5] = { 200, 200, 240, 260, 280 };
-const u16 gUnk_08367B8C[5] = { 6000, 8000, 8500, 10000, 15000 };
-const u16 gUnk_08367B96[5] = { 10, 8, 7, 6, 4 };
-const u16 gUnk_08367BA0[5] = { 300, 300, 300, 260, 50 };
-const u16 gUnk_08367BAA[5] = { 6300, 7500, 8775, 10125, 12750 };
-const u16 gUnk_08367BB4[5] = { 10, 9, 7, 6, 5 };
-const u16 gUnk_08367BBE[5] = { 300, 300, 300, 240, 40 };
-const u16 gUnk_08367BC8[5] = { 6300, 7500, 8250, 9000, 10500 };
-const u16 gUnk_08367BD2[5] = { 10, 9, 7, 7, 6 };
-const u16 gUnk_08367BDC[5] = { 280, 280, 320, 340, 360 };
-const u16 gUnk_08367BE6[5] = { 6000, 8600, 9300, 13600, 16600 };
-const u16 gUnk_08367BF0[5] = { 10, 7, 7, 4, 3 };
-const u16 gAiDriverGearPowerTable[5] = { 280, 280, 320, 340, 360 };
-const u16 gUnk_08367C04[1] = { 20 };
-const u16 gAiDriverGearRatioTable[5] = { 6000, 8600, 9300, 13600, 16600 };
-const u16 gAiDriverRpmPerSpeedTable[5] = { 10, 7, 7, 4, 3 };
-const u16 gUnk_08367C1A[5] = { 280, 280, 320, 340, 360 };
-const u16 gUnk_08367C24[5] = { 6000, 8600, 9300, 13600, 16600 };
-const u16 gUnk_08367C2E[5] = { 10, 7, 7, 4, 3 };
+const u16 gUnk_08367B64[5] = UNK_08367B64;
+const u16 gUnk_08367B6E[5] = UNK_08367B6E;
+const u16 gUnk_08367B78[5] = UNK_08367B78;
+const u16 gUnk_08367B82[5] = UNK_08367B82;
+const u16 gUnk_08367B8C[5] = UNK_08367B8C;
+const u16 gUnk_08367B96[5] = UNK_08367B96;
+const u16 gUnk_08367BA0[5] = UNK_08367BA0;
+const u16 gUnk_08367BAA[5] = UNK_08367BAA;
+const u16 gUnk_08367BB4[5] = UNK_08367BB4;
+const u16 gUnk_08367BBE[5] = UNK_08367BBE;
+const u16 gUnk_08367BC8[5] = UNK_08367BC8;
+const u16 gUnk_08367BD2[5] = UNK_08367BD2;
+const u16 gUnk_08367BDC[5] = UNK_08367BDC;
+const u16 gUnk_08367BE6[5] = UNK_08367BE6;
+const u16 gUnk_08367BF0[5] = UNK_08367BF0;
+const u16 gAiDriverGearPowerTable[5] = AI_DRIVER_GEAR_POWER_TABLE;
+const u16 gUnk_08367C04[1] = UNK_08367C04;
+const u16 gAiDriverGearRatioTable[5] = AI_DRIVER_GEAR_RATIO_TABLE;
+const u16 gAiDriverRpmPerSpeedTable[5] = AI_DRIVER_RPM_PER_SPEED_TABLE;
+const u16 gUnk_08367C1A[5] = UNK_08367C1A;
+const u16 gUnk_08367C24[5] = UNK_08367C24;
+const u16 gUnk_08367C2E[5] = UNK_08367C2E;
 
 const u16 gDriverSteveParkPower[5] = DRIVER_STEVE_PARK_POWER;
 const u16 gDriverDaleEarnhardtJRPower[5] = DRIVER_DALE_EARNHARDT_J_R_POWER;
@@ -417,8 +417,8 @@ const u16 *const gDriverRpmPerSpeedTables[] = {
     gDriverWillGreenoughRpmPerSpeed,  gDriverJonnieShearnRpmPerSpeed,    gDriverDaveMurphyRpmPerSpeed,
     gDriverDarrenJacksonRpmPerSpeed,  gDriverMikeMerrenRpmPerSpeed,      gDriverCameronSheppardRpmPerSpeed
 };
-const u32 gPitStopTireServiceTimes[4] = { 12800, 6400, 6400, 256 };
-const u32 gPitStopRepairTimes[2] = { 12800, 256 };
+const u32 gPitStopTireServiceTimes[4] = PIT_STOP_TIRE_SERVICE_TIMES;
+const u32 gPitStopRepairTimes[2] = PIT_STOP_REPAIR_TIMES;
 const u8 *const gPitMenuRowLabelTexts[] = { gText_TiresLabel, gText_FuelLabel, gText_DamageLabel, gText_Ok };
 const u8 *const gPitMenuTireOptionTexts[] = { gText_AllTires, gText_Left2, gText_Right2, gText_None };
 const u8 *const gPitMenuFuelOptionTexts[] = { gText_FullTank, gText_SplashAndDash, gText_None_2 };

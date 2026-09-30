@@ -3,10 +3,10 @@
 
 /* The race-setup tables the ROM holds twice, byte for byte: the main
  * program's copies in src/data/race_setup.c (0x083671F0-0x083682BC) and
- * the high module's at 0x0835F444-0x0835F894, 0x0835F8A0-0x0835FB0C,
- * 0x0835FBFC-0x083600E8 and 0x0836012C-0x08360280 (src/data/
- * rom_0835F440.c, rom_0835F8A0.c, rom_0835FBFC.c and rom_08360100.c),
- * each linked into its own image. One macro per table, so one edit changes both GBAs. The
+ * the high module's at 0x0835F444-0x0835F894, 0x0835F8A0-0x08360100 and
+ * 0x0836012C-0x08360280 (src/data/rom_0835F440.c, rom_0835F8A0.c,
+ * rom_0835FBFC.c and rom_08360100.c), each linked into its own image.
+ * The module holds track 7's start-grid row only. One macro per table, so one edit changes both GBAs. The
  * tables' names, comments and readers live in those files. */
 
 #define TIRE_GRIP_DEFAULTS \
@@ -185,5 +185,31 @@
     121, 118, 115, 112, 109, 106, 103, 100, 97, 94, 91, 88, 85, 82, \
     79, 76, 73, 0, 0, \
 }
+
+#define TRACK_7_START_GRID { 2875, 1564, 0, 56, -40, 0, 128 }
+#define UNK_08367B64 { 450, 420, 400, 400, 475 }
+#define UNK_08367B6E { 5500, 9000, 12000, 13500, 18200 }
+#define UNK_08367B78 { 11, 7, 5, 4, 3 }
+#define UNK_08367B82 { 200, 200, 240, 260, 280 }
+#define UNK_08367B8C { 6000, 8000, 8500, 10000, 15000 }
+#define UNK_08367B96 { 10, 8, 7, 6, 4 }
+#define UNK_08367BA0 { 300, 300, 300, 260, 50 }
+#define UNK_08367BAA { 6300, 7500, 8775, 10125, 12750 }
+#define UNK_08367BB4 { 10, 9, 7, 6, 5 }
+#define UNK_08367BBE { 300, 300, 300, 240, 40 }
+#define UNK_08367BC8 { 6300, 7500, 8250, 9000, 10500 }
+#define UNK_08367BD2 { 10, 9, 7, 7, 6 }
+#define UNK_08367BDC { 280, 280, 320, 340, 360 }
+#define UNK_08367BE6 { 6000, 8600, 9300, 13600, 16600 }
+#define UNK_08367BF0 { 10, 7, 7, 4, 3 }
+#define AI_DRIVER_GEAR_POWER_TABLE { 280, 280, 320, 340, 360 }
+#define UNK_08367C04 { 20 }
+#define AI_DRIVER_GEAR_RATIO_TABLE { 6000, 8600, 9300, 13600, 16600 }
+#define AI_DRIVER_RPM_PER_SPEED_TABLE { 10, 7, 7, 4, 3 }
+#define UNK_08367C1A { 280, 280, 320, 340, 360 }
+#define UNK_08367C24 { 6000, 8600, 9300, 13600, 16600 }
+#define UNK_08367C2E { 10, 7, 7, 4, 3 }
+#define PIT_STOP_TIRE_SERVICE_TIMES { 12800, 6400, 6400, 256 }
+#define PIT_STOP_REPAIR_TIMES { 12800, 256 }
 
 #endif

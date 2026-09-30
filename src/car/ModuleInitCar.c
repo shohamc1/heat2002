@@ -124,9 +124,9 @@ void ModuleInitCar(u8 carIdx, struct Car *car, s32 posX, s32 posZ, u32 heading)
     (*(s32 *)&car->gearRatioTable) = gModule_DriverGearRatioTables[car->driverId];
     (*(s32 *)&car->rpmPerSpeedTable) = gModule_DriverRpmPerSpeedTables[car->driverId];
     if (gModule_IsLinkRace == 0 && carIdx != 0 && gModule_GameMode[0] != 2) {
-        car->gearPowerTable = gUnk_0202713E;
-        car->gearRatioTable = gUnk_0202714A;
-        car->rpmPerSpeedTable = gUnk_02027154;
+        car->gearPowerTable = gModule_AiDriverGearPowerTable;
+        car->gearRatioTable = gModule_AiDriverGearRatioTable;
+        car->rpmPerSpeedTable = gModule_AiDriverRpmPerSpeedTable;
         (*(s32 *)&car->gearPowerTable) = gModule_DriverGearPowerTables[0];
         (*(s32 *)&car->gearRatioTable) = gModule_DriverGearRatioTables[0];
         (*(s32 *)&car->rpmPerSpeedTable) = gModule_DriverRpmPerSpeedTables[0];

@@ -1,7 +1,7 @@
 #include "global.h"
 #include "variables.h"
 
-extern struct TrackGrid gModule_TrackStartGrids[]; /* 0x0202708C, one record (track 7's) */
+extern struct TrackGrid gModule_TrackStartGrids[]; /* one record (track 7's) */
 
 void ModuleBuildStartingGrid(u8 idx)
 {
