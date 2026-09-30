@@ -4,7 +4,7 @@
 
 extern u32 *gUnk_02026E14[];
 extern u32 *gUnk_02026E18[];
-extern u32 *gUnk_0202773C[];
+extern u32 *gModule_DriverNumberFrameLists[];
 extern u8 gUnk_0201B590[];
 u32 ModuleAddDepthSortedSprite(u32 a, u32 b, u16 c);
 struct ObjTileCacheEntry *ModuleRequestObjTiles16(u32 a);
@@ -78,7 +78,7 @@ void ModuleDrawCar(struct Car *car, u8 idx)
         }
     }
     if (gModule_IsLinkRace != 0) {
-        row = gUnk_0202772C[idx];
+        row = gModule_LinkMarkerFrameLists[idx];
         row += (gModule_FrameCounter >> 1) % 7;
         pos[1] -= 0xC;
         pos[0] += 0x10;
@@ -90,7 +90,7 @@ void ModuleDrawCar(struct Car *car, u8 idx)
         t5 |= (u32)(ModuleRequestObjPalette(gUnk_020243E8) << 24) >> 12;
         ModuleAddDepthSortedSprite(k, t5, y + 0x40);
     } else {
-        row = gUnk_0202773C[car->driverId];
+        row = gModule_DriverNumberFrameLists[car->driverId];
         pos[1] -= 8;
         pos[0] += 0x10;
         k = (pos[1] & 0xFF) | ((pos[0] & 0x1FF) << 16) | 0x4000;

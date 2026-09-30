@@ -12,7 +12,7 @@ void ModuleDrawLinkMarker(u32 x, u32 y, u32 carIdx)
     struct ObjTileCacheEntry *sprite;
     u32 attr2;
 
-    frames = gUnk_0202772C[carIdx];
+    frames = gModule_LinkMarkerFrameLists[carIdx];
     frames += sub_08344C50(gModule_FrameCounter >> 1, 7);
     y &= 0xFF;
     y |= (x & 0x1FF) << 16;

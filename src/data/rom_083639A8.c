@@ -323,10 +323,11 @@ const u8 gModule_0202B1E9[6] = UNK_083FDE72;
 
 /* The sprite frame lists, the twins of the main program's in
  * data/rom_083FEF08.s and data/rom_083FF724.s: one number frame per
- * driver (reached through gUnk_0202773C, module_draw.c), the two car
- * sprite halves (gUnk_02026E14/gUnk_02026E18), the damage smoke
- * (module_particles.c), and one link-marker list per player
- * (gUnk_0202772C, module_draw.c and ModuleDrawLinkMarker.c). */
+ * driver (reached through gModule_DriverNumberFrameLists, module_draw.c),
+ * the two car sprite halves (gUnk_02026E14/gUnk_02026E18), the damage
+ * smoke (module_particles.c), and one link-marker list per player
+ * (gModule_LinkMarkerFrameLists, module_draw.c and
+ * ModuleDrawLinkMarker.c). */
 const u8 *const gModule_DriverSteveParkNumberFrames[1] = { gModule_0201AD3C };
 const u8 *const gModule_DriverDaleEarnhardtJRNumberFrames[1] = { gModule_0201AD78 };
 const u8 *const gModule_DriverKevinHarvickNumberFrames[1] = { gModule_0201ADBC };

@@ -32,28 +32,6 @@
 	.size \name, .-\name
 	.endm
 @ End embedded Luvdis macros
-	.global gUnk_020276AC
-gUnk_020276AC:
-	.incbin "build/assets/unknown/data_0836012C.bin"
-	.incbin "build/assets/unknown/data_0836019C.bin"
-	.global gUnk_0202772C
-gUnk_0202772C:
-	.incbin "build/assets/unknown/data_083601AC.bin"
-	.global gUnk_0202773C
-gUnk_0202773C:
-	.incbin "build/assets/unknown/data_083601BC.bin"
-	.global gUnk_020277B4
-gUnk_020277B4:
-	.incbin "build/assets/unknown/data_08360234.bin"
-	.global gUnk_020277C4
-gUnk_020277C4:
-	.incbin "build/assets/unknown/data_08360244.bin"
-	.global gUnk_020277D4
-gUnk_020277D4:
-	.incbin "build/assets/unknown/data_08360254.bin"
-	.global gUnk_020277F4
-gUnk_020277F4:
-	.incbin "build/assets/unknown/data_08360274.bin"
 	.global gUnk_02027800
 gUnk_02027800:
 	.incbin "build/assets/unknown/data_08360280.bin"

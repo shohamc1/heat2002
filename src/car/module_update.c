@@ -28,7 +28,7 @@
  * - Everything from the sound check to the unk40 division is inside
  *   `if (v != 0)`.
  */
-extern u16 gUnk_020277D4[];
+extern u16 gModule_TrackAiDragDivisors[];
 void ModuleResetCarSurface(struct Car *a);
 void ModuleComputeForwardSpeed(struct Car *a);
 void ModuleUpdateEngine(struct Car *a, u32 b);
@@ -188,7 +188,7 @@ void ModuleUpdateCarPhysics(struct Car *car, u32 keys, u8 idx)
         else
             car->drag = car->drag / 480;
     } else {
-        car->drag = car->drag / gUnk_020277D4[gModule_TrackId];
+        car->drag = car->drag / gModule_TrackAiDragDivisors[gModule_TrackId];
     }
     if (gUnk_020390B8 != 0 && (u8)(gModule_GameMode[0] - 3) > 1)
         car->drag = 0;

@@ -2,10 +2,10 @@
 #define RACE_SETUP_TABLES_H
 
 /* The race-setup tables the ROM holds twice, byte for byte: the main
- * program's copies in src/data/race_setup.c (0x083677A8-0x08368124) and
- * the high module's at 0x0835F8A0-0x0835FB0C and 0x0835FBFC-0x083600E8
- * (src/data/rom_0835F8A0.c, src/data/rom_0835FBFC.c), each linked into
- * its own image. One macro per table, so one edit changes both GBAs. The
+ * program's copies in src/data/race_setup.c (0x083677A8-0x083682BC) and
+ * the high module's at 0x0835F8A0-0x0835FB0C, 0x0835FBFC-0x083600E8 and
+ * 0x0836012C-0x08360280 (src/data/rom_0835F8A0.c, rom_0835FBFC.c and
+ * rom_08360100.c), each linked into its own image. One macro per table, so one edit changes both GBAs. The
  * tables' names, comments and readers live in those files. */
 
 #define TIRE_GRIP_DEFAULTS \
@@ -113,5 +113,14 @@
 #define DRIVER_DARREN_JACKSON_RPM_PER_SPEED { 10, 7, 6, 5, 4 }
 #define DRIVER_MIKE_MERREN_RPM_PER_SPEED { 9, 7, 6, 5, 4 }
 #define DRIVER_CAMERON_SHEPPARD_RPM_PER_SPEED { 10, 7, 6, 5, 4 }
+
+#define CHALLENGE_START_OFFSET_PERCENTS { 50, 30, 96, 90, 30, 50, 45, 75, 75, 50, 50, 75, 15, 92, 88, 50 }
+#define TRACK_START_OFFSET_PERCENTS { 50, 80, 35, 40, 35, 35, 90, 50, 45, 35, 60, 40 }
+#define PIT_LANE_INDICES { 7, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 7 }
+#define UNK_083681C8 { -1048576, -1048576, 1048576, -1048576, -1048576, 1048576, 1048576, 1048576 }
+#define CORNER_OFFSET_X { -425984, 425984, -425984, 425984 }
+#define CORNER_OFFSET_Z { -917504, -917504, 1114112, 1114112 }
+#define TRACK_AI_DRAG_DIVISORS { 500, 460, 420, 470, 460, 440, 475, 480, 470, 460, 470, 480 }
+#define RECORDS_TASK_PARAMS { 64, 72, 80, 96, 104, 112, 128, 136, 144, 152, 160, 168 }
 
 #endif

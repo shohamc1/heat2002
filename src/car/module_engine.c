@@ -4,8 +4,8 @@
 
 u32 ModuleGetGearForSpeed(struct Car *car, s32 speed);
 void ModuleStopCar(struct Car *a);
-extern s32 gUnk_020277B4[]; /* 0x020277B4 */
-extern s32 gUnk_020277C4[]; /* 0x020277C4 */
+extern s32 gModule_CornerOffsetX[];
+extern s32 gModule_CornerOffsetZ[];
 
 u32 ModuleGetGearForSpeed(struct Car *car, s32 speed)
 {
@@ -125,8 +125,8 @@ void ModuleComputeCarCorners(struct Car *car)
     sin = gModule_SinTable[idx];
     cos = gModule_SinTable[idx + 0x40];
     for (i = 0; i != 4; i++) {
-        offsetX = gUnk_020277B4[i];
-        offsetZ = gUnk_020277C4[i];
+        offsetX = gModule_CornerOffsetX[i];
+        offsetZ = gModule_CornerOffsetZ[i];
         car->cornerX[i] = (cos * offsetX - sin * offsetZ) >> 8;
         car->cornerZ[i] = (sin * offsetX + cos * offsetZ) >> 8;
         car->cornerX[i] += car->posX;
@@ -137,8 +137,8 @@ void ModuleComputeCarCorners(struct Car *car)
     sin = gModule_SinTable[idx];
     cos = gModule_SinTable[idx + 0x40];
     for (i = 0; i != 4; i++) {
-        offsetX = gUnk_020277B4[i];
-        offsetZ = gUnk_020277C4[i];
+        offsetX = gModule_CornerOffsetX[i];
+        offsetZ = gModule_CornerOffsetZ[i];
         car->nextCornerX[i] = (cos * offsetX - sin * offsetZ) >> 8;
         car->nextCornerZ[i] = (sin * offsetX + cos * offsetZ) >> 8;
         car->nextCornerX[i] += car->posX + car->velX;

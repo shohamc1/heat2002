@@ -444,11 +444,11 @@ const u8 *const gPitMenuRowLabelTexts[] = { gText_TiresLabel, gText_FuelLabel, g
 const u8 *const gPitMenuTireOptionTexts[] = { gText_AllTires, gText_Left2, gText_Right2, gText_None };
 const u8 *const gPitMenuFuelOptionTexts[] = { gText_FullTank, gText_SplashAndDash, gText_None_2 };
 const u8 *const gPitMenuRepairOptionTexts[] = { gText_Repair, gText_NoRepair };
-const s32 gChallengeStartOffsetPercents[16] = { 50, 30, 96, 90, 30, 50, 45, 75, 75, 50, 50, 75, 15, 92, 88, 50 };
-const u8 gTrackStartOffsetPercents[12] = { 50, 80, 35, 40, 35, 35, 90, 50, 45, 35, 60, 40 };
-const u8 gPitLaneIndices[12] = { 7, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 7 };
+const s32 gChallengeStartOffsetPercents[16] = CHALLENGE_START_OFFSET_PERCENTS;
+const u8 gTrackStartOffsetPercents[12] = TRACK_START_OFFSET_PERCENTS;
+const u8 gPitLaneIndices[12] = PIT_LANE_INDICES;
 // Eight 16.16 fixed-point values (+/-16.0). No decompiled code reads them yet.
-const s32 gUnk_083681C8[8] = { -1048576, -1048576, 1048576, -1048576, -1048576, 1048576, 1048576, 1048576 };
+const s32 gUnk_083681C8[8] = UNK_083681C8;
 // Its users declare it as u32 *x[], u32 x[].
 const u32 *const gLinkMarkerFrameLists[] = { gLinkMarkerP1FrameList, gLinkMarkerP2FrameList, gLinkMarkerP3FrameList,
                                              gLinkMarkerP4FrameList };
@@ -465,11 +465,11 @@ const u32 *const gDriverNumberFrameLists[] = {
     gDriverWillGreenoughNumberFrames,  gDriverJonnieShearnNumberFrames,    gDriverDaveMurphyNumberFrames,
     gDriverDarrenJacksonNumberFrames,  gDriverMikeMerrenNumberFrames,      gDriverCameronSheppardNumberFrames
 };
-const s32 gCornerOffsetX[4] = { -425984, 425984, -425984, 425984 };
-const s32 gCornerOffsetZ[4] = { -917504, -917504, 1114112, 1114112 };
+const s32 gCornerOffsetX[4] = CORNER_OFFSET_X;
+const s32 gCornerOffsetZ[4] = CORNER_OFFSET_Z;
 // The AI drag divisor per track (car/update.c).
-const u16 gTrackAiDragDivisors[12] = { 500, 460, 420, 470, 460, 440, 475, 480, 470, 460, 470, 480 };
+const u16 gTrackAiDragDivisors[12] = TRACK_AI_DRAG_DIVISORS;
 // No decompiled code reads this pointer pair yet.
 const u8 *const gUnk_083682A8[] = { gText_Demo, gText_OutOfTime };
 // One parameter per task spawned by AddTrackRecordTasks (records screen rows).
-const u8 gRecordsTaskParams[12] = { 64, 72, 80, 96, 104, 112, 128, 136, 144, 152, 160, 168 };
+const u8 gRecordsTaskParams[12] = RECORDS_TASK_PARAMS;

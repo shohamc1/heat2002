@@ -2,7 +2,7 @@
 #include "functions.h"
 #include "structs.h"
 
-extern u8 gUnk_020277F4[];
+extern u8 gModule_RecordsTaskParams[];
 void ModuleDelayTask(struct Task *task);
 
 void ModuleAddTrackRecordTasks(void)
@@ -15,7 +15,7 @@ void ModuleAddTrackRecordTasks(void)
         if (task != 0) {
             task->timer = 0x60;
             task->unk1C = row * 32;
-            task->unk00 = gUnk_020277F4[row];
+            task->unk00 = gModule_RecordsTaskParams[row];
             task->unk04 = 0x28;
             task->callback = ModuleDelayTask;
             ModuleAddTask(task);

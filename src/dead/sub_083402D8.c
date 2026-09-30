@@ -24,7 +24,7 @@ extern u8 gModule_BlankRow20_2[];
 extern const u8 *const gModule_PitMenuRowLabelTexts[];
 extern const u8 *const gModule_PitMenuTireOptionTexts[];
 extern const u8 *const gModule_PitMenuFuelOptionTexts[];
-extern u32 gUnk_020276AC[];
+extern u32 gModule_PitMenuRepairOptionTexts[];
 extern u8 gUnk_0203D4F0;
 extern u8 gUnk_0203DDE0[];
 
@@ -49,7 +49,7 @@ void sub_08340324(u8 a)
     if (a != 2 || (gUnk_0203D4F0 & 4) == 0)
     {
         ModuleDrawText(gModule_PitMenuRowLabelTexts[2], 0x06, 0x0B);
-        ModuleDrawText(gUnk_020276AC[gUnk_0203DDE0[2]], 0x0D, 0x0B);
+        ModuleDrawText(gModule_PitMenuRepairOptionTexts[gUnk_0203DDE0[2]], 0x0D, 0x0B);
     }
     else
         ModuleDrawText(gModule_BlankRow28, 0x06, 0x0B);
