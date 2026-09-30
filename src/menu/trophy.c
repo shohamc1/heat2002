@@ -70,7 +70,7 @@ u8 TrophyScreen(u8 place)
     WaitForVBlank();
     FadeToBrightenedPalette(buf, 0x0F);
     WaitForVBlank();
-    REG_DISPCNT = 0xAA << 5;
+    REG_DISPCNT = DISPCNT_OBJ_1D_MAP | DISPCNT_BG0_ON | DISPCNT_BG2_ON | DISPCNT_OBJ_ON;
     sel = 0x40;
     do {
         ClearOamBuffer();

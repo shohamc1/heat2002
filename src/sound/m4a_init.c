@@ -20,9 +20,9 @@ void SoundInit(struct SoundInfo *soundInfo)
 
     soundInfo->ident = 0;
     if (REG_DMA1CNT & (DMA_REPEAT << 16))
-        REG_DMA1CNT = 0x84400004;
+        REG_DMA1CNT = ((DMA_ENABLE | DMA_32BIT | DMA_DEST_FIXED) << 16) | 4;
     if (REG_DMA2CNT & (DMA_REPEAT << 16))
-        REG_DMA2CNT = 0x84400004;
+        REG_DMA2CNT = ((DMA_ENABLE | DMA_32BIT | DMA_DEST_FIXED) << 16) | 4;
     REG_DMA1CNT_H = DMA_32BIT;
     REG_DMA2CNT_H = DMA_32BIT;
     REG_SOUNDCNT_X = (SOUND_MASTER_ENABLE | SOUND_1_ON | SOUND_2_ON | SOUND_3_ON | SOUND_4_ON);

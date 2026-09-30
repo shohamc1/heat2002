@@ -128,9 +128,9 @@ s8 LinkDriverSelect(void)
     BuildScreenPalette(gMenuPalette, (u16 *)buf);
     DrawDriverSelect(a[(*(volatile u32 *)REG_ADDR_SIOCNT << 26) >> 30]);
     FadeToBrightenedPalette(buf, 0x0F);
-    REG_DISPCNT = 0xA8 << 3;
+    REG_DISPCNT = DISPCNT_OBJ_1D_MAP | DISPCNT_BG0_ON | DISPCNT_BG2_ON;
     WaitForVBlank();
-    REG_DISPCNT = 0xAA << 5;
+    REG_DISPCNT = DISPCNT_OBJ_1D_MAP | DISPCNT_BG0_ON | DISPCNT_BG2_ON | DISPCNT_OBJ_ON;
     sel = 0x40;
     for (i = 0; i < gNumLinkPlayers[0]; i++)
         b[i] |= 0xFF;

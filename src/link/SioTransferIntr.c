@@ -65,7 +65,7 @@ Ltail:
         p->count = n + 1;
         if (p->mode == 1) {
             REG_SIOCNT |= SIO_START;
-            REG_TM3CNT_H = 0xC0;
+            REG_TM3CNT_H = TIMER_INTR_ENABLE | TIMER_ENABLE;
         }
     }
 }

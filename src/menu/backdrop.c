@@ -21,7 +21,7 @@ void LoadMainMenuBackdrop(void)
     CpuCopy16((u32)gUnk_082A9F0C, VRAM, 0xA280);
     CpuCopy16((u32)gTextLayerTiles, BG_SCREEN_ADDR(24), 0x2000);
     WaitForVBlank();
-    REG_DISPCNT = 0xA8 << 3;
+    REG_DISPCNT = DISPCNT_OBJ_1D_MAP | DISPCNT_BG0_ON | DISPCNT_BG2_ON;
     DrawBackdropMetatileMap(gMainMenuMetatileMapAndTable);
 }
 
@@ -42,7 +42,7 @@ void LoadResultsScreenBackdrop(void)
     size = 0x80 << 5;
     CpuCopy16(src, dest, size * 2);
     WaitForVBlank();
-    REG_DISPCNT = 0xA8 << 3;
+    REG_DISPCNT = DISPCNT_OBJ_1D_MAP | DISPCNT_BG0_ON | DISPCNT_BG2_ON;
     DrawBackdropMetatileMap(gResultsScreenMetatileMapAndTable);
 }
 
@@ -53,7 +53,7 @@ void LoadMenuBackdrop(void)
     CpuCopy16((u32)gUnk_082E4B04, VRAM, 0xA280);
     CpuCopy16((u32)gTextLayerTiles, BG_SCREEN_ADDR(24), 0x2000);
     WaitForVBlank();
-    REG_DISPCNT = 0xA8 << 3;
+    REG_DISPCNT = DISPCNT_OBJ_1D_MAP | DISPCNT_BG0_ON | DISPCNT_BG2_ON;
     DrawBackdropMetatileMap(gMenuBackdropMetatileMapAndTable);
 }
 
@@ -65,7 +65,7 @@ void ShowBootSplash1(void)
     CpuCopy16((u32)gBootSplash1Gfx, VRAM, 0xA280);
     CpuCopy16((u32)gTextLayerTiles, BG_SCREEN_ADDR(24), 0x2000);
     WaitForVBlank();
-    REG_DISPCNT = 0xA8 << 3;
+    REG_DISPCNT = DISPCNT_OBJ_1D_MAP | DISPCNT_BG0_ON | DISPCNT_BG2_ON;
     DrawMetatileMap(gBootSplash1MetatileMap, gBootSplash1MetatileTable);
     BuildScreenPalette(gBootSplash1Palette, (u16 *)palette);
     FadeToBrightenedPalette(palette, 0x0F);

@@ -1,6 +1,8 @@
 #include "global.h"
 #include "functions.h"
 #include "variables.h"
+#include "gba/syscall.h"
+#include "gba/defines.h"
 
 void MainVBlankCallback(void);
 
@@ -18,7 +20,7 @@ void GameMain(void)
     volatile u16 *ds;
     register volatile u16 *p asm("r1");
 
-    RegisterRamReset(1);
+    RegisterRamReset(RESET_EWRAM);
     p128 = (volatile u16 *)0x04000128;
     z1 = 0;
     z2 = 0;
@@ -35,7 +37,7 @@ void GameMain(void)
     SetVBlankCallback(MainVBlankCallback);
     *ie = 0x2001;
     *ds = eight;
-    FillFadePalette(0x7FFF);
+    FillFadePalette(RGB_WHITE);
     FadeToColor(0, 0x32);
     WaitForVBlank();
     p = (volatile u16 *)0x0400000E;

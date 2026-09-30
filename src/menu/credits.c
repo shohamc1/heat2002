@@ -24,7 +24,7 @@ void ShowCreditsPage1(void)
     CpuCopy16((u32)gCreditsPage1Gfx, VRAM, 0xA280);
     CpuCopy16((u32)gTextLayerTiles, BG_SCREEN_ADDR(24), 0x2000);
     WaitForVBlank();
-    REG_DISPCNT = 0x88 << 3;
+    REG_DISPCNT = DISPCNT_OBJ_1D_MAP | DISPCNT_BG2_ON;
     DrawMetatileMap(gCreditsPage1MetatileMap, gCreditsPage1MetatileTable);
     BuildScreenPalette(gCreditsPage1Palette, (u16 *)palette);
     FadeToBrightenedPalette(palette, 0x0F);
@@ -40,7 +40,7 @@ void ShowCreditsPage2(void)
     CpuCopy16((u32)gCreditsPage2Gfx, VRAM, 0xA280);
     CpuCopy16((u32)gTextLayerTiles, BG_SCREEN_ADDR(24), 0x2000);
     WaitForVBlank();
-    REG_DISPCNT = 0x88 << 3;
+    REG_DISPCNT = DISPCNT_OBJ_1D_MAP | DISPCNT_BG2_ON;
     DrawMetatileMap(gCreditsPage2MetatileMap, gCreditsPage2MetatileTable);
     BuildScreenPalette(gCreditsPage2Palette, (u16 *)palette);
     FadeToBrightenedPalette(palette, 0x0F);
@@ -56,7 +56,7 @@ void ShowCreditsPage3(void)
     CpuCopy16((u32)gCreditsPage3Gfx, VRAM, 0xA280);
     CpuCopy16((u32)gTextLayerTiles, BG_SCREEN_ADDR(24), 0x2000);
     WaitForVBlank();
-    REG_DISPCNT = 0x88 << 3;
+    REG_DISPCNT = DISPCNT_OBJ_1D_MAP | DISPCNT_BG2_ON;
     DrawMetatileMap(gCreditsPage3MetatileMap, gCreditsPage3MetatileTable);
     BuildScreenPalette(gCreditsPage3Palette, (u16 *)palette);
     FadeToBrightenedPalette(palette, 0x0F);

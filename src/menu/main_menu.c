@@ -27,7 +27,7 @@ u8 TitleScreen(void)
     WaitForVBlank();
     REG_BG2CNT = BGCNT_PRIORITY(1) | BGCNT_256COLOR | BGCNT_SCREENBASE(31);
     REG_BG0CNT = BGCNT_PRIORITY(1) | BGCNT_CHARBASE(3) | BGCNT_SCREENBASE(28);
-    REG_DISPCNT = 0xA8 << 3;
+    REG_DISPCNT = DISPCNT_OBJ_1D_MAP | DISPCNT_BG0_ON | DISPCNT_BG2_ON;
     CpuCopy16((u32)gTitleScreenGfx, VRAM, 0xA280);
     CpuCopy16((u32)gTextLayerTiles, BG_SCREEN_ADDR(24), 0x2000);
     DrawBackdropMetatileMap(gTitleScreenMetatileMap);

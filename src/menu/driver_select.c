@@ -52,9 +52,9 @@ u8 DriverSelectMenu(void)
     BuildScreenPalette(gMenuPalette, (u16 *)palette);
     DrawDriverSelect(0);
     FadeToBrightenedPalette(palette, 0x0F);
-    REG_DISPCNT = 0xA8 << 3;
+    REG_DISPCNT = DISPCNT_OBJ_1D_MAP | DISPCNT_BG0_ON | DISPCNT_BG2_ON;
     WaitForVBlank();
-    REG_DISPCNT = 0xAA << 5;
+    REG_DISPCNT = DISPCNT_OBJ_1D_MAP | DISPCNT_BG0_ON | DISPCNT_BG2_ON | DISPCNT_OBJ_ON;
     choice = 0x40;
     do {
         ClearOamBuffer();
@@ -81,7 +81,7 @@ u8 DriverSelectMenu(void)
         WaitForVBlank();
     } while (choice == 0x40);
     WaitForVBlank();
-    REG_DISPCNT = 0xA8 << 3;
+    REG_DISPCNT = DISPCNT_OBJ_1D_MAP | DISPCNT_BG0_ON | DISPCNT_BG2_ON;
     WaitForVBlank();
     if (gOptions[3] != 0)
         m4aSongNumStart(9);
@@ -152,9 +152,9 @@ u8 TrackSelectMenu(u8 a, u8 b)
     BuildScreenPalette(gMenuPalette, (u16 *)buf);
     DrawTrackSelect(v, a);
     FadeToBrightenedPalette(buf, 0x0F);
-    REG_DISPCNT = 0xA8 << 3;
+    REG_DISPCNT = DISPCNT_OBJ_1D_MAP | DISPCNT_BG0_ON | DISPCNT_BG2_ON;
     WaitForVBlank();
-    REG_DISPCNT = 0xAA << 5;
+    REG_DISPCNT = DISPCNT_OBJ_1D_MAP | DISPCNT_BG0_ON | DISPCNT_BG2_ON | DISPCNT_OBJ_ON;
     sel = 0x40;
     do {
         ClearOamBuffer();
@@ -182,7 +182,7 @@ u8 TrackSelectMenu(u8 a, u8 b)
         WaitForVBlank();
     } while (sel == 0x40);
     WaitForVBlank();
-    REG_DISPCNT = 0xA8 << 3;
+    REG_DISPCNT = DISPCNT_OBJ_1D_MAP | DISPCNT_BG0_ON | DISPCNT_BG2_ON;
     WaitForVBlank();
     if (gOptions[3] != 0)
         m4aSongNumStart(9);

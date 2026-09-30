@@ -33,9 +33,9 @@ u8 LinkTrackSelect(void)
     BuildScreenPalette(gMenuPalette, (u16 *)buf);
     DrawTrackSelect(0, 1);
     FadeToBrightenedPalette(buf, 0x0F);
-    REG_DISPCNT = 0xA8 << 3;
+    REG_DISPCNT = DISPCNT_OBJ_1D_MAP | DISPCNT_BG0_ON | DISPCNT_BG2_ON;
     WaitForVBlank();
-    REG_DISPCNT = 0xAA << 5;
+    REG_DISPCNT = DISPCNT_OBJ_1D_MAP | DISPCNT_BG0_ON | DISPCNT_BG2_ON | DISPCNT_OBJ_ON;
     sel = 0x40;
     gTrackSelectCursor = 0;
     prev = 0;
@@ -88,7 +88,7 @@ u8 LinkTrackSelect(void)
         WaitForVBlank();
     } while (sel == 0x40);
     WaitForVBlank();
-    REG_DISPCNT = 0xA8 << 3;
+    REG_DISPCNT = DISPCNT_OBJ_1D_MAP | DISPCNT_BG0_ON | DISPCNT_BG2_ON;
     WaitForVBlank();
     if (sel == 2)
         return 0;

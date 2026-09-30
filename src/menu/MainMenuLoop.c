@@ -139,7 +139,7 @@ u32 MainMenuLoop(void)
     ShowBootSplash2();
     ShowBootSplash3();
     m4aSoundInit();
-    FillFadePalette(0x7FFF);
+    FillFadePalette(RGB_WHITE);
 
     gLinkSyncByte = 0;
     gTireGripFast = 0x60;

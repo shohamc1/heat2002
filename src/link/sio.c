@@ -71,7 +71,7 @@ u32 SioTransferUpdate(u32 *a1)
 
                 if (mode == 1) {
                     REG_SIOCNT |= SIO_START;
-                    REG_TM3CNT = 0x00C0F318;
+                    REG_TM3CNT = ((TIMER_INTR_ENABLE | TIMER_ENABLE) << 16) | 0xF318;
                     REG_IME = 0;
                     REG_IE |= INTR_FLAG_TIMER3;
                     REG_IME = mode;

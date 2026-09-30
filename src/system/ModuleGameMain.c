@@ -1,6 +1,7 @@
 #include "global.h"
 #include "functions.h"
 #include "variables.h"
+#include "gba/defines.h"
 
 extern u8 gUnk_02039190;
 void ModuleMainVBlankCallback(void);
@@ -46,7 +47,7 @@ void ModuleGameMain(void)
     ModuleSetVBlankCallback(ModuleMainVBlankCallback);
     *ie = 0x2001;
     *ds = eight;
-    ModuleFillFadePalette(0x7FFF);
+    ModuleFillFadePalette(RGB_WHITE);
     ModuleFadeToColor(0, 0x32);
     ModuleWaitForVBlank();
     p = (volatile u16 *)0x0400000E;
