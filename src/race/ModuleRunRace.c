@@ -25,8 +25,8 @@ extern u8 gUnk_0203921C;
 extern u8 gUnk_02039218[4];
 extern u8 gUnk_02039160[];
 extern u8 gUnk_02039170[];
-extern s32 gUnk_02025190[];
-extern u8 gUnk_020251A4[];
+extern s32 gModule_EngineSoundFreqBases[];
+extern u8 gModule_EngineSoundRpmMultipliers[];
 
 void ModuleLoadTrack(u8);
 void ModuleLoadTrackCues(u8);
@@ -201,7 +201,7 @@ skip42B04:
         else
             car = &gModule_Cars[gModule_LinkPlayerId];
         ModuleM4aMPlayPitchControl(
-            &gModule_EngineSoundPlayer, 1, ((s16)(gUnk_02025190[car->gear] + ((car->rpm * gUnk_020251A4[car->gear]) >> 6))) >> 3);
+            &gModule_EngineSoundPlayer, 1, ((s16)(gModule_EngineSoundFreqBases[car->gear] + ((car->rpm * gModule_EngineSoundRpmMultipliers[car->gear]) >> 6))) >> 3);
         if (gModule_IsDemo[0] != 0) {
             ModuleSetCameraTarget(gModule_AiCars);
             gUnk_020250EC = t2 = gModule_FrameCounter / 256;

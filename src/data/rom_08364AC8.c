@@ -1,5 +1,6 @@
 #include "global.h"
 #include "structs.h"
+#include "engine_sound_tables.h"
 
 /* no data.h: it declares gTextLayerMapPtr without const,
    which the users' bytes need; this file needs nothing else from it. */
@@ -121,12 +122,12 @@ const u32 gUnk_08364AC8[] = { (u32)gText_1st, (u32)gText_2nd, (u32)gText_3rd, (u
 const u8 gUnk_08364ADC[4] = { 4, 0, 0, 0 };
 // The engine-sound base frequencies per gear; RunRace adds
 // rpm * gEngineSoundRpmMultipliers[gear] >> 6 before playing (src/race/RunRace.c).
-const u32 gEngineSoundFreqBases[5] = { 1200, 700, 550, 500, 300 };
+const u32 gEngineSoundFreqBases[5] = ENGINE_SOUND_FREQ_BASES;
 // The engine-sound rpm multipliers per gear (gears 0-4, like
 // gEngineSoundFreqBases).
-const u8 gEngineSoundRpmMultipliers[5] = { 200, 190, 180, 160, 150 };
+const u8 gEngineSoundRpmMultipliers[5] = ENGINE_SOUND_RPM_MULTIPLIERS;
 // No decompiled code reads these bytes yet.
-const u8 gUnk_08364AF9[15] = { 1, 1, 12, 2, 12, 12, 12, 2, 12, 12, 12, 12, 39, 0, 0 };
+const u8 gUnk_08364AF9[15] = UNK_08364AF9;
 // Its users declare it as u16 *x, u32 *x, u32 x, u32 x[], vu32 x[].
 // The one word is the text layer's BG map base in VRAM.
 const u32 gTextLayerMapPtr[1] = { 0x600E000 };

@@ -1,4 +1,5 @@
 #include "global.h"
+#include "engine_sound_tables.h"
 
 extern const u8 gModule_Text_Checkpoint[];
 extern const u8 gModule_Text_DeKontrollpunkt[];
@@ -60,3 +61,12 @@ const u8 *const gModule_LocalizedText[8][5] = {
     /* LAP_TIME */ { gModule_Text_LapTime, gModule_Text_FrLapTime, gModule_Text_DeLapTime, gModule_Text_EsLapTime, gModule_Text_ItLapTime },
     /* CHECKPOINT */ { gModule_Text_Checkpoint, gModule_Text_FrControle, gModule_Text_DeKontrollpunkt, gModule_Text_EsControl, gModule_Text_ItControllo },
 };
+
+/* The engine-sound twins (ROM 0x0835DC10-0x0835DC38, EWRAM
+ * 0x02025190-0x020251B8): ModuleRunRace plays each gear's base
+ * frequency plus rpm times its multiplier, as RunRace does with the main
+ * program's tables. The initialisers live in engine_sound_tables.h. */
+const u32 gModule_EngineSoundFreqBases[5] = ENGINE_SOUND_FREQ_BASES;
+const u8 gModule_EngineSoundRpmMultipliers[5] = ENGINE_SOUND_RPM_MULTIPLIERS;
+// No module code reads these bytes yet.
+const u8 gModule_020251A9[15] = UNK_08364AF9;

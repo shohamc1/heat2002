@@ -50,16 +50,6 @@
   "size": 4
  },
  {
-  "path": "unknown/data_0835DC10.bin",
-  "start": "0x0835DC10",
-  "size": 20
- },
- {
-  "path": "unknown/data_0835DC24.bin",
-  "start": "0x0835DC24",
-  "size": 20
- },
- {
   "path": "unknown/data_08363EE8.bin",
   "start": "0x08363EE8",
   "size": 172
