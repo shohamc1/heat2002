@@ -234,18 +234,18 @@ extern const struct TrackPreviewGfx gTrackPreviewGfx_Track9[];
 
 // One row per track, read by LoadTrackWalls.
 const struct TrackWalls gTrackWallTables[12] = {
-    { gUnk_083CA0C4, gUnk_083CA9DC, 0x120, gUnk_083CCDDC, gUnk_083CDA98 },
-    { gUnk_083D44A8, gUnk_083D4A28, 0xAC, gUnk_083D5FA8, gUnk_083D669E },
-    { gUnk_083CEC98, gUnk_083CF7D0, 0x163, gUnk_083D2430, gUnk_083D32A8 },
-    { gUnk_083D78A0, gUnk_083D7FE0, 0xE5, gUnk_083D9C80, gUnk_083DA5D0 },
-    { gUnk_083DB7D0, gUnk_083DC1C0, 0x13B, gUnk_083DE920, gUnk_083DF630 },
-    { gUnk_083E0830, gUnk_083E1290, 0x149, gUnk_083E3BB0, gUnk_083E4A40 },
-    { gUnk_083E5C40, gUnk_083E6218, 0xB8, gUnk_083E7918, gUnk_083E81CA },
-    { gUnk_083E93CC, gUnk_083E996C, 0xB2, gUnk_083EAFAC, gUnk_083EB890 },
-    { gUnk_083ECA90, gUnk_083ED040, 0xB3, gUnk_083EE6A0, gUnk_083EEE84 },
-    { gUnk_083F0084, gUnk_083F0CC4, 0x185, gUnk_083F3D64, gUnk_083F4D42 },
-    { gUnk_083F5F44, gUnk_083F64A4, 0xA9, gUnk_083F79C4, gUnk_083F80C4 },
-    { gUnk_083F92C4, gUnk_083F9B14, 0x107, gUnk_083FBBF4, gUnk_083FC71C },
+    { gUnk_083CA0C4, gUnk_083CA9DC, INCBIN_U32("build/assets/tracks/hooley_downs/wall_count.bin"), gUnk_083CCDDC, gUnk_083CDA98 },
+    { gUnk_083D44A8, gUnk_083D4A28, INCBIN_U32("build/assets/tracks/darlington_raceway/wall_count.bin"), gUnk_083D5FA8, gUnk_083D669E },
+    { gUnk_083CEC98, gUnk_083CF7D0, INCBIN_U32("build/assets/tracks/green_valley/wall_count.bin"), gUnk_083D2430, gUnk_083D32A8 },
+    { gUnk_083D78A0, gUnk_083D7FE0, INCBIN_U32("build/assets/tracks/michigan_international_speedway/wall_count.bin"), gUnk_083D9C80, gUnk_083DA5D0 },
+    { gUnk_083DB7D0, gUnk_083DC1C0, INCBIN_U32("build/assets/tracks/great_canyon/wall_count.bin"), gUnk_083DE920, gUnk_083DF630 },
+    { gUnk_083E0830, gUnk_083E1290, INCBIN_U32("build/assets/tracks/fuji_port/wall_count.bin"), gUnk_083E3BB0, gUnk_083E4A40 },
+    { gUnk_083E5C40, gUnk_083E6218, INCBIN_U32("build/assets/tracks/crawfish_raceway/wall_count.bin"), gUnk_083E7918, gUnk_083E81CA },
+    { gUnk_083E93CC, gUnk_083E996C, INCBIN_U32("build/assets/tracks/purley_park/wall_count.bin"), gUnk_083EAFAC, gUnk_083EB890 },
+    { gUnk_083ECA90, gUnk_083ED040, INCBIN_U32("build/assets/tracks/kansas_speedway/wall_count.bin"), gUnk_083EE6A0, gUnk_083EEE84 },
+    { gUnk_083F0084, gUnk_083F0CC4, INCBIN_U32("build/assets/tracks/asphalt_city/wall_count.bin"), gUnk_083F3D64, gUnk_083F4D42 },
+    { gUnk_083F5F44, gUnk_083F64A4, INCBIN_U32("build/assets/tracks/phoenix_international_raceway/wall_count.bin"), gUnk_083F79C4, gUnk_083F80C4 },
+    { gUnk_083F92C4, gUnk_083F9B14, INCBIN_U32("build/assets/tracks/infogrames_super_speedway/wall_count.bin"), gUnk_083FBBF4, gUnk_083FC71C },
 };
 // No decompiled code reads these labels yet.
 const u8 *const gUnk_083FDA0C[] = { gText_Frontleft, gText_Frontright, gText_Rearleft, gText_Rearright,

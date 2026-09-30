@@ -244,7 +244,8 @@ extern const u8 gModule_02024E48[];
  * what each field is; this one row's blobs are a copy of track 7's
  * (data/rom_08360290.s), labelled by their EWRAM addresses. */
 const struct TrackWalls gModule_TrackWallTables[1] = {
-    { gUnk_02027810, gUnk_02027DB0, 0xB2, gUnk_020293F0, gUnk_02029CD4 },
+    { gUnk_02027810, gUnk_02027DB0, INCBIN_U32("build/assets/tracks/purley_park/wall_count.bin"),
+      gUnk_020293F0, gUnk_02029CD4 },
 };
 
 /* The eight tyre-position names in the pit menu's order, the twin of

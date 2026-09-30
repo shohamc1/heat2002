@@ -1979,7 +1979,7 @@
    "type": "copy",
    "options": {
     "sources": [
-     "build/assets/tracks/crawfish_raceway/bg2Tiles.bin@32192@512"
+     "build/assets/tracks/crawfish_raceway/bg2Tiles_tail.bin"
     ]
    }
   },

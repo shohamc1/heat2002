@@ -1107,6 +1107,10 @@ def build_track_geometry(meta, folder, paths, sizes, objects):
                                           v0, v1, st, nx, nz)
         paths["wall_verts"].write_bytes(verts)
         paths["wall_recs"].write_bytes(recs)
+        # the record count gTrackWallTables INCBINs, so a chain that gains
+        # or loses a point moves the count with the records
+        paths["wall_recs"].with_name("wall_count.bin").write_bytes(
+            struct.pack("<I", len(recs) // 0x20))
         cells = (folder / "wall_cells").read_bytes()
         grid = sizes["wall_grid"]
         paths["wall_lists"].write_bytes(cells[:len(cells) - grid])
@@ -1205,6 +1209,9 @@ def build_track(meta, folder, paths, sizes):
     for part, (blob, palette) in sheets.items():
         paths[part].parent.mkdir(parents=True, exist_ok=True)
         paths[part].write_bytes(blob)
+        # the sheet's last 16 tiles: the high module's copy of track 7's
+        # data starts that far into the sheet before it (track 6's bg2Tiles)
+        paths[part].with_name(f"{part}_tail.bin").write_bytes(blob[-512:])
         if part == "bg2Tiles" and "palette" in paths:
             paths["palette"].write_bytes(palette)
     for part, fname in (("bg3Metatiles", "metatiles_a"),
@@ -1536,6 +1543,16 @@ def blank():
         (folder / "lane_fixups").write_bytes(bytes(fixups))
         for fname, size in meta.get("geometrySizes", {}).items():
             (folder / fname).write_bytes(bytes(size))
+    # the wall counts gTrackWallTables INCBINs, from the retail record
+    # sizes, and the sheet tails the module's copy fragment incbins
+    for name, parts in track_entries().items():
+        for part in ("bg2Tiles", "bg3Tiles"):
+            if part in parts:
+                (OUT / "tracks" / name / f"{part}_tail.bin").write_bytes(
+                    bytes(512))
+        if "wall_recs" in parts:
+            (OUT / "tracks" / name / "wall_count.bin").write_bytes(
+                struct.pack("<I", parts["wall_recs"]["size"] // 0x20))
 
 
 def mask(rom_in, rom_out):
