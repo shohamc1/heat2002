@@ -15,8 +15,10 @@ one file declares locally, and local declarations that a header already
 declares -- and exit 1 if there are any.
 
 Known gaps: only single-line prototypes are recognized, and parse()'s
-normalization predates the header rule, so an exotic duplicate (a
-multi-line prototype, say) can slip by.
+normalization predates the header rule, so an exotic duplicate can slip
+by -- a multi-line prototype, or one whose parameter names a
+function-pointer parameter the header spells differently. Both gaps
+hide duplicates; neither can flag a declaration that is not one.
 
 Run from the repository root."""
 import collections
@@ -31,10 +33,12 @@ EXTERN = re.compile(r"^[ \t]*extern\s+(.*?);", re.S | re.M)
 # that keeps macro calls like ASM_FUNC(...) out, and indented call statements
 # `    foo(x);` too, because the callee leaves no word for the name group.
 # Keyword statements are excluded up front: `return f(x, y);` and a
-# `register ... asm("r1");` pin would otherwise parse as prototypes. The
-# lookaheads lead the line, so they cannot be sidestepped by indentation.
+# `register ... asm("r1");` pin would otherwise parse as prototypes, and
+# `extern` lines are EXTERN's to count. The lookaheads lead the line, so
+# they cannot be sidestepped by indentation.
 PROTO = re.compile(
-    r"^(?![ \t]*(?:static|typedef|return|register)\b)(?![ \t]*#)(?![^\n]*[={])"
+    r"^(?![ \t]*(?:(?:static|typedef|return|register|extern)\b|_{0,2}asm_{0,2}\b))"
+    r"(?![ \t]*#)(?![^\n]*[={])"
     r"[ \t]*([\w \t*]*\w[\w \t*]*?)\b(\w+)[ \t]*\((.*)\)[ \t]*;[ \t]*$",
     re.M)
 
@@ -50,7 +54,7 @@ def parse(decl):
         params = []
         for p in args.split(","):
             p = p.strip()
-            p = re.sub(r"\b\w+(\s*\[[^\]]*\])$", r"\1", p)
+            p = re.sub(r"(?<=[\s*])\w+(\s*\[[^\]]*\])$", r"\1", p)
             if len(p.split()) > 1 or "*" in p:
                 p = re.sub(r"\b\w+$", "", p) if re.search(r"[\w*]\s*\w+$", p) \
                     and not re.fullmatch(r"(const |volatile )*\w+", p) else p
