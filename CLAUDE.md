@@ -81,8 +81,9 @@ SHA1 is wrong, no matter how clean the C looks. Never edit `baserom.gba`,
   The 12 tracks and their AI and collision geometry are a `"track"`
   asset type: `scripts/assets.py unpack` writes each track's editable
   folder `assets/tracks/NAME/` (a Tiled `.tmx` holding the three RLE
-  map layers, two 4bpp tile-sheet `.png`s that carry the palette, and
-  the metatile and surface tables as the binary data they are), and the
+  map layers, two 4bpp tile-sheet `.png`s that carry the palette, the
+  two metatile tables as Tiled maps, and the surface codes as text,
+  with the ROM-only side files under `retail/`), and the
   build re-encodes them into the part files `data/rom_0807CE30.s`
   incbins, with the stream lengths reaching `gTrackData` through the
   `.len` files it `INCBIN_U16`s. The high module's track-7 copy builds
@@ -91,8 +92,8 @@ SHA1 is wrong, no matter how clean the C looks. Never edit `baserom.gba`,
   whose derived records (`scripts/track_geometry.py` holds the
   byte-exact formulas and a `verify` mode) rebuild three more regions
   (`data/rom_08365348.s`, `data/rom_083682BC.s`, `data/rom_083CA0C4.s`)
-  beside the spatial indexes, kept binary. `assets.py`'s docstring is
-  the reference.
+  beside the spatial indexes, which are rebuilt when the geometry
+  moves. `assets.py`'s docstring is the reference.
   Compressed graphics are typed and convert to `.png` with `make convert`;
   the rest of the data is untyped raw blobs (`assets/unknown.json`).
   See "Extracted data assets" in `docs/learnings/parked.md`.

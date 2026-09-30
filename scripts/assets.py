@@ -91,17 +91,28 @@ zero-fill it in CI. Its `options.sources` list records the chain
 A "track" asset is one blob of a racing track's map data (12 tracks,
 0x0807CE30-0x0829EAE0 plus the high module's track-7 copy), built from
 the editable files in its folder, assets/tracks/NAME/ (NAME from the
-track's text: hooley_downs ... infogrames_super_speedway):
-NAME.tmx holds the three RLE map layers as CSV (A = BG3's metatile map,
-B = BG2's, cells = the collision cell map, each layer its own size);
-tiles_0.png and tiles_2.png are the two char blocks' 4bpp tile sheets,
-indexed pictures of the track's whole 256-colour palette (a 4bpp tile
-paints with one 16-colour bank, and the palette blob builds from
-tiles_0.png's — the two sheets must keep it equal); metatiles_a,
-metatiles_b and surfaces are the metatile tables and the surface table,
-kept as the binary data they are (entries carry flips and palette banks
-no picture can regenerate). `unpack` writes the folder's files only when
-missing; the tileset .pngs the .tmx points at are previews it redraws.
+track's text: hooley_downs ... infogrames_super_speedway). The files
+you edit sit at the top of the folder:
+
+- NAME.tmx, a Tiled map: the three RLE map layers as CSV (A = BG3's
+  metatile map, B = BG2's, cells = the collision cell map, each layer
+  its own size) and the geometry object layers (below).
+- tiles_0.png and tiles_2.png, the two char blocks' 4bpp tile sheets:
+  8x8 tiles, 16 to a row, indexed pictures of the track's whole
+  256-colour palette. Each tile shows in the bank its metatiles use
+  most, and only each pixel's colour within its bank (the low 4 bits)
+  reaches the ROM. The palette builds from tiles_0.png's, so the two
+  sheets must keep it equal.
+- metatiles_a.tmx and metatiles_b.tmx, the metatile tables as Tiled
+  maps: each metatile a 4x4 block of 8x8 tiles, 16 metatiles to a row,
+  painted from a tileset holding the sheet once per palette bank, with
+  Tiled's flip flags as the entries' flip bits (write_metatile_tmx).
+- surfaces.txt, the surface codes: a 4x4 block per cell value.
+
+retail/ holds the side files the build needs only to reproduce the ROM
+(its README.txt lists them), and previews/ the pictures the Tiled maps
+display, which extract redraws from your edits and nothing reads.
+`unpack` writes the folder's files only when missing.
 At build time each map layer re-encodes with the ROM's own RLE (the
 encoder every one of the 35 streams round-trips through), the stream
 lengths land in gTrackData through the .len files it INCBINs, and the
@@ -118,7 +129,7 @@ The same folders hold each track's GEOMETRY (the lanes, waypoints and
 walls of issue #4 part 2): three object layers in the .tmx (lanes as
 polylines per distinct lane, walls as one polyline per wall chain with
 its per-record steerAngle bytes as a "steer" property, waypoints as
-2-point lines with "kind"/"countdown"), the binary side files
+2-point lines with "kind"/"countdown"), the retail/ side files
 scripts/track_geometry.py documents (wall_cells, lane_cells_N,
 cell_index_crc, lane_terms, lane_fixups, lane_lengths, lane_orphan_N),
 and the derivations that module verifies against the ROM: the WallRec
@@ -573,15 +584,13 @@ def tiles_layout(asset):
 # A track's own blobs sit together in the ROM in an order the asset entry
 # records (it varies by track), then the cell map and surface table of all
 # 12 tracks follow as one run. The names here are the part names the build
-# writes under build/assets/tracks/NAME/ and the editable files unpack
-# writes under assets/tracks/NAME/: tiles_0.png (bg2Tiles, char block 0)
-# and tiles_2.png (bg3Tiles, char block 2) carry the track's whole
-# 256-colour palette; metatiles_a/metatiles_b are the layers' metatile
-# tables and surfaces the surface table, kept as the binary data they are;
-# NAME.tmx holds the three RLE map layers as CSV. A metatile is 32 bytes:
-# 16 u16 tilemap entries (tile index, flips, palette bank) for a 4x4 block
-# of 8x8 tiles, so a picture cannot regenerate the tables — they stay data.
-TRACK_EDITABLE = ("tmx", "png", "png", "metatiles_a", "metatiles_b", "surfaces")
+# writes under build/assets/tracks/NAME/; the module docstring lists the
+# editable files unpack writes under assets/tracks/NAME/. tiles_0.png is
+# bg2Tiles (char block 0, the B layer's) and tiles_2.png bg3Tiles (char
+# block 2, the A layer's). A metatile is 32 bytes: 16 u16 tilemap entries
+# (tile index, flips, palette bank) for a 4x4 block of 8x8 tiles, which a
+# picture can't regenerate, so metatiles_a.tmx and metatiles_b.tmx keep
+# every entry as a painted tile.
 
 
 def rle16_values(data):
@@ -648,29 +657,74 @@ def track_sheet_size(count):
     return 16 * 8, rows * 8
 
 
-def unpack_track_tiles(out, blob, palette):
-    """Write one char block's 4bpp tiles as an indexed .png: the tiles in
-    reading order, 16 to a row, coloured by the track's whole palette
-    (a 4bpp tile paints with one 16-colour bank of it, so the picture
-    previews bank 0 and shows the rest of the palette for reference).
-    A ragged last row is padded with blank tiles to fill the rectangle."""
-    w, h = track_sheet_size(len(blob) // 32)
-    px = unpack_4bpp(blob) + bytes(w * h - 2 * len(blob))
-    write_indexed_png(out, px, w, h, palette)
+def tiles_to_image(linear, count):
+    """Tile-major pixels (64 per 8x8 tile, as the 4bpp data runs) laid
+    out as a picture 16 tiles wide, `count` tiles, blank past the end."""
+    w, h = track_sheet_size(count)
+    linear = linear + bytes(64 * (h // 8) * 16 - len(linear))
+    img = bytearray(w * h)
+    for t in range(len(linear) // 64):
+        x0, y0 = (t % 16) * 8, (t // 16) * 8
+        for y in range(8):
+            img[(y0 + y) * w + x0:(y0 + y) * w + x0 + 8] = \
+                linear[t * 64 + y * 8:t * 64 + y * 8 + 8]
+    return bytes(img), w, h
+
+
+def image_to_tiles(img, w, h):
+    """The inverse of tiles_to_image: a 16-tile-wide picture back into
+    tile-major pixels."""
+    out = bytearray()
+    for t in range((w // 8) * (h // 8)):
+        x0, y0 = (t % 16) * 8, (t // 16) * 8
+        for y in range(8):
+            out += img[(y0 + y) * w + x0:(y0 + y) * w + x0 + 8]
+    return bytes(out)
+
+
+def tile_banks(metatiles, count):
+    """The palette bank each tile is drawn with most often in a metatile
+    table (0 for a tile no metatile uses): the bank its picture shows."""
+    votes = [dict() for _ in range(count)]
+    for entries in metatile_entries(metatiles):
+        for e in entries:
+            if (e & 0x3FF) < count:
+                v = votes[e & 0x3FF]
+                v[e >> 12] = v.get(e >> 12, 0) + 1
+    return [max(v, key=v.get) if v else 0 for v in votes]
+
+
+def unpack_track_tiles(out, blob, palette, banks):
+    """Write one char block's 4bpp tiles as an indexed .png of 8x8 tiles,
+    16 to a row, each tile coloured with the palette bank `banks` gives
+    it (the one its metatiles use most), so the sheet shows the track's
+    real colours. The ROM keeps only each pixel's colour within its bank
+    (the low 4 bits of its palette index), so recolouring a tile into
+    another bank changes nothing; paint with the bank's own colours. A
+    ragged last row is padded with blank tiles to fill the rectangle."""
+    linear = bytearray(unpack_4bpp(blob))
+    for t, bank in enumerate(banks):
+        for i in range(t * 64, t * 64 + 64):
+            linear[i] |= bank << 4
+    img, w, h = tiles_to_image(bytes(linear), len(blob) // 32)
+    write_indexed_png(out, img, w, h, palette)
 
 
 def build_track_tiles(png, min_tiles=0):
     """Read a track tile sheet back into its 4bpp blob, up to its last
     non-blank tile (blank padding never reaches the ROM; `min_tiles` is
     the ROM slot's tile count, so a round trip of the retail sheet keeps
-    its ragged size). LoadTrackTiles copies a fixed 0x8000/0x4000 bytes,
-    and the ROM's own sheets run past that (track 1's bg3Tiles holds 519
-    tiles against a 512-tile copy), so growth past the slot is allowed:
-    it moves the rest of the ROM, as any edit does."""
-    px, palette = read_indexed_png(png, 16 * 8, None, 256)
-    if len(px) % 64 or (len(px) // 8) % 16:
+    its ragged size). Each pixel keeps the low 4 bits of its palette
+    index, its colour within the tile's bank. LoadTrackTiles copies a
+    fixed 0x8000/0x4000 bytes, and the ROM's own sheets run past that
+    (track 1's bg3Tiles holds 519 tiles against a 512-tile copy), so
+    growth past the slot is allowed: it moves the rest of the ROM, as any
+    edit does."""
+    img, palette = read_indexed_png(png, 16 * 8, None, 256)
+    if len(img) % (128 * 8):
         sys.exit(f"{png}: the width must stay 16 tiles (128 pixels) and "
                  "the height a multiple of 8 pixels")
+    px = bytes(v & 15 for v in image_to_tiles(img, 128, len(img) // 128))
     used = max(1 + max((i for i in range(len(px) // 64)
                         if any(px[i * 64:(i + 1) * 64])), default=-1), 0)
     used = max(used, min_tiles)
@@ -684,12 +738,133 @@ def metatile_entries(blob):
             for i in range(len(blob) // 32)]
 
 
+# A metatile table as a Tiled map: each metatile a 4x4 block of 8x8 tiles,
+# 16 metatiles to a row. Its one tileset is the layer's tile sheet drawn
+# once per palette bank (bank k's 1024-tile block starts at local id
+# k*1024), so the bank is the block you paint from and the flips are
+# Tiled's own flip flags: every u16 entry round-trips.
+BANK_TILES = 1024
+FLIP_H, FLIP_V, FLIP_D = 0x80000000, 0x40000000, 0x20000000
+
+
+def write_metatile_tmx(path, blob, banks_png):
+    """The editable metatile table: one 4x4 block of tiles per metatile."""
+    entries = metatile_entries(blob)
+    w, h = 16 * 4, -(-len(entries) // 16) * 4
+    gids = [0] * (w * h)
+    for m, ent in enumerate(entries):
+        mx, my = (m % 16) * 4, (m // 16) * 4
+        for i, e in enumerate(ent):
+            gid = 1 + (e >> 12) * BANK_TILES + (e & 0x3FF)
+            gid |= (FLIP_H if e & 0x400 else 0) | (FLIP_V if e & 0x800 else 0)
+            gids[(my + i // 4) * w + mx + i % 4] = gid
+    rows = [",".join(str(g) for g in gids[r * w:(r + 1) * w]) for r in range(h)]
+    path.write_text("\n".join([
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        f'<map version="1.10" orientation="orthogonal" renderorder="right-down" '
+        f'width="{w}" height="{h}" tilewidth="8" tileheight="8" infinite="0" '
+        f'nextlayerid="2" nextobjectid="1">',
+        f' <tileset firstgid="1" name="banks" tilewidth="8" tileheight="8" '
+        f'tilecount="{16 * BANK_TILES}" columns="16">',
+        f'  <image source="{banks_png}" width="128" '
+        f'height="{16 * BANK_TILES // 16 * 8}"/>',
+        ' </tileset>',
+        f' <layer id="1" name="metatiles" width="{w}" height="{h}">',
+        '  <data encoding="csv">', ",\n".join(rows), '  </data>',
+        ' </layer>', '</map>']) + "\n")
+
+
+def read_metatile_tmx(path):
+    """A metatile table map back into its blob: metatile n is the 4x4
+    block at (n % 16, n // 16); the table runs to the last block with
+    any tile painted, and every block before it must be fully painted."""
+    import xml.etree.ElementTree as ET
+    root = ET.parse(path).getroot()
+    first = {t.get("name"): int(t.get("firstgid"))
+             for t in root.findall("tileset")}.get("banks")
+    layer = root.find("layer")
+    if first is None or layer is None or layer.find("data").get("encoding") != "csv":
+        sys.exit(f"{path}: expected a 'banks' tileset and one CSV layer")
+    w, h = int(layer.get("width")), int(layer.get("height"))
+    gids = [int(v) for v in layer.find("data").text.replace("\n", "").split(",") if v]
+    if w != 64 or len(gids) != w * h or h % 4:
+        sys.exit(f"{path}: the map must stay 64 tiles (16 metatiles) wide "
+                 "and a multiple of 4 tiles tall")
+    blocks = []
+    for m in range((w // 4) * (h // 4)):
+        mx, my = (m % 16) * 4, (m // 16) * 4
+        blocks.append([gids[(my + i // 4) * w + mx + i % 4] for i in range(16)])
+    count = max((m + 1 for m, b in enumerate(blocks) if any(b)), default=0)
+    out = bytearray()
+    for m, block in enumerate(blocks[:count]):
+        for i, gid in enumerate(block):
+            where = f"{path}: metatile {m}, tile ({i % 4}, {i // 4})"
+            if gid == 0:
+                sys.exit(f"{where} is empty; paint every tile of a metatile")
+            if gid & FLIP_D:
+                sys.exit(f"{where} is rotated; the GBA only flips tiles")
+            local = (gid & 0x1FFFFFFF) - first
+            if not 0 <= local < 16 * BANK_TILES:
+                sys.exit(f"{where} uses a tile outside the banks tileset")
+            entry = (local % BANK_TILES) | (local // BANK_TILES) << 12
+            entry |= (0x400 if gid & FLIP_H else 0) | (0x800 if gid & FLIP_V else 0)
+            out += struct.pack("<H", entry)
+    return bytes(out)
+
+
+def draw_bank_sheet(path, tiles, palette):
+    """The metatile maps' tileset picture: the tile sheet drawn once per
+    palette bank, 1024 tiles to a bank. A preview; nothing reads it."""
+    img, w, h = tiles_to_image(unpack_4bpp(tiles)[:64 * BANK_TILES], BANK_TILES)
+    write_indexed_png(path, b"".join(
+        img.translate(bytes(v + 16 * k for v in range(16)) + bytes(240))
+        for k in range(16)), w, h * 16, palette)
+
+
+SURFACES_HEAD = """# Surface codes, one 4x4 block per collision cell value (the values the
+# .tmx's cells layer paints): each cell of that layer is a 4x4 area of
+# the track, and these are its sub-positions, rows top to bottom. Bit 0
+# draws the car behind the background; 2 and 3 are the apron.
+"""
+
+
+def write_surfaces_txt(path, blob):
+    lines = [SURFACES_HEAD.rstrip("\n")]
+    for c in range(len(blob) // 16):
+        lines.append(f"cell {c}")
+        lines += [" ".join(f"{v:3}" for v in blob[c * 16 + r * 4:c * 16 + r * 4 + 4])
+                  for r in range(4)]
+    path.write_text("\n".join(lines) + "\n")
+
+
+def read_surfaces_txt(path):
+    """surfaces.txt back into the 16-bytes-per-value table."""
+    out, want, rows = bytearray(), 0, 0
+    for n, line in enumerate(path.read_text().splitlines(), 1):
+        line = line.split("#")[0].strip()
+        if not line:
+            continue
+        if line.startswith("cell"):
+            if rows % 4 or line.split()[1:] != [str(want)]:
+                sys.exit(f"{path}:{n}: expected 'cell {want}' after four rows")
+            want += 1
+            continue
+        vals = line.split()
+        if len(vals) != 4 or not all(v.isdigit() and int(v) < 256 for v in vals):
+            sys.exit(f"{path}:{n}: a row is four codes from 0 to 255")
+        out += bytes(int(v) for v in vals)
+        rows += 1
+    if rows != 4 * want:
+        sys.exit(f"{path}: cell {want - 1} needs four rows")
+    return bytes(out)
+
+
 def render_metatile_sheet(metatiles, tiles, palette, columns=16):
     """A metatile table as an indexed .png for viewing in the track's
     .tmx: metatile n at (n % columns, n // columns), each drawn from its
     16 tilemap entries over the layer's 4bpp tiles and the track palette.
-    The build never reads this picture back; metatiles_a/metatiles_b are
-    the data."""
+    The build never reads this picture back; metatiles_a.tmx and
+    metatiles_b.tmx are the data."""
     pixels_ = unpack_4bpp(tiles)
     count = len(metatiles)
     w, h = columns * 32, -(-count // columns) * 32
@@ -841,26 +1016,33 @@ def read_tmx(path):
     return layers, objects
 
 
+RETAIL, PREVIEWS = "retail", "previews"
+
+
 def track_layer_files(meta, parts):
-    """The editable files of a track with these part blobs, in a fixed
-    order: the .tmx (tile layers and geometry object layers), the two
-    tile sheets, the two metatile tables, the surface table, and the
-    geometry's binary side files (the spatial indexes, the lane
-    terminator pointers and projScale fixups, the wall cell pool, and
-    the unreferenced authoring leftovers). A file whose part the track
-    lacks (track 7's surfaces) is left out, so make never waits on it."""
+    """The files of a track with these part blobs that unpack writes, in
+    a fixed order: the ones you edit at the top of the folder (the .tmx
+    with the map and geometry layers, the two tile sheets, the two
+    metatile tables as Tiled maps, the surface codes as text), then the
+    retail/ side files the build needs only to reproduce the ROM (the
+    spatial indexes and their geometry CRCs, the lane terminator words
+    and projScale fixups, the length words, the unreferenced authoring
+    leftovers, the streams' dead tail bytes). A file whose part the track
+    lacks (track 7's surfaces) is left out, so make never waits on it.
+    The previews/ pictures are drawn by extract and aren't listed."""
     files = [f"{meta['name']}.tmx", "tiles_0.png", "tiles_2.png",
-             "metatiles_a", "metatiles_b"]
+             "metatiles_a.tmx", "metatiles_b.tmx"]
     if "surfaceTable" in parts:
-        files.append("surfaces")
+        files.append("surfaces.txt")
+    retail = ["README.txt", "stream_tails", "lane_terms", "lane_fixups",
+              "cell_index_crc"]
     if "wall_recs" in parts:
-        files.append("wall_cells")
-    files += ["stream_tails", "lane_terms", "lane_fixups", "cell_index_crc"]
+        retail.append("wall_cells")
     if "lane_lengths" in parts:
-        files.append("lane_lengths")
-    files += [f"lane_cells_{g['slot']}" for g in meta["lanes"]]
-    files += [f"lane_orphan_{i}" for i in meta.get("orphanParts", [])]
-    return files
+        retail.append("lane_lengths")
+    retail += [f"lane_cells_{g['slot']}" for g in meta["lanes"]]
+    retail += [f"lane_orphan_{i}" for i in meta.get("orphanParts", [])]
+    return files + [f"{RETAIL}/{f}" for f in retail]
 
 
 STREAMS = ("bg3Map", "bg2Map", "cellMap")
@@ -908,6 +1090,23 @@ def track_parts_blobs(meta, blobs):
     return layers
 
 
+RETAIL_README = """These files hold ROM data the build needs only to reproduce the
+retail ROM byte for byte. You don't edit them: the build derives
+everything else from the files one folder up, and when you move the
+geometry it rebuilds the spatial indexes these files hold.
+
+wall_cells, lane_cells_N  the wall and lane cell indexes (see
+                          scripts/track_geometry.py); cell_index_crc
+                          records the geometry each was built for
+lane_terms, lane_fixups   authoring-tool words the lane records carry
+lane_lengths              the length words; each lane's own word is
+                          recomputed from its points
+lane_orphan_N             unreferenced authoring leftovers
+stream_tails              the bytes each map stream's ROM slot holds
+                          past the stream
+"""
+
+
 def unpack_track(meta, blobs, out):
     """Write a track's editable files from its part blobs. Every file is
     written only when missing: an existing one is the user's, edits and
@@ -917,22 +1116,34 @@ def unpack_track(meta, blobs, out):
     out.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(dir=out) as t:
         tmp, done = Path(t), []
+
+        def put(fname, write):
+            """Write fname through `write(path)` unless it exists."""
+            if (out / fname).exists():
+                return
+            (tmp / fname).parent.mkdir(parents=True, exist_ok=True)
+            write(tmp / fname)
+            done.append(fname)
+
         tmx = f"{name}.tmx"
         geo_layers, geo_files = unpack_track_geometry(meta, blobs)
         for fname, data in geo_files.items():
-            if not (out / fname).exists():
-                (tmp / fname).write_bytes(data)
-                done.append(fname)
-        if "lane_lengths" in blobs and not (out / "lane_lengths").exists():
-            (tmp / "lane_lengths").write_bytes(blobs["lane_lengths"])
-            done.append("lane_lengths")
-        if not (out / tmx).exists():
+            put(f"{RETAIL}/{fname}", lambda p, d=data: p.write_bytes(d))
+        if "lane_lengths" in blobs:
+            put(f"{RETAIL}/lane_lengths",
+                lambda p: p.write_bytes(blobs["lane_lengths"]))
+        put(f"{RETAIL}/stream_tails", lambda p: p.write_bytes(pack_stream_tails(
+            {part: blobs[part][2 * meta["layers"][part]["len"]:]
+             for part in STREAMS if part in blobs})))
+        put(f"{RETAIL}/README.txt", lambda p: p.write_text(RETAIL_README))
+
+        def track_tmx(p):
             layers = track_parts_blobs(meta, blobs)
             counts = {"metatiles_a": len(blobs["bg3Metatiles"]) // 32,
                       "metatiles_b": len(blobs["bg2Metatiles"]) // 32,
                       "cells": len(blobs.get("surfaceTable", b"")) // 16}
-            tilesets = [("metatiles_a", counts["metatiles_a"], "metatiles_a.png"),
-                        ("metatiles_b", counts["metatiles_b"], "metatiles_b.png")]
+            tilesets = [(t, counts[t], f"{PREVIEWS}/{t}.png")
+                        for t in ("metatiles_a", "metatiles_b")]
             tmx_layers = []
             for lname, tset, part in (("A", "metatiles_a", "bg3Map"),
                                       ("B", "metatiles_b", "bg2Map"),
@@ -944,28 +1155,24 @@ def unpack_track(meta, blobs, out):
                 tmx_layers.append((lname, tset, layers[lname], stride,
                                    -(-m["count"] // stride)))
             if "cells" in layers:
-                tilesets.append(("cells", counts["cells"], "cells.png"))
-            write_tmx(tmp / tmx, name, tmx_layers, tilesets, geo_layers)
-            done.append(tmx)
-        for part, fname in (("bg2Tiles", "tiles_0.png"),
-                            ("bg3Tiles", "tiles_2.png")):
-            if part in blobs and not (out / fname).exists():
-                unpack_track_tiles(tmp / fname, blobs[part], blobs["palette"])
-                done.append(fname)
-        for part, fname in (("bg3Metatiles", "metatiles_a"),
-                            ("bg2Metatiles", "metatiles_b"),
-                            ("surfaceTable", "surfaces")):
-            if part in blobs and not (out / fname).exists():
-                (tmp / fname).write_bytes(blobs[part])
-                done.append(fname)
-        if not (out / "stream_tails").exists():
-            (tmp / "stream_tails").write_bytes(pack_stream_tails(
-                {part: blobs[part][2 * meta["layers"][part]["len"]:]
-                 for part in STREAMS if part in blobs}))
-            done.append("stream_tails")
+                tilesets.append(("cells", counts["cells"], f"{PREVIEWS}/cells.png"))
+            write_tmx(p, name, tmx_layers, tilesets, geo_layers)
+        put(tmx, track_tmx)
+        for part, mpart, fname in (("bg2Tiles", "bg2Metatiles", "tiles_0.png"),
+                                   ("bg3Tiles", "bg3Metatiles", "tiles_2.png")):
+            put(fname, lambda p, t=part, m=mpart: unpack_track_tiles(
+                p, blobs[t], blobs["palette"],
+                tile_banks(blobs[m], len(blobs[t]) // 32)))
+        for part, fname, sheet in (("bg3Metatiles", "metatiles_a.tmx", "tiles_2"),
+                                   ("bg2Metatiles", "metatiles_b.tmx", "tiles_0")):
+            put(fname, lambda p, m=part, sh=sheet: write_metatile_tmx(
+                p, blobs[m], f"{PREVIEWS}/{sh}_banks.png"))
+        if "surfaceTable" in blobs:
+            put("surfaces.txt",
+                lambda p: write_surfaces_txt(p, blobs["surfaceTable"]))
         for fname in done:
+            (out / fname).parent.mkdir(parents=True, exist_ok=True)
             (tmp / fname).rename(out / fname)
-
 
 
 # --- Track geometry -------------------------------------------------------
@@ -1122,7 +1329,8 @@ def build_track_geometry(meta, folder, paths, sizes, objects):
     the editable files."""
     for path in paths.values():
         path.parent.mkdir(parents=True, exist_ok=True)
-    index_crc = read_index_crc(folder)
+    retail = folder / RETAIL
+    index_crc = read_index_crc(retail)
     for oname in objects:
         if oname not in ("waypoints", "walls", "lanes"):
             sys.exit(f"{folder}: unknown object layer {oname}")
@@ -1167,7 +1375,7 @@ def build_track_geometry(meta, folder, paths, sizes, objects):
         paths["wall_recs"].with_name("wall_count.bin").write_bytes(
             struct.pack("<I", len(recs) // 0x20))
         if index_crc.get("walls") == zlib.crc32(verts + recs):
-            cells = (folder / "wall_cells").read_bytes()
+            cells = (retail / "wall_cells").read_bytes()
             grid = sizes["wall_grid"]
             lists, grid = cells[:len(cells) - grid], cells[len(cells) - grid:]
         else:
@@ -1181,9 +1389,9 @@ def build_track_geometry(meta, folder, paths, sizes, objects):
         paths["wall_lists"].write_bytes(lists)
         paths["wall_grid"].write_bytes(grid)
     terms = list(struct.unpack(
-        f"<{len((folder / 'lane_terms').read_bytes()) // 4}I",
-        (folder / "lane_terms").read_bytes()))
-    by_lane = read_lane_fixups(folder)
+        f"<{len((retail / 'lane_terms').read_bytes()) // 4}I",
+        (retail / "lane_terms").read_bytes()))
+    by_lane = read_lane_fixups(retail)
     totals = {}
     for gi, g in enumerate(meta["lanes"]):
         slot = g["slot"]
@@ -1201,7 +1409,7 @@ def build_track_geometry(meta, folder, paths, sizes, objects):
         paths[f"lane_points_{slot}"].write_bytes(points)
         paths[f"lane_segs_{slot}"].write_bytes(segs)
         if index_crc.get(f"lane_{slot}") == zlib.crc32(points + segs):
-            cells = (folder / f"lane_cells_{slot}").read_bytes()
+            cells = (retail / f"lane_cells_{slot}").read_bytes()
             lists, grid = cells[:-2 * 48 * 48], cells[-2 * 48 * 48:]
         else:
             print(f"{folder.name}: lane {slot} changed; rebuilding its "
@@ -1215,13 +1423,13 @@ def build_track_geometry(meta, folder, paths, sizes, objects):
         # each lane's length word is its computed total, so moving a lane's
         # points moves the length the AI and the challenge start read; the
         # other words are authoring leftovers nothing reads, kept as data
-        lengths = bytearray((folder / "lane_lengths").read_bytes())
+        lengths = bytearray((retail / "lane_lengths").read_bytes())
         for at, total in totals.items():
             struct.pack_into("<H", lengths, at, total)
         paths["lane_lengths"].write_bytes(lengths)
     for i in meta.get("orphanParts", []):
         paths[f"lane_orphan_{i}"].write_bytes(
-            (folder / f"lane_orphan_{i}").read_bytes())
+            (retail / f"lane_orphan_{i}").read_bytes())
 
 
 def build_track(meta, folder, paths, sizes):
@@ -1236,7 +1444,11 @@ def build_track(meta, folder, paths, sizes):
     name = meta["name"]
     layers, objects = read_tmx(folder / f"{name}.tmx")
     build_track_geometry(meta, folder, paths, sizes, objects)
-    tails = read_stream_tails(folder)
+    tails = read_stream_tails(folder / RETAIL)
+    tables = {"bg3Metatiles": read_metatile_tmx(folder / "metatiles_a.tmx"),
+              "bg2Metatiles": read_metatile_tmx(folder / "metatiles_b.tmx")}
+    if "surfaceTable" in paths:
+        tables["surfaceTable"] = read_surfaces_txt(folder / "surfaces.txt")
     for part, lname in (("bg3Map", "A"), ("bg2Map", "B"),
                         ("cellMap", "cells")):
         if part not in paths:
@@ -1253,11 +1465,10 @@ def build_track(meta, folder, paths, sizes):
             sys.exit(f"{folder / (name + '.tmx')}: layer {lname} holds "
                      f"{len(values)} cells, the map is {width}x{height}")
         if part == "cellMap":
-            values_allowed = len((folder / "surfaces").read_bytes()) // 16
+            values_allowed = len(tables["surfaceTable"]) // 16
         else:
-            table = (folder / ("metatiles_a" if part == "bg3Map"
-                               else "metatiles_b")).read_bytes()
-            values_allowed = len(table) // 32
+            values_allowed = len(tables["bg3Metatiles" if part == "bg3Map"
+                                        else "bg2Metatiles"]) // 32
         if max(values) >= values_allowed:
             sys.exit(f"{folder / (name + '.tmx')}: layer {lname} uses "
                      f"index {max(values)}, the table holds {values_allowed}")
@@ -1298,11 +1509,9 @@ def build_track(meta, folder, paths, sizes):
         paths[part].with_name(f"{part}_tail.bin").write_bytes(blob[-512:])
         if part == "bg2Tiles" and "palette" in paths:
             paths["palette"].write_bytes(palette)
-    for part, fname in (("bg3Metatiles", "metatiles_a"),
-                        ("bg2Metatiles", "metatiles_b"),
-                        ("surfaceTable", "surfaces")):
+    for part, table in tables.items():
         if part in paths:
-            paths[part].write_bytes((folder / fname).read_bytes())
+            paths[part].write_bytes(table)
 
 
 def pal_asset(asset):
@@ -1413,34 +1622,43 @@ def generate(asset):
 
 
 def draw_track_previews(meta, blobs, out):
-    """Redraw the tileset pictures the .tmx points at (metatiles_a.png,
-    metatiles_b.png, cells.png) from the track's built parts, so they
-    show your edits; each only when it is older than an editable file.
-    Tiled only displays them; the build never reads them."""
+    """Redraw the pictures the Tiled maps display, in previews/, from the
+    track's built parts, so they show your edits: the metatile tilesets
+    of NAME.tmx (metatiles_a.png, metatiles_b.png, cells.png) and the
+    tile banks of the metatile maps (tiles_2_banks.png, tiles_0_banks.png).
+    Each is redrawn when older than an editable file. Nothing reads them."""
     stamp = max((out / f).stat().st_mtime
                 for f in track_layer_files(meta, blobs) if (out / f).exists())
+    view = out / PREVIEWS
+    view.mkdir(exist_ok=True)
+
+    def stale(p):
+        return not p.exists() or p.stat().st_mtime < stamp
+
     for pname, mpart, tpart in (("metatiles_a.png", "bg3Metatiles", "bg3Tiles"),
                                 ("metatiles_b.png", "bg2Metatiles", "bg2Tiles")):
-        if mpart not in blobs:
-            continue
-        p = out / pname
-        if p.exists() and p.stat().st_mtime >= stamp:
-            continue
-        px, w, h, pal = render_metatile_sheet(
-            metatile_entries(blobs[mpart]), blobs[tpart], blobs["palette"])
-        write_indexed_png(p, px, w, h, pal)
-    if "surfaceTable" in blobs:
-        p = out / "cells.png"
-        if not p.exists() or p.stat().st_mtime < stamp:
-            values = len(blobs["surfaceTable"]) // 16
-            colors = bytearray(512)
-            for i in range(min(values, 256)):
-                struct.pack_into("<H", colors, 2 * i,
-                                 (i * 37 + 8) & 31 | ((i * 73 + 12) & 31) << 5
-                                 | ((i * 19 + 4) & 31) << 10)
-            px = b"".join(bytes([i & 0xFF]) * 1024 for i in range(values))
-            write_indexed_png(p, px, 32 * 16, -(-values // 16) * 32,
-                              bytes(colors))
+        if mpart in blobs and stale(view / pname):
+            px, w, h, pal = render_metatile_sheet(
+                metatile_entries(blobs[mpart]), blobs[tpart], blobs["palette"])
+            write_indexed_png(view / pname, px, w, h, pal)
+    for pname, tpart in (("tiles_2_banks.png", "bg3Tiles"),
+                         ("tiles_0_banks.png", "bg2Tiles")):
+        if tpart in blobs and stale(view / pname):
+            draw_bank_sheet(view / pname, blobs[tpart], blobs["palette"])
+    if "surfaceTable" in blobs and stale(view / "cells.png"):
+        values = len(blobs["surfaceTable"]) // 16
+        colors = bytearray(512)
+        for i in range(min(values, 256)):
+            struct.pack_into("<H", colors, 2 * i,
+                             (i * 37 + 8) & 31 | ((i * 73 + 12) & 31) << 5
+                             | ((i * 19 + 4) & 31) << 10)
+        w, h = 32 * 16, -(-values // 16) * 32
+        px = bytearray(w * h)  # one 32x32 swatch per value, 16 to a row
+        for i in range(values):
+            x0, y0 = (i % 16) * 32, (i // 16) * 32
+            for y in range(32):
+                px[(y0 + y) * w + x0:(y0 + y) * w + x0 + 32] = bytes([i & 0xFF]) * 32
+        write_indexed_png(view / "cells.png", bytes(px), w, h, bytes(colors))
 
 
 def extract_tracks(rom):
