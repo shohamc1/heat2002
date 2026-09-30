@@ -175,7 +175,7 @@ extern struct ObjTileCacheEntry gObjTileCache16[];
 extern s32 gTireContactVelX;
 extern u8 gStartedCarCount;
 extern u16 gUnk_0202CB00[];
-extern u32 *gUnk_02026E1C[];
+extern u32 *gModule_DriverPalettes[];
 extern u32 gTrackMapWidth[];
 extern s32 gUnk_02000468;
 extern u8 gPitServiceSelections[];

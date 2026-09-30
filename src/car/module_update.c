@@ -42,8 +42,8 @@ u8 ModuleUpdateLapProgress(struct Car *p, u8 a1);
 void ModuleM4aSongNumStart(u16 idx);
 void ModuleAddDamageSmokeTask(struct Car *car);
 void ModuleUpdateRacePosition(u8 idx);
-extern u16 gUnk_02026DC4[];
-extern u16 gUnk_02026DDC[];
+extern u16 gModule_PitEntryProgressPoints[];
+extern u16 gModule_PitExitProgressPoints[];
 u8 ModuleCarNeedsPit(struct Car *p);
 u8 ModuleFindFreePitStall(u8 a);
 void ModuleEnterPit(struct Car *p, u8 a);
@@ -276,8 +276,8 @@ void ModuleUpdateAllCars(void)
     gUnk_0203D4E8++;
     for (i = 0; i != count; i++) {
         ModuleUpdateCar(car, i);
-        if (car->prevProgress <= gUnk_02026DC4[gModule_TrackId] &&
-            (*(u32 *)&car->progress & 0xFFFF) >= gUnk_02026DC4[gModule_TrackId] && ModuleCarNeedsPit(car) != 0 &&
+        if (car->prevProgress <= gModule_PitEntryProgressPoints[gModule_TrackId] &&
+            (*(u32 *)&car->progress & 0xFFFF) >= gModule_PitEntryProgressPoints[gModule_TrackId] && ModuleCarNeedsPit(car) != 0 &&
             car != gModule_Cars) {
             pitStall = gModule_DamagePitsEnabled;
             if (pitStall != 0) {
@@ -287,8 +287,8 @@ void ModuleUpdateAllCars(void)
             }
         }
         if (car != gModule_Cars && car->pitState != 0) {
-            if (car->prevProgress <= gUnk_02026DDC[gModule_TrackId] &&
-                (*(u32 *)&car->progress & 0xFFFF) >= gUnk_02026DDC[gModule_TrackId])
+            if (car->prevProgress <= gModule_PitExitProgressPoints[gModule_TrackId] &&
+                (*(u32 *)&car->progress & 0xFFFF) >= gModule_PitExitProgressPoints[gModule_TrackId])
                 car->pitCollidable = 0;
         }
         car++;

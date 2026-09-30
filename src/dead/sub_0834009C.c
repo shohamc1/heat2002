@@ -63,7 +63,7 @@ u32 sub_08340168(u32 ptr)
     return 0x5;
 }
 
-extern u8 gUnk_02026DF4[];
+extern u8 gModule_RacePointsTable[];
 
 void ModuleUpdateRacePosition(u8 idx);
 u32 sub_08340168(u32 ptr);
@@ -76,7 +76,7 @@ void sub_0834018C(struct Car *a1, u32 a2)
 
     ModuleUpdateRacePosition((u8)a2);
     t = sub_08340168((u32)a1);
-    a1->points = a1->points + gUnk_02026DF4[(u8)t];
+    a1->points = a1->points + gModule_RacePointsTable[(u8)t];
     if (a1->lapsLed != 0)
         a1->points += 5;
     flag = 1;

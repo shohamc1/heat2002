@@ -34,7 +34,7 @@ void ModuleInitCar(u8 carIdx, struct Car *car, s32 posX, s32 posZ, u32 heading)
     car->hitCooldown = 0;
     car->waypoint = 0;
     car->firstStepCrossed = 0;
-    car->driverPalette = gUnk_02026E1C[carIdx * 3];
+    car->driverPalette = gModule_DriverPalettes[carIdx * 3];
     car->carState = 0;
     car->unk84 = 1;
     car->unk30 = 0;

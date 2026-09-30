@@ -1,12 +1,12 @@
 #include "global.h"
 #include "variables.h"
 
-extern u8 gUnk_020269C4[];
-extern u8 gUnk_020269CC[];
-extern u8 gUnk_020269FC[];
-extern u8 gUnk_02026A3C[];
-extern u8 gUnk_02026A64[];
-extern u8 gUnk_02026A84[];
+extern u8 gModule_ObjTileCache64Tiles[];
+extern u8 gModule_ObjTileCache16Tiles[];
+extern u8 gModule_ObjTileCache2Tiles[];
+extern u8 gModule_ObjTileCache8Tiles[];
+extern u8 gModule_ObjTileCache4Tiles[];
+extern u8 gModule_ObjTileCache1Tiles[];
 
 void ModuleInitObjPaletteCacheEntry(struct ObjPaletteCacheEntry *entry)
 {
@@ -37,22 +37,22 @@ void ModuleInitGfxCaches(void)
     u16 *src;
     void *dest;
 
-    src = gUnk_020269C4;
+    src = gModule_ObjTileCache64Tiles;
     dest = gModule_ObjTileCache64;
     ModuleInitObjTileCache(4, src, dest);
-    src = gUnk_020269CC;
+    src = gModule_ObjTileCache16Tiles;
     dest = gModule_ObjTileCache16;
     ModuleInitObjTileCache(0x18, src, dest);
-    src = gUnk_020269FC;
+    src = gModule_ObjTileCache2Tiles;
     dest = gModule_ObjTileCache2;
     ModuleInitObjTileCache(0x20, src, dest);
-    src = gUnk_02026A3C;
+    src = gModule_ObjTileCache8Tiles;
     dest = gModule_ObjTileCache8;
     ModuleInitObjTileCache(0x14, src, dest);
-    src = gUnk_02026A64;
+    src = gModule_ObjTileCache4Tiles;
     dest = gModule_ObjTileCache4;
     ModuleInitObjTileCache(0x10, src, dest);
-    src = gUnk_02026A84;
+    src = gModule_ObjTileCache1Tiles;
     dest = gModule_ObjTileCache1;
     ModuleInitObjTileCache(0x20, src, dest);
 

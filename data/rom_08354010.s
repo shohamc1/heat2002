@@ -288,6 +288,8 @@ gModule_0201E6E4:
 	.incbin "build/assets/graphics/rl_0832C890.bin"
 	.space 2
 	.incbin "build/assets/graphics/palettes/pal_0832C8D4.pal.bin"
+	.global gModule_0201E748
+gModule_0201E748:
 	.incbin "build/assets/graphics/palettes/pal_08330D38.pal.bin"
 	.global gModule_0201E768
 gModule_0201E768:

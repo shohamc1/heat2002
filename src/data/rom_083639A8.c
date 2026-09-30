@@ -324,7 +324,7 @@ const u8 gModule_0202B1E9[6] = UNK_083FDE72;
 /* The sprite frame lists, the twins of the main program's in
  * data/rom_083FEF08.s and data/rom_083FF724.s: one number frame per
  * driver (reached through gModule_DriverNumberFrameLists, module_draw.c),
- * the two car sprite halves (gUnk_02026E14/gUnk_02026E18), the damage
+ * the two car sprite halves (gModule_DriverCarSpriteHalfATables/BTables), the damage
  * smoke (module_particles.c), and one link-marker list per player
  * (gModule_LinkMarkerFrameLists, module_draw.c and
  * ModuleDrawLinkMarker.c). */

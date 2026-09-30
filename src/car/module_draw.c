@@ -2,8 +2,8 @@
 #include "variables.h"
 #include "car.h"
 
-extern u32 *gUnk_02026E14[];
-extern u32 *gUnk_02026E18[];
+extern u32 *gModule_DriverCarSpriteHalfATables[];
+extern u32 *gModule_DriverCarSpriteHalfBTables[];
 extern u32 *gModule_DriverNumberFrameLists[];
 extern u8 gUnk_0201B590[];
 u32 ModuleAddDepthSortedSprite(u32 a, u32 b, u16 c);
@@ -38,18 +38,18 @@ void ModuleDrawCar(struct Car *car, u8 idx)
     k &= 0x1F;
     if (flip != 0)
         k = 0x20 - k;
-    t5 = (u32)(ModuleRequestObjPalette(gUnk_02026E1C[car->driverId]) << 24) >> 12;
+    t5 = (u32)(ModuleRequestObjPalette(gModule_DriverPalettes[car->driverId]) << 24) >> 12;
     if (car->behindBgFlag != 0)
         t5 |= 0x800;
     else
         t5 |= 0x400;
     if (flip == 0) {
-        t = ModuleRequestObjTiles8(gUnk_02026E14[car->driverId][k]);
+        t = ModuleRequestObjTiles8(gModule_DriverCarSpriteHalfATables[car->driverId][k]);
         if (t != NULL) {
             ModuleAddDepthSortedSprite((pos[1] & 0xFF) | ((pos[0] & 0x1FF) << 16) | 0x80008000, t->tileIndex | t5,
                                        y + 0x40);
         }
-        t = ModuleRequestObjTiles16(gUnk_02026E18[car->driverId][k]);
+        t = ModuleRequestObjTiles16(gModule_DriverCarSpriteHalfBTables[car->driverId][k]);
         if (t != NULL) {
             ModuleAddDepthSortedSprite((pos[1] & 0xFF) | (((pos[0] + 0x10) & 0x1FF) << 16) | 0x80000000,
                                        t->tileIndex | t5, y + 0x40);
@@ -60,7 +60,7 @@ void ModuleDrawCar(struct Car *car, u8 idx)
         u32 b;
         u32 **tbl;
 
-        tbl = gUnk_02026E18;
+        tbl = gModule_DriverCarSpriteHalfBTables;
         p162 = &car->driverId;
         t = ModuleRequestObjTiles16(tbl[*p162][k]);
         if (t != NULL) {
@@ -69,7 +69,7 @@ void ModuleDrawCar(struct Car *car, u8 idx)
             a |= 0x10000000;
             ModuleAddDepthSortedSprite(a, b, y + 0x40);
         }
-        t = ModuleRequestObjTiles8(gUnk_02026E14[*p162][k]);
+        t = ModuleRequestObjTiles8(gModule_DriverCarSpriteHalfATables[*p162][k]);
         if (t != NULL) {
             a = (pos[1] & 0xFF) | (((pos[0] + 0x20) & 0x1FF) << 16) | 0x80008000;
             b = t->tileIndex | t5;

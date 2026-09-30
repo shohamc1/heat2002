@@ -71,45 +71,24 @@ const struct TrackSeg *const gTrackSegTables[] = { gTrackSegs_Track0, gTrackSegs
 // The sprite caches' OBJ VRAM tile numbers. Each array holds u16 tile
 // indices that InitObjTileCache reads one by one (turning each into an
 // OBJ_VRAM0 offset with t << 5); the words below just pair them.
-const u16 gObjTileCache64Tiles[4] = { 0x0, 0x40, 0x80, 0xC0 };
-const u16 gObjTileCache16Tiles[24] = { 0x100, 0x110, 0x120, 0x130, 0x140, 0x150, 0x160, 0x170,
-                                       0x180, 0x190, 0x1A0, 0x1B0, 0x1C0, 0x1D0, 0x1E0, 0x1F0,
-                                       0x200, 0x210, 0x220, 0x230, 0x0,   0x0,   0x0,   0x0 };
-const u16 gObjTileCache2Tiles[32] = { 0x240, 0x242, 0x244, 0x246, 0x248, 0x24A, 0x24C, 0x24E, 0x250, 0x252, 0x254,
-                                      0x256, 0x258, 0x25A, 0x25C, 0x25E, 0x260, 0x262, 0x264, 0x266, 0x268, 0x26A,
-                                      0x26C, 0x26E, 0x270, 0x272, 0x274, 0x276, 0x278, 0x27A, 0x27C, 0x27E };
-const u16 gObjTileCache8Tiles[20] = { 0x2C0, 0x2C8, 0x2D0, 0x2D8, 0x2E0, 0x2E8, 0x2F0, 0x2F8, 0x300, 0x308,
-                                      0x310, 0x318, 0x320, 0x328, 0x330, 0x338, 0x340, 0x348, 0x350, 0x358 };
-const u16 gObjTileCache4Tiles[16] = { 0x360, 0x364, 0x368, 0x36C, 0x370, 0x374, 0x378, 0x37C,
-                                      0x380, 0x384, 0x388, 0x38C, 0x390, 0x394, 0x398, 0x39C };
-const u16 gObjTileCache1Tiles[32] = { 0x3A0, 0x3A1, 0x3A2, 0x3A3, 0x3A4, 0x3A5, 0x3A6, 0x3A7, 0x3A8, 0x3A9, 0x3AA,
-                                      0x3AB, 0x3AC, 0x3AD, 0x3AE, 0x3AF, 0x3B0, 0x3B1, 0x3B2, 0x3B3, 0x3B4, 0x3B5,
-                                      0x3B6, 0x3B7, 0x3B8, 0x3B9, 0x3BA, 0x3BB, 0x3BC, 0x3BD, 0x3BE, 0x3BF };
+const u16 gObjTileCache64Tiles[4] = OBJ_TILE_CACHE_64_TILES;
+const u16 gObjTileCache16Tiles[24] = OBJ_TILE_CACHE_16_TILES;
+const u16 gObjTileCache2Tiles[32] = OBJ_TILE_CACHE_2_TILES;
+const u16 gObjTileCache8Tiles[20] = OBJ_TILE_CACHE_8_TILES;
+const u16 gObjTileCache4Tiles[16] = OBJ_TILE_CACHE_4_TILES;
+const u16 gObjTileCache1Tiles[32] = OBJ_TILE_CACHE_1_TILES;
 // Its users declare it as s32 x[], u32 x[].
 // Twelve tracks times eight pit stalls, one (x, y) pair each
 // (ComputePitStallDistance, UpdateAiDriver).
-const u32 gPitStallPositions[192] = {
-    3015, 2209, 2855, 2049, 2703, 1897, 2551, 1745, 2399, 1593, 2247, 1441, 2095, 1289, 1943, 1137, 1471, 1308,
-    1568, 1308, 1664, 1308, 1759, 1308, 1856, 1308, 1952, 1308, 2048, 1308, 2144, 1308, 3998, 3278, 3957, 3310,
-    3915, 3355, 3874, 3389, 3833, 3430, 3799, 3468, 3753, 3511, 3712, 3558, 888,  2208, 896,  2112, 888,  2016,
-    896,  1920, 888,  1824, 896,  1728, 888,  1632, 896,  1536, 4195, 3469, 4199, 3372, 4197, 3279, 4197, 2988,
-    4195, 2894, 4197, 2798, 4195, 2702, 4193, 2606, 1639, 2385, 1641, 2445, 1639, 2575, 1641, 2637, 1639, 2701,
-    1638, 2827, 1641, 2896, 1641, 3023, 2413, 1455, 2413, 1615, 2413, 1775, 2414, 1855, 2413, 2016, 2413, 2177,
-    2413, 2336, 2413, 2496, 2413, 1455, 2413, 1615, 2413, 1775, 2414, 1855, 2413, 2016, 2414, 2177, 2414, 2336,
-    2414, 2496, 2601, 1816, 2601, 1927, 2603, 2107, 2600, 2297, 2602, 2400, 2599, 2495, 2602, 2582, 2600, 2671,
-    898,  2474, 897,  2535, 897,  2597, 897,  2661, 896,  2727, 897,  2793, 897,  2857, 896,  2923, 1034, 1734,
-    1035, 1637, 1034, 1539, 1034, 1443, 1032, 1347, 1035, 1245, 1033, 1156, 1033, 1056, 1645, 2418, 1711, 2416,
-    1834, 2417, 1901, 2418, 1963, 2418, 2029, 2419, 2094, 2416, 2222, 2417
-};
+const u32 gPitStallPositions[192] = PIT_STALL_POSITIONS;
 // The track progress value at which a car may enter its pit stall, per
 // track (car/update.c compares it against the car's progress).
-const u16 gPitEntryProgressPoints[12] = { 365, 150, 390, 325, 660, 480, 90, 0, 210, 500, 150, 380 };
+const u16 gPitEntryProgressPoints[12] = PIT_ENTRY_PROGRESS_POINTS;
 // The track progress value at which a car leaves the pit lane, per track.
-const u16 gPitExitProgressPoints[12] = { 410, 200, 425, 365, 720, 505, 125, 0, 260, 580, 190, 400 };
+const u16 gPitExitProgressPoints[12] = PIT_EXIT_PROGRESS_POINTS;
 // NASCAR championship points per finishing position 1-30; 31st and
 // beyond get nothing (AwardRacePoints, src/race/grid.c).
-const u8 gRacePointsTable[32] = { 175, 170, 165, 160, 155, 150, 146, 142, 138, 134, 130, 127, 124, 121, 118, 115,
-                                  112, 109, 106, 103, 100, 97,  94,  91,  88,  85,  82,  79,  76,  73,  0,   0 };
+const u8 gRacePointsTable[32] = RACE_POINTS_TABLE;
 const u32 *const gDriverCarSpriteHalfATables[] = {
     gUnk_083FF424, gUnk_083FF424, gUnk_083FF52C, gUnk_083FF004, gUnk_083FF52C, gUnk_083FF214,
     gUnk_083FF10C, gUnk_083FF31C, gUnk_083FF52C, gUnk_083FF52C, gUnk_083FF31C, gUnk_083FF214,
