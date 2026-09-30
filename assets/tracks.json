@@ -35,15 +35,18 @@
    "lanes": [
     {
      "slot": 0,
-     "points": 100
+     "points": 100,
+     "lengthAt": 0
     },
     {
      "slot": 4,
-     "points": 90
+     "points": 90,
+     "lengthAt": 8
     },
     {
      "slot": 7,
-     "points": 89
+     "points": 89,
+     "lengthAt": 12
     }
    ],
    "terms": [
@@ -121,15 +124,18 @@
    "lanes": [
     {
      "slot": 0,
-     "points": 59
+     "points": 59,
+     "lengthAt": 0
     },
     {
      "slot": 1,
-     "points": 48
+     "points": 48,
+     "lengthAt": 2
     },
     {
      "slot": 4,
-     "points": 50
+     "points": 50,
+     "lengthAt": 10
     }
    ],
    "terms": [
@@ -195,19 +201,23 @@
    "lanes": [
     {
      "slot": 0,
-     "points": 130
+     "points": 130,
+     "lengthAt": 0
     },
     {
      "slot": 1,
-     "points": 123
+     "points": 123,
+     "lengthAt": 2
     },
     {
      "slot": 4,
-     "points": 126
+     "points": 126,
+     "lengthAt": 10
     },
     {
      "slot": 7,
-     "points": 123
+     "points": 123,
+     "lengthAt": 14
     }
    ],
    "terms": [
@@ -276,19 +286,23 @@
    "lanes": [
     {
      "slot": 0,
-     "points": 88
+     "points": 88,
+     "lengthAt": 0
     },
     {
      "slot": 1,
-     "points": 82
+     "points": 82,
+     "lengthAt": 6
     },
     {
      "slot": 4,
-     "points": 86
+     "points": 86,
+     "lengthAt": 10
     },
     {
      "slot": 7,
-     "points": 95
+     "points": 95,
+     "lengthAt": 14
     }
    ],
    "terms": [
@@ -366,19 +380,23 @@
    "lanes": [
     {
      "slot": 0,
-     "points": 152
+     "points": 152,
+     "lengthAt": 0
     },
     {
      "slot": 1,
-     "points": 149
+     "points": 149,
+     "lengthAt": 2
     },
     {
      "slot": 4,
-     "points": 160
+     "points": 160,
+     "lengthAt": 10
     },
     {
      "slot": 7,
-     "points": 149
+     "points": 149,
+     "lengthAt": 14
     }
    ],
    "terms": [
@@ -439,19 +457,23 @@
    "lanes": [
     {
      "slot": 0,
-     "points": 121
+     "points": 121,
+     "lengthAt": 0
     },
     {
      "slot": 1,
-     "points": 123
+     "points": 123,
+     "lengthAt": 2
     },
     {
      "slot": 4,
-     "points": 113
+     "points": 113,
+     "lengthAt": 10
     },
     {
      "slot": 7,
-     "points": 125
+     "points": 125,
+     "lengthAt": 14
     }
    ],
    "terms": [
@@ -516,19 +538,23 @@
    "lanes": [
     {
      "slot": 0,
-     "points": 60
+     "points": 60,
+     "lengthAt": 0
     },
     {
      "slot": 1,
-     "points": 63
+     "points": 63,
+     "lengthAt": 4
     },
     {
      "slot": 4,
-     "points": 75
+     "points": 75,
+     "lengthAt": 10
     },
     {
      "slot": 7,
-     "points": 70
+     "points": 70,
+     "lengthAt": 14
     }
    ],
    "terms": [
@@ -636,19 +662,23 @@
    "lanes": [
     {
      "slot": 0,
-     "points": 71
+     "points": 71,
+     "lengthAt": 0
     },
     {
      "slot": 1,
-     "points": 76
+     "points": 76,
+     "lengthAt": 2
     },
     {
      "slot": 4,
-     "points": 78
+     "points": 78,
+     "lengthAt": 10
     },
     {
      "slot": 7,
-     "points": 80
+     "points": 80,
+     "lengthAt": 14
     }
    ],
    "terms": [
@@ -712,19 +742,23 @@
    "lanes": [
     {
      "slot": 0,
-     "points": 129
+     "points": 129,
+     "lengthAt": 0
     },
     {
      "slot": 1,
-     "points": 131
+     "points": 131,
+     "lengthAt": 2
     },
     {
      "slot": 4,
-     "points": 129
+     "points": 129,
+     "lengthAt": 10
     },
     {
      "slot": 7,
-     "points": 127
+     "points": 127,
+     "lengthAt": 14
     }
    ],
    "terms": [
@@ -796,19 +830,23 @@
    "lanes": [
     {
      "slot": 0,
-     "points": 48
+     "points": 48,
+     "lengthAt": 0
     },
     {
      "slot": 1,
-     "points": 47
+     "points": 47,
+     "lengthAt": 6
     },
     {
      "slot": 4,
-     "points": 43
+     "points": 43,
+     "lengthAt": 10
     },
     {
      "slot": 7,
-     "points": 55
+     "points": 55,
+     "lengthAt": 14
     }
    ],
    "terms": [
@@ -875,19 +913,23 @@
    "lanes": [
     {
      "slot": 0,
-     "points": 98
+     "points": 98,
+     "lengthAt": 0
     },
     {
      "slot": 1,
-     "points": 98
+     "points": 98,
+     "lengthAt": 2
     },
     {
      "slot": 4,
-     "points": 96
+     "points": 96,
+     "lengthAt": 8
     },
     {
      "slot": 7,
-     "points": 105
+     "points": 105,
+     "lengthAt": 14
     }
    ],
    "terms": [

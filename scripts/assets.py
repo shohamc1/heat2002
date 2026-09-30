@@ -1119,13 +1119,14 @@ def build_track_geometry(meta, folder, paths, sizes, objects):
         f"<{len((folder / 'lane_terms').read_bytes()) // 4}I",
         (folder / "lane_terms").read_bytes()))
     by_lane = read_lane_fixups(folder)
+    totals = {}
     for gi, g in enumerate(meta["lanes"]):
         slot = g["slot"]
         objs = {o[0]: o for o in objects.get("lanes", [])}
         if str(slot) not in objs:
             sys.exit(f"{folder}: no lane object named {slot}")
         pts = objs[str(slot)][1]
-        segs, _ = geo.pack_lane_segs(
+        segs, totals[g["lengthAt"]] = geo.pack_lane_segs(
             pts, parse_skips(dict(objs[str(slot)][2]).get("skips", "")),
             by_lane.get(slot, {}), terms[gi])
         paths[f"lane_points_{slot}"].write_bytes(
@@ -1135,8 +1136,13 @@ def build_track_geometry(meta, folder, paths, sizes, objects):
         paths[f"lane_cells_{slot}"].write_bytes(
             (folder / f"lane_cells_{slot}").read_bytes())
     if "lane_lengths" in paths:
-        paths["lane_lengths"].write_bytes(
-            (folder / "lane_lengths").read_bytes())
+        # each lane's length word is its computed total, so moving a lane's
+        # points moves the length the AI and the challenge start read; the
+        # other words are authoring leftovers nothing reads, kept as data
+        lengths = bytearray((folder / "lane_lengths").read_bytes())
+        for at, total in totals.items():
+            struct.pack_into("<H", lengths, at, total)
+        paths["lane_lengths"].write_bytes(lengths)
     for i in meta.get("orphanParts", []):
         paths[f"lane_orphan_{i}"].write_bytes(
             (folder / f"lane_orphan_{i}").read_bytes())
