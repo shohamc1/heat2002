@@ -4,7 +4,6 @@
 #include "variables.h"
 
 void m4aSongNumStop(u16 a);
-void m4aSoundVSyncOff(void);
 
 void StopAllSongsAndVSyncOff(void)
 {

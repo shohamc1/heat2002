@@ -2,8 +2,17 @@
 """Count the extern declarations in src/ and list symbols declared with more
 than one type. Parameter names and whitespace don't count as a difference.
 
-With --check, print only the symbols that more than one file declares
-locally, and exit 1 if there are any.
+Plain file-scope prototypes (not spelled with `extern`) are recognized too,
+and so is what every header in include/ declares. A local declaration whose
+normalized signature matches a header's is redundant -- the header is
+already visible -- and is reported so it can be deleted. A local
+declaration whose signature differs from the header's is a deliberate
+struct-view prototype (AGENTS.md, "Files, folders, and names") and is left
+alone.
+
+With --check, print only the violations -- symbols that more than one file
+declares locally, and local declarations that a header already declares --
+and exit 1 if there are any.
 
 Run from the repository root."""
 import collections
@@ -12,6 +21,15 @@ import re
 import sys
 
 EXTERN = re.compile(r"^[ \t]*extern\s+(.*?);", re.S | re.M)
+
+# A plain file-scope prototype: `void foo(u32 x);`, `struct Bar *baz(void);`.
+# The return type may hold only words, spaces and `*`, and must hold a word:
+# that keeps macro calls like ASM_FUNC(...) out, and indented call statements
+# `    foo(x);` too, because the callee leaves no word for the name group.
+PROTO = re.compile(
+    r"^[ \t]*(?!static\b|typedef\b|return\b|#)(?![^\n]*[={])"
+    r"([\w \t*]*\w[\w \t*]*?)\b(\w+)[ \t]*\((.*)\)[ \t]*;[ \t]*$",
+    re.M)
 
 
 def parse(decl):
@@ -33,25 +51,62 @@ def parse(decl):
     return "variable", name, re.sub(rf"\b{name}\b", "X", decl)
 
 
+def declarations(path):
+    """The extern declarations and plain prototypes in a file, each as a
+    (kind, name, signature) tuple with the signature parse() normalizes."""
+    text = re.sub(r"/\*.*?\*/|//[^\n]*", "",
+                  open(path, errors="replace").read(), flags=re.S)
+    decls = [parse(m.group(1)) for m in EXTERN.finditer(text)]
+    decls += [parse(f"{m.group(1)}{m.group(2)}({m.group(3)})")
+              for m in PROTO.finditer(text)]
+    return decls
+
+
+# What the headers declare: name -> (signature, header) pairs.
+headers = collections.defaultdict(set)
+for path in glob.glob("include/**/*.h", recursive=True):
+    for kind, name, sig in declarations(path):
+        headers[name].add((sig, path))
+
 lines = 0
+prototypes = 0
 types = collections.defaultdict(collections.Counter)
 files = collections.defaultdict(set)
+shadowed = set()
 for path in glob.glob("src/**/*.c", recursive=True):
     text = re.sub(r"/\*.*?\*/|//[^\n]*", "",
                   open(path, errors="replace").read(), flags=re.S)
-    for m in EXTERN.finditer(text):
-        lines += 1
-        kind, name, sig = parse(m.group(1))
+    externs = [parse(m.group(1)) for m in EXTERN.finditer(text)]
+    protos = [parse(f"{m.group(1)}{m.group(2)}({m.group(3)})")
+              for m in PROTO.finditer(text)]
+    lines += len(externs)
+    prototypes += len(protos)
+    for kind, name, sig in externs:
         types[kind, name][sig] += 1
         files[kind, name].add(path)
+    # Dead files are frozen (AGENTS.md, "Ignore everything in src/dead/"):
+    # they cannot be edited to satisfy the header rule, so it skips them.
+    if path.startswith("src/dead/"):
+        continue
+    for kind, name, sig in externs + protos:
+        for header_sig, header in sorted(headers.get(name, ())):
+            if header_sig == sig:
+                shadowed.add((path, name, header))
+                break
 
 shared = sorted(k[1] for k in files if len(files[k]) > 1)
 if "--check" in sys.argv:
     for name in shared:
         print(f"{name} is declared in more than one file; move it to a header")
-    sys.exit(1 if shared else 0)
+    for path, name, header in sorted(shadowed):
+        print(f"{name} is declared locally in {path} but {header} already "
+              f"declares it; delete the local declaration")
+    sys.exit(1 if shared or shadowed else 0)
 
-print(f"extern lines: {lines}")
+print(f"extern lines: {lines}, plain prototypes: {prototypes}")
+print(f"declarations a header already declares: {len(shadowed)}")
+for path, name, header in sorted(shadowed):
+    print(f"  {path}: {name} ({header})")
 for kind in ("function", "variable"):
     syms = [k for k in types if k[0] == kind]
     clash = sorted((k for k in syms if len(types[k]) > 1),

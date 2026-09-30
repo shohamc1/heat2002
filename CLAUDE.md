@@ -109,7 +109,10 @@ SHA1 is wrong, no matter how clean the C looks. Never edit `baserom.gba`,
   files read. See "Define ROM data in C" below.
 - `include/` — one declaration per shared symbol, enforced by
   `make check-code` (`scripts/externs.py --check` fails if two files
-  declare the same symbol locally). `functions.h` holds every game
+  declare the same symbol locally, or a file declares locally, with the
+  same signature, what a header in `include/` already declares; a
+  differing signature is a deliberate struct view, and `src/dead/` is
+  skipped). `functions.h` holds every game
   function's prototype, `m4a.h` the sound API and its tables,
   `variables.h` the shared RAM globals (address-sorted, main program and
   high-module sections; the addresses stay in `symbols.ld`),

@@ -5,8 +5,6 @@
 #include "m4a.h"
 #include "variables.h"
 
-void m4aSoundVSyncOff(void);
-
 void WaitForLinkRestart(void)
 {
     AgeGfxCaches();

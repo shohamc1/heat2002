@@ -8,7 +8,6 @@ extern u8 gText_Player1[];
 extern u8 gText_Player2[];
 extern u8 gText_Player3[];
 extern u8 gText_Player4[];
-void m4aSoundVSyncOff(void);
 void ClearPausedPlayerText(void);
 void DrawPausedPlayerText(void);
 

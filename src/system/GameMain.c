@@ -6,7 +6,6 @@
 
 void MainVBlankCallback(void);
 
-void RegisterRamReset(u32 r0);
 void FillFadePalette(u16 color);
 u32 MainMenuLoop(void);
 
