@@ -5,7 +5,7 @@
 void ModuleInitMultiplayerSio(void)
 {
     REG_RCNT = 0;
-    REG_SIOCNT = 0x6003;
+    REG_SIOCNT = SIO_MULTI_MODE | SIO_INTR_ENABLE | SIO_115200_BPS;
     REG_IME = 0;
     REG_IE |= INTR_FLAG_SERIAL;
     REG_IME = 1;
@@ -18,7 +18,7 @@ void ModuleSioSendWord(u16 data)
     gIntrCheck = gIntrCheck & 0xFF7F;
     REG_IME = 1;
     if ((*(u8 *)0x04000128 & 0x30) == 0)
-        REG_SIOCNT |= 0x80;
+        REG_SIOCNT |= SIO_START;
 }
 
 void ModuleSerialIntr(void)

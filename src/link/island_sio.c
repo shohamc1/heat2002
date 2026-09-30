@@ -131,8 +131,8 @@ u32 IslandSioTransferUpdate(u32 *chunkSize)
                 *ie &= ~(INTR_FLAG_TIMER3 | INTR_FLAG_SERIAL);
                 REG_IME = 1;
                 REG_SIOCNT = SIO_32BIT_MODE;
-                *(volatile u32 *)REG_ADDR_SIOCNT = 0x80 << 6;
-                *(volatile u32 *)REG_ADDR_SIOCNT = (0x80 << 6) + 3;
+                *(volatile u32 *)REG_ADDR_SIOCNT = SIO_MULTI_MODE;
+                *(volatile u32 *)REG_ADDR_SIOCNT = SIO_MULTI_MODE | SIO_115200_BPS;
                 p = (volatile u32 *)((u32)ie - 0xE0);
                 *(volatile long long *)p = 0;
             }

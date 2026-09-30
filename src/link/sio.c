@@ -30,7 +30,7 @@ void SioTransferInit(u32 a1, const u8 *a2)
     fill = 0;
     g = (u32 *)&gSioTransfer;
     CpuSet((u32)&fill, (u32)g, CPU_SET_32BIT | CPU_SET_SRC_FIXED | 6);
-    *(volatile u32 *)REG_ADDR_SIOCNT = 0x2003;
+    *(volatile u32 *)REG_ADDR_SIOCNT = SIO_MULTI_MODE | SIO_115200_BPS;
     g[1] = (u32)a2;
     g[2] = -1;
     if (a1 != 0) {
@@ -129,8 +129,8 @@ u32 SioTransferUpdate(u32 *a1)
                 *ie &= ~(INTR_FLAG_TIMER3 | INTR_FLAG_SERIAL);
                 REG_IME = 1;
                 REG_SIOCNT = SIO_32BIT_MODE;
-                *(volatile u32 *)REG_ADDR_SIOCNT = 0x80 << 6;
-                *(volatile u32 *)REG_ADDR_SIOCNT = (0x80 << 6) + 3;
+                *(volatile u32 *)REG_ADDR_SIOCNT = SIO_MULTI_MODE;
+                *(volatile u32 *)REG_ADDR_SIOCNT = SIO_MULTI_MODE | SIO_115200_BPS;
                 p = (volatile u32 *)((u32)ie - 0xE0);
                 *(volatile long long *)p = 0;
             }
