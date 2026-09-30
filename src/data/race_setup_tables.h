@@ -3,13 +3,13 @@
 
 /* The race-setup tables the ROM holds twice, byte for byte: the main
  * program's copies in src/data/race_setup.c (0x083671F0-0x083682BC) and
- * the high module's at 0x0835F444-0x0835F894, 0x0835F8A0-0x08360100 and
- * 0x0836012C-0x08360280 (src/data/rom_0835F440.c, rom_0835F8A0.c,
- * rom_0835FBFC.c and rom_08360100.c), each linked into its own image.
- * The module holds track 7's start-grid row only. One table comes from
- * elsewhere: TRACK_COUNTDOWN_EXTRA_SECONDS, the main program's in
- * src/data/rom_0836524C.c and the module's in rom_0835DC38.c. One macro per table, so one edit changes both GBAs. The
- * tables' names, comments and readers live in those files. */
+ * the high module's in src/data/module_race_setup.c (0x0835F444-0x0835F894,
+ * 0x0835F8A0-0x08360100 and 0x0836012C-0x08360290), each linked into its
+ * own image. One macro per table, so one edit changes both GBAs. The
+ * tables' names, comments and readers live in those files. The module
+ * holds track 7's start-grid row only. One table comes from elsewhere:
+ * TRACK_COUNTDOWN_EXTRA_SECONDS, the main program's in
+ * src/data/rom_0836524C.c and the module's in rom_0835DC38.c. */
 
 #define TIRE_GRIP_DEFAULTS \
 { \

@@ -529,7 +529,7 @@ gUnk_0203E140 = 0x0203E140;
 gUnk_08334E22 = gFontGlyphGrid + 0x56;
 gUnk_0200C910 = gUnk_08345390;
 /* Rows inside gModule_PitLabelBlock (src/data/high_module_text.c) the
- * module's pit-menu option tables name (src/data/rom_08360100.c). */
+ * module's pit-menu option tables name (src/data/module_race_setup.c). */
 gUnk_0200CFC4 = gModule_PitLabelBlock + 0x34;
 gUnk_0200CFC8 = gModule_PitLabelBlock + 0x38;
 gUnk_0200CFD0 = gModule_PitLabelBlock + 0x40;
