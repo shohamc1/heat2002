@@ -19,6 +19,10 @@ typedef void (*IntrFunc)(void);
 #define FALSE 0
 #define NULL ((void *)0)
 
+// Absolute value, testing < 0 first; the >= 0-first form (SA2's ABS)
+// compiles to a different branch order.
+#define ABS2(x) ((x) < 0 ? -(x) : (x))
+
 // INCBIN_U8("build/assets/...") and its siblings expand to the file's contents
 // as an array initialiser, as in pokeemerald. The build's cpp runs with
 // -undef, so these stay undefined there and tools/bin/preproc expands each

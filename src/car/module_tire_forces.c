@@ -106,8 +106,8 @@ void ModuleComputeAxleTireForce(u8 axle, struct Car *car)
     slipSpeed = lateralVel >> 8;
     if (axle != 0) {
         if (gModule_DamagePitsEnabled != 0) {
-            car->tireWear0 += ((lateralVel >> 17) < 0 ? -(lateralVel >> 17) : (lateralVel >> 17));
-            car->tireWear1 += ((lateralVel >> 17) < 0 ? -(lateralVel >> 17) : (lateralVel >> 17));
+            car->tireWear0 += ABS2(lateralVel >> 17);
+            car->tireWear1 += ABS2(lateralVel >> 17);
         }
         if (slipSpeed < -gModule_TireSlipLimit) {
             slipSpeed = -gModule_TireSlipLimit / 2;
@@ -137,8 +137,8 @@ void ModuleComputeAxleTireForce(u8 axle, struct Car *car)
             ModuleM4aSongNumStart(0xB);
     } else {
         if (gModule_DamagePitsEnabled != 0) {
-            car->tireWear2 += ((lateralVel >> 17) < 0 ? -(lateralVel >> 17) : (lateralVel >> 17));
-            car->tireWear3 += ((lateralVel >> 17) < 0 ? -(lateralVel >> 17) : (lateralVel >> 17));
+            car->tireWear2 += ABS2(lateralVel >> 17);
+            car->tireWear3 += ABS2(lateralVel >> 17);
         }
     }
 tail:

@@ -291,8 +291,8 @@ void UpdateAiDriver(struct Car *ent, u8 param)
             d2 = angle - ent->heading;
             d2 = d2 << 16;
             d2 = d2 >> 16;
-            if ((d2 < 0 ? -d2 : d2) <= 0x3FF || gTrackId == 3 || gTrackId == 1 || gTrackId == 9 ||
-                ((d2 < 0 ? -d2 : d2) <= 0xFFF && (gTrackId == 4 || gTrackId == 2)))
+            if (ABS2(d2) <= 0x3FF || gTrackId == 3 || gTrackId == 1 || gTrackId == 9 ||
+                (ABS2(d2) <= 0xFFF && (gTrackId == 4 || gTrackId == 2)))
                 ent->pitState = 4;
         }
         if (ent->pitState == 0 && gAiCarAheadSide == 0)
@@ -303,9 +303,9 @@ void UpdateAiDriver(struct Car *ent, u8 param)
             ent->steerHeading = -angl;
         else
             ent->steerHeading = ent->steerHeading + diffxy;
-        if ((diffxy < 0 ? -diffxy : diffxy) > 0x1F4 && (-ent->speed) >> 12 > 0x28)
+        if (ABS2(diffxy) > 0x1F4 && (-ent->speed) >> 12 > 0x28)
             *pA0 = *pA0 & 0xFFFE;
-        if ((diffxy < 0 ? -diffxy : diffxy) > 0x28A && (-ent->speed) >> 12 > 0x28)
+        if (ABS2(diffxy) > 0x28A && (-ent->speed) >> 12 > 0x28)
             *pA0 = 2;
     }
     if (ent->pitState == 1 && (-ent->speed) >> 12 > 0x50)
