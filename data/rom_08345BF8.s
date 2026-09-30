@@ -32,7 +32,10 @@
 	.size \name, .-\name
 	.endm
 @ End embedded Luvdis macros
-	.incbin "build/assets/unknown/data_08345BF8.bin"
+@ The last 512 bytes of track 6's (crawfish_raceway) bg2Tiles: in the main
+@ program that sheet ends where track 7's blobs begin, and the module's
+@ copy of track 7's data starts 512 bytes early. Nothing reads them.
+	.incbin "build/assets/tracks/crawfish_raceway/bg2Tiles.bin", 32192, 512
 	.global gUnk_0200D378
 gUnk_0200D378:
 	.incbin "build/assets/tracks/purley_park/module_bg3Map.bin"

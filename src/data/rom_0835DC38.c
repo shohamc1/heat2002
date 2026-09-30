@@ -63,12 +63,12 @@ const struct Track gModule_TrackData[1] = {
       { 0, 0 } },
 };
 
-/* gUnk_0201242C (0x0834AEAC), gUnk_02018DA0 (0x08351820),
- * gUnk_02017080 (0x0834FB00), gUnk_02013DAC (0x0834C82C) and
- * gUnk_02013FAC (0x0834CA2C): the track's BG tile sheets, metatiles,
- * palette and BG2 map, in data/rom_08345BF8.s's slices of the module's
- * track-data blobs. gUnk_0201044C (0x08348ECC) and gUnk_0200D378
- * (0x08345DF8) are in this record's own fragment's tyre-data blob. */
+/* gUnk_0200D378 (0x08345DF8), gUnk_0201044C (0x08348ECC),
+ * gUnk_0201242C (0x0834AEAC), gUnk_02013DAC (0x0834C82C),
+ * gUnk_02013FAC (0x0834CA2C), gUnk_02017080 (0x0834FB00) and
+ * gUnk_02018DA0 (0x08351820): the track's BG maps, metatiles, tile
+ * sheets and palette, labelled in data/rom_08345BF8.s, which builds
+ * them from track 7's editable files. */
 
 /* ROM 0x0835DCA0-0x0835DCB8: the twins of the main program's
  * gTrackCountdownExtraSeconds (built from race_setup_tables.h) and the

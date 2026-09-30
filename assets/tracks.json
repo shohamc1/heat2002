@@ -1973,6 +1973,17 @@
    }
   },
   {
+   "path": "tracks/crawfish_raceway/module_bg2Tiles_tail.bin",
+   "start": "0x08345BF8",
+   "size": 512,
+   "type": "copy",
+   "options": {
+    "sources": [
+     "build/assets/tracks/crawfish_raceway/bg2Tiles.bin@32192@512"
+    ]
+   }
+  },
+  {
    "path": "tracks/purley_park/module_bg3Map.bin",
    "start": "0x08345DF8",
    "size": 12500,
