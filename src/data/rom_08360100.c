@@ -1,5 +1,6 @@
 #include "global.h"
 #include "race_setup_tables.h"
+#include "approach_constants.h"
 
 /* The pit-menu label rows inside gModule_PitLabelBlock
  * (src/data/high_module_text.c), named by their EWRAM addresses in
@@ -110,3 +111,11 @@ const s32 gModule_CornerOffsetZ[4] = CORNER_OFFSET_Z;
 const u16 gModule_TrackAiDragDivisors[12] = TRACK_AI_DRAG_DIVISORS;
 const u8 *const gModule_083682A8[2] = { gUnk_0200D0EC, gUnk_0200D10C };
 const u8 gModule_RecordsTaskParams[12] = RECORDS_TASK_PARAMS;
+
+/* The twins of the main program's second-order approach constants
+ * gUnk_083CA0B4-gUnk_083CA0C0 (src/data/rom_083C9574.c). Only dead code
+ * reads them (sub_083432F4.c). */
+const s32 gUnk_02027800 = APPROACH_STIFFNESS_A;
+const s32 gUnk_02027804 = APPROACH_DAMPING_A;
+const s32 gUnk_02027808 = APPROACH_STIFFNESS_B;
+const s32 gUnk_0202780C = APPROACH_DAMPING_B;

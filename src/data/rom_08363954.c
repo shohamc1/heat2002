@@ -9,7 +9,7 @@ extern const u8 gModule_Back[];
 extern const u8 gModule_Front[];
 extern const u8 gModule_Left[];
 extern const u8 gModule_Right[];
-/* The wall-data labels data/rom_0836012C.s defines (EWRAM names). */
+/* The wall-data labels data/rom_08360290.s defines (EWRAM names). */
 extern struct Pt gUnk_02027810[];
 extern struct WallRec gUnk_02027DB0[];
 extern u16 gUnk_020293F0[];
@@ -22,8 +22,8 @@ extern u16 gUnk_02029CD4[];
  * vertices, wall records and the 48x48 cell grid module_walls.c walks.
  * The main program's twelve-row gTrackWallTables
  * (src/data/rom_083FD91C.c) says what each field is; this one row's
- * blobs live in the module's track-data tail, labelled by their EWRAM
- * addresses in data/rom_0836012C.s. */
+ * blobs are a copy of track 7's (data/rom_08360290.s), labelled by
+ * their EWRAM addresses. */
 const struct TrackWalls gModule_TrackWallTables[1] = {
     { gUnk_02027810, gUnk_02027DB0, 0xB2, gUnk_020293F0, gUnk_02029CD4 },
 };

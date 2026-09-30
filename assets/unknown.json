@@ -175,51 +175,6 @@
   "size": 24
  },
  {
-  "path": "unknown/data_08360280.bin",
-  "start": "0x08360280",
-  "size": 4
- },
- {
-  "path": "unknown/data_08360284.bin",
-  "start": "0x08360284",
-  "size": 4
- },
- {
-  "path": "unknown/data_08360288.bin",
-  "start": "0x08360288",
-  "size": 4
- },
- {
-  "path": "unknown/data_0836028C.bin",
-  "start": "0x0836028C",
-  "size": 1492
- },
- {
-  "path": "unknown/data_08360860.bin",
-  "start": "0x08360860",
-  "size": 40
- },
- {
-  "path": "unknown/data_08360888.bin",
-  "start": "0x08360888",
-  "size": 112
- },
- {
-  "path": "unknown/data_083608F8.bin",
-  "start": "0x083608F8",
-  "size": 820
- },
- {
-  "path": "unknown/data_08360C2C.bin",
-  "start": "0x08360C2C",
-  "size": 2900
- },
- {
-  "path": "unknown/data_08361780.bin",
-  "start": "0x08361780",
-  "size": 8660
- },
- {
   "path": "unknown/data_08363EE8.bin",
   "start": "0x08363EE8",
   "size": 172

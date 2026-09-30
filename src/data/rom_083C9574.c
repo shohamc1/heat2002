@@ -1,5 +1,6 @@
 #include "global.h"
 #include "data.h"
+#include "approach_constants.h"
 
 extern const u8 gUnk_08368FAE[];
 extern const u8 gUnk_0836ADC2[];
@@ -333,7 +334,7 @@ const u8 *const gLaneLengthPtrs[] = {
 // Second-order approach constants: sub_0800C98C steps its value toward a
 // target with stiffness gUnk_083CA0B4 and damping gUnk_083CA0B8
 // (likewise sub_0800CA20 with gUnk_083CA0BC/gUnk_083CA0C0).
-const s32 gUnk_083CA0B4 = 0xF0;
-const s32 gUnk_083CA0B8 = 0x20;
-const s32 gUnk_083CA0BC = 0xF8;
-const s32 gUnk_083CA0C0 = 0x80;
+const s32 gUnk_083CA0B4 = APPROACH_STIFFNESS_A;
+const s32 gUnk_083CA0B8 = APPROACH_DAMPING_A;
+const s32 gUnk_083CA0BC = APPROACH_STIFFNESS_B;
+const s32 gUnk_083CA0C0 = APPROACH_DAMPING_B;

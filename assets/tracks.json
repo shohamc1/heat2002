@@ -2048,6 +2048,50 @@
    }
   },
   {
+   "path": "tracks/purley_park/module_wall_verts.bin",
+   "start": "0x08360290",
+   "size": 1440,
+   "type": "copy",
+   "options": {
+    "sources": [
+     "build/assets/tracks/purley_park/wall_verts.bin"
+    ]
+   }
+  },
+  {
+   "path": "tracks/purley_park/module_wall_recs.bin",
+   "start": "0x08360830",
+   "size": 5696,
+   "type": "copy",
+   "options": {
+    "sources": [
+     "build/assets/tracks/purley_park/wall_recs.bin"
+    ]
+   }
+  },
+  {
+   "path": "tracks/purley_park/module_wall_lists.bin",
+   "start": "0x08361E70",
+   "size": 2276,
+   "type": "copy",
+   "options": {
+    "sources": [
+     "build/assets/tracks/purley_park/wall_lists.bin"
+    ]
+   }
+  },
+  {
+   "path": "tracks/purley_park/module_wall_grid.bin",
+   "start": "0x08362754",
+   "size": 4608,
+   "type": "copy",
+   "options": {
+    "sources": [
+     "build/assets/tracks/purley_park/wall_grid.bin"
+    ]
+   }
+  },
+  {
    "path": "tracks/hooley_downs/segs.bin",
    "start": "0x08365348",
    "size": 720,
