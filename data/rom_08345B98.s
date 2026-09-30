@@ -32,17 +32,29 @@
 	.size \name, .-\name
 	.endm
 @ End embedded Luvdis macros
+	.thumb
 	.global gUnk_0200D118
 gUnk_0200D118:
 	.incbin "build/assets/unknown/data_08345B98.bin"
-	.incbin "build/assets/unknown/data_08349780.bin"
-	.incbin "build/assets/unknown/data_0835041C.bin"
-	.incbin "build/assets/unknown/data_08350528.bin"
-	.incbin "build/assets/unknown/data_0835081C.bin"
-	.incbin "build/assets/unknown/data_08350830.bin"
-	.incbin "build/assets/unknown/data_08350834.bin"
-	.incbin "build/assets/unknown/data_0835085C.bin"
-	.incbin "build/assets/unknown/data_08350C20.bin"
-	.incbin "build/assets/unknown/data_081C7EA8.bin", 7296, 160
-	.incbin "build/assets/unknown/data_081C9BC8.bin"
+	.global gUnk_0200D378
+gUnk_0200D378:
+	.incbin "build/assets/tracks/purley_park/module_bg3Map.bin"
+	.global gUnk_0201044C
+gUnk_0201044C:
+	.incbin "build/assets/tracks/purley_park/bg3Metatiles.bin"
+	.global gUnk_0201242C
+gUnk_0201242C:
+	.incbin "build/assets/tracks/purley_park/bg3Tiles.bin"
+	.global gUnk_02013DAC
+gUnk_02013DAC:
+	.incbin "build/assets/tracks/purley_park/palette.bin"
+	.global gUnk_02013FAC
+gUnk_02013FAC:
+	.incbin "build/assets/tracks/purley_park/module_bg2Map.bin"
+	.global gUnk_02017080
+gUnk_02017080:
+	.incbin "build/assets/tracks/purley_park/bg2Metatiles.bin"
+	.global gUnk_02018DA0
+gUnk_02018DA0:
+	.incbin "build/assets/tracks/purley_park/bg2Tiles.bin"
 	.incbin "build/assets/unknown/data_08353260.bin"

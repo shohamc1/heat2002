@@ -29,19 +29,19 @@ struct Track
     /* 0x1C */ u32 unk1C;
     /* 0x20 */ u16 *bg3Map; /* RLE-compressed u16 map of metatile indices */
     /* 0x24 */ u16 *bg2Map;
-    /* 0x28 */ u32 unk28;
-    /* 0x2C */ u32 mapWidth; /* the gBgMapWidth stride */
-    /* 0x30 */ u32 unk30;
-    /* 0x34 */ u32 unk34;
-    /* 0x38 */ u32 unk38;
+    /* 0x28 */ u32 unk28; /* bg2Map's value again on tracks 3-11, 0 on 0-2 */
+    /* 0x2C */ u32 mapWidth; /* the gBgMapWidth stride of both layers */
+    /* 0x30 */ u32 mapHeight;
+    /* 0x34 */ u32 mapWidth2; /* the second pair; equal to mapWidth on */
+    /* 0x38 */ u32 mapHeight2; /* every track (LoadTrack -> gUnk_02022DD8) */
     /* 0x3C */ u32 unk3C;
     /* 0x40 */ u32 unk40;
     /* 0x44 */ u16 *cellMap;     /* RLE-compressed u16 collision cell map */
     /* 0x48 */ u32 surfaceTable; /* 16 bytes per cell value: surface code per 4x4 sub-position */
     /* 0x4C */ u8 pad4C[0x5C - 0x4C];
-    /* 0x5C */ u16 bg3MapLen; /* RLE source word count of bg3Map */
-    /* 0x5E */ u16 bg2MapLen;
-    /* 0x60 */ u16 cellMapLen;
+    /* 0x5C */ u16 bg3MapLen; /* RLE source halfword counts, one per */
+    /* 0x5E */ u16 bg2MapLen; /* stream: the ROM blob is 2*len bytes, */
+    /* 0x60 */ u16 cellMapLen; /* plus dead tail bytes to 4-alignment */
     /* 0x62 */ u8 pad62[0x64 - 0x62];
 };
 

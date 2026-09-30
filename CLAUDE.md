@@ -78,9 +78,23 @@ SHA1 is wrong, no matter how clean the C looks. Never edit `baserom.gba`,
   blob the ROM also holds in the main program is a `"copy"`: its
   fragment incbins the original's build output, so one edit changes
   both GBAs.
+  The 12 tracks and their AI and collision geometry are a `"track"`
+  asset type: `scripts/assets.py unpack` writes each track's editable
+  folder `assets/tracks/NAME/` (a Tiled `.tmx` holding the three RLE
+  map layers, two 4bpp tile-sheet `.png`s that carry the palette, and
+  the metatile and surface tables as the binary data they are), and the
+  build re-encodes them into the part files `data/rom_0807CE30.s`
+  incbins, with the stream lengths reaching `gTrackData` through the
+  `.len` files it `INCBIN_U16`s. The high module's track-7 copy builds
+  from the same files. `assets.py`'s docstring is the reference.
   Compressed graphics are typed and convert to `.png` with `make convert`;
   the rest of the data is untyped raw blobs (`assets/unknown.json`).
   See "Extracted data assets" in `docs/learnings/parked.md`.
+- `scripts/gen_atan2.py` generates `gAtan2Table` (0x0806C97C-0x0807C97C,
+  65,536 bytes) from one formula, as a `"gen"` asset type: no ROM is
+  needed, CI builds the real bytes, and `assets.py mask` leaves the range
+  unmasked so `make check-code` holds the generator to the committed
+  hash.
 - `src/data/*.c`: the ROM data tables that C code reads, defined in C with
   `INCBIN_U8`/`INCBIN_U16`/`INCBIN_U32`, as pokeemerald's `src/graphics.c`
   does. `tools/bin/preproc` (built from `tools/tmc`) expands each call

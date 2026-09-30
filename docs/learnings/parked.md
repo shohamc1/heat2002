@@ -281,6 +281,43 @@ Unidentified data, `assets/unknown.json`, established 2026-09-24:
     `rom.s`, `sub_08339780`/`sub_083397C4` in `rom_08339780.s`) were
     `.byte` rows too, never counted as functions, then ARM blocks.
 
+- The 12 tracks' map data (0x0807CE30-0x0829EAE0, 106 blobs, 2.2 MB) is
+  now a "track" asset type; `scripts/assets.py`'s docstring documents
+  the editable files. Findings the format work established:
+  - Every track's 7 blobs (bg3Map, bg2Metatiles, bg3Tiles, palette,
+    bg2Map, bg2Metatiles, bg2Tiles — order varies by track) tile its
+    region exactly; the cell maps and surface tables of all tracks
+    follow as one run, 22 blobs. Track 7 (Purley Park) has no cell map.
+  - The three Len fields (0x5C/0x5E/0x60) are u16 halfword counts;
+    a stream's blob is 2*len bytes plus dead tail bytes (non-zero on
+    three bg2Maps: tracks 1, 4, 6 — stored verbatim as metadata).
+    28 of the 35 streams end on a run word, which makes RleDecode16
+    over-read one word into the next blob (harmless; never written).
+    7 end on a value word the decoder reads but never writes; the
+    editable map keeps it, so every stream re-encodes byte for byte.
+  - A map layer's cell count is data, not always W*H: three bg2Maps
+    are shorter than the rectangle (t1/t4/t6) and one is the full
+    W*H (t2). The .tmx pads to the rectangle; the build encodes the
+    recorded count.
+  - Metatile entries are full tilemap entries (flips and palette banks
+    1-13 used heavily), so the tables can't come from a picture and
+    stay binary. Metatile table size = (max index in its map + 1)*32,
+    exact on 23 of 24 tables (track 4's bg2Metatiles has 2 spare).
+  - LoadTrackTiles copies fixed 0x8000/0x4000 bytes and over-reads on
+    19 of 24 tile blobs (track 7's bg2Tiles reaches 26,048 bytes into
+    track 8); the referenced tile indices always stay inside the copied
+    space. Track 1's bg3Tiles blob is 519 tiles against the 512-tile
+    copy, so growth past the copy exists in the retail ROM itself.
+  - The high module's track-7 copy: five blobs byte-identical to the
+    main ones (fragment incbins the same build outputs), but its two
+    maps are RAW u8 W*H, not RLE — and they carry the true final entry
+    the main streams omit (0x02 for BG3, 0x00 for BG2), which is how
+    the layers' true last cells are known for track 7. The static
+    module record is track 7 even though LinkTrackSelect skips index 7;
+    whatever patches it at link-race start is not decompiled yet.
+  - `graphics/rl_080C0000.bin` was a false RL detection inside track
+    2's bg3Metatiles table (+0x5110); removed with the track type.
+
 ## Code that left asm/ last (2026-09-25)
 
 After these changes, every fragment holds only `.incbin` lines for data

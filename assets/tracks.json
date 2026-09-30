@@ -1,0 +1,1615 @@
+{
+ "tracks": {
+  "hooley_downs": {
+   "name": "hooley_downs",
+   "index": 0,
+   "text": "gText_HooleyDowns",
+   "layers": {
+    "bg3Map": {
+     "stride": 125,
+     "count": 12499,
+     "size": 8124,
+     "len": 4062,
+     "pad": [],
+     "tail": null
+    },
+    "bg2Map": {
+     "stride": 125,
+     "count": 12499,
+     "size": 6828,
+     "len": 3414,
+     "pad": [],
+     "tail": null
+    },
+    "cellMap": {
+     "stride": 125,
+     "count": 15624,
+     "size": 6564,
+     "len": 3282,
+     "pad": [],
+     "tail": null
+    }
+   },
+   "tiles0Max": 1024,
+   "tiles2Max": 512
+  },
+  "darlington_raceway": {
+   "name": "darlington_raceway",
+   "index": 1,
+   "text": "gText_DarlingtonRaceway",
+   "layers": {
+    "bg3Map": {
+     "stride": 125,
+     "count": 12499,
+     "size": 4156,
+     "len": 2077,
+     "pad": [
+      0,
+      0
+     ],
+     "tail": null
+    },
+    "bg2Map": {
+     "stride": 125,
+     "count": 8848,
+     "size": 3776,
+     "len": 1884,
+     "pad": [
+      0,
+      0,
+      0,
+      0,
+      65,
+      14,
+      0,
+      0
+     ],
+     "tail": null
+    },
+    "cellMap": {
+     "stride": 112,
+     "count": 10415,
+     "size": 1084,
+     "len": 542,
+     "pad": [],
+     "tail": null
+    }
+   },
+   "tiles0Max": 1024,
+   "tiles2Max": 512
+  },
+  "green_valley": {
+   "name": "green_valley",
+   "index": 2,
+   "text": "gText_GreenValley",
+   "layers": {
+    "bg3Map": {
+     "stride": 125,
+     "count": 12499,
+     "size": 6844,
+     "len": 3421,
+     "pad": [
+      0,
+      0
+     ],
+     "tail": null
+    },
+    "bg2Map": {
+     "stride": 125,
+     "count": 12500,
+     "size": 14368,
+     "len": 7184,
+     "pad": [],
+     "tail": null
+    },
+    "cellMap": {
+     "stride": 168,
+     "count": 27047,
+     "size": 7532,
+     "len": 3765,
+     "pad": [
+      0,
+      0
+     ],
+     "tail": null
+    }
+   },
+   "tiles0Max": 1024,
+   "tiles2Max": 512
+  },
+  "michigan_international_speedway": {
+   "name": "michigan_international_speedway",
+   "index": 3,
+   "text": "gText_MichiganInternationalSpeedway",
+   "layers": {
+    "bg3Map": {
+     "stride": 125,
+     "count": 12499,
+     "size": 8044,
+     "len": 4021,
+     "pad": [
+      0,
+      0
+     ],
+     "tail": null
+    },
+    "bg2Map": {
+     "stride": 125,
+     "count": 12499,
+     "size": 12340,
+     "len": 6169,
+     "pad": [
+      0,
+      0
+     ],
+     "tail": null
+    },
+    "cellMap": {
+     "stride": 107,
+     "count": 13588,
+     "size": 7868,
+     "len": 3933,
+     "pad": [
+      0,
+      0
+     ],
+     "tail": null
+    }
+   },
+   "tiles0Max": 1024,
+   "tiles2Max": 512
+  },
+  "great_canyon": {
+   "name": "great_canyon",
+   "index": 4,
+   "text": "gText_GreatCanyon",
+   "layers": {
+    "bg3Map": {
+     "stride": 125,
+     "count": 12499,
+     "size": 7916,
+     "len": 3957,
+     "pad": [
+      0,
+      0
+     ],
+     "tail": null
+    },
+    "bg2Map": {
+     "stride": 125,
+     "count": 12461,
+     "size": 12968,
+     "len": 6477,
+     "pad": [
+      153,
+      4,
+      19,
+      12,
+      178,
+      2,
+      20,
+      12,
+      0,
+      0,
+      0,
+      0,
+      32,
+      0
+     ],
+     "tail": null
+    },
+    "cellMap": {
+     "stride": 163,
+     "count": 26242,
+     "size": 8940,
+     "len": 4470,
+     "pad": [],
+     "tail": null
+    }
+   },
+   "tiles0Max": 1024,
+   "tiles2Max": 512
+  },
+  "fuji_port": {
+   "name": "fuji_port",
+   "index": 5,
+   "text": "gText_FujiPort",
+   "layers": {
+    "bg3Map": {
+     "stride": 155,
+     "count": 13949,
+     "size": 14028,
+     "len": 7014,
+     "pad": [],
+     "tail": null
+    },
+    "bg2Map": {
+     "stride": 155,
+     "count": 13949,
+     "size": 10120,
+     "len": 5059,
+     "pad": [
+      0,
+      0
+     ],
+     "tail": null
+    },
+    "cellMap": {
+     "stride": 166,
+     "count": 27555,
+     "size": 8052,
+     "len": 4026,
+     "pad": [],
+     "tail": null
+    }
+   },
+   "tiles0Max": 1024,
+   "tiles2Max": 512
+  },
+  "crawfish_raceway": {
+   "name": "crawfish_raceway",
+   "index": 6,
+   "text": "gText_CrawfishRaceway",
+   "layers": {
+    "bg3Map": {
+     "stride": 125,
+     "count": 12499,
+     "size": 5808,
+     "len": 2904,
+     "pad": [],
+     "tail": null
+    },
+    "bg2Map": {
+     "stride": 125,
+     "count": 10450,
+     "size": 9692,
+     "len": 4844,
+     "pad": [
+      0,
+      0,
+      0,
+      8
+     ],
+     "tail": null
+    },
+    "cellMap": {
+     "stride": 125,
+     "count": 15624,
+     "size": 3832,
+     "len": 1916,
+     "pad": [],
+     "tail": null
+    }
+   },
+   "tiles0Max": 1024,
+   "tiles2Max": 512
+  },
+  "purley_park": {
+   "name": "purley_park",
+   "index": 7,
+   "text": "gText_PurleyPark",
+   "layers": {
+    "bg3Map": {
+     "stride": 125,
+     "count": 12499,
+     "size": 25240,
+     "len": 12620,
+     "pad": [],
+     "tail": 2
+    },
+    "bg2Map": {
+     "stride": 125,
+     "count": 12499,
+     "size": 4556,
+     "len": 2278,
+     "pad": [],
+     "tail": 0
+    },
+    "cellMap": {
+     "stride": 0,
+     "count": 0,
+     "size": 0,
+     "len": 0,
+     "pad": [],
+     "tail": null
+    }
+   },
+   "tiles0Max": 1024,
+   "tiles2Max": 512,
+   "module": true
+  },
+  "kansas_speedway": {
+   "name": "kansas_speedway",
+   "index": 8,
+   "text": "gText_KansasSpeedway",
+   "layers": {
+    "bg3Map": {
+     "stride": 125,
+     "count": 12499,
+     "size": 9824,
+     "len": 4911,
+     "pad": [
+      0,
+      0
+     ],
+     "tail": null
+    },
+    "bg2Map": {
+     "stride": 125,
+     "count": 12499,
+     "size": 10460,
+     "len": 5229,
+     "pad": [
+      0,
+      0
+     ],
+     "tail": null
+    },
+    "cellMap": {
+     "stride": 125,
+     "count": 15624,
+     "size": 7800,
+     "len": 3899,
+     "pad": [
+      0,
+      0
+     ],
+     "tail": null
+    }
+   },
+   "tiles0Max": 1024,
+   "tiles2Max": 512
+  },
+  "asphalt_city": {
+   "name": "asphalt_city",
+   "index": 9,
+   "text": "gText_AsphaltCity",
+   "layers": {
+    "bg3Map": {
+     "stride": 186,
+     "count": 19715,
+     "size": 13264,
+     "len": 6632,
+     "pad": [],
+     "tail": null
+    },
+    "bg2Map": {
+     "stride": 186,
+     "count": 19715,
+     "size": 14252,
+     "len": 7126,
+     "pad": [],
+     "tail": null
+    },
+    "cellMap": {
+     "stride": 125,
+     "count": 19499,
+     "size": 8628,
+     "len": 4314,
+     "pad": [],
+     "tail": null
+    }
+   },
+   "tiles0Max": 1024,
+   "tiles2Max": 512
+  },
+  "phoenix_international_raceway": {
+   "name": "phoenix_international_raceway",
+   "index": 10,
+   "text": "gText_PhoenixInternationalRaceway",
+   "layers": {
+    "bg3Map": {
+     "stride": 125,
+     "count": 12499,
+     "size": 5672,
+     "len": 2836,
+     "pad": [],
+     "tail": null
+    },
+    "bg2Map": {
+     "stride": 125,
+     "count": 12499,
+     "size": 7548,
+     "len": 3773,
+     "pad": [
+      0,
+      0
+     ],
+     "tail": null
+    },
+    "cellMap": {
+     "stride": 94,
+     "count": 8835,
+     "size": 5424,
+     "len": 2711,
+     "pad": [
+      0,
+      0
+     ],
+     "tail": null
+    }
+   },
+   "tiles0Max": 1024,
+   "tiles2Max": 512
+  },
+  "infogrames_super_speedway": {
+   "name": "infogrames_super_speedway",
+   "index": 11,
+   "text": "gText_InfogramesSuperSpeedway",
+   "layers": {
+    "bg3Map": {
+     "stride": 125,
+     "count": 13249,
+     "size": 7084,
+     "len": 3541,
+     "pad": [
+      0,
+      0
+     ],
+     "tail": null
+    },
+    "bg2Map": {
+     "stride": 125,
+     "count": 13249,
+     "size": 8664,
+     "len": 4331,
+     "pad": [
+      0,
+      0
+     ],
+     "tail": null
+    },
+    "cellMap": {
+     "stride": 125,
+     "count": 15624,
+     "size": 5116,
+     "len": 2557,
+     "pad": [
+      0,
+      0
+     ],
+     "tail": null
+    }
+   },
+   "tiles0Max": 1024,
+   "tiles2Max": 512
+  }
+ },
+ "assets": [
+  {
+   "path": "tracks/hooley_downs/bg3Map.bin",
+   "start": "0x807ce30",
+   "size": 8124,
+   "type": "track",
+   "options": {
+    "track": "hooley_downs",
+    "part": "bg3Map"
+   }
+  },
+  {
+   "path": "tracks/hooley_downs/bg3Metatiles.bin",
+   "start": "0x807edec",
+   "size": 32640,
+   "type": "track",
+   "options": {
+    "track": "hooley_downs",
+    "part": "bg3Metatiles"
+   }
+  },
+  {
+   "path": "tracks/hooley_downs/bg3Tiles.bin",
+   "start": "0x8086d6c",
+   "size": 15392,
+   "type": "track",
+   "options": {
+    "track": "hooley_downs",
+    "part": "bg3Tiles"
+   }
+  },
+  {
+   "path": "tracks/hooley_downs/palette.bin",
+   "start": "0x808a98c",
+   "size": 512,
+   "type": "track",
+   "options": {
+    "track": "hooley_downs",
+    "part": "palette"
+   }
+  },
+  {
+   "path": "tracks/hooley_downs/bg2Map.bin",
+   "start": "0x808ab8c",
+   "size": 6828,
+   "type": "track",
+   "options": {
+    "track": "hooley_downs",
+    "part": "bg2Map"
+   }
+  },
+  {
+   "path": "tracks/hooley_downs/bg2Metatiles.bin",
+   "start": "0x808c638",
+   "size": 36544,
+   "type": "track",
+   "options": {
+    "track": "hooley_downs",
+    "part": "bg2Metatiles"
+   }
+  },
+  {
+   "path": "tracks/hooley_downs/bg2Tiles.bin",
+   "start": "0x80954f8",
+   "size": 29216,
+   "type": "track",
+   "options": {
+    "track": "hooley_downs",
+    "part": "bg2Tiles"
+   }
+  },
+  {
+   "path": "tracks/hooley_downs/cellMap.bin",
+   "start": "0x8282468",
+   "size": 6564,
+   "type": "track",
+   "options": {
+    "track": "hooley_downs",
+    "part": "cellMap"
+   }
+  },
+  {
+   "path": "tracks/hooley_downs/surfaceTable.bin",
+   "start": "0x8283e0c",
+   "size": 5008,
+   "type": "track",
+   "options": {
+    "track": "hooley_downs",
+    "part": "surfaceTable"
+   }
+  },
+  {
+   "path": "tracks/darlington_raceway/palette.bin",
+   "start": "0x809c718",
+   "size": 512,
+   "type": "track",
+   "options": {
+    "track": "darlington_raceway",
+    "part": "palette"
+   }
+  },
+  {
+   "path": "tracks/darlington_raceway/bg3Map.bin",
+   "start": "0x809c918",
+   "size": 4156,
+   "type": "track",
+   "options": {
+    "track": "darlington_raceway",
+    "part": "bg3Map"
+   }
+  },
+  {
+   "path": "tracks/darlington_raceway/bg3Metatiles.bin",
+   "start": "0x809d954",
+   "size": 37664,
+   "type": "track",
+   "options": {
+    "track": "darlington_raceway",
+    "part": "bg3Metatiles"
+   }
+  },
+  {
+   "path": "tracks/darlington_raceway/bg3Tiles.bin",
+   "start": "0x80a6c74",
+   "size": 16608,
+   "type": "track",
+   "options": {
+    "track": "darlington_raceway",
+    "part": "bg3Tiles"
+   }
+  },
+  {
+   "path": "tracks/darlington_raceway/bg2Map.bin",
+   "start": "0x80aad54",
+   "size": 3776,
+   "type": "track",
+   "options": {
+    "track": "darlington_raceway",
+    "part": "bg2Map"
+   }
+  },
+  {
+   "path": "tracks/darlington_raceway/bg2Metatiles.bin",
+   "start": "0x80abc14",
+   "size": 22560,
+   "type": "track",
+   "options": {
+    "track": "darlington_raceway",
+    "part": "bg2Metatiles"
+   }
+  },
+  {
+   "path": "tracks/darlington_raceway/bg2Tiles.bin",
+   "start": "0x80b1434",
+   "size": 32256,
+   "type": "track",
+   "options": {
+    "track": "darlington_raceway",
+    "part": "bg2Tiles"
+   }
+  },
+  {
+   "path": "tracks/darlington_raceway/cellMap.bin",
+   "start": "0x828519c",
+   "size": 1084,
+   "type": "track",
+   "options": {
+    "track": "darlington_raceway",
+    "part": "cellMap"
+   }
+  },
+  {
+   "path": "tracks/darlington_raceway/surfaceTable.bin",
+   "start": "0x82855d8",
+   "size": 912,
+   "type": "track",
+   "options": {
+    "track": "darlington_raceway",
+    "part": "surfaceTable"
+   }
+  },
+  {
+   "path": "tracks/green_valley/palette.bin",
+   "start": "0x80b9234",
+   "size": 512,
+   "type": "track",
+   "options": {
+    "track": "green_valley",
+    "part": "palette"
+   }
+  },
+  {
+   "path": "tracks/green_valley/bg3Map.bin",
+   "start": "0x80b9434",
+   "size": 6844,
+   "type": "track",
+   "options": {
+    "track": "green_valley",
+    "part": "bg3Map"
+   }
+  },
+  {
+   "path": "tracks/green_valley/bg3Metatiles.bin",
+   "start": "0x80baef0",
+   "size": 63744,
+   "type": "track",
+   "options": {
+    "track": "green_valley",
+    "part": "bg3Metatiles"
+   }
+  },
+  {
+   "path": "tracks/green_valley/bg3Tiles.bin",
+   "start": "0x80ca7f0",
+   "size": 16096,
+   "type": "track",
+   "options": {
+    "track": "green_valley",
+    "part": "bg3Tiles"
+   }
+  },
+  {
+   "path": "tracks/green_valley/bg2Map.bin",
+   "start": "0x80ce6d0",
+   "size": 14368,
+   "type": "track",
+   "options": {
+    "track": "green_valley",
+    "part": "bg2Map"
+   }
+  },
+  {
+   "path": "tracks/green_valley/bg2Metatiles.bin",
+   "start": "0x80d1ef0",
+   "size": 108992,
+   "type": "track",
+   "options": {
+    "track": "green_valley",
+    "part": "bg2Metatiles"
+   }
+  },
+  {
+   "path": "tracks/green_valley/bg2Tiles.bin",
+   "start": "0x80ec8b0",
+   "size": 30496,
+   "type": "track",
+   "options": {
+    "track": "green_valley",
+    "part": "bg2Tiles"
+   }
+  },
+  {
+   "path": "tracks/green_valley/cellMap.bin",
+   "start": "0x8285968",
+   "size": 7532,
+   "type": "track",
+   "options": {
+    "track": "green_valley",
+    "part": "cellMap"
+   }
+  },
+  {
+   "path": "tracks/green_valley/surfaceTable.bin",
+   "start": "0x82876d4",
+   "size": 5376,
+   "type": "track",
+   "options": {
+    "track": "green_valley",
+    "part": "surfaceTable"
+   }
+  },
+  {
+   "path": "tracks/michigan_international_speedway/palette.bin",
+   "start": "0x80f3fd0",
+   "size": 512,
+   "type": "track",
+   "options": {
+    "track": "michigan_international_speedway",
+    "part": "palette"
+   }
+  },
+  {
+   "path": "tracks/michigan_international_speedway/bg3Map.bin",
+   "start": "0x80f41d0",
+   "size": 8044,
+   "type": "track",
+   "options": {
+    "track": "michigan_international_speedway",
+    "part": "bg3Map"
+   }
+  },
+  {
+   "path": "tracks/michigan_international_speedway/bg3Metatiles.bin",
+   "start": "0x80f613c",
+   "size": 69856,
+   "type": "track",
+   "options": {
+    "track": "michigan_international_speedway",
+    "part": "bg3Metatiles"
+   }
+  },
+  {
+   "path": "tracks/michigan_international_speedway/bg3Tiles.bin",
+   "start": "0x810721c",
+   "size": 16480,
+   "type": "track",
+   "options": {
+    "track": "michigan_international_speedway",
+    "part": "bg3Tiles"
+   }
+  },
+  {
+   "path": "tracks/michigan_international_speedway/bg2Map.bin",
+   "start": "0x810b27c",
+   "size": 12340,
+   "type": "track",
+   "options": {
+    "track": "michigan_international_speedway",
+    "part": "bg2Map"
+   }
+  },
+  {
+   "path": "tracks/michigan_international_speedway/bg2Metatiles.bin",
+   "start": "0x810e2b0",
+   "size": 97056,
+   "type": "track",
+   "options": {
+    "track": "michigan_international_speedway",
+    "part": "bg2Metatiles"
+   }
+  },
+  {
+   "path": "tracks/michigan_international_speedway/bg2Tiles.bin",
+   "start": "0x8125dd0",
+   "size": 33184,
+   "type": "track",
+   "options": {
+    "track": "michigan_international_speedway",
+    "part": "bg2Tiles"
+   }
+  },
+  {
+   "path": "tracks/michigan_international_speedway/cellMap.bin",
+   "start": "0x8288bd4",
+   "size": 7868,
+   "type": "track",
+   "options": {
+    "track": "michigan_international_speedway",
+    "part": "cellMap"
+   }
+  },
+  {
+   "path": "tracks/michigan_international_speedway/surfaceTable.bin",
+   "start": "0x828aa90",
+   "size": 4048,
+   "type": "track",
+   "options": {
+    "track": "michigan_international_speedway",
+    "part": "surfaceTable"
+   }
+  },
+  {
+   "path": "tracks/great_canyon/bg3Map.bin",
+   "start": "0x812df70",
+   "size": 7916,
+   "type": "track",
+   "options": {
+    "track": "great_canyon",
+    "part": "bg3Map"
+   }
+  },
+  {
+   "path": "tracks/great_canyon/bg3Metatiles.bin",
+   "start": "0x812fe5c",
+   "size": 61344,
+   "type": "track",
+   "options": {
+    "track": "great_canyon",
+    "part": "bg3Metatiles"
+   }
+  },
+  {
+   "path": "tracks/great_canyon/bg3Tiles.bin",
+   "start": "0x813edfc",
+   "size": 15072,
+   "type": "track",
+   "options": {
+    "track": "great_canyon",
+    "part": "bg3Tiles"
+   }
+  },
+  {
+   "path": "tracks/great_canyon/palette.bin",
+   "start": "0x81428dc",
+   "size": 512,
+   "type": "track",
+   "options": {
+    "track": "great_canyon",
+    "part": "palette"
+   }
+  },
+  {
+   "path": "tracks/great_canyon/bg2Map.bin",
+   "start": "0x8142adc",
+   "size": 12968,
+   "type": "track",
+   "options": {
+    "track": "great_canyon",
+    "part": "bg2Map"
+   }
+  },
+  {
+   "path": "tracks/great_canyon/bg2Metatiles.bin",
+   "start": "0x8145d84",
+   "size": 98976,
+   "type": "track",
+   "options": {
+    "track": "great_canyon",
+    "part": "bg2Metatiles"
+   }
+  },
+  {
+   "path": "tracks/great_canyon/bg2Tiles.bin",
+   "start": "0x815e024",
+   "size": 32768,
+   "type": "track",
+   "options": {
+    "track": "great_canyon",
+    "part": "bg2Tiles"
+   }
+  },
+  {
+   "path": "tracks/great_canyon/cellMap.bin",
+   "start": "0x828ba60",
+   "size": 8940,
+   "type": "track",
+   "options": {
+    "track": "great_canyon",
+    "part": "cellMap"
+   }
+  },
+  {
+   "path": "tracks/great_canyon/surfaceTable.bin",
+   "start": "0x828dd4c",
+   "size": 6112,
+   "type": "track",
+   "options": {
+    "track": "great_canyon",
+    "part": "surfaceTable"
+   }
+  },
+  {
+   "path": "tracks/fuji_port/palette.bin",
+   "start": "0x8166024",
+   "size": 512,
+   "type": "track",
+   "options": {
+    "track": "fuji_port",
+    "part": "palette"
+   }
+  },
+  {
+   "path": "tracks/fuji_port/bg3Map.bin",
+   "start": "0x8166224",
+   "size": 14028,
+   "type": "track",
+   "options": {
+    "track": "fuji_port",
+    "part": "bg3Map"
+   }
+  },
+  {
+   "path": "tracks/fuji_port/bg3Metatiles.bin",
+   "start": "0x81698f0",
+   "size": 59424,
+   "type": "track",
+   "options": {
+    "track": "fuji_port",
+    "part": "bg3Metatiles"
+   }
+  },
+  {
+   "path": "tracks/fuji_port/bg3Tiles.bin",
+   "start": "0x8178110",
+   "size": 16512,
+   "type": "track",
+   "options": {
+    "track": "fuji_port",
+    "part": "bg3Tiles"
+   }
+  },
+  {
+   "path": "tracks/fuji_port/bg2Map.bin",
+   "start": "0x817c190",
+   "size": 10120,
+   "type": "track",
+   "options": {
+    "track": "fuji_port",
+    "part": "bg2Map"
+   }
+  },
+  {
+   "path": "tracks/fuji_port/bg2Metatiles.bin",
+   "start": "0x817e918",
+   "size": 69696,
+   "type": "track",
+   "options": {
+    "track": "fuji_port",
+    "part": "bg2Metatiles"
+   }
+  },
+  {
+   "path": "tracks/fuji_port/bg2Tiles.bin",
+   "start": "0x818f958",
+   "size": 31680,
+   "type": "track",
+   "options": {
+    "track": "fuji_port",
+    "part": "bg2Tiles"
+   }
+  },
+  {
+   "path": "tracks/fuji_port/cellMap.bin",
+   "start": "0x828f52c",
+   "size": 8052,
+   "type": "track",
+   "options": {
+    "track": "fuji_port",
+    "part": "cellMap"
+   }
+  },
+  {
+   "path": "tracks/fuji_port/surfaceTable.bin",
+   "start": "0x82914a0",
+   "size": 4528,
+   "type": "track",
+   "options": {
+    "track": "fuji_port",
+    "part": "surfaceTable"
+   }
+  },
+  {
+   "path": "tracks/crawfish_raceway/palette.bin",
+   "start": "0x8197518",
+   "size": 512,
+   "type": "track",
+   "options": {
+    "track": "crawfish_raceway",
+    "part": "palette"
+   }
+  },
+  {
+   "path": "tracks/crawfish_raceway/bg3Map.bin",
+   "start": "0x8197718",
+   "size": 5808,
+   "type": "track",
+   "options": {
+    "track": "crawfish_raceway",
+    "part": "bg3Map"
+   }
+  },
+  {
+   "path": "tracks/crawfish_raceway/bg3Metatiles.bin",
+   "start": "0x8198dc8",
+   "size": 42752,
+   "type": "track",
+   "options": {
+    "track": "crawfish_raceway",
+    "part": "bg3Metatiles"
+   }
+  },
+  {
+   "path": "tracks/crawfish_raceway/bg3Tiles.bin",
+   "start": "0x81a34c8",
+   "size": 5824,
+   "type": "track",
+   "options": {
+    "track": "crawfish_raceway",
+    "part": "bg3Tiles"
+   }
+  },
+  {
+   "path": "tracks/crawfish_raceway/bg2Map.bin",
+   "start": "0x81a4b88",
+   "size": 9692,
+   "type": "track",
+   "options": {
+    "track": "crawfish_raceway",
+    "part": "bg2Map"
+   }
+  },
+  {
+   "path": "tracks/crawfish_raceway/bg2Metatiles.bin",
+   "start": "0x81a7164",
+   "size": 56768,
+   "type": "track",
+   "options": {
+    "track": "crawfish_raceway",
+    "part": "bg2Metatiles"
+   }
+  },
+  {
+   "path": "tracks/crawfish_raceway/bg2Tiles.bin",
+   "start": "0x81b4f24",
+   "size": 32704,
+   "type": "track",
+   "options": {
+    "track": "crawfish_raceway",
+    "part": "bg2Tiles"
+   }
+  },
+  {
+   "path": "tracks/crawfish_raceway/cellMap.bin",
+   "start": "0x8292650",
+   "size": 3832,
+   "type": "track",
+   "options": {
+    "track": "crawfish_raceway",
+    "part": "cellMap"
+   }
+  },
+  {
+   "path": "tracks/crawfish_raceway/surfaceTable.bin",
+   "start": "0x8293548",
+   "size": 1120,
+   "type": "track",
+   "options": {
+    "track": "crawfish_raceway",
+    "part": "surfaceTable"
+   }
+  },
+  {
+   "path": "tracks/purley_park/bg3Map.bin",
+   "start": "0x81bcee4",
+   "size": 25240,
+   "type": "track",
+   "options": {
+    "track": "purley_park",
+    "part": "bg3Map"
+   }
+  },
+  {
+   "path": "tracks/purley_park/bg3Metatiles.bin",
+   "start": "0x81c317c",
+   "size": 8160,
+   "type": "track",
+   "options": {
+    "track": "purley_park",
+    "part": "bg3Metatiles"
+   }
+  },
+  {
+   "path": "tracks/purley_park/bg3Tiles.bin",
+   "start": "0x81c515c",
+   "size": 6528,
+   "type": "track",
+   "options": {
+    "track": "purley_park",
+    "part": "bg3Tiles"
+   }
+  },
+  {
+   "path": "tracks/purley_park/palette.bin",
+   "start": "0x81c6adc",
+   "size": 512,
+   "type": "track",
+   "options": {
+    "track": "purley_park",
+    "part": "palette"
+   }
+  },
+  {
+   "path": "tracks/purley_park/bg2Map.bin",
+   "start": "0x81c6cdc",
+   "size": 4556,
+   "type": "track",
+   "options": {
+    "track": "purley_park",
+    "part": "bg2Map"
+   }
+  },
+  {
+   "path": "tracks/purley_park/bg2Metatiles.bin",
+   "start": "0x81c7ea8",
+   "size": 7456,
+   "type": "track",
+   "options": {
+    "track": "purley_park",
+    "part": "bg2Metatiles"
+   }
+  },
+  {
+   "path": "tracks/purley_park/bg2Tiles.bin",
+   "start": "0x81c9bc8",
+   "size": 6720,
+   "type": "track",
+   "options": {
+    "track": "purley_park",
+    "part": "bg2Tiles"
+   }
+  },
+  {
+   "path": "tracks/kansas_speedway/palette.bin",
+   "start": "0x81cb608",
+   "size": 512,
+   "type": "track",
+   "options": {
+    "track": "kansas_speedway",
+    "part": "palette"
+   }
+  },
+  {
+   "path": "tracks/kansas_speedway/bg3Map.bin",
+   "start": "0x81cb808",
+   "size": 9824,
+   "type": "track",
+   "options": {
+    "track": "kansas_speedway",
+    "part": "bg3Map"
+   }
+  },
+  {
+   "path": "tracks/kansas_speedway/bg3Metatiles.bin",
+   "start": "0x81cde68",
+   "size": 69216,
+   "type": "track",
+   "options": {
+    "track": "kansas_speedway",
+    "part": "bg3Metatiles"
+   }
+  },
+  {
+   "path": "tracks/kansas_speedway/bg3Tiles.bin",
+   "start": "0x81decc8",
+   "size": 13504,
+   "type": "track",
+   "options": {
+    "track": "kansas_speedway",
+    "part": "bg3Tiles"
+   }
+  },
+  {
+   "path": "tracks/kansas_speedway/bg2Map.bin",
+   "start": "0x81e2188",
+   "size": 10460,
+   "type": "track",
+   "options": {
+    "track": "kansas_speedway",
+    "part": "bg2Map"
+   }
+  },
+  {
+   "path": "tracks/kansas_speedway/bg2Metatiles.bin",
+   "start": "0x81e4a64",
+   "size": 81120,
+   "type": "track",
+   "options": {
+    "track": "kansas_speedway",
+    "part": "bg2Metatiles"
+   }
+  },
+  {
+   "path": "tracks/kansas_speedway/bg2Tiles.bin",
+   "start": "0x81f8744",
+   "size": 32000,
+   "type": "track",
+   "options": {
+    "track": "kansas_speedway",
+    "part": "bg2Tiles"
+   }
+  },
+  {
+   "path": "tracks/kansas_speedway/cellMap.bin",
+   "start": "0x82939a8",
+   "size": 7800,
+   "type": "track",
+   "options": {
+    "track": "kansas_speedway",
+    "part": "cellMap"
+   }
+  },
+  {
+   "path": "tracks/kansas_speedway/surfaceTable.bin",
+   "start": "0x8295820",
+   "size": 4624,
+   "type": "track",
+   "options": {
+    "track": "kansas_speedway",
+    "part": "surfaceTable"
+   }
+  },
+  {
+   "path": "tracks/asphalt_city/palette.bin",
+   "start": "0x8200444",
+   "size": 512,
+   "type": "track",
+   "options": {
+    "track": "asphalt_city",
+    "part": "palette"
+   }
+  },
+  {
+   "path": "tracks/asphalt_city/bg3Map.bin",
+   "start": "0x8200644",
+   "size": 13264,
+   "type": "track",
+   "options": {
+    "track": "asphalt_city",
+    "part": "bg3Map"
+   }
+  },
+  {
+   "path": "tracks/asphalt_city/bg3Metatiles.bin",
+   "start": "0x8203a14",
+   "size": 43040,
+   "type": "track",
+   "options": {
+    "track": "asphalt_city",
+    "part": "bg3Metatiles"
+   }
+  },
+  {
+   "path": "tracks/asphalt_city/bg3Tiles.bin",
+   "start": "0x820e234",
+   "size": 16288,
+   "type": "track",
+   "options": {
+    "track": "asphalt_city",
+    "part": "bg3Tiles"
+   }
+  },
+  {
+   "path": "tracks/asphalt_city/bg2Map.bin",
+   "start": "0x82121d4",
+   "size": 14252,
+   "type": "track",
+   "options": {
+    "track": "asphalt_city",
+    "part": "bg2Map"
+   }
+  },
+  {
+   "path": "tracks/asphalt_city/bg2Metatiles.bin",
+   "start": "0x8215980",
+   "size": 77568,
+   "type": "track",
+   "options": {
+    "track": "asphalt_city",
+    "part": "bg2Metatiles"
+   }
+  },
+  {
+   "path": "tracks/asphalt_city/bg2Tiles.bin",
+   "start": "0x8228880",
+   "size": 32544,
+   "type": "track",
+   "options": {
+    "track": "asphalt_city",
+    "part": "bg2Tiles"
+   }
+  },
+  {
+   "path": "tracks/asphalt_city/cellMap.bin",
+   "start": "0x8296a30",
+   "size": 8628,
+   "type": "track",
+   "options": {
+    "track": "asphalt_city",
+    "part": "cellMap"
+   }
+  },
+  {
+   "path": "tracks/asphalt_city/surfaceTable.bin",
+   "start": "0x8298be4",
+   "size": 3856,
+   "type": "track",
+   "options": {
+    "track": "asphalt_city",
+    "part": "surfaceTable"
+   }
+  },
+  {
+   "path": "tracks/phoenix_international_raceway/bg3Map.bin",
+   "start": "0x82307a0",
+   "size": 5672,
+   "type": "track",
+   "options": {
+    "track": "phoenix_international_raceway",
+    "part": "bg3Map"
+   }
+  },
+  {
+   "path": "tracks/phoenix_international_raceway/bg3Metatiles.bin",
+   "start": "0x8231dc8",
+   "size": 54112,
+   "type": "track",
+   "options": {
+    "track": "phoenix_international_raceway",
+    "part": "bg3Metatiles"
+   }
+  },
+  {
+   "path": "tracks/phoenix_international_raceway/bg3Tiles.bin",
+   "start": "0x823f128",
+   "size": 15232,
+   "type": "track",
+   "options": {
+    "track": "phoenix_international_raceway",
+    "part": "bg3Tiles"
+   }
+  },
+  {
+   "path": "tracks/phoenix_international_raceway/palette.bin",
+   "start": "0x8242ca8",
+   "size": 512,
+   "type": "track",
+   "options": {
+    "track": "phoenix_international_raceway",
+    "part": "palette"
+   }
+  },
+  {
+   "path": "tracks/phoenix_international_raceway/bg2Map.bin",
+   "start": "0x8242ea8",
+   "size": 7548,
+   "type": "track",
+   "options": {
+    "track": "phoenix_international_raceway",
+    "part": "bg2Map"
+   }
+  },
+  {
+   "path": "tracks/phoenix_international_raceway/bg2Metatiles.bin",
+   "start": "0x8244c24",
+   "size": 60512,
+   "type": "track",
+   "options": {
+    "track": "phoenix_international_raceway",
+    "part": "bg2Metatiles"
+   }
+  },
+  {
+   "path": "tracks/phoenix_international_raceway/bg2Tiles.bin",
+   "start": "0x8253884",
+   "size": 32480,
+   "type": "track",
+   "options": {
+    "track": "phoenix_international_raceway",
+    "part": "bg2Tiles"
+   }
+  },
+  {
+   "path": "tracks/phoenix_international_raceway/cellMap.bin",
+   "start": "0x8299af4",
+   "size": 5424,
+   "type": "track",
+   "options": {
+    "track": "phoenix_international_raceway",
+    "part": "cellMap"
+   }
+  },
+  {
+   "path": "tracks/phoenix_international_raceway/surfaceTable.bin",
+   "start": "0x829b024",
+   "size": 6032,
+   "type": "track",
+   "options": {
+    "track": "phoenix_international_raceway",
+    "part": "surfaceTable"
+   }
+  },
+  {
+   "path": "tracks/infogrames_super_speedway/palette.bin",
+   "start": "0x825b764",
+   "size": 512,
+   "type": "track",
+   "options": {
+    "track": "infogrames_super_speedway",
+    "part": "palette"
+   }
+  },
+  {
+   "path": "tracks/infogrames_super_speedway/bg3Map.bin",
+   "start": "0x825b964",
+   "size": 7084,
+   "type": "track",
+   "options": {
+    "track": "infogrames_super_speedway",
+    "part": "bg3Map"
+   }
+  },
+  {
+   "path": "tracks/infogrames_super_speedway/bg3Metatiles.bin",
+   "start": "0x825d510",
+   "size": 44768,
+   "type": "track",
+   "options": {
+    "track": "infogrames_super_speedway",
+    "part": "bg3Metatiles"
+   }
+  },
+  {
+   "path": "tracks/infogrames_super_speedway/bg3Tiles.bin",
+   "start": "0x82683f0",
+   "size": 14464,
+   "type": "track",
+   "options": {
+    "track": "infogrames_super_speedway",
+    "part": "bg3Tiles"
+   }
+  },
+  {
+   "path": "tracks/infogrames_super_speedway/bg2Map.bin",
+   "start": "0x826bc70",
+   "size": 8664,
+   "type": "track",
+   "options": {
+    "track": "infogrames_super_speedway",
+    "part": "bg2Map"
+   }
+  },
+  {
+   "path": "tracks/infogrames_super_speedway/bg2Metatiles.bin",
+   "start": "0x826de48",
+   "size": 52320,
+   "type": "track",
+   "options": {
+    "track": "infogrames_super_speedway",
+    "part": "bg2Metatiles"
+   }
+  },
+  {
+   "path": "tracks/infogrames_super_speedway/bg2Tiles.bin",
+   "start": "0x827aaa8",
+   "size": 31168,
+   "type": "track",
+   "options": {
+    "track": "infogrames_super_speedway",
+    "part": "bg2Tiles"
+   }
+  },
+  {
+   "path": "tracks/infogrames_super_speedway/cellMap.bin",
+   "start": "0x829c7b4",
+   "size": 5116,
+   "type": "track",
+   "options": {
+    "track": "infogrames_super_speedway",
+    "part": "cellMap"
+   }
+  },
+  {
+   "path": "tracks/infogrames_super_speedway/surfaceTable.bin",
+   "start": "0x829dbb0",
+   "size": 3888,
+   "type": "track",
+   "options": {
+    "track": "infogrames_super_speedway",
+    "part": "surfaceTable"
+   }
+  },
+  {
+   "path": "tracks/purley_park/module_bg3Map.bin",
+   "start": "0x08345DF8",
+   "size": 12500,
+   "type": "track",
+   "options": {
+    "track": "purley_park",
+    "part": "module_bg3Map"
+   }
+  },
+  {
+   "path": "tracks/purley_park/module_bg3Metatiles.bin",
+   "start": "0x08348ECC",
+   "size": 8160,
+   "type": "copy",
+   "options": {
+    "sources": [
+     "build/assets/tracks/purley_park/bg3Metatiles.bin"
+    ]
+   }
+  },
+  {
+   "path": "tracks/purley_park/module_bg3Tiles.bin",
+   "start": "0x0834AEAC",
+   "size": 6528,
+   "type": "copy",
+   "options": {
+    "sources": [
+     "build/assets/tracks/purley_park/bg3Tiles.bin"
+    ]
+   }
+  },
+  {
+   "path": "tracks/purley_park/module_palette.bin",
+   "start": "0x0834C82C",
+   "size": 512,
+   "type": "copy",
+   "options": {
+    "sources": [
+     "build/assets/tracks/purley_park/palette.bin"
+    ]
+   }
+  },
+  {
+   "path": "tracks/purley_park/module_bg2Map.bin",
+   "start": "0x0834CA2C",
+   "size": 12500,
+   "type": "track",
+   "options": {
+    "track": "purley_park",
+    "part": "module_bg2Map"
+   }
+  },
+  {
+   "path": "tracks/purley_park/module_bg2Metatiles.bin",
+   "start": "0x0834FB00",
+   "size": 7456,
+   "type": "copy",
+   "options": {
+    "sources": [
+     "build/assets/tracks/purley_park/bg2Metatiles.bin"
+    ]
+   }
+  },
+  {
+   "path": "tracks/purley_park/module_bg2Tiles.bin",
+   "start": "0x08351820",
+   "size": 6720,
+   "type": "copy",
+   "options": {
+    "sources": [
+     "build/assets/tracks/purley_park/bg2Tiles.bin"
+    ]
+   }
+  }
+ ]
+}

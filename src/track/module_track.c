@@ -50,7 +50,7 @@ void ModuleLoadTrack(u32 idx)
     CpuCopy16(t = gUnk_02021394, (u32)paletteCopy, 0x20);
     ModuleBeginFadeToBrightenedPalette(0x1E, fadePalette);
     gUnk_02039244 = gModule_TrackData[idx].mapWidth;
-    gUnk_02039288 = gModule_TrackData[idx].unk34;
+    gUnk_02039288 = gModule_TrackData[idx].mapWidth2;
     gUnk_02039228 = gModule_TrackData[idx].bg3Map;
     gUnk_02039268 = gModule_TrackData[idx].bg2Map;
     gUnk_02039224 = gModule_TrackData[idx].unk28;

@@ -257,10 +257,12 @@ $(BUILD)/lib/m4a/m4a_1_high.o: $(BUILD)/lib/m4a/m4a_1.o Makefile
 ASSETS_JSON := $(wildcard assets/*.json)
 ifneq ($(wildcard baserom.gba),)
 ASSET_EDITABLE := $(shell python3 scripts/assets.py list)
-ASSET_PNGS := $(filter %.png,$(ASSET_EDITABLE))
-ASSET_PALS := $(filter %.pal,$(ASSET_EDITABLE))
+ASSET_TRACKS := $(filter assets/tracks/%,$(ASSET_EDITABLE))
+ASSET_PNGS := $(filter-out $(ASSET_TRACKS),$(filter %.png,$(ASSET_EDITABLE)))
+ASSET_PALS := $(filter-out $(ASSET_TRACKS),$(filter %.pal,$(ASSET_EDITABLE)))
 ASSET_STAMP := $(BUILD)/assets/.extracted
-$(ASSET_STAMP): baserom.gba scripts/assets.py $(ASSETS_JSON) $(ASSET_PNGS) $(ASSET_PALS)
+$(ASSET_STAMP): baserom.gba scripts/assets.py $(ASSETS_JSON) $(ASSET_PNGS) $(ASSET_PALS) \
+		$(ASSET_TRACKS)
 	python3 scripts/assets.py extract
 	touch $@
 
@@ -277,8 +279,10 @@ $(TARGET).code.sha1: baserom.gba scripts/assets.py $(ASSETS_JSON)
 # so make never deletes them as intermediate files, and order-only so one
 # that exists is never out of date. `unpack` writes each from baserom.gba
 # only when it's missing, so your edits survive every build; delete one to
-# get the ROM's.
-$(ASSET_PNGS): | baserom.gba
+# get the ROM's. A track's editable files unpack the same way, as a
+# folder: the .tmx, the two tile sheets, and the metatile and surface
+# tables (the tileset .pngs beside them are previews the build redraws).
+$(ASSET_PNGS) $(ASSET_TRACKS): | baserom.gba
 	python3 scripts/assets.py unpack $@
 $(ASSET_PALS): | baserom.gba
 	python3 scripts/assets.py unpack $@

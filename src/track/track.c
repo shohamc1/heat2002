@@ -152,7 +152,7 @@ void LoadTrack(u32 idx)
     CpuCopy16(t = gRaceHudBgPalette, (u32)b, 0x20);
     BeginFadeToBrightenedPalette(0x1E, a);
     gBgMapWidth = gTrackData[idx].mapWidth;
-    gUnk_02022DD8 = gTrackData[idx].unk34;
+    gUnk_02022DD8 = gTrackData[idx].mapWidth2;
     gUnk_02002208 = (u8 *)gUnk_02002220;
     gUnk_0200BC54 = (u8 *)gUnk_0200BC70;
     RleDecode16(gTrackData[idx].bg3Map, gUnk_02002220, gTrackData[idx].bg3MapLen);

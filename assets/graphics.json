@@ -2,7 +2,6 @@
   {"path": "graphics/lz_0807CA7C.bin", "start": "0x0807CA7C", "size": 75, "type": "lz", "options": {"width": 4, "palette": "0x0807CB58"}},
   {"path": "graphics/lz_0807CAC8.bin", "start": "0x0807CAC8", "size": 75, "type": "lz", "options": {"width": 4, "palette": "0x0807CB58"}},
   {"path": "graphics/lz_0807CB14.bin", "start": "0x0807CB14", "size": 68, "type": "lz", "options": {"width": 4, "palette": "0x0807CB58"}},
-  {"path": "graphics/rl_080C0000.bin", "start": "0x080C0000", "size": 13437, "type": "rl", "options": {"raw": true}},
   {"path": "graphics/screens/title_screen.png", "start": "0x0829F954", "size": 40412, "type": "screen", "options": {"sharedTable": true, "metatiles": 150, "tiles": 600}},
   {"path": "graphics/screens/main_menu.png", "start": "0x082A9730", "size": 40412, "type": "screen", "options": {"sharedTable": true, "metatiles": 150, "tiles": 600}},
   {"path": "graphics/palettes/boot_splash3.pal", "start": "0x082B350C", "size": 512, "type": "pal"},

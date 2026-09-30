@@ -105,7 +105,9 @@ def scan(rom, ranges, moved):
 def assets():
     out = []
     for config in sorted((ROOT / "assets").glob("*.json")):
-        for a in json.loads(config.read_text()):
+        data = json.loads(config.read_text())
+        # assets/tracks.json also carries per-track metadata under "tracks"
+        for a in (data["assets"] if isinstance(data, dict) else data):
             out.append((int(a["start"], 16), a["size"], a["path"]))
     return sorted(out)
 
