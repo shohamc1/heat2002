@@ -1,4 +1,5 @@
 #include "global.h"
+#include "championship_tables.h"
 #include "collision_normals.h"
 #include "data.h"
 
@@ -257,16 +258,16 @@ const u8 *const gUnk_083FDA0C[] = { gText_Frontleft, gText_Frontright, gText_Rea
  * GBA. */
 const s32 gCarCollisionNormals[8] = CAR_COLLISION_NORMALS;
 // No decompiled code reads this word yet.
-const s32 gUnk_083FDA4C[1] = { 10000 };
+const s32 gUnk_083FDA4C[1] = UNK_083FDA4C;
 const u8 *const gUnk_083FDA50[3] = { gUnk_0807CA7C, gUnk_0807CAC8, gUnk_0807CB14 };
 // No decompiled code reads this word yet.
 const u32 gUnk_083FDA5C[1] = { 0x800F };
 // Options-menu row v runs from gOptionsMenuMinValues[v] to
 // gOptionsMenuMaxValues[v]; gLapsPerOption maps the laps row to a lap
 // count and ends in 3 zero pad bytes.
-const u8 gOptionsMenuMinValues[7] = { 0, 0, 0, 0, 0, 0, 0 };
-const u8 gOptionsMenuMaxValues[7] = { 1, 6, 1, 1, 1, 1, 0 };
-const u8 gLapsPerOption[10] = { 5, 10, 15, 20, 30, 50, 100, 0, 0, 0 };
+const u8 gOptionsMenuMinValues[7] = OPTIONS_MENU_MIN_VALUES;
+const u8 gOptionsMenuMaxValues[7] = OPTIONS_MENU_MAX_VALUES;
+const u8 gLapsPerOption[10] = LAPS_PER_OPTION;
 const struct TrackSelectEntry gTrackSelectEntries[12] = {
     { 0x1, gText_TrackLen1567, gText_TrackNum22, gText_HooleyDowns, gTrackPreviewGfx_Track0, gUnk_08302E00 },
     { 0x1, gText_TrackLen3044, gText_TrackNum15, gText_DarlingtonRaceway, gTrackPreviewGfx_Track1, gUnk_082FF41C },
@@ -316,10 +317,10 @@ const u8 *const gChampionshipLockedTexts[] = { gText_NotAvailableYouNeedToFinish
 /* Team tier (0, 1 or 2) passed to UnlockChampionshipTier when a championship is
  * started with team a; UnlockChampionshipTier unlocks every team in tiers at or
  * below it. */
-const u8 gChampionshipTeamTiers[17] = { 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2 };
+const u8 gChampionshipTeamTiers[17] = CHAMPIONSHIP_TEAM_TIERS;
 // The season finish (top 5, 10 or 20) team a requires, then 2 zero pad
 // bytes.
-const u8 gChampionshipRequiredFinish[19] = { 5, 5, 5, 5, 5, 5, 5, 10, 10, 10, 10, 10, 20, 20, 20, 20, 20, 0, 0 };
+const u8 gChampionshipRequiredFinish[19] = CHAMPIONSHIP_REQUIRED_FINISH;
 // Its users declare it as u8 *x[].
 const u8 *const gChampionshipQualifyTexts[] = {
     gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns,
@@ -341,11 +342,10 @@ const u8 *const gChampionshipQualifyTexts[] = {
     gText_ToQualifyForThisTeamYouWillNeedToBeatALapTimeOf33SecondsOnHooleyDowns
 };
 /* Track id for each championship index; all zero in the shipped ROM. */
-const u8 gChampionshipTrackIds[20] = { 0 };
+const u8 gChampionshipTrackIds[20] = CHAMPIONSHIP_TRACK_IDS;
 /* Qualifying lap-time target in milliseconds (33 or 37 seconds) for
  * each championship index, compared against the player's lap time. */
-const u32 gChampionshipQualifyLapTimeTargets[17] = { 33000, 37000, 33000, 37000, 33000, 37000, 33000, 37000, 33000,
-                                                     37000, 33000, 37000, 33000, 37000, 33000, 37000, 33000 };
+const u32 gChampionshipQualifyLapTimeTargets[17] = CHAMPIONSHIP_QUALIFY_LAP_TIME_TARGETS;
 const u8 *const gChampionshipRetainTexts[] = { gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop5,
                                                gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop5,
                                                gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop5,
@@ -382,7 +382,7 @@ const u32 gChampionshipTeamNames[17] = { (u32)gText_Dei,
                                          (u32)gText_Darby,
                                          (u32)gText_TeamCrawfish };
 // No decompiled code reads these bytes yet.
-const u8 gUnk_083FDE14[4] = { 4, 7, 8, 9 };
+const u8 gUnk_083FDE14[4] = UNK_083FDE14;
 // Its users declare it as u32 x, u32 x[].
 // The font row every screen loads through DummyUiFontLoad (a stub in the
 // retail build; sub_08006738 is the working twin).
@@ -390,15 +390,14 @@ const u8 *const gUiFontTable[] = { gText_UnderscoreRow32 };
 /* Season schedule: track id for each gSeasonRaceIndex (34 races; bytes
  * 17-33 double as the gChallengeIndex track table via the gUnk_083FDE2D
  * alias). */
-const u8 gChampionshipTrackOrder[34] = { 0, 1,  2, 3, 4, 5, 6, 8,  9, 10, 11, 0, 5, 1, 2, 6, 10,
-                                         3, 11, 8, 6, 0, 1, 8, 10, 1, 10, 3,  1, 4, 2, 9, 3, 0 };
+const u8 gChampionshipTrackOrder[34] = { CHAMPIONSHIP_TRACK_ORDER, 0 };
 // Sixteen 0x7FFF words. No decompiled code reads them yet.
 const u16 gUnk_083FDE3E[16] = { 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF,
                                 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF };
 // GetString ids; DrawMainMenuItems draws the first seven as its menu rows.
 const u16 gUnk_083FDE5E[10] = { 72, 73, 74, 75, 76, 77, 78, 79, 80, 106 };
 // No decompiled code reads these bytes yet.
-const u8 gUnk_083FDE72[6] = { 2, 1, 0, 3, 0, 0 };
+const u8 gUnk_083FDE72[6] = UNK_083FDE72;
 // LinkTrackSelect.c maps the cursor to a track id through this table.
 const u8 gLinkTrackSelectTrackIds[12] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
 // Twenty 4-byte rows. No decompiled code reads them yet.

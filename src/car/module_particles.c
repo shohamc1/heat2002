@@ -51,7 +51,7 @@ void ModuleDraftStreakTask(struct DraftStreak *task);
 u8 ModuleWorldToScreen(s32 x, s32 y, s32 *out);
 void ModuleSkidSmokeTask(struct SkidSmoke *e);
 void ModuleDamageSmokeTask(struct DamageSmoke *e);
-extern u32 gUnk_0202B370[];
+extern u32 gModule_DamageSmokeFrames[];
 extern u8 gUnk_0201F370[];
 struct ObjTileCacheEntry *ModuleRequestObjTiles16(u32 a);
 u32 ModuleGetTrackTileType(s32 x, s32 y);
@@ -199,7 +199,7 @@ void ModuleDamageSmokeTask(struct DamageSmoke *e)
         screenY = out[1] - 8;
         out[1] = screenY + (e->rise >> 1);
         if ((u32)(screenX + 0x17) <= 0x10E && out[1] <= 0x9F && out[1] > -0x10) {
-            sprite = ModuleRequestObjTiles16(gUnk_0202B370[e->timer & 0x1F]);
+            sprite = ModuleRequestObjTiles16(gModule_DamageSmokeFrames[e->timer & 0x1F]);
             if (sprite != 0) {
                 tileType = ModuleGetTrackTileType(e->posX >> 19, e->posZ >> 19);
                 if (tileType & 1) {

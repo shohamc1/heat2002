@@ -11,7 +11,6 @@ struct Car
     s32 tireWear3;
 };
 
-extern u32 gUnk_02024EE8[];
 struct ObjTileCacheEntry *ModuleRequestObjTiles16(void *a, u16 *b);
 u32 ModuleRequestObjPalette(u32 a);
 void ModuleAddOamEntry(u32 a, u32 b);
@@ -21,7 +20,6 @@ extern u8 gUnk_0203B6F8;
 u8 ModuleCarNeedsPit(void);
 void ModuleDrawTextCenteredHighlight(const u8 *a, u32 b, u32 c);
 extern u8 gUnk_0203B6D8;
-extern u8 gUnk_02024F70[];
 struct ObjTileCacheEntry *ModuleRequestObjTiles4(u32 r0);
 u32 ModuleRequestObjPalette(u32 r0);
 void ModuleAddOamEntry(u32 r0, u32 r1);

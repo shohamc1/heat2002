@@ -1,9 +1,10 @@
 #include "global.h"
 
 /* The high module's driver-name and not-available strings
-   (0x08353260-0x083534B0), one sized row each: the layout the
-   47-pointer table at gUnk_0202AF44 indexes, every string
-   padded with zero bytes to its slot. */
+   (0x08353260-0x083534B0), one sized row each: the layout
+   gModule_DriverRoster and gModule_ChampionshipLockedTexts
+   (src/data/rom_083639A8.c) point into, every string padded with zero
+   bytes to its slot. */
 const u8 gModule_DriverCameronSheppard[20] = "CAMERON SHEPPARD";
 const u8 gModule_DriverMikeMerren[12] = "MIKE MERREN";
 const u8 gModule_DriverDarrenJackson[16] = "DARREN JACKSON";

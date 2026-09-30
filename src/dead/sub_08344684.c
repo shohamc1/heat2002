@@ -3,6 +3,8 @@
 #include "functions.h"
 #include "car.h"
 
+extern u32 gModule_DriverRoster[][2];
+
 void sub_08344684(void)
 {
 }
@@ -13,7 +15,7 @@ void sub_08344688(void)
 
 u32 sub_0834468C(u8 r0)
 {
-    return gUnk_0202AF44[r0][0];
+    return gModule_DriverRoster[r0][0];
 }
 
 struct Unk083FDB98 {
@@ -27,7 +29,7 @@ u8 sub_0834469C(u8 id)
     u8 i;
 
     for (i = 0; i != 0x1E; i++) {
-        if (((struct Unk083FDB98 *)gUnk_0202AF44)[i].b == id)
+        if (((struct Unk083FDB98 *)gModule_DriverRoster)[i].b == id)
             return i;
     }
     return 0;
@@ -106,24 +108,24 @@ void sub_08344778(void)
 {
 }
 
-extern u8 gUnk_0202B089[];
-extern u8 gUnk_0202B078[];
+extern u8 gModule_ChampionshipRequiredFinish[];
+extern u8 gModule_ChampionshipTeamTiers[];
 u8 sub_0834477C(u8 a, u8 b)
 {
     u8 i;
-    if (b >= gUnk_0202B089[a] - 1) {
+    if (b >= gModule_ChampionshipRequiredFinish[a] - 1) {
         sub_08344730();
         gUnk_0203E140[a] = 0;
         return 1;
     }
     i = 0;
     do {
-        if (b < gUnk_0202B089[i])
+        if (b < gModule_ChampionshipRequiredFinish[i])
             gUnk_0203E140[i] = 1;
         i++;
     } while (i != 0x11);
     sub_08344734();
-    sub_083446C8(gUnk_0202B078[a]);
+    sub_083446C8(gModule_ChampionshipTeamTiers[a]);
     return 0;
 }
 

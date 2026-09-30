@@ -260,31 +260,6 @@
   "size": 8660
  },
  {
-  "path": "unknown/data_083639A8.bin",
-  "start": "0x083639A8",
-  "size": 28
- },
- {
-  "path": "unknown/data_083639C4.bin",
-  "start": "0x083639C4",
-  "size": 308
- },
- {
-  "path": "unknown/data_08363AF8.bin",
-  "start": "0x08363AF8",
-  "size": 17
- },
- {
-  "path": "unknown/data_08363B09.bin",
-  "start": "0x08363B09",
-  "size": 743
- },
- {
-  "path": "unknown/data_08363DF0.bin",
-  "start": "0x08363DF0",
-  "size": 248
- },
- {
   "path": "unknown/data_08363EE8.bin",
   "start": "0x08363EE8",
   "size": 172
