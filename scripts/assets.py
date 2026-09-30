@@ -717,11 +717,15 @@ def write_tmx(path, name, layers, tilesets, objects=()):
     count, image). The tileset images are the previews
     render_metatile_sheet draws; Tiled only displays them."""
     width, height = layers[0][3], layers[0][4]
+    # Tiled numbers layers and object groups from one counter and objects
+    # from another, map-wide: the next free ids follow them
+    nobjects = sum(len(objs) for _, objs in objects)
     lines = ['<?xml version="1.0" encoding="UTF-8"?>',
              f'<map version="1.10" orientation="orthogonal" '
              f'renderorder="right-down" width="{width}" height="{height}" '
              f'tilewidth="32" tileheight="32" infinite="0" '
-             f'nextlayerid="{len(layers) + 1}" nextobjectid="1">']
+             f'nextlayerid="{len(layers) + len(objects) + 1}" '
+             f'nextobjectid="{nobjects + 1}">']
     first = 1
     for tname, count, image in tilesets:
         lines.append(f' <tileset firstgid="{first}" name="{tname}" '
@@ -753,13 +757,15 @@ def write_tmx(path, name, layers, tilesets, objects=()):
     # the geometry: one object group per entry of `objects` (name,
     # objects); each object is (name, points, props) — a polyline in
     # world coordinates (one unit = one pixel), its points absolute
+    oid = 0
     for gi, (gname, objs) in enumerate(objects):
         lines.append(f' <objectgroup id="{len(layers) + gi + 1}" '
                      f'name="{gname}">')
-        for oi, (oname, points, props) in enumerate(objs):
+        for oname, points, props in objs:
+            oid += 1
             x, y = points[0]
             rel = " ".join(f"{px - x},{py - y}" for px, py in points)
-            lines.append(f'  <object id="{oi + 1}" name="{oname}" '
+            lines.append(f'  <object id="{oid}" name="{oname}" '
                          f'x="{x}" y="{y}">')
             lines.append(f'   <polyline points="{rel}"/>')
             if props:
@@ -880,9 +886,8 @@ def track_parts_blobs(meta, blobs):
 def unpack_track(meta, blobs, out):
     """Write a track's editable files from its part blobs. Every file is
     written only when missing: an existing one is the user's, edits and
-    all. The tileset pictures the .tmx points at are previews, drawn from
-    the same blobs and refreshed whenever they are older than an editable
-    file (Tiled only displays them; the build never reads them)."""
+    all. The tileset pictures the .tmx points at are previews that
+    extract draws from the built parts (draw_track_previews)."""
     name = meta["name"]
     out.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(dir=out) as t:
@@ -930,31 +935,7 @@ def unpack_track(meta, blobs, out):
                 done.append(fname)
         for fname in done:
             (tmp / fname).rename(out / fname)
-    # previews: refreshed when older than every editable file
-    stamp = max((out / f).stat().st_mtime
-                for f in track_layer_files(meta, blobs) if (out / f).exists())
-    for pname, mpart, tpart in (("metatiles_a.png", "bg3Metatiles", "bg3Tiles"),
-                                ("metatiles_b.png", "bg2Metatiles", "bg2Tiles")):
-        if mpart not in blobs:
-            continue
-        p = out / pname
-        if p.exists() and p.stat().st_mtime >= stamp:
-            continue
-        px, w, h, pal = render_metatile_sheet(
-            metatile_entries(blobs[mpart]), blobs[tpart], blobs["palette"])
-        write_indexed_png(p, px, w, h, pal)
-    if "surfaceTable" in blobs:
-        p = out / "cells.png"
-        if not p.exists() or p.stat().st_mtime < stamp:
-            values = len(blobs["surfaceTable"]) // 16
-            colors = bytearray(512)
-            for i in range(min(values, 256)):
-                struct.pack_into("<H", colors, 2 * i,
-                                 (i * 37 + 8) & 31 | ((i * 73 + 12) & 31) << 5
-                                 | ((i * 19 + 4) & 31) << 10)
-            px = b"".join(bytes([i & 0xFF]) * 1024 for i in range(values))
-            write_indexed_png(p, px, 32 * 16, -(-values // 16) * 32,
-                              bytes(colors))
+
 
 
 # --- Track geometry -------------------------------------------------------
@@ -1399,6 +1380,37 @@ def generate(asset):
     run(sys.executable, ROOT / asset["options"]["generator"], path)
 
 
+def draw_track_previews(meta, blobs, out):
+    """Redraw the tileset pictures the .tmx points at (metatiles_a.png,
+    metatiles_b.png, cells.png) from the track's built parts, so they
+    show your edits; each only when it is older than an editable file.
+    Tiled only displays them; the build never reads them."""
+    stamp = max((out / f).stat().st_mtime
+                for f in track_layer_files(meta, blobs) if (out / f).exists())
+    for pname, mpart, tpart in (("metatiles_a.png", "bg3Metatiles", "bg3Tiles"),
+                                ("metatiles_b.png", "bg2Metatiles", "bg2Tiles")):
+        if mpart not in blobs:
+            continue
+        p = out / pname
+        if p.exists() and p.stat().st_mtime >= stamp:
+            continue
+        px, w, h, pal = render_metatile_sheet(
+            metatile_entries(blobs[mpart]), blobs[tpart], blobs["palette"])
+        write_indexed_png(p, px, w, h, pal)
+    if "surfaceTable" in blobs:
+        p = out / "cells.png"
+        if not p.exists() or p.stat().st_mtime < stamp:
+            values = len(blobs["surfaceTable"]) // 16
+            colors = bytearray(512)
+            for i in range(min(values, 256)):
+                struct.pack_into("<H", colors, 2 * i,
+                                 (i * 37 + 8) & 31 | ((i * 73 + 12) & 31) << 5
+                                 | ((i * 19 + 4) & 31) << 10)
+            px = b"".join(bytes([i & 0xFF]) * 1024 for i in range(values))
+            write_indexed_png(p, px, 32 * 16, -(-values // 16) * 32,
+                              bytes(colors))
+
+
 def extract_tracks(rom):
     """Unpack every track's editable folder (only the files missing) and
     build its part blobs from the editable files: the round trip must
@@ -1412,6 +1424,9 @@ def extract_tracks(rom):
         build_track(metas[name], EDIT / "tracks" / name,
                     {p: OUT / a["path"] for p, a in parts.items()},
                     {p: a["size"] for p, a in parts.items()})
+        built = {p: (OUT / a["path"]).read_bytes() for p, a in parts.items()
+                 if (OUT / a["path"]).exists()}
+        draw_track_previews(metas[name], built, EDIT / "tracks" / name)
         # a track with no such stream (track 7's cell map) still owes the
         # table its length: zero
         for part, m in metas[name]["layers"].items():
