@@ -2,7 +2,7 @@
 """Generate Atan2's lookup table (0x0806C97C-0x0807C97C, 65,536 bytes).
 
 Atan2 (src/system/Atan2.c) returns t[(y + 128) * 256 + 128 + x], with x
-and y scaled into -127..127, so t is a 256x256 table of u8 angles, 128
+and y scaled into -127..127, so t is a 256x256 table of u8 angles, 256
 units per turn. The original tool evaluated atan2(x, y) * 128 / pi as a
 double and truncated toward zero, as a C cast does; Python's math.atan2
 is the same host libm double. `make check` compares the bytes with

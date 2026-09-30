@@ -284,7 +284,7 @@ Unidentified data, `assets/unknown.json`, established 2026-09-24:
 - The 12 tracks' map data (0x0807CE30-0x0829EAE0, 106 blobs, 2.2 MB) is
   now a "track" asset type; `scripts/assets.py`'s docstring documents
   the editable files. Findings the format work established:
-  - Every track's 7 blobs (bg3Map, bg2Metatiles, bg3Tiles, palette,
+  - Every track's 7 blobs (bg3Map, bg3Metatiles, bg3Tiles, palette,
     bg2Map, bg2Metatiles, bg2Tiles — order varies by track) tile its
     region exactly; the cell maps and surface tables of all tracks
     follow as one run, 22 blobs. Track 7 (Purley Park) has no cell map.

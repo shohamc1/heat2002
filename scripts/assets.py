@@ -107,11 +107,12 @@ encoder every one of the 35 streams round-trips through), the stream
 lengths land in gTrackData through the .len files it INCBINs, and the
 module's raw track-7 maps build from the same .tmx, so one edit changes
 both GBAs. A layer's rectangle is its stride x ceil(count/stride); the
-cells past the ROM's recorded count are display-only padding, and the
-dead tail bytes a few blobs hold past their stream (non-zero on three)
-follow the stream as metadata. LoadTrackTiles copies fixed 0x8000/0x4000
-bytes and over-reads into the following blobs on many tracks, so the
-part files keep the ROM's blob order.
+cells past the ROM's recorded count only pad the picture, except on
+track 7, whose module raw maps hold the whole rectangle. The bytes a
+few ROM slots hold past their stream (non-zero on three) come from the
+stream_tails side file and follow the stream. LoadTrackTiles copies
+fixed 0x8000/0x4000 bytes and over-reads into the following blobs on
+many tracks, so the part files keep the ROM's blob order.
 
 The same folders hold each track's GEOMETRY (the lanes, waypoints and
 walls of issue #4 part 2): three object layers in the .tmx (lanes as
@@ -119,12 +120,12 @@ polylines per distinct lane, walls as one polyline per wall chain with
 its per-record steerAngle bytes as a "steer" property, waypoints as
 2-point lines with "kind"/"countdown"), the binary side files
 scripts/track_geometry.py documents (wall_cells, lane_cells_N,
-lane_terms, lane_fixups, lane_lengths, lane_orphan_N), and the
-derivations that module verifies against the ROM at build inputs: the
-WallRec normals, AABBs and angle bytes, and the LaneSeg chain and
-distance arithmetic regenerate from the object layers; the spatial
-indexes do not (their membership rule was never recovered) and stay
-binary.
+cell_index_crc, lane_terms, lane_fixups, lane_lengths, lane_orphan_N),
+and the derivations that module verifies against the ROM: the WallRec
+normals, AABBs and angle bytes, the LaneSeg chain and distance
+arithmetic, and each lane's length word regenerate from the object
+layers. The spatial indexes stay binary while the geometry they were
+built for is unchanged, and are rebuilt when it moves.
 
 A "gen" asset's bytes come from a script, not the ROM:
 `options.generator` names a host script that `extract` and `blank`
@@ -884,9 +885,10 @@ def read_stream_tails(folder):
 def track_parts_blobs(meta, blobs):
     """The whole track from its part blobs, as the editable .tmx holds it:
     each map layer's values padded to its rectangle. The cells past the
-    ROM's stream are display-only (the build encodes the recorded count);
-    a layer the module's raw track-7 maps also hold takes its padding
-    cells from them (they reach the ROM there)."""
+    ROM's stream only pad the picture (the build encodes the recorded
+    count), except where the module's raw track-7 maps also hold the
+    layer: those take their padding cells from them, since they reach
+    the ROM there."""
     layers = {}
     for part, lname in (("bg3Map", "A"), ("bg2Map", "B"),
                         ("cellMap", "cells")):

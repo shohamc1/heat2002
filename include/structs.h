@@ -41,7 +41,7 @@ struct Track
     /* 0x4C */ u8 pad4C[0x5C - 0x4C];
     /* 0x5C */ u16 bg3MapLen; /* RLE source halfword counts, one per */
     /* 0x5E */ u16 bg2MapLen; /* stream: the ROM blob is 2*len bytes, */
-    /* 0x60 */ u16 cellMapLen; /* plus dead tail bytes to 4-alignment */
+    /* 0x60 */ u16 cellMapLen; /* plus the slot's dead tail bytes */
     /* 0x62 */ u8 pad62[0x64 - 0x62];
 };
 
