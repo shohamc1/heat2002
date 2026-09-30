@@ -8869,6 +8869,32 @@
   }
  },
  {
+  "path": "module/link_marker_frame_copy.bin",
+  "start": "0x0835D9F0",
+  "size": 360,
+  "type": "copy",
+  "options": {
+   "sources": [
+    [
+     "build/assets/graphics/rl_083387A8.bin",
+     70
+    ],
+    [
+     null,
+     2
+    ],
+    [
+     "build/assets/graphics/palettes/pal_083387F0.pal.bin",
+     32
+    ],
+    [
+     "build/assets/graphics/palettes/pal_082F98C0.pal.bin@256@256",
+     256
+    ]
+   ]
+  }
+ },
+ {
   "path": "graphics/lz_083648A8.bin",
   "start": "0x083648A8",
   "size": 75,

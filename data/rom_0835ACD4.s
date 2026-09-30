@@ -136,7 +136,7 @@ gUnk_02024F50:
 	.incbin "build/assets/graphics/palettes/track_select_arrow.pal.bin"
 	.global gUnk_02024F70
 gUnk_02024F70:
-	.incbin "build/assets/unknown/data_0835D9F0.bin"
-	.global gUnk_020250EC
-gUnk_020250EC:
-	.incbin "build/assets/unknown/data_0835DB6C.bin"
+	.incbin "build/assets/graphics/rl_083387A8.bin"
+	.space 2
+	.incbin "build/assets/graphics/palettes/pal_083387F0.pal.bin"
+	.incbin "build/assets/graphics/palettes/pal_082F98C0.pal.bin", 256, 256

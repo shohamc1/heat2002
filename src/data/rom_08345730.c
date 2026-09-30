@@ -1,13 +1,13 @@
 #include "global.h"
 
 /* High module (link slave) localized race text (ROM 0x08345730-0x08345940,
- * EWRAM 0x0200CA50-0x0200CC60): the place names and the eight messages
+ * EWRAM 0x0200CCB0-0x0200CEC0): the place names and the eight messages
  * ModuleGetString looks up in gModule_LocalizedText
- * (src/data/rom_0835DB70.c), each in the five languages the link
+ * (src/data/rom_0835DB58.c), each in the five languages the link
  * handshake negotiates (EN/FR/DE/ES/IT, gModule_Language). The ROM
  * leaves the Italian OUT OF TIME row empty. The placing names
- * (1ST..5TH) sit in front: the pointer block in gUnk_02024F70's sprite
- * data (0x0200CC08) names them for the link results table. */
+ * (1ST..5TH) sit in front; gModule_020250D8 (rom_0835DB58.c) points at
+ * them, as the main program's gUnk_08364AC8 points at its own. */
 
 const u8 gModule_Text_5th[4] = "5TH";
 const u8 gModule_Text_4th[4] = "4TH";

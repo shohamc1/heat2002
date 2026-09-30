@@ -119,7 +119,7 @@ extern const u8 gUnk_0829DBB0[];
 
 const u32 gUnk_08364AC8[] = { (u32)gText_1st, (u32)gText_2nd, (u32)gText_3rd, (u32)gText_4th, (u32)gText_5th };
 // Its users declare it as u8 x.
-const u8 gUnk_08364ADC[4] = { 4, 0, 0, 0 };
+const u8 gUnk_08364ADC[4] = UNK_08364ADC;
 // The engine-sound base frequencies per gear; RunRace adds
 // rpm * gEngineSoundRpmMultipliers[gear] >> 6 before playing (src/race/RunRace.c).
 const u32 gEngineSoundFreqBases[5] = ENGINE_SOUND_FREQ_BASES;

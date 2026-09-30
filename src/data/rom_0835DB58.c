@@ -42,14 +42,29 @@ extern const u8 gModule_Text_Waiting[];
 /* no variables.h needed: ModuleGetString.c declares this table locally,
    and this file needs nothing else from it. */
 
+/* The place names src/data/rom_08345730.c defines. */
+extern const u8 gModule_Text_1st[];
+extern const u8 gModule_Text_2nd[];
+extern const u8 gModule_Text_3rd[];
+extern const u8 gModule_Text_4th[];
+extern const u8 gModule_Text_5th[];
+
+/* ROM 0x0835DB58-0x0835DB70, EWRAM 0x020250D8-0x020250F0: the twins of
+ * the main program's gUnk_08364AC8 (the place names, 1ST to 5TH) and
+ * gUnk_08364ADC (src/data/rom_08364AC8.c). ModuleRunRace writes
+ * gUnk_020250EC in place, as RunRace writes its twin; the image runs
+ * from EWRAM, so here the write sticks. */
+const u32 gModule_020250D8[5] = { (u32)gModule_Text_1st, (u32)gModule_Text_2nd, (u32)gModule_Text_3rd,
+                                  (u32)gModule_Text_4th, (u32)gModule_Text_5th };
+const u8 gUnk_020250EC[4] = UNK_08364ADC;
+
 /* High module (link slave) localized message table (ROM
  * 0x0835DB70-0x0835DC10, EWRAM 0x02025090-0x02025130): eight messages
  * (include/functions.h's MODULE_MSG_*) in the five languages the link
  * handshake negotiates (gModule_Language: EN, FR, DE, ES, IT).
  * ModuleGetString returns row[id][language]. The strings live in
- * src/data/rom_08345730.c; the same forty words sit a second time in
- * gUnk_02024F70's sprite block (0x0200D170), which stays a blob. The
- * ROM leaves the Italian OUT OF TIME row empty. */
+ * src/data/rom_08345730.c. The ROM leaves the Italian OUT OF TIME row
+ * empty. */
 
 const u8 *const gModule_LocalizedText[8][5] = {
     /* LINK_FAIL */ { gModule_Text_LinkFail, gModule_Text_FrLinkFail, gModule_Text_DeLinkFail, gModule_Text_EsLinkFail, gModule_Text_ItLinkFail },
