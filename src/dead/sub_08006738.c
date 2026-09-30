@@ -38,7 +38,7 @@ void sub_08006738(u8 *str)
         i++;
     }
     while (i < 32) {
-        c = *gUnk_08365340;
+        c = *gTextPadCharPtr;
         ch = c - 0x20;
         base = (ch >> 5) * 64 + 0x60;
         tile = &gTextCharMap[base + (ch & 0x1F)];

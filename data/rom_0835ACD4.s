@@ -128,14 +128,14 @@ gModule_02024DC8:
 gModule_02024E48:
 	.incbin "build/assets/graphics/rl_08338680.bin"
 	.incbin "build/assets/graphics/palettes/pal_08338700.pal.bin"
-	.global gUnk_02024EE8
-gUnk_02024EE8:
+	.global gModule_SpeedNeedleGfx
+gModule_SpeedNeedleGfx:
 	.incbin "build/assets/graphics/rl_08338720.bin"
 	.global gUnk_02024F50
 gUnk_02024F50:
 	.incbin "build/assets/graphics/palettes/track_select_arrow.pal.bin"
-	.global gUnk_02024F70
-gUnk_02024F70:
+	.global gModule_LowFuelWarningGfx
+gModule_LowFuelWarningGfx:
 	.incbin "build/assets/graphics/rl_083387A8.bin"
 	.space 2
 	.incbin "build/assets/graphics/palettes/pal_083387F0.pal.bin"

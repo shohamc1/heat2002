@@ -1051,7 +1051,7 @@ as a pointer deref — `*(u8 *)&gNumLinkPlayers = v;` — reproduces the
 scalar's expansion and matched all four.
 
 **Variant:** a shared extern's `const` can change the users' bytes by
-itself. `gUnk_08365340`'s users agreed on `extern u8 *gX`, but the ROM
+itself. `gTextPadCharPtr`'s users agreed on `extern u8 *gX`, but the ROM
 definition in `src/data/rom_0836524C.c` says `const u32`, so the header
 first followed the definition; re-typing the users' derefs to match
 rotated registers, and `extern u8 * const gX` in the header mismatched

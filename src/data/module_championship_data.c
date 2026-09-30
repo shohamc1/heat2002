@@ -446,6 +446,6 @@ const u8 *const gModule_LinkMarkerP3FrameList[7] = {
 };
 const u8 *const gModule_LinkMarkerP4FrameList[9] = {
     gModule_02024B48, gModule_02024BC8, gModule_02024C48, gModule_02024CC8,
-    gModule_02024D48, gModule_02024DC8, gModule_02024E48, (const u8 *)gUnk_02024EE8,
-    (const u8 *)gUnk_02024F70
+    gModule_02024D48, gModule_02024DC8, gModule_02024E48, (const u8 *)gModule_SpeedNeedleGfx,
+    (const u8 *)gModule_LowFuelWarningGfx
 };

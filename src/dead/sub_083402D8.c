@@ -85,16 +85,16 @@ void sub_0834047C(u16 *a, u16 *b)
 extern u16 gUnk_0203D510[];
 extern u16 gUnk_0203DD40[];
 extern u16 gUnk_0203DD20[];
-extern u16 gModule_020270C6[];
-extern u16 gModule_020270D0[];
+extern u16 gModule_TuneDefaultGearPower[];
+extern u16 gModule_TuneDefaultGearRatio[];
 void sub_083404A8(void)
 {
     u16 *dst;
     u16 *src;
     u8 i = 0;
     do {
-        gUnk_0203D510[i] = gModule_020270C6[i];
-        gUnk_0203DD40[i] = gModule_020270D0[i];
+        gUnk_0203D510[i] = gModule_TuneDefaultGearPower[i];
+        gUnk_0203DD40[i] = gModule_TuneDefaultGearRatio[i];
         i++;
     } while (i != 5);
     dst = gUnk_0203DD40;

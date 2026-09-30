@@ -33,8 +33,8 @@
 	.endm
 @ End embedded Luvdis macros
 	.thumb
-	.global gUnk_083387A8
-gUnk_083387A8:
+	.global gLowFuelWarningGfx
+gLowFuelWarningGfx:
 	.incbin "build/assets/graphics/rl_083387A8.bin"
 	.align 2, 0
 	.incbin "build/assets/graphics/palettes/pal_083387F0.pal.bin"

@@ -38,7 +38,7 @@ void ModuleDrawSpeedNeedle(u32 speed)
 
     pos[0] = 0xC8;
     pos[1] = 0x78;
-    entry = ModuleRequestObjTiles16(gUnk_02024EE8, pos);
+    entry = ModuleRequestObjTiles16(gModule_SpeedNeedleGfx, pos);
     if (entry != 0) {
         attr = pos[1] & 0xFF;
         attr |= (pos[0] & 0x1FF) << 16;
@@ -81,7 +81,7 @@ void ModuleDrawLowFuelWarning(s32 fuel)
     gUnk_0203B6D8++;
     pos[0] = 0xAA;
     pos[1] = 0x89;
-    entry = ModuleRequestObjTiles4((u32)gUnk_02024F70);
+    entry = ModuleRequestObjTiles4((u32)gModule_LowFuelWarningGfx);
     if (entry != 0) {
         attr = pos[1] & 0xFF;
         attr |= (pos[0] & 0x1FF) << 16;

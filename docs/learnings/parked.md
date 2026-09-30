@@ -682,7 +682,7 @@ Targets got names this way:
 `symbols.ld` holds no ROM address now. Its 58 ROM lines went this way: 22
 Thumb entry points became the functions' names in C, 11 offsets became
 aliases, six became labels (the two sound tables, the two boot logos,
-`gUnk_08338720` and `gUnk_083387A8`), `gUnk_08363EE8` moved to
+`gSpeedNeedleGfx` and `gLowFuelWarningGfx`), `gUnk_08363EE8` moved to
 `ldscript.ld`, and 18 lines that nothing used were deleted. The high module's 136 `symbols.ld`
 names for its own code and data went the same way: 21 function names, 110
 labels and five aliases. `gClockTable`, `gMPlayJumpTableTemplate`,

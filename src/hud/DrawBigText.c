@@ -26,7 +26,7 @@ void DrawBigText(const u8 *text)
     }
 
     for (; i < ((30 - len) / 2); i++, dest++) {
-        c = (*gUnk_08365340) - ' '; /* gUnk_08365340 is the space character */
+        c = (*gTextPadCharPtr) - ' '; /* gTextPadCharPtr points at a space */
         t = c;
         /* font atlas walk: row = t / 32, base 0x60, row stride 64 entries */
         idx = (((t >> 5) << 22) + 0x600000u) >> 16;
@@ -52,7 +52,7 @@ void DrawBigText(const u8 *text)
         } while (c != 0);
     }
     for (; i < 0x20; i++, dest++) {
-        t = (*gUnk_08365340) - 0x20;
+        t = (*gTextPadCharPtr) - 0x20;
         /* font atlas walk: row = t / 32, base 0x60, row stride 64 entries */
         idx = (((t >> 5) << 22) + 0x600000u) >> 16;
         e = &gTextCharMap[idx + (t & 0x1F)];

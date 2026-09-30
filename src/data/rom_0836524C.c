@@ -55,6 +55,6 @@ const u8 gTrackCountdownExtraSeconds[12] = TRACK_COUNTDOWN_EXTRA_SECONDS;
 // Its users declare it as u8 *x.
 const u32 gUnk_0836533C = (u32)gText_01234;
 // Its users declare it as u8 *x.
-u8 *const gUnk_08365340 = (u8 *)gText_BlankRow4;
+u8 *const gTextPadCharPtr = (u8 *)gText_BlankRow4;
 // Its users declare it as u8 *x.
 const u32 gUnk_08365344 = (u32)gText_BlankRow32;

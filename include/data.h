@@ -25,7 +25,7 @@ extern const u8 gMenuPalette[];
 extern const u8 RomHeaderMagic;
 extern const u32 RomHeaderGameCode;
 extern const u8 gText_ChrisWalsh[];
-extern u8 *gUnk_08365340;
+extern u8 *gTextPadCharPtr;
 extern const u8 gText_A[];
 extern const u8 gText_WillGreenough[];
 extern const u16 gAiDriverGearRatioTable[];

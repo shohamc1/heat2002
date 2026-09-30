@@ -18,13 +18,13 @@ extern u8 gText_BlankRow16_2[];
 extern u8 gText_Lap[];
 extern u8 gTireWearBlinkCounter;
 
-extern u8 gUnk_08338720[];
+extern u8 gSpeedNeedleGfx[];
 extern u8 gUnk_02025250;
 extern u8 gText_PitStopNeeded[];
 extern u8 gText_BlankRow20[];
 u8 CarNeedsPit(void);
 extern u8 gUnk_02025228;
-extern u8 gUnk_083387A8[];
+extern u8 gLowFuelWarningGfx[];
 
 void DrawSpeedNeedle(u32 speed)
 {
@@ -35,7 +35,7 @@ void DrawSpeedNeedle(u32 speed)
 
     pos[0] = 0xC8;
     pos[1] = 0x78;
-    entry = RequestObjTiles16((u32)gUnk_08338720);
+    entry = RequestObjTiles16((u32)gSpeedNeedleGfx);
     if (entry != 0) {
         attr = (pos[1] & 0xFF) | ((pos[0] & 0x1FF) << 16) | 0x80000000;
         tileAttr = entry->tileIndex | ((u8)RequestObjPalette((u32)gHudWarningIconPalette) << 12);
@@ -76,7 +76,7 @@ void DrawLowFuelWarning(s32 fuel)
     gUnk_02025228++;
     pos[0] = 0xAA;
     pos[1] = 0x89;
-    entry = RequestObjTiles4((u32)gUnk_083387A8);
+    entry = RequestObjTiles4((u32)gLowFuelWarningGfx);
     if (entry != 0) {
         attr = pos[1] & 0xFF;
         attr |= (pos[0] & 0x1FF) << 16;

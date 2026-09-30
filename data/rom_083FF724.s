@@ -68,5 +68,5 @@ gLinkMarkerP4FrameList:
 	.4byte gUnk_08338580
 	.4byte gUnk_08338600
 	.4byte gUnk_08338680
-	.4byte gUnk_08338720
-	.4byte gUnk_083387A8
+	.4byte gSpeedNeedleGfx
+	.4byte gLowFuelWarningGfx

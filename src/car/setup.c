@@ -4,8 +4,8 @@
 #include "variables.h"
 #include "data.h"
 
-extern u16 gUnk_08367B82[];
-extern u16 gUnk_08367B8C[];
+extern u16 gTuneDefaultGearPower[];
+extern u16 gTuneDefaultGearRatio[];
 
 void ComputeGearRatioReciprocals(u16 *src, u16 *dest)
 {
@@ -24,8 +24,8 @@ void InitTuneSettings(void)
     u16 *reciprocals;
     u8 i = 0;
     do {
-        gUnk_0202A540[i] = gUnk_08367B82[i];
-        gUnk_0202CB20[i] = gUnk_08367B8C[i];
+        gUnk_0202A540[i] = gTuneDefaultGearPower[i];
+        gUnk_0202CB20[i] = gTuneDefaultGearRatio[i];
         i++;
     } while (i != 5);
     ratios = gUnk_0202CB20;

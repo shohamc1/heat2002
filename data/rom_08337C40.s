@@ -99,6 +99,6 @@ gUnk_08338600:
 gUnk_08338680:
 	.incbin "build/assets/graphics/rl_08338680.bin"
 	.incbin "build/assets/graphics/palettes/pal_08338700.pal.bin"
-	.global gUnk_08338720
-gUnk_08338720:
+	.global gSpeedNeedleGfx
+gSpeedNeedleGfx:
 	.incbin "build/assets/graphics/rl_08338720.bin"
