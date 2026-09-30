@@ -1,0 +1,3 @@
+[
+  {"path": "generated/atan2_table.bin", "start": "0x0806C97C", "size": 65536, "type": "gen", "options": {"generator": "scripts/gen_atan2.py"}}
+]

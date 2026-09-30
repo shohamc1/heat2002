@@ -1,7 +1,7 @@
 #include "global.h"
 #include "data.h"
 
-/* Race HUD, pause and pit menu text (0x0806C664-0x0806FFF4). */
+/* Race HUD, pause and pit menu text (0x0806C664-0x0806C97C). */
 
 const u8 gText_5th[] = "5TH";
 const u8 gText_4th[] = "4TH";
@@ -70,4 +70,3 @@ const u8 gText_DemoMode[12] = "DEMO MODE";
 const u8 gText_BlankRow12_3[12] = "         ";
 const u8 gText_OutOfTime[] = "OUT OF TIME";
 const u8 gText_BlankRowRaceMsg[16] = "              ";
-const u8 gUnk_0806C97C[] = INCBIN_U8("build/assets/unknown/data_0806C97C.bin");

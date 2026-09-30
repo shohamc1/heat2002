@@ -388,7 +388,7 @@ SECTIONS
         build/data/sound/direct_sound_samples.o(.text*);
         build/data/sound/sounds.o(.text*);
         build/src/data/race_text.o(.rodata);
-        build/data/rom_0806FFF4.o(.text*);
+        build/src/data/rom_0806C97C.o(.rodata);
         build/src/data/link_text.o(.rodata);
         build/data/rom_0807CA7C.o(.text*);
         build/src/data/rom_0807CB58.o(.rodata);
