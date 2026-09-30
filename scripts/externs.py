@@ -4,15 +4,19 @@ than one type. Parameter names and whitespace don't count as a difference.
 
 Plain file-scope prototypes (not spelled with `extern`) are recognized too,
 and so is what every header in include/ declares. A local declaration whose
-normalized signature matches a header's is redundant -- the header is
-already visible -- and is reported so it can be deleted. A local
+normalized signature matches a header's is redundant -- the header can be
+made visible with an include, and the local line deleted. A local
 declaration whose signature differs from the header's is a deliberate
 struct-view prototype (AGENTS.md, "Files, folders, and names") and is left
 alone.
 
-With --check, print only the violations -- symbols that more than one file
-declares locally, and local declarations that a header already declares --
-and exit 1 if there are any.
+With --check, print only the violations -- extern symbols that more than
+one file declares locally, and local declarations that a header already
+declares -- and exit 1 if there are any.
+
+Known gaps: only single-line prototypes are recognized, and parse()'s
+normalization predates the header rule, so an exotic duplicate (a
+multi-line prototype, say) can slip by.
 
 Run from the repository root."""
 import collections
@@ -26,21 +30,27 @@ EXTERN = re.compile(r"^[ \t]*extern\s+(.*?);", re.S | re.M)
 # The return type may hold only words, spaces and `*`, and must hold a word:
 # that keeps macro calls like ASM_FUNC(...) out, and indented call statements
 # `    foo(x);` too, because the callee leaves no word for the name group.
+# Keyword statements are excluded up front: `return f(x, y);` and a
+# `register ... asm("r1");` pin would otherwise parse as prototypes. The
+# lookaheads lead the line, so they cannot be sidestepped by indentation.
 PROTO = re.compile(
-    r"^[ \t]*(?!static\b|typedef\b|return\b|#)(?![^\n]*[={])"
-    r"([\w \t*]*\w[\w \t*]*?)\b(\w+)[ \t]*\((.*)\)[ \t]*;[ \t]*$",
+    r"^(?![ \t]*(?:static|typedef|return|register)\b)(?![ \t]*#)(?![^\n]*[={])"
+    r"[ \t]*([\w \t*]*\w[\w \t*]*?)\b(\w+)[ \t]*\((.*)\)[ \t]*;[ \t]*$",
     re.M)
 
 
 def parse(decl):
     decl = re.sub(r"/\*.*?\*/|//[^\n]*", "", decl)
     decl = re.sub(r"\s+", " ", decl).strip()
+    # A pointer to be declared names itself right after the first `(`;
+    # a function whose parameter happens to be a pointer does not.
     func = re.match(r"(.*?)\b(\w+)\s*\((.*)\)$", decl)
-    if func and not re.search(r"\(\s*\*", decl):
+    if func and not re.match(r"^[^(]*\(\s*\*", decl):
         ret, name, args = func.groups()
         params = []
         for p in args.split(","):
             p = p.strip()
+            p = re.sub(r"\b\w+(\s*\[[^\]]*\])$", r"\1", p)
             if len(p.split()) > 1 or "*" in p:
                 p = re.sub(r"\b\w+$", "", p) if re.search(r"[\w*]\s*\w+$", p) \
                     and not re.fullmatch(r"(const |volatile )*\w+", p) else p
@@ -52,20 +62,20 @@ def parse(decl):
 
 
 def declarations(path):
-    """The extern declarations and plain prototypes in a file, each as a
-    (kind, name, signature) tuple with the signature parse() normalizes."""
+    """The file's extern declarations and plain prototypes, as two lists of
+    (kind, name, signature) tuples with the signature parse() normalizes."""
     text = re.sub(r"/\*.*?\*/|//[^\n]*", "",
                   open(path, errors="replace").read(), flags=re.S)
-    decls = [parse(m.group(1)) for m in EXTERN.finditer(text)]
-    decls += [parse(f"{m.group(1)}{m.group(2)}({m.group(3)})")
+    externs = [parse(m.group(1)) for m in EXTERN.finditer(text)]
+    protos = [parse(f"{m.group(1)}{m.group(2)}({m.group(3)})")
               for m in PROTO.finditer(text)]
-    return decls
+    return externs, protos
 
 
 # What the headers declare: name -> (signature, header) pairs.
 headers = collections.defaultdict(set)
 for path in glob.glob("include/**/*.h", recursive=True):
-    for kind, name, sig in declarations(path):
+    for kind, name, sig in sum(declarations(path), []):
         headers[name].add((sig, path))
 
 lines = 0
@@ -74,11 +84,7 @@ types = collections.defaultdict(collections.Counter)
 files = collections.defaultdict(set)
 shadowed = set()
 for path in glob.glob("src/**/*.c", recursive=True):
-    text = re.sub(r"/\*.*?\*/|//[^\n]*", "",
-                  open(path, errors="replace").read(), flags=re.S)
-    externs = [parse(m.group(1)) for m in EXTERN.finditer(text)]
-    protos = [parse(f"{m.group(1)}{m.group(2)}({m.group(3)})")
-              for m in PROTO.finditer(text)]
+    externs, protos = declarations(path)
     lines += len(externs)
     prototypes += len(protos)
     for kind, name, sig in externs:
@@ -100,7 +106,8 @@ if "--check" in sys.argv:
         print(f"{name} is declared in more than one file; move it to a header")
     for path, name, header in sorted(shadowed):
         print(f"{name} is declared locally in {path} but {header} already "
-              f"declares it; delete the local declaration")
+              f"declares it; include {header}, then delete the local "
+              f"declaration")
     sys.exit(1 if shared or shadowed else 0)
 
 print(f"extern lines: {lines}, plain prototypes: {prototypes}")

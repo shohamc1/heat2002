@@ -13,6 +13,7 @@ void DummyCgbSound(void);
 /* SampleFreqSet */
 extern u16 gPcmSamplesPerVBlankTable[];
 /* m4aSoundMode */
+/* m4aSoundVSyncOff */
 
 void SoundInit(struct SoundInfo *soundInfo)
 {
