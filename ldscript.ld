@@ -630,8 +630,7 @@ SECTIONS
         build/data/rom_08358450.o(.text*);
         build/src/data/rom_0835A784.o(.rodata);
         build/data/rom_0835ACD4.o(.text*);
-        build/src/data/rom_0835DB58.o(.rodata);
-        build/src/data/rom_0835DC38.o(.rodata);
+        build/src/data/module_race_data.o(.rodata);
         build/data/rom_0835DCB8.o(.text*);
         build/src/data/module_race_setup.o(.rodata);
         build/data/rom_08360290.o(.text*);
@@ -671,7 +670,7 @@ SECTIONS
     .text_tail LOADADDR(.island) + SIZEOF(.island) (READONLY) :
         AT(LOADADDR(.island) + SIZEOF(.island))
     {
-        build/src/data/rom_08364AC8.o(.rodata);
+        build/src/data/race_data.o(.rodata);
         build/data/rom_08364FBC.o(.text*);
         build/src/data/rom_0836524C.o(.rodata);
         build/data/rom_08365348.o(.text*);

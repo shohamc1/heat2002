@@ -3,10 +3,10 @@
 /* High module (link slave) localized race text (ROM 0x08345730-0x08345940,
  * EWRAM 0x0200CCB0-0x0200CEC0): the place names and the eight messages
  * ModuleGetString looks up in gModule_LocalizedText
- * (src/data/rom_0835DB58.c), each in the five languages the link
+ * (src/data/module_race_data.c), each in the five languages the link
  * handshake negotiates (EN/FR/DE/ES/IT, gModule_Language). The ROM
  * leaves the Italian OUT OF TIME row empty. The placing names
- * (1ST..5TH) sit in front; gModule_020250D8 (rom_0835DB58.c) points at
+ * (1ST..5TH) sit in front; gModule_020250D8 (module_race_data.c) points at
  * them, as the main program's gUnk_08364AC8 points at its own. */
 
 const u8 gModule_Text_5th[4] = "5TH";

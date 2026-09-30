@@ -1137,7 +1137,7 @@ array members.
 { ..., { pad0, ..., pad15 }, unk5C, unk5E, unk60, { p0, p1 } }
 ```
 
-**Seen in:** `gTrackData` (`src/data/rom_08364AC8.c`, 2026-09-29); the
+**Seen in:** `gTrackData` (`src/data/race_data.c`, 2026-09-29); the
 12 row tails matched after unbracing the two u16 pairs.
 
 ### 32. A memory load the target puts before a constant

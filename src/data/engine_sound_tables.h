@@ -3,9 +3,9 @@
 
 /* The engine-sound tables the ROM holds twice, byte for byte: the main
  * program's gUnk_08364ADC, gEngineSoundFreqBases,
- * gEngineSoundRpmMultipliers and gUnk_08364AF9 (src/data/rom_08364AC8.c,
+ * gEngineSoundRpmMultipliers and gUnk_08364AF9 (src/data/race_data.c,
  * which says what they are) and the high module's at 0x0835DB6C and
- * 0x0835DC10-0x0835DC38 (src/data/rom_0835DB58.c),
+ * 0x0835DC10-0x0835DC38 (src/data/module_race_data.c),
  * each linked into its own image. One edit changes both GBAs. */
 
 #define UNK_08364ADC { 4, 0, 0, 0 }

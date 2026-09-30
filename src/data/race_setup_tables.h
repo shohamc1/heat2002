@@ -9,7 +9,7 @@
  * tables' names, comments and readers live in those files. The module
  * holds track 7's start-grid row only. One table comes from elsewhere:
  * TRACK_COUNTDOWN_EXTRA_SECONDS, the main program's in
- * src/data/rom_0836524C.c and the module's in rom_0835DC38.c. */
+ * src/data/rom_0836524C.c and the module's in module_race_data.c. */
 
 #define TIRE_GRIP_DEFAULTS \
 { \
