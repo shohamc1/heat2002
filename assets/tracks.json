@@ -914,7 +914,7 @@
  "assets": [
   {
    "path": "tracks/hooley_downs/bg3Map.bin",
-   "start": "0x807ce30",
+   "start": "0x0807CE30",
    "size": 8124,
    "type": "track",
    "options": {
@@ -924,7 +924,7 @@
   },
   {
    "path": "tracks/hooley_downs/bg3Metatiles.bin",
-   "start": "0x807edec",
+   "start": "0x0807EDEC",
    "size": 32640,
    "type": "track",
    "options": {
@@ -934,7 +934,7 @@
   },
   {
    "path": "tracks/hooley_downs/bg3Tiles.bin",
-   "start": "0x8086d6c",
+   "start": "0x08086D6C",
    "size": 15392,
    "type": "track",
    "options": {
@@ -944,7 +944,7 @@
   },
   {
    "path": "tracks/hooley_downs/palette.bin",
-   "start": "0x808a98c",
+   "start": "0x0808A98C",
    "size": 512,
    "type": "track",
    "options": {
@@ -954,7 +954,7 @@
   },
   {
    "path": "tracks/hooley_downs/bg2Map.bin",
-   "start": "0x808ab8c",
+   "start": "0x0808AB8C",
    "size": 6828,
    "type": "track",
    "options": {
@@ -964,7 +964,7 @@
   },
   {
    "path": "tracks/hooley_downs/bg2Metatiles.bin",
-   "start": "0x808c638",
+   "start": "0x0808C638",
    "size": 36544,
    "type": "track",
    "options": {
@@ -974,7 +974,7 @@
   },
   {
    "path": "tracks/hooley_downs/bg2Tiles.bin",
-   "start": "0x80954f8",
+   "start": "0x080954F8",
    "size": 29216,
    "type": "track",
    "options": {
@@ -984,7 +984,7 @@
   },
   {
    "path": "tracks/hooley_downs/cellMap.bin",
-   "start": "0x8282468",
+   "start": "0x08282468",
    "size": 6564,
    "type": "track",
    "options": {
@@ -994,7 +994,7 @@
   },
   {
    "path": "tracks/hooley_downs/surfaceTable.bin",
-   "start": "0x8283e0c",
+   "start": "0x08283E0C",
    "size": 5008,
    "type": "track",
    "options": {
@@ -1004,7 +1004,7 @@
   },
   {
    "path": "tracks/darlington_raceway/palette.bin",
-   "start": "0x809c718",
+   "start": "0x0809C718",
    "size": 512,
    "type": "track",
    "options": {
@@ -1014,7 +1014,7 @@
   },
   {
    "path": "tracks/darlington_raceway/bg3Map.bin",
-   "start": "0x809c918",
+   "start": "0x0809C918",
    "size": 4156,
    "type": "track",
    "options": {
@@ -1024,7 +1024,7 @@
   },
   {
    "path": "tracks/darlington_raceway/bg3Metatiles.bin",
-   "start": "0x809d954",
+   "start": "0x0809D954",
    "size": 37664,
    "type": "track",
    "options": {
@@ -1034,7 +1034,7 @@
   },
   {
    "path": "tracks/darlington_raceway/bg3Tiles.bin",
-   "start": "0x80a6c74",
+   "start": "0x080A6C74",
    "size": 16608,
    "type": "track",
    "options": {
@@ -1044,7 +1044,7 @@
   },
   {
    "path": "tracks/darlington_raceway/bg2Map.bin",
-   "start": "0x80aad54",
+   "start": "0x080AAD54",
    "size": 3776,
    "type": "track",
    "options": {
@@ -1054,7 +1054,7 @@
   },
   {
    "path": "tracks/darlington_raceway/bg2Metatiles.bin",
-   "start": "0x80abc14",
+   "start": "0x080ABC14",
    "size": 22560,
    "type": "track",
    "options": {
@@ -1064,7 +1064,7 @@
   },
   {
    "path": "tracks/darlington_raceway/bg2Tiles.bin",
-   "start": "0x80b1434",
+   "start": "0x080B1434",
    "size": 32256,
    "type": "track",
    "options": {
@@ -1074,7 +1074,7 @@
   },
   {
    "path": "tracks/darlington_raceway/cellMap.bin",
-   "start": "0x828519c",
+   "start": "0x0828519C",
    "size": 1084,
    "type": "track",
    "options": {
@@ -1084,7 +1084,7 @@
   },
   {
    "path": "tracks/darlington_raceway/surfaceTable.bin",
-   "start": "0x82855d8",
+   "start": "0x082855D8",
    "size": 912,
    "type": "track",
    "options": {
@@ -1094,7 +1094,7 @@
   },
   {
    "path": "tracks/green_valley/palette.bin",
-   "start": "0x80b9234",
+   "start": "0x080B9234",
    "size": 512,
    "type": "track",
    "options": {
@@ -1104,7 +1104,7 @@
   },
   {
    "path": "tracks/green_valley/bg3Map.bin",
-   "start": "0x80b9434",
+   "start": "0x080B9434",
    "size": 6844,
    "type": "track",
    "options": {
@@ -1114,7 +1114,7 @@
   },
   {
    "path": "tracks/green_valley/bg3Metatiles.bin",
-   "start": "0x80baef0",
+   "start": "0x080BAEF0",
    "size": 63744,
    "type": "track",
    "options": {
@@ -1124,7 +1124,7 @@
   },
   {
    "path": "tracks/green_valley/bg3Tiles.bin",
-   "start": "0x80ca7f0",
+   "start": "0x080CA7F0",
    "size": 16096,
    "type": "track",
    "options": {
@@ -1134,7 +1134,7 @@
   },
   {
    "path": "tracks/green_valley/bg2Map.bin",
-   "start": "0x80ce6d0",
+   "start": "0x080CE6D0",
    "size": 14368,
    "type": "track",
    "options": {
@@ -1144,7 +1144,7 @@
   },
   {
    "path": "tracks/green_valley/bg2Metatiles.bin",
-   "start": "0x80d1ef0",
+   "start": "0x080D1EF0",
    "size": 108992,
    "type": "track",
    "options": {
@@ -1154,7 +1154,7 @@
   },
   {
    "path": "tracks/green_valley/bg2Tiles.bin",
-   "start": "0x80ec8b0",
+   "start": "0x080EC8B0",
    "size": 30496,
    "type": "track",
    "options": {
@@ -1164,7 +1164,7 @@
   },
   {
    "path": "tracks/green_valley/cellMap.bin",
-   "start": "0x8285968",
+   "start": "0x08285968",
    "size": 7532,
    "type": "track",
    "options": {
@@ -1174,7 +1174,7 @@
   },
   {
    "path": "tracks/green_valley/surfaceTable.bin",
-   "start": "0x82876d4",
+   "start": "0x082876D4",
    "size": 5376,
    "type": "track",
    "options": {
@@ -1184,7 +1184,7 @@
   },
   {
    "path": "tracks/michigan_international_speedway/palette.bin",
-   "start": "0x80f3fd0",
+   "start": "0x080F3FD0",
    "size": 512,
    "type": "track",
    "options": {
@@ -1194,7 +1194,7 @@
   },
   {
    "path": "tracks/michigan_international_speedway/bg3Map.bin",
-   "start": "0x80f41d0",
+   "start": "0x080F41D0",
    "size": 8044,
    "type": "track",
    "options": {
@@ -1204,7 +1204,7 @@
   },
   {
    "path": "tracks/michigan_international_speedway/bg3Metatiles.bin",
-   "start": "0x80f613c",
+   "start": "0x080F613C",
    "size": 69856,
    "type": "track",
    "options": {
@@ -1214,7 +1214,7 @@
   },
   {
    "path": "tracks/michigan_international_speedway/bg3Tiles.bin",
-   "start": "0x810721c",
+   "start": "0x0810721C",
    "size": 16480,
    "type": "track",
    "options": {
@@ -1224,7 +1224,7 @@
   },
   {
    "path": "tracks/michigan_international_speedway/bg2Map.bin",
-   "start": "0x810b27c",
+   "start": "0x0810B27C",
    "size": 12340,
    "type": "track",
    "options": {
@@ -1234,7 +1234,7 @@
   },
   {
    "path": "tracks/michigan_international_speedway/bg2Metatiles.bin",
-   "start": "0x810e2b0",
+   "start": "0x0810E2B0",
    "size": 97056,
    "type": "track",
    "options": {
@@ -1244,7 +1244,7 @@
   },
   {
    "path": "tracks/michigan_international_speedway/bg2Tiles.bin",
-   "start": "0x8125dd0",
+   "start": "0x08125DD0",
    "size": 33184,
    "type": "track",
    "options": {
@@ -1254,7 +1254,7 @@
   },
   {
    "path": "tracks/michigan_international_speedway/cellMap.bin",
-   "start": "0x8288bd4",
+   "start": "0x08288BD4",
    "size": 7868,
    "type": "track",
    "options": {
@@ -1264,7 +1264,7 @@
   },
   {
    "path": "tracks/michigan_international_speedway/surfaceTable.bin",
-   "start": "0x828aa90",
+   "start": "0x0828AA90",
    "size": 4048,
    "type": "track",
    "options": {
@@ -1274,7 +1274,7 @@
   },
   {
    "path": "tracks/great_canyon/bg3Map.bin",
-   "start": "0x812df70",
+   "start": "0x0812DF70",
    "size": 7916,
    "type": "track",
    "options": {
@@ -1284,7 +1284,7 @@
   },
   {
    "path": "tracks/great_canyon/bg3Metatiles.bin",
-   "start": "0x812fe5c",
+   "start": "0x0812FE5C",
    "size": 61344,
    "type": "track",
    "options": {
@@ -1294,7 +1294,7 @@
   },
   {
    "path": "tracks/great_canyon/bg3Tiles.bin",
-   "start": "0x813edfc",
+   "start": "0x0813EDFC",
    "size": 15072,
    "type": "track",
    "options": {
@@ -1304,7 +1304,7 @@
   },
   {
    "path": "tracks/great_canyon/palette.bin",
-   "start": "0x81428dc",
+   "start": "0x081428DC",
    "size": 512,
    "type": "track",
    "options": {
@@ -1314,7 +1314,7 @@
   },
   {
    "path": "tracks/great_canyon/bg2Map.bin",
-   "start": "0x8142adc",
+   "start": "0x08142ADC",
    "size": 12968,
    "type": "track",
    "options": {
@@ -1324,7 +1324,7 @@
   },
   {
    "path": "tracks/great_canyon/bg2Metatiles.bin",
-   "start": "0x8145d84",
+   "start": "0x08145D84",
    "size": 98976,
    "type": "track",
    "options": {
@@ -1334,7 +1334,7 @@
   },
   {
    "path": "tracks/great_canyon/bg2Tiles.bin",
-   "start": "0x815e024",
+   "start": "0x0815E024",
    "size": 32768,
    "type": "track",
    "options": {
@@ -1344,7 +1344,7 @@
   },
   {
    "path": "tracks/great_canyon/cellMap.bin",
-   "start": "0x828ba60",
+   "start": "0x0828BA60",
    "size": 8940,
    "type": "track",
    "options": {
@@ -1354,7 +1354,7 @@
   },
   {
    "path": "tracks/great_canyon/surfaceTable.bin",
-   "start": "0x828dd4c",
+   "start": "0x0828DD4C",
    "size": 6112,
    "type": "track",
    "options": {
@@ -1364,7 +1364,7 @@
   },
   {
    "path": "tracks/fuji_port/palette.bin",
-   "start": "0x8166024",
+   "start": "0x08166024",
    "size": 512,
    "type": "track",
    "options": {
@@ -1374,7 +1374,7 @@
   },
   {
    "path": "tracks/fuji_port/bg3Map.bin",
-   "start": "0x8166224",
+   "start": "0x08166224",
    "size": 14028,
    "type": "track",
    "options": {
@@ -1384,7 +1384,7 @@
   },
   {
    "path": "tracks/fuji_port/bg3Metatiles.bin",
-   "start": "0x81698f0",
+   "start": "0x081698F0",
    "size": 59424,
    "type": "track",
    "options": {
@@ -1394,7 +1394,7 @@
   },
   {
    "path": "tracks/fuji_port/bg3Tiles.bin",
-   "start": "0x8178110",
+   "start": "0x08178110",
    "size": 16512,
    "type": "track",
    "options": {
@@ -1404,7 +1404,7 @@
   },
   {
    "path": "tracks/fuji_port/bg2Map.bin",
-   "start": "0x817c190",
+   "start": "0x0817C190",
    "size": 10120,
    "type": "track",
    "options": {
@@ -1414,7 +1414,7 @@
   },
   {
    "path": "tracks/fuji_port/bg2Metatiles.bin",
-   "start": "0x817e918",
+   "start": "0x0817E918",
    "size": 69696,
    "type": "track",
    "options": {
@@ -1424,7 +1424,7 @@
   },
   {
    "path": "tracks/fuji_port/bg2Tiles.bin",
-   "start": "0x818f958",
+   "start": "0x0818F958",
    "size": 31680,
    "type": "track",
    "options": {
@@ -1434,7 +1434,7 @@
   },
   {
    "path": "tracks/fuji_port/cellMap.bin",
-   "start": "0x828f52c",
+   "start": "0x0828F52C",
    "size": 8052,
    "type": "track",
    "options": {
@@ -1444,7 +1444,7 @@
   },
   {
    "path": "tracks/fuji_port/surfaceTable.bin",
-   "start": "0x82914a0",
+   "start": "0x082914A0",
    "size": 4528,
    "type": "track",
    "options": {
@@ -1454,7 +1454,7 @@
   },
   {
    "path": "tracks/crawfish_raceway/palette.bin",
-   "start": "0x8197518",
+   "start": "0x08197518",
    "size": 512,
    "type": "track",
    "options": {
@@ -1464,7 +1464,7 @@
   },
   {
    "path": "tracks/crawfish_raceway/bg3Map.bin",
-   "start": "0x8197718",
+   "start": "0x08197718",
    "size": 5808,
    "type": "track",
    "options": {
@@ -1474,7 +1474,7 @@
   },
   {
    "path": "tracks/crawfish_raceway/bg3Metatiles.bin",
-   "start": "0x8198dc8",
+   "start": "0x08198DC8",
    "size": 42752,
    "type": "track",
    "options": {
@@ -1484,7 +1484,7 @@
   },
   {
    "path": "tracks/crawfish_raceway/bg3Tiles.bin",
-   "start": "0x81a34c8",
+   "start": "0x081A34C8",
    "size": 5824,
    "type": "track",
    "options": {
@@ -1494,7 +1494,7 @@
   },
   {
    "path": "tracks/crawfish_raceway/bg2Map.bin",
-   "start": "0x81a4b88",
+   "start": "0x081A4B88",
    "size": 9692,
    "type": "track",
    "options": {
@@ -1504,7 +1504,7 @@
   },
   {
    "path": "tracks/crawfish_raceway/bg2Metatiles.bin",
-   "start": "0x81a7164",
+   "start": "0x081A7164",
    "size": 56768,
    "type": "track",
    "options": {
@@ -1514,7 +1514,7 @@
   },
   {
    "path": "tracks/crawfish_raceway/bg2Tiles.bin",
-   "start": "0x81b4f24",
+   "start": "0x081B4F24",
    "size": 32704,
    "type": "track",
    "options": {
@@ -1524,7 +1524,7 @@
   },
   {
    "path": "tracks/crawfish_raceway/cellMap.bin",
-   "start": "0x8292650",
+   "start": "0x08292650",
    "size": 3832,
    "type": "track",
    "options": {
@@ -1534,7 +1534,7 @@
   },
   {
    "path": "tracks/crawfish_raceway/surfaceTable.bin",
-   "start": "0x8293548",
+   "start": "0x08293548",
    "size": 1120,
    "type": "track",
    "options": {
@@ -1544,7 +1544,7 @@
   },
   {
    "path": "tracks/purley_park/bg3Map.bin",
-   "start": "0x81bcee4",
+   "start": "0x081BCEE4",
    "size": 25240,
    "type": "track",
    "options": {
@@ -1554,7 +1554,7 @@
   },
   {
    "path": "tracks/purley_park/bg3Metatiles.bin",
-   "start": "0x81c317c",
+   "start": "0x081C317C",
    "size": 8160,
    "type": "track",
    "options": {
@@ -1564,7 +1564,7 @@
   },
   {
    "path": "tracks/purley_park/bg3Tiles.bin",
-   "start": "0x81c515c",
+   "start": "0x081C515C",
    "size": 6528,
    "type": "track",
    "options": {
@@ -1574,7 +1574,7 @@
   },
   {
    "path": "tracks/purley_park/palette.bin",
-   "start": "0x81c6adc",
+   "start": "0x081C6ADC",
    "size": 512,
    "type": "track",
    "options": {
@@ -1584,7 +1584,7 @@
   },
   {
    "path": "tracks/purley_park/bg2Map.bin",
-   "start": "0x81c6cdc",
+   "start": "0x081C6CDC",
    "size": 4556,
    "type": "track",
    "options": {
@@ -1594,7 +1594,7 @@
   },
   {
    "path": "tracks/purley_park/bg2Metatiles.bin",
-   "start": "0x81c7ea8",
+   "start": "0x081C7EA8",
    "size": 7456,
    "type": "track",
    "options": {
@@ -1604,7 +1604,7 @@
   },
   {
    "path": "tracks/purley_park/bg2Tiles.bin",
-   "start": "0x81c9bc8",
+   "start": "0x081C9BC8",
    "size": 6720,
    "type": "track",
    "options": {
@@ -1614,7 +1614,7 @@
   },
   {
    "path": "tracks/kansas_speedway/palette.bin",
-   "start": "0x81cb608",
+   "start": "0x081CB608",
    "size": 512,
    "type": "track",
    "options": {
@@ -1624,7 +1624,7 @@
   },
   {
    "path": "tracks/kansas_speedway/bg3Map.bin",
-   "start": "0x81cb808",
+   "start": "0x081CB808",
    "size": 9824,
    "type": "track",
    "options": {
@@ -1634,7 +1634,7 @@
   },
   {
    "path": "tracks/kansas_speedway/bg3Metatiles.bin",
-   "start": "0x81cde68",
+   "start": "0x081CDE68",
    "size": 69216,
    "type": "track",
    "options": {
@@ -1644,7 +1644,7 @@
   },
   {
    "path": "tracks/kansas_speedway/bg3Tiles.bin",
-   "start": "0x81decc8",
+   "start": "0x081DECC8",
    "size": 13504,
    "type": "track",
    "options": {
@@ -1654,7 +1654,7 @@
   },
   {
    "path": "tracks/kansas_speedway/bg2Map.bin",
-   "start": "0x81e2188",
+   "start": "0x081E2188",
    "size": 10460,
    "type": "track",
    "options": {
@@ -1664,7 +1664,7 @@
   },
   {
    "path": "tracks/kansas_speedway/bg2Metatiles.bin",
-   "start": "0x81e4a64",
+   "start": "0x081E4A64",
    "size": 81120,
    "type": "track",
    "options": {
@@ -1674,7 +1674,7 @@
   },
   {
    "path": "tracks/kansas_speedway/bg2Tiles.bin",
-   "start": "0x81f8744",
+   "start": "0x081F8744",
    "size": 32000,
    "type": "track",
    "options": {
@@ -1684,7 +1684,7 @@
   },
   {
    "path": "tracks/kansas_speedway/cellMap.bin",
-   "start": "0x82939a8",
+   "start": "0x082939A8",
    "size": 7800,
    "type": "track",
    "options": {
@@ -1694,7 +1694,7 @@
   },
   {
    "path": "tracks/kansas_speedway/surfaceTable.bin",
-   "start": "0x8295820",
+   "start": "0x08295820",
    "size": 4624,
    "type": "track",
    "options": {
@@ -1704,7 +1704,7 @@
   },
   {
    "path": "tracks/asphalt_city/palette.bin",
-   "start": "0x8200444",
+   "start": "0x08200444",
    "size": 512,
    "type": "track",
    "options": {
@@ -1714,7 +1714,7 @@
   },
   {
    "path": "tracks/asphalt_city/bg3Map.bin",
-   "start": "0x8200644",
+   "start": "0x08200644",
    "size": 13264,
    "type": "track",
    "options": {
@@ -1724,7 +1724,7 @@
   },
   {
    "path": "tracks/asphalt_city/bg3Metatiles.bin",
-   "start": "0x8203a14",
+   "start": "0x08203A14",
    "size": 43040,
    "type": "track",
    "options": {
@@ -1734,7 +1734,7 @@
   },
   {
    "path": "tracks/asphalt_city/bg3Tiles.bin",
-   "start": "0x820e234",
+   "start": "0x0820E234",
    "size": 16288,
    "type": "track",
    "options": {
@@ -1744,7 +1744,7 @@
   },
   {
    "path": "tracks/asphalt_city/bg2Map.bin",
-   "start": "0x82121d4",
+   "start": "0x082121D4",
    "size": 14252,
    "type": "track",
    "options": {
@@ -1754,7 +1754,7 @@
   },
   {
    "path": "tracks/asphalt_city/bg2Metatiles.bin",
-   "start": "0x8215980",
+   "start": "0x08215980",
    "size": 77568,
    "type": "track",
    "options": {
@@ -1764,7 +1764,7 @@
   },
   {
    "path": "tracks/asphalt_city/bg2Tiles.bin",
-   "start": "0x8228880",
+   "start": "0x08228880",
    "size": 32544,
    "type": "track",
    "options": {
@@ -1774,7 +1774,7 @@
   },
   {
    "path": "tracks/asphalt_city/cellMap.bin",
-   "start": "0x8296a30",
+   "start": "0x08296A30",
    "size": 8628,
    "type": "track",
    "options": {
@@ -1784,7 +1784,7 @@
   },
   {
    "path": "tracks/asphalt_city/surfaceTable.bin",
-   "start": "0x8298be4",
+   "start": "0x08298BE4",
    "size": 3856,
    "type": "track",
    "options": {
@@ -1794,7 +1794,7 @@
   },
   {
    "path": "tracks/phoenix_international_raceway/bg3Map.bin",
-   "start": "0x82307a0",
+   "start": "0x082307A0",
    "size": 5672,
    "type": "track",
    "options": {
@@ -1804,7 +1804,7 @@
   },
   {
    "path": "tracks/phoenix_international_raceway/bg3Metatiles.bin",
-   "start": "0x8231dc8",
+   "start": "0x08231DC8",
    "size": 54112,
    "type": "track",
    "options": {
@@ -1814,7 +1814,7 @@
   },
   {
    "path": "tracks/phoenix_international_raceway/bg3Tiles.bin",
-   "start": "0x823f128",
+   "start": "0x0823F128",
    "size": 15232,
    "type": "track",
    "options": {
@@ -1824,7 +1824,7 @@
   },
   {
    "path": "tracks/phoenix_international_raceway/palette.bin",
-   "start": "0x8242ca8",
+   "start": "0x08242CA8",
    "size": 512,
    "type": "track",
    "options": {
@@ -1834,7 +1834,7 @@
   },
   {
    "path": "tracks/phoenix_international_raceway/bg2Map.bin",
-   "start": "0x8242ea8",
+   "start": "0x08242EA8",
    "size": 7548,
    "type": "track",
    "options": {
@@ -1844,7 +1844,7 @@
   },
   {
    "path": "tracks/phoenix_international_raceway/bg2Metatiles.bin",
-   "start": "0x8244c24",
+   "start": "0x08244C24",
    "size": 60512,
    "type": "track",
    "options": {
@@ -1854,7 +1854,7 @@
   },
   {
    "path": "tracks/phoenix_international_raceway/bg2Tiles.bin",
-   "start": "0x8253884",
+   "start": "0x08253884",
    "size": 32480,
    "type": "track",
    "options": {
@@ -1864,7 +1864,7 @@
   },
   {
    "path": "tracks/phoenix_international_raceway/cellMap.bin",
-   "start": "0x8299af4",
+   "start": "0x08299AF4",
    "size": 5424,
    "type": "track",
    "options": {
@@ -1874,7 +1874,7 @@
   },
   {
    "path": "tracks/phoenix_international_raceway/surfaceTable.bin",
-   "start": "0x829b024",
+   "start": "0x0829B024",
    "size": 6032,
    "type": "track",
    "options": {
@@ -1884,7 +1884,7 @@
   },
   {
    "path": "tracks/infogrames_super_speedway/palette.bin",
-   "start": "0x825b764",
+   "start": "0x0825B764",
    "size": 512,
    "type": "track",
    "options": {
@@ -1894,7 +1894,7 @@
   },
   {
    "path": "tracks/infogrames_super_speedway/bg3Map.bin",
-   "start": "0x825b964",
+   "start": "0x0825B964",
    "size": 7084,
    "type": "track",
    "options": {
@@ -1904,7 +1904,7 @@
   },
   {
    "path": "tracks/infogrames_super_speedway/bg3Metatiles.bin",
-   "start": "0x825d510",
+   "start": "0x0825D510",
    "size": 44768,
    "type": "track",
    "options": {
@@ -1914,7 +1914,7 @@
   },
   {
    "path": "tracks/infogrames_super_speedway/bg3Tiles.bin",
-   "start": "0x82683f0",
+   "start": "0x082683F0",
    "size": 14464,
    "type": "track",
    "options": {
@@ -1924,7 +1924,7 @@
   },
   {
    "path": "tracks/infogrames_super_speedway/bg2Map.bin",
-   "start": "0x826bc70",
+   "start": "0x0826BC70",
    "size": 8664,
    "type": "track",
    "options": {
@@ -1934,7 +1934,7 @@
   },
   {
    "path": "tracks/infogrames_super_speedway/bg2Metatiles.bin",
-   "start": "0x826de48",
+   "start": "0x0826DE48",
    "size": 52320,
    "type": "track",
    "options": {
@@ -1944,7 +1944,7 @@
   },
   {
    "path": "tracks/infogrames_super_speedway/bg2Tiles.bin",
-   "start": "0x827aaa8",
+   "start": "0x0827AAA8",
    "size": 31168,
    "type": "track",
    "options": {
@@ -1954,7 +1954,7 @@
   },
   {
    "path": "tracks/infogrames_super_speedway/cellMap.bin",
-   "start": "0x829c7b4",
+   "start": "0x0829C7B4",
    "size": 5116,
    "type": "track",
    "options": {
@@ -1964,7 +1964,7 @@
   },
   {
    "path": "tracks/infogrames_super_speedway/surfaceTable.bin",
-   "start": "0x829dbb0",
+   "start": "0x0829DBB0",
    "size": 3888,
    "type": "track",
    "options": {
@@ -2049,7 +2049,7 @@
   },
   {
    "path": "tracks/hooley_downs/segs.bin",
-   "start": "0x8365348",
+   "start": "0x08365348",
    "size": 720,
    "type": "track",
    "options": {
@@ -2059,7 +2059,7 @@
   },
   {
    "path": "tracks/darlington_raceway/segs.bin",
-   "start": "0x8365618",
+   "start": "0x08365618",
    "size": 384,
    "type": "track",
    "options": {
@@ -2069,7 +2069,7 @@
   },
   {
    "path": "tracks/green_valley/segs.bin",
-   "start": "0x8365798",
+   "start": "0x08365798",
    "size": 672,
    "type": "track",
    "options": {
@@ -2079,7 +2079,7 @@
   },
   {
    "path": "tracks/michigan_international_speedway/segs.bin",
-   "start": "0x8365a38",
+   "start": "0x08365A38",
    "size": 648,
    "type": "track",
    "options": {
@@ -2089,7 +2089,7 @@
   },
   {
    "path": "tracks/great_canyon/segs.bin",
-   "start": "0x8365cc0",
+   "start": "0x08365CC0",
    "size": 1152,
    "type": "track",
    "options": {
@@ -2099,7 +2099,7 @@
   },
   {
    "path": "tracks/fuji_port/segs.bin",
-   "start": "0x8366140",
+   "start": "0x08366140",
    "size": 816,
    "type": "track",
    "options": {
@@ -2109,7 +2109,7 @@
   },
   {
    "path": "tracks/crawfish_raceway/segs.bin",
-   "start": "0x8366470",
+   "start": "0x08366470",
    "size": 432,
    "type": "track",
    "options": {
@@ -2119,7 +2119,7 @@
   },
   {
    "path": "tracks/purley_park/segs.bin",
-   "start": "0x8366620",
+   "start": "0x08366620",
    "size": 648,
    "type": "track",
    "options": {
@@ -2129,7 +2129,7 @@
   },
   {
    "path": "tracks/kansas_speedway/segs.bin",
-   "start": "0x83668a8",
+   "start": "0x083668A8",
    "size": 432,
    "type": "track",
    "options": {
@@ -2139,7 +2139,7 @@
   },
   {
    "path": "tracks/asphalt_city/segs.bin",
-   "start": "0x8366a58",
+   "start": "0x08366A58",
    "size": 912,
    "type": "track",
    "options": {
@@ -2149,7 +2149,7 @@
   },
   {
    "path": "tracks/phoenix_international_raceway/segs.bin",
-   "start": "0x8366de8",
+   "start": "0x08366DE8",
    "size": 336,
    "type": "track",
    "options": {
@@ -2159,7 +2159,7 @@
   },
   {
    "path": "tracks/infogrames_super_speedway/segs.bin",
-   "start": "0x8366f38",
+   "start": "0x08366F38",
    "size": 648,
    "type": "track",
    "options": {
@@ -2169,7 +2169,7 @@
   },
   {
    "path": "tracks/hooley_downs/wall_verts.bin",
-   "start": "0x83ca0c4",
+   "start": "0x083CA0C4",
    "size": 2328,
    "type": "track",
    "options": {
@@ -2179,7 +2179,7 @@
   },
   {
    "path": "tracks/hooley_downs/wall_recs.bin",
-   "start": "0x83ca9dc",
+   "start": "0x083CA9DC",
    "size": 9216,
    "type": "track",
    "options": {
@@ -2189,7 +2189,7 @@
   },
   {
    "path": "tracks/hooley_downs/wall_lists.bin",
-   "start": "0x83ccddc",
+   "start": "0x083CCDDC",
    "size": 3260,
    "type": "track",
    "options": {
@@ -2199,7 +2199,7 @@
   },
   {
    "path": "tracks/hooley_downs/wall_grid.bin",
-   "start": "0x83cda98",
+   "start": "0x083CDA98",
    "size": 4608,
    "type": "track",
    "options": {
@@ -2209,7 +2209,7 @@
   },
   {
    "path": "tracks/green_valley/wall_verts.bin",
-   "start": "0x83cec98",
+   "start": "0x083CEC98",
    "size": 2872,
    "type": "track",
    "options": {
@@ -2219,7 +2219,7 @@
   },
   {
    "path": "tracks/green_valley/wall_recs.bin",
-   "start": "0x83cf7d0",
+   "start": "0x083CF7D0",
    "size": 11360,
    "type": "track",
    "options": {
@@ -2229,7 +2229,7 @@
   },
   {
    "path": "tracks/green_valley/wall_lists.bin",
-   "start": "0x83d2430",
+   "start": "0x083D2430",
    "size": 3704,
    "type": "track",
    "options": {
@@ -2239,7 +2239,7 @@
   },
   {
    "path": "tracks/green_valley/wall_grid.bin",
-   "start": "0x83d32a8",
+   "start": "0x083D32A8",
    "size": 4608,
    "type": "track",
    "options": {
@@ -2249,7 +2249,7 @@
   },
   {
    "path": "tracks/darlington_raceway/wall_verts.bin",
-   "start": "0x83d44a8",
+   "start": "0x083D44A8",
    "size": 1408,
    "type": "track",
    "options": {
@@ -2259,7 +2259,7 @@
   },
   {
    "path": "tracks/darlington_raceway/wall_recs.bin",
-   "start": "0x83d4a28",
+   "start": "0x083D4A28",
    "size": 5504,
    "type": "track",
    "options": {
@@ -2269,7 +2269,7 @@
   },
   {
    "path": "tracks/darlington_raceway/wall_lists.bin",
-   "start": "0x83d5fa8",
+   "start": "0x083D5FA8",
    "size": 1782,
    "type": "track",
    "options": {
@@ -2279,7 +2279,7 @@
   },
   {
    "path": "tracks/darlington_raceway/wall_grid.bin",
-   "start": "0x83d669e",
+   "start": "0x083D669E",
    "size": 4610,
    "type": "track",
    "options": {
@@ -2289,7 +2289,7 @@
   },
   {
    "path": "tracks/michigan_international_speedway/wall_verts.bin",
-   "start": "0x83d78a0",
+   "start": "0x083D78A0",
    "size": 1856,
    "type": "track",
    "options": {
@@ -2299,7 +2299,7 @@
   },
   {
    "path": "tracks/michigan_international_speedway/wall_recs.bin",
-   "start": "0x83d7fe0",
+   "start": "0x083D7FE0",
    "size": 7328,
    "type": "track",
    "options": {
@@ -2309,7 +2309,7 @@
   },
   {
    "path": "tracks/michigan_international_speedway/wall_lists.bin",
-   "start": "0x83d9c80",
+   "start": "0x083D9C80",
    "size": 2384,
    "type": "track",
    "options": {
@@ -2319,7 +2319,7 @@
   },
   {
    "path": "tracks/michigan_international_speedway/wall_grid.bin",
-   "start": "0x83da5d0",
+   "start": "0x083DA5D0",
    "size": 4608,
    "type": "track",
    "options": {
@@ -2329,7 +2329,7 @@
   },
   {
    "path": "tracks/great_canyon/wall_verts.bin",
-   "start": "0x83db7d0",
+   "start": "0x083DB7D0",
    "size": 2544,
    "type": "track",
    "options": {
@@ -2339,7 +2339,7 @@
   },
   {
    "path": "tracks/great_canyon/wall_recs.bin",
-   "start": "0x83dc1c0",
+   "start": "0x083DC1C0",
    "size": 10080,
    "type": "track",
    "options": {
@@ -2349,7 +2349,7 @@
   },
   {
    "path": "tracks/great_canyon/wall_lists.bin",
-   "start": "0x83de920",
+   "start": "0x083DE920",
    "size": 3344,
    "type": "track",
    "options": {
@@ -2359,7 +2359,7 @@
   },
   {
    "path": "tracks/great_canyon/wall_grid.bin",
-   "start": "0x83df630",
+   "start": "0x083DF630",
    "size": 4608,
    "type": "track",
    "options": {
@@ -2369,7 +2369,7 @@
   },
   {
    "path": "tracks/fuji_port/wall_verts.bin",
-   "start": "0x83e0830",
+   "start": "0x083E0830",
    "size": 2656,
    "type": "track",
    "options": {
@@ -2379,7 +2379,7 @@
   },
   {
    "path": "tracks/fuji_port/wall_recs.bin",
-   "start": "0x83e1290",
+   "start": "0x083E1290",
    "size": 10528,
    "type": "track",
    "options": {
@@ -2389,7 +2389,7 @@
   },
   {
    "path": "tracks/fuji_port/wall_lists.bin",
-   "start": "0x83e3bb0",
+   "start": "0x083E3BB0",
    "size": 3728,
    "type": "track",
    "options": {
@@ -2399,7 +2399,7 @@
   },
   {
    "path": "tracks/fuji_port/wall_grid.bin",
-   "start": "0x83e4a40",
+   "start": "0x083E4A40",
    "size": 4608,
    "type": "track",
    "options": {
@@ -2409,7 +2409,7 @@
   },
   {
    "path": "tracks/crawfish_raceway/wall_verts.bin",
-   "start": "0x83e5c40",
+   "start": "0x083E5C40",
    "size": 1496,
    "type": "track",
    "options": {
@@ -2419,7 +2419,7 @@
   },
   {
    "path": "tracks/crawfish_raceway/wall_recs.bin",
-   "start": "0x83e6218",
+   "start": "0x083E6218",
    "size": 5888,
    "type": "track",
    "options": {
@@ -2429,7 +2429,7 @@
   },
   {
    "path": "tracks/crawfish_raceway/wall_lists.bin",
-   "start": "0x83e7918",
+   "start": "0x083E7918",
    "size": 2226,
    "type": "track",
    "options": {
@@ -2439,7 +2439,7 @@
   },
   {
    "path": "tracks/crawfish_raceway/wall_grid.bin",
-   "start": "0x83e81ca",
+   "start": "0x083E81CA",
    "size": 4610,
    "type": "track",
    "options": {
@@ -2449,7 +2449,7 @@
   },
   {
    "path": "tracks/purley_park/wall_verts.bin",
-   "start": "0x83e93cc",
+   "start": "0x083E93CC",
    "size": 1440,
    "type": "track",
    "options": {
@@ -2459,7 +2459,7 @@
   },
   {
    "path": "tracks/purley_park/wall_recs.bin",
-   "start": "0x83e996c",
+   "start": "0x083E996C",
    "size": 5696,
    "type": "track",
    "options": {
@@ -2469,7 +2469,7 @@
   },
   {
    "path": "tracks/purley_park/wall_lists.bin",
-   "start": "0x83eafac",
+   "start": "0x083EAFAC",
    "size": 2276,
    "type": "track",
    "options": {
@@ -2479,7 +2479,7 @@
   },
   {
    "path": "tracks/purley_park/wall_grid.bin",
-   "start": "0x83eb890",
+   "start": "0x083EB890",
    "size": 4608,
    "type": "track",
    "options": {
@@ -2489,7 +2489,7 @@
   },
   {
    "path": "tracks/kansas_speedway/wall_verts.bin",
-   "start": "0x83eca90",
+   "start": "0x083ECA90",
    "size": 1456,
    "type": "track",
    "options": {
@@ -2499,7 +2499,7 @@
   },
   {
    "path": "tracks/kansas_speedway/wall_recs.bin",
-   "start": "0x83ed040",
+   "start": "0x083ED040",
    "size": 5728,
    "type": "track",
    "options": {
@@ -2509,7 +2509,7 @@
   },
   {
    "path": "tracks/kansas_speedway/wall_lists.bin",
-   "start": "0x83ee6a0",
+   "start": "0x083EE6A0",
    "size": 2020,
    "type": "track",
    "options": {
@@ -2519,7 +2519,7 @@
   },
   {
    "path": "tracks/kansas_speedway/wall_grid.bin",
-   "start": "0x83eee84",
+   "start": "0x083EEE84",
    "size": 4608,
    "type": "track",
    "options": {
@@ -2529,7 +2529,7 @@
   },
   {
    "path": "tracks/asphalt_city/wall_verts.bin",
-   "start": "0x83f0084",
+   "start": "0x083F0084",
    "size": 3136,
    "type": "track",
    "options": {
@@ -2539,7 +2539,7 @@
   },
   {
    "path": "tracks/asphalt_city/wall_recs.bin",
-   "start": "0x83f0cc4",
+   "start": "0x083F0CC4",
    "size": 12448,
    "type": "track",
    "options": {
@@ -2549,7 +2549,7 @@
   },
   {
    "path": "tracks/asphalt_city/wall_lists.bin",
-   "start": "0x83f3d64",
+   "start": "0x083F3D64",
    "size": 4062,
    "type": "track",
    "options": {
@@ -2559,7 +2559,7 @@
   },
   {
    "path": "tracks/asphalt_city/wall_grid.bin",
-   "start": "0x83f4d42",
+   "start": "0x083F4D42",
    "size": 4610,
    "type": "track",
    "options": {
@@ -2569,7 +2569,7 @@
   },
   {
    "path": "tracks/phoenix_international_raceway/wall_verts.bin",
-   "start": "0x83f5f44",
+   "start": "0x083F5F44",
    "size": 1376,
    "type": "track",
    "options": {
@@ -2579,7 +2579,7 @@
   },
   {
    "path": "tracks/phoenix_international_raceway/wall_recs.bin",
-   "start": "0x83f64a4",
+   "start": "0x083F64A4",
    "size": 5408,
    "type": "track",
    "options": {
@@ -2589,7 +2589,7 @@
   },
   {
    "path": "tracks/phoenix_international_raceway/wall_lists.bin",
-   "start": "0x83f79c4",
+   "start": "0x083F79C4",
    "size": 1792,
    "type": "track",
    "options": {
@@ -2599,7 +2599,7 @@
   },
   {
    "path": "tracks/phoenix_international_raceway/wall_grid.bin",
-   "start": "0x83f80c4",
+   "start": "0x083F80C4",
    "size": 4608,
    "type": "track",
    "options": {
@@ -2609,7 +2609,7 @@
   },
   {
    "path": "tracks/infogrames_super_speedway/wall_verts.bin",
-   "start": "0x83f92c4",
+   "start": "0x083F92C4",
    "size": 2128,
    "type": "track",
    "options": {
@@ -2619,7 +2619,7 @@
   },
   {
    "path": "tracks/infogrames_super_speedway/wall_recs.bin",
-   "start": "0x83f9b14",
+   "start": "0x083F9B14",
    "size": 8416,
    "type": "track",
    "options": {
@@ -2629,7 +2629,7 @@
   },
   {
    "path": "tracks/infogrames_super_speedway/wall_lists.bin",
-   "start": "0x83fbbf4",
+   "start": "0x083FBBF4",
    "size": 2856,
    "type": "track",
    "options": {
@@ -2639,7 +2639,7 @@
   },
   {
    "path": "tracks/infogrames_super_speedway/wall_grid.bin",
-   "start": "0x83fc71c",
+   "start": "0x083FC71C",
    "size": 4608,
    "type": "track",
    "options": {
@@ -2649,7 +2649,7 @@
   },
   {
    "path": "tracks/hooley_downs/lane_points_0.bin",
-   "start": "0x83682bc",
+   "start": "0x083682BC",
    "size": 400,
    "type": "track",
    "options": {
@@ -2659,7 +2659,7 @@
   },
   {
    "path": "tracks/hooley_downs/lane_segs_0.bin",
-   "start": "0x836844c",
+   "start": "0x0836844C",
    "size": 2000,
    "type": "track",
    "options": {
@@ -2669,7 +2669,7 @@
   },
   {
    "path": "tracks/hooley_downs/lane_cells_0.bin",
-   "start": "0x8368c1c",
+   "start": "0x08368C1C",
    "size": 5522,
    "type": "track",
    "options": {
@@ -2679,7 +2679,7 @@
   },
   {
    "path": "tracks/hooley_downs/lane_points_4.bin",
-   "start": "0x836a1b0",
+   "start": "0x0836A1B0",
    "size": 360,
    "type": "track",
    "options": {
@@ -2689,7 +2689,7 @@
   },
   {
    "path": "tracks/hooley_downs/lane_segs_4.bin",
-   "start": "0x836a318",
+   "start": "0x0836A318",
    "size": 1800,
    "type": "track",
    "options": {
@@ -2699,7 +2699,7 @@
   },
   {
    "path": "tracks/hooley_downs/lane_cells_4.bin",
-   "start": "0x836aa20",
+   "start": "0x0836AA20",
    "size": 5538,
    "type": "track",
    "options": {
@@ -2709,7 +2709,7 @@
   },
   {
    "path": "tracks/hooley_downs/lane_points_7.bin",
-   "start": "0x836bfc4",
+   "start": "0x0836BFC4",
    "size": 356,
    "type": "track",
    "options": {
@@ -2719,7 +2719,7 @@
   },
   {
    "path": "tracks/hooley_downs/lane_segs_7.bin",
-   "start": "0x836c128",
+   "start": "0x0836C128",
    "size": 1780,
    "type": "track",
    "options": {
@@ -2729,7 +2729,7 @@
   },
   {
    "path": "tracks/hooley_downs/lane_cells_7.bin",
-   "start": "0x836c81c",
+   "start": "0x0836C81C",
    "size": 5412,
    "type": "track",
    "options": {
@@ -2739,7 +2739,7 @@
   },
   {
    "path": "tracks/hooley_downs/lane_lengths.bin",
-   "start": "0x836dd42",
+   "start": "0x0836DD42",
    "size": 14,
    "type": "track",
    "options": {
@@ -2749,7 +2749,7 @@
   },
   {
    "path": "tracks/darlington_raceway/lane_points_0.bin",
-   "start": "0x836dd50",
+   "start": "0x0836DD50",
    "size": 236,
    "type": "track",
    "options": {
@@ -2759,7 +2759,7 @@
   },
   {
    "path": "tracks/darlington_raceway/lane_segs_0.bin",
-   "start": "0x836de3c",
+   "start": "0x0836DE3C",
    "size": 1180,
    "type": "track",
    "options": {
@@ -2769,7 +2769,7 @@
   },
   {
    "path": "tracks/darlington_raceway/lane_cells_0.bin",
-   "start": "0x836e2d8",
+   "start": "0x0836E2D8",
    "size": 5122,
    "type": "track",
    "options": {
@@ -2779,7 +2779,7 @@
   },
   {
    "path": "tracks/darlington_raceway/lane_points_1.bin",
-   "start": "0x836f6dc",
+   "start": "0x0836F6DC",
    "size": 192,
    "type": "track",
    "options": {
@@ -2789,7 +2789,7 @@
   },
   {
    "path": "tracks/darlington_raceway/lane_segs_1.bin",
-   "start": "0x836f79c",
+   "start": "0x0836F79C",
    "size": 960,
    "type": "track",
    "options": {
@@ -2799,7 +2799,7 @@
   },
   {
    "path": "tracks/darlington_raceway/lane_cells_1.bin",
-   "start": "0x836fb5c",
+   "start": "0x0836FB5C",
    "size": 5038,
    "type": "track",
    "options": {
@@ -2809,7 +2809,7 @@
   },
   {
    "path": "tracks/darlington_raceway/lane_points_4.bin",
-   "start": "0x8370f0c",
+   "start": "0x08370F0C",
    "size": 200,
    "type": "track",
    "options": {
@@ -2819,7 +2819,7 @@
   },
   {
    "path": "tracks/darlington_raceway/lane_segs_4.bin",
-   "start": "0x8370fd4",
+   "start": "0x08370FD4",
    "size": 1000,
    "type": "track",
    "options": {
@@ -2829,7 +2829,7 @@
   },
   {
    "path": "tracks/darlington_raceway/lane_cells_4.bin",
-   "start": "0x83713bc",
+   "start": "0x083713BC",
    "size": 5054,
    "type": "track",
    "options": {
@@ -2839,7 +2839,7 @@
   },
   {
    "path": "tracks/darlington_raceway/lane_lengths.bin",
-   "start": "0x837401c",
+   "start": "0x0837401C",
    "size": 16,
    "type": "track",
    "options": {
@@ -2849,7 +2849,7 @@
   },
   {
    "path": "tracks/green_valley/lane_points_0.bin",
-   "start": "0x837402c",
+   "start": "0x0837402C",
    "size": 520,
    "type": "track",
    "options": {
@@ -2859,7 +2859,7 @@
   },
   {
    "path": "tracks/green_valley/lane_segs_0.bin",
-   "start": "0x8374234",
+   "start": "0x08374234",
    "size": 2600,
    "type": "track",
    "options": {
@@ -2869,7 +2869,7 @@
   },
   {
    "path": "tracks/green_valley/lane_cells_0.bin",
-   "start": "0x8374c5c",
+   "start": "0x08374C5C",
    "size": 5932,
    "type": "track",
    "options": {
@@ -2879,7 +2879,7 @@
   },
   {
    "path": "tracks/green_valley/lane_points_1.bin",
-   "start": "0x8376388",
+   "start": "0x08376388",
    "size": 492,
    "type": "track",
    "options": {
@@ -2889,7 +2889,7 @@
   },
   {
    "path": "tracks/green_valley/lane_segs_1.bin",
-   "start": "0x8376574",
+   "start": "0x08376574",
    "size": 2460,
    "type": "track",
    "options": {
@@ -2899,7 +2899,7 @@
   },
   {
    "path": "tracks/green_valley/lane_cells_1.bin",
-   "start": "0x8376f10",
+   "start": "0x08376F10",
    "size": 5880,
    "type": "track",
    "options": {
@@ -2909,7 +2909,7 @@
   },
   {
    "path": "tracks/green_valley/lane_points_4.bin",
-   "start": "0x837ee98",
+   "start": "0x0837EE98",
    "size": 504,
    "type": "track",
    "options": {
@@ -2919,7 +2919,7 @@
   },
   {
    "path": "tracks/green_valley/lane_segs_4.bin",
-   "start": "0x837f090",
+   "start": "0x0837F090",
    "size": 2520,
    "type": "track",
    "options": {
@@ -2929,7 +2929,7 @@
   },
   {
    "path": "tracks/green_valley/lane_cells_4.bin",
-   "start": "0x837fa68",
+   "start": "0x0837FA68",
    "size": 5892,
    "type": "track",
    "options": {
@@ -2939,7 +2939,7 @@
   },
   {
    "path": "tracks/green_valley/lane_points_7.bin",
-   "start": "0x8383430",
+   "start": "0x08383430",
    "size": 492,
    "type": "track",
    "options": {
@@ -2949,7 +2949,7 @@
   },
   {
    "path": "tracks/green_valley/lane_segs_7.bin",
-   "start": "0x838361c",
+   "start": "0x0838361C",
    "size": 2460,
    "type": "track",
    "options": {
@@ -2959,7 +2959,7 @@
   },
   {
    "path": "tracks/green_valley/lane_cells_7.bin",
-   "start": "0x8383fb8",
+   "start": "0x08383FB8",
    "size": 5862,
    "type": "track",
    "options": {
@@ -2969,7 +2969,7 @@
   },
   {
    "path": "tracks/green_valley/lane_lengths.bin",
-   "start": "0x838569e",
+   "start": "0x0838569E",
    "size": 18,
    "type": "track",
    "options": {
@@ -2979,7 +2979,7 @@
   },
   {
    "path": "tracks/michigan_international_speedway/lane_points_0.bin",
-   "start": "0x83856b0",
+   "start": "0x083856B0",
    "size": 352,
    "type": "track",
    "options": {
@@ -2989,7 +2989,7 @@
   },
   {
    "path": "tracks/michigan_international_speedway/lane_segs_0.bin",
-   "start": "0x8385810",
+   "start": "0x08385810",
    "size": 1760,
    "type": "track",
    "options": {
@@ -2999,7 +2999,7 @@
   },
   {
    "path": "tracks/michigan_international_speedway/lane_cells_0.bin",
-   "start": "0x8385ef0",
+   "start": "0x08385EF0",
    "size": 5448,
    "type": "track",
    "options": {
@@ -3009,7 +3009,7 @@
   },
   {
    "path": "tracks/michigan_international_speedway/lane_points_1.bin",
-   "start": "0x8387438",
+   "start": "0x08387438",
    "size": 328,
    "type": "track",
    "options": {
@@ -3019,7 +3019,7 @@
   },
   {
    "path": "tracks/michigan_international_speedway/lane_segs_1.bin",
-   "start": "0x8387580",
+   "start": "0x08387580",
    "size": 1640,
    "type": "track",
    "options": {
@@ -3029,7 +3029,7 @@
   },
   {
    "path": "tracks/michigan_international_speedway/lane_cells_1.bin",
-   "start": "0x8387be8",
+   "start": "0x08387BE8",
    "size": 5366,
    "type": "track",
    "options": {
@@ -3039,7 +3039,7 @@
   },
   {
    "path": "tracks/michigan_international_speedway/lane_points_4.bin",
-   "start": "0x83890e0",
+   "start": "0x083890E0",
    "size": 344,
    "type": "track",
    "options": {
@@ -3049,7 +3049,7 @@
   },
   {
    "path": "tracks/michigan_international_speedway/lane_segs_4.bin",
-   "start": "0x8389238",
+   "start": "0x08389238",
    "size": 1720,
    "type": "track",
    "options": {
@@ -3059,7 +3059,7 @@
   },
   {
    "path": "tracks/michigan_international_speedway/lane_cells_4.bin",
-   "start": "0x83898f0",
+   "start": "0x083898F0",
    "size": 5346,
    "type": "track",
    "options": {
@@ -3069,7 +3069,7 @@
   },
   {
    "path": "tracks/michigan_international_speedway/lane_points_7.bin",
-   "start": "0x838add4",
+   "start": "0x0838ADD4",
    "size": 380,
    "type": "track",
    "options": {
@@ -3079,7 +3079,7 @@
   },
   {
    "path": "tracks/michigan_international_speedway/lane_segs_7.bin",
-   "start": "0x838af50",
+   "start": "0x0838AF50",
    "size": 1900,
    "type": "track",
    "options": {
@@ -3089,7 +3089,7 @@
   },
   {
    "path": "tracks/michigan_international_speedway/lane_cells_7.bin",
-   "start": "0x838b6bc",
+   "start": "0x0838B6BC",
    "size": 5490,
    "type": "track",
    "options": {
@@ -3099,7 +3099,7 @@
   },
   {
    "path": "tracks/michigan_international_speedway/lane_lengths.bin",
-   "start": "0x838cc2e",
+   "start": "0x0838CC2E",
    "size": 18,
    "type": "track",
    "options": {
@@ -3109,7 +3109,7 @@
   },
   {
    "path": "tracks/great_canyon/lane_points_0.bin",
-   "start": "0x838cc40",
+   "start": "0x0838CC40",
    "size": 608,
    "type": "track",
    "options": {
@@ -3119,7 +3119,7 @@
   },
   {
    "path": "tracks/great_canyon/lane_segs_0.bin",
-   "start": "0x838cea0",
+   "start": "0x0838CEA0",
    "size": 3020,
    "type": "track",
    "options": {
@@ -3129,7 +3129,7 @@
   },
   {
    "path": "tracks/great_canyon/lane_cells_0.bin",
-   "start": "0x838da6c",
+   "start": "0x0838DA6C",
    "size": 6076,
    "type": "track",
    "options": {
@@ -3139,7 +3139,7 @@
   },
   {
    "path": "tracks/great_canyon/lane_points_1.bin",
-   "start": "0x838f228",
+   "start": "0x0838F228",
    "size": 596,
    "type": "track",
    "options": {
@@ -3149,7 +3149,7 @@
   },
   {
    "path": "tracks/great_canyon/lane_segs_1.bin",
-   "start": "0x838f47c",
+   "start": "0x0838F47C",
    "size": 2980,
    "type": "track",
    "options": {
@@ -3159,7 +3159,7 @@
   },
   {
    "path": "tracks/great_canyon/lane_cells_1.bin",
-   "start": "0x8390020",
+   "start": "0x08390020",
    "size": 6092,
    "type": "track",
    "options": {
@@ -3169,7 +3169,7 @@
   },
   {
    "path": "tracks/great_canyon/lane_points_4.bin",
-   "start": "0x83917ec",
+   "start": "0x083917EC",
    "size": 640,
    "type": "track",
    "options": {
@@ -3179,7 +3179,7 @@
   },
   {
    "path": "tracks/great_canyon/lane_segs_4.bin",
-   "start": "0x8391a6c",
+   "start": "0x08391A6C",
    "size": 3200,
    "type": "track",
    "options": {
@@ -3189,7 +3189,7 @@
   },
   {
    "path": "tracks/great_canyon/lane_cells_4.bin",
-   "start": "0x83926ec",
+   "start": "0x083926EC",
    "size": 6142,
    "type": "track",
    "options": {
@@ -3199,7 +3199,7 @@
   },
   {
    "path": "tracks/great_canyon/lane_points_7.bin",
-   "start": "0x8393eec",
+   "start": "0x08393EEC",
    "size": 596,
    "type": "track",
    "options": {
@@ -3209,7 +3209,7 @@
   },
   {
    "path": "tracks/great_canyon/lane_segs_7.bin",
-   "start": "0x8394140",
+   "start": "0x08394140",
    "size": 2980,
    "type": "track",
    "options": {
@@ -3219,7 +3219,7 @@
   },
   {
    "path": "tracks/great_canyon/lane_cells_7.bin",
-   "start": "0x8394ce4",
+   "start": "0x08394CE4",
    "size": 5974,
    "type": "track",
    "options": {
@@ -3229,7 +3229,7 @@
   },
   {
    "path": "tracks/great_canyon/lane_lengths.bin",
-   "start": "0x839643a",
+   "start": "0x0839643A",
    "size": 18,
    "type": "track",
    "options": {
@@ -3239,7 +3239,7 @@
   },
   {
    "path": "tracks/fuji_port/lane_points_0.bin",
-   "start": "0x839644c",
+   "start": "0x0839644C",
    "size": 484,
    "type": "track",
    "options": {
@@ -3249,7 +3249,7 @@
   },
   {
    "path": "tracks/fuji_port/lane_segs_0.bin",
-   "start": "0x8396630",
+   "start": "0x08396630",
    "size": 2420,
    "type": "track",
    "options": {
@@ -3259,7 +3259,7 @@
   },
   {
    "path": "tracks/fuji_port/lane_cells_0.bin",
-   "start": "0x8396fa4",
+   "start": "0x08396FA4",
    "size": 5778,
    "type": "track",
    "options": {
@@ -3269,7 +3269,7 @@
   },
   {
    "path": "tracks/fuji_port/lane_points_1.bin",
-   "start": "0x8398638",
+   "start": "0x08398638",
    "size": 492,
    "type": "track",
    "options": {
@@ -3279,7 +3279,7 @@
   },
   {
    "path": "tracks/fuji_port/lane_segs_1.bin",
-   "start": "0x8398824",
+   "start": "0x08398824",
    "size": 2460,
    "type": "track",
    "options": {
@@ -3289,7 +3289,7 @@
   },
   {
    "path": "tracks/fuji_port/lane_cells_1.bin",
-   "start": "0x83991c0",
+   "start": "0x083991C0",
    "size": 5830,
    "type": "track",
    "options": {
@@ -3299,7 +3299,7 @@
   },
   {
    "path": "tracks/fuji_port/lane_points_4.bin",
-   "start": "0x839a888",
+   "start": "0x0839A888",
    "size": 452,
    "type": "track",
    "options": {
@@ -3309,7 +3309,7 @@
   },
   {
    "path": "tracks/fuji_port/lane_segs_4.bin",
-   "start": "0x839aa4c",
+   "start": "0x0839AA4C",
    "size": 2260,
    "type": "track",
    "options": {
@@ -3319,7 +3319,7 @@
   },
   {
    "path": "tracks/fuji_port/lane_cells_4.bin",
-   "start": "0x839b320",
+   "start": "0x0839B320",
    "size": 5736,
    "type": "track",
    "options": {
@@ -3329,7 +3329,7 @@
   },
   {
    "path": "tracks/fuji_port/lane_points_7.bin",
-   "start": "0x839c988",
+   "start": "0x0839C988",
    "size": 500,
    "type": "track",
    "options": {
@@ -3339,7 +3339,7 @@
   },
   {
    "path": "tracks/fuji_port/lane_segs_7.bin",
-   "start": "0x839cb7c",
+   "start": "0x0839CB7C",
    "size": 2500,
    "type": "track",
    "options": {
@@ -3349,7 +3349,7 @@
   },
   {
    "path": "tracks/fuji_port/lane_cells_7.bin",
-   "start": "0x839d540",
+   "start": "0x0839D540",
    "size": 5924,
    "type": "track",
    "options": {
@@ -3359,7 +3359,7 @@
   },
   {
    "path": "tracks/fuji_port/lane_lengths.bin",
-   "start": "0x839ec64",
+   "start": "0x0839EC64",
    "size": 16,
    "type": "track",
    "options": {
@@ -3369,7 +3369,7 @@
   },
   {
    "path": "tracks/crawfish_raceway/lane_points_0.bin",
-   "start": "0x839ec74",
+   "start": "0x0839EC74",
    "size": 240,
    "type": "track",
    "options": {
@@ -3379,7 +3379,7 @@
   },
   {
    "path": "tracks/crawfish_raceway/lane_segs_0.bin",
-   "start": "0x839ed64",
+   "start": "0x0839ED64",
    "size": 1200,
    "type": "track",
    "options": {
@@ -3389,7 +3389,7 @@
   },
   {
    "path": "tracks/crawfish_raceway/lane_cells_0.bin",
-   "start": "0x839f214",
+   "start": "0x0839F214",
    "size": 5010,
    "type": "track",
    "options": {
@@ -3399,7 +3399,7 @@
   },
   {
    "path": "tracks/crawfish_raceway/lane_points_1.bin",
-   "start": "0x83a05a8",
+   "start": "0x083A05A8",
    "size": 252,
    "type": "track",
    "options": {
@@ -3409,7 +3409,7 @@
   },
   {
    "path": "tracks/crawfish_raceway/lane_segs_1.bin",
-   "start": "0x83a06a4",
+   "start": "0x083A06A4",
    "size": 1260,
    "type": "track",
    "options": {
@@ -3419,7 +3419,7 @@
   },
   {
    "path": "tracks/crawfish_raceway/lane_cells_1.bin",
-   "start": "0x83a0b90",
+   "start": "0x083A0B90",
    "size": 5140,
    "type": "track",
    "options": {
@@ -3429,7 +3429,7 @@
   },
   {
    "path": "tracks/crawfish_raceway/lane_points_4.bin",
-   "start": "0x83a1fa4",
+   "start": "0x083A1FA4",
    "size": 300,
    "type": "track",
    "options": {
@@ -3439,7 +3439,7 @@
   },
   {
    "path": "tracks/crawfish_raceway/lane_segs_4.bin",
-   "start": "0x83a20d0",
+   "start": "0x083A20D0",
    "size": 1500,
    "type": "track",
    "options": {
@@ -3449,7 +3449,7 @@
   },
   {
    "path": "tracks/crawfish_raceway/lane_cells_4.bin",
-   "start": "0x83a26ac",
+   "start": "0x083A26AC",
    "size": 5304,
    "type": "track",
    "options": {
@@ -3459,7 +3459,7 @@
   },
   {
    "path": "tracks/crawfish_raceway/lane_points_7.bin",
-   "start": "0x83a3b64",
+   "start": "0x083A3B64",
    "size": 280,
    "type": "track",
    "options": {
@@ -3469,7 +3469,7 @@
   },
   {
    "path": "tracks/crawfish_raceway/lane_segs_7.bin",
-   "start": "0x83a3c7c",
+   "start": "0x083A3C7C",
    "size": 1400,
    "type": "track",
    "options": {
@@ -3479,7 +3479,7 @@
   },
   {
    "path": "tracks/crawfish_raceway/lane_cells_7.bin",
-   "start": "0x83a41f4",
+   "start": "0x083A41F4",
    "size": 5220,
    "type": "track",
    "options": {
@@ -3489,7 +3489,7 @@
   },
   {
    "path": "tracks/crawfish_raceway/lane_lengths.bin",
-   "start": "0x83a5658",
+   "start": "0x083A5658",
    "size": 16,
    "type": "track",
    "options": {
@@ -3499,7 +3499,7 @@
   },
   {
    "path": "tracks/kansas_speedway/lane_points_0.bin",
-   "start": "0x83a5668",
+   "start": "0x083A5668",
    "size": 284,
    "type": "track",
    "options": {
@@ -3509,7 +3509,7 @@
   },
   {
    "path": "tracks/kansas_speedway/lane_segs_0.bin",
-   "start": "0x83a5784",
+   "start": "0x083A5784",
    "size": 1420,
    "type": "track",
    "options": {
@@ -3519,7 +3519,7 @@
   },
   {
    "path": "tracks/kansas_speedway/lane_cells_0.bin",
-   "start": "0x83a5d10",
+   "start": "0x083A5D10",
    "size": 5166,
    "type": "track",
    "options": {
@@ -3529,7 +3529,7 @@
   },
   {
    "path": "tracks/kansas_speedway/lane_points_1.bin",
-   "start": "0x83a7140",
+   "start": "0x083A7140",
    "size": 304,
    "type": "track",
    "options": {
@@ -3539,7 +3539,7 @@
   },
   {
    "path": "tracks/kansas_speedway/lane_segs_1.bin",
-   "start": "0x83a7270",
+   "start": "0x083A7270",
    "size": 1520,
    "type": "track",
    "options": {
@@ -3549,7 +3549,7 @@
   },
   {
    "path": "tracks/kansas_speedway/lane_cells_1.bin",
-   "start": "0x83a7860",
+   "start": "0x083A7860",
    "size": 5320,
    "type": "track",
    "options": {
@@ -3559,7 +3559,7 @@
   },
   {
    "path": "tracks/kansas_speedway/lane_points_4.bin",
-   "start": "0x83a8d28",
+   "start": "0x083A8D28",
    "size": 312,
    "type": "track",
    "options": {
@@ -3569,7 +3569,7 @@
   },
   {
    "path": "tracks/kansas_speedway/lane_segs_4.bin",
-   "start": "0x83a8e60",
+   "start": "0x083A8E60",
    "size": 1560,
    "type": "track",
    "options": {
@@ -3579,7 +3579,7 @@
   },
   {
    "path": "tracks/kansas_speedway/lane_cells_4.bin",
-   "start": "0x83a9478",
+   "start": "0x083A9478",
    "size": 5272,
    "type": "track",
    "options": {
@@ -3589,7 +3589,7 @@
   },
   {
    "path": "tracks/kansas_speedway/lane_points_7.bin",
-   "start": "0x83aa910",
+   "start": "0x083AA910",
    "size": 320,
    "type": "track",
    "options": {
@@ -3599,7 +3599,7 @@
   },
   {
    "path": "tracks/kansas_speedway/lane_segs_7.bin",
-   "start": "0x83aaa50",
+   "start": "0x083AAA50",
    "size": 1600,
    "type": "track",
    "options": {
@@ -3609,7 +3609,7 @@
   },
   {
    "path": "tracks/kansas_speedway/lane_cells_7.bin",
-   "start": "0x83ab090",
+   "start": "0x083AB090",
    "size": 5340,
    "type": "track",
    "options": {
@@ -3619,7 +3619,7 @@
   },
   {
    "path": "tracks/kansas_speedway/lane_lengths.bin",
-   "start": "0x83ac56c",
+   "start": "0x083AC56C",
    "size": 16,
    "type": "track",
    "options": {
@@ -3629,7 +3629,7 @@
   },
   {
    "path": "tracks/asphalt_city/lane_points_0.bin",
-   "start": "0x83ac57c",
+   "start": "0x083AC57C",
    "size": 516,
    "type": "track",
    "options": {
@@ -3639,7 +3639,7 @@
   },
   {
    "path": "tracks/asphalt_city/lane_segs_0.bin",
-   "start": "0x83ac780",
+   "start": "0x083AC780",
    "size": 2580,
    "type": "track",
    "options": {
@@ -3649,7 +3649,7 @@
   },
   {
    "path": "tracks/asphalt_city/lane_cells_0.bin",
-   "start": "0x83ad194",
+   "start": "0x083AD194",
    "size": 5862,
    "type": "track",
    "options": {
@@ -3659,7 +3659,7 @@
   },
   {
    "path": "tracks/asphalt_city/lane_points_1.bin",
-   "start": "0x83ae87c",
+   "start": "0x083AE87C",
    "size": 524,
    "type": "track",
    "options": {
@@ -3669,7 +3669,7 @@
   },
   {
    "path": "tracks/asphalt_city/lane_segs_1.bin",
-   "start": "0x83aea88",
+   "start": "0x083AEA88",
    "size": 2620,
    "type": "track",
    "options": {
@@ -3679,7 +3679,7 @@
   },
   {
    "path": "tracks/asphalt_city/lane_cells_1.bin",
-   "start": "0x83af4c4",
+   "start": "0x083AF4C4",
    "size": 5864,
    "type": "track",
    "options": {
@@ -3689,7 +3689,7 @@
   },
   {
    "path": "tracks/asphalt_city/lane_points_4.bin",
-   "start": "0x83b73c0",
+   "start": "0x083B73C0",
    "size": 516,
    "type": "track",
    "options": {
@@ -3699,7 +3699,7 @@
   },
   {
    "path": "tracks/asphalt_city/lane_segs_4.bin",
-   "start": "0x83b75c4",
+   "start": "0x083B75C4",
    "size": 2580,
    "type": "track",
    "options": {
@@ -3709,7 +3709,7 @@
   },
   {
    "path": "tracks/asphalt_city/lane_cells_4.bin",
-   "start": "0x83b7fd8",
+   "start": "0x083B7FD8",
    "size": 5868,
    "type": "track",
    "options": {
@@ -3719,7 +3719,7 @@
   },
   {
    "path": "tracks/asphalt_city/lane_points_7.bin",
-   "start": "0x83b96c4",
+   "start": "0x083B96C4",
    "size": 508,
    "type": "track",
    "options": {
@@ -3729,7 +3729,7 @@
   },
   {
    "path": "tracks/asphalt_city/lane_segs_7.bin",
-   "start": "0x83b98c0",
+   "start": "0x083B98C0",
    "size": 2540,
    "type": "track",
    "options": {
@@ -3739,7 +3739,7 @@
   },
   {
    "path": "tracks/asphalt_city/lane_cells_7.bin",
-   "start": "0x83ba2ac",
+   "start": "0x083BA2AC",
    "size": 5858,
    "type": "track",
    "options": {
@@ -3749,7 +3749,7 @@
   },
   {
    "path": "tracks/asphalt_city/lane_lengths.bin",
-   "start": "0x83bb98e",
+   "start": "0x083BB98E",
    "size": 18,
    "type": "track",
    "options": {
@@ -3759,7 +3759,7 @@
   },
   {
    "path": "tracks/phoenix_international_raceway/lane_points_0.bin",
-   "start": "0x83bb9a0",
+   "start": "0x083BB9A0",
    "size": 192,
    "type": "track",
    "options": {
@@ -3769,7 +3769,7 @@
   },
   {
    "path": "tracks/phoenix_international_raceway/lane_segs_0.bin",
-   "start": "0x83bba60",
+   "start": "0x083BBA60",
    "size": 960,
    "type": "track",
    "options": {
@@ -3779,7 +3779,7 @@
   },
   {
    "path": "tracks/phoenix_international_raceway/lane_cells_0.bin",
-   "start": "0x83bbe20",
+   "start": "0x083BBE20",
    "size": 4984,
    "type": "track",
    "options": {
@@ -3789,7 +3789,7 @@
   },
   {
    "path": "tracks/phoenix_international_raceway/lane_points_1.bin",
-   "start": "0x83bd198",
+   "start": "0x083BD198",
    "size": 188,
    "type": "track",
    "options": {
@@ -3799,7 +3799,7 @@
   },
   {
    "path": "tracks/phoenix_international_raceway/lane_segs_1.bin",
-   "start": "0x83bd254",
+   "start": "0x083BD254",
    "size": 940,
    "type": "track",
    "options": {
@@ -3809,7 +3809,7 @@
   },
   {
    "path": "tracks/phoenix_international_raceway/lane_cells_1.bin",
-   "start": "0x83bd600",
+   "start": "0x083BD600",
    "size": 4986,
    "type": "track",
    "options": {
@@ -3819,7 +3819,7 @@
   },
   {
    "path": "tracks/phoenix_international_raceway/lane_points_4.bin",
-   "start": "0x83be97c",
+   "start": "0x083BE97C",
    "size": 172,
    "type": "track",
    "options": {
@@ -3829,7 +3829,7 @@
   },
   {
    "path": "tracks/phoenix_international_raceway/lane_segs_4.bin",
-   "start": "0x83bea28",
+   "start": "0x083BEA28",
    "size": 860,
    "type": "track",
    "options": {
@@ -3839,7 +3839,7 @@
   },
   {
    "path": "tracks/phoenix_international_raceway/lane_cells_4.bin",
-   "start": "0x83bed84",
+   "start": "0x083BED84",
    "size": 4948,
    "type": "track",
    "options": {
@@ -3849,7 +3849,7 @@
   },
   {
    "path": "tracks/phoenix_international_raceway/lane_points_7.bin",
-   "start": "0x83c00d8",
+   "start": "0x083C00D8",
    "size": 220,
    "type": "track",
    "options": {
@@ -3859,7 +3859,7 @@
   },
   {
    "path": "tracks/phoenix_international_raceway/lane_segs_7.bin",
-   "start": "0x83c01b4",
+   "start": "0x083C01B4",
    "size": 1100,
    "type": "track",
    "options": {
@@ -3869,7 +3869,7 @@
   },
   {
    "path": "tracks/phoenix_international_raceway/lane_cells_7.bin",
-   "start": "0x83c0600",
+   "start": "0x083C0600",
    "size": 5058,
    "type": "track",
    "options": {
@@ -3879,7 +3879,7 @@
   },
   {
    "path": "tracks/phoenix_international_raceway/lane_lengths.bin",
-   "start": "0x83c19c2",
+   "start": "0x083C19C2",
    "size": 18,
    "type": "track",
    "options": {
@@ -3889,7 +3889,7 @@
   },
   {
    "path": "tracks/infogrames_super_speedway/lane_points_0.bin",
-   "start": "0x83c19d4",
+   "start": "0x083C19D4",
    "size": 392,
    "type": "track",
    "options": {
@@ -3899,7 +3899,7 @@
   },
   {
    "path": "tracks/infogrames_super_speedway/lane_segs_0.bin",
-   "start": "0x83c1b5c",
+   "start": "0x083C1B5C",
    "size": 1960,
    "type": "track",
    "options": {
@@ -3909,7 +3909,7 @@
   },
   {
    "path": "tracks/infogrames_super_speedway/lane_cells_0.bin",
-   "start": "0x83c2304",
+   "start": "0x083C2304",
    "size": 5498,
    "type": "track",
    "options": {
@@ -3919,7 +3919,7 @@
   },
   {
    "path": "tracks/infogrames_super_speedway/lane_points_1.bin",
-   "start": "0x83c3880",
+   "start": "0x083C3880",
    "size": 392,
    "type": "track",
    "options": {
@@ -3929,7 +3929,7 @@
   },
   {
    "path": "tracks/infogrames_super_speedway/lane_segs_1.bin",
-   "start": "0x83c3a08",
+   "start": "0x083C3A08",
    "size": 1960,
    "type": "track",
    "options": {
@@ -3939,7 +3939,7 @@
   },
   {
    "path": "tracks/infogrames_super_speedway/lane_cells_1.bin",
-   "start": "0x83c41b0",
+   "start": "0x083C41B0",
    "size": 5492,
    "type": "track",
    "options": {
@@ -3949,7 +3949,7 @@
   },
   {
    "path": "tracks/infogrames_super_speedway/lane_points_4.bin",
-   "start": "0x83c5724",
+   "start": "0x083C5724",
    "size": 384,
    "type": "track",
    "options": {
@@ -3959,7 +3959,7 @@
   },
   {
    "path": "tracks/infogrames_super_speedway/lane_segs_4.bin",
-   "start": "0x83c58a4",
+   "start": "0x083C58A4",
    "size": 1920,
    "type": "track",
    "options": {
@@ -3969,7 +3969,7 @@
   },
   {
    "path": "tracks/infogrames_super_speedway/lane_cells_4.bin",
-   "start": "0x83c6024",
+   "start": "0x083C6024",
    "size": 5496,
    "type": "track",
    "options": {
@@ -3979,7 +3979,7 @@
   },
   {
    "path": "tracks/infogrames_super_speedway/lane_points_7.bin",
-   "start": "0x83c759c",
+   "start": "0x083C759C",
    "size": 420,
    "type": "track",
    "options": {
@@ -3989,7 +3989,7 @@
   },
   {
    "path": "tracks/infogrames_super_speedway/lane_segs_7.bin",
-   "start": "0x83c7740",
+   "start": "0x083C7740",
    "size": 2100,
    "type": "track",
    "options": {
@@ -3999,7 +3999,7 @@
   },
   {
    "path": "tracks/infogrames_super_speedway/lane_cells_7.bin",
-   "start": "0x83c7f74",
+   "start": "0x083C7F74",
    "size": 5614,
    "type": "track",
    "options": {
@@ -4009,7 +4009,7 @@
   },
   {
    "path": "tracks/infogrames_super_speedway/lane_lengths.bin",
-   "start": "0x83c9562",
+   "start": "0x083C9562",
    "size": 18,
    "type": "track",
    "options": {
@@ -4019,7 +4019,7 @@
   },
   {
    "path": "tracks/hooley_downs/lane_orphan_0.bin",
-   "start": "0x836a1ae",
+   "start": "0x0836A1AE",
    "size": 2,
    "type": "track",
    "options": {
@@ -4029,7 +4029,7 @@
   },
   {
    "path": "tracks/hooley_downs/lane_orphan_1.bin",
-   "start": "0x836bfc2",
+   "start": "0x0836BFC2",
    "size": 2,
    "type": "track",
    "options": {
@@ -4039,7 +4039,7 @@
   },
   {
    "path": "tracks/hooley_downs/lane_orphan_2.bin",
-   "start": "0x836dd40",
+   "start": "0x0836DD40",
    "size": 2,
    "type": "track",
    "options": {
@@ -4049,7 +4049,7 @@
   },
   {
    "path": "tracks/darlington_raceway/lane_orphan_3.bin",
-   "start": "0x836f6da",
+   "start": "0x0836F6DA",
    "size": 2,
    "type": "track",
    "options": {
@@ -4059,7 +4059,7 @@
   },
   {
    "path": "tracks/darlington_raceway/lane_orphan_4.bin",
-   "start": "0x8370f0a",
+   "start": "0x08370F0A",
    "size": 2,
    "type": "track",
    "options": {
@@ -4069,7 +4069,7 @@
   },
   {
    "path": "tracks/darlington_raceway/lane_orphan_5.bin",
-   "start": "0x837277a",
+   "start": "0x0837277A",
    "size": 6306,
    "type": "track",
    "options": {
@@ -4079,7 +4079,7 @@
   },
   {
    "path": "tracks/green_valley/lane_orphan_6.bin",
-   "start": "0x8378608",
+   "start": "0x08378608",
    "size": 26768,
    "type": "track",
    "options": {
@@ -4089,7 +4089,7 @@
   },
   {
    "path": "tracks/green_valley/lane_orphan_7.bin",
-   "start": "0x838116c",
+   "start": "0x0838116C",
    "size": 8900,
    "type": "track",
    "options": {
@@ -4099,7 +4099,7 @@
   },
   {
    "path": "tracks/michigan_international_speedway/lane_orphan_8.bin",
-   "start": "0x83890de",
+   "start": "0x083890DE",
    "size": 2,
    "type": "track",
    "options": {
@@ -4109,7 +4109,7 @@
   },
   {
    "path": "tracks/michigan_international_speedway/lane_orphan_9.bin",
-   "start": "0x838add2",
+   "start": "0x0838ADD2",
    "size": 2,
    "type": "track",
    "options": {
@@ -4119,7 +4119,7 @@
   },
   {
    "path": "tracks/great_canyon/lane_orphan_10.bin",
-   "start": "0x8393eea",
+   "start": "0x08393EEA",
    "size": 2,
    "type": "track",
    "options": {
@@ -4129,7 +4129,7 @@
   },
   {
    "path": "tracks/fuji_port/lane_orphan_11.bin",
-   "start": "0x8398636",
+   "start": "0x08398636",
    "size": 2,
    "type": "track",
    "options": {
@@ -4139,7 +4139,7 @@
   },
   {
    "path": "tracks/fuji_port/lane_orphan_12.bin",
-   "start": "0x839a886",
+   "start": "0x0839A886",
    "size": 2,
    "type": "track",
    "options": {
@@ -4149,7 +4149,7 @@
   },
   {
    "path": "tracks/crawfish_raceway/lane_orphan_13.bin",
-   "start": "0x83a05a6",
+   "start": "0x083A05A6",
    "size": 2,
    "type": "track",
    "options": {
@@ -4159,7 +4159,7 @@
   },
   {
    "path": "tracks/kansas_speedway/lane_orphan_14.bin",
-   "start": "0x83a713e",
+   "start": "0x083A713E",
    "size": 2,
    "type": "track",
    "options": {
@@ -4169,7 +4169,7 @@
   },
   {
    "path": "tracks/asphalt_city/lane_orphan_15.bin",
-   "start": "0x83ae87a",
+   "start": "0x083AE87A",
    "size": 2,
    "type": "track",
    "options": {
@@ -4179,7 +4179,7 @@
   },
   {
    "path": "tracks/asphalt_city/lane_orphan_16.bin",
-   "start": "0x83b0bac",
+   "start": "0x083B0BAC",
    "size": 26644,
    "type": "track",
    "options": {
@@ -4189,7 +4189,7 @@
   },
   {
    "path": "tracks/phoenix_international_raceway/lane_orphan_17.bin",
-   "start": "0x83be97a",
+   "start": "0x083BE97A",
    "size": 2,
    "type": "track",
    "options": {
@@ -4199,7 +4199,7 @@
   },
   {
    "path": "tracks/infogrames_super_speedway/lane_orphan_18.bin",
-   "start": "0x83c387e",
+   "start": "0x083C387E",
    "size": 2,
    "type": "track",
    "options": {

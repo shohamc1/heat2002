@@ -834,20 +834,25 @@ def read_tmx(path):
     return layers, objects
 
 
-def track_layer_files(name, meta=None):
-    """A track's editable files, in a fixed order: the .tmx (tile layers
-    and geometry object layers), the two tile sheets, the two metatile
-    tables, the surface table, and the geometry's binary side files (the
-    spatial indexes, the lane terminator pointers and projScale fixups,
-    the wall cell pool, and the unreferenced authoring leftovers)."""
-    files = [f"{name}.tmx", "tiles_0.png", "tiles_2.png",
-             "metatiles_a", "metatiles_b", "surfaces"]
-    if meta:
-        files += ["wall_cells", "lane_terms", "lane_fixups",
-                  "lane_lengths"]
-        files += [f"lane_cells_{g['slot']}" for g in meta["lanes"]]
-        files += [f"lane_orphan_{i}"
-                  for i in meta.get("orphanParts", [])]
+def track_layer_files(meta, parts):
+    """The editable files of a track with these part blobs, in a fixed
+    order: the .tmx (tile layers and geometry object layers), the two
+    tile sheets, the two metatile tables, the surface table, and the
+    geometry's binary side files (the spatial indexes, the lane
+    terminator pointers and projScale fixups, the wall cell pool, and
+    the unreferenced authoring leftovers). A file whose part the track
+    lacks (track 7's surfaces) is left out, so make never waits on it."""
+    files = [f"{meta['name']}.tmx", "tiles_0.png", "tiles_2.png",
+             "metatiles_a", "metatiles_b"]
+    if "surfaceTable" in parts:
+        files.append("surfaces")
+    if "wall_recs" in parts:
+        files.append("wall_cells")
+    files += ["lane_terms", "lane_fixups"]
+    if "lane_lengths" in parts:
+        files.append("lane_lengths")
+    files += [f"lane_cells_{g['slot']}" for g in meta["lanes"]]
+    files += [f"lane_orphan_{i}" for i in meta.get("orphanParts", [])]
     return files
 
 
@@ -927,7 +932,7 @@ def unpack_track(meta, blobs, out):
             (tmp / fname).rename(out / fname)
     # previews: refreshed when older than every editable file
     stamp = max((out / f).stat().st_mtime
-                for f in track_layer_files(name) if (out / f).exists())
+                for f in track_layer_files(meta, blobs) if (out / f).exists())
     for pname, mpart, tpart in (("metatiles_a.png", "bg3Metatiles", "bg3Tiles"),
                                 ("metatiles_b.png", "bg2Metatiles", "bg2Tiles")):
         if mpart not in blobs:
@@ -950,8 +955,6 @@ def unpack_track(meta, blobs, out):
             px = b"".join(bytes([i & 0xFF]) * 1024 for i in range(values))
             write_indexed_png(p, px, 32 * 16, -(-values // 16) * 32,
                               bytes(colors))
-
-
 
 
 # --- Track geometry -------------------------------------------------------
@@ -1211,10 +1214,6 @@ def build_track(meta, folder, paths, sizes):
             paths[part].write_bytes((folder / fname).read_bytes())
 
 
-
-
-
-
 def pal_asset(asset):
     """The pal asset a tiles sheet's `palette` option names."""
     for other in assets():
@@ -1285,8 +1284,6 @@ def build_tiles(asset):
     path = built(asset)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_bytes(data)
-
-
 
 
 def build_screen(asset):
@@ -1477,16 +1474,13 @@ def song(mid, out):
 
 
 def list_editable():
-    seen = set()
     for asset in assets():
         if asset.get("type") in EDITABLE:
             print(editable(asset).relative_to(ROOT))
-        elif asset.get("type") == "track":
-            name = asset["options"]["track"]
-            if name not in seen:
-                seen.add(name)
-                for f in track_layer_files(tracks_meta()[name]["name"]):
-                    print((EDIT / "tracks" / name / f).relative_to(ROOT))
+    metas = tracks_meta()
+    for name, parts in track_entries().items():
+        for f in track_layer_files(metas[name], parts):
+            print((EDIT / "tracks" / name / f).relative_to(ROOT))
 
 
 def blank():

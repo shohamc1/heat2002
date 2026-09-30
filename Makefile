@@ -255,13 +255,15 @@ $(BUILD)/lib/m4a/m4a_1_high.o: $(BUILD)/lib/m4a/m4a_1.o Makefile
 # editable .pal the way a song builds from its .mid, so the stamp depends
 # on those files: editing one rebuilds its blobs into the ROM.
 ASSETS_JSON := $(wildcard assets/*.json)
+# The scripts extract and blank run: assets.py and the two it imports or calls.
+ASSET_SCRIPTS := scripts/assets.py scripts/track_geometry.py scripts/gen_atan2.py
 ifneq ($(wildcard baserom.gba),)
 ASSET_EDITABLE := $(shell python3 scripts/assets.py list)
 ASSET_TRACKS := $(filter assets/tracks/%,$(ASSET_EDITABLE))
 ASSET_PNGS := $(filter-out $(ASSET_TRACKS),$(filter %.png,$(ASSET_EDITABLE)))
 ASSET_PALS := $(filter-out $(ASSET_TRACKS),$(filter %.pal,$(ASSET_EDITABLE)))
 ASSET_STAMP := $(BUILD)/assets/.extracted
-$(ASSET_STAMP): baserom.gba scripts/assets.py $(ASSETS_JSON) $(ASSET_PNGS) $(ASSET_PALS) \
+$(ASSET_STAMP): baserom.gba $(ASSET_SCRIPTS) $(ASSETS_JSON) $(ASSET_PNGS) $(ASSET_PALS) \
 		$(ASSET_TRACKS)
 	python3 scripts/assets.py extract
 	touch $@
@@ -290,7 +292,7 @@ else
 # No baserom.gba (CI): every asset is zero fill of its listed size, so the
 # code still links at its real addresses. Only check-code can pass.
 ASSET_STAMP := $(BUILD)/assets/.blank
-$(ASSET_STAMP): scripts/assets.py $(ASSETS_JSON)
+$(ASSET_STAMP): $(ASSET_SCRIPTS) $(ASSETS_JSON)
 	python3 scripts/assets.py blank
 	touch $@
 endif

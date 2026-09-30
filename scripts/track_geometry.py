@@ -167,20 +167,27 @@ def verify():
         return rom[addr - ROM_BASE:addr - ROM_BASE + size]
 
     layout = json.loads((ROOT / "assets" / "tracks.json").read_text())
-    meta = layout["tracks"]
-    rm = json.loads(Path("/tmp/nh4b/out/region_map.json").read_text())
-    rm = rm["regions"]
+    # {track index: {part: (ROM address, size)}}, the build's own layout
+    parts = {}
+    for a in layout["assets"]:
+        opts = a.get("options", {})
+        if "part" in opts:
+            track = layout["tracks"][opts["track"]]["index"]
+            parts.setdefault(track, {})[opts["part"]] = \
+                (int(a["start"], 16), a["size"])
 
     bad = []
     fixups_all = {}
     # walls
-    for t in rm["walls"]["tables"]:
-        track = str(t["track"])
-        nv, nc = (t["walls"] - t["verts"]) // 8, t["wallCount"]
-        words = struct.unpack_from(f"<{nv * 2}i", rom,
-                                   t["verts"] - ROM_BASE)
+    for track, p in sorted(parts.items()):
+        if "wall_recs" not in p:
+            continue
+        verts_at, verts_size = p["wall_verts"]
+        words = struct.unpack_from(f"<{verts_size // 4}i", rom,
+                                   verts_at - ROM_BASE)
         verts = list(zip(words[::2], words[1::2]))
-        recs = at(t["walls"], nc * 0x20)
+        recs = at(*p["wall_recs"])
+        nc = len(recs) // 0x20
         for i in range(nc):
             v0, v1, steer = (struct.unpack_from("<2H", recs, i * 0x20)
                              + (recs[i * 0x20 + 0x1C],))
@@ -190,14 +197,15 @@ def verify():
             if got != want:
                 bad.append(("wall", track, i, want.hex(), got.hex()))
     # lanes
-    for g in rm["lanes"]["groups"]:
-        track = str(g["track"])
-        n = g["nPoints"]
-        words = struct.unpack_from(f"<{n * 2}H", rom,
-                                   g["points"] - ROM_BASE)
+    for track, slot, p in sorted((track, int(k[len("lane_segs_"):]), p)
+                                 for track, p in parts.items()
+                                 for k in p if k.startswith("lane_segs_")):
+        points_at, points_size = p[f"lane_points_{slot}"]
+        n = points_size // 4
+        words = struct.unpack_from(f"<{n * 2}H", rom, points_at - ROM_BASE)
         points = list(zip(words[::2], words[1::2]))
-        want = at(g["segments"], g["segmentsSize"])
-        nrec = g["segmentsSize"] // 0x14 - 1  # minus the terminator
+        want = at(*p[f"lane_segs_{slot}"])
+        nrec = len(want) // 0x14 - 1  # minus the terminator
         # the ROM's own chain: the record pairs, from which the skips
         # come (a link whose b is not the next visited point)
         pairs = [struct.unpack_from("<2B", want, i * 0x14)
@@ -214,33 +222,35 @@ def verify():
                 fixups[i] = w[2]  # the authored projScale exceptions
         got, _ = pack_lane_segs(points, skips, fixups, term)
         if got != want:
-            for i in range(g["segmentsSize"] // 0x14):
+            for i in range(len(want) // 0x14):
                 if got[i * 0x14:(i + 1) * 0x14] != \
                         want[i * 0x14:(i + 1) * 0x14]:
-                    bad.append(("lane", track, g["slot"], i,
+                    bad.append(("lane", track, slot, i,
                                 want[i * 0x14:(i + 1) * 0x14].hex(),
                                 got[i * 0x14:(i + 1) * 0x14].hex()))
         if skips:
-            print(f"  lane skips track {track} slot {g['slot']}: {skips}")
+            print(f"  lane skips track {track} slot {slot}: {skips}")
         if fixups:
-            fixups_all.setdefault(track, []).append((g["slot"], fixups))
+            fixups_all.setdefault(track, []).append((slot, fixups))
     # segments
-    for t in rm["segments"]["tables"]:
-        want = at(t["start"], t["size"])
+    for track, p in sorted(parts.items()):
+        if "segs" not in p:
+            continue
+        want = at(*p["segs"])
         got = b""
-        for i in range(t["nSegs"]):
+        for i in range(len(want) // 0x18):
             w = want[i * 0x18:(i + 1) * 0x18]
             got += pack_seg(struct.unpack_from("<2i", w, 0),
                             struct.unpack_from("<2i", w, 8),
                             struct.unpack_from("<H", w, 16)[0], w[0x14])
         if got != want:
-            bad.append(("segs", t["track"], t["size"]))
+            bad.append(("segs", track, len(want)))
     if bad:
         for b in bad[:10]:
             print("MISMATCH", b)
         sys.exit(f"{len(bad)} mismatches")
     print("every derivation matches the ROM byte for byte")
-    for track, groups in sorted(fixups_all.items(), key=lambda kv: int(kv[0])):
+    for track, groups in sorted(fixups_all.items()):
         for slot, fx in groups:
             print(f"  lane fixups track {track} slot {slot}: {fx}")
 
