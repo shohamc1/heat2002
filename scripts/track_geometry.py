@@ -42,16 +42,22 @@ on every record of every track:
 - LaneSeg: the point chain (each point to the next, the last wrapping
   to 0), cumulative startDist/endDist over isqrt(len2),
   invLen = 65536/isqrt(len2), scaleX/Z = C-trunc(65536/d) (0 when the
-  component is 0), projScale = min(255, 65536//len2) — except five
+  component is 0), projScale = min(255, 65536//len2) — except three
   records the authoring tool wrote differently, kept in the per-track
   "lane_fixups" file of (record, value) pairs the build applies after
   the formula. The terminator record's leading 16 bytes are a constant
-  and its last u32 an opaque authoring-tool pointer: both are data,
-  heading the "lane_cells_N" files beside the cell indexes.
-- The spatial indexes (cellGrid + cellLists, walls and lanes) do not
-  regenerate: their pool and grid conventions replay byte-exactly, but
-  the membership rule left no trace we recovered. They stay binary, as
-  "wall_cells" and the tail of each "lane_cells_N".
+  and its last u32 an opaque authoring-tool pointer, kept per lane in
+  the "lane_terms" file. Each lane's total length also lands in its
+  word of "lane_lengths", the word gLaneLengthPtrs points at.
+- The spatial indexes (cellGrid + cellLists, walls and lanes): a 48x48
+  grid of 128-unit cells, each the offset of a terminated list of wall
+  or lane-segment indices. The retail membership rules aren't
+  recoverable exactly, so "wall_cells" and "lane_cells_N" keep the
+  retail indexes, and "cell_index_crc" records the CRC-32 of the
+  geometry each was built for. When the geometry still matches, the
+  build uses the retail index; when it changed, the build rebuilds it:
+  walls by bounding box grown 64 units (a superset of every retail wall
+  index), lanes by nearest segment (see lane_cell_index).
 
 Usage:
     python3 scripts/track_geometry.py verify
@@ -157,6 +163,111 @@ def pack_seg(c1, c2, kind, countdown):
     """One 0x18-byte struct TrackSeg from its two corners."""
     return struct.pack("<4iH2xB3x", c1[0], c1[1], c2[0], c2[1], kind,
                        countdown)
+
+
+# The cell indexes: a 48x48 grid of 128-unit cells, each holding the
+# offset of a terminated index list in a pool of shared lists. The retail
+# membership rules aren't recoverable exactly, so an edited track's
+# indexes are rebuilt with rules that list at least what the game needs.
+CELL, GRID = 128, 48
+
+
+def seg_rect_dist(a, b, x0, y0, x1, y1):
+    """Euclidean distance from segment ab to the rectangle [x0,x1]x[y0,y1]."""
+    def inside(p):
+        return x0 <= p[0] <= x1 and y0 <= p[1] <= y1
+
+    def orient(p, q, r):
+        return (q[0] - p[0]) * (r[1] - p[1]) - (q[1] - p[1]) * (r[0] - p[0])
+
+    def cross(p, q, r, t):
+        return (orient(p, q, r) * orient(p, q, t) <= 0
+                and orient(r, t, p) * orient(r, t, q) <= 0)
+
+    def pt_seg(p, a, b):
+        dx, dy = b[0] - a[0], b[1] - a[1]
+        n = dx * dx + dy * dy
+        t = max(0.0, min(1.0, ((p[0] - a[0]) * dx + (p[1] - a[1]) * dy) / n)) if n else 0.0
+        return math.hypot(p[0] - a[0] - t * dx, p[1] - a[1] - t * dy)
+
+    if inside(a) or inside(b):
+        return 0.0
+    corners = [(x0, y0), (x1, y0), (x1, y1), (x0, y1)]
+    if any(cross(a, b, corners[i], corners[(i + 1) % 4]) for i in range(4)):
+        return 0.0
+    return min(min(pt_seg(c, a, b) for c in corners),
+               min(math.hypot(max(x0 - p[0], 0, p[0] - x1),
+                              max(y0 - p[1], 0, p[1] - y1)) for p in (a, b)))
+
+
+def pack_cell_index(cells, fmt, end):
+    """(lists, grid) for per-cell index lists: each distinct list stored
+    once in the pool with its terminator, the grid giving each cell's
+    offset in pool units (fmt's size: u16 for walls, bytes for lanes)."""
+    pool, at, grid = [], {}, []
+    for lst in cells:
+        key = tuple(lst)
+        if key not in at:
+            at[key] = len(pool)
+            pool += list(key) + [end]
+        grid.append(at[key])
+    if len(pool) > 0xFFFF:
+        sys.exit("a cell index pool outgrew its u16 offsets")
+    return (struct.pack(f"<{len(pool)}{fmt}", *pool),
+            struct.pack(f"<{len(grid)}H", *grid))
+
+
+def wall_cell_index(verts, pairs):
+    """Every wall whose bounding box, grown by 64 units, touches the cell:
+    a superset of every retail wall index (checked on all 12 tracks)."""
+    cells = []
+    for c in range(GRID * GRID):
+        x0, y0 = (c % GRID) * CELL, (c // GRID) * CELL
+        cells.append([i for i, (a, b) in enumerate(pairs)
+                      if min(verts[a][0], verts[b][0]) - 64 <= x0 + CELL
+                      and max(verts[a][0], verts[b][0]) + 64 >= x0
+                      and min(verts[a][1], verts[b][1]) - 64 <= y0 + CELL
+                      and max(verts[a][1], verts[b][1]) + 64 >= y0])
+    return pack_cell_index(cells, "H", 0xFFFF)
+
+
+def lane_cell_index(points, pairs):
+    """For each cell, every lane segment that can be the nearest one to
+    some point in the cell, which is what the AI's lookup needs: a 5x5
+    grid of samples 32 units apart, each keeping the segments within
+    32*sqrt(2) of its own nearest distance. Any point in the cell lies
+    within 16*sqrt(2) of a sample, so its nearest segment is at most
+    twice that further from the sample than the sample's own nearest,
+    and is always kept. Lists are never empty, as in retail."""
+    if len(pairs) > 0xFF:
+        sys.exit(f"a lane has {len(pairs)} segments; its cell lists hold "
+                 "u8 indices, so 255 is the most")
+    def pt_seg(p, a, b):
+        dx, dy = b[0] - a[0], b[1] - a[1]
+        n = dx * dx + dy * dy
+        t = max(0.0, min(1.0, ((p[0] - a[0]) * dx + (p[1] - a[1]) * dy) / n)) if n else 0.0
+        return math.hypot(p[0] - a[0] - t * dx, p[1] - a[1] - t * dy)
+    segs = [(points[a], points[b]) for a, b in pairs]
+    step = CELL // 4
+    slack = math.ceil(step * math.sqrt(2)) + 1
+    reach = math.ceil(CELL * math.sqrt(2)) + 1
+    cells = []
+    for c in range(GRID * GRID):
+        x0, y0 = (c % GRID) * CELL, (c // GRID) * CELL
+        d = [seg_rect_dist(a, b, x0, y0, x0 + CELL, y0 + CELL) for a, b in segs]
+        near = min(d)
+        # candidates: a segment beyond the cell's nearest plus one diagonal
+        # is never the nearest for any point in the cell
+        cand = [i for i, v in enumerate(d) if v <= near + reach]
+        keep = set()
+        for sy in range(5):
+            for sx in range(5):
+                q = (x0 + sx * step, y0 + sy * step)
+                dq = {i: pt_seg(q, *segs[i]) for i in cand}
+                best = min(dq.values())
+                keep.update(i for i, v in dq.items() if v <= best + slack)
+        cells.append(sorted(keep))
+    return pack_cell_index(cells, "B", 0xFF)
 
 
 def verify():

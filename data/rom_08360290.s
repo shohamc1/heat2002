@@ -34,15 +34,19 @@
 @ End embedded Luvdis macros
 @ The link track's walls: a copy of track 7's (purley_park) wall parts,
 @ built from the same editable folder, so one edit changes both GBAs.
+	.align 2, 0
 	.global gUnk_02027810
 gUnk_02027810:
 	.incbin "build/assets/tracks/purley_park/wall_verts.bin"
+	.align 2, 0
 	.global gUnk_02027DB0
 gUnk_02027DB0:
 	.incbin "build/assets/tracks/purley_park/wall_recs.bin"
+	.align 1, 0
 	.global gUnk_020293F0
 gUnk_020293F0:
 	.incbin "build/assets/tracks/purley_park/wall_lists.bin"
+	.align 1, 0
 	.global gUnk_02029CD4
 gUnk_02029CD4:
 	.incbin "build/assets/tracks/purley_park/wall_grid.bin"

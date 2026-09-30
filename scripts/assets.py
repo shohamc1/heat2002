@@ -848,7 +848,7 @@ def track_layer_files(meta, parts):
         files.append("surfaces")
     if "wall_recs" in parts:
         files.append("wall_cells")
-    files += ["lane_terms", "lane_fixups"]
+    files += ["lane_terms", "lane_fixups", "cell_index_crc"]
     if "lane_lengths" in parts:
         files.append("lane_lengths")
     files += [f"lane_cells_{g['slot']}" for g in meta["lanes"]]
@@ -999,6 +999,9 @@ def unpack_track_geometry(meta, blobs):
                          [("steer", steer)]))
         obj_layers.append(("walls", objs))
         files["wall_cells"] = blobs["wall_lists"] + blobs["wall_grid"]
+        crcs = [("walls", blobs["wall_verts"] + blobs["wall_recs"])]
+    else:
+        crcs = []
     lanes = []
     for g in meta["lanes"]:
         slot = g["slot"]
@@ -1013,7 +1016,10 @@ def unpack_track_geometry(meta, blobs):
         props = ([("skips", " ".join(f"{a}-{b}" for a, b in skips))]
                  if skips else [])
         lanes.append((str(slot), pts, props))
-        files[f"lane_cells_{slot}"] = blobs[f"lane_cells_{slot}"]
+        files[f"lane_cells_{slot}"] = (blobs[f"lane_lists_{slot}"]
+                                       + blobs[f"lane_grid_{slot}"])
+        crcs.append((f"lane_{slot}", blobs[f"lane_points_{slot}"]
+                     + blobs[f"lane_segs_{slot}"]))
     if lanes:
         obj_layers.append(("lanes", lanes))
     # per lane: the terminator u32, and the projScale bytes the tool
@@ -1037,6 +1043,10 @@ def unpack_track_geometry(meta, blobs):
                     if segs[i * 0x14 + 2] != got[i * 0x14 + 2]]
         fixups += struct.pack("<BB", slot, len(lane_fix)) + b"".join(lane_fix)
     files["lane_terms"] = b"".join(struct.pack("<I", t) for t in terms)
+    # the geometry each retail cell index was built for; see
+    # build_track_geometry
+    files["cell_index_crc"] = "".join(
+        f"{name} {zlib.crc32(data):08X}\n" for name, data in crcs).encode()
     files["lane_fixups"] = bytes(fixups)
     for i in meta.get("orphanParts", []):
         files[f"lane_orphan_{i}"] = blobs[f"lane_orphan_{i}"]
@@ -1066,6 +1076,17 @@ def read_lane_fixups(folder):
     return out
 
 
+def read_index_crc(folder):
+    """{"walls" or "lane_N": CRC-32} from cell_index_crc: the geometry
+    bytes (vertices and records, or points and segment records) each
+    retail cell index was built for. A missing file matches nothing."""
+    f = folder / "cell_index_crc"
+    if not f.exists():
+        return {}
+    return {name: int(crc, 16) for name, crc in
+            (line.split() for line in f.read_text().splitlines() if line)}
+
+
 def build_track_geometry(meta, folder, paths, sizes, objects):
     """Build the geometry part blobs from the .tmx's object layers and
     the binary side files: every derived field through track_geometry's
@@ -1073,6 +1094,7 @@ def build_track_geometry(meta, folder, paths, sizes, objects):
     the editable files."""
     for path in paths.values():
         path.parent.mkdir(parents=True, exist_ok=True)
+    index_crc = read_index_crc(folder)
     for oname in objects:
         if oname not in ("waypoints", "walls", "lanes"):
             sys.exit(f"{folder}: unknown object layer {oname}")
@@ -1111,10 +1133,20 @@ def build_track_geometry(meta, folder, paths, sizes, objects):
         # or loses a point moves the count with the records
         paths["wall_recs"].with_name("wall_count.bin").write_bytes(
             struct.pack("<I", len(recs) // 0x20))
-        cells = (folder / "wall_cells").read_bytes()
-        grid = sizes["wall_grid"]
-        paths["wall_lists"].write_bytes(cells[:len(cells) - grid])
-        paths["wall_grid"].write_bytes(cells[len(cells) - grid:])
+        if index_crc.get("walls") == zlib.crc32(verts + recs):
+            cells = (folder / "wall_cells").read_bytes()
+            grid = sizes["wall_grid"]
+            lists, grid = cells[:len(cells) - grid], cells[len(cells) - grid:]
+        else:
+            print(f"{folder.name}: the walls changed; rebuilding their "
+                  "cell index", file=sys.stderr)
+            lists, grid = geo.wall_cell_index(
+                [struct.unpack_from("<2i", verts, i)
+                 for i in range(0, len(verts), 8)],
+                [struct.unpack_from("<2H", recs, i)
+                 for i in range(0, len(recs), 0x20)])
+        paths["wall_lists"].write_bytes(lists)
+        paths["wall_grid"].write_bytes(grid)
     terms = list(struct.unpack(
         f"<{len((folder / 'lane_terms').read_bytes()) // 4}I",
         (folder / "lane_terms").read_bytes()))
@@ -1129,12 +1161,21 @@ def build_track_geometry(meta, folder, paths, sizes, objects):
         segs, totals[g["lengthAt"]] = geo.pack_lane_segs(
             pts, parse_skips(dict(objs[str(slot)][2]).get("skips", "")),
             by_lane.get(slot, {}), terms[gi])
-        paths[f"lane_points_{slot}"].write_bytes(
-            struct.pack(f"<{len(pts) * 2}H",
-                        *[c for pt in pts for c in pt]))
+        points = struct.pack(f"<{len(pts) * 2}H",
+                             *[c for pt in pts for c in pt])
+        paths[f"lane_points_{slot}"].write_bytes(points)
         paths[f"lane_segs_{slot}"].write_bytes(segs)
-        paths[f"lane_cells_{slot}"].write_bytes(
-            (folder / f"lane_cells_{slot}").read_bytes())
+        if index_crc.get(f"lane_{slot}") == zlib.crc32(points + segs):
+            cells = (folder / f"lane_cells_{slot}").read_bytes()
+            lists, grid = cells[:-2 * 48 * 48], cells[-2 * 48 * 48:]
+        else:
+            print(f"{folder.name}: lane {slot} changed; rebuilding its "
+                  "cell index", file=sys.stderr)
+            lists, grid = geo.lane_cell_index(
+                pts, [struct.unpack_from("<2B", segs, i)
+                      for i in range(0, len(segs) - 0x14, 0x14)])
+        paths[f"lane_lists_{slot}"].write_bytes(lists)
+        paths[f"lane_grid_{slot}"].write_bytes(grid)
     if "lane_lengths" in paths:
         # each lane's length word is its computed total, so moving a lane's
         # points moves the length the AI and the challenge start read; the
