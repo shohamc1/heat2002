@@ -8,9 +8,8 @@
  * three sound effects), then the 30 songs gSongTable indexes by number.
  * A row names its player's MusicPlayerInfo and track array in EWRAM/IWRAM
  * (symbols.ld) and a song names its header, the label mid2agb gives it in
- * data/sound/sounds.s. The ms and me columns are the players a song's
- * m4aSongNumStart and m4aSongNumStop go through; they carry the same index.
- * The high module has its own pair of tables, in module_tables.c. */
+ * data/sound/sounds.s. The ms column is the player m4aSongNumStart and
+ * m4aSongNumStop use; no code reads me, which repeats it. The high module has its own pair of tables, in module_tables.c. */
 
 const struct MusicPlayer gMPlayTable[5] = {
     { &gBgMusicPlayer, gUnk_02000000, 10, 0 },
