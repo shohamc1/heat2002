@@ -1,5 +1,6 @@
 #include "global.h"
 #include "data.h"
+#include "race_setup_tables.h"
 
 extern const u8 gText_01234[];
 extern const u8 gText_BlankRow4[];
@@ -50,7 +51,7 @@ const s32 gTuneMenuMaxValues[10] = { 1000, 1000, 1000, 1000, 600, 25000, 25000, 
 const s32 gTuneMenuSteps[10] = { 20, 20, 20, 20, 20, 400, 400, 400, 400, 400 };
 // One byte per track: extra seconds added to the pre-race countdown
 // (InitCountdown reads it as u8 at gTrackId).
-const u8 gTrackCountdownExtraSeconds[12] = { 6, 8, 6, 0, 0, 8, 8, 0, 0, 0, 15, 0 };
+const u8 gTrackCountdownExtraSeconds[12] = TRACK_COUNTDOWN_EXTRA_SECONDS;
 // Its users declare it as u8 *x.
 const u32 gUnk_0836533C = (u32)gText_01234;
 // Its users declare it as u8 *x.

@@ -1,5 +1,6 @@
 #include "global.h"
 #include "structs.h"
+#include "race_setup_tables.h"
 
 /* The track-data blob labels data/rom_08345BF8.s defines (EWRAM names):
  * the u16 ones fill this record's pointer fields, the u32-word ones its
@@ -11,6 +12,12 @@ extern u32 gUnk_0201242C[];
 extern u32 gUnk_02018DA0[];
 extern u32 gUnk_02017080[];
 extern u32 gUnk_02013DAC[];
+
+/* Three rows inside gModule_PitLabelBlock (high_module_text.c), named
+ * in symbols.ld. */
+extern const u8 gUnk_0200CF98[]; /* 01234 */
+extern const u8 gUnk_0200CFA0[]; /* a blank row of 4 */
+extern const u8 gUnk_0200CFA4[]; /* a blank row of 32 */
 
 /* no variables.h: it declares gModule_TextLayerMapPtr without const and
    gModule_TrackData as non-const struct Track, which the readers' bytes
@@ -62,3 +69,12 @@ const struct Track gModule_TrackData[1] = {
  * palette and BG2 map, in data/rom_08345BF8.s's slices of the module's
  * track-data blobs. gUnk_0201044C (0x08348ECC) and gUnk_0200D378
  * (0x08345DF8) are in this record's own fragment's tyre-data blob. */
+
+/* ROM 0x0835DCA0-0x0835DCB8: the twins of the main program's
+ * gTrackCountdownExtraSeconds (built from race_setup_tables.h) and the
+ * three text pointers after it, gUnk_0836533C to gUnk_08365344
+ * (src/data/rom_0836524C.c), here pointing at the module's own rows. */
+const u8 gModule_TrackCountdownExtraSeconds[12] = TRACK_COUNTDOWN_EXTRA_SECONDS;
+const u32 gModule_0202522C = (u32)gUnk_0200CF98;
+u8 *const gUnk_02025230 = (u8 *)gUnk_0200CFA0;
+const u32 gUnk_02025234 = (u32)gUnk_0200CFA4;

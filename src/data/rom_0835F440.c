@@ -2,8 +2,8 @@
 #include "structs.h"
 #include "race_setup_tables.h"
 
-/* The track-segment blob label data/rom_0835DCA0.s defines (EWRAM
- * name). */
+/* Track 7's waypoint gates in the module's copy of the main program's
+ * segs parts (data/rom_0835DCB8.s, EWRAM name). */
 extern struct TrackSeg gUnk_02025E20[];
 
 /* The frame lists src/data/rom_083639A8.c defines, and the first
@@ -14,9 +14,8 @@ extern const u8 gModule_0201E748[];
 
 /* High module (link slave) track-segment table (ROM 0x0835F440,
  * EWRAM 0x02025E60): the one row ModuleLoadTrackSegs loads its
- * gModule_TrackSegs from. The segment records themselves live in the
- * module's track-data blob behind gUnk_02025E20
- * (data/rom_0835DCA0.s). */
+ * gModule_TrackSegs from: gUnk_02025E20, track 7's records in the
+ * module's copy of tracks 3-11's segs parts (data/rom_0835DCB8.s). */
 
 const struct TrackSeg *const gModule_TrackSegTables[1] = { gUnk_02025E20 };
 

@@ -1,7 +1,7 @@
 #include "global.h"
 #include "variables.h"
 
-extern u8 gModule_02025220[]; /* 0x02025220 */
+extern u8 gModule_TrackCountdownExtraSeconds[];
 
 void ModuleResetLapTimer(void)
 {
@@ -38,7 +38,7 @@ void ModuleInitCountdown(void)
         gModule_CountdownSeconds = 0x14;
     if (gModule_GameMode[0] == 0) {
         seconds = (u8)(3 - gModule_Options[0]);
-        trackExtra = gModule_02025220;
+        trackExtra = gModule_TrackCountdownExtraSeconds;
         trackExtra += gModule_TrackId;
         seconds += 3;
         gModule_CountdownSeconds = *trackExtra + seconds;

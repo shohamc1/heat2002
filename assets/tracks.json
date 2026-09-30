@@ -2048,6 +2048,105 @@
    }
   },
   {
+   "path": "tracks/michigan_international_speedway/module_segs.bin",
+   "start": "0x0835DCB8",
+   "size": 648,
+   "type": "copy",
+   "options": {
+    "sources": [
+     "build/assets/tracks/michigan_international_speedway/segs.bin"
+    ]
+   }
+  },
+  {
+   "path": "tracks/great_canyon/module_segs.bin",
+   "start": "0x0835DF40",
+   "size": 1152,
+   "type": "copy",
+   "options": {
+    "sources": [
+     "build/assets/tracks/great_canyon/segs.bin"
+    ]
+   }
+  },
+  {
+   "path": "tracks/fuji_port/module_segs.bin",
+   "start": "0x0835E3C0",
+   "size": 816,
+   "type": "copy",
+   "options": {
+    "sources": [
+     "build/assets/tracks/fuji_port/segs.bin"
+    ]
+   }
+  },
+  {
+   "path": "tracks/crawfish_raceway/module_segs.bin",
+   "start": "0x0835E6F0",
+   "size": 432,
+   "type": "copy",
+   "options": {
+    "sources": [
+     "build/assets/tracks/crawfish_raceway/segs.bin"
+    ]
+   }
+  },
+  {
+   "path": "tracks/purley_park/module_segs.bin",
+   "start": "0x0835E8A0",
+   "size": 648,
+   "type": "copy",
+   "options": {
+    "sources": [
+     "build/assets/tracks/purley_park/segs.bin"
+    ]
+   }
+  },
+  {
+   "path": "tracks/kansas_speedway/module_segs.bin",
+   "start": "0x0835EB28",
+   "size": 432,
+   "type": "copy",
+   "options": {
+    "sources": [
+     "build/assets/tracks/kansas_speedway/segs.bin"
+    ]
+   }
+  },
+  {
+   "path": "tracks/asphalt_city/module_segs.bin",
+   "start": "0x0835ECD8",
+   "size": 912,
+   "type": "copy",
+   "options": {
+    "sources": [
+     "build/assets/tracks/asphalt_city/segs.bin"
+    ]
+   }
+  },
+  {
+   "path": "tracks/phoenix_international_raceway/module_segs.bin",
+   "start": "0x0835F068",
+   "size": 336,
+   "type": "copy",
+   "options": {
+    "sources": [
+     "build/assets/tracks/phoenix_international_raceway/segs.bin"
+    ]
+   }
+  },
+  {
+   "path": "tracks/infogrames_super_speedway/module_segs.bin",
+   "start": "0x0835F1B8",
+   "size": 648,
+   "type": "copy",
+   "options": {
+    "sources": [
+     "build/assets/tracks/infogrames_super_speedway/segs.bin"
+    ]
+   }
+  },
+  {
    "path": "tracks/purley_park/module_wall_verts.bin",
    "start": "0x08360290",
    "size": 1440,

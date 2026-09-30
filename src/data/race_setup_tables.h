@@ -6,7 +6,9 @@
  * the high module's at 0x0835F444-0x0835F894, 0x0835F8A0-0x08360100 and
  * 0x0836012C-0x08360280 (src/data/rom_0835F440.c, rom_0835F8A0.c,
  * rom_0835FBFC.c and rom_08360100.c), each linked into its own image.
- * The module holds track 7's start-grid row only. One macro per table, so one edit changes both GBAs. The
+ * The module holds track 7's start-grid row only. One table comes from
+ * elsewhere: TRACK_COUNTDOWN_EXTRA_SECONDS, the main program's in
+ * src/data/rom_0836524C.c and the module's in rom_0835DC38.c. One macro per table, so one edit changes both GBAs. The
  * tables' names, comments and readers live in those files. */
 
 #define TIRE_GRIP_DEFAULTS \
@@ -211,5 +213,7 @@
 #define UNK_08367C2E { 10, 7, 7, 4, 3 }
 #define PIT_STOP_TIRE_SERVICE_TIMES { 12800, 6400, 6400, 256 }
 #define PIT_STOP_REPAIR_TIMES { 12800, 256 }
+
+#define TRACK_COUNTDOWN_EXTRA_SECONDS { 6, 8, 6, 0, 0, 8, 8, 0, 0, 0, 15, 0 }
 
 #endif
