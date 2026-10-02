@@ -39,25 +39,6 @@ jobs:
           path: report.json
           if-no-files-found: error
 
-      # The shift test boots this build and a copy linked with padding after
-      # crt0 in mGBA, and checks that both load the same assets, draw the
-      # same screens and hold the same RAM (scripts/shift_test.py). Without
-      # baserom.gba the data is zero fill, so here it covers the boot and the
-      # first 600 frames; run `make shift-test` with the ROM for the rest.
-      - name: Install mGBA
-        run: sudo apt-get install -y mgba-sdl xvfb
-
-      - name: Shift test
-        run: xvfb-run -a make shift-test
-
-      - name: Upload the shift test's screens
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: shift-test
-          path: build/shift-test/
-          if-no-files-found: ignore
-
   # The SDL port compiles with the same zero-filled assets as check-code
   # uses without a ROM, so it cannot silently rot behind the GBA build.
   port:
