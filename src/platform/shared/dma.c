@@ -98,12 +98,12 @@ void DmaSet(int dmaNum, const void *src, void *dest, u32 control)
     // Regular GBA order
     (&REG_DMA0SAD)[dmaNum * 3] = (uintptr_t)src;
     (&REG_DMA0DAD)[dmaNum * 3] = (uintptr_t)dest;
-    (&REG_DMA0CNT)[dmaNum * 3] = (size_t)control;
+    (&REG_DMA0CNT)[dmaNum * 3] = control;
 #else
     // "64 bit" order
     (&REG_DMA0SAD)[dmaNum] = (uintptr_t)src;
     (&REG_DMA0DAD)[dmaNum] = (uintptr_t)dest;
-    (&REG_DMA0CNT)[dmaNum] = (size_t)control;
+    (&REG_DMA0CNT)[dmaNum] = control;
 #endif
 
     struct DMATransfer *dma = &DMAList[dmaNum];

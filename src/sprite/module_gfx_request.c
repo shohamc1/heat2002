@@ -9,7 +9,7 @@ struct ObjTileCacheEntry *ModuleRequestObjTiles16(GfxSrc gfx)
 
     entry = gModule_ObjTileCache16;
     for (i = 0; i != 24; i++, entry++) {
-        if (entry->gfx == gfx) {
+        if (entry->gfx == (GfxAddr)gfx) {
             entry->age = 1;
             return entry;
         }
@@ -20,7 +20,7 @@ struct ObjTileCacheEntry *ModuleRequestObjTiles16(GfxSrc gfx)
         if (entry->age == 0) {
             entry->age = 1;
             entry->pending = 1;
-            entry->gfx = gfx;
+            entry->gfx = (GfxAddr)gfx;
             return entry;
         }
     }
@@ -35,7 +35,7 @@ struct ObjTileCacheEntry *ModuleRequestObjTiles2(GfxSrc gfx)
 
     entry = gModule_ObjTileCache2;
     for (i = 0; i != 0x20; i++, entry++) {
-        if (entry->gfx == gfx) {
+        if (entry->gfx == (GfxAddr)gfx) {
             entry->age = 1;
             return entry;
         }
@@ -46,7 +46,7 @@ struct ObjTileCacheEntry *ModuleRequestObjTiles2(GfxSrc gfx)
         if (entry->age == 0) {
             entry->age = 1;
             entry->pending = 1;
-            entry->gfx = gfx;
+            entry->gfx = (GfxAddr)gfx;
             return entry;
         }
     }
@@ -61,7 +61,7 @@ struct ObjTileCacheEntry *ModuleRequestObjTiles8(GfxSrc gfx)
 
     entry = gModule_ObjTileCache8;
     for (i = 0; i != 20; i++, entry++) {
-        if (entry->gfx == gfx) {
+        if (entry->gfx == (GfxAddr)gfx) {
             entry->age = 1;
             return entry;
         }
@@ -72,7 +72,7 @@ struct ObjTileCacheEntry *ModuleRequestObjTiles8(GfxSrc gfx)
         if (entry->age == 0) {
             entry->age = 1;
             entry->pending = 1;
-            entry->gfx = gfx;
+            entry->gfx = (GfxAddr)gfx;
             return entry;
         }
     }
@@ -87,7 +87,7 @@ struct ObjTileCacheEntry *ModuleRequestObjTiles4(GfxSrc gfx)
 
     entry = gModule_ObjTileCache4;
     for (i = 0; i != 0x10; i++, entry++) {
-        if (entry->gfx == gfx) {
+        if (entry->gfx == (GfxAddr)gfx) {
             entry->age = 1;
             return entry;
         }
@@ -98,7 +98,7 @@ struct ObjTileCacheEntry *ModuleRequestObjTiles4(GfxSrc gfx)
         if (entry->age == 0) {
             entry->age = 1;
             entry->pending = 1;
-            entry->gfx = gfx;
+            entry->gfx = (GfxAddr)gfx;
             return entry;
         }
     }
@@ -113,7 +113,7 @@ struct ObjTileCacheEntry *ModuleRequestObjTiles1(GfxSrc gfx)
 
     entry = gModule_ObjTileCache1;
     for (i = 0; i != 0x20; i++, entry++) {
-        if (entry->gfx == gfx) {
+        if (entry->gfx == (GfxAddr)gfx) {
             entry->age = 1;
             return entry;
         }
@@ -124,7 +124,7 @@ struct ObjTileCacheEntry *ModuleRequestObjTiles1(GfxSrc gfx)
         if (entry->age == 0) {
             entry->age = 1;
             entry->pending = 1;
-            entry->gfx = gfx;
+            entry->gfx = (GfxAddr)gfx;
             return entry;
         }
     }

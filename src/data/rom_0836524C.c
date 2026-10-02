@@ -1,5 +1,4 @@
 #include "global.h"
-#include "data.h"
 #include "race_setup_tables.h"
 
 extern const u8 gText_01234[];
@@ -92,7 +91,8 @@ const u32 gUnk_0836533C = (u32)gText_01234;
 #else
 const u8 *const gUnk_0836533C = gText_01234;
 #endif
-// Its users declare it as u8 *x.
+// Its users declare it as u8 *x. This file skips data.h, whose GBA
+// extern drops the outer const (see there).
 const u8 *const gTextPadCharPtr = gText_BlankRow4;
 // Its users declare it as u8 *x.
 #if PLATFORM_GBA

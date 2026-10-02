@@ -87,7 +87,7 @@ extern struct CommRegs gIsland_SioTransfer;
 extern struct ObjTileCacheEntry gObjTileCache4[];
 extern const u16 gModule_AiDriverGearPowerTable[];
 extern u8 gProgressFlags[];
-extern u32 *gModule_LinkMarkerFrameLists[];
+extern const GfxSrc *gModule_LinkMarkerFrameLists[];
 extern u8 gUnk_0202EDC8[];
 extern u8 gLinkSyncByte;
 extern u16 gUnk_02022DE4;

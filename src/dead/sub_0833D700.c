@@ -25,7 +25,7 @@ u32 sub_0833D700(u32 a, u32 b, s32 c, u16 d)
     p->field8 = c;
     p->fieldA = c;
     p->fieldC = d;
-    gModule_SecondOamSortCursor = (u32)(p + 1);
+    gModule_SecondOamSortCursor = (u8 *)(p + 1);
     gUnk_0203B600 = gUnk_0203B600 + 1;
     gUnk_0203B604 = gUnk_0203B604 + 1;
     return 1;

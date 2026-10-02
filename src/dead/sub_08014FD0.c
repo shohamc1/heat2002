@@ -48,7 +48,7 @@ u8 sub_08015060(void)
     v = 0;
     LoadMenuScreen(0, (u16 *)buf);
     sub_08015000(0);
-    FadeToBrightenedPalette((u32)buf, 0x0F);
+    FadeToBrightenedPalette(buf, 0x0F);
     sel = 0x40;
     do {
         ReadKeys();
@@ -71,7 +71,7 @@ void sub_080150F4(void)
 {
     u8 buf[0x28];
     u16 m, s, f;
-    u32 *walk;
+    struct Car **walk;
     u8 *ptr;
     u16 *pm, *ps, *pf;
     u8 i;
@@ -118,7 +118,7 @@ u8 sub_08015244(void)
     SortCarsByTime();
     LoadMenuScreen(0, (u16 *)buf);
     sub_080150F4();
-    FadeToBrightenedPalette((u32)buf, 0x0F);
+    FadeToBrightenedPalette(buf, 0x0F);
     sel = 0x40;
     do {
         ReadKeys();

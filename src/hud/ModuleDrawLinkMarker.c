@@ -4,7 +4,7 @@
 
 void ModuleDrawLinkMarker(u32 x, u32 y, u32 carIdx)
 {
-    u32 *frames;
+    const GfxSrc *frames;
     struct ObjTileCacheEntry *sprite;
     u32 attr2;
 

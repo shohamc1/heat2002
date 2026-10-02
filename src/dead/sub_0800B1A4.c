@@ -11,7 +11,7 @@ struct EntityB1A4
 };
 void sub_0800B1A4(struct EntityB1A4 *e)
 {
-  u32 *spr;
+  struct ObjTileCacheEntry *spr;
   u32 idx;
   u32 attr;
   u32 t;
@@ -45,8 +45,8 @@ void sub_0800B1A4(struct EntityB1A4 *e)
         attr = x << 0x10;
         attr = attr | new_var;
         attr = attr | (0x80 << 0x18);
-        t = (RequestObjPalette((u32) gSplashSpritePalette) << 12) | 0x400;
-        arg1 = spr[4] | t;
+        t = (RequestObjPalette(gSplashSpritePalette) << 12) | 0x400;
+        arg1 = spr->tileIndex | t;
         AddOamEntry(attr, arg1);
       }
     }
@@ -77,8 +77,8 @@ void sub_0800B1A4(struct EntityB1A4 *e)
     e->unk18 = e->unk18 + 1;
     if (e->unk18 == 0x7A)
     {
-      RemoveTask((u32)e);
-      FreeTask((u32)e);
+      RemoveTask(e);
+      FreeTask(e);
     }
     if (gRaceStarted == 0)
     {

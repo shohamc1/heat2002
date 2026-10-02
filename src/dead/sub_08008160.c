@@ -14,7 +14,7 @@ extern u8 gText_FormatDCommaD[];
 
 u8 GetTrackTileType(s32 x, s32 y);
 u32 WorldToScreen(s32 x, s32 y, s32 *out);
-void sub_08007A7C(s32 a1, s32 a2, u32 a3, u32 a4, u32 a5);
+void sub_08007A7C(s32 a1, s32 a2, GfxSrc a3, const void *a4, u8 a5);
 void sub_08017594(u8 *a, u8 *b, s32 c, s32 d);
 
 void sub_08008160(void)
@@ -26,7 +26,7 @@ void sub_08008160(void)
     s32 cx;
     u8 v;
     u8 w;
-    u32 pal;
+    const void *pal;
     s32 t;
     s32 u;
     u32 flag2;
@@ -57,7 +57,7 @@ void sub_08008160(void)
                 out[1] = u + gCamera[7];
                 out[0] += 0xA;
                 out[1] += 8;
-                pal = (u32)gTrackTileSpritePalette;
+                pal = gTrackTileSpritePalette;
                 sub_08007A7C(out[0] << 16, out[1] << 16, gTrackTileSpriteFrames[v], pal, 0);
                 if (i > cx - 2 && i < cx + 2 && j > cy - 2 && j < cy + 2)
                 {

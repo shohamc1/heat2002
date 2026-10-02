@@ -3,9 +3,9 @@
 #include "car.h"
 #include "functions.h"
 
-extern u32 *gModule_DriverCarSpriteHalfATables[];
-extern u32 *gModule_DriverCarSpriteHalfBTables[];
-extern u32 *gModule_DriverNumberFrameLists[];
+extern const GfxSrc *const gModule_DriverCarSpriteHalfATables[];
+extern const GfxSrc *const gModule_DriverCarSpriteHalfBTables[];
+extern const GfxSrc *const gModule_DriverNumberFrameLists[];
 extern u8 gModule_DriverNumberPalette[];
 
 void ModuleDrawCar(struct Car *car, u8 idx)
@@ -16,7 +16,7 @@ void ModuleDrawCar(struct Car *car, u8 idx)
     u16 y;
     u8 flip;
     s32 k;
-    u32 *row;
+    const GfxSrc *row;
 
     if (ModuleWorldToScreen(car->posX, car->posZ, pos) == 0)
         return;
@@ -52,7 +52,7 @@ void ModuleDrawCar(struct Car *car, u8 idx)
         u8 *p162;
         register u32 a PIN(r4);
         u32 b;
-        u32 **tbl;
+        const GfxSrc *const *tbl;
 
         tbl = gModule_DriverCarSpriteHalfBTables;
         p162 = &car->driverId;

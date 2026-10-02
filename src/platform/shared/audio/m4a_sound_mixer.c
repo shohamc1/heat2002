@@ -21,11 +21,12 @@
 // field this file reads, on the host's 8-byte pointers as on the GBA's
 // 4-byte ones).
 //
-// sa2's event_goto/patt/rept read sizeof(uintptr_t) bytes little-endian,
-// which is exactly what this tree's mPtr song data stores hosted; the
-// GBA asm's 4-byte reads are the same little-endian order.
+// sa2's event_goto/patt/rept read an absolute pointer from the stream.
+// This tree's hosted songs store an offset from the field instead
+// (mRelPtr), so the unaligned fields need no load-time relocation.
 
 #include <stddef.h>
+#include <string.h>
 
 #include "global.h"
 #include "gba/defines.h"
@@ -327,7 +328,7 @@ static void GenerateAudio(struct SoundInfo *mixer, struct SoundChannel *chan, st
         for (s32 i = 0; i < samplesPerFrame; i++, pcmBuffer += 2) {
             // Use linear interpolation to calculate a value between the current sample in the wav
             // and the next sample. Also cancel out the 9.23 stuff
-            s32 sample = fp8_24_to_u32((long long)finePos * m) + b;
+            s32 sample = (s32)fp8_24_to_u32((long long)finePos * m) + b;
 
             pcmBuffer[1] += (sample * envR);
             pcmBuffer[0] += (sample * envL);
@@ -419,17 +420,15 @@ void ply_fine(struct MusicPlayerInfo *unused, struct MusicPlayerTrack *track)
     track->flags = 0;
 }
 
-// Sets the track's cmdPtr to the specified address.
+// Sets the track's cmdPtr to the specified address. The stream stores it
+// as an offset from the field (mRelPtr, asm/macros/portable.inc).
 void ply_goto(struct MusicPlayerInfo *unused, struct MusicPlayerTrack *track)
 {
     u8 *cmdPtr = track->cmdPtr;
-    uintptr_t addr = 0;
-    for (size_t i = sizeof(uintptr_t) - 1; i > 0; i--) {
-        addr |= cmdPtr[i];
-        addr <<= 8;
-    }
-    addr |= *cmdPtr;
-    track->cmdPtr = (u8 *)addr;
+    intptr_t offset;
+
+    memcpy(&offset, cmdPtr, sizeof(offset));
+    track->cmdPtr = cmdPtr + offset;
 }
 
 // Sets the track's cmdPtr to the specified address after backing up its current position.

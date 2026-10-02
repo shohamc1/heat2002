@@ -203,7 +203,7 @@ void VBlankIntrWait(void)
                     shots = malloc(nshots * sizeof(u32));
                     nshots = 0;
                     for (tok = strtok(dup, ","); tok != NULL; tok = strtok(NULL, ","))
-                        shots[nshots++] = strtoul(tok, NULL, 0);
+                        shots[nshots++] = (u32)strtoul(tok, NULL, 0);
                     free(dup);
                 } else {
                     nshots = 0;

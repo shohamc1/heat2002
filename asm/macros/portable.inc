@@ -86,6 +86,17 @@
 #endif
 .endm
 
+@ A GOTO or PATT target in a song's command stream. The fields sit
+@ at odd offsets, so the hosted build stores the target as an offset from
+@ the field, which needs no relocation; ply_goto adds it back.
+.macro mRelPtr value
+#if PLATFORM_GBA
+    .4byte \value
+#else
+    .quad \value - .
+#endif
+.endm
+
 @ Align to the pointer width, hosted builds only. The GBA branch must emit
 @ nothing: tools/tmc's voice macros pack their pointer fields unaligned,
 @ and any padding would move every later byte of the voice groups.

@@ -70,6 +70,10 @@ u8 LinkPauseConfirmMenu(void)
         *blink = (u8)(*blink + 1);
         ReadKeys();
     }
+#if PORTABLE
+    /* The ROM falls off the end with linkState still in r0. */
+    return linkState;
+#endif
 }
 
 u8 LinkPauseMenu(void)

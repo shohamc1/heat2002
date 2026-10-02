@@ -51,6 +51,10 @@ u8 DrawTrackSelect(u8 a, u8 b)
             Draw32x32Sprite(208, 72, 160 << 2);
     }
     gTrackSelectFrameCount++;
+#if PORTABLE
+    /* The ROM falls off the end; no caller reads the result. */
+    return 0;
+#endif
 }
 
 u8 TrackSelectMenu(u8 a, u8 b)

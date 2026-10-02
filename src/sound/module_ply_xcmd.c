@@ -22,7 +22,8 @@
         (var) |= byte;                 \
     }
 
-void _08344B84(u32 arg0, u32 arg1, u32 arg2);
+void _08344B84(struct MusicPlayerInfo *mplayInfo,
+               struct MusicPlayerTrack *track, MPlayFunc target);
 /* ply_xcmd, high-module copy. Its xcmd table lives at 0x0200C910 and the
  * indirect call goes through the high module's _call_via_r2 stub at
  * 0x08344B84: calling _08344B84(a, b, target) leaves a in r0, b in r1 and
@@ -133,7 +134,7 @@ void ModulePlyXcmd(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *t
 }
 
 void ModulePlyXxx(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
-{ _08344B84(mplayInfo, track, (u32)gModule_MPlayJumpTable[0]); }
+{ _08344B84(mplayInfo, track, gModule_MPlayJumpTable[0]); }
 
 void ModulePlyXwave(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
 {

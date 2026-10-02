@@ -15,7 +15,7 @@ void sub_08016330(u8 x)
     u16 *p;
     u16 i;
     u8 j, sel, cnt;
-    u8 *q;
+    const u8 *q;
 
     p = (u16 *)0x06008000;
     FadeToColor(0, 0xF);
@@ -35,7 +35,7 @@ void sub_08016330(u8 x)
         DrawTextCenteredHighlight(gCreditTexts[i + j - 0x14].text, (i + j - 0x14) % 32,
                      gCreditTexts[i + j - 0x14].highlight);
     }
-    FadeToBrightenedPalette((u32)buf, 0xF);
+    FadeToBrightenedPalette(buf, 0xF);
     for (i = 0; i <= 0x13; i++)
         VBlankIntrWait();
     for (;;) {

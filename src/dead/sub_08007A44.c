@@ -20,11 +20,11 @@ u32 sub_08007A44(u32 a0, u32 a1, u32 count)
     return count;
 }
 
-void sub_08007A7C(s32 a1, s32 a2, u32 a3, u32 a4, u8 a5)
+void sub_08007A7C(s32 a1, s32 a2, GfxSrc a3, const void *a4, u8 a5)
 {
     u32 dx;
     s32 dy;
-    u32 *q;
+    struct ObjTileCacheEntry *q;
     u32 attr;
     u32 t;
     u32 v;
@@ -40,7 +40,7 @@ void sub_08007A7C(s32 a1, s32 a2, u32 a3, u32 a4, u8 a5)
             attr = (dy & 0xFF) | ((dx & 0x1FF) << 16) | 0x40000000;
             v = v >> 12;
             v = v | 0x800;
-            t = *(u32 *)((u32)q + 0x10) | v;
+            t = q->tileIndex | v;
             if (a5 != 0)
                 attr |= 0x10000000;
             AddOamEntry(attr, t);

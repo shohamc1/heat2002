@@ -27,9 +27,14 @@ void sub_08344B64(const void *src, void *dest, u32 control);
 #define GBA_CPUFASTSET sub_08016E0C
 #endif
 
-#define CpuSet GBA_CPUSET
-#define RLUnCompVram GBA_RLUNCOMPVRAM
-#define CpuFastSet GBA_CPUFASTSET
+// The casts take the integer addresses the game passes (VRAM, PLTT,
+// IWRAM_START + n) without a warning; they emit no code.
+#define CpuSet(src, dest, control) \
+    GBA_CPUSET((const void *)(src), (void *)(dest), control)
+#define RLUnCompVram(src, dest) \
+    GBA_RLUNCOMPVRAM((const void *)(src), (void *)(dest))
+#define CpuFastSet(src, dest, mode) \
+    GBA_CPUFASTSET((const void *)(src), (void *)(dest), mode)
 #else
 // The port ships C versions of the BIOS calls the game uses
 // (src/platform/libagbsyscall.c, after sa2), which syscall.h

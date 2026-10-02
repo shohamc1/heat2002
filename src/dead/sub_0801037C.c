@@ -17,7 +17,7 @@ void sub_0801037C(void)
     vu32 *p;
     u16 v;
 
-    sub_08016E10((u32)gTextLayerTiles, (u32)gUnk_0600C000, 0x1000);
+    sub_08016E10(gTextLayerTiles, gUnk_0600C000, 0x1000);
     WaitForVBlank();
     r = &REG_BG2CNT;
     *r = 0x1081;
@@ -25,7 +25,7 @@ void sub_0801037C(void)
     *r = 0x1C0D;
     r = &REG_DISPCNT;
     *r = 0x540;
-    sub_08016E10((u32)gLicensedByNintendoBgGfx, VRAM, 0x4000);
+    sub_08016E10(gLicensedByNintendoBgGfx, (void *)VRAM, 0x4000);
     sub_08010714();
     i = 0;
     p = gTextLayerMapPtr;
@@ -34,8 +34,8 @@ void sub_0801037C(void)
         *(u16 *)(p[0] + i * 2) = v;
         i++;
     } while (i != 0x380);
-    sub_08016E10((u32)gLicensedByNintendoPalette, (u32)buf, 0x100);
-    FadeToBrightenedPalette((u32)buf, 0xF);
+    sub_08016E10(gLicensedByNintendoPalette, buf, 0x100);
+    FadeToBrightenedPalette(buf, 0xF);
     WaitFrames(0xB4);
     FadeToColor(0, 0xF);
 }

@@ -66,7 +66,7 @@ u8 sub_08014BA4(void)
     UpdateSprites();
     gVBlankWorkDone = v;
     WaitForVBlank();
-    FadeToBrightenedPalette((u32)buf, 0x0F);
+    FadeToBrightenedPalette(buf, 0x0F);
     sel = 0x40;
     w = 0;
     do {

@@ -89,6 +89,10 @@ u32 DrawTeamSelect(u8 teamId)
         Draw64x64Sprite(16, 48, 0);
         Draw64x64Sprite(80, 48, 128);
     }
+#if PORTABLE
+    /* The ROM falls off the end; no caller reads the result. */
+    return 0;
+#endif
 }
 
 u8 TeamSelectMenu(void)

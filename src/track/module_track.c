@@ -1,10 +1,12 @@
+/* Before the includes, so gba/compat.h takes the high module's copy. */
+#define GBA_CPUSET sub_08344B64
+
 #include "global.h"
 #include "functions.h"
 #include "variables.h"
 #include "tilemap.h"
 #include "gba/compat.h"
 
-#define GBA_CPUSET sub_08344B64
 /* struct Track comes from include/structs.h via variables.h; it is the
    record type of gModule_TrackData, also from variables.h. */
 extern u16 gUnk_02022428[];
@@ -24,8 +26,8 @@ void ModuleLoadTrackTiles(u8 idx)
     base = (u8 *)gModule_TrackData;
     off = idx * 100;
     p = base + 4;
-    sub_08344B64(*(u32 *)(p + off), VRAM, 0x4000);
-    sub_08344B64(*(u32 *)(base + off), BG_CHAR_ADDR(2), 0x2000);
+    CpuSet(*(u32 *)(p + off), VRAM, 0x4000);
+    CpuSet(*(u32 *)(base + off), BG_CHAR_ADDR(2), 0x2000);
     gUnk_02039294 = 0;
     gUnk_02039248 = 0;
     gUnk_020392A4 = 0;

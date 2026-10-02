@@ -1,11 +1,12 @@
+/* Before the includes, so gba/compat.h takes the high module's copy. */
+#define GBA_CPUSET sub_08344B64
+
 #include "global.h"
 #include "functions.h"
 #include "gba/compat.h"
 #include "gba/m4a_internal.h"
 #include "gba/defines.h"
 #include "gba/io_reg.h"
-
-#define GBA_CPUSET sub_08344B64
 
 /* m4aSoundVSyncOff (high copy) */
 /* m4aSoundVSyncOn (high copy) */

@@ -4,13 +4,13 @@
 
 
 
-void sub_08342A14(u32 a)
+void sub_08342A14(struct Task *task)
 {
     s32 t;
 
     if (gModule_PaletteFadeActive == 0)
     {
-        t = *(s32 *)(a + 0x18);
+        t = task->timer;
         if (t > 0x2D)
         {
             if (gModule_GameMode == 9)
@@ -25,11 +25,11 @@ void sub_08342A14(u32 a)
                 gModule_GameMode = 5;
             gModule_RaceStarted = 1;
         }
-        *(s32 *)(a + 0x18) = t + 1;
+        task->timer = t + 1;
         if (t + 1 == 0x7A)
         {
-            ModuleRemoveTask(a);
-            ModuleFreeTask(a);
+            ModuleRemoveTask(task);
+            ModuleFreeTask(task);
         }
         if (gModule_RaceStarted == 0)
             ModuleWaitForVBlank();

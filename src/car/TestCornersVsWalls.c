@@ -101,4 +101,8 @@ s32 TestCornersVsWalls(struct CornerSweep *corn, struct SweepBox *box, struct Sw
             }
         }
     }
+#if PORTABLE
+    /* The ROM falls off the end; no caller reads the result. */
+    return 0;
+#endif
 }

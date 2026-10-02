@@ -2,9 +2,9 @@
 #include "functions.h"
 #include "data.h"
 
-void sub_080109C0(u8 *str, u32 attr, u32 pal)
+void sub_080109C0(const u8 *str, u32 attr, u32 pal)
 {
-    u8 *s;
+    const u8 *s;
     u32 a;
     u8 c;
 
@@ -18,7 +18,7 @@ void sub_080109C0(u8 *str, u32 attr, u32 pal)
     }
 }
 
-void sub_080109C0(u8 *str, u32 attr, u32 pal);
+void sub_080109C0(const u8 *str, u32 attr, u32 pal);
 
 void sub_08010A04(u32 a0, u32 a1, u32 a2)
 {

@@ -25,7 +25,7 @@ u32 sub_08004504(u32 a, u32 b, s32 c, u16 d)
     p->field8 = c;
     p->fieldA = c;
     p->fieldC = d;
-    gSecondOamSortCursor = (u32)(p + 1);
+    gSecondOamSortCursor = (u8 *)(p + 1);
     gOamEntryCount = gOamEntryCount + 1;
     gOamAffineCount = gOamAffineCount + 1;
     return 1;

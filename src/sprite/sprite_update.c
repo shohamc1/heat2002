@@ -60,6 +60,10 @@ outer:
     } while (i != 0x3F);
     if (swapped)
         goto outer;
+#if PORTABLE
+    /* The ROM falls off the end; no caller reads the result. */
+    return 0;
+#endif
 }
 
 void FlushSortedSprites(void)

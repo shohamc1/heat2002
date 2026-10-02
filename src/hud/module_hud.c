@@ -67,7 +67,7 @@ void ModuleDrawLowFuelWarning(s32 fuel)
     gUnk_0203B6D8++;
     pos[0] = 170;
     pos[1] = 137;
-    entry = ModuleRequestObjTiles4((u32)gModule_LowFuelWarningGfx);
+    entry = ModuleRequestObjTiles4(gModule_LowFuelWarningGfx);
     if (entry != 0) {
         attr = pos[1] & 0xFF;
         attr |= (pos[0] & 0x1FF) << 16;

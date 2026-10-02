@@ -3,7 +3,7 @@
 
 void ModuleUpdatePaletteFade(void);
 
-void sub_0833D53C(u32 a, u32 b)
+void sub_0833D53C(u16 *a, u32 b)
 {
     u32 i;
 

@@ -6,16 +6,16 @@
 extern u8 gUnk_0203E000;
 
 
-void sub_08342948(u32 a)
+void sub_08342948(struct Task *task)
 {
     gUnk_0203E000 = 1;
     if (gModule_PaletteFadeActive == 0)
     {
         ModuleDrawSpriteText((u8 *)(ModuleGetString(MODULE_MSG_OUT_OF_TIME)), 0x4C, 0x18);
-        if (--*(u32 *)(a + 0x18) == 0)
+        if (--task->timer == 0)
         {
-            ModuleRemoveTask(a);
-            ModuleFreeTask(a);
+            ModuleRemoveTask(task);
+            ModuleFreeTask(task);
             ModuleBeginFadeToColor(0xA, 0);
             ModuleWaitForVBlank();
             REG_DISPCNT &= ~DISPCNT_OBJ_ON;

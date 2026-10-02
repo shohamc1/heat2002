@@ -17,15 +17,8 @@ typedef volatile u32 vu32;
 
 typedef void (*IntrFunc)(void);
 
-/* A graphics-source address handed to the OBJ tile caches. The ROM's
-   callers pass both pointers and raw ROM-table words; the GBA build keeps
-   the u32 the original code used, the hosted build passes real pointers
-   (raw table words ride through as integers, as they do on the GBA). */
-#if PORTABLE
+/* A graphics-source address handed to the OBJ tile caches. */
 typedef const void *GfxSrc;
-#else
-typedef u32 GfxSrc;
-#endif
 
 /* The integer width a ROM-era address takes: u32 on the GBA, where a
    pointer is one word, uintptr_t on a hosted build whose pointers are

@@ -1,3 +1,6 @@
+/* Before the includes, so gba/compat.h takes the high module's copy. */
+#define GBA_CPUSET sub_08344B64
+
 #include "global.h"
 #include "gba/compat.h"
 #include "gba/m4a_internal.h"
@@ -6,8 +9,6 @@
 #include "gba/defines.h"
 #include "gba/io_reg.h"
 #include "functions.h"
-
-#define GBA_CPUSET sub_08344B64
 
 /* SoundInit (high copy) */
 void sub_0833A018(MPlayFunc *jumpTable);

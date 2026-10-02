@@ -1,11 +1,12 @@
+/* Before the includes, so gba/compat.h takes the high module's copy. */
+#define GBA_CPUFASTSET sub_08344B60
+
 #include "global.h"
 #include "gba/defines.h"
 #include "gba/io_reg.h"
 #include "gba/compat.h"
 #include "variables.h"
 #include "functions.h"
-
-#define GBA_CPUFASTSET sub_08344B60
 
 extern u8 gModule_VBlankWorkPhase;
 

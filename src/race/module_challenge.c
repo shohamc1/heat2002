@@ -10,7 +10,6 @@ extern const u8 gModule_BlankRow12_2[];
 extern u8 gUnk_0203DD08;
 extern s32 gUnk_0203DDF8;
 extern u8 gUnk_0203DD30;
-void ModuleClearWaypointSpeedSamples(void);
 
 u8 ModuleIsProgressPointCrossed(s32 point)
 {

@@ -63,4 +63,9 @@ loop:
             goto loop;
         }
     }
+#if PORTABLE
+    /* The ROM falls off the end with FadeToColor's return address in r0,
+       which the caller reads as nonzero. */
+    return 1;
+#endif
 }

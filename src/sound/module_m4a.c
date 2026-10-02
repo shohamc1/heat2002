@@ -1,3 +1,6 @@
+/* Before the includes, so gba/compat.h takes the high module's copy. */
+#define GBA_CPUSET sub_08344B64
+
 #include "global.h"
 #include "gba/compat.h"
 #include "functions.h"
@@ -5,7 +8,6 @@
 #include "variables.h"
 #include "structs.h"
 
-#define GBA_CPUSET sub_08344B64
 /* The cancelling offset preserves the initial base-to-p copy.
    Assigning off = 4 inside the loop keeps base + 4 out of the preheader. */
 void sub_08339C0C(void);

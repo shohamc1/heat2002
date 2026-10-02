@@ -86,11 +86,11 @@ void sub_08344734(void)
 {
 }
 
-extern u32 gModule_CareerDecision[];
+extern const u8 gModule_CareerDecision[];
 extern u32 gModule_StayOnThisTeam[];
 extern u32 gModule_ChooseANewTeam[];
 
-void ModuleDrawBigText(u32 a);
+void ModuleDrawBigText(const u8 *text);
 void sub_0833F3C0(u32 a, u32 b, u32 c);
 
 void sub_08344738(u8 a)
@@ -155,14 +155,14 @@ void sub_08344804(void)
     i = 0;
     do
     {
-        ((struct Unk0202A550 **)gModule_CarOrder)[i] = &gModule_Cars[i];
+        gModule_CarOrder[i] = &gModule_Cars[i];
         i++;
     } while (i != 0x5);
     /* A goto keeps the field-offset setup inside each sort pass. */
 outer:
     {
         swapped = 0;
-        p = (struct Unk0202A550 **)gModule_CarOrder;
+        p = gModule_CarOrder;
         i = 0;
         do
         {

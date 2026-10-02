@@ -180,6 +180,7 @@ void UpdateChallengeTimer(void);
 void ResetChallengeTimer(void);
 s32 GetAverageWaypointSpeed(void);
 void ClearWaypointSpeedSamples(void);
+void ModuleClearWaypointSpeedSamples(void);
 void UpdateChallenge(void);
 void InitRaceCars(u32 a1);
 void ClearPitStopProgressBar(void);
@@ -405,6 +406,9 @@ u32 ComputeProgressDistance(s32 a, u8 b);
 void FinishAllCars(u8 a);
 void sub_08016E10(const void *src, void *dest, u32 control);
 void VBlankIntrWait(void);
+#if !PORTABLE
+void IntrWait(u32 clearFlags, u32 flags);
+#endif
 s32 sub_08017230(s32 a, s32 b);
 s32 sub_080172C8(s32 a, s32 b);
 

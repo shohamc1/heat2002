@@ -52,7 +52,7 @@ void sub_0800BA38(struct EntityBA38 *e)
     e->unk18 = e->unk18 - 1;
     if (e->unk18 == 0)
     {
-        RemoveTask((u32)e);
-        FreeTask((u32)e);
+        RemoveTask(e);
+        FreeTask(e);
     }
 }

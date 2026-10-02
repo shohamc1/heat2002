@@ -26,6 +26,10 @@ u8 DrawDriverSelect(u8 driverIdx)
 #endif
     Draw64x64Sprite(56, 64, 0);
     Draw64x64Sprite(120, 64, 128);
+#if PORTABLE
+    /* The ROM falls off the end; no caller reads the result. */
+    return 0;
+#endif
 }
 
 u8 DriverSelectMenu(void)

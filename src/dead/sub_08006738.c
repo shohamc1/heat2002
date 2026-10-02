@@ -13,7 +13,7 @@ void sub_08006738(u8 *str)
     u8 c;
     u8 ch;
     u16 base;
-    u16 *tile;
+    const u16 *tile;
 
     vp = (vu16 *)0x06008040;
     pal = 0xF000;

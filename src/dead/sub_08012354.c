@@ -7,7 +7,7 @@ void sub_08012354(void)
 
     LoadMenuScreen(4, (u16 *)buf);
     DrawMultiplayerMenu(0);
-    FadeToBrightenedPalette((u32)buf, 0x0F);
+    FadeToBrightenedPalette(buf, 0x0F);
 }
 
 void sub_08012384(void)

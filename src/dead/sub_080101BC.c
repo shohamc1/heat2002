@@ -1,9 +1,10 @@
 #include "global.h"
 #include "functions.h"
+#include "structs.h"
 
-void sub_080101BC(u32 a0, u32 a1, u32 a2, u32 a3, u8 a4)
+void sub_080101BC(u32 a0, u32 a1, GfxSrc a2, const void *a3, u8 a4)
 {
-    u32 *v;
+    struct ObjTileCacheEntry *v;
     u8 idx;
     u32 attr;
     u32 x;
@@ -15,15 +16,15 @@ void sub_080101BC(u32 a0, u32 a1, u32 a2, u32 a3, u8 a4)
     idx = RequestObjPalette(a3);
     attr = (a1 & 0xFF) | ((a0 & 0x1FF) << 16) | 0x80000000;
     x = idx << 12;
-    oam = v[4] | x;
+    oam = v->tileIndex | x;
     if (a4 != 0)
         attr |= 0x10000000;
     AddOamEntry(attr, oam);
 }
 
-void sub_0801021C(u32 a0, u32 a1, u32 a2, u32 a3, u8 a4)
+void sub_0801021C(u32 a0, u32 a1, GfxSrc a2, const void *a3, u8 a4)
 {
-    u32 *v;
+    struct ObjTileCacheEntry *v;
     u8 idx;
     u32 attr;
     u32 x;
@@ -35,7 +36,7 @@ void sub_0801021C(u32 a0, u32 a1, u32 a2, u32 a3, u8 a4)
     idx = RequestObjPalette(a3);
     attr = (a1 & 0xFF) | ((a0 & 0x1FF) << 16) | 0x40000000;
     x = idx << 12;
-    oam = v[4] | x;
+    oam = v->tileIndex | x;
     if (a4 != 0)
         attr |= 0x10000000;
     AddOamEntry(attr, oam);

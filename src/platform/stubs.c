@@ -147,6 +147,8 @@ const u32 RomHeaderGameCode = 0;
    LOADADDR(.island). ROM-range sized so the chunk table's pointers into
    gHighModuleRom stay plain address arithmetic; nothing reads either
    array under PORTABLE (the single-pak path returns before the chunk
-   walk and the island-length subtraction, step 8). */
-const u8 gHighModuleRom[0x08363EE8 - 0x08339780];
-u8 gUnk_08363EE8[0x08364AC8 - 0x08363EE8];
+   walk and the island-length subtraction, step 8). ALIGNED sets the
+   alignment ld64 would otherwise derive from the size, which exceeds
+   what a segment allows. */
+ALIGNED(4) const u8 gHighModuleRom[0x08363EE8 - 0x08339780];
+ALIGNED(4) u8 gUnk_08363EE8[0x08364AC8 - 0x08363EE8];

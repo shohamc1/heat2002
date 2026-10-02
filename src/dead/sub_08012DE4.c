@@ -37,7 +37,7 @@ u8 sub_08012E48(void)
     /* sub_08012DEC: this file's old local prototype differs from
        functions.h; call through the old signature (solved-walls 31). */
     ((void (*)(u8, u8))sub_08012DEC)(0, gChallengeIndex);
-    FadeToBrightenedPalette((u32)buf, 0x0F);
+    FadeToBrightenedPalette(buf, 0x0F);
     sel = 0x40;
     do {
         ReadKeys();
@@ -71,7 +71,7 @@ u8 sub_08012F1C(void)
     LoadMenuScreen(3, (u16 *)buf);
     /* sub_08012EE8: this file's old prototype differs from the matched definition; call through the old one */
     ((void (*)(u8, u8))sub_08012EE8)(0, gChallengeIndex);
-    FadeToBrightenedPalette((u32)buf, 0x0F);
+    FadeToBrightenedPalette(buf, 0x0F);
     sel = 0x40;
     do {
         ReadKeys();
@@ -111,7 +111,7 @@ u8 sub_0801303C(void)
     v = 0;
     LoadMenuScreen(3, (u16 *)buf);
     sub_08012FB0();
-    FadeToBrightenedPalette((u32)buf, 0x0F);
+    FadeToBrightenedPalette(buf, 0x0F);
     sel = 0x40;
     do {
         ReadKeys();
@@ -158,7 +158,7 @@ u8 sub_08013114(void)
     v = 0;
     LoadMenuScreen(3, (u16 *)buf);
     sub_080130C8(0);
-    FadeToBrightenedPalette((u32)buf, 0x0F);
+    FadeToBrightenedPalette(buf, 0x0F);
     sel = 0x40;
     do {
         ReadKeys();
@@ -244,7 +244,7 @@ void sub_080132F8(void)
     gCheatCodeDials[4] = 0;
     LoadMenuScreen(6, (u16 *)buf);
     sub_080131F8(0);
-    FadeToBrightenedPalette((u32)buf, 0xF);
+    FadeToBrightenedPalette(buf, 0xF);
     gCheatMsgBlinkTimer = 0;
     sel = 0x40;
     do {

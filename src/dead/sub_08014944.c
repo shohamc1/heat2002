@@ -29,7 +29,7 @@ u8 sub_080149A4(void)
     v = 0;
     LoadMenuScreen(5, (u16 *)buf);
     sub_08014944(0);
-    FadeToBrightenedPalette((u32)buf, 0x0F);
+    FadeToBrightenedPalette(buf, 0x0F);
     sel = 0x40;
     do {
         ReadKeys();

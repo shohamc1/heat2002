@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 #include "variables.h"
 
 void sub_0800BA38(void *e);
@@ -16,7 +17,7 @@ void sub_0800BAFC(s32 a, s32 b)
         r[1] = 0;
         r[2] = b;
         r[3] = (u32)sub_0800BA38;
-        AddTask((u32)r);
+        AddTask(r);
     }
 }
 

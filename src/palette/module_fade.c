@@ -1,9 +1,10 @@
+/* Before the includes, so gba/compat.h takes the high module's copy. */
+#define GBA_CPUSET sub_08344B64
+
 #include "global.h"
 #include "variables.h"
 #include "functions.h"
 #include "gba/compat.h"
-
-#define GBA_CPUSET sub_08344B64
 
 void ModulePackFadePalette(void);
 extern u16 gModule_PaletteBuffer[];

@@ -72,6 +72,10 @@ PORT_BUILD := build/$(PLATFORM)$(if $(PORT_WINDOWS),-windows)$(if $(filter 1,$(A
 # an unrecognized option, so probe the compiler once and leave it out
 # where it is not accepted.
 WARN_SHORTEN_64_TO_32 := $(shell $(CC_H) -Wshorten-64-to-32 -fsyntax-only -x c /dev/null >/dev/null 2>&1 && echo -Wshorten-64-to-32)
+# K&R function-pointer types such as MPlayFunc and the task callback hold
+# functions of several signatures, as C89 allows; clang flags each call
+# through one. gcc has no such warning, so probe for it the same way.
+NO_WARN_NON_PROTOTYPE := $(shell $(CC_H) -Wdeprecated-non-prototype -fsyntax-only -x c /dev/null >/dev/null 2>&1 && echo -Wno-deprecated-non-prototype)
 CPPFLAGS_H := -I include -DPLATFORM_$(shell echo $(PLATFORM) | tr '[:lower:]' '[:upper:]')=1 \
 	-DPLATFORM_GBA=0 -DPORTABLE=1 $(shell $(SDL2_CONFIG) --cflags 2>/dev/null)
 # A GCC 2.95-era codebase meeting a modern host compiler: the old dialect
@@ -79,7 +83,7 @@ CPPFLAGS_H := -I include -DPLATFORM_$(shell echo $(PLATFORM) | tr '[:lower:]' '[
 # and relies on signed wraparound, as agbcc allowed.
 CFLAGS_H := -O2 -std=gnu89 -fno-strict-aliasing -fwrapv \
 	-Wno-implicit-function-declaration -Wno-pointer-sign -Wno-return-mismatch \
-	-Wno-incompatible-pointer-types $(WARN_SHORTEN_64_TO_32)
+	-Wno-incompatible-pointer-types $(WARN_SHORTEN_64_TO_32) $(NO_WARN_NON_PROTOTYPE)
 
 # Sanitizer build of the port (issue 5 step 9): `make PLATFORM=sdl ASAN=1`
 # compiles every hosted object (game code, platform layer, renderer) and
@@ -703,18 +707,9 @@ port-objects: $(PORT_C_OBJS) $(PORT_DATA_OBJS)
 
 # The link (issue 5 step 5): every hosted object plus the platform
 # layer, linked by c++ so the renderer's C++ runtime comes along. Sound
-# is stubbed this step; the mixer is step 6. On macOS, ld64's chained
-# fixups refuse the songs' inline PATT pointers, mPtr fields the m4a
-# command stream packs at odd offsets (unaligned reads are fine on the
-# host); -no_fixup_chains falls back to classic relocations for them.
-# UNAME_S is set in the ASAN block above; $(SAN_FLAGS) links the
+# is stubbed this step; the mixer is step 6. $(SAN_FLAGS) links the
 # sanitizer runtimes in when ASAN=1.
-ifneq ($(findstring apple,$(PORT_TARGET)),)
-PORT_LDFLAGS := -Wl,-no_fixup_chains
-else
-PORT_LDFLAGS :=
-endif
-PORT_LDFLAGS += $(SAN_FLAGS)
+PORT_LDFLAGS := $(SAN_FLAGS)
 # Windows: link the GCC and C++ runtimes statically, so the .exe needs
 # only SDL2.dll, which the link copies beside it.
 ifneq ($(PORT_WINDOWS),)

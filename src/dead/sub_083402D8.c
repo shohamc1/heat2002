@@ -8,13 +8,13 @@ extern u8 gModule_BlankRow24[];
 
 void sub_083402D8(void)
 {
-    u32 p;
+    const u8 *p;
 
     ModuleDrawText(gModule_BlankRow12, 0x0B, 0x07);
-    p = (u32)gModule_BlankRow24;
+    p = gModule_BlankRow24;
     ModuleDrawText(p, 0x06, 0x09);
     ModuleDrawText(p, 0x06, 0x0A);
-    p = (u32)gModule_BlankRow28;
+    p = gModule_BlankRow28;
     ModuleDrawText(p, 0x06, 0x0B);
     ModuleDrawText(p, 0x0A, 0x0C);
 }
@@ -24,7 +24,7 @@ extern u8 gModule_BlankRow20_2[];
 extern const u8 *const gModule_PitMenuRowLabelTexts[];
 extern const u8 *const gModule_PitMenuTireOptionTexts[];
 extern const u8 *const gModule_PitMenuFuelOptionTexts[];
-extern u32 gModule_PitMenuRepairOptionTexts[];
+extern const u8 *const gModule_PitMenuRepairOptionTexts[];
 extern u8 gUnk_0203D4F0;
 extern u8 gUnk_0203DDE0[];
 

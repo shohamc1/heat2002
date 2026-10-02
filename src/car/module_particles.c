@@ -6,7 +6,7 @@
 void ModuleDraftStreakTask(struct DraftStreak *task);
 void ModuleSkidSmokeTask(struct SkidSmoke *e);
 void ModuleDamageSmokeTask(struct DamageSmoke *e);
-extern u32 gModule_DamageSmokeFrames[];
+extern const u8 *const gModule_DamageSmokeFrames[];
 extern const u8 gModule_SkidSmokePalette[];
 
 void ModuleDummyWallHitHook(s32 cornerX, s32 cornerZ)

@@ -8,7 +8,7 @@ void sub_080064F8(u8 *p, u32 a2, u32 a3, u8 a4)
     u32 off;
     u16 color;
     u8 t;
-    u16 *e;
+    const u16 *e;
     u16 idx;
     u32 c;
 

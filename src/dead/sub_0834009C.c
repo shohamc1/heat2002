@@ -51,13 +51,13 @@ void sub_083400D4(s32 a1, s32 a2, u32 a3, u32 a4, u8 a5)
     }
 }
 
-u32 sub_08340168(u32 ptr)
+u32 sub_08340168(struct Car *car)
 {
-    u32 *p = gModule_CarOrder;
+    struct Car **p = gModule_CarOrder;
     u8 i;
 
     for (i = 0; i != 0x5; i++, p++) {
-        if (*p == ptr)
+        if (*p == car)
             return i;
     }
     return 0x5;
@@ -66,7 +66,7 @@ u32 sub_08340168(u32 ptr)
 extern u8 gModule_RacePointsTable[];
 
 void ModuleUpdateRacePosition(u8 idx);
-u32 sub_08340168(u32 ptr);
+u32 sub_08340168(struct Car *car);
 
 void sub_0834018C(struct Car *a1, u32 a2)
 {
@@ -75,7 +75,7 @@ void sub_0834018C(struct Car *a1, u32 a2)
     s32 t;
 
     ModuleUpdateRacePosition((u8)a2);
-    t = sub_08340168((u32)a1);
+    t = sub_08340168(a1);
     a1->points = a1->points + gModule_RacePointsTable[(u8)t];
     if (a1->lapsLed != 0)
         a1->points += 5;

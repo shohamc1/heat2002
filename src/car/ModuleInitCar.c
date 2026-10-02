@@ -4,9 +4,9 @@
 #include "functions.h"
 
 extern u8 gUnk_0203DCF0;
-extern u32 gModule_DriverGearPowerTables[];
-extern u32 gModule_DriverGearRatioTables[];
-extern u32 gModule_DriverRpmPerSpeedTables[];
+extern const u16 *const gModule_DriverGearPowerTables[];
+extern const u16 *const gModule_DriverGearRatioTables[];
+extern const u16 *const gModule_DriverRpmPerSpeedTables[];
 
 void ModuleInitCar(u8 carIdx, struct Car *car, s32 posX, s32 posZ, u32 heading, u32 unused)
 {
