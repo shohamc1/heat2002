@@ -7,8 +7,7 @@ and so is what every header in include/ declares. A local declaration whose
 normalized signature matches a header's is redundant -- the header can be
 made visible with an include, and the local line deleted. A local
 declaration whose signature differs from the header's is a deliberate
-struct-view prototype (AGENTS.md, "Files, folders, and names") and is left
-alone.
+struct-view prototype and is left alone.
 
 With --check, print only the violations -- extern symbols that more than
 one file declares locally, and local declarations that a header already
@@ -94,7 +93,7 @@ for path in glob.glob("src/**/*.c", recursive=True):
     for kind, name, sig in externs:
         types[kind, name][sig] += 1
         files[kind, name].add(path)
-    # Dead files are frozen (AGENTS.md, "Ignore everything in src/dead/"):
+    # Dead files are frozen:
     # they cannot be edited to satisfy the header rule, so it skips them.
     if path.startswith("src/dead/"):
         continue

@@ -1,6 +1,6 @@
 name: build
 
-on: [push, pull_request]
+on: [push, pull_request, workflow_dispatch]
 
 jobs:
   match:
@@ -26,6 +26,18 @@ jobs:
       # nascar-heat.code.sha1: the retail ROM with those ranges zeroed.
       - name: Build and verify every byte outside the extracted assets
         run: make -j"$(nproc)" check-code
+
+      - name: Generate decomp.dev report
+        run: |
+          python3 scripts/test_progress.py
+          python3 scripts/progress.py --check-code --json
+
+      - name: Upload decomp.dev report
+        uses: actions/upload-artifact@v4
+        with:
+          name: usa_report
+          path: report.json
+          if-no-files-found: error
 
       # The shift test boots this build and a copy linked with padding after
       # crt0 in mGBA, and checks that both load the same assets, draw the

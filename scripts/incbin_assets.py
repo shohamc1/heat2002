@@ -2,7 +2,7 @@
 """Replace extracted data assets' `.byte` rows in an asm fragment with
 `.incbin` lines.
 
-Follows the protocol in docs/graphics-extraction.md ("Rewrite the asm"):
+The rewrite uses these checks:
 
 1. Map every line of the fragment to its ROM address, starting from the
    address in the fragment's name. `.byte` rows are one byte per value,

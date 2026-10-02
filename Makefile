@@ -576,6 +576,7 @@ check-code: $(TARGET).gba $(TARGET).code.sha1
 test:
 	python3 scripts/match.py --selftest
 	python3 scripts/progress.py --selftest
+	python3 scripts/test_progress.py
 	python3 scripts/closure.py --selftest
 	python3 scripts/seed_functions.py --selftest
 	python3 scripts/strings.py --selftest

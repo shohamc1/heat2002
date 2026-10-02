@@ -253,7 +253,7 @@ def main():
                " addresses; 'same' plus exact tokens is a literal duplicate.")
     out.append("")
     out.append(f"Regenerate after any batch of matches:"
-               f" `make disasm && python3 scripts/find_twins.py > docs/function-twins.md`.")
+               f" `make disasm && python3 scripts/find_twins.py > build/function-twins.md`.")
     out.append("")
     out.append(f"## Summary — {len(exact)} exact copies, {len(near)} near matches")
     out.append("")

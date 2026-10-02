@@ -3,8 +3,7 @@
 
 `MainMenuLoop` is the main game loop; finishing it means finishing the whole
 subtree under it. This walks the `bl` graph over `data/*.s` and `src/*.c`,
-stops at library code (built from source, not decompiled -- see
-docs/learnings/parked.md), and reports what is left.
+stops at library code built from source, and reports what is left.
 
 Usage:
     python3 scripts/closure.py [ROOT]      # default ROOT: MainMenuLoop

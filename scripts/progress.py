@@ -2,18 +2,20 @@
 """Generate an objdiff-format progress report for decomp.dev, plus a local summary.
 
 decomp.dev ingests objdiff's `report.json` schema. We synthesize it directly
-rather than running `objdiff-cli report generate`, which wants a carved target
-object per unit and a full objdiff.json unit map -- overkill while every
-function still lives in one asm file.
+from the compiled GBA game-code objects. Libraries, SDK code, and assets
+are excluded. With --check-code, verify the build against the committed
+code hash, then compare each C function against that verified image.
+This mode needs no retail ROM. The default mode verifies the full ROM.
 
 Progress is measured in BYTES OF CODE, not function count: a function is
 "matched" once it is implemented in C under src/ and `scripts/match.py` agrees
-with the target asm. Everything still in data/*.s, and every ASM_FUNC in a C
+with the verified reference bytes. Everything still in data/*.s, and every ASM_FUNC in a C
 file, counts as unmatched. One function per luvdis block (scripts/blocks.txt),
 keyed by ROM address, so names, files and folders don't matter.
 
     python3 scripts/progress.py            # human summary
     python3 scripts/progress.py --json     # write report.json
+    python3 scripts/progress.py --check-code --json  # verify and report without a ROM
 """
 
 import bisect
@@ -44,7 +46,7 @@ START = re.compile(r"^\s+(?:non_word_aligned_)?(?:thumb|arm)_func_start\s+(\S+)\
 # flag-insensitive and matches either way).
 NON_INTERWORK_EPILOGUE = re.compile(r"\bpop \{[^}]*pc\}|\bmov pc, lr\b")
 
-# luvdis misread these seven data runs as functions; see parked.md.
+# luvdis misread these seven data runs as functions.
 LUVDIS_FALSE_POSITIVES = frozenset((
     0x08026DB6, 0x0824C6F0, 0x0827B7CA, 0x080462B2, 0x08121316,
     0x08120E3A, 0x08248272,
@@ -176,8 +178,7 @@ def parse_asm():
 
     Once a function is decompiled, its `thumb_func_start`..`thumb_func_end`
     block moves out of the monolithic asm/rom.s and the file gets split at
-    that boundary (see CLAUDE.md's placement notes), so functions still in
-    asm are spread across every data/*.s fragment, not just rom.s.
+    that boundary, so functions still in asm are spread across every data/*.s fragment, not just rom.s.
     """
     funcs = {}
     for path in sorted(ASM_DIR.glob("*.s")):
@@ -280,25 +281,51 @@ def decompiled(blocks):
     return done
 
 
-def library_objects():
-    """{object: .text bytes} for the runtime library built from source."""
-    sizes = {}
-    lib = ROOT / "build" / "lib"
-    for obj in sorted(lib.rglob("*.o")):
-        out = subprocess.run(
-            ["arm-none-eabi-size", "-A", str(obj)], capture_output=True, text=True, check=False
-        ).stdout
-        m = re.search(r"^\.text\s+(\d+)", out, re.MULTILINE)
-        if m and int(m.group(1)):
-            sizes[str(obj.relative_to(lib))] = int(m.group(1))
-    return sizes
+def summarize(units):
+    """Sum unit measures using the objdiff v2 schema."""
+    measures = {
+        key: sum(unit["measures"].get(key, 0) for unit in units)
+        for key in ("total_code", "matched_code", "total_functions", "matched_functions",
+                    "complete_code", "total_data", "matched_data", "complete_data")
+    }
+    for prefix, total in (("matched_code", "total_code"), ("complete_code", "total_code"),
+                          ("matched_functions", "total_functions"), ("matched_data", "total_data"),
+                          ("complete_data", "total_data")):
+        measures[prefix + "_percent"] = (
+            measures[prefix] / measures[total] * 100 if measures[total] else 0.0
+        )
+    measures["fuzzy_match_percent"] = measures["matched_code_percent"]
+    measures["total_units"] = len(units)
+    measures["complete_units"] = sum(unit["metadata"]["complete"] for unit in units)
+    return measures
 
 
 def main():
+    checked = "--check-code" in sys.argv
+    if "--json" in sys.argv:
+        (ROOT / "report.json").unlink(missing_ok=True)
+    # A report is valid only after the current build passes its hash check.
+    subprocess.run(["make", "PLATFORM=gba", "check-code" if checked else "check"],
+                   cwd=ROOT, check=True)
+    _selftest()
     insns = parse_asm()
     sizes = func_sizes()
     in_c = c_blocks()
-    done = decompiled(in_c)
+    reference = match.ROM
+    try:
+        if checked:
+            import assets
+
+            # Masked asset bytes cannot prove a function matches retail code.
+            ranges = [(int(a["start"], 16), int(a["start"], 16) + a["size"])
+                      for a in assets.assets() if a.get("type") != "gen"]
+            for addr, (name, size, _) in in_c.items():
+                if any(addr < end and addr + size > start for start, end in ranges):
+                    sys.exit(f"{name}: code overlaps masked assets; cannot report a match")
+            match.ROM = ROOT / "build" / "nascar-heat.code.gba"
+        done = decompiled(in_c)
+    finally:
+        match.ROM = reference
 
     # Sizes come from build/**/*.o via nm. With no build (or a stale one), a
     # decompiled function contributes 0 bytes and the totals silently shrink
@@ -307,18 +334,18 @@ def main():
     missing = sorted(
         str(c.relative_to(src))
         for c in src.rglob("*.c")
-        if not (ROOT / "build" / "src" / c.relative_to(src).with_suffix(".o")).exists()
+        if "platform" not in c.relative_to(src).parts
+        and not (ROOT / "build" / "src" / c.relative_to(src).with_suffix(".o")).exists()
     )
 
-    # A matched function is deleted from data/*.s entirely (see CLAUDE.md's
-    # loop, step 5), so `insns` alone would lose it from the report. Track it
-    # separately, sized from its compiled object instead of asm bytes. Before
+    # A matched function leaves data/*.s, so `insns` alone would lose it.
+    # Track it separately, sized from its compiled object. Before
     # its asm block is deleted, both copies share one address and one unit.
     in_asm = by_address(insns)
-    non_targets = set(by_address(runtime_library())) | LUVDIS_FALSE_POSITIVES | ARM_BLOCKS
+    non_targets = set(by_address(runtime_library())) | LUVDIS_FALSE_POSITIVES | LIBRARY_BLOCKS
 
     units, total, matched = [], 0, 0
-    for addr in sorted(set(in_asm) | set(in_c)):
+    for addr in sorted((set(in_asm) | set(in_c)) - non_targets):
         is_done = addr in done
         if addr in in_asm:
             name = in_asm[addr]
@@ -343,48 +370,15 @@ def main():
                     "matched_functions": 1 if is_done else 0,
                     "complete_code": size if is_done else 0,
                 },
-                "metadata": {"complete": is_done, "target": addr not in non_targets},
+                "metadata": {"complete": is_done, "progress_categories": ["game"]},
             }
         )
 
-    # Source-built runtime library: complete by construction (make check
-    # verifies it), never a decompilation target.
-    lib = library_objects()
-    for name, size in lib.items():
-        total += size
-        matched += size
-        units.append(
-            {
-                "name": name,
-                "measures": {
-                    "total_code": size,
-                    "matched_code": size,
-                    "matched_code_percent": 100.0,
-                    "total_functions": 1,
-                    "matched_functions": 1,
-                    "complete_code": size,
-                },
-                "metadata": {"complete": True, "target": False},
-            }
-        )
-
-    pct = (matched / total * 100) if total else 0.0
-    measures = {
-        "fuzzy_match_percent": pct,
-        "total_code": total,
-        "matched_code": matched,
-        "matched_code_percent": pct,
-        "total_data": 0,
-        "matched_data": 0,
-        "matched_data_percent": 0.0,
-        "total_functions": len(units),
-        "matched_functions": len(done) + len(lib),
-        "matched_functions_percent": ((len(done) + len(lib)) / len(units) * 100 if units else 0.0),
-        "complete_code": matched,
-        "complete_code_percent": pct,
-        "total_units": len(units),
-        "complete_units": len(done) + len(lib),
-    }
+    for unit in units:
+        unit["measures"] = summarize([unit])
+    measures = summarize(units)
+    pct = measures["matched_code_percent"]
+    categories = [{"id": "game", "name": "Game code", "measures": measures}]
 
     if "--json" in sys.argv:
         if missing:
@@ -392,36 +386,22 @@ def main():
                 f"refusing to write report.json: no compiled object for "
                 f"{', '.join(missing)} -- run `make` first"
             )
-        report = {"version": 2, "measures": measures, "units": units, "categories": []}
+        report = {"version": 2, "measures": measures, "units": units, "categories": categories}
         out = ROOT / "report.json"
         out.write_text(json.dumps(report, indent=2) + "\n")
         print(f"wrote {out}")
     else:
-        game = [u for u in units if u["metadata"]["target"]]
-        g_total = sum(u["measures"]["total_code"] for u in game)
-        g_matched = sum(u["measures"]["matched_code"] for u in game)
-        g_done = sum(u["measures"]["matched_functions"] for u in game)
-        g_pct = (g_matched / g_total * 100) if g_total else 0.0
-        print("NASCAR Heat 2002 — decompilation progress")
-        print(f"  functions: {g_done} / {len(game)} matched")
-        print(f"  code:      {g_matched} / {g_total} bytes ({g_pct:.4f}%)")
-        print(
-            f"  excluded:  {len(units) - len(game)} non-targets"
-            " (vendored runtime library, luvdis false positives, hand-written ARM)"
-        )
-        print(
-            f"  whole ROM: {matched} / {total} bytes ({pct:.4f}%) over {len(units)} units"
-            f" ({len(lib)} library objects built from source)"
-        )
-        if not lib:
-            print("\n  WARNING: no build/lib objects; run `make` for accurate totals.")
+        print("NASCAR Heat 2002 — game-code decompilation progress")
+        print(f"  functions: {measures['matched_functions']} / {len(units)} matched")
+        print(f"  code:      {matched} / {total} bytes ({pct:.4f}%)")
+        print("  excludes:  runtime libraries, SDK code, and assets")
         if missing:
             print(
                 f"\n  WARNING: no compiled object for {', '.join(missing)};"
                 "\n  counted as 0 bytes. Run `make` for accurate totals."
             )
         if not done:
-            print("\n  nothing decompiled yet — see docs/decomp-guide.md")
+            print("\n  nothing decompiled yet")
 
 
 def _selftest():
@@ -462,7 +442,7 @@ def _selftest():
 
     mapped = {
         int(row[0], 16)
-        for row in _json.loads((ROOT / "docs/learnings/runtime-newlib-map.json").read_text())
+        for row in _json.loads((ROOT / "scripts/runtime-newlib-map.json").read_text())
     }
     assert mapped <= rt_addrs, f"newlib map has {len(mapped - rt_addrs)} unflagged addresses"
     print(f"selftest ok ({len(insns)} functions remaining in asm)")

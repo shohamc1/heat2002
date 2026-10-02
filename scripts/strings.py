@@ -18,7 +18,7 @@ ROOT = Path(__file__).resolve().parent.parent
 ROM = ROOT / "baserom.gba"
 BASE = 0x8000000
 
-# Executable regions from docs/recon.md. Strings inside code are almost always
+# Executable ROM regions. Strings inside code are almost always
 # instruction bytes that happen to be printable, so they are excluded.
 CODE = ((0x08000260, 0x0801CCD4), (0x08339920, 0x08344DA8), (0x0836419C, 0x083647FC))
 

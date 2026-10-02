@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""One-off codemod for docs/extern-headers-plan.md. NOT COMMITTED.
+"""Move local extern declarations into shared headers.
 
 Removes extern declarations from src/**/*.c and adds the #include lines that
 replace them. Which declarations to remove is decided by the current phase
