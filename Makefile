@@ -79,7 +79,7 @@ LIBGCC_OBJS := $(LIBGCC1_OBJS) $(LIBGCC2_OBJS) $(LIBGCC_FP_OBJS) $(LIBGCC_HIGH_O
 
 # Each GBA image has its own startup code and interrupt dispatcher.
 CRT0_OBJS := $(BUILD)/lib/rom_header.o $(BUILD)/lib/crt0.o $(BUILD)/lib/crt0_high.o \
-	$(BUILD)/lib/crt0_island.o
+	$(BUILD)/lib/island_header.o $(BUILD)/lib/crt0_island.o
 CRT0_HIGH_SYMS := Init=sub_08339780 IntrMain=sub_083397C4 \
 	AgbMain=ModuleAgbMain gIntrTable=gModule_IntrTable
 
@@ -204,7 +204,8 @@ $(LIB_C_OBJS): $(BUILD)/lib/%.o: lib/%.c $(wildcard include/*.h include/gba/*.h)
 	printf '.text\n\t.align\t2, 0\n' >> $(@:.o=.s)
 	$(AS) $(ASFLAGS) -o $@ $(@:.o=.s)
 
-$(BUILD)/lib/rom_header.o $(BUILD)/lib/crt0.o $(BUILD)/lib/crt0_island.o: $(BUILD)/lib/%.o: lib/%.s lib/function.inc Makefile
+$(BUILD)/lib/rom_header.o $(BUILD)/lib/crt0.o $(BUILD)/lib/island_header.o \
+		$(BUILD)/lib/crt0_island.o: $(BUILD)/lib/%.o: lib/%.s lib/function.inc Makefile
 	@mkdir -p $(@D)
 	$(AS) -mcpu=arm7tdmi -I lib -o $@ $<
 $(BUILD)/lib/crt0_high.o: $(BUILD)/lib/crt0.o Makefile
@@ -353,6 +354,9 @@ ROM_END    := 0x08400000
 define make_gba
 $(OBJCOPY) -O binary --pad-to $(ROM_END) $< $@
 tools/bin/gbafix $@ -t"$(TITLE)" -c$(GAME_CODE) -m$(MAKER_CODE) -r$(REVISION) --silent
+dd if=$@ of=$@ bs=1 skip=4 count=156 conv=notrunc status=none seek=$$(( \
+	$$(arm-none-eabi-nm $< | awk '$$3 == "gUnk_08363EE8" { print "0x" $$1 }') \
+	- 0x08000000 + 4 ))
 endef
 
 $(TARGET).gba: $(TARGET).elf tools/bin/gbafix

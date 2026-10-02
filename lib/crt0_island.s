@@ -67,7 +67,7 @@ sub_08363FF4:
 	lsr r2, r2, #5
 	cmp r1, #0
 	bne .Lsend
-	ldr r3, =gUnk_020000AC
+	ldr r3, =IslandHeaderGameCode
 	ldrh r2, [r3]
 	strh r2, [r0, #OFFSET_REG_SIOMLT_SEND]
 	bl sub_08363FC8

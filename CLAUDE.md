@@ -32,7 +32,9 @@ SHA1 is wrong, no matter how clean the C looks. Never edit `baserom.gba`,
   `lib/rom_header.s` leaves the header's fields empty, and the Makefile's
   `.gba` rule pads the ROM to 4 MB with `objcopy --pad-to`, then runs
   `gbafix` (built from `tools/tmc`) to write the logo, title, codes and
-  checksum, as pokeemerald does.
+  checksum, as pokeemerald does. The multiboot island's own header is
+  `lib/island_header.s`; after `gbafix`, the `.gba` rule copies the
+  Nintendo logo from the main header into it.
 - `src/` — decompiled C, in folders at any depth. A file can hold several
   functions that sit next to each other in the ROM, including `ASM_FUNC`
   functions still in asm (see "Files, folders, and names"). Run
@@ -94,8 +96,9 @@ SHA1 is wrong, no matter how clean the C looks. Never edit `baserom.gba`,
   (`data/rom_08365348.s`, `data/rom_083682BC.s`, `data/rom_083CA0C4.s`)
   beside the spatial indexes, which are rebuilt when the geometry
   moves. `assets.py`'s docstring is the reference.
-  Compressed graphics are typed and convert to `.png` with `make convert`;
-  the rest of the data is untyped raw blobs (`assets/unknown.json`).
+  Compressed graphics are typed and convert to `.png` with `make convert`.
+  No untyped blob list is left: every range is a typed asset, a
+  `"copy"`, or C.
   See "Extracted data assets" in `docs/learnings/parked.md`.
 - `scripts/gen_atan2.py` generates `gAtan2Table` (0x0806C97C-0x0807C97C,
   65,536 bytes) from one formula, as a `"gen"` asset type: no ROM is
@@ -288,10 +291,10 @@ maps closely onto the source:
   re-match later. For a function, declare it and use its name:
   `(u32)sub_0800042C` links to `0x0800042D`, Thumb bit included, with
   identical bytes (tested on `sub_08000380`). For ROM data that starts an
-  `assets/unknown.json` blob, define it in `src/data/` (see "Define ROM
+  asset blob, define it in `src/data/` (see "Define ROM
   data in C"). For any other ROM address, give the data a label where its
   bytes are: a `NAME:` line before its `.incbin` in `data/*.s`, splitting
-  the blob in `assets/unknown.json` if the address falls inside one. For an
+  the blob's asset entry if the address falls inside one. For an
   offset inside a C-defined blob, add an alias to `symbols.ld`, such as
   `gUnk_083FDE2D = gChampionshipTrackOrder + 0x11;`. `symbols.ld` holds no ROM
   address: never add one. No C writes a ROM address as a number, so keep
@@ -456,8 +459,8 @@ tooling changes.
 Asset data must come from `baserom.gba`, never from literals in git. That
 covers graphics (tiles, palettes, tilemaps, metatile maps and tables),
 music and samples. List a graphics blob in `assets/graphics.json` (as
-`graphics/metatiles_ADDR.bin` for a metatile map or table), not in
-`assets/unknown.json`, and read it with `INCBIN_*`. Write literal
+`graphics/metatiles_ADDR.bin` for a metatile map or table), and read
+it with `INCBIN_*`. Write literal
 initialisers only for data the program logic reads: constants, lookup
 tables, VRAM slot lists, text and pointer tables.
 
@@ -470,8 +473,8 @@ placement", with these differences:
 1. In a `src/data/rom_ADDR.c` file, define the blob with the element type
    its users declare, reading the file that `scripts/assets.py` extracts:
 
-       const u32 gUnk_0807C9CC[] =
-           INCBIN_U32("build/assets/unknown/data_0807C9CC.bin");
+       const u16 gMultibootSendObjPalette[] = INCBIN_U16(
+           "build/assets/graphics/palettes/multiboot_obj.pal.bin");
 
    If users declare a pointer, a struct, or types that disagree, define an
    integer array of the matching width and add a comment that names the
@@ -627,9 +630,8 @@ Follow the same loop as for any other function. Only these points differ:
 - The same EWRAM address can mean a different variable on each GBA. When
   main-program code already uses a `gUnk_<address>` name, give the
   module's data its own label, such as `gModule_02025220`.
-- Keep each asm fragment inside one image. The fragments
-  `rom_08363EE8.s` and `rom_08364AC8.s` start exactly at a section
-  boundary, so never merge one into the fragment before it.
+- Keep each asm fragment inside one image: never merge fragments across
+  a section boundary.
 
 ### Troubleshoot an EWRAM function
 

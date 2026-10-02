@@ -80,7 +80,10 @@ gUnk_08364940:
 	.incbin "build/assets/graphics/lz_08364940.bin"
 	.global gUnk_02000A9C
 gUnk_02000A9C:
-	.incbin "build/assets/unknown/data_08364984.bin"
+	.incbin "build/assets/graphics/palettes/multiboot_obj.pal.bin"
+	@ the SDK Sio32MultiLoad library's version string, zero-padded
+	.asciz "Sio32MultiLoad010214"
+	.space 0x103
 	.global gUnk_08364ABC
 gUnk_08364ABC:
 	.4byte gUnk_083648A8

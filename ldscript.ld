@@ -762,7 +762,7 @@ SECTIONS
        BIOS MultiBoot call. It runs from the start of EWRAM. */
     .island 0x02000000 : AT(LOADADDR(.high_module) + SIZEOF(.high_module))
     {
-        build/data/rom_08363EE8.o(.text*);
+        build/lib/island_header.o(.text);
         build/lib/crt0_island.o(.text);
         build/src/link/island_intr.o(.text*);
         build/src/link/island_multiboot.o(.text*);
@@ -791,7 +791,7 @@ SECTIONS
         AT(LOADADDR(.island) + SIZEOF(.island))
     {
         build/src/data/race_data.o(.rodata);
-        build/data/rom_08364FBC.o(.text*);
+        build/src/data/track_cues.o(.rodata);
         build/src/data/rom_0836524C.o(.rodata);
         build/data/rom_08365348.o(.text*);
         build/src/data/race_setup.o(.rodata);

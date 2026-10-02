@@ -30,6 +30,26 @@
   }
  },
  {
+  "path": "graphics/palettes/multiboot_obj.pal",
+  "start": "0x0807CB58",
+  "size": 32,
+  "type": "pal"
+ },
+ {
+  "path": "graphics/hooley_downs_palette_copy.bin",
+  "start": "0x0807CC30",
+  "size": 512,
+  "type": "copy",
+  "options": {
+   "sources": [
+    [
+     "build/assets/tracks/hooley_downs/palette.bin",
+     512
+    ]
+   ]
+  }
+ },
+ {
   "path": "graphics/screens/title_screen.png",
   "start": "0x0829F954",
   "size": 40412,
@@ -9144,6 +9164,20 @@
     [
      null,
      3
+    ]
+   ]
+  }
+ },
+ {
+  "path": "island/multiboot_obj_copy.bin",
+  "start": "0x08364984",
+  "size": 32,
+  "type": "copy",
+  "options": {
+   "sources": [
+    [
+     "build/assets/graphics/palettes/multiboot_obj.pal.bin",
+     32
     ]
    ]
   }

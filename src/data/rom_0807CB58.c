@@ -1,10 +1,14 @@
 #include "global.h"
 #include "data.h"
 
-/* Multiboot-send OBJ palette (0x0807CB58-0x0807CE30). The first 0xA0
- * bytes are the palette SendMultibootPayload (src/link/multiboot.c)
- * DMAs to OBJ_PLTT; its colors 0x10-0x19 hold the ASCII string
- * "Sio32MultiLoad010214" instead of colors, so the blob stays binary.
- * Only the four colors at the start are nonzero; the tail past 0xA0
- * (zeros, then more color-like words) is read by no decompiled code. */
-const u8 gMultibootSendObjPalette[] = INCBIN_U8("build/assets/unknown/data_0807CB58.bin");
+/* Multiboot-send OBJ palette. SendMultibootPayload (src/link/multiboot.c)
+ * DMAs 0xA0 bytes from here to OBJ_PLTT: these 16 colours, then the
+ * version string below as colours 0x10-0x4F. */
+const u16 gMultibootSendObjPalette[] = INCBIN_U16("build/assets/graphics/palettes/multiboot_obj.pal.bin");
+
+/* The SDK Sio32MultiLoad library's version string, zero-padded. The
+ * island holds the same palette and string (gUnk_02000A9C). */
+const char gSio32MultiLoadVersion[0xB8] = "Sio32MultiLoad010214";
+
+/* A copy of Hooley Downs' track palette that no code reads. */
+const u16 gUnusedHooleyDownsPalette[] = INCBIN_U16("build/assets/tracks/hooley_downs/palette.bin");
