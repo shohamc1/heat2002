@@ -1,18 +1,7 @@
-// SDL2 platform layer, after sa2's src/platform/pret_sdl/sdl2.c.
-//
-// Adapted for this project (issue 5 step 5):
-//   - 240x160: DISPLAY_WIDTH/DISPLAY_HEIGHT come from include/gba/defines.h,
-//     which fixes the GBA's real resolution (sa2 widens to 426x240).
-//   - The win32, PSP and VRAM-view halves are dropped; the save file is
-//     sa2's pattern on this ROM's EEPROM instead of flash: main() loads
-//     nascar-heat.sav through ReadSaveFile (step 7,
-//     src/platform/shared/save.c), which also backs the EEPROM calls.
-//   - cgb_audio_init runs before the queue opens (step 6): the software
-//     PSG's duty/noise tables are baked for the 48 kHz rate.
-//   - The interrupt slot numbers come from this ROM's crt0 dispatch order
-//     (include/platform/shared/video/gpsp_renderer.h), not sa2's.
-//   - main() calls this game's AgbMain (src/system/AgbMain.c), which
-//     never returns.
+// SDL2 platform layer, based on sa2's src/platform/pret_sdl/sdl2.c.
+// ReadSaveFile loads the EEPROM image before AgbMain starts.
+// The software PSG requires 48 kHz audio.
+// Interrupt slots follow this ROM's crt0 dispatch order.
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -81,7 +70,7 @@ int main(int argc, char **argv)
 
     REG_KEYINPUT = 0x3FF;
 
-    // The save file (step 7): load the EEPROM image before the game can
+    // The save file: load the EEPROM image before the game can
     // reach it, and create the file on the first run so it exists in its
     // erased state, as a blank cartridge would read.
     if (!ReadSaveFile())
@@ -150,7 +139,7 @@ int main(int argc, char **argv)
         want.channels = 2;
         want.samples = PLATFORM_AUDIO_SAMPLES_PER_FRAME;
 
-        // The software PSG's tables are baked for 48 kHz (step 6, as sa2);
+        // The software PSG's tables are baked for 48 kHz;
         // this rate is 0.04% above it, a pitch change far below hearing.
         cgb_audio_init(want.freq);
 

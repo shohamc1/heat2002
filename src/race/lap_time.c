@@ -6,12 +6,6 @@
 
 void LapTimeTask(struct Task *task);
 
-/* The file's four RAM variables (the two u32 timer-snapshot arrays,
-   gLapTimeTextBuf -- sized to gUnk_0202CC20, its first 9 bytes the text
-   DrawLapTime writes -- and gUnk_0202CC1C) moved to src/race/globals.c,
-   the owner of the 0x0202CBE0-0x0202CCD0 EWRAM run they sit in; they are
-   declared in variables.h. */
-
 void LapTimeTask(struct Task *task)
 {
     u8 unused[0x28];

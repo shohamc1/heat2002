@@ -3,29 +3,19 @@
 #include "variables.h"
 
 /* This file owns the race EWRAM runs 0x0202CBE0-0x0202CCD0 and
-   0x0202CD90-0x0202CDE8 (issue 5 step 3, run rule): the pit-menu cursor,
-   the tire-force leftovers, the lap-time snapshots and text buffer, the
-   AI driver's closest-lane state, the wall tables' pointers, the car
-   contact record and its self frame counters; then the RunRace argument
-   buffers, the unreferenced gUnk_0202CDB0 byte and the SIO transfer
-   block. Every identified variable in the two spans is defined here in
-   address order; the static gap arrays pad only the addresses no
-   identified symbol covers. ldscript.ld's .bss_race_globals places the
-   first section at 0x0202CBE0 and .bss_race_globals_2 the second at
-   0x0202CD90.
-
-   Variables moved here from their old owners (definitions unchanged):
-   src/car/tire_forces.c (the four angles/speeds past 0x0202CBE4),
-   src/race/lap_time.c, src/car/ai_driver.c,
-   src/car/TestCornersVsWalls.c (gWalls, gWallVertices),
-   src/car/CollideCarWithWalls.c, src/car/collide.c (gCarCollContact,
-   gCarCollFrameSelf), src/race/UpdateLapProgress.c (gUnk_0202CC20) and
-   src/menu/MainMenuLoop.c (the three RunRace buffers), plus the
-   symbols.ld lines the runs covered, now deleted.
+   0x0202CD90-0x0202CDE8: the pit-menu cursor, the tire-force leftovers, the
+   lap-time snapshots and text buffer, the AI driver's closest-lane state,
+   the wall tables' pointers, the car contact record and its self frame
+   counters; then the RunRace argument buffers, the unreferenced
+   gUnk_0202CDB0 byte and the SIO transfer block. Every identified variable
+   in the two spans is defined here in address order; the static gap arrays
+   pad only the addresses no identified symbol covers. ldscript.ld's
+   .bss_race_globals places the first section at 0x0202CBE0
+   and.bss_race_globals_2 the second at 0x0202CD90.
 
    struct CarContact and struct CommRegs come from structs.h.
-   gLapTimeTextBuf is sized to gUnk_0202CC20,
-   and DrawLapTime writes its 9 text bytes. */
+   gLapTimeTextBuf is sized to gUnk_0202CC20, and DrawLapTime writes its 9
+   text bytes. */
 
 EWRAM_DATA u8 gPitMenuCursorRow = 0;
 static EWRAM_DATA u8 race_globals_gapCBE1[0x3] = { 0 };

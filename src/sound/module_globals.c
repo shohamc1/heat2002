@@ -3,8 +3,7 @@
 #include "m4a.h"
 #include "variables.h"
 
-/* This file owns the high module's two sound EWRAM runs (issue 5 step 3,
-   run rule; MODULE_EWRAM_DATA like the main program's EWRAM_DATA files):
+/* This file owns the high module's two sound EWRAM runs (MODULE_EWRAM_DATA):
    the music-player jump table with the clear-call pointers beside it
    (0x02038DE0-0x02038E70), and the module's MusicPlayerInfo players plus
    the two table rows behind them (0x02038F70-0x020390A0). The module's

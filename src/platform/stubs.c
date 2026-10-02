@@ -1,13 +1,5 @@
-// Link completion for the hosted build: the symbols the port's objects
-// reference that the GBA link satisfied elsewhere. Each group names the
-// step that replaces it.
-//
-// Nothing here is compiled into the GBA build.
-//
-// The MP2K sound driver's assembly half (lib/m4a_1.s) is NOT stubbed
-// anymore: step 6 vendored it as C under src/platform/shared/audio/
-// (m4a_sound_mixer.c, the mixer and event handlers, plus cgb_audio.c,
-// the software PSG the hosted CgbSound drives).
+// Hosted stubs for symbols supplied by the GBA link.
+// This file is excluded from the GBA build.
 
 #include "config.h"
 #include "global.h"
@@ -91,12 +83,8 @@ void LoadFadePalette(u16 *p)
 // Nintendo's MultiBoot library (lib/multiboot.c), which the GBA link
 // places by address and the port does not compile. The game's single-pak
 // path calls it through the luvdis names ldscript.ld aliases them to;
-// under PORTABLE that path fails closed before any call (step 8,
-// SendMultibootIsland in src/link/multiboot.c), so these stay inert.
+// under PORTABLE that path fails closed before any call (SendMultibootIsland in src/link/multiboot.c), so these stay inert.
 //
-// The EEPROM library's luvdis names (sub_08016E38 and siblings) used to
-// be stubbed here; step 7 replaced them with the file-backed store in
-// src/platform/shared/save.c.
 // ---------------------------------------------------------------------------
 
 void sub_0800EA64(void *a1)
@@ -147,7 +135,7 @@ const u32 RomHeaderGameCode = 0;
    LOADADDR(.island). ROM-range sized so the chunk table's pointers into
    gHighModuleRom stay plain address arithmetic; nothing reads either
    array under PORTABLE (the single-pak path returns before the chunk
-   walk and the island-length subtraction, step 8). ALIGNED sets the
+   walk and the island-length subtraction). ALIGNED sets the
    alignment ld64 would otherwise derive from the size, which exceeds
    what a segment allows. */
 ALIGNED(4) const u8 gHighModuleRom[0x08363EE8 - 0x08339780];

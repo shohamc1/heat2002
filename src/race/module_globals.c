@@ -2,21 +2,20 @@
 #include "gba/defines.h"
 #include "variables.h"
 
-/* This file owns the high module's two race/walls/collide EWRAM runs
-   (issue 5 step 3, run rule), the module twin of src/race/globals.c's
-   run: the tire-force leftovers and the four heading/yaw angles
-   (0x0203DDE4-0x0203DEF0, ending at the lap-time state), then the
-   lap-time state, the wall-table pointers and wall-collision state, the
-   car contact record with its frame counters, the challenge/link
-   leftovers and gModule_Language (0x0203DF44-0x0203E005). The
-   0x54-byte span 0x0203DEF0-0x0203DF44 between the frame counters and
-   gUnk_0203DF44 carries no identified symbol, as does the 0xDB-byte
-   span 0x0203E005-0x0203E0E0 behind gModule_Language; the dead-only
-   gUnk_0203E000 (src/dead/sub_08342948.c sets it) is defined here, no
-   symbols.ld line left. gModule_CarCollContact is one struct CarContact
-   (structs.h), with the second record's space behind it unnamed.
-   ldscript.ld's .module_ewram_data_race and
-   .module_ewram_data_race_2 place the two sections. */
+/* This file owns the high module's two race/walls/collide EWRAM runs, the
+   module twin of src/race/globals.c's run: the tire-force leftovers and the
+   four heading/yaw angles (0x0203DDE4-0x0203DEF0, ending at the lap- time
+   state), then the lap-time state, the wall-table pointers and wall-
+   collision state, the car contact record with its frame counters, the
+   challenge/link leftovers and gModule_Language (0x0203DF44-0x0203E005).
+   The 0x54-byte span 0x0203DEF0-0x0203DF44 between the frame counters and
+   gUnk_0203DF44 carries no identified symbol, as does the 0xDB-byte span
+   0x0203E005-0x0203E0E0 behind gModule_Language; the dead-only
+   gUnk_0203E000 (src/dead/sub_08342948.c sets it) is defined here.
+   gModule_CarCollContact is one struct CarContact (structs.h), with the
+   second record's space behind it unnamed. ldscript.ld's
+   .module_ewram_data_race and .module_ewram_data_race_2 place the two
+   sections. */
 
 MODULE_EWRAM_DATA u8 gModule_FrontTireGripSlow = 0;
 static MODULE_EWRAM_DATA u8 race_gapDDE5[0x3] = { 0 };

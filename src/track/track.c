@@ -15,11 +15,6 @@ extern u16 gRaceHudBgPalette[];
 void LoadTrackTiles(u8 idx);
 void RleDecode16(u16 *src, u16 *dst, u16 count);
 
-/* This file's EWRAM variables (0x02002200-0x02022E20: the map metadata,
-   the three RLE buffers gBg3MapBuffer/gBg2MapBuffer/gCellMapBuffer and the
-   scroll registers) moved to src/system/globals.c, that run's owner; the
-   ones no other file reads keep local externs here, the rest come from
-   variables.h. */
 extern u16 gBg3MapBuffer[0x4D06];                 /* 0x02002220 */
 extern u16 gBg2MapBuffer[0x4D06];                 /* 0x0200BC70 */
 extern u32 gUnk_0201567C;                         /* 0x0201567C */

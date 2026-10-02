@@ -3,12 +3,8 @@
 #include "variables.h"
 #include "gba/defines.h"
 
-/* The file's eleven s32 wall-test scratch values, the whole of the
-   0x02000460-0x0200048C EWRAM run this file owns (issue 5 step 3, run
-   rule): ldscript.ld's .bss_TestCornersVsWalls places the section at
-   0x02000460 and it ends at 0x0200048C, where the MultiBoot library's
-   .bss follows. gWalls and gWallVertices (0x0202CC40/0x0202CC44) moved
-   to src/race/globals.c, their own run's owner. */
+/* The eleven s32 wall-test scratch values occupy 0x02000460-0x0200048C.
+.bss_TestCornersVsWalls places them before the MultiBoot library BSS. */
 EWRAM_DATA s32 gUnk_02000460 = 0;
 EWRAM_DATA s32 gUnk_02000464 = 0;
 EWRAM_DATA s32 gUnk_02000468 = 0;

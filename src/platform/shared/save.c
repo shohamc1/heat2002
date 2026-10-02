@@ -1,6 +1,6 @@
-// The port's save store (issue 5 step 7): the EEPROM the cartridge
+// The port's save store: the EEPROM the cartridge
 // carries, as a file next to the binary, as sa2's sdl2.c backs its flash
-// with a .sav (the ReadSaveFile/StoreSaveFile pattern).
+// with a.sav (the ReadSaveFile/StoreSaveFile pattern).
 //
 // The game's save code (src/save/eeprom.c) calls Nintendo's EEPROM_V120
 // library (lib/eeprom.c) through the luvdis names ldscript.ld aliases to

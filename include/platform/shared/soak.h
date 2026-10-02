@@ -1,7 +1,7 @@
 #ifndef GUARD_PLATFORM_SHARED_SOAK_H
 #define GUARD_PLATFORM_SHARED_SOAK_H
 
-// Scripted-input soak harness (issue 5 step 9). Host-only: nothing here
+// Scripted-input soak harness. Host-only: nothing here
 // is ever compiled into the GBA build.
 //
 // The front end calls Soak_Advance() once per emulated frame (per

@@ -18,7 +18,7 @@
  *   redundant `v = 0` lets cse fold the following `v != 0` test on that
  *   path, so the branch is threaded past it. Without the else the branch
  *   lands on the test.
- * - The sound call is one call behind `DC == 0 ? car == base : car ==
+ * - The sound call is one call behind `DC == 0 ? car == base: car ==
  *   base + idx`, which gives the `beq/b` then `bne` layout.
  * - The `gLapProgressAdvanced` loop is written with a goto so loop.c does not
  *   hoist the store address out of it.
@@ -29,12 +29,6 @@ extern u16 gTrackAiDragDivisors[];
 void ClampSteerHeading(struct Car *car);
 extern u16 gPitEntryProgressPoints[];
 extern u16 gPitExitProgressPoints[];
-
-/* gLapProgressAdvanced (0x020020BC) and gIsLinkRace (0x020020DC) moved to
-   src/system/globals.c, the 0x02000DE0-0x02022E20 EWRAM run's owner, and
-   gFuelOutStutterCounter (0x0202A51C) to src/car/globals.c, the
-   0x0202A510-0x0202CBE0 run's owner; all three are declared in
-   variables.h. */
 
 void ClampSteerHeading(struct Car *car)
 {

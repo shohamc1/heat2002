@@ -6,12 +6,6 @@
 #include "m4a.h"
 
 
-/* The file's RAM variables all moved to the owners of the EWRAM runs
-   they sit in (issue 5 step 3, run rule): everything up to gAxleTireGrip
-   to src/car/globals.c, and the four at 0x0202CBE4 on (gCarHeadingAngle,
-   gYawContactVelX, gYawContactVelZ, gTireForceAngle) to
-   src/race/globals.c. The six no header declares are used only here, so
-   this file keeps their local externs; the rest are in variables.h. */
 extern s32 gYawContactSpeed;
 extern s32 gFrontTireGrip;
 extern s32 gTireGrip;

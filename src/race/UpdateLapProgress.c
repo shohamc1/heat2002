@@ -1,6 +1,6 @@
 /*
- * UpdateLapProgress -- SOLVED: MATCH, 2240 bytes @ 0x08006A34 (campaign 2026-09-15).
- * Three levers closed the last three sites of the wave-6 draft:
+ * UpdateLapProgress -- SOLVED: MATCH, 2240 bytes @ 0x08006A34.
+ * Code shapes required for a byte match:
  *
  *  0x08006B84 (X/Y r5<->r6): pin dx/dy with register asm, assigned INSIDE
  *     the det-check expression. A separate initialiser statement moves the
@@ -26,13 +26,6 @@
 #include "variables.h"
 #include "car.h"
 
-/* The file's RAM variables all moved to the owners of the EWRAM runs
-   they sit in (issue 5 step 3, run rule): the lap/race timers, gTrackSegs
-   and gNumFinishedCars to src/hud/globals.c; gStartedCarCount and
-   gPlayerPittedFlag to src/car/globals.c; gUnk_0202CC20 to
-   src/race/globals.c; and gChallengeResult (0x0202EEE4) to src/save/save.c.
-   gUnk_0202CC20 is this file's alone among them, so it keeps a local
-   extern; the rest are declared in variables.h. */
 extern u32 gUnk_0202CC20;
 
 u8 UpdateLapProgress(struct Car *p, u8 a1)

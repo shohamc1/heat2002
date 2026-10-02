@@ -20,7 +20,7 @@
 
 extern void Platform_QueueAudio(const s16 *data, u32 numBytes);
 
-// The file-backed EEPROM (step 7, src/platform/shared/save.c): the save
+// The file-backed EEPROM (src/platform/shared/save.c): the save
 // image the port loads in main() before AgbMain and writes back after
 // every program. FALSE means no file (or a short one); the caller then
 // stores the erased image ReadSaveFile left in the buffer, so the file

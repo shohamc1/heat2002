@@ -45,7 +45,7 @@
 // tests statusFlags against exactly this mask before ticking a channel).
 #define SOUND_CHANNEL_SF_ON (SOUND_CHANNEL_SF_START | SOUND_CHANNEL_SF_STOP | SOUND_CHANNEL_SF_IEC | SOUND_CHANNEL_SF_ENV)
 
-// The hosted mixer's (issue 5 step 6, after sa2) fixed-point sample type:
+// The hosted mixer's fixed-point sample type:
 // 8 integer bits, 24 fractional, [-1, 1) full scale. The macros are the
 // only float-touching spots the port's mixer needs. fp8_24_to_u32 must
 // shift BEFORE any narrowing: GenerateAudio feeds it an s64 product that
@@ -73,7 +73,7 @@ struct WaveData
 // keySplitTable == ..._attack in lib/m4a_constants.inc), and a square or
 // noise voice carries its duty cycle or period in wav's first byte.
 //
-// Hosted (issue 5 step 4): the same record as asm/macros/music_voice.inc
+// Hosted: the same record as asm/macros/music_voice.inc
 // emits it there, a uniform 24 bytes so a voice group is a plain array:
 // type/key/length/pan_sweep at 0-3, the duty/period byte at 4 (where the
 // GBA record keeps it, as wav's first byte), pad to 8, then a union whose
@@ -233,7 +233,7 @@ struct SoundChannel
 
 #define MAX_DIRECTSOUND_CHANNELS 12
 // Size of the Direct Sound buffer, in samples per channel. The GBA keeps
-// the hardware rate's 1584; the hosted mixer (issue 5 step 6, after sa2)
+// the hardware rate's 1584; the hosted mixer
 // mixes 804-sample frames and sizes the ring for six of them, so the
 // hosted build uses sa2's 4907. m4aSoundVSyncOn's and SoundInit's DMA
 // register arithmetic is the only other reader, and those writes are

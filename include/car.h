@@ -3,15 +3,10 @@
 
 #include "config.h"
 
-// struct Car: the merged view of the 0x190-byte per-car record (the union of
-// the local struct views the 52+ gCars/gModule_Cars users used to declare;
-// build/car_map.txt maps every local field to the canonical one). Fields
-// named below are evidence-backed from matched C and the reference asm
-// (agents' analysis 2026-09-28); unkXX fields have no reader anywhere in
-// the reachable code, and padXX regions are never touched at any width.
-
 struct LaneSeg;
 
+// The per-car record is 0x190 bytes on the GBA. unkXX fields have no
+// reader in reachable code. padXX regions are never accessed.
 struct Car
 {
     /* 0x00 */ s32 posX;

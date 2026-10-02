@@ -6,11 +6,6 @@
 
 void SetTrackRecord(u32 a, u32 b, u32 c);
 
-/* The file's RAM variables (the three track-record tables and gRaceSec)
-   moved to src/hud/globals.c, the owner of the 0x02024C40-0x02025270 and
-   0x02025380-0x020253F8 EWRAM runs they sit in; they are declared in
-   variables.h. */
-
 void SetTrackRecord(u32 a, u32 b, u32 c)
 {
     if ((u8)(gGameMode - 3) <= 1)

@@ -14,12 +14,6 @@ extern u32 gPitStopRepairTimes[];
 
 extern const u8 gText_BlankRow20_2[];
 
-/* The file's five RAM variables (gPitFuelToAdd, gPitServiceEnabled,
-   gPitMenuActive, gPlayerPitProgressRate and the 8-stall
-   gPitStallOccupied) moved to src/car/globals.c, the owner of the
-   0x0202A510-0x0202CBE0 EWRAM run they sit in. gPitFuelToAdd and
-   gPlayerPitProgressRate are used only here, so this file keeps their
-   local externs; the rest are declared in variables.h. */
 extern s32 gPitFuelToAdd;
 extern s32 gPlayerPitProgressRate;
 void ClearPitStopProgressBar(void)

@@ -21,15 +21,6 @@ extern u8 gUnk_083FDE2D[];
 /* This caller narrows the result to s8. */
 u8 ChallengeFailedScreen(u8 value);
 
-/* This file has no EWRAM variables left. The ones below 0x02022E20 moved
-   to src/system/globals.c (that run's owner): gChallengeScore, gTrackId,
-   gNewTrackRecord, gRaceAborted and gBgScrollUpdateEnabled. The three
-   RunRace argument buffers at 0x0202CD9C-0x0202CDD0 moved to
-   src/race/globals.c (the 0x0202CD90 run's owner), and everything from
-   gChallengeIndex (0x0202ED70) to gSeasonRaceIncomplete (0x0202F034)
-   moved to src/save/save.c (the owner of the merged menu/link/save run).
-   All are declared in variables.h except the five below, used only here,
-   which keep local externs. */
 extern u8 gUnk_0202CD9C[];
 extern u8 gUnk_0202CDC0[];
 extern s32 gMainMenuCursor;

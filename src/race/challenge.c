@@ -10,16 +10,8 @@ extern u8 gText_MPH[];
 extern u8 gText_BlankRow8[];
 extern u8 gText_BlankRow12_2[];
 
-/* gUnk_0202A3F0[0x48] is the whole of the 0x0202A3F0-0x0202A510 EWRAM
-   run this file owns (issue 5 step 3, run rule): ldscript.ld's
-   .bss_challenge places the section at 0x0202A3F0 and it ends at
-   0x0202A510, where src/car/globals.c's run begins. The file's other RAM
-   variables moved to the owners of the runs they sit in: the challenge
-   timers, phase and counters (gChallengeTimerMs through
-   gChallengeBestValue) to src/car/globals.c, and gUnk_0202EED0 with
-   gCarOrder to src/save/save.c. gChallengeEndDelay is used only here and
-   has no header extern, so this file keeps its local extern; the rest
-   are declared in variables.h. */
+/*.bss_challenge places this buffer at 0x0202A3F0. It ends at 0x0202A510,
+   where the car globals begin. */
 EWRAM_DATA u32 gUnk_0202A3F0[0x48] = {0};
 extern u8 gChallengeEndDelay;
 

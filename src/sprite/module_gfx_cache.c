@@ -11,12 +11,12 @@ extern u16 gModule_ObjTileCache4Tiles[];
 extern u16 gModule_ObjTileCache1Tiles[];
 
 /* This file also owns the high module's gfx-cache EWRAM run
-   0x0203B870-0x0203C340 (issue 5 step 3, run rule; MODULE_EWRAM_DATA),
-   the module twin of src/sprite/gfx_cache.c's run: the six OBJ tile
-   caches, the OBJ palette cache and the two upload counters behind them
-   (gModule_ObjPalBytesPeak/gModule_ObjPalBytesCopiedThisFrame, src/sprite/ModuleUploadPendingGfx.c's
-   variables, which close the run 8 bytes before
-   src/task/module_task.c's task run begins). ldscript.ld's
+   0x0203B870-0x0203C340, the module twin of src/sprite/gfx_cache.c's run:
+   the six OBJ tile caches, the OBJ palette cache and the two upload
+   counters behind them
+   (gModule_ObjPalBytesPeak/gModule_ObjPalBytesCopiedThisFrame,
+   src/sprite/ModuleUploadPendingGfx.c's variables, which close the run 8
+   bytes before src/task/module_task.c's task run begins). ldscript.ld's
    .module_ewram_data_gfx_cache places the section at 0x0203B870. */
 
 MODULE_EWRAM_DATA struct ObjTileCacheEntry gModule_ObjTileCache16[0x18] = {0};

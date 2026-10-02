@@ -1,14 +1,6 @@
-// Software CGB PSG, after sa2's src/platform/shared/audio/cgb_audio.c
-// (issue 5 step 6). Vendored with only the mechanical adaptations this
-// tree needs: the includes (our headers keep the same REG_NR*/REG_SOUND*
-// lvalues, and REG_ADDR_WAVE_RAM0 is the byte address of the I/O block,
-// which is what the wave-RAM walk indexes), an ARRAY_COUNT this tree's
-// global.h does not define, and cgb_set_wavram's old-style () parameter
-// list spelled (void). Everything else is sa2's, because the emulator's
-// numerics are the deliverable: the register-driven model of the four
-// hardware channels (sweep, length, envelope, the 32-step wave bank and
-// both LFSR widths) that the driver's CGB half drives exactly as it
-// drives the real registers.
+// Software CGB PSG, based on sa2's src/platform/shared/audio/cgb_audio.c.
+// Models sweep, length, envelope, the 32-step wave bank and both LFSR widths.
+// REG_ADDR_WAVE_RAM0 is the byte address used by the wave-RAM walk.
 
 #include "global.h"
 #include "gba/io_reg.h"

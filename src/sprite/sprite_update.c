@@ -21,11 +21,6 @@ typedef struct
 u32 SortSpritesByDepth(void);
 void SetSpriteRotMatrices(void);
 
-/* The file's RAM variables (gDepthSortedSprites, gSpriteOrderTable,
-   gUnk_0202522C and gUnk_02025398) moved to src/hud/globals.c, the
-   owner of the 0x02024C40-0x02025270 and 0x02025380 EWRAM runs they
-   sit in; they are declared in variables.h. */
-
 void ResetSpriteOrderTable(void)
 {
     u32 i = 0;

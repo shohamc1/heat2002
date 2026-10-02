@@ -3,28 +3,25 @@
 #include "variables.h"
 
 /* This file owns the HUD/sprite-counters EWRAM runs 0x02024C40-0x02025270
-   and 0x02025380-0x020253F8 (issue 5 step 3, run rule): the depth-sorted
-   sprite queue and its sort buffers, the OAM entry/affine counters, the
-   sprite order table, the track cues, the lap/race timers and record
-   tables, the countdown, the link-menu key state and the finish order.
-   Every identified variable in the two spans is defined here in address
-   order; the static gap arrays pad only the addresses no identified
-   symbol covers. ldscript.ld's .bss_hud_globals places the first section
-   at 0x02024C40 and .bss_hud_globals_2 the second at 0x02025380.
+   and 0x02025380-0x020253F8: the depth-sorted sprite queue and its sort
+   buffers, the OAM entry/affine counters, the sprite order table, the track
+   cues, the lap/race timers and record tables, the countdown, the link-menu
+   key state and the finish order. Every identified variable in the two
+   spans is defined here in address order; the static gap arrays pad only
+   the addresses no identified symbol covers. ldscript.ld's .bss_hud_globals
+   places the first section at 0x02024C40 and.bss_hud_globals_2 the second
+   at 0x02025380.
 
-   Variables moved here from their old owners (definitions unchanged):
-   src/sprite/sprite_update.c, src/hud/track_cues.c,
-   src/race/UpdateLapProgress.c and src/race/records.c, plus
-   the symbols.ld lines the runs covered, now deleted. gDepthSortedSprites
-   is the 64 12-byte depth-sorted sprite entries; the gap behind it holds
-   gUnk_02024F40 (defined here; only src/dead/sub_0800E734.c reads it, as
-   the sprite rotation index into gSinTable) and, from 0x02024F50 on, the
-   second OAM sort buffer gSecondOamSortBuffer (ResetSpriteQueues stores its
-   address in oam.c's gSecondOamSortCursor). gSpriteOrderTable is sized to
-   gUnk_020251F0; its first 0x40 entries are used. Each track-record
-   table holds one entry per track (12, gTrackId's range).
-   gFinishedCarOrder holds one entry per car (24, gNumCars' maximum;
-   DrawLinkFinishTimes walks gNumFinishedCars of them). */
+   gDepthSortedSprites is the 64 12-byte depth-sorted sprite entries; the
+   gap behind it holds gUnk_02024F40 (defined here; only
+   src/dead/sub_0800E734.c reads it, as the sprite rotation index into
+   gSinTable) and, from 0x02024F50 on, the second OAM sort buffer
+   gSecondOamSortBuffer (ResetSpriteQueues stores its address in oam.c's
+   gSecondOamSortCursor). gSpriteOrderTable is sized to gUnk_020251F0; its
+   first 0x40 entries are used. Each track-record table holds one entry per
+   track (12, gTrackId's range). gFinishedCarOrder holds one entry per car
+   (24, gNumCars' maximum; DrawLinkFinishTimes walks gNumFinishedCars of
+   them). */
 
 EWRAM_DATA struct DepthSortedSprite gDepthSortedSprites[0x40] = { 0 };
 EWRAM_DATA u16 gUnk_02024F40 = 0;

@@ -8,12 +8,11 @@ void PackFadePalette(void);
 extern u8 gPaletteBufferDirty; /* 0x02022E10 */
 extern u32 gPaletteBuffer[];   /* 0x02024620 */
 
-/* This file owns the third palette-fade run (issue 5 step 3, run rule):
-   gPaletteBuffer (0x02024620-0x02024820) is PackFadePalette's packed
-   256-colour u16 staging buffer, which FlushPaletteBuffer CpuCopy16s to
-   PLTT (0x200 bytes, one run, one variable, no pads). ldscript.ld's
-   .bss_fade places ewram_data at 0x02024620; oam.c's run starts at the
-   buffer's end. */
+/* This file owns the third palette-fade run: gPaletteBuffer
+   (0x02024620-0x02024820) is PackFadePalette's packed 256-colour u16
+   staging buffer, which FlushPaletteBuffer CpuCopy16s to PLTT (0x200 bytes,
+   one run, one variable, no pads). ldscript.ld's .bss_fade places
+   ewram_data at 0x02024620; oam.c's run starts at the buffer's end. */
 EWRAM_DATA u32 gPaletteBuffer[0x80] = { 0 }; /* 0x02024620, 0x200 bytes as u16 */
 
 void UpdatePaletteFade(void)

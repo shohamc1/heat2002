@@ -22,10 +22,6 @@ struct WallHit;
 
 // Main program
 
-/* The SDK start routine (lib/crt0.s) and both hosted front ends call
-   this; the front ends used to keep local externs, but two front ends
-   (src/platform/pret_sdl/sdl2.c, src/platform/null_front/null_front.c)
-   is one local declaration too many for scripts/externs.py. */
 void AgbMain(void);
 
 void SetLinkSerialIntr(void);

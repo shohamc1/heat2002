@@ -6,38 +6,29 @@
 
 extern u16 gSaveFormatFillPattern[];
 
-/* This file owns the merged menu/link/save EWRAM run 0x0202ED70-0x0202F1C0
-   (issue 5 step 3, run rule: runs 19 and 20 interleave, so one owner).
-   Every identified variable in the span is defined here in address order;
-   the static gap arrays pad only the addresses no identified symbol
-   covers. That includes the dead-only symbols src/dead/sub_08014B14.c
-   and sub_0800B030.c reach (gUnk_0202EDC0, gUnk_0202EDCC, gUnk_0202EDE0,
+/* This file owns the menu/link/save EWRAM run 0x0202ED70-0x0202F1C0. Every
+   identified variable in the span is defined here in address order; the
+   static gap arrays pad only the addresses no identified symbol covers.
+   That includes the dead-only symbols src/dead/sub_08014B14.c and
+   sub_0800B030.c reach (gUnk_0202EDC0, gUnk_0202EDCC, gUnk_0202EDE0,
    gUnk_0202EEE0, gUnk_0202EEF0 and gUnk_0202F02C: defined here with the
-   types their dead users declare, no symbols.ld lines left).
-   ldscript.ld's .bss_save places the section at 0x0202ED70.
+   types their dead users declare). ldscript.ld's .bss_save places the
+   section at 0x0202ED70.
 
-   Variables moved here from their old owners (definitions unchanged):
-   src/menu/MainMenuLoop.c (the menu state from gChallengeIndex through
-   gSeasonRaceIncomplete), src/link/ExchangeLinkInput.c (gLinkSendWords),
-   src/link/link_state.c (the link state), src/race/challenge.c
-   (gUnk_0202EED0, gCarOrder) and src/race/UpdateLapProgress.c
-   (gChallengeResult), plus the symbols.ld lines the run covered, now
-   deleted. gUnk_0202EDF0 is the colour-cycle palette buffer
-   (sub_08010768 CpuSets from it to PLTT), bounded by gDamagePitsEnabled
-   at 0x0202EEB0; gCarOrder holds one pointer per car (24, gNumCars'
-   maximum) and ends at gSeasonRaceIndex. From gUnk_0202F040 on, the
-   variables are views into the one EEPROM staging buffer that
-   ReadSaveBlocks/WriteSaveBlocks fill (they index it from its base), so
-   the run 0x0202F040..0x0202F1C0 is contiguous: gSeasonSaveFlag is the
-   buffer's offset-8 flag block (gUnk_0202F040[5]), gSeasonSaveData its
-   0xF0-byte season block, and writes through one view land in the next.
-   gCheatCodeDials is the cheat screen's five dials (src/dead's password
-   check reads [0..4]); gChampionshipAvailable holds one flag per
-   championship cup; gChallengeStatus one s8 score per challenge;
-   gProgressFlags the ten career progress bytes InitNewSaveData fills. gCheatFlags is the
-   save file's eight cheat bytes (LoadProgress/SaveProgress loop i != 8;
-   it was sized 0x10 before, which overlapped gPracticeDone at 0x0202EEC8
-   -- a pre-consolidation overlap this file now resolves). */
+   gUnk_0202EDF0 is the colour-cycle palette buffer (sub_08010768 CpuSets
+   from it to PLTT), bounded by gDamagePitsEnabled at 0x0202EEB0; gCarOrder
+   holds one pointer per car (24, gNumCars' maximum) and ends at
+   gSeasonRaceIndex. From gUnk_0202F040 on, the variables are views into the
+   one EEPROM staging buffer that ReadSaveBlocks/WriteSaveBlocks fill (they
+   index it from its base), so the run 0x0202F040..0x0202F1C0 is contiguous:
+   gSeasonSaveFlag is the buffer's offset-8 flag block (gUnk_0202F040[5]),
+   gSeasonSaveData its 0xF0-byte season block, and writes through one view
+   land in the next. gCheatCodeDials is the cheat screen's five dials
+   (src/dead's password check reads [0..4]); gChampionshipAvailable holds
+   one flag per championship cup; gChallengeStatus one s8 score per
+   challenge; gProgressFlags the ten career progress bytes InitNewSaveData
+   fills. gCheatFlags is the save file's eight cheat bytes
+   (LoadProgress/SaveProgress loop i != 8). */
 EWRAM_DATA u8 gChallengeIndex = 0;
 static EWRAM_DATA u8 save_gapED71[0x7] = {0};
 EWRAM_DATA u16 gLinkSendWords[4] = {0};

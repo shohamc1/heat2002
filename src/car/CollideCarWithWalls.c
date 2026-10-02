@@ -28,13 +28,8 @@
  *   slots come out permuted.
  */
 
-
-/* The file's four RAM variables (gUnk_0202CC4C, gWallCollisionNormal --
-   sized to gUnk_0202CC64, only elements 1 and 2 read -- gUnk_0202CC64 and
-   gUnk_0202CC70) moved to src/race/globals.c, the owner of the
-   0x0202CBE0-0x0202CCD0 EWRAM run they sit in, together with the two
-   wall-list pointers that used to sit between them; they are used only
-   here, so this file keeps the local externs. */
+/* gWallCollisionNormal is bounded by gUnk_0202CC64. Only elements 1 and 2
+   are read. */
 extern s32 gUnk_0202CC4C;
 extern s32 gWallCollisionNormal[];
 extern s32 gUnk_0202CC64;

@@ -65,7 +65,7 @@ void SampleFreqSet(u32 freq)
         soundInfo->freq = freq;
         {
 #if PORTABLE
-            /* Hosted mixer timing (issue 5 step 6, after sa2): a fixed
+            /* Hosted mixer timing: a fixed
                sample count per frame at the rate sdl2.c opens the audio
                device at (platform.h). The GBA branch's hardware tables and
                timer mean nothing on the host. */
@@ -96,7 +96,7 @@ void SampleFreqSet(u32 freq)
            A hosted build is single-threaded: REG_VCOUNT only moves when
            the platform's frame pump runs, so waiting for it to pass
            through 0x9F mid-frame cannot finish. The wait is timing-only
-           (step 6's mixer owns the hosted timing), so the port skips it. */
+           (the mixer owns the hosted timing), so the port skips it. */
         while (*(volatile u8 *)REG_ADDR_VCOUNT == 0x9F)
             ;
         while (*(volatile u8 *)REG_ADDR_VCOUNT != 0x9F)

@@ -8,12 +8,6 @@
 extern u16 gTuneDefaultGearPower[];
 extern u16 gTuneDefaultGearRatio[];
 
-/* The file's three u16 gear tables (gUnk_0202A540, gUnk_0202CB00 and
-   gUnk_0202CB20: the five gear values InitTuneSettings copies, the
-   reciprocals ComputeGearRatioReciprocals writes, and the third table)
-   moved to src/car/globals.c, the owner of the 0x0202A510-0x0202CBE0
-   EWRAM run they sit in; they are declared in variables.h. */
-
 void ComputeGearRatioReciprocals(u16 *src, u16 *dest)
 {
     u8 i = 0;

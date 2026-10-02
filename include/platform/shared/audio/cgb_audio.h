@@ -2,7 +2,7 @@
 #define CGB_AUDIO_H
 
 // Software PSG, after sa2's include/platform/shared/audio/cgb_audio.h
-// (issue 5 step 6). The hosted build has no sound hardware, so the CGB
+//. The hosted build has no sound hardware, so the CGB
 // half of the driver keeps working by driving this emulator through the
 // same REG_NR* registers the GBA code writes: src/sound/cgb_sound.c's
 // PORTABLE hooks (cgb_set_sweep/envelope/length/wavram, cgb_trigger_note)

@@ -1,4 +1,4 @@
-// Scripted-input soak harness (issue 5 step 9): drives the hosted build
+// Scripted-input soak harness: drives the hosted build
 // from a text script so a sanitizer soak can walk menus and race without
 // a person at the keyboard. Host-only; never compiled into the GBA build.
 //

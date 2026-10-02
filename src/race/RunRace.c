@@ -10,9 +10,6 @@ extern u32 gEngineSoundFreqBases[];               /* 0x08364AE0 */
 extern u8 gEngineSoundRpmMultipliers[];           /* 0x08364AF4 */
 extern u8 gText_BlankRow16[];                     /* 0x0806C678 */
 
-/* This file's old EWRAM variables now live in src/system/globals.c, which
-   owns the whole 0x02000DE0-0x02022E20 run. The ones no other file reads
-   keep local externs here; the rest come from variables.h. */
 extern u8 gExitRaceLoop;                          /* 0x02002144 */
 extern u8 gUnk_02002150[0xC];                     /* 0x02002150 */
 extern u8 gUnk_02002160[0xC];                     /* 0x02002160 */

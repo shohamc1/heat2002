@@ -2,7 +2,7 @@
 #include "gba/m4a_internal.h"
 #include "functions.h"
 #if PORTABLE
-// The hosted build's software PSG (issue 5 step 6): every NRx write below
+// The hosted build's software PSG: every NRx write below
 // is mirrored into it, after sa2's hooks in their m4a.c. The GBA branch
 // is untouched -- the registers are the real hardware there.
 #include "platform/shared/audio/cgb_audio.h"

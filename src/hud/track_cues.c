@@ -12,12 +12,6 @@ extern const u8 *const gTrackCueLists[];
 extern u32 gTrackCueLists[];
 #endif
 
-/* The file's RAM variables (gUnk_020251F0, gUnk_020251F8, gUnk_0202523C,
-   gUnk_02025244, gTrackCueId, gUnk_02025254, gTrackCueList and
-   gUnk_020253C8) moved to src/hud/globals.c, the owner of the
-   0x02024C40-0x02025270 and 0x02025380-0x020253F8 EWRAM runs they sit
-   in; gUnk_020251F8 and gUnk_02025254 are used only here, so this file
-   keeps their local externs. */
 extern u16 gUnk_020251F8;
 extern u16 gUnk_02025254;
 

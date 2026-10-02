@@ -1,4 +1,4 @@
-// Null front end (issue 5 step 9): the SDL-free hosted main loop, used
+// Null front end: the SDL-free hosted main loop, used
 // when the port is built with ASAN=1 on macOS. Homebrew's sdl2 there is
 // sdl2-compat, whose dylib initializer dlopens SDL3; under the AddressSanizer
 // runtime that dlopen fails and the layer pops a modal NSAlert (dllinit ->

@@ -11,15 +11,9 @@ extern struct CollisionNormal gCarCollisionNormals[];
    the ROM does, and the callee narrows them. */
 void KeepNearestCarContact(struct Car *a, s32 b, struct Car *c, s32 d, struct CarContact *e, u8 *f, s32 g, s32 h);
 
-/* Of the file's RAM variables, gUnk_0202A530 (0x0202A530) moved to
-   src/car/globals.c and gCarCollContact with gCarCollFrameSelf
-   (0x0202CC90/0x0202CCB0) to src/race/globals.c, the owners of the EWRAM
-   runs they sit in; they are used only here, so this file keeps their
-   local externs. What stays is the 0x0202CD24-0x0202CD50 run this file
-   owns (ldscript.ld's .bss_collide places the section at 0x0202CD24):
-   gUnk_0202CD24, then gCarCollFrameOther. Both frame arrays are 8 words
-   each, as their users' indices [0..7] and the 0x20 spacing to the next
-   variable both say. */
+/*.bss_collide places gUnk_0202CD24 and gCarCollFrameOther at 0x0202CD24.
+   Both frame arrays have eight words, as required by indices 0..7 and
+   the 0x20-byte spacing between variables. */
 extern u8 gUnk_0202A530;
 extern struct CarContact gCarCollContact;
 extern s32 gCarCollFrameSelf[];

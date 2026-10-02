@@ -7,12 +7,6 @@
 
 void FindCarAhead(struct Car *car);
 
-/* The file's six RAM variables (the three ClosestLane s32 arrays and
-   pointer array -- one element each, every user reads [0] -- with
-   gAiCarAheadSide and gUnk_0202CC2C) moved to src/race/globals.c, the
-   owner of the 0x0202CBE0-0x0202CCD0 EWRAM run they sit in; they are
-   declared in variables.h. */
-
 void UpdateCarPredictedPos(struct Car *car)
 {
     if (car->speed > (s32)0xFFFF0000) {

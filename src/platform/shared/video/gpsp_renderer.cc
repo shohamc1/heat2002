@@ -1,9 +1,4 @@
-/* gameplaySP - Modified to fit the SA2 codebase (freshollie - 2026)
- * and adapted to the NASCAR Heat 2002 decompilation's hosted port
- * (issue 5 step 5): SA2's widescreen (426x240) hacks reverted so the
- * renderer draws plain 240x160 GBA tiles, and the includes pointed at
- * this project's headers (the OamData field accesses flattened to
- * match include/gba/types.h's struct).
+/* gameplaySP renderer for the 240x160 GBA display.
  *
  * Copyright (C) 2006 Exophase <exophase@gmail.com>
  * Copyright (C) 2023 David Guillen Fandos <david@davidgf.net>
@@ -1343,7 +1338,7 @@ static void render_affine_object(const t_sprite *obji, const t_affp *affp, bool 
 
 // Renders a single sprite on the current scanline.
 // This function calls the affine or regular renderer depending on the sprite.
-// Will calculate whether sprite has certain effects (flip, rotation ...) to
+// Will calculate whether sprite has certain effects (flip, rotation...) to
 // use an optimized renderer function.
 template <typename stype, rendtype rdtype, bool is8bpp, bool mosaic>
 inline static void render_sprite(const t_sprite *obji, bool is_affine, u32 start, u32 end, stype *scanline, u32 pxcomb, const u16 *palptr)

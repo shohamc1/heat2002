@@ -3,14 +3,14 @@
 #include "variables.h"
 #include "functions.h"
 
-/* This file owns the palette-fade runs (issue 5 step 3, run rule):
-   gPaletteFadeColors (0x02022E20-0x02023A20) is the 256-colour fade state,
-   one u32 per 5-bit channel with the value in the high half, and
-   gPaletteFadeDeltas (0x02023A20-0x02024620) the matching per-channel delta
-   each BeginFade* routine divides into it (256 colours x 3 channels x 4
-   bytes = 0xC00 each). One contiguous span, one owner, one section: the
-   first buffer ends exactly where the second begins, so .bss_fade_begin
-   places the single ewram_data at 0x02022E20 and neither run pads. */
+/* This file owns the palette-fade runs: gPaletteFadeColors
+   (0x02022E20-0x02023A20) is the 256-colour fade state, one u32 per 5-bit
+   channel with the value in the high half, and gPaletteFadeDeltas
+   (0x02023A20-0x02024620) the matching per-channel delta each BeginFade*
+   routine divides into it (256 colours x 3 channels x 4 bytes = 0xC00
+   each). One contiguous span, one owner, one section: the first buffer ends
+   exactly where the second begins, so.bss_fade_begin places the single
+   ewram_data at 0x02022E20 and neither run pads. */
 EWRAM_DATA u32 gPaletteFadeColors[0x300] = { 0 }; /* 0x02022E20 */
 EWRAM_DATA s32 gPaletteFadeDeltas[0x300] = { 0 }; /* 0x02023A20 */
 

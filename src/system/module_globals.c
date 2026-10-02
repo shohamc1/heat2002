@@ -3,18 +3,17 @@
 #include "variables.h"
 
 /* This file owns the high module's game/link/track/fade EWRAM run
-   0x020390A0-0x0203ACD0 (issue 5 step 3, run rule), the module twin of
-   src/system/globals.c's run: the race state (gModule_NumCars through
-   gModule_RaceEndState, gModule_Camera, the link state), the track
-   pointer block (gModule_TrackMapWidth through gModule_Bg2ScrollX, mostly
-   src/track/module_track.c's map pointers), and the palette-fade state
-   (the two 0xC00-byte buffers plus the 0x200-byte staging buffer,
-   src/palette/module_fade.c's variables). Every identified variable in
-   the span is defined here in address order; the static gap arrays pad
-   only the addresses no identified symbol covers, including the one
-   dead-only symbol (gUnk_020390E4, defined here for the dead files that
-   use it, its symbols.ld line deleted). ldscript.ld's
-   .module_ewram_data_system places the section at 0x020390A0. */
+   0x020390A0-0x0203ACD0, the module twin of src/system/globals.c's run: the
+   race state (gModule_NumCars through gModule_RaceEndState, gModule_Camera,
+   the link state), the track pointer block (gModule_TrackMapWidth through
+   gModule_Bg2ScrollX, mostly src/track/module_track.c's map pointers), and
+   the palette-fade state (the two 0xC00-byte buffers plus the 0x200-byte
+   staging buffer, src/palette/module_fade.c's variables). Every identified
+   variable in the span is defined here in address order; the static gap
+   arrays pad only the addresses no identified symbol covers, including the
+   one dead-only symbol (gUnk_020390E4, defined here for the dead files that
+   use it). ldscript.ld's .module_ewram_data_system places the section at
+   0x020390A0. */
 
 MODULE_EWRAM_DATA u8 gModule_NumCars[8] = { 0 };
 MODULE_EWRAM_DATA u8 gUnk_020390A8 = 0;

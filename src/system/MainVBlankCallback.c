@@ -6,11 +6,6 @@
 #include "functions.h"
 #include "m4a.h"
 
-/* gVBlankWorkPhase (0x020021B8) — the first RAM variable ever moved into C,
-   per the phase-6 mechanism proof in docs/extern-headers-plan.md — now
-   lives in src/system/globals.c, which owns the whole 0x02000DE0-0x02022E20
-   EWRAM run; the EWRAM_DATA definition pattern moved with it. Only this
-   file reads it, so it keeps a local extern. */
 extern u8 gVBlankWorkPhase;                       /* 0x020021B8 */
 
 void MainVBlankCallback(void)

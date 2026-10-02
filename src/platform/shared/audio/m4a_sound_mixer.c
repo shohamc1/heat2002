@@ -1,5 +1,5 @@
 // The MP2K sound driver's assembly half (lib/m4a_1.s) as C, for the
-// hosted build only (issue 5 step 6), after sa2's
+// hosted build only, after sa2's
 // src/platform/shared/audio/m4a_sound_mixer.c. The GBA build keeps the
 // hand-written asm; nothing here compiles into it.
 //

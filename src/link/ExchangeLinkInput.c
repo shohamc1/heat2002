@@ -16,13 +16,6 @@
 
 u8 IsLinkSeqNumExpected(u16 seq, u8 next);
 
-/* This file's EWRAM variables below 0x02022E20 (gNumLinkPlayers,
-   gLinkVBlankTimeout, gLinkTxSeqNum and gLinkPhase0RecvWords) moved to
-   src/system/globals.c, the 0x02000DE0-0x02022E20 run's owner; the first
-   three are declared in variables.h. Only this file reads
-   gLinkPhase0RecvWords. gLinkSendWords (0x0202ED78) moved to
-   src/save/save.c, the owner of the 0x0202ED70-0x0202F1C0 run it sits in,
-   and is declared in variables.h. */
 extern u16 gLinkPhase0RecvWords[6];               /* 0x02002178 */
 #if PLATFORM_GBA
 /* The BIOS interrupt-check flag the serial ISR sets, in IWRAM: it takes

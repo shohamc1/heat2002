@@ -2,19 +2,18 @@
 #include "gba/defines.h"
 #include "variables.h"
 
-/* This file owns the high module's two race-timer EWRAM runs (issue 5
-   step 3, run rule), the module twin of src/hud/globals.c's second run:
-   the lap/race timers and countdown (0x0203B6A8-0x0203B708), and the
-   track-record tables through the finish order (0x0203B810-0x0203B870).
-   The 0x108-byte span between them (0x0203B708-0x0203B810) carries no
-   identified symbol. Each track-record table holds one entry per track
-   (12, gModule_TrackId's range); gModule_FinishedCarOrder holds one
-   entry per module car (8). The dead-only symbols inside
-   (gUnk_0203B6F4, gUnk_0203B700, gUnk_0203B82C: only src/dead/
-   sub_0833DAD8.c and sub_0833E3F8.c touch them) are defined here with
-   the types their externs declare, no symbols.ld lines left.
-   ldscript.ld's .module_ewram_data_hud and .module_ewram_data_hud_2
-   place the two sections. */
+/* This file owns the high module's two race-timer EWRAM runs, the module
+   twin of src/hud/globals.c's second run: the lap/race timers and countdown
+   (0x0203B6A8-0x0203B708), and the track-record tables through the finish
+   order (0x0203B810-0x0203B870). The 0x108-byte span between them
+   (0x0203B708-0x0203B810) carries no identified symbol. Each track-record
+   table holds one entry per track (12, gModule_TrackId's range);
+   gModule_FinishedCarOrder holds one entry per module car (8). The dead-
+   only symbols inside (gUnk_0203B6F4, gUnk_0203B700, gUnk_0203B82C: only
+   src/dead/ sub_0833DAD8.c and sub_0833E3F8.c touch them) are defined here
+   with the types their externs declare. ldscript.ld's
+   .module_ewram_data_hud and.module_ewram_data_hud_2 place the two
+   sections. */
 
 MODULE_EWRAM_DATA u16 gModule_LapSec = 0;
 static MODULE_EWRAM_DATA u8 hud_gapB6AA[0x6] = { 0 };

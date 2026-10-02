@@ -3,22 +3,9 @@
 
 #include "config.h"
 
-// structs that belong to no module yet — stage 1 catch-all of
-// docs/extern-headers-plan.md
-
-// struct Track: the merged view of the 0x64-byte per-track record that
-// gTrackData (ROM) and gModule_TrackData (the high module's EWRAM copy of
-// it) are arrays of. Three src/ files declared it locally
-// (sub_08003890.c, sub_08003928.c, ModuleLoadTrack.c); the two full views
-// were identical and the third (unk00/unk04 only) is a prefix of them, so
-// this is their union with no conflicts. The 100-byte stride is the one
-// ModuleLoadTrackTiles.c's byte-pointer arithmetic uses (`off = idx * 100`).
-// The 0x18-byte track segment record used to share the `struct Track`
-// tag name in four local definitions; it now lives below as
-// `struct TrackSeg`. Its stride differs from struct Track's, so the
-// two can never fold together. This header defines the struct before declaring any array of
-// it ("Declaration order matters for struct arrays",
-// docs/extern-headers-plan.md).
+// gTrackData and gModule_TrackData contain 0x64-byte track records.
+// ModuleLoadTrackTiles uses this 100-byte stride in its byte-pointer arithmetic.
+// Define each struct before declaring an array of it to preserve code generation.
 struct Track
 {
     /* 0x00 */ const u8 *bg3Tiles; /* 4bpp tiles copied to char block 2 (BG3) */
@@ -48,7 +35,7 @@ struct Track
 };
 
 // The 0x64 layout holds on the GBA; the hosted build widens the pointer
-// members (issue 5 step 4 adjusts the pads), so the check is GBA-only.
+// members, so the check is GBA-only.
 #if PLATFORM_GBA
 typedef char TrackSizeCheck[sizeof(struct Track) == 0x64 ? 1 : -1];
 #endif
@@ -61,8 +48,6 @@ extern const struct Track gTrackData[];
 // gTrackSegTables (race_setup.c, one row per track). ModuleUpdateLapProgress and
 // race/UpdateLapProgress.c read kind (the segment kind) against the
 // quad's corners; FindWaypointCrossing crosses the quad with a vertex pair.
-// Its old local tags (this struct, plus the coarser `struct SegBC4C`
-// prefix view) were merged here unchanged.
 struct TrackSeg
 {
     /* 0x00 */ s32 corner1X; /* one edge of the waypoint quad; the quad spans */

@@ -3,21 +3,14 @@
 #include "variables.h"
 
 /* This file owns the main program's one contiguous EWRAM run
-   0x02000DE0-0x02022E20 (issue 5 step 3, run rule): the m4a driver state
-   (gSoundInfo through the MusicPlayerInfo players and gMPlayMemAccArea),
-   the game/menu/link state (0x02002090-0x020021F0), the track map buffers
-   and scroll registers (0x02002200-0x02022DF8), and the palette-fade state
-   (gPaletteBufferDirty, gFadeActive, gPaletteFadeSteps). Every identified variable in
-   that span is defined here in address order; the static gap arrays pad
-   only the addresses no identified symbol covers. ldscript.ld's
-   .bss_globals places the section at the run's start (0x02000DE0).
-
-   Variables moved here from their old owners (definitions unchanged):
-   src/race/RunRace.c, src/car/UpdateCarSurface.c, src/menu/MainMenuLoop.c,
-   src/link/ExchangeLinkInput.c, src/car/update.c, src/track/track.c, and
-   src/system/MainVBlankCallback.c (gVBlankWorkPhase, the first RAM
-   variable ever moved into C, whose EWRAM_DATA pattern the rest of this
-   file follows); the rest came off symbols.ld lines, now deleted.
+   0x02000DE0-0x02022E20: the m4a driver state (gSoundInfo through the
+   MusicPlayerInfo players and gMPlayMemAccArea), the game/menu/link state
+   (0x02002090-0x020021F0), the track map buffers and scroll registers
+   (0x02002200-0x02022DF8), and the palette-fade state (gPaletteBufferDirty,
+   gFadeActive, gPaletteFadeSteps). Every identified variable in that span
+   is defined here in address order; the static gap arrays pad only the
+   addresses no identified symbol covers. ldscript.ld's .bss_globals places
+   the section at the run's start (0x02000DE0).
 
    Two symbols.ld lines stay as absolute aliases inside the map buffers,
    where no separate bytes exist: gUnk_0200CAD0 (inside gBg2MapBuffer) and
