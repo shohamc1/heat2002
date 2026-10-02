@@ -1,13 +1,14 @@
 #include "global.h"
+#include "functions.h"
 #include "variables.h"
 
 extern u8 gTrackCountdownExtraSeconds[];
 
 void ResetLapTimer(void)
 {
-    gLapMs[0] = 0;
-    gLapSec[0] = 0;
-    gLapMin[0] = 0;
+    gLapMs = 0;
+    gLapSec = 0;
+    gLapMin = 0;
 }
 
 void ResetRaceTimer(void)
@@ -20,8 +21,8 @@ void ResetRaceTimer(void)
 void SetCountdownSeconds(u8 seconds)
 {
     gCountdownSeconds = seconds;
-    if (gCountdownSeconds > 0x63)
-        gCountdownSeconds = 0x63;
+    if (gCountdownSeconds > 99)
+        gCountdownSeconds = 99;
 }
 
 void InitCountdown(void)
@@ -34,9 +35,9 @@ void InitCountdown(void)
     gCountdownMs = 0;
     gCountdownSeconds = gDefaultCountdownSeconds;
     gUnk_02025238 = 1;
-    mode = gGameMode[0];
-    if (mode == 0xA)
-        gCountdownSeconds = 0x14;
+    mode = gGameMode;
+    if (mode == 10)
+        gCountdownSeconds = 20;
     if (mode == 0) {
         seconds = (u8)(3 - gOptions[0]);
         extraSeconds = gTrackCountdownExtraSeconds;

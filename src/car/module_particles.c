@@ -3,60 +3,11 @@
 #include "variables.h"
 #include "car.h"
 
-/* The module task slot as the particle tasks see it (struct Task). */
-struct DraftStreak
-{
-    /* 0x00 */ u32 unk00;
-    /* 0x04 */ u32 unk04;
-    /* 0x08 */ s32 axialDist; /* 16.16 distance along the car's heading axis */
-    /* 0x0C */ void (*callback)();
-    /* 0x10 */ u8 pad10[8];
-    /* 0x18 */ s32 timer;
-    /* 0x1C */ s32 cornerIdx;
-    /* 0x20 */ u32 unk20;
-    /* 0x24 */ u8 pad24[0x10];
-    /* 0x34 */ u8 carIdx;
-};
-struct SkidSmoke
-{
-    /* 0x00 */ s32 posX;
-    /* 0x04 */ s32 rise;
-    /* 0x08 */ s32 posZ;
-    /* 0x0C */ void (*callback)();
-    /* 0x10 */ u8 pad10[8];
-    /* 0x18 */ s32 timer;
-    /* 0x1C */ s32 cornerIdx;
-    /* 0x20 */ u32 unk20;
-    /* 0x24 */ u8 pad24[4];
-    /* 0x28 */ s32 velX;
-    /* 0x2C */ u8 pad2C[4];
-    /* 0x30 */ s32 velZ;
-    /* 0x34 */ u8 carIdx;
-};
-struct DamageSmoke
-{
-    /* 0x00 */ s32 posX;
-    /* 0x04 */ s32 rise;
-    /* 0x08 */ s32 posZ;
-    /* 0x0C */ void (*callback)();
-    /* 0x10 */ u8 pad10[8];
-    /* 0x18 */ s32 timer;
-    /* 0x1C */ s32 riseRate;
-    /* 0x20 */ u8 pad20[8];
-    /* 0x28 */ s32 velX;
-    /* 0x2C */ u8 pad2C[4];
-    /* 0x30 */ s32 velZ;
-};
 void ModuleDraftStreakTask(struct DraftStreak *task);
-u8 ModuleWorldToScreen(s32 x, s32 y, s32 *out);
 void ModuleSkidSmokeTask(struct SkidSmoke *e);
 void ModuleDamageSmokeTask(struct DamageSmoke *e);
 extern u32 gModule_DamageSmokeFrames[];
-extern u8 gUnk_0201F370[];
-struct ObjTileCacheEntry *ModuleRequestObjTiles16(u32 a);
-u32 ModuleGetTrackTileType(s32 x, s32 y);
-s32 ModuleRequestObjPalette(u32 a);
-u32 ModuleAddOamEntry(u32 a, u32 b);
+extern const u8 gModule_SkidSmokePalette[];
 
 void ModuleDummyWallHitHook(s32 cornerX, s32 cornerZ)
 {}
@@ -198,17 +149,17 @@ void ModuleDamageSmokeTask(struct DamageSmoke *e)
         out[0] = screenX - 8;
         screenY = out[1] - 8;
         out[1] = screenY + (e->rise >> 1);
-        if ((u32)(screenX + 0x17) <= 0x10E && out[1] <= 0x9F && out[1] > -0x10) {
+        if ((u32)(screenX + 0x17) <= 0x10E && out[1] <= 159 && out[1] > -0x10) {
             sprite = ModuleRequestObjTiles16(gModule_DamageSmokeFrames[e->timer & 0x1F]);
             if (sprite != 0) {
                 tileType = ModuleGetTrackTileType(e->posX >> 19, e->posZ >> 19);
                 if (tileType & 1) {
                     attr = (out[1] & 0xFF) | ((out[0] & 0x1FF) << 16) | 0x40000000;
-                    palBits = ((u8)ModuleRequestObjPalette((u32)gUnk_0201F370) << 12) | 0x800;
+                    palBits = ((u8)ModuleRequestObjPalette(gModule_SkidSmokePalette) << 12) | 0x800;
                     ModuleAddOamEntry(attr, sprite->tileIndex | palBits);
                 } else {
                     attr = (out[1] & 0xFF) | ((out[0] & 0x1FF) << 16) | 0x40000000;
-                    palBits = ((u8)ModuleRequestObjPalette((u32)gUnk_0201F370) << 12) | 0x400;
+                    palBits = ((u8)ModuleRequestObjPalette(gModule_SkidSmokePalette) << 12) | 0x400;
                     ModuleAddOamEntry(attr, sprite->tileIndex | palBits);
                 }
             }

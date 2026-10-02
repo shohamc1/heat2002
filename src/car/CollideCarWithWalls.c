@@ -1,5 +1,8 @@
 #include "global.h"
+#include "functions.h"
+#include "gba/defines.h"
 #include "data.h"
+#include "car.h"
 
 /*
  * Car-vs-track box collision. Builds the four corner boxes and their union,
@@ -25,67 +28,23 @@
  *   slots come out permuted.
  */
 
-struct Car
-{
-    u8 pad00[0x0C];
-    s32 velX;
-    u8 pad10[4];
-    s32 velZ;
-    u8 pad18[0x34 - 0x18];
-    u16 heading;
-    u16 respawnHeading;
-    u16 respawnWaypoint;
-    u16 unk3A;
-    u16 yawRate;
-    u8 pad3E[0x7C - 0x3E];
-    u8 carState;
-    u8 pad7D[0xA4 - 0x7D];
-    s32 cornerX[4];
-    s32 cornerZ[4];
-    s32 nextCornerX[4];
-    s32 nextCornerZ[4];
-    u8 padE4[0x12C - 0xE4];
-    s32 steerHeading;
-};
 
-struct Corner
-{
-    s32 x;      /* 0x00: cornerX, 16.16 */
-    s32 z;      /* 0x04: cornerZ */
-    s32 nextX;  /* 0x08: nextCornerX */
-    s32 nextZ;  /* 0x0C: nextCornerZ */
-    s32 deltaX; /* 0x10: nextX - x */
-    s32 deltaZ; /* 0x14 */
-};
-
-struct Box
-{
-    s32 minX; /* 0x00: corner-sweep AABB, world units */
-    s32 maxX; /* 0x04 */
-    s32 minZ; /* 0x08 */
-    s32 maxZ; /* 0x0C */
-};
-
-struct Hit
-{
-    u8 pad00[4];   /* 0x00 */
-    s32 normalX;   /* 0x04 */
-    s32 normalZ;   /* 0x08 */
-    u8 cornerIndex;    /* 0x0C */
-    u8 steerAngle;     /* 0x0D */
-    u8 steerAngleOpp;  /* 0x0E */
-    u8 unk0F;          /* 0x0F */
-    s32 unk10;         /* 0x10 */
-};
-
+/* The file's four RAM variables (gUnk_0202CC4C, gWallCollisionNormal --
+   sized to gUnk_0202CC64, only elements 1 and 2 read -- gUnk_0202CC64 and
+   gUnk_0202CC70) moved to src/race/globals.c, the owner of the
+   0x0202CBE0-0x0202CCD0 EWRAM run they sit in, together with the two
+   wall-list pointers that used to sit between them; they are used only
+   here, so this file keeps the local externs. */
 extern s32 gUnk_0202CC4C;
 extern s32 gWallCollisionNormal[];
 extern s32 gUnk_0202CC64;
 extern s32 gUnk_0202CC70;
 
+/* The callers' view: s16 coordinates make agbcc emit insns the ROM's
+   instruction count depends on (see the header comment above), but the
+   definition (src/track/walls.c) takes s32, so this view can't go in
+   functions.h. */
 u16 *GetWallListAt(s16 x, s16 y);
-void TestCornersVsWalls(struct Corner *a1, struct Box *a2, struct Box *a3, struct Hit *a4, u16 *a5, s32 *a6);
-void DummyWallHitHook(s32 a, s32 b);
 
 inline s32 Min(s32 a, s32 b)
 {
@@ -105,10 +64,10 @@ inline s32 Max(s32 a, s32 b)
 
 s32 CollideCarWithWalls(struct Car *a)
 {
-    struct Corner corner[4];
-    struct Box boxes[4];
-    struct Box total;
-    struct Hit res;
+    struct CornerSweep corner[4];
+    struct SweepBox boxes[4];
+    struct SweepBox total;
+    struct WallHit res;
     s32 best;
     long long t;
     u16 *tile;
@@ -156,7 +115,7 @@ s32 CollideCarWithWalls(struct Car *a)
             d1 = ((long long)res.normalZ * t) >> 29;
             gUnk_0202CC70 = a->velX;
             gUnk_0202CC64 = a->velZ;
-            gUnk_0202CC4C = t;
+            gUnk_0202CC4C = (s32)t;
             gWallCollisionNormal[1] = res.normalX;
             gWallCollisionNormal[2] = res.normalZ;
             a->velX -= d0;
@@ -177,7 +136,7 @@ s32 CollideCarWithWalls(struct Car *a)
                 v >>= 20;
                 a->yawRate += v;
             }
-            return t >> 7;
+            return (s32)(t >> 7);
         }
     }
     return 0;

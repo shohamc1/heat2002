@@ -3,7 +3,13 @@
 #include "gba/defines.h"
 
 extern u16 gSharedMetatileTileTable[][4];
-extern u16 gUnk_0600F800[];
+#if PLATFORM_GBA
+extern u16 gUnk_0600F800[];               /* 0x0600F800 */
+#else
+/* VRAM screen block 31 (BG_SCREEN_ADDR(31)) as a host VRAM pointer; the
+   only use decays the array to u16 *. */
+#define gUnk_0600F800 ((u16 *)((u8 *)VRAM + 0xF800))
+#endif
 
 void DrawBackdropMetatileMap(const u16 *map)
 {
@@ -15,7 +21,7 @@ void DrawBackdropMetatileMap(const u16 *map)
 
     dest = gUnk_0600F800;
     i = 0;
-    for (; i != 0xA; i++) {
+    for (; i != 10; i++) {
         j = 0;
         for (; j != 0xF; j++) {
             idx = *map;

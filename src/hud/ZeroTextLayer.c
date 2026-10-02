@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 #include "data.h"
 
 void ZeroTextLayer(void)

@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 
 u16 ModulePackLinkKeys(u16 keys)
 {

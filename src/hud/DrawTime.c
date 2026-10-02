@@ -6,7 +6,7 @@ void DrawTime(u16 *dest, s32 a, s32 b, s32 c)
     u32 i;
     s32 digits[8];
 
-    if (a > 0x63) {
+    if (a > 99) {
         a = 0x63;
         b = 0x3B;
         c = 0;

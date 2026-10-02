@@ -10,8 +10,21 @@ extern u16 gObjTileCache2Tiles[];
 extern u16 gObjTileCache8Tiles[];
 extern u16 gObjTileCache4Tiles[];
 extern u16 gObjTileCache1Tiles[];
-extern s32 gObjPalBytesCopiedThisFrame;
-extern s32 gObjPalBytesPeak;
+
+/* The file's RAM variables, defined in address order (ldscript.ld's
+   .bss_gfx_cache places the section at 0x02025400). The seven caches run
+   contiguously to the two counters: 0x14 bytes per ObjTileCacheEntry
+   (counts 0x18/0x20/0x20/0x14/0x10/4) and 0x0C per ObjPaletteCacheEntry
+   (0x10), which is exactly each variable's span to the next symbol. */
+EWRAM_DATA struct ObjTileCacheEntry gObjTileCache16[0x18] = {0};
+EWRAM_DATA struct ObjTileCacheEntry gObjTileCache2[0x20] = {0};
+EWRAM_DATA struct ObjTileCacheEntry gObjTileCache1[0x20] = {0};
+EWRAM_DATA struct ObjTileCacheEntry gObjTileCache8[0x14] = {0};
+EWRAM_DATA struct ObjTileCacheEntry gObjTileCache4[0x10] = {0};
+EWRAM_DATA struct ObjTileCacheEntry gObjTileCache64[0x4] = {0};
+EWRAM_DATA struct ObjPaletteCacheEntry gObjPaletteCache[0x10] = {0};
+EWRAM_DATA s32 gObjPalBytesPeak = 0;
+EWRAM_DATA s32 gObjPalBytesCopiedThisFrame = 0;
 
 void InitObjPaletteCacheEntry(struct ObjPaletteCacheEntry *entry)
 {
@@ -27,14 +40,14 @@ void InitObjTileCache(u32 count, u16 *tiles, struct ObjTileCacheEntry *entries)
 
     i = 0;
     if (i != count) {
-        register u32 f asm("r12") = 0xFFFF;
+        register u32 f PIN(r12) = 0xFFFF;
         do {
             entries->gfx = f;
             entries->age = 0;
             entries->pending = 0;
             entries->tileIndex = *tiles;
             tile = *tiles;
-            entries->vramDest = OBJ_VRAM0 + (tile << 5);
+            entries->vramDest = (GfxAddr)(OBJ_VRAM0 + (tile << 5));
             entries->unk06 = 0;
             i++;
             entries++;
@@ -46,7 +59,7 @@ void InitObjTileCache(u32 count, u16 *tiles, struct ObjTileCacheEntry *entries)
 void InitGfxCaches(void)
 {
     u32 i;
-    u32 color;
+    u8 *color;
     struct ObjPaletteCacheEntry *q;
 
     {
@@ -80,11 +93,11 @@ void InitGfxCaches(void)
         InitObjTileCache(0x20, b, c);
     }
     i = 0;
-    color = OBJ_PLTT;
+    color = (u8 *)OBJ_PLTT;
     q = gObjPaletteCache;
     for (; i != 0x10; q++, i++) {
         InitObjPaletteCacheEntry(q);
-        q->palDest = color;
+        q->palDest = (GfxAddr)color;
         color += 0x20;
     }
 }
@@ -116,7 +129,7 @@ void AgeGfxCaches(void)
             p->age--;
     }
     p = a2;
-    for (i = 0; i != 0x18; i++, p++) {
+    for (i = 0; i != 24; i++, p++) {
         if (p->age == 0)
             p->gfx = 0xFFFF;
         else
@@ -130,7 +143,7 @@ void AgeGfxCaches(void)
             p->age--;
     }
     p = a4;
-    for (i = 0; i != 0x14; i++, p++) {
+    for (i = 0; i != 20; i++, p++) {
         if (p->age == 0)
             p->gfx = 0xFFFF;
         else
@@ -159,7 +172,7 @@ void AgeGfxCaches(void)
     }
 }
 
-struct ObjTileCacheEntry *RequestObjTiles64(u32 gfx, u8 flag)
+struct ObjTileCacheEntry *RequestObjTiles64(GfxSrc gfx, u8 flag)
 {
     struct ObjTileCacheEntry *entry;
     struct ObjTileCacheEntry *pool;
@@ -169,7 +182,7 @@ struct ObjTileCacheEntry *RequestObjTiles64(u32 gfx, u8 flag)
     i = 0;
     pool = entry;
     for (; i != 4; i++, entry++) {
-        if (entry->gfx == gfx) {
+        if (entry->gfx == (GfxAddr)gfx) {
             entry->age = 1;
             entry->unk05 = flag;
             return entry;
@@ -181,45 +194,45 @@ struct ObjTileCacheEntry *RequestObjTiles64(u32 gfx, u8 flag)
             entry->age = 1;
             entry->unk05 = flag;
             entry->pending = 1;
-            entry->gfx = gfx;
+            entry->gfx = (GfxAddr)gfx;
             return entry;
         }
     }
     return 0;
 }
 
-struct ObjTileCacheEntry *RequestObjTiles16(u32 gfx)
+struct ObjTileCacheEntry *RequestObjTiles16(GfxSrc gfx)
 {
     struct ObjTileCacheEntry *entry;
     u32 i;
 
     entry = gObjTileCache16;
-    for (i = 0; i != 0x18; i++, entry++) {
-        if (entry->gfx == gfx) {
+    for (i = 0; i != 24; i++, entry++) {
+        if (entry->gfx == (GfxAddr)gfx) {
             entry->age = 1;
             return entry;
         }
     }
     entry = gObjTileCache16;
-    for (i = 0; i != 0x18; i++, entry++) {
+    for (i = 0; i != 24; i++, entry++) {
         if (entry->age == 0) {
             entry->age = 1;
             entry->pending = 1;
-            entry->gfx = gfx;
+            entry->gfx = (GfxAddr)gfx;
             return entry;
         }
     }
     return 0;
 }
 
-struct ObjTileCacheEntry *RequestObjTiles2(u32 gfx)
+struct ObjTileCacheEntry *RequestObjTiles2(GfxSrc gfx)
 {
     struct ObjTileCacheEntry *entry;
     u32 i;
 
     entry = gObjTileCache2;
     for (i = 0; i != 0x20; i++, entry++) {
-        if (entry->gfx == gfx) {
+        if (entry->gfx == (GfxAddr)gfx) {
             entry->age = 1;
             return entry;
         }
@@ -229,38 +242,38 @@ struct ObjTileCacheEntry *RequestObjTiles2(u32 gfx)
         if (entry->age == 0) {
             entry->age = 1;
             entry->pending = 1;
-            entry->gfx = gfx;
+            entry->gfx = (GfxAddr)gfx;
             return entry;
         }
     }
     return 0;
 }
 
-struct ObjTileCacheEntry *RequestObjTiles8(u32 gfx)
+struct ObjTileCacheEntry *RequestObjTiles8(GfxSrc gfx)
 {
     struct ObjTileCacheEntry *entry;
     u32 i;
 
     entry = gObjTileCache8;
-    for (i = 0; i != 0x14; i++, entry++) {
-        if (entry->gfx == gfx) {
+    for (i = 0; i != 20; i++, entry++) {
+        if (entry->gfx == (GfxAddr)gfx) {
             entry->age = 1;
             return entry;
         }
     }
     entry = gObjTileCache8;
-    for (i = 0; i != 0x14; i++, entry++) {
+    for (i = 0; i != 20; i++, entry++) {
         if (entry->age == 0) {
             entry->age = 1;
             entry->pending = 1;
-            entry->gfx = gfx;
+            entry->gfx = (GfxAddr)gfx;
             return entry;
         }
     }
     return 0;
 }
 
-struct ObjTileCacheEntry *RequestObjTiles4(u32 gfx)
+struct ObjTileCacheEntry *RequestObjTiles4(GfxSrc gfx)
 {
     u32 i;
     struct ObjTileCacheEntry *entry;
@@ -268,7 +281,7 @@ struct ObjTileCacheEntry *RequestObjTiles4(u32 gfx)
     entry = gObjTileCache4;
     i = 0;
     do {
-        if (entry->gfx == gfx) {
+        if (entry->gfx == (GfxAddr)gfx) {
             entry->age = 1;
             return entry;
         }
@@ -280,21 +293,21 @@ struct ObjTileCacheEntry *RequestObjTiles4(u32 gfx)
         if (entry->age == 0) {
             entry->age = 1;
             entry->pending = 1;
-            entry->gfx = gfx;
+            entry->gfx = (GfxAddr)gfx;
             return entry;
         }
     }
     return 0;
 }
 
-struct ObjTileCacheEntry *RequestObjTiles1(u32 gfx)
+struct ObjTileCacheEntry *RequestObjTiles1(GfxSrc gfx)
 {
     struct ObjTileCacheEntry *entry;
     u32 i;
 
     entry = gObjTileCache1;
     for (i = 0; i != 0x20; i++, entry++) {
-        if (entry->gfx == gfx) {
+        if (entry->gfx == (GfxAddr)gfx) {
             entry->age = 1;
             return entry;
         }
@@ -304,21 +317,21 @@ struct ObjTileCacheEntry *RequestObjTiles1(u32 gfx)
         if (entry->age == 0) {
             entry->age = 1;
             entry->pending = 1;
-            entry->gfx = gfx;
+            entry->gfx = (GfxAddr)gfx;
             return entry;
         }
     }
     return 0;
 }
 
-struct ObjTileCacheEntry *RequestObjTiles1Compressed(u32 gfx)
+struct ObjTileCacheEntry *RequestObjTiles1Compressed(GfxSrc gfx)
 {
     struct ObjTileCacheEntry *entry;
     u32 i;
 
     entry = gObjTileCache1;
     for (i = 0; i != 0x20; i++, entry++) {
-        if (entry->gfx == gfx) {
+        if (entry->gfx == (GfxAddr)gfx) {
             entry->age = 1;
             return entry;
         }
@@ -328,14 +341,14 @@ struct ObjTileCacheEntry *RequestObjTiles1Compressed(u32 gfx)
         if (entry->age == 0) {
             entry->age = 1;
             entry->pending = 3;
-            entry->gfx = gfx;
+            entry->gfx = (GfxAddr)gfx;
             return entry;
         }
     }
     return 0;
 }
 
-u8 RequestObjPalette(u32 a)
+u8 RequestObjPalette(const void *a)
 {
     struct ObjPaletteCacheEntry *p;
     struct ObjPaletteCacheEntry *q;
@@ -345,7 +358,7 @@ u8 RequestObjPalette(u32 a)
     i = 0;
     q = p;
     for (; i != 16; i++, p++) {
-        if (p->palette == a) {
+        if (p->palette == (GfxAddr)a) {
             p->age = 1;
             p->pending = 1;
             return (u8)i;
@@ -356,7 +369,7 @@ u8 RequestObjPalette(u32 a)
         if (p->age == 0) {
             p->age = 1;
             p->pending = 1;
-            p->palette = a;
+            p->palette = (GfxAddr)a;
             return (u8)i;
         }
     }
@@ -369,8 +382,8 @@ void UploadPendingGfx(void)
     struct ObjTileCacheEntry *p;
     struct ObjPaletteCacheEntry *pal;
     u32 i;
-    s32 src;
-    s32 dest;
+    GfxAddr src;
+    GfxAddr dest;
     s32 *q;
 
     gObjPalBytesCopiedThisFrame = 0;
@@ -381,7 +394,7 @@ void UploadPendingGfx(void)
         if (p->pending != 0) {
             src = p->gfx;
             dest = p->vramDest;
-            RLUnCompVram(src, dest);
+            RLUnCompVram((const void *)src, (void *)dest);
             p->pending = 0;
         }
         i++;
@@ -394,12 +407,12 @@ void UploadPendingGfx(void)
         if (p->pending != 0) {
             src = p->gfx;
             dest = p->vramDest;
-            RLUnCompVram(src, dest);
+            RLUnCompVram((const void *)src, (void *)dest);
             p->pending = 0;
         }
         i++;
         p++;
-    } while (i != 0x18);
+    } while (i != 24);
 
     p = gObjTileCache2;
     i = 0;
@@ -421,12 +434,12 @@ void UploadPendingGfx(void)
         if (p->pending != 0) {
             src = p->gfx;
             dest = p->vramDest;
-            RLUnCompVram(src, dest);
+            RLUnCompVram((const void *)src, (void *)dest);
             p->pending = 0;
         }
         i++;
         p++;
-    } while (i != 0x14);
+    } while (i != 20);
 
     p = gObjTileCache4;
     i = 0;
@@ -434,7 +447,7 @@ void UploadPendingGfx(void)
         if (p->pending != 0) {
             src = p->gfx;
             dest = p->vramDest;
-            RLUnCompVram(src, dest);
+            RLUnCompVram((const void *)src, (void *)dest);
             p->pending = 0;
         }
         i++;
@@ -448,9 +461,9 @@ void UploadPendingGfx(void)
             src = p->gfx;
             dest = p->vramDest;
             if (p->pending == 1)
-                CpuSet(src, dest, 0x10);
+                CpuSet((const void *)src, (void *)dest, 0x10);
             else
-                RLUnCompVram(src, dest);
+                RLUnCompVram((const void *)src, (void *)dest);
             p->pending = 0;
         }
         i++;
@@ -464,7 +477,7 @@ void UploadPendingGfx(void)
         if (pal->pending != 0) {
             src = pal->palette;
             dest = pal->palDest;
-            CpuSet(src, dest, 0x10);
+            CpuSet((const void *)src, (void *)dest, 0x10);
             pal->pending = 0;
             *q += 0x20;
         }

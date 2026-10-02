@@ -21,7 +21,7 @@ void sub_0833EAA4(void)
     ModuleUpdateRaceTimers();
     base = gModule_TextLayerMapPtr[0];
     obj = base + 0x448;
-    ModuleDrawTime(obj, gModule_LapMin[0], gModule_LapSec[0], gModule_LapMs[0]);
+    ModuleDrawTime(obj, gModule_LapMin[0], gModule_LapSec, gModule_LapMs[0]);
     obj = base + 0x488;
     if (gUnk_0203E1E0[0] != 0)
         ModuleDrawTime(obj, gModule_TrackRecordMin[gModule_TrackId], gModule_TrackRecordSec[gModule_TrackId], gModule_TrackRecordMs[gModule_TrackId]);

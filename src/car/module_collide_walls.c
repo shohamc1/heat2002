@@ -1,5 +1,7 @@
 #include "global.h"
+#include "functions.h"
 #include "variables.h"
+#include "car.h"
 
 /*
  * Car-vs-track box collision: the high-region (0x0834 module) copy of
@@ -29,67 +31,17 @@
  *   slots come out permuted.
  */
 
-struct Car
-{
-    u8 pad00[0x0C];
-    s32 velX;
-    u8 pad10[4];
-    s32 velZ;
-    u8 pad18[0x34 - 0x18];
-    u16 heading;
-    u16 respawnHeading;
-    u16 respawnWaypoint;
-    u16 unk3A;
-    u16 yawRate;
-    u8 pad3E[0x7C - 0x3E];
-    u8 carState;
-    u8 pad7D[0xA4 - 0x7D];
-    s32 cornerX[4];
-    s32 cornerZ[4];
-    s32 nextCornerX[4];
-    s32 nextCornerZ[4];
-    u8 padE4[0x12C - 0xE4];
-    s32 steerHeading;
-};
-
-struct Corner
-{
-    s32 x;      /* 0x00: cornerX, 16.16 */
-    s32 z;      /* 0x04: cornerZ */
-    s32 nextX;  /* 0x08: nextCornerX */
-    s32 nextZ;  /* 0x0C: nextCornerZ */
-    s32 deltaX; /* 0x10: nextX - x */
-    s32 deltaZ; /* 0x14 */
-};
-
-struct Box
-{
-    s32 minX; /* 0x00: corner-sweep AABB, world units */
-    s32 maxX; /* 0x04 */
-    s32 minZ; /* 0x08 */
-    s32 maxZ; /* 0x0C */
-};
-
-struct Hit
-{
-    u8 pad00[4];   /* 0x00 */
-    s32 normalX;   /* 0x04 */
-    s32 normalZ;   /* 0x08 */
-    u8 cornerIndex;    /* 0x0C */
-    u8 steerAngle;     /* 0x0D */
-    u8 steerAngleOpp;  /* 0x0E */
-    u8 unk0F;          /* 0x0F */
-    s32 unk10;         /* 0x10 */
-};
 
 extern s32 gUnk_0203DE6C;
 extern s32 gModule_WallCollisionNormal[];
 extern s32 gUnk_0203DE84;
 extern s32 gUnk_0203DE90;
 
+/* The callers' view: s16 coordinates make agbcc emit insns the ROM's
+   instruction count depends on (see the header comment above), but the
+   definition (src/track/module_walls.c) takes s32, so this view can't go in
+   functions.h. */
 u16 *ModuleGetWallListAt(s16 x, s16 y);
-void ModuleTestCornersVsWalls(struct Corner *a1, struct Box *a2, struct Box *a3, struct Hit *a4, u16 *a5, s32 *a6);
-void ModuleDummyWallHitHook(s32 a, s32 b);
 
 inline s32 ModuleMin(s32 a, s32 b)
 {
@@ -109,10 +61,10 @@ inline s32 ModuleMax(s32 a, s32 b)
 
 s32 ModuleCollideCarWithWalls(struct Car *a)
 {
-    struct Corner corner[4];
-    struct Box boxes[4];
-    struct Box total;
-    struct Hit res;
+    struct CornerSweep corner[4];
+    struct SweepBox boxes[4];
+    struct SweepBox total;
+    struct WallHit res;
     s32 best;
     long long t;
     u16 *tile;

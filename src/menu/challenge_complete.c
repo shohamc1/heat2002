@@ -6,14 +6,13 @@
 void DrawChallengeCategoryComplete(u8 category)
 {
     DummyUiFontLoad(gUiFontTable[0]);
-    GetString(0xA9);
-    ((void (*)(void))DrawBigText)();
-    DrawTextCenteredHighlight(GetString(0xC5), 6, 1);
-    DrawTextCenteredHighlight(GetString(category + 0xC5), 7, 1);
+    DrawBigText(GetString(169));
+    DrawTextCenteredHighlight(GetString(197), 6, 1);
+    DrawTextCenteredHighlight(GetString(category + 197), 7, 1);
     if (category != 4)
-        DrawTextCenteredHighlight(GetString(category + 0xAA), 0xA, 1);
+        DrawTextCenteredHighlight(GetString(category + 170), 10, 1);
     else
-        DrawTextCenteredHighlight(GetString(0xB3), 0xA, 1);
+        DrawTextCenteredHighlight(GetString(179), 10, 1);
 }
 
 u8 ShowChallengeCategoryComplete(u8 category)
@@ -25,7 +24,7 @@ u8 ShowChallengeCategoryComplete(u8 category)
     LoadMenuScreen(3, (u16 *)palette);
     DrawChallengeCategoryComplete(category);
     FadeToBrightenedPalette(palette, 0x0F);
-    done = 0x40;
+    done = 64;
     do {
         ReadKeys();
         DrawChallengeCategoryComplete(category);

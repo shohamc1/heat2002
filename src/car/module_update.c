@@ -29,46 +29,30 @@
  *   `if (v != 0)`.
  */
 extern u16 gModule_TrackAiDragDivisors[];
-void ModuleResetCarSurface(struct Car *a);
-void ModuleComputeForwardSpeed(struct Car *a);
-void ModuleUpdateEngine(struct Car *a, u32 b);
-void ModuleUpdateTireForces(struct Car *a, u8 b);
-void ModuleComputeCarCorners(struct Car *a);
-s32 ModuleCollideCarWithWalls(struct Car *a);
-s32 ModuleCheckDrafting(struct Car *a);
-void ModuleAddDraftStreakTask(u8 a, u8 b);
-u8 ModuleCollideCars(struct Car *a);
-u8 ModuleUpdateLapProgress(struct Car *p, u8 a1);
-void ModuleM4aSongNumStart(u16 idx);
-void ModuleAddDamageSmokeTask(struct Car *car);
-void ModuleUpdateRacePosition(u8 idx);
 extern u16 gModule_PitEntryProgressPoints[];
 extern u16 gModule_PitExitProgressPoints[];
-u8 ModuleCarNeedsPit(struct Car *p);
-u8 ModuleFindFreePitStall(u8 a);
-void ModuleEnterPit(struct Car *p, u8 a);
 
 void ModuleClampSteerHeading(struct Car *car)
 {
-    register u32 rot asm("r9");
+    register u32 rot PIN(r9);
     u32 tableIdx;
-    register s32 scale asm("r1");
+    register s32 scale PIN(r1);
     s32 sinHeading;
     s32 cosHeading;
-    register s32 sin1 asm("r5");
-    register s32 cos1 asm("r4");
-    register s32 steerIdx asm("r2");
-    register s32 steerVal asm("r0");
-    register s32 sinSteer asm("r3");
-    register s32 cosSteer asm("r2");
-    register s32 sin2 asm("r8");
+    register s32 sin1 PIN(r5);
+    register s32 cos1 PIN(r4);
+    register s32 steerIdx PIN(r2);
+    register s32 steerVal PIN(r0);
+    register s32 sinSteer PIN(r3);
+    register s32 cosSteer PIN(r2);
+    register s32 sin2 PIN(r8);
     s32 cos2;
     s32 newSteer;
-    register s32 *steerPtr asm("r6");
+    register s32 *steerPtr PIN(r6);
     s16 *p;
-    register u32 rot2 asm("r1");
+    register u32 rot2 PIN(r1);
     s32 tmp;
-    register s32 idx asm("r0");
+    register s32 idx PIN(r0);
 
     rot = (car->heading >> 10) << 16;
     tableIdx = rot >> 14;
@@ -90,7 +74,7 @@ void ModuleClampSteerHeading(struct Car *car)
     cosSteer = gModule_SinTable[idx];
     sin2 = -(sinSteer * scale) >> 8;
     cos2 = (cosSteer * scale) >> 8;
-    if ((sin2 * sin1 + cos1 * cos2) >> 8 > 0x8D)
+    if ((sin2 * sin1 + cos1 * cos2) >> 8 > 141)
         return;
     rot2 = rot;
     tableIdx = rot2 >> 14;
@@ -102,7 +86,7 @@ void ModuleClampSteerHeading(struct Car *car)
     else
         newSteer = car->heading + 0x2800;
     *steerPtr = newSteer;
-    car->steerHeading = *(u16 *)&car->steerHeading;
+    car->steerHeading = (u16)car->steerHeading;
 }
 
 void ModuleUpdateSteering(struct Car *car, u16 keys)
@@ -164,7 +148,7 @@ void ModuleUpdateCarPhysics(struct Car *car, u32 keys, u8 idx)
     ModuleUpdateTireForces(car, idx);
     wallHit = 0;
     ModuleComputeCarCorners(car);
-    if (gModule_GameMode[0] == 4 || gModule_TrackId <= 0xB) {
+    if (gModule_GameMode == 4 || gModule_TrackId <= 11) {
         if (car->pitState != 0)
             wallHit = 0;
         else
@@ -176,11 +160,10 @@ void ModuleUpdateCarPhysics(struct Car *car, u32 keys, u8 idx)
     car->drag = dragBase * dragBase;
     if (dragBase > 0)
         car->drag = -car->drag;
-    if (gModule_IsLinkRace != 0 || gModule_GameMode[0] == 4 || gModule_GameMode[0] == 3) {
+    if (gModule_IsLinkRace != 0 || gModule_GameMode == 4 || gModule_GameMode == 3) {
         car->drag = car->drag / 215;
-    } else if (car == gModule_Cars || gModule_GameMode[0] == 9 || gModule_GameMode[0] == 0xD ||
-               gModule_GameMode[0] == 0xE || gModule_GameMode[0] == 0xF || gModule_GameMode[0] == 0x11 ||
-               gModule_GameMode[0] == 4) {
+    } else if (car == gModule_Cars || gModule_GameMode == 9 || gModule_GameMode == 13 || gModule_GameMode == 14 ||
+               gModule_GameMode == 15 || gModule_GameMode == 17 || gModule_GameMode == 4) {
         if (car->onApron != 0)
             car->drag = car->drag / 250;
         else if (car->onGrass != 0)
@@ -190,12 +173,11 @@ void ModuleUpdateCarPhysics(struct Car *car, u32 keys, u8 idx)
     } else {
         car->drag = car->drag / gModule_TrackAiDragDivisors[gModule_TrackId];
     }
-    if (gUnk_020390B8 != 0 && (u8)(gModule_GameMode[0] - 3) > 1)
+    if (gUnk_020390B8 != 0 && (u8)(gModule_GameMode - 3) > 1)
         car->drag = 0;
     if (car == gModule_Cars || gModule_IsLinkRace != 0) {
-        if (gModule_GameMode[0] != 9 && gModule_GameMode[0] != 0xD && gModule_GameMode[0] != 0xE &&
-            gModule_GameMode[0] != 0xF && gModule_GameMode[0] != 0x11 &&
-            (ModuleCheckDrafting(car) != 0 || car->draftTimer != 0)) {
+        if (gModule_GameMode != 9 && gModule_GameMode != 13 && gModule_GameMode != 14 && gModule_GameMode != 15 &&
+            gModule_GameMode != 17 && (ModuleCheckDrafting(car) != 0 || car->draftTimer != 0)) {
             if (car->draftTimer != 0)
                 car->draftTimer--;
             car->drag = (car->drag * 3) >> 2;
@@ -203,7 +185,7 @@ void ModuleUpdateCarPhysics(struct Car *car, u32 keys, u8 idx)
             ModuleAddDraftStreakTask(idx, 1);
         }
     }
-    if (gModule_GameMode[0] != 2)
+    if (gModule_GameMode != 2)
         ModuleCollideCars(car);
     car->prevProgress = car->progress;
 again:
@@ -214,9 +196,9 @@ again:
     car->posZ += car->velZ;
     car->heading = car->heading + car->yawRate;
     if (wallHit != 0) {
-        if (gModule_IsDemo[0] == 0 && gModule_RaceEndState == 0 && gModule_Options[3] != 0) {
+        if (gModule_IsDemo == 0 && gModule_RaceEndState == 0 && gModule_Options[3] != 0) {
             if (gModule_IsLinkRace == 0 ? car == gModule_Cars : car == gModule_Cars + gModule_LinkPlayerId)
-                ModuleM4aSongNumStart(0x12);
+                ModuleM4aSongNumStart(18);
         }
         if ((u8)(car->carState - 5) > 2 && gModule_DamagePitsEnabled != 0)
             car->damage -= wallHit >> 12;
@@ -229,7 +211,7 @@ again:
     }
     car->velX += car->forceX;
     car->velZ += car->forceZ;
-    car->yawRate = *(u16 *)&car->torque + car->yawRate;
+    car->yawRate = (u16)car->torque + car->yawRate;
     car->yawRate = ((s16)car->yawRate * 31) >> 5;
 }
 
@@ -247,12 +229,12 @@ void ModuleUpdateCar(struct Car *car, u8 idx)
     if (gModule_IsLinkRace != 0) {
         if (idx == gModule_LinkPlayerId) {
             ModuleUpdateRacePosition(idx);
-            if (gModule_Cars[idx].racePosition != 0 && gModule_Cars[idx].racePosition != 0x63)
+            if (gModule_Cars[idx].racePosition != 0 && gModule_Cars[idx].racePosition != 99)
                 gModule_Cars[idx].ledLapFlag = 0;
         }
     } else if (idx == 0) {
         ModuleUpdateRacePosition(0);
-        if (gModule_Cars[0].racePosition != 0 && gModule_Cars[0].racePosition != 0x63)
+        if (gModule_Cars[0].racePosition != 0 && gModule_Cars[0].racePosition != 99)
             gModule_Cars[0].ledLapFlag = idx;
     }
     car->tickCount++;
@@ -269,26 +251,26 @@ void ModuleUpdateAllCars(void)
     ModuleReadKeys();
     car = gModule_Cars;
     count = gModule_NumCars[0];
-    if (gModule_IsLinkRace != 0 || gModule_GameMode[0] == 4)
+    if (gModule_IsLinkRace != 0 || gModule_GameMode == 4)
         count = gModule_NumLinkPlayers[0];
-    if (gModule_GameMode[0] == 2)
+    if (gModule_GameMode == 2)
         count = 1;
     gUnk_0203D4E8++;
     for (i = 0; i != count; i++) {
         ModuleUpdateCar(car, i);
         if (car->prevProgress <= gModule_PitEntryProgressPoints[gModule_TrackId] &&
-            (*(u32 *)&car->progress & 0xFFFF) >= gModule_PitEntryProgressPoints[gModule_TrackId] && ModuleCarNeedsPit(car) != 0 &&
-            car != gModule_Cars) {
+            ((u32)car->progress & 0xFFFF) >= gModule_PitEntryProgressPoints[gModule_TrackId] &&
+            ModuleCarNeedsPit(car) != 0 && car != gModule_Cars) {
             pitStall = gModule_DamagePitsEnabled;
             if (pitStall != 0) {
                 pitStall = ModuleFindFreePitStall(pitStall);
-                if (pitStall != 0x63)
+                if (pitStall != 99)
                     ModuleEnterPit(car, ModuleFindFreePitStall(pitStall));
             }
         }
         if (car != gModule_Cars && car->pitState != 0) {
             if (car->prevProgress <= gModule_PitExitProgressPoints[gModule_TrackId] &&
-                (*(u32 *)&car->progress & 0xFFFF) >= gModule_PitExitProgressPoints[gModule_TrackId])
+                ((u32)car->progress & 0xFFFF) >= gModule_PitExitProgressPoints[gModule_TrackId])
                 car->pitCollidable = 0;
         }
         car++;

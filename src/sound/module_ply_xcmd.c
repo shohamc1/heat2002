@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 #include "gba/m4a_internal.h"
 #include "m4a.h"
 
@@ -159,43 +160,43 @@ void ModulePlyXatta(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *
     track->cmdPtr++;
 }
 
-void ModulePlyXdeca(u32 mplayInfo, struct MusicPlayerTrack *track)
+void ModulePlyXdeca(struct MusicPlayerInfo *unused, struct MusicPlayerTrack *track)
 {
     track->tone.decay = *track->cmdPtr;
     track->cmdPtr++;
 }
 
-void ModulePlyXsust(u32 mplayInfo, struct MusicPlayerTrack *track)
+void ModulePlyXsust(struct MusicPlayerInfo *unused, struct MusicPlayerTrack *track)
 {
     track->tone.sustain = *track->cmdPtr;
     track->cmdPtr++;
 }
 
-void ModulePlyXrele(u32 mplayInfo, struct MusicPlayerTrack *track)
+void ModulePlyXrele(struct MusicPlayerInfo *unused, struct MusicPlayerTrack *track)
 {
     track->tone.release = *track->cmdPtr;
     track->cmdPtr++;
 }
 
-void ModulePlyXiecv(u32 mplayInfo, struct MusicPlayerTrack *track)
+void ModulePlyXiecv(struct MusicPlayerInfo *unused, struct MusicPlayerTrack *track)
 {
     track->pseudoEchoVolume = *track->cmdPtr;
     track->cmdPtr++;
 }
 
-void ModulePlyXiecl(u32 mplayInfo, struct MusicPlayerTrack *track)
+void ModulePlyXiecl(struct MusicPlayerInfo *unused, struct MusicPlayerTrack *track)
 {
     track->pseudoEchoLength = *track->cmdPtr;
     track->cmdPtr++;
 }
 
-void ModulePlyXleng(u32 mplayInfo, struct MusicPlayerTrack *track)
+void ModulePlyXleng(struct MusicPlayerInfo *unused, struct MusicPlayerTrack *track)
 {
     track->tone.length = *track->cmdPtr;
     track->cmdPtr++;
 }
 
-void ModulePlyXswee(u32 mplayInfo, struct MusicPlayerTrack *track)
+void ModulePlyXswee(struct MusicPlayerInfo *unused, struct MusicPlayerTrack *track)
 {
     track->tone.pan_sweep = *track->cmdPtr;
     track->cmdPtr++;

@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 #include "variables.h"
 #include "data.h"
 
@@ -6,9 +7,9 @@
  * ModuleDrawTextCenteredHighlight, ModuleDrawText, ModuleDrawBigText
  * (0x0833EE88-0x0833F1DC). */
 
-void ModuleDrawTextCenteredHighlight(u8 *str, u32 y)
+void ModuleDrawTextCenteredHighlight(const u8 *str, u32 y, u32 unused)
 {
-    u8 *cursor;
+    const u8 *cursor;
     u8 len;
     u8 w;
     u16 *dest;

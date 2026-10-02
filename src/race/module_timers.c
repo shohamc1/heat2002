@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 #include "variables.h"
 
 extern u8 gModule_TrackCountdownExtraSeconds[];
@@ -6,7 +7,7 @@ extern u8 gModule_TrackCountdownExtraSeconds[];
 void ModuleResetLapTimer(void)
 {
     gModule_LapMs[0] = 0;
-    gModule_LapSec[0] = 0;
+    gModule_LapSec = 0;
     gModule_LapMin[0] = 0;
 }
 
@@ -34,9 +35,9 @@ void ModuleInitCountdown(void)
     gModule_CountdownMs = 0;
     gModule_CountdownSeconds = gUnk_0203B6F0;
     gUnk_0203B6E8 = 1;
-    if (gModule_GameMode[0] == 0xA)
-        gModule_CountdownSeconds = 0x14;
-    if (gModule_GameMode[0] == 0) {
+    if (gModule_GameMode == 10)
+        gModule_CountdownSeconds = 20;
+    if (gModule_GameMode == 0) {
         seconds = (u8)(3 - gModule_Options[0]);
         trackExtra = gModule_TrackCountdownExtraSeconds;
         trackExtra += gModule_TrackId;

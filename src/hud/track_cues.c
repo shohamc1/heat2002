@@ -1,14 +1,25 @@
 #include "global.h"
+#include "gba/defines.h"
 #include "car.h"
 #include "functions.h"
 #include "variables.h"
 
 extern const u8 *const gTrackCueIconGfxList[];
 extern u8 gTrackCueIconPalette[];
-extern u32 gUnk_0836524C[];
+#if PORTABLE
+extern const u8 *const gTrackCueLists[];
+#else
+extern u32 gTrackCueLists[];
+#endif
+
+/* The file's RAM variables (gUnk_020251F0, gUnk_020251F8, gUnk_0202523C,
+   gUnk_02025244, gTrackCueId, gUnk_02025254, gTrackCueList and
+   gUnk_020253C8) moved to src/hud/globals.c, the owner of the
+   0x02024C40-0x02025270 and 0x02025380-0x020253F8 EWRAM runs they sit
+   in; gUnk_020251F8 and gUnk_02025254 are used only here, so this file
+   keeps their local externs. */
 extern u16 gUnk_020251F8;
 extern u16 gUnk_02025254;
-void DrawTrackCueIcon(u8 a, u16 b);
 
 void DrawTrackCueIcon(u8 cueId, u16 angle)
 {
@@ -18,7 +29,7 @@ void DrawTrackCueIcon(u8 cueId, u16 angle)
     u32 attr2;
     u8 hFlip;
     u8 vFlip;
-    register u8 zero asm("r10");
+    register u8 zero PIN(r10);
     u16 zero2;
     u16 *cmdPtr;
     if (angle != 0) {
@@ -36,7 +47,7 @@ void DrawTrackCueIcon(u8 cueId, u16 angle)
         }
         gUnk_020251F0 = angle;
         attr = ((cmd[1] & 0xFF) | ((cmd[0] & 0x1FF) << 16)) | 0x80000000;
-        attr2 = tileEntry->tileIndex | (RequestObjPalette((u32)gTrackCueIconPalette) << 12);
+        attr2 = tileEntry->tileIndex | (RequestObjPalette(gTrackCueIconPalette) << 12);
         attr |= 0x04000100;
         gUnk_0202523C = zero;
         gUnk_020253C8 = zero;
@@ -57,7 +68,7 @@ void DrawTrackCueIcon(u8 cueId, u16 angle)
             return;
         }
         attr = ((cmd[1] & 0xFF) | ((cmd[0] & 0x1FF) << 16)) | 0x80000000;
-        attr2 = tileEntry->tileIndex | (RequestObjPalette((u32)gTrackCueIconPalette) << 12);
+        attr2 = tileEntry->tileIndex | (RequestObjPalette(gTrackCueIconPalette) << 12);
         if (hFlip != 0) {
             attr |= 0x10000000;
         }
@@ -71,10 +82,14 @@ void DrawTrackCueIcon(u8 cueId, u16 angle)
 void LoadTrackCues(u8 trackIdx)
 {
     gUnk_02025244 = 1;
-    gTrackCueList = gUnk_0836524C[trackIdx];
+    gTrackCueList = gTrackCueLists[trackIdx];
     gTrackCueId = -1;
     if (gTrackCueList == 0)
+#if PORTABLE
+        gUnk_02025244 = 0;
+#else
         gUnk_02025244 = gTrackCueList;
+#endif
 }
 
 void UpdateTrackCues(struct Car *car)
@@ -100,7 +115,11 @@ void UpdateTrackCues(struct Car *car)
             gUnk_020251F8 = *(u16 *)(cueRecord + 4);
             gUnk_02025254 = *(u16 *)(cueRecord + 6);
             cueRecord += 8;
+#if PORTABLE
+            car->trackCueCursor = cueRecord;
+#else
             car->trackCueCursor = (u32)cueRecord;
+#endif
         } while (progress >= *(u16 *)cueRecord);
     }
 }

@@ -51,16 +51,14 @@ extern const u8 gModule_Text_3rd[];
 extern const u8 gModule_Text_4th[];
 extern const u8 gModule_Text_5th[];
 
-/* The track-data blob labels data/rom_08345BF8.s defines (EWRAM names):
- * the u16 ones fill this record's pointer fields, the u32-word ones its
- * raw word fields (cast at the use). */
-extern u16 gUnk_0201044C[];
-extern u16 gUnk_02013FAC[];
-extern u16 gUnk_0200D378[];
-extern u32 gUnk_0201242C[];
-extern u32 gUnk_02018DA0[];
-extern u32 gUnk_02017080[];
-extern u32 gUnk_02013DAC[];
+/* Track 7's blobs in the module's track data (data/rom_08345BF8.s). */
+extern const u8 gModule_Track7Bg3Tiles[];
+extern const u8 gModule_Track7Bg2Tiles[];
+extern u16 gModule_Track7Bg3Metatiles[];
+extern u16 gModule_Track7Bg2Metatiles[];
+extern const u8 gModule_Track7Palette[];
+extern u16 gModule_Track7Bg3Map[];
+extern u16 gModule_Track7Bg2Map[];
 
 /* Three rows inside gModule_PitLabelBlock (high_module_text.c), named
  * in symbols.ld. */
@@ -121,23 +119,23 @@ const u32 gModule_TextLayerMapPtr[1] = { 0x600E000 };
  * the championship's link-only layout. The main program's twelve-record
  * gTrackData (src/data/race_data.c) says what each field is; this
  * record's blobs live in the module's track data around 0x0834A000,
- * labelled by their EWRAM addresses in data/rom_08345BF8.s. */
+ * labelled gModule_Track7* in data/rom_08345BF8.s. */
 const struct Track gModule_TrackData[1] = {
-    { (u32)gUnk_0201242C,
-      (u32)gUnk_02018DA0,
-      (u32)gUnk_02018DA0,
-      gUnk_0201044C,
-      gUnk_02017080,
-      (u32)gUnk_02017080,
-      (u32)gUnk_02013DAC,
+    { gModule_Track7Bg3Tiles,
+      gModule_Track7Bg2Tiles,
+      gModule_Track7Bg2Tiles,
+      gModule_Track7Bg3Metatiles,
+      gModule_Track7Bg2Metatiles,
+      gModule_Track7Bg2Metatiles,
+      gModule_Track7Palette,
       0x0,
-      gUnk_0200D378,
-      gUnk_02013FAC,
-      (u32)gUnk_02013FAC,
-      0x7d,
-      0x64,
-      0x7d,
-      0x64,
+      gModule_Track7Bg3Map,
+      gModule_Track7Bg2Map,
+      gModule_Track7Bg2Map,
+      125,
+      100,
+      125,
+      100,
       0x0,
       0x0,
       0x0,
@@ -149,10 +147,10 @@ const struct Track gModule_TrackData[1] = {
       { 0, 0 } },
 };
 
-/* gUnk_0200D378 (0x08345DF8), gUnk_0201044C (0x08348ECC),
- * gUnk_0201242C (0x0834AEAC), gUnk_02013DAC (0x0834C82C),
- * gUnk_02013FAC (0x0834CA2C), gUnk_02017080 (0x0834FB00) and
- * gUnk_02018DA0 (0x08351820): the track's BG maps, metatiles, tile
+/* gModule_Track7Bg3Map (0x08345DF8), gModule_Track7Bg3Metatiles (0x08348ECC),
+ * gModule_Track7Bg3Tiles (0x0834AEAC), gModule_Track7Palette (0x0834C82C),
+ * gModule_Track7Bg2Map (0x0834CA2C), gModule_Track7Bg2Metatiles (0x0834FB00) and
+ * gModule_Track7Bg2Tiles (0x08351820): the track's BG maps, metatiles, tile
  * sheets and palette, labelled in data/rom_08345BF8.s, which builds
  * them from track 7's editable files. */
 

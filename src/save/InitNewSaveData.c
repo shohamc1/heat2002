@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 #include "variables.h"
 
 void InitNewSaveData(void)
@@ -14,7 +15,7 @@ void InitNewSaveData(void)
     do {
         gProgressFlags[i] = 1;
         i++;
-    } while (i != 0x0A);
+    } while (i != 10);
     gChallengeCategoryUnlocked[0] = 1;
     gChallengeCategoryUnlocked[1] = 0;
     gChallengeCategoryUnlocked[2] = 0;

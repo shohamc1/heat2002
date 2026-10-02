@@ -2,6 +2,10 @@
 #include "gba/m4a_internal.h"
 #include "functions.h"
 #include "variables.h"
+#if PORTABLE
+#include <stddef.h>
+#include "gba/compat.h"
+#endif
 
 /* MPlayOpen */
 void MPlayMain(void);
@@ -17,12 +21,26 @@ void MPlayOpen(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track
     if (count == 0)
         return;
     if (count > 0x10)
-        count = 0x10;
+        count = 16;
     soundInfo = gSoundInfoPtr[0];
     if (soundInfo->ident != ID_NUMBER)
         return;
     soundInfo->ident = soundInfo->ident + 1;
     Clear64byte(playerInfo);
+#if PORTABLE
+    /* Clear64byte zeroes through the track view's cmdPtr, which on the
+       GBA covers the whole 0x40-byte player; the hosted player is wider,
+       so zero the tail here (MPlayMainNext/musicPlayerNext would
+       otherwise hold garbage the ident check would then trust). */
+    CpuFill32(0,
+              (u8 *)playerInfo + offsetof(struct MusicPlayerTrack, cmdPtr),
+              sizeof(struct MusicPlayerInfo) - offsetof(struct MusicPlayerTrack, cmdPtr));
+#if !PLATFORM_GBA
+    /* The size above only makes sense while the track view's cmdPtr
+       offset fits inside the player struct; keep it checked. */
+    typedef char MPlayOpenClearCheck[offsetof(struct MusicPlayerTrack, cmdPtr) <= sizeof(struct MusicPlayerInfo) ? 1 : -1];
+#endif
+#endif
     playerInfo->tracks = track;
     playerInfo->trackCount = count;
     playerInfo->status = MUSICPLAYER_STATUS_PAUSE;
@@ -44,14 +62,18 @@ void MPlayOpen(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track
 
 void MPlayStart(struct MusicPlayerInfo *mplayInfo, struct SongHeader *songHeader)
 {
-    register struct MusicPlayerTrack *track asm("r4");
+    register struct MusicPlayerTrack *track PIN(r4);
     struct MusicPlayerInfo *playerInfo = mplayInfo;
     struct SongHeader *song = songHeader;
     s32 i;
     u32 trackIdx;
     u16 tempo;
     u32 partOffset;
-    register u32 partPtr asm("r0");
+#if PORTABLE
+    register uintptr_t partPtr PIN(r0);
+#else
+    register u32 partPtr PIN(r0);
+#endif
 
     if (playerInfo->ident != ID_NUMBER)
         return;
@@ -75,14 +97,28 @@ void MPlayStart(struct MusicPlayerInfo *mplayInfo, struct SongHeader *songHeader
     loopA:
         TrackStop(playerInfo, track);
         track->flags = 0xC0;
+#if PORTABLE
+        /* The GBA stores the track index here and reads it back as a
+           pointer whose bytes the BIOS-protected low page zeroes; the
+           host cannot, so the port stores the NULL the engine means.
+           The part walk below reads the header's pointer array through
+           its struct member instead of +8/i*4 byte arithmetic. */
+        track->chan = NULL;
+        track->cmdPtr = song->part[i];
+#else
         track->chan = (struct SoundChannel *)trackIdx;
         partOffset = i * 4;
-        partPtr = (u32)song;
+        partPtr = ADDR_WORD(song);
         partPtr = partPtr + 8;
         partPtr = partPtr + partOffset;
         track->cmdPtr = *(u8 **)partPtr;
+#endif
         i++;
+#if PORTABLE
+        track++;
+#else
         track = (struct MusicPlayerTrack *)((u8 *)track + 0x50);
+#endif
         if (i < song->trackCount && i < playerInfo->trackCount)
             goto loopA;
     }
@@ -92,7 +128,11 @@ void MPlayStart(struct MusicPlayerInfo *mplayInfo, struct SongHeader *songHeader
         TrackStop(playerInfo, track);
         track->flags = trackIdx;
         i++;
+#if PORTABLE
+        track++;
+#else
         track = (struct MusicPlayerTrack *)((u8 *)track + 0x50);
+#endif
         if (i < playerInfo->trackCount)
             goto loopB;
     }
@@ -116,7 +156,11 @@ void m4aMPlayStop(struct MusicPlayerInfo *mplayInfo)
     while (remaining > 0) {
         TrackStop(playerInfo, track);
         remaining--;
+#if PORTABLE
+        track++;
+#else
         track = (struct MusicPlayerTrack *)((u8 *)track + 0x50);
+#endif
     }
     playerInfo->ident = ID_NUMBER;
 }

@@ -52,25 +52,25 @@ void sub_0800B1A4(struct EntityB1A4 *e)
     }
     if (e->unk18 > 0x2D)
     {
-      if (gGameMode[0] == 9)
+      if (gGameMode == 9)
       {
-        gGameMode[0] = 6;
+        gGameMode = 6;
       }
-      if (gGameMode[0] == 0x0D)
+      if (gGameMode == 0x0D)
       {
-        gGameMode[0] = 0x0C;
+        gGameMode = 0x0C;
       }
-      if (gGameMode[0] == 0x0E)
+      if (gGameMode == 0x0E)
       {
-        gGameMode[0] = 2;
+        gGameMode = 2;
       }
-      if (gGameMode[0] == 0x0F)
+      if (gGameMode == 0x0F)
       {
-        gGameMode[0] = 0x10;
+        gGameMode = 0x10;
       }
-      if (gGameMode[0] == 0x11)
+      if (gGameMode == 0x11)
       {
-        gGameMode[0] = 5;
+        gGameMode = 5;
       }
       gRaceStarted = 1;
     }

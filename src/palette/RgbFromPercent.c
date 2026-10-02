@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 
 u16 RgbFromPercent(u16 a, u16 b, u16 c)
 {

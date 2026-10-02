@@ -19,13 +19,21 @@ extern const u8 gText_Abcdee[];
 extern const u8 gText_TimCoode[];
 extern const struct Song gSongTable[];
 extern const u8 *const gDriverCarPalettes[];
-extern const u32 *const gDriverCarGfxRightTiles[];
+extern const GfxSrc *const gDriverCarGfxRightTiles[];
 extern const u8 *const gSplashSpriteFrames[];
 extern const u8 gMenuPalette[];
 extern const u8 RomHeaderMagic;
 extern const u32 RomHeaderGameCode;
 extern const u8 gText_ChrisWalsh[];
-extern u8 *gTextPadCharPtr;
+// rom_0836524C.c defines it const u8 *const. The GBA build's extern drops
+// the outer const: DrawBigText reloads the pointer every iteration, which
+// agbcc only does for a non-const object. A hosted compiler rejects the
+// mismatch, so it sees the definition's type.
+#if PLATFORM_GBA
+extern const u8 *gTextPadCharPtr;
+#else
+extern const u8 *const gTextPadCharPtr;
+#endif
 extern const u8 gText_A[];
 extern const u8 gText_WillGreenough[];
 extern const u16 gAiDriverGearRatioTable[];
@@ -37,7 +45,14 @@ extern const u8 gText_Abcde[];
 extern const u8 gText_Abcd[];
 extern const u8 gText_PagePrevArrow[];
 extern const u8 gText_BlankRow36[];
+/* The one word is the text layer's BG map base in VRAM. The users' byte
+   offsets and u16/u32 views all adapt through casts; the hosted build
+   types it as the pointer it is, so the map base is a real address. */
+#if PORTABLE
+extern const u8 *gTextLayerMapPtr[1];
+#else
 extern u32 gTextLayerMapPtr[];
+#endif
 extern const u8 gLinkMarkerPalette[];
 extern const u8 gText_Ab[];
 extern const u8 *const gUiFontTable[];
@@ -73,13 +88,13 @@ extern struct SongHeader song_27;
 extern struct SongHeader song_28;
 extern struct SongHeader song_29;
 extern const u8 gText_MikeMerren[];
-extern const u32 *const gLinkMarkerFrameLists[];
+extern const GfxSrc *const gLinkMarkerFrameLists[];
 extern const u8 *const gLaneLengthPtrs[];
 extern const u8 gText_BlankRowPauseMenu[];
 extern const u16 gFontCharToGlyphTable[];
 extern const u8 gText_BlankRow28[];
 extern const struct DriverRosterEntry gDriverRoster[];
-extern const u32 *const gDriverCarGfxLeftTiles[];
+extern const GfxSrc *const gDriverCarGfxLeftTiles[];
 extern const u16 gAiDriverGearPowerTable[];
 extern const u32 gTextLayerTiles[];
 extern const u8 gResultsScreenPalette[];

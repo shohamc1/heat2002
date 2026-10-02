@@ -1,6 +1,15 @@
 @ Generated with Luvdis v0.9.0
+@ Both builds preprocess this file (preproc inlines the .include files,
+@ cpp resolves the switch below). The GBA keeps the exact luvdis layout;
+@ the hosted build switches to a writable data section, because its mPtr
+@ pointer fields carry relocations the host linker must be able to write.
+	.include "asm/macros/portable.inc"
+#if PLATFORM_GBA
 .syntax unified
 .text
+#else
+mSectionData
+#endif
 @ Begin embedded Luvdis macros
 	.macro arm_func_start name
 	.align 2, 0
@@ -56,8 +65,9 @@ gModule_020242E8:
 	.global gModule_02024368
 gModule_02024368:
 	.incbin "build/assets/graphics/rl_08337BA0.bin"
-	.global gUnk_020243E8
-gUnk_020243E8:
+	.global gModule_LinkMarkerPalette
+gModule_LinkMarkerPalette:
+	cSym gModule_LinkMarkerPalette
 	.incbin "build/assets/graphics/palettes/link_marker.pal.bin"
 	.global gModule_02024408
 gModule_02024408:
@@ -127,12 +137,15 @@ gModule_02024E48:
 	.incbin "build/assets/graphics/palettes/pal_08338700.pal.bin"
 	.global gModule_SpeedNeedleGfx
 gModule_SpeedNeedleGfx:
+	cSym gModule_SpeedNeedleGfx
 	.incbin "build/assets/graphics/rl_08338720.bin"
-	.global gUnk_02024F50
-gUnk_02024F50:
+	.global gModule_HudWarningIconPalette
+gModule_HudWarningIconPalette:
+	cSym gModule_HudWarningIconPalette
 	.incbin "build/assets/graphics/palettes/track_select_arrow.pal.bin"
 	.global gModule_LowFuelWarningGfx
 gModule_LowFuelWarningGfx:
+	cSym gModule_LowFuelWarningGfx
 	.incbin "build/assets/graphics/rl_083387A8.bin"
 	.space 2
 	.incbin "build/assets/graphics/palettes/pal_083387F0.pal.bin"

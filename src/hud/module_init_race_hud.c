@@ -3,21 +3,9 @@
 #include "car.h"
 #include "functions.h"
 
-void ModuleUpdateRaceTimers(void);
-void ModuleDrawTime(u16 *dest, s32 a, s32 b, s32 c);
-void ModuleDrawSpeedNeedle(u32 a1);
-void ModuleDrawRacePosition(s32 arg);
-void ModuleDrawLapCounter(s32 a, s32 b);
-void ModuleDrawLowFuelWarning(s32 arg);
-void ModuleDrawTireWear(struct Car *p);
-void ModuleDrawPitStopWarning(struct Car *p);
-void ModuleDummyHudHook(struct Car *p);
-void ModuleUpdateTrackCues(struct Car *p);
 extern u8 gModule_TimeLabel[];
 void ModuleDrawHudLabels(void);
-void ModuleInitCountdown(void);
 void ModuleUpdateRaceHud(void);
-void ModuleInitRaceHud(void);
 extern u8 gModule_PitLabelBlock[];
 
 void ModuleUpdateRaceHud(void)
@@ -32,8 +20,8 @@ void ModuleUpdateRaceHud(void)
         car = &gModule_Cars[0];
     ModuleUpdateRaceTimers();
     dest = (u16 *)(gModule_TextLayerMapPtr[0] + 0x4C6);
-    ModuleDrawTime(dest, gModule_LapMin[0], gModule_LapSec[0], gModule_LapMs[0]);
-    if (gModule_GameMode[0] == 0x0E || gModule_GameMode[0] == 0x02) {
+    ModuleDrawTime(dest, gModule_LapMin[0], gModule_LapSec, gModule_LapMs[0]);
+    if (gModule_GameMode == 14 || gModule_GameMode == 2) {
         dest = (u16 *)(gModule_TextLayerMapPtr[0] + 0x486);
         if (gUnk_0203E1E0[0] != 0)
             ModuleDrawTime(dest, gModule_TrackRecordMin[gModule_TrackId], gModule_TrackRecordSec[gModule_TrackId],
@@ -44,13 +32,13 @@ void ModuleUpdateRaceHud(void)
     if (v < 0)
         v = 0;
     ModuleDrawSpeedNeedle(v);
-    if (gModule_GameMode[0] != 2 && gModule_GameMode[0] != 0x0E) {
+    if (gModule_GameMode != 2 && gModule_GameMode != 14) {
         ModuleDrawRacePosition(car->racePosition + 1);
-        if (car->lapStartedFlag != 0 || (u8)(gModule_GameMode[0] - 3) <= 1)
-            ModuleDrawLapCounter((*(s8 *)&car->lap) + 1, gUnk_02039194);
+        if (car->lapStartedFlag != 0 || (u8)(gModule_GameMode - 3) <= 1)
+            ModuleDrawLapCounter(car->lap + 1, gUnk_02039194);
         else
             ModuleDrawLapCounter(999, gUnk_02039194);
-        ModuleDrawLowFuelWarning((*(u32 *)&car->fuel) << 8);
+        ModuleDrawLowFuelWarning((u32)car->fuel << 8);
         ModuleDrawTireWear(car);
         ModuleDrawPitStopWarning(car);
         ModuleDummyHudHook(car);
@@ -66,7 +54,7 @@ void ModuleClearTextLayer(void)
     do {
         *p++ = 0xE047;
         i++;
-    } while (i != 0x380);
+    } while (i != 896);
 }
 
 void ModuleDrawHudLabels(void)
@@ -105,7 +93,7 @@ void ModuleInitRaceHud(void)
 {
     struct Task *task;
 
-    if (gModule_IsDemo[0] != 0)
+    if (gModule_IsDemo != 0)
         return;
     task = ModuleAllocTask();
     if (task != 0) {
@@ -113,7 +101,7 @@ void ModuleInitRaceHud(void)
         ModuleAddTask(task);
     }
     ModuleDrawHudLabels();
-    ModuleDrawText(gModule_TimeLabel, 0, 0x13);
+    ModuleDrawText(gModule_TimeLabel, 0, 19);
     ModuleInitCountdown();
 }
 
@@ -121,5 +109,5 @@ void ModuleInitTimeTrialHud(void)
 {
     ModuleInitRaceHud();
     if (gUnk_0203E1E0[0] != 0)
-        ModuleDrawText(gModule_PitLabelBlock, 0, 0x12);
+        ModuleDrawText(gModule_PitLabelBlock, 0, 18);
 }

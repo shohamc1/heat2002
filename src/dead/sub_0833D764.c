@@ -18,13 +18,13 @@ u32 sub_0833D764(u32 a, u32 b, s32 c, u16 d)
         return 0;
     if (gUnk_0203B604 > 0x1E)
         return 0;
-    p = (struct VertexCmd *)gUnk_0203B0E0;
+    p = (struct VertexCmd *)gModule_SecondOamSortCursor;
     p->field0 = (gUnk_0203B604 << 25) | a;
     p->field4 = b;
     p->field8 = -c;
     p->fieldA = c;
     p->fieldC = d;
-    gUnk_0203B0E0 = (u32)(p + 1);
+    gModule_SecondOamSortCursor = (u32)(p + 1);
     gUnk_0203B600 = gUnk_0203B600 + 1;
     gUnk_0203B604 = gUnk_0203B604 + 1;
     return 1;

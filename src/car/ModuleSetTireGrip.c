@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 #include "variables.h"
 #include "car.h"
 

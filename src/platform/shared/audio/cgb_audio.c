@@ -1,0 +1,306 @@
+// Software CGB PSG, after sa2's src/platform/shared/audio/cgb_audio.c
+// (issue 5 step 6). Vendored with only the mechanical adaptations this
+// tree needs: the includes (our headers keep the same REG_NR*/REG_SOUND*
+// lvalues, and REG_ADDR_WAVE_RAM0 is the byte address of the I/O block,
+// which is what the wave-RAM walk indexes), an ARRAY_COUNT this tree's
+// global.h does not define, and cgb_set_wavram's old-style () parameter
+// list spelled (void). Everything else is sa2's, because the emulator's
+// numerics are the deliverable: the register-driven model of the four
+// hardware channels (sweep, length, envelope, the 32-step wave bank and
+// both LFSR widths) that the driver's CGB half drives exactly as it
+// drives the real registers.
+
+#include "global.h"
+#include "gba/io_reg.h"
+#include "platform/shared/audio/cgb_audio.h"
+#include "platform/shared/audio/cgb_tables.h"
+
+#define ARRAY_COUNT(a) (sizeof(a) / sizeof((a)[0]))
+
+static struct AudioCGB gb;
+static fixed8_24 soundChannelPos[4];
+static const fixed8_24 *PU1Table;
+static const fixed8_24 *PU2Table;
+static u32 apuFrame;
+static u8 apuCycle;
+static u32 sampleRate;
+static u16 lfsrMax[2];
+fixed8_24 ch4Samples;
+fixed8_24 volScale[16];
+fixed8_24 ch4StepsScale[12];
+
+void cgb_audio_init(u32 rate)
+{
+    gb.ch1Freq = 0;
+    gb.ch1SweepCounter = 0;
+    gb.ch1SweepCounterI = 0;
+    gb.ch1SweepDir = 0;
+    gb.ch1SweepShift = 0;
+    for (u8 ch = 0; ch < 4; ch++) {
+        gb.Vol[ch] = 0;
+        gb.VolI[ch] = 0;
+        gb.Len[ch] = 0;
+        gb.LenOn[ch] = 0;
+        gb.EnvCounter[ch] = 0;
+        gb.EnvCounterI[ch] = 0;
+        gb.EnvDir[ch] = 0;
+        gb.DAC[ch] = 0;
+        soundChannelPos[ch] = 0;
+    }
+    soundChannelPos[1] = u32_to_fp8_24(1);
+    PU1Table = PU0;
+    PU2Table = PU0;
+    sampleRate = rate;
+    gb.ch4LFSR[0] = 0x8000;
+    gb.ch4LFSR[1] = 0x80;
+    lfsrMax[0] = 0x8000;
+    lfsrMax[1] = 0x80;
+    ch4Samples = 0;
+    for (int i = 0; i < 16; i++)
+        volScale[i] = u32_to_fp8_24(i) / 15;
+
+    for (int i = 0; i < 12; i++)
+        ch4StepsScale[i] = u32_to_fp8_24(1) / (i + 1);
+}
+
+void cgb_set_sweep(u8 sweep)
+{
+    gb.ch1SweepDir = (sweep & 0x08) >> 3;
+    gb.ch1SweepCounter = gb.ch1SweepCounterI = (sweep & 0x70) >> 4;
+    gb.ch1SweepShift = (sweep & 0x07);
+}
+
+void cgb_set_wavram(void)
+{
+    for (u8 wavi = 0; wavi < 0x10; wavi++) {
+        gb.WAVRAM[(wavi << 1)] = (u32_to_fp8_24(((*(REG_ADDR_WAVE_RAM0 + wavi)) & 0xF0) >> 4) * 2) / 15 - u32_to_fp8_24(1);
+        gb.WAVRAM[(wavi << 1) + 1] = (u32_to_fp8_24(((*(REG_ADDR_WAVE_RAM0 + wavi)) & 0x0F)) * 2) / 15 - u32_to_fp8_24(1);
+    }
+}
+
+void cgb_toggle_length(u8 channel, bool8 state) { gb.LenOn[channel] = state; }
+
+// Writing NRx1 loads the length counter with 64 - t (256 - t on the wave
+// channel, whose length field is a full byte).
+void cgb_set_length(u8 channel, u8 length)
+{
+    if (channel == 2)
+        gb.Len[channel] = 256 - length;
+    else
+        gb.Len[channel] = 64 - (length & 0x3F);
+}
+
+void cgb_set_envelope(u8 channel, u8 envelope)
+{
+    if (channel == 2) {
+        switch ((envelope & 0xE0)) {
+            case 0x00: // mute
+                gb.Vol[2] = gb.VolI[2] = 0;
+                break;
+            case 0x20: // full
+                gb.Vol[2] = gb.VolI[2] = 4;
+                break;
+            case 0x40: // half
+                gb.Vol[2] = gb.VolI[2] = 2;
+                break;
+            case 0x60: // quarter
+                gb.Vol[2] = gb.VolI[2] = 1;
+                break;
+            case 0x80: // 3 quarters
+                gb.Vol[2] = gb.VolI[2] = 3;
+                break;
+        }
+    } else {
+        gb.DAC[channel] = (envelope & 0xF8) > 0;
+        gb.Vol[channel] = gb.VolI[channel] = (envelope & 0xF0) >> 4;
+        gb.EnvDir[channel] = (envelope & 0x08) >> 3;
+        gb.EnvCounter[channel] = gb.EnvCounterI[channel] = (envelope & 0x07);
+    }
+}
+
+// A trigger (NRx4 bit 7) turns the channel back on and reloads the length
+// counter only if it has run out, as the hardware does. m4a retriggers on
+// every envelope step, so reloading unconditionally would keep a
+// finite-length note from ever expiring.
+void cgb_trigger_note(u8 channel)
+{
+    REG_NR52 |= 1 << channel;
+    gb.Vol[channel] = gb.VolI[channel];
+    if (gb.Len[channel] == 0)
+        gb.Len[channel] = (channel == 2) ? 256 : 64;
+    if (channel != 2)
+        gb.EnvCounter[channel] = gb.EnvCounterI[channel];
+    if (channel == 3) {
+        gb.ch4LFSR[0] = 0x8000;
+        gb.ch4LFSR[1] = 0x80;
+    }
+}
+
+void cgb_audio_generate(u16 samplesPerFrame)
+{
+    fixed8_24 *outBuffer = gb.outBuffer;
+    switch (REG_NR11 & 0xC0) {
+        case 0x00:
+            PU1Table = PU0;
+            break;
+        case 0x40:
+            PU1Table = PU1;
+            break;
+        case 0x80:
+            PU1Table = PU2;
+            break;
+        case 0xC0:
+            PU1Table = PU3;
+            break;
+    }
+
+    switch (REG_NR21 & 0xC0) {
+        case 0x00:
+            PU2Table = PU0;
+            break;
+        case 0x40:
+            PU2Table = PU1;
+            break;
+        case 0x80:
+            PU2Table = PU2;
+            break;
+        case 0xC0:
+            PU2Table = PU3;
+            break;
+    }
+
+    for (u16 i = 0; i < samplesPerFrame; i++, outBuffer += 2) {
+        apuFrame += 512;
+        if (apuFrame >= sampleRate) {
+            apuFrame -= sampleRate;
+            apuCycle++;
+
+            if ((apuCycle & 1) == 0) { // Length
+                // The counter runs only while length is enabled (NRx4
+                // bit 6); reaching zero turns the channel off.
+                for (u8 ch = 0; ch < 4; ch++) {
+                    if (gb.LenOn[ch] && gb.Len[ch] != 0 && --gb.Len[ch] == 0)
+                        REG_NR52 &= (0xFF ^ (1 << ch));
+                }
+            }
+
+            if ((apuCycle & 7) == 7) { // Envelope
+                for (u8 ch = 0; ch < 4; ch++) {
+                    if (ch == 2)
+                        continue; // Skip wave channel
+                    if (gb.EnvCounter[ch]) {
+                        if (--gb.EnvCounter[ch] == 0) {
+                            if (gb.Vol[ch] && !gb.EnvDir[ch]) {
+                                gb.Vol[ch]--;
+                                gb.EnvCounter[ch] = gb.EnvCounterI[ch];
+                            } else if (gb.Vol[ch] < 0x0F && gb.EnvDir[ch]) {
+                                gb.Vol[ch]++;
+                                gb.EnvCounter[ch] = gb.EnvCounterI[ch];
+                            }
+                        }
+                    }
+                }
+            }
+
+            if ((apuCycle & 3) == 2) { // Sweep
+                if (gb.ch1SweepCounterI && gb.ch1SweepShift) {
+                    if (--gb.ch1SweepCounter == 0) {
+                        gb.ch1Freq = REG_SOUND1CNT_X & 0x7FF;
+                        if (gb.ch1SweepDir) {
+                            gb.ch1Freq -= gb.ch1Freq >> gb.ch1SweepShift;
+                            if (gb.ch1Freq & 0xF800)
+                                gb.ch1Freq = 0;
+                        } else {
+                            gb.ch1Freq += gb.ch1Freq >> gb.ch1SweepShift;
+                            if (gb.ch1Freq & 0xF800) {
+                                gb.ch1Freq = 0;
+                                gb.EnvCounter[0] = 0;
+                                gb.Vol[0] = 0;
+                            }
+                        }
+                        REG_NR13 = gb.ch1Freq & 0xFF;
+                        REG_NR14 &= 0xF8;
+                        REG_NR14 += (gb.ch1Freq >> 8) & 0x07;
+                        gb.ch1SweepCounter = gb.ch1SweepCounterI;
+                    }
+                }
+            }
+        }
+        // Sound generation loop
+        soundChannelPos[0] += freqTable[REG_SOUND1CNT_X & (ARRAY_COUNT(freqTable) - 1)];
+        soundChannelPos[1] += freqTable[REG_SOUND2CNT_H & (ARRAY_COUNT(freqTable) - 1)];
+        soundChannelPos[2] += freqTable[REG_SOUND3CNT_X & (ARRAY_COUNT(freqTable) - 1)];
+
+        soundChannelPos[0] &= (u32_to_fp8_24(32)) - 1;
+        soundChannelPos[1] &= (u32_to_fp8_24(32)) - 1;
+        soundChannelPos[2] &= (u32_to_fp8_24(32)) - 1;
+
+        fixed8_24 outputL = 0;
+        fixed8_24 outputR = 0;
+        if (REG_NR52 & 0x80) {
+            if ((gb.DAC[0]) && (REG_NR52 & 0x01)) {
+                if (REG_NR51 & 0x10)
+                    outputL += (gb.Vol[0] * PU1Table[fp8_24_to_u32(soundChannelPos[0])]);
+                if (REG_NR51 & 0x01)
+                    outputR += (gb.Vol[0] * PU1Table[fp8_24_to_u32(soundChannelPos[0])]);
+            }
+            if ((gb.DAC[1]) && (REG_NR52 & 0x02)) {
+                if (REG_NR51 & 0x20)
+                    outputL += (gb.Vol[1] * PU2Table[fp8_24_to_u32(soundChannelPos[1])]);
+                if (REG_NR51 & 0x02)
+                    outputR += (gb.Vol[1] * PU2Table[fp8_24_to_u32(soundChannelPos[1])]);
+            }
+            if ((REG_NR30 & 0x80) && (REG_NR52 & 0x04)) {
+                if (REG_NR51 & 0x40)
+                    outputL += gb.Vol[2] * (gb.WAVRAM[fp8_24_to_u32(soundChannelPos[2])] >> 2);
+                if (REG_NR51 & 0x04)
+                    outputR += gb.Vol[2] * (gb.WAVRAM[fp8_24_to_u32(soundChannelPos[2])] >> 2);
+            }
+            if ((gb.DAC[3]) && (REG_NR52 & 0x08)) {
+                u8 lfsrMode = ((REG_NR43 & 0x08) == 8);
+                ch4Samples += freqTableNSE[REG_SOUND4CNT_H & (ARRAY_COUNT(freqTableNSE) - 1)];
+                s8 ch4Out = 0;
+                if (gb.ch4LFSR[lfsrMode] & 1) {
+                    ch4Out++;
+                } else {
+                    ch4Out--;
+                }
+                u8 steps = fp8_24_to_u32(ch4Samples);
+                ch4Samples = fp8_24_fractional_part(ch4Samples);
+
+                u16 lfsr = gb.ch4LFSR[lfsrMode];
+                u16 lfsrMask = lfsrMax[lfsrMode];
+
+                for (u8 i = 0; i < steps; i++) {
+                    // Comments to show what the bit
+                    // manipulation here is representing
+
+                    // if (gb.ch4LFSR[lfsrMode] & 2)
+                    u16 lfsrCarry = (lfsr >> 1) & 1;
+                    lfsr >>= 1;
+                    // if (gb.ch4LFSR[lfsrMode] & 2)
+                    lfsrCarry ^= (lfsr >> 1) & 1;
+                    // if (lfsrCarry) gb.ch4LFSR[lfsrMode] |= lfsrMax[lfsrMode];
+                    lfsr |= -lfsrCarry & lfsrMask;
+                    // if (gb.ch4LFSR[lfsrMode] & 1)
+                    ch4Out += (lfsr & 1) ? 1 : -1;
+                }
+                gb.ch4LFSR[lfsrMode] = lfsr;
+
+                // NOTE: if we convert this to int before multiplying by volume
+                // the waves sound effect sounds better
+                fixed8_24 sample = ch4Out * ch4StepsScale[steps];
+
+                // Muliply by the sample and then shift to make 8.24 again
+                if (REG_NR51 & 0x80)
+                    outputL += ((long long)sample * volScale[gb.Vol[3]]) >> 24;
+                if (REG_NR51 & 0x08)
+                    outputR += ((long long)sample * volScale[gb.Vol[3]]) >> 24;
+            }
+        }
+        outBuffer[0] = (outputL >> 2);
+        outBuffer[1] = (outputR >> 2);
+    }
+}
+
+fixed8_24 *cgb_get_buffer(void) { return gb.outBuffer; }

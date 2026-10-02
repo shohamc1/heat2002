@@ -1,6 +1,5 @@
 #include "global.h"
-
-u32 ModuleClearTextLayer(void);
+#include "functions.h"
 
 void ModuleClearRaceTextLayer(void)
 { ModuleClearTextLayer(); }

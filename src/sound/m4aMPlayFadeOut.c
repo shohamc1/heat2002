@@ -1,6 +1,6 @@
 #include "global.h"
+#include "m4a.h"
+#include "functions.h"
 
-void MPlayFadeOut(u32 mplayInfo, u16 fadeOutDelay);
-
-void m4aMPlayFadeOut(u32 arg0, u32 arg1)
-{ MPlayFadeOut(arg0, arg1); }
+void m4aMPlayFadeOut(struct MusicPlayerInfo *mplayInfo, u32 fadeOutDelay)
+{ MPlayFadeOut(mplayInfo, fadeOutDelay); }

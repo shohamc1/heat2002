@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 
 extern u32 gUnk_02038E68;
 void _08344B80(u32 arg0, u32 arg1);

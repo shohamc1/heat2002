@@ -15,13 +15,12 @@ void DrawSingleRaceResultsPage(u8 page)
     u8 i;
 
     DummyUiFontLoad(gUiFontTable[0]);
-    GetString(0x13);
-    ((void (*)(void))DrawBigText)();
+    DrawBigText(GetString(19));
     orderEntry = gCarOrder + (u8)(page * 15);
     i = 0;
     do {
         DrawText(gText_BlankRow36, 1, i + 4, 1);
-        if (orderEntry < gSeasonRaceIndex) {
+        if (orderEntry < &gCarOrder[24]) {
             car = *orderEntry;
             SplitMilliseconds(car->finishTime, &min, &sec, &ms);
             if (car == gCars && (gMenuBlinkCounter & 0x10) != 0) {
@@ -37,7 +36,7 @@ void DrawSingleRaceResultsPage(u8 page)
                 timeText[6] = (ms / 100) % 10 + 0x30;
                 timeText[7] = (ms / 10) % 10 + 0x30;
                 timeText[8] = 0;
-                DrawText(timeText, 0x14, i + 4, 1);
+                DrawText(timeText, 20, i + 4, 1);
             }
             orderEntry++;
         }
@@ -45,11 +44,11 @@ void DrawSingleRaceResultsPage(u8 page)
     } while (i != 0x0F);
     if ((gMenuBlinkCounter & 8) != 0) {
         if (page == 0)
-            DrawText(gText_PageNextArrow, 0x1A, 0x13, 1);
+            DrawText(gText_PageNextArrow, 26, 19, 1);
         else
-            DrawText(gText_PagePrevArrow, 0x1A, 0x13, 1);
+            DrawText(gText_PagePrevArrow, 26, 19, 1);
     } else {
-        DrawText(gText_PageNoArrowBlank, 0x1A, 0x13, 1);
+        DrawText(gText_PageNoArrowBlank, 26, 19, 1);
     }
     gMenuBlinkCounter++;
 }
@@ -66,7 +65,7 @@ u8 SingleRaceResultsScreen(void)
     LoadMenuScreen(1, (u16 *)fadePalette);
     DrawSingleRaceResultsPage(0);
     FadeToBrightenedPalette(fadePalette, 0x0F);
-    selection = 0x40;
+    selection = 64;
     do {
         ReadKeys();
         DrawSingleRaceResultsPage(page);

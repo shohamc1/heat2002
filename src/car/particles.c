@@ -3,65 +3,14 @@
 #include "functions.h"
 #include "car.h"
 
-/* The task slot as DraftStreakTask sees it (0x44-byte struct Task). */
-struct DraftStreak
-{
-    /* 0x00 */ u32 unk00;
-    /* 0x04 */ u32 unk04;
-    /* 0x08 */ s32 axialDist; /* 16.16 distance along the car's heading axis */
-    /* 0x0C */ void (*callback)();
-    /* 0x10 */ u8 pad10[8];
-    /* 0x18 */ s32 timer;
-    /* 0x1C */ s32 cornerIdx;
-    /* 0x20 */ u32 unk20;
-    /* 0x24 */ u8 pad24[0x10];
-    /* 0x34 */ u8 carIdx;
-};
-/* The task slot as SkidSmokeTask sees it. */
-struct SkidSmoke
-{
-    /* 0x00 */ s32 posX;
-    /* 0x04 */ s32 rise;
-    /* 0x08 */ s32 posZ;
-    /* 0x0C */ void (*callback)();
-    /* 0x10 */ u8 pad10[8];
-    /* 0x18 */ s32 timer;
-    /* 0x1C */ s32 cornerIdx;
-    /* 0x20 */ u32 unk20;
-    /* 0x24 */ u8 pad24[4];
-    /* 0x28 */ s32 velX;
-    /* 0x2C */ u8 pad2C[4];
-    /* 0x30 */ s32 velZ;
-    /* 0x34 */ u8 carIdx;
-};
-/* The task slot as DamageSmokeTask sees it. */
-struct DamageSmoke
-{
-    /* 0x00 */ s32 posX;
-    /* 0x04 */ s32 rise;
-    /* 0x08 */ s32 posZ;
-    /* 0x0C */ void (*callback)();
-    /* 0x10 */ u8 pad10[8];
-    /* 0x18 */ s32 timer;
-    /* 0x1C */ s32 riseRate;
-    /* 0x20 */ u8 pad20[8];
-    /* 0x28 */ s32 velX;
-    /* 0x2C */ u8 pad2C[4];
-    /* 0x30 */ s32 velZ;
-};
-void DraftStreakTask(struct DraftStreak *);
 extern const u8 *const gDraftStreakFrames[];
 extern u8 gDraftStreakPalette[];
-u32 WorldToScreen(s32 x, s32 y, s32 *out);
-void SkidSmokeTask(struct SkidSmoke *);
 extern const u8 *const gSkidSmokeFrames[]; /* 0x083FF60C */
 extern u8 gSkidSmokePalette[];             /* 0x08330D18 */
-void DamageSmokeTask(struct DamageSmoke *);
 extern const u8 *const gDamageSmokeFrames[];
 extern u8 gDamageSmokePalettes[];
-u32 GetTrackTileType(s32 x, s32 y);
 
-void DummyWallHitHook(void)
+void DummyWallHitHook(s32 unused0, s32 unused1)
 {}
 
 void AddDraftStreakTask(u8 carIdx, u8 cornerIdx)
@@ -114,11 +63,11 @@ void DraftStreakTask(struct DraftStreak *e)
         screenX = pos[0];
         pos[0] = screenX - 4;
         pos[1] = pos[1] - 6;
-        if (((((u32)(screenX + 0x1B)) <= 0x10E) && (pos[1] <= 0x9F)) && (pos[1] > (-0x20))) {
+        if (((((u32)(screenX + 0x1B)) <= 0x10E) && (pos[1] <= 159)) && (pos[1] > (-0x20))) {
             sprite = RequestObjTiles1Compressed(gDraftStreakFrames[e->timer & 0xF]);
             if (sprite != 0) {
                 attr = (pos[1] & 0xFF) | ((pos[0] & 0x1FF) << 0x10);
-                palBits = (RequestObjPalette((u32)gDraftStreakPalette) << 12) | 0x800;
+                palBits = (RequestObjPalette(gDraftStreakPalette) << 12) | 0x800;
                 attr2 = sprite->tileIndex | palBits;
                 AddOamEntry(attr, attr2);
             }
@@ -172,11 +121,11 @@ void SkidSmokeTask(struct SkidSmoke *e)
         pos[0] = screenX - 4;
         riseY = pos[1] - 4;
         pos[1] = riseY + (e->rise >> 2);
-        if ((u32)(screenX + 0x1B) <= 0x10E && pos[1] <= 0x9F && pos[1] > -0x20) {
+        if ((u32)(screenX + 0x1B) <= 0x10E && pos[1] <= 159 && pos[1] > -0x20) {
             sprite = RequestObjTiles1Compressed(gSkidSmokeFrames[((e->timer + 8) & 7) + 8]);
             if (sprite != 0) {
                 attr = (pos[1] & 0xFF) | ((pos[0] & 0x1FF) << 0x10);
-                palBits = (RequestObjPalette((u32)gSkidSmokePalette) << 12) | 0x800;
+                palBits = (RequestObjPalette(gSkidSmokePalette) << 12) | 0x800;
                 attr2 = sprite->tileIndex | palBits;
                 AddOamEntry(attr, attr2);
             }
@@ -226,17 +175,17 @@ void DamageSmokeTask(struct DamageSmoke *e)
         out[0] = screenX - 8;
         screenY = out[1] - 8;
         out[1] = screenY + (e->rise >> 1);
-        if ((u32)(screenX + 0x17) <= 0x10E && out[1] <= 0x9F && out[1] > -0x10) {
+        if ((u32)(screenX + 0x17) <= 0x10E && out[1] <= 159 && out[1] > -0x10) {
             sprite = RequestObjTiles16(gDamageSmokeFrames[e->timer & 0x1F]);
             if (sprite != 0) {
                 tileType = GetTrackTileType(e->posX >> 19, e->posZ >> 19);
                 if (tileType & 1) {
                     attr = (out[1] & 0xFF) | ((out[0] & 0x1FF) << 16) | 0x40000000;
-                    palBits = ((u8)RequestObjPalette((u32)gDamageSmokePalettes) << 12) | 0x800;
+                    palBits = ((u8)RequestObjPalette(gDamageSmokePalettes) << 12) | 0x800;
                     AddOamEntry(attr, sprite->tileIndex | palBits);
                 } else {
                     attr = (out[1] & 0xFF) | ((out[0] & 0x1FF) << 16) | 0x40000000;
-                    palBits = ((u8)RequestObjPalette((u32)gDamageSmokePalettes) << 12) | 0x400;
+                    palBits = ((u8)RequestObjPalette(gDamageSmokePalettes) << 12) | 0x400;
                     AddOamEntry(attr, sprite->tileIndex | palBits);
                 }
             }

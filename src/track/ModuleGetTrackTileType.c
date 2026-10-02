@@ -1,17 +1,20 @@
-
 #include "global.h"
+#include "functions.h"
 #include "variables.h"
 
-extern u16 *gUnk_02039264;
+extern u16 *gModule_CellMapPtr;
+
 u8 ModuleGetTrackTileType(s32 x, s32 y)
 {
-    int cellValue;
-    int subIdx;
+    s32 cellValue;
+    s32 subIdx;
     s32 cellX;
     s32 cellY;
     u32 inX;
     u32 inY;
-    u16 *map;
+
+    /* The block (and its empty statement) is load-bearing: without it the
+       subtractions schedule differently. */
     do {
         cellX = (x - 1) >> 2;
         cellY = (y - 1) >> 2;
@@ -19,7 +22,7 @@ u8 ModuleGetTrackTileType(s32 x, s32 y)
         inY = (y - 1) & 3;
         ;
     } while (0);
-    cellValue = (gUnk_02039264 + (gModule_TrackMapWidth[0] * cellY))[cellX];
+    cellValue = (gModule_CellMapPtr + (gModule_TrackMapWidth * cellY))[cellX];
     subIdx = inX + (inY * 4);
-    return (gUnk_0203929C + (cellValue * 0x10))[subIdx];
+    return (gModule_SurfaceTablePtr + (cellValue * 0x10))[subIdx];
 }

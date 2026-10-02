@@ -1,82 +1,59 @@
 #include "global.h"
-#include "gba/io_reg.h"
 #include "functions.h"
-#include "m4a.h"
+#include "gba/io_reg.h"
 #include "variables.h"
+#include "m4a.h"
 #include "car.h"
 
 extern const u8 gText_YouLose[];
 extern const u8 gText_YourCareerIsOverAs[];
 extern const u8 gText_NoTeamsWillTakeYou[];
 
-extern u8 gUnk_0202A6B2;
+extern u8 gLapsPerOption[];
+extern u8 gChampionshipTrackOrder[];
+#if PLATFORM_GBA
+extern u8 gUnk_083FDE2D[];
+#else
+// symbols.ld alias gUnk_083FDE2D = gChampionshipTrackOrder + 0x11.
+#define gUnk_083FDE2D (gChampionshipTrackOrder + 0x11)
+#endif
+
+/* This caller narrows the result to s8. */
+u8 ChallengeFailedScreen(u8 value);
+
+/* This file has no EWRAM variables left. The ones below 0x02022E20 moved
+   to src/system/globals.c (that run's owner): gChallengeScore, gTrackId,
+   gNewTrackRecord, gRaceAborted and gBgScrollUpdateEnabled. The three
+   RunRace argument buffers at 0x0202CD9C-0x0202CDD0 moved to
+   src/race/globals.c (the 0x0202CD90 run's owner), and everything from
+   gChallengeIndex (0x0202ED70) to gSeasonRaceIncomplete (0x0202F034)
+   moved to src/save/save.c (the owner of the merged menu/link/save run).
+   All are declared in variables.h except the five below, used only here,
+   which keep local externs. */
 extern u8 gUnk_0202CD9C[];
 extern u8 gUnk_0202CDC0[];
 extern s32 gMainMenuCursor;
-extern u8 gUnk_0202EED4;
 extern u8 gSeasonSession;
-extern u8 gLapsPerOption[];
-extern u8 gChampionshipTrackOrder[];
-extern u8 gUnk_083FDE2D[];
+extern u8 gUnk_0202EED4;
 
-u8 StartSinglePakLink(void);
-void FillFadePalette(u16 color);
-void InitTuneSettings(void);
-u8 FindDriverByTeam(u8 value);
-u8 IsAnyChampionshipTeamAvailable(void);
-u8 CareerDecisionMenu(void);
-u8 ResolveSeasonResult(u8 a, u8 b);
-void ShowBootSplash1(void);
-void SetupChallenge(u8 value, u8 *unused);
-void ShowBootSplash3(void);
-void ShowBootSplash2(void);
-u8 TitleScreen(void);
-s8 LinkTrackSelect(void);
-u8 DriverSelectMenu(void);
-u8 TeamSelectMenu(void);
-u8 MultiplayerMenu(void);
-u8 ShowLinkRaceSummary(void);
-s8 LinkPostRaceMenu(void);
-s16 LinkDriverSelect(void);
-/* This caller narrows the result to s8. */
-s8 LinkLobby(void);
-void InitNewSaveData(void);
-u8 OptionsMenu(void);
-u8 ShowChallengeCategoryComplete(u8 value);
-u8 RunChampionshipQualifyTest(u8 value);
-u8 ShowChallengePassed(u8 a, u8 b);
-u8 ChallengeFailedScreen(u8 value);
-u32 GetPlayerStanding(void);
-u8 TrophyScreen(u8 value);
-u8 SeasonSessionMenu(u8 a, u8 b);
-u8 CareerSessionMenu(u8 a, u8 b);
-u8 QualifyResultsScreen(void);
-void SaveCareerScreen(void);
-u8 RaceResultsScreen(void);
-u32 AwardAllRacePoints(void);
-u8 StandingsScreen(void);
-u8 TimeTrialMenu(void);
-u8 ChallengeCategorySelect(void);
-u8 ChallengeSelect(u8 a, u8 b);
-u8 NewGameLoadMenu(void);
-u8 SingleRaceResultsScreen(void);
-u8 SingleRaceRetryMenu(void);
-void SaveTrackRecords(void);
-void LoadTrackRecords(void);
-void LoadProgress(void);
-void LoadOptions(void);
-void SaveOptions(void);
-void FormatSave(void);
-void RandomizeAiFinishTimes(void);
-u8 IsSaveValid(void);
-void LinkFailScreen(void);
-void LoadSeason(void);
+void ResetBgScroll(void)
+{
+    gBg1ScrollX = gBg1ScrollY = gBg2ScrollX = gBg2ScrollY = gBg3ScrollX = gBg3ScrollY = 0;
+    REG_BG3HOFS = 0;
+    REG_BG3VOFS = 0;
+    REG_BG2HOFS = 0;
+    REG_BG2VOFS = 0;
+    REG_BG1HOFS = 0;
+    REG_BG1VOFS = 0;
+    REG_BG0HOFS = 0;
+    REG_BG0VOFS = 0;
+}
 
 u32 MainMenuLoop(void)
 {
     u16 frame[0x100];
     u32 keys;
-    u32 a6b2 = (u32)&gUnk_0202A6B2;
+    u8 *playerDriverId = &gCars[0].driverId;
     u8 zero;
     u8 quit;
     s32 i;
@@ -98,7 +75,7 @@ u32 MainMenuLoop(void)
     gIsLinkRace = zero;
     ResetBgScroll();
 
-    for (i = 0; i != 0x11; i++)
+    for (i = 0; i != 17; i++)
         gChampionshipAvailable[i] = 0;
     gChampionshipAvailable[0x0C] = 1;
     gChampionshipAvailable[0x0D] = 1;
@@ -162,8 +139,8 @@ u32 MainMenuLoop(void)
         ResetBgScroll();
     }
 
-    for (i = 0; i != 0x18; i++)
-        gCars[i].driverId = i % 0x0C;
+    for (i = 0; i != 24; i++)
+        gCars[i].driverId = i % 12;
 
     ZeroTextLayer();
     DrawMainMenu(0);
@@ -193,6 +170,14 @@ u32 MainMenuLoop(void)
         if ((keys & DPAD_UP) != 0) {
             if (--gMainMenuCursor < 0)
                 gMainMenuCursor = 6;
+#if PORTABLE
+            /* No link cable on the host: MULTIPLAYER (row 3) is never
+               selectable, so no multiplayer screen can be drawn or
+               reached (the only entries into it are this row's state 3;
+               StartSinglePakLink fails closed too, src/link/multiboot.c). */
+            if (gMainMenuCursor == 3)
+                gMainMenuCursor = 2;
+#endif
             if (gOptions[3] != 0)
                 m4aSongNumStart(8);
             DrawMainMenu(gMainMenuCursor);
@@ -200,6 +185,10 @@ u32 MainMenuLoop(void)
         if ((keys & DPAD_DOWN) != 0) {
             if (++gMainMenuCursor > 6)
                 gMainMenuCursor = 0;
+#if PORTABLE
+            if (gMainMenuCursor == 3)
+                gMainMenuCursor = 4;
+#endif
             if (gOptions[3] != 0)
                 m4aSongNumStart(8);
             DrawMainMenu(gMainMenuCursor);
@@ -313,10 +302,10 @@ u32 MainMenuLoop(void)
                 m4aSongNumStart(9);
             FadeToColor(0, 0x0F);
 
-            for (i = 0; i != 0x18; i++)
+            for (i = 0; i != 24; i++)
                 gCars[i].points = 0;
 
-            *(u8 *)a6b2 = DriverSelectMenu();
+            *playerDriverId = DriverSelectMenu();
             AssignRandomDrivers();
             FadeToColor(0, 0x0F);
             if ((gKeysPressed & B_BUTTON) != 0)
@@ -396,7 +385,7 @@ u32 MainMenuLoop(void)
                     break;
             }
 
-            if (gSeasonRaceIndex[0] != 0x0B)
+            if (gSeasonRaceIndex[0] != 11)
                 goto state0_menu;
             TrophyScreen(GetPlayerStanding());
 
@@ -409,15 +398,15 @@ u32 MainMenuLoop(void)
             if (gOptions[4] != 0)
                 gDamagePitsEnabled = 1;
 
-            for (i = 0; i != 0x18; i++)
-                gCars[i].driverId = i % 0x0C;
+            for (i = 0; i != 24; i++)
+                gCars[i].driverId = i % 12;
 
             if (gOptions[3] != 0)
                 m4aSongNumStart(9);
             FadeToColor(0, 0x0F);
 
         state1_load:
-            *(u8 *)a6b2 = DriverSelectMenu();
+            *playerDriverId = DriverSelectMenu();
             AssignRandomDrivers();
             FadeToColor(0, 0x0F);
             if ((gKeysPressed & B_BUTTON) != 0)
@@ -435,7 +424,7 @@ u32 MainMenuLoop(void)
             gCars[0].finishTime = 0;
             gCars[0].finished = 1;
             FinishAllCars(1);
-            for (i = 0; i != 0x18; i++)
+            for (i = 0; i != 24; i++)
                 gCars[i].finishTime = i;
             gCars[0].finishTime = 0x0002CAD8;
             SortCarsByTime();
@@ -467,7 +456,7 @@ u32 MainMenuLoop(void)
             FadeToColor(0, 0x0F);
 
         state4_load:
-            *(u8 *)a6b2 = DriverSelectMenu();
+            *playerDriverId = DriverSelectMenu();
             AssignRandomDrivers();
             FadeToColor(0, 0x0F);
             if ((gKeysPressed & B_BUTTON) != 0)
@@ -619,11 +608,11 @@ u32 MainMenuLoop(void)
                 m4aSongNumStart(9);
             FadeToColor(0, 0x0F);
 
-            for (i = 0; i != 0x18; i++)
+            for (i = 0; i != 24; i++)
                 gCars[i].points = 0;
 
-            /* IsSeasonSaved: this file's old prototype returns u8; the matched definition returns u32 */
-            if (((u8 (*)(void))IsSeasonSaved)() != 0) {
+            /* The ROM narrows the result to u8 before the test. */
+            if ((u8)IsSeasonSaved() != 0) {
                 result = NewGameLoadMenu();
                 if ((gKeysPressed & B_BUTTON) != 0)
                     goto state5_done;
@@ -634,7 +623,7 @@ u32 MainMenuLoop(void)
             }
 
         state5_setup:
-            for (i = 0; i != 0x18; i++)
+            for (i = 0; i != 24; i++)
                 gCars[i].points = 0;
             if (IsAnyChampionshipTeamAvailable() == 0) {
                 MessageBox(gText_YouLose, gText_YourCareerIsOverAs, gText_NoTeamsWillTakeYou);
@@ -644,12 +633,12 @@ u32 MainMenuLoop(void)
             gChampionshipIndex = TeamSelectMenu();
             if ((gKeysPressed & B_BUTTON) != 0)
                 goto state5_done;
-            *(u8 *)a6b2 = FindDriverByTeam(gChampionshipIndex);
-            if (RunChampionshipQualifyTest(*(u8 *)a6b2) == 0)
+            *playerDriverId = FindDriverByTeam(gChampionshipIndex);
+            if (RunChampionshipQualifyTest(*playerDriverId) == 0)
                 goto state5_setup;
 
         state5_load:
-            *(u8 *)a6b2 = FindDriverByTeam(gChampionshipIndex);
+            *playerDriverId = FindDriverByTeam(gChampionshipIndex);
             AssignRandomDrivers();
             FadeToColor(0, 0x0F);
             if ((gKeysPressed & B_BUTTON) != 0)
@@ -731,7 +720,7 @@ u32 MainMenuLoop(void)
                     break;
             }
 
-            if (gSeasonRaceIndex[0] != 0x0B)
+            if (gSeasonRaceIndex[0] != 11)
                 goto state5_menu;
             score = GetPlayerStanding();
             TrophyScreen(score);

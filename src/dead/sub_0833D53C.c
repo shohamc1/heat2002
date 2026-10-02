@@ -1,7 +1,6 @@
 #include "global.h"
 #include "functions.h"
 
-void ModuleBeginFadeToBrightenedPalette(u32 a, u32 b);
 void ModuleUpdatePaletteFade(void);
 
 void sub_0833D53C(u32 a, u32 b)

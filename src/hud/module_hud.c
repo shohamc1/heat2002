@@ -2,28 +2,12 @@
 #include "variables.h"
 #include "functions.h"
 
-struct Car
-{
-    u8 pad00[0x8C];
-    s32 tireWear0;
-    s32 tireWear1;
-    s32 tireWear2;
-    s32 tireWear3;
-};
+#include "car.h"
 
-struct ObjTileCacheEntry *ModuleRequestObjTiles16(void *a, u16 *b);
-u32 ModuleRequestObjPalette(u32 a);
-void ModuleAddOamEntry(u32 a, u32 b);
 extern u8 gModule_PitStopNeeded[];
 extern u8 gModule_BlankRow20[];
 extern u8 gUnk_0203B6F8;
-u8 ModuleCarNeedsPit(void);
-void ModuleDrawTextCenteredHighlight(const u8 *a, u32 b, u32 c);
 extern u8 gUnk_0203B6D8;
-struct ObjTileCacheEntry *ModuleRequestObjTiles4(u32 r0);
-u32 ModuleRequestObjPalette(u32 r0);
-void ModuleAddOamEntry(u32 r0, u32 r1);
-void ModuleM4aSongNumStart(u32 r0);
 extern u8 gModule_Pos[];
 extern u8 gModule_BlankRow16[];
 extern u8 gModule_Lap[];
@@ -36,35 +20,37 @@ void ModuleDrawSpeedNeedle(u32 speed)
     u32 attr;
     u32 tileAttr;
 
-    pos[0] = 0xC8;
-    pos[1] = 0x78;
-    entry = ModuleRequestObjTiles16(gModule_SpeedNeedleGfx, pos);
+    pos[0] = 200;
+    pos[1] = 120;
+    /* The ROM also passes pos in r1, an argument the request ignores. */
+    entry =
+        ((struct ObjTileCacheEntry * (*)(GfxSrc, u16 *)) ModuleRequestObjTiles16)((GfxSrc)gModule_SpeedNeedleGfx, pos);
     if (entry != 0) {
         attr = pos[1] & 0xFF;
         attr |= (pos[0] & 0x1FF) << 16;
         attr |= 0x80000000;
-        tileAttr = entry->tileIndex | ((ModuleRequestObjPalette((u32 *)gUnk_02024F50) << 24) >> 12);
+        tileAttr = entry->tileIndex | ((u32)(ModuleRequestObjPalette(gModule_HudWarningIconPalette) << 24) >> 12);
         attr |= 0x100;
         ModuleAddOamEntry(attr, tileAttr);
     }
     gUnk_0203B6DC = (speed + 0xA0) & 0xFF;
 }
 
-void ModuleDrawPitStopWarning(void)
+void ModuleDrawPitStopWarning(struct Car *car)
 {
-    u32 text;
+    const u8 *text;
 
-    if (ModuleCarNeedsPit() != 0 && (gUnk_0203B6F8 & 8) != 0) {
-        text = (u32)gModule_PitStopNeeded;
-        ModuleDrawTextCenteredHighlight((u8 *)text, 6, 1);
+    if (ModuleCarNeedsPit(car) != 0 && (gUnk_0203B6F8 & 8) != 0) {
+        text = gModule_PitStopNeeded;
+        ModuleDrawTextCenteredHighlight(text, 6, 1);
     } else {
-        text = (u32)gModule_BlankRow20;
-        ModuleDrawTextCenteredHighlight((u8 *)text, 6, 1);
+        text = gModule_BlankRow20;
+        ModuleDrawTextCenteredHighlight(text, 6, 1);
     }
     gUnk_0203B6F8 = gUnk_0203B6F8 + 1;
 }
 
-void ModuleDummyHudHook(void)
+void ModuleDummyHudHook(struct Car *unused)
 {}
 
 void ModuleDrawLowFuelWarning(s32 fuel)
@@ -79,14 +65,14 @@ void ModuleDrawLowFuelWarning(s32 fuel)
     if (gModule_DamagePitsEnabled == 0)
         return;
     gUnk_0203B6D8++;
-    pos[0] = 0xAA;
-    pos[1] = 0x89;
+    pos[0] = 170;
+    pos[1] = 137;
     entry = ModuleRequestObjTiles4((u32)gModule_LowFuelWarningGfx);
     if (entry != 0) {
         attr = pos[1] & 0xFF;
         attr |= (pos[0] & 0x1FF) << 16;
         attr |= 0x40000000;
-        tileAttr = entry->tileIndex | (((u32)ModuleRequestObjPalette((u32)gUnk_02024F50) << 24) >> 12);
+        tileAttr = entry->tileIndex | ((u32)(ModuleRequestObjPalette(gModule_HudWarningIconPalette) << 24) >> 12);
         ModuleAddOamEntry(attr | 0x02000100, tileAttr);
     }
     gUnk_0203B828 = ((fuel >> 16) + 0xBE) & 0xFF;
@@ -95,8 +81,8 @@ void ModuleDrawLowFuelWarning(s32 fuel)
         glyphOff = 0x5B2;
         *dest = 0xE000 | gModule_FontTileEntries[*(u16 *)&gModule_FontGlyphGrid[glyphOff]];
         if (gModule_Options[3] != 0) {
-            if (gModule_IsDemo[0] == 0)
-                ModuleM4aSongNumStart(0x1B);
+            if (gModule_IsDemo == 0)
+                ModuleM4aSongNumStart(27);
         }
     } else {
         glyphOff = 0x5B4;
@@ -108,9 +94,9 @@ void ModuleDrawRacePosition(s32 position)
 {
     u16 *q;
     u16 *p;
-    if (gModule_GameMode[0] == 0x0A || gModule_GameMode[0] == 0x02)
+    if (gModule_GameMode == 10 || gModule_GameMode == 2)
         return;
-    if (position == 0x64 || gModule_GameMode[0] == 5) {
+    if (position == 100 || gModule_GameMode == 5) {
         p = (u16 *)gModule_TextLayerMapPtr[0];
         p[0x16] = 0xE047;
         p[0x17] = 0xE047;
@@ -131,9 +117,9 @@ void ModuleDrawRacePosition(s32 position)
         *q = 0xE047;
         return;
     }
-    ModuleDrawText(gModule_Pos, 0x16, 0);
+    ModuleDrawText(gModule_Pos, 22, 0);
     if (position <= 9) {
-        register u16 *w asm("r0");
+        register u16 *w PIN(r0);
         p = (u16 *)gModule_TextLayerMapPtr[0];
         p[0x1C] = 0xE047;
         p[0x1D] = 0xE047;
@@ -142,7 +128,7 @@ void ModuleDrawRacePosition(s32 position)
         *w = 0xE047;
         w -= 0x23;
         ModuleDrawBigDigit((u16 *)((u32)w), (u8)position);
-    } else if (position <= 0x13) {
+    } else if (position <= 19) {
         ModuleDrawBigDigit((u16 *)(gModule_TextLayerMapPtr[0] + 0x34), 1);
         ModuleDrawBigDigit((u16 *)(gModule_TextLayerMapPtr[0] + 0x38), (u8)(position - 0x0A));
     } else {

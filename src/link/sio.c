@@ -1,50 +1,38 @@
 #include "global.h"
+#include "functions.h"
 #include "gba/compat.h"
 #include "variables.h"
 #include "gba/io_reg.h"
 
-struct CommRegs
-{
-    u8 mode;      /* +0 */
-    u8 state;     /* +1 */
-    u8 retry;     /* +2 */
-    u8 flag;      /* +3 */
-    u32 *data;    /* +4 */
-    s32 count;    /* +8 */
-    u32 checksum; /* +0xC */
-    u32 crc;      /* +0x10 */
-    s32 index;    /* +0x14 */
-};
-
-void SioTransferInit(u32 a1, const u8 *a2)
+void SioTransferInit(u32 send, const void *chunk)
 {
     u32 sum = 0;
-    register u32 one __asm__("r8");
+    register u32 one PIN(r8);
     u32 fill;
-    register u32 *g __asm__("r4");
+    register struct CommRegs *g PIN(r4);
 
     REG_IME = 0;
     REG_IE &= ~(INTR_FLAG_TIMER3 | INTR_FLAG_SERIAL);
     one = 1;
     REG_IME = 1;
     fill = 0;
-    g = (u32 *)&gSioTransfer;
-    CpuSet((u32)&fill, (u32)g, CPU_SET_32BIT | CPU_SET_SRC_FIXED | 6);
+    g = &gSioTransfer;
+    CpuSet(&fill, g, CPU_SET_32BIT | CPU_SET_SRC_FIXED | sizeof(struct CommRegs) / 4);
     *(volatile u32 *)REG_ADDR_SIOCNT = SIO_MULTI_MODE | SIO_115200_BPS;
-    g[1] = (u32)a2;
-    g[2] = -1;
-    if (a1 != 0) {
+    g->data = (u32 *)chunk;
+    g->count = -1;
+    if (send != 0) {
         REG_TM3CNT = 0;
-        *(u8 *)g = one;
+        g->mode = one;
         {
-            u32 *p = (u32 *)a2;
-            u32 count = 0x80 << 6;
+            const u32 *p = chunk;
+            u32 count = 0x8000 / 4;
             do {
                 sum += *p++;
                 count = count - 1;
             } while (count > 0);
         }
-        g[3] = ~sum;
+        g->checksum = ~sum;
         REG_SIOCNT = SIO_32BIT_MODE;
         REG_SIOCNT = SIO_32BIT_MODE + 1;
     }
@@ -67,7 +55,7 @@ u32 SioTransferUpdate(u32 *a1)
             REG_SIODATA32 = 0;
             REG_IF = INTR_FLAG_TIMER3 | INTR_FLAG_SERIAL;
             {
-                register u32 mode __asm__("r4") = gSioTransfer.mode;
+                register u32 mode PIN(r4) = gSioTransfer.mode;
 
                 if (mode == 1) {
                     REG_SIOCNT |= SIO_START;
@@ -86,8 +74,8 @@ u32 SioTransferUpdate(u32 *a1)
             gSioTransfer.state = 2;
             break;
         case 2: {
-            register s32 count __asm__("r6") = gSioTransfer.count;
-            register s32 chunk __asm__("r4") = count;
+            register s32 count PIN(r6) = gSioTransfer.count;
+            register s32 chunk PIN(r4) = count;
 
             if (count > 0x2000)
                 chunk = 0x2000;
@@ -97,16 +85,16 @@ u32 SioTransferUpdate(u32 *a1)
                 *a1 = chunk;
             if (gSioTransfer.mode != 1) {
                 if (gSioTransfer.index < chunk) {
-                    register s32 *w __asm__("r3") = (s32 *)&gSioTransfer;
+                    register struct CommRegs *w PIN(r3) = &gSioTransfer;
                     u32 *data = gSioTransfer.data;
                     {
                         s32 i;
 
                         do {
-                            i = w[5];
-                            w[4] = w[4] + data[i];
+                            i = w->index;
+                            w->crc = w->crc + data[i];
                             i++;
-                            w[5] = i;
+                            w->index = i;
                         } while (i < chunk);
                     }
                 }
@@ -117,7 +105,7 @@ u32 SioTransferUpdate(u32 *a1)
                         gSioTransfer.flag = 1;
                 }
             }
-            if (count > 0x2000 || gSioTransfer.retry == 0x8C)
+            if (count > 0x2000 || gSioTransfer.retry == 140)
                 gSioTransfer.state = 3;
         } break;
         case 3:
@@ -131,7 +119,7 @@ u32 SioTransferUpdate(u32 *a1)
                 REG_SIOCNT = SIO_32BIT_MODE;
                 *(volatile u32 *)REG_ADDR_SIOCNT = SIO_MULTI_MODE;
                 *(volatile u32 *)REG_ADDR_SIOCNT = SIO_MULTI_MODE | SIO_115200_BPS;
-                p = (volatile u32 *)((u32)ie - 0xE0);
+                p = (volatile u32 *)((u8 *)ie - 0xE0);
                 *(volatile long long *)p = 0;
             }
             if (gSioTransfer.mode != 0)

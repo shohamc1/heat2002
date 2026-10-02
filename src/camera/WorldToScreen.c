@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 #include "variables.h"
 
 u32 WorldToScreen(s32 x, s32 y, s32 *out)
@@ -19,4 +20,9 @@ u32 WorldToScreen(s32 x, s32 y, s32 *out)
         return 0;
     out[0] = u;
     out[1] = v;
+#if PORTABLE
+    /* The ROM falls off the end with v + 0x20 still in r0 from the
+       bounds check; callers test its low byte, so return it here. */
+    return v + 0x20;
+#endif
 }

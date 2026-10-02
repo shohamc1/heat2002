@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 
 /* 0x08345390-0x083453C0 (EWRAM 0x0200C910): the high module's m4a
  * ply_xcmd dispatch table, the twin of the low copy's xcmd table in
@@ -8,17 +9,6 @@
  * _08344B84 (_call_via_r2) stub. The handlers are its own
  * ModulePlyXxx family. */
 
-void ModulePlyXxx(void);
-void ModulePlyXwave(void);
-void ModulePlyXtype(void);
-void ModulePlyXatta(void);
-void ModulePlyXdeca(void);
-void ModulePlyXsust(void);
-void ModulePlyXrele(void);
-void ModulePlyXiecv(void);
-void ModulePlyXiecl(void);
-void ModulePlyXleng(void);
-void ModulePlyXswee(void);
 
 const u32 gUnk_08345390[12] = {
     (u32)ModulePlyXxx, (u32)ModulePlyXwave, (u32)ModulePlyXtype, (u32)ModulePlyXxx,

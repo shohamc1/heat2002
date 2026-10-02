@@ -12,8 +12,6 @@ void sub_0833E3F8(u16 *dest, u8 idx)
     *dest = (gModule_FontTileEntries[v] & 0xFFF) | 0xE000;
 }
 
-void ModuleAddOamEntry(u32 a, u32 b);
-
 void sub_0833E428(u32 x, u32 pal, u32 tiles, u32 a, u32 b)
 {
     u32 arr[8];

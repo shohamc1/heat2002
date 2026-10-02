@@ -16,8 +16,8 @@ s32 ModuleMidiKeyToFreq(struct WaveData *track, u8 key, u32 fineTune)
 
     idx = key;
     fineTunePacked = fineTune << 24;
-    if (idx > 0xB2) {
-        idx = 0xB2;
+    if (idx > 178) {
+        idx = 178;
         fineTunePacked = 0xFF000000;
     }
     freq = gModule_MidiKeyToFreqTable[idx];

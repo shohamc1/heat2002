@@ -22,7 +22,7 @@ void ModuleWorldToCarLocal(struct Car *car, s32 x, s32 z, s32 *out)
     out[1] = (sin * relx + rely * cos) >> 8;
 }
 
-u8 ModuleCheckDrafting(struct Car *car)
+s32 ModuleCheckDrafting(struct Car *car)
 {
     s32 relPos1[2];
     s32 relPos2[2];

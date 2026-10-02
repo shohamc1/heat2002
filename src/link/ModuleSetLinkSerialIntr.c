@@ -1,7 +1,6 @@
 #include "global.h"
 #include "variables.h"
-
-void ModuleSerialIntr(void);
+#include "functions.h"
 
 void ModuleSetLinkSerialIntr(void)
 { gModule_IntrTable[0] = ModuleSerialIntr; }

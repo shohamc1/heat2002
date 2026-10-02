@@ -2,10 +2,6 @@
 #include "functions.h"
 #include "variables.h"
 
-struct ObjTileCacheEntry *ModuleRequestObjTiles4(u32 a);
-u32 ModuleRequestObjPalette(u32 a);
-void ModuleAddOamEntry(u32 a, u32 b);
-
 void ModuleDrawLinkMarker(u32 x, u32 y, u32 carIdx)
 {
     u32 *frames;
@@ -21,6 +17,6 @@ void ModuleDrawLinkMarker(u32 x, u32 y, u32 carIdx)
     if (sprite == 0)
         return;
     attr2 = sprite->tileIndex;
-    attr2 |= (ModuleRequestObjPalette((u32 *)gUnk_020243E8) << 24) >> 12;
+    attr2 |= (u32)(ModuleRequestObjPalette(gModule_LinkMarkerPalette) << 24) >> 12;
     ModuleAddOamEntry(y, attr2);
 }

@@ -104,7 +104,7 @@ void sub_083404A8(void)
 
 void sub_08340504(u32 a)
 {
-    *(vu8 *)&gModule_GameMode[0]; /* deliberate volatile read: keeps the load in the output */
+    *(vu8 *)&gModule_GameMode; /* deliberate volatile read: keeps the load in the output */
     *(u32 *)(a + 0xE4) = (u32)gModule_AiDriverGearPowerTable;
     *(u32 *)(a + 0xE8) = (u32)gModule_AiDriverGearRatioTable;
     *(u32 *)(a + 0xEC) = (u32)gModule_AiDriverRpmPerSpeedTable;

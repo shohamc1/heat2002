@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 
 void SplitMilliseconds(s32 a, u16 *b, u16 *c, u16 *d)
 {

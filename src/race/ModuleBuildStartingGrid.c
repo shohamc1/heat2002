@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 #include "variables.h"
 
 extern struct TrackGrid gModule_TrackStartGrids[]; /* one record (track 7's) */
@@ -26,5 +27,5 @@ void ModuleBuildStartingGrid(u8 idx)
         x += gModule_TrackStartGrids[idx].rowStepX;
         y += gModule_TrackStartGrids[idx].rowStepY;
         j++;
-    } while (j != 0x0C);
+    } while (j != 12);
 }

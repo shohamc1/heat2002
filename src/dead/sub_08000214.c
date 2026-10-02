@@ -83,8 +83,6 @@ s16 sub_08000340(s16 arg0, s16 arg1)
     return (arg0 << 8) / arg1;
 }
 
-void CarNeedsPit(u32 arg);
-
 s16 FixedInverse8(u16 r0)
 {
     /* sub_08017230: this file's old prototype is s16 (u32, s16); the

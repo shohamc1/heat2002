@@ -4,7 +4,6 @@
 #include "m4a.h"
 #include "variables.h"
 
-void MainVBlankCallback(void);
 
 extern u8 gUnk_0202CD90[];
 extern u8 gText_PressStartToExit[];
@@ -24,12 +23,12 @@ u8 StartSinglePakLink(void)
     m4aSoundInit();
     m4aSoundVSyncOn();
     SetLinkSerialIntr();
-    FadeToColor(0, 0x0A);
+    FadeToColor(0, 10);
     i = 0;
     do {
         WaitForVBlank();
         i++;
-    } while (i != 0x32);
+    } while (i != 50);
 loop:
     gIsLinkRace = 1;
     DetectLinkPlayers();
@@ -41,13 +40,13 @@ loop:
            compiler precomputes an address argument before the other
            argument registers are loaded, unless those are already in place:
            pinning them emits their loads first. */
-        register u32 a0 asm("r0") = 0;
-        register u32 a1 asm("r1") = 4;
-        /* RunRace: the ROM caller passes a third argument the matched definition drops; call
-           through a function pointer with the old prototype. */
+        register u32 a0 PIN(r0) = 0;
+        register u32 a1 PIN(r1) = 4;
+        /* Passes the second argument unnarrowed; RunRace narrows it to u8
+           itself. */
         if (((u8 (*)(u32, u32, void *))RunRace)(a0, a1, gUnk_0202CD90) != 0) {
-            DrawTextCentered(GetString(0x75), 0x0A, 1);
-            DrawTextCentered(gText_PressStartToExit, 0x0C, 1);
+            DrawTextCentered(GetString(117), 10, 1);
+            DrawTextCentered(gText_PressStartToExit, 12, 1);
             StopAllSongsAndVSyncOff();
         wait1:
             ReadKeys();
@@ -57,7 +56,7 @@ loop:
             ReadKeys();
             if (gKeysPressed & 8)
                 goto wait2;
-            FadeToColor(0, 0x32);
+            FadeToColor(0, 50);
         } else {
             SortLinkCarsByTime();
             WaitForLinkRestart();

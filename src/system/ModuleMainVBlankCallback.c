@@ -3,16 +3,13 @@
 #include "gba/io_reg.h"
 #include "gba/compat.h"
 #include "variables.h"
+#include "functions.h"
 
 #define GBA_CPUFASTSET sub_08344B60
 
-extern u8 gUnk_020391C8;
+extern u8 gModule_VBlankWorkPhase;
 
 void sub_0833A1DC(void);
-void ModuleFlushTrackBgBuffers(void);
-void ModuleUploadPendingGfx(void);
-void ModuleFlushPaletteBuffer(void);
-void ModuleM4aSoundMain(void);
 
 void ModuleMainVBlankCallback(void)
 {
@@ -31,19 +28,19 @@ void ModuleMainVBlankCallback(void)
     }
     if (gModule_IsLinkRace == 0)
         gUnk_020390FC = 1;
-    gUnk_020391C8++;
-    if (gUnk_020391C8 > 2) {
+    gModule_VBlankWorkPhase++;
+    if (gModule_VBlankWorkPhase > 2) {
         v = (*(vu8 *)&gModule_VBlankWorkDone);
         if (v == 0) {
-            gUnk_020391C8 = v;
-            CpuFastSet(gUnk_0203ACE0, (void *)OAM, 0x100);
-            if (gUnk_020391D4 != 0) {
-                REG_BG3HOFS = gUnk_02039290;
-                REG_BG3VOFS = gUnk_02039298;
-                REG_BG2HOFS = gUnk_020392A8;
-                REG_BG2VOFS = gUnk_02039240;
-                REG_BG1HOFS = gUnk_0203925C;
-                REG_BG1VOFS = gUnk_02039260;
+            gModule_VBlankWorkPhase = v;
+            CpuFastSet(gModule_OamEntryQueue, (void *)OAM, 0x100);
+            if (gModule_BgScrollUpdateEnabled != 0) {
+                REG_BG3HOFS = gModule_Bg3ScrollX;
+                REG_BG3VOFS = gModule_Bg3ScrollY;
+                REG_BG2HOFS = gModule_Bg2ScrollX;
+                REG_BG2VOFS = gModule_Bg2ScrollY;
+                REG_BG1HOFS = gModule_Bg1ScrollX;
+                REG_BG1VOFS = gModule_Bg1ScrollY;
                 REG_BG0HOFS = v;
                 REG_BG0VOFS = v;
                 ModuleFlushTrackBgBuffers();

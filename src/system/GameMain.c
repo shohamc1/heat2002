@@ -3,32 +3,30 @@
 #include "variables.h"
 #include "gba/syscall.h"
 #include "gba/defines.h"
+#include "gba/io_reg.h"
 
-void MainVBlankCallback(void);
 
-void FillFadePalette(u16 color);
-u32 MainMenuLoop(void);
 
 void GameMain(void)
 {
-    register u8 z1 asm("r9");
+    register u8 z1 PIN(r9);
     u32 z2;
     u32 eight;
     volatile u16 *p128;
     volatile u16 *ie;
     volatile u16 *ds;
-    register volatile u16 *p asm("r1");
+    register volatile u16 *p PIN(r1);
 
     RegisterRamReset(RESET_EWRAM);
-    p128 = (volatile u16 *)0x04000128;
+    p128 = (volatile u16 *)REG_ADDR_SIOCNT;
     z1 = 0;
     z2 = 0;
     p128[1] = z2;
     InitIntrHandlers();
-    ie = (volatile u16 *)0x04000200;
+    ie = (volatile u16 *)REG_ADDR_IE;
     *ie = z2;
-    *(volatile u16 *)0x04000208 = 1;
-    ds = (volatile u16 *)0x04000004;
+    REG_IME = 1;
+    ds = (volatile u16 *)REG_ADDR_DISPSTAT;
     eight = 8;
     *ds = eight;
     ReadKeys();
@@ -37,9 +35,9 @@ void GameMain(void)
     *ie = 0x2001;
     *ds = eight;
     FillFadePalette(RGB_WHITE);
-    FadeToColor(0, 0x32);
+    FadeToColor(0, 50);
     WaitForVBlank();
-    p = (volatile u16 *)0x0400000E;
+    p = (volatile u16 *)REG_ADDR_BG3CNT;
     *p = 0x3D0B;
     p -= 1;
     *p = 0x1E01;

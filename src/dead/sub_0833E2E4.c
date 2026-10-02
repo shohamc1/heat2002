@@ -31,7 +31,7 @@ void sub_0833E304(void)
         return;
     (*(s32 *)&gModule_CountdownSeconds) = v;
     (*(s32 *)&gModule_CountdownMs) = v;
-    if (gModule_GameMode[0] != 0)
+    if (gModule_GameMode != 0)
         return;
     sub_083429B4();
 }

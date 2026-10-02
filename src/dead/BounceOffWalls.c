@@ -53,7 +53,7 @@ s32 BounceOffWalls(struct Ent *ent)
     s32 dot;
     long long q1, q2;
 
-    if (gGameMode[0] == 7)
+    if (gGameMode == 7)
         goto miss;
     seg.f00 = ent->posX >> 16;
     seg.f04 = ent->posZ >> 16;

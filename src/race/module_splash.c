@@ -2,11 +2,10 @@
 #include "functions.h"
 #include "variables.h"
 
-void ModuleDrawTextCenteredHighlight(u8 *str, u32 y, u32 z);
 
 void ModuleRaceStartSplashTask(struct Task *task)
 {
-    if (++task->timer == 0x30) {
+    if (++task->timer == 48) {
         ModuleRemoveTask(task);
         ModuleFreeTask(task);
     }
@@ -15,7 +14,7 @@ void ModuleRaceStartSplashTask(struct Task *task)
 
 void ModuleLinkRaceStartSplashTask(struct Task *task)
 {
-    if (++task->timer == 0x4E) {
+    if (++task->timer == 78) {
         ModuleRemoveTask(task);
         ModuleFreeTask(task);
         gModule_RaceStarted = 1;

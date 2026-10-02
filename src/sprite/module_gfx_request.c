@@ -1,13 +1,14 @@
 #include "global.h"
+#include "functions.h"
 #include "variables.h"
 
-struct ObjTileCacheEntry *ModuleRequestObjTiles16(void *gfx)
+struct ObjTileCacheEntry *ModuleRequestObjTiles16(GfxSrc gfx)
 {
     struct ObjTileCacheEntry *entry;
     u32 i;
 
     entry = gModule_ObjTileCache16;
-    for (i = 0; i != 0x18; i++, entry++) {
+    for (i = 0; i != 24; i++, entry++) {
         if (entry->gfx == gfx) {
             entry->age = 1;
             return entry;
@@ -15,7 +16,7 @@ struct ObjTileCacheEntry *ModuleRequestObjTiles16(void *gfx)
     }
 
     entry = gModule_ObjTileCache16;
-    for (i = 0; i != 0x18; i++, entry++) {
+    for (i = 0; i != 24; i++, entry++) {
         if (entry->age == 0) {
             entry->age = 1;
             entry->pending = 1;
@@ -27,7 +28,7 @@ struct ObjTileCacheEntry *ModuleRequestObjTiles16(void *gfx)
     return 0;
 }
 
-struct ObjTileCacheEntry *ModuleRequestObjTiles2(void *gfx)
+struct ObjTileCacheEntry *ModuleRequestObjTiles2(GfxSrc gfx)
 {
     struct ObjTileCacheEntry *entry;
     u32 i;
@@ -53,13 +54,13 @@ struct ObjTileCacheEntry *ModuleRequestObjTiles2(void *gfx)
     return 0;
 }
 
-struct ObjTileCacheEntry *ModuleRequestObjTiles8(void *gfx)
+struct ObjTileCacheEntry *ModuleRequestObjTiles8(GfxSrc gfx)
 {
     struct ObjTileCacheEntry *entry;
     u32 i;
 
     entry = gModule_ObjTileCache8;
-    for (i = 0; i != 0x14; i++, entry++) {
+    for (i = 0; i != 20; i++, entry++) {
         if (entry->gfx == gfx) {
             entry->age = 1;
             return entry;
@@ -67,7 +68,7 @@ struct ObjTileCacheEntry *ModuleRequestObjTiles8(void *gfx)
     }
 
     entry = gModule_ObjTileCache8;
-    for (i = 0; i != 0x14; i++, entry++) {
+    for (i = 0; i != 20; i++, entry++) {
         if (entry->age == 0) {
             entry->age = 1;
             entry->pending = 1;
@@ -79,7 +80,7 @@ struct ObjTileCacheEntry *ModuleRequestObjTiles8(void *gfx)
     return 0;
 }
 
-struct ObjTileCacheEntry *ModuleRequestObjTiles4(void *gfx)
+struct ObjTileCacheEntry *ModuleRequestObjTiles4(GfxSrc gfx)
 {
     struct ObjTileCacheEntry *entry;
     u32 i;
@@ -105,7 +106,7 @@ struct ObjTileCacheEntry *ModuleRequestObjTiles4(void *gfx)
     return 0;
 }
 
-struct ObjTileCacheEntry *ModuleRequestObjTiles1(void *gfx)
+struct ObjTileCacheEntry *ModuleRequestObjTiles1(GfxSrc gfx)
 {
     struct ObjTileCacheEntry *entry;
     u32 i;

@@ -5,7 +5,7 @@
 
 void DrawLinkMarker(u32 x, u32 y, u32 carIdx)
 {
-    u32 *frames = (u32 *)gLinkMarkerFrameLists[carIdx];
+    const GfxSrc *frames = gLinkMarkerFrameLists[carIdx];
     u32 attr;
     struct ObjTileCacheEntry *sprite;
     u32 attr2;
@@ -15,7 +15,7 @@ void DrawLinkMarker(u32 x, u32 y, u32 carIdx)
     sprite = RequestObjTiles4(*frames);
     if (sprite != 0) {
         attr2 = sprite->tileIndex;
-        attr2 |= (u8)RequestObjPalette((u32)gLinkMarkerPalette) << 12;
+        attr2 |= (u8)RequestObjPalette(gLinkMarkerPalette) << 12;
         AddOamEntry(attr, attr2);
     }
 }

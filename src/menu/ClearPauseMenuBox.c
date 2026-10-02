@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 #include "data.h"
 
 void ClearPauseMenuBox(void)
@@ -8,7 +9,7 @@ void ClearPauseMenuBox(void)
 
     dest = (*(u16 **)&gTextLayerMapPtr) + 0xA6;
     for (row = 0; row != 8; row++) {
-        for (col = 0; col != 0x13; col++)
+        for (col = 0; col != 19; col++)
             *dest++ = 0xE047;
         dest += 13;
     }

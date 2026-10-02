@@ -1,9 +1,9 @@
 #include "global.h"
 #include "car.h"
 #include "variables.h"
+#include "functions.h"
 
 extern u8 gRacePointsTable[];
-void UpdateRacePosition(u8 idx);
 u32 GetCarOrderIndex(struct Car *car);
 /* Non-const on purpose: with a const extern, old_agbcc allocates the
    table base to r3 and the destination pointer to r2, swapped from the
@@ -15,7 +15,7 @@ u32 GetCarOrderIndex(struct Car *car)
     struct Car **order = gCarOrder;
     u8 i;
 
-    for (i = 0; i != 0x18; i++, order++) {
+    for (i = 0; i != 24; i++, order++) {
         if (*order == car)
             return i;
     }

@@ -1,44 +1,28 @@
 #include "global.h"
 #include "variables.h"
 #include "car.h"
+#include "functions.h"
 
 /*
  * Car-vs-car box collision test: the high-region (0x0834 module) copy of
- * sub_0800D684, byte-identical in instruction stream and ported from that
- * matched source with the module's globals and callees. See
- * src/sub_0800D684.c for the shapes the retail bytes depend on.
+ * CollideCars, byte-identical in instruction stream and ported from that
+ * matched source (src/car/collide.c) with the module's globals and callees.
+ * See that file for the shapes the retail bytes depend on.
  *
  * The `/` and `%` here must stay operators: the module links its own
  * libgcc copy (sub_08344BB8, sub_08344DA8), and the Makefile renames the
- * libcall symbols for src/sub_083[3-9]*.c objects. Calling sub_08344BB8
+ * libcall symbols for every high-module object. Calling sub_08344BB8
  * directly loses the libcall's hard-r0 return and flips the allocation.
  */
-struct CarContact
-{
-    struct Car *carA;   /* 0x00 */
-    struct Car *carB;   /* 0x04 */
-    u8 unk08;           /* 0x08 */
-    u8 normalIndex;     /* 0x09 */
-    s32 closingSpeed;   /* 0x0C */
-};
-struct CollisionNormal
-{
-    s32 normalX; /* 0x00: 20.12 fixed point */
-    s32 normalZ; /* 0x04 */
-};
-
-u16 *ModuleGetWallListAt(s16 x, s16 y);
-void ModuleDummyWallHitHook(s32 a, s32 b);
 extern s32 gModule_CarCollFrameSelf[8];
 extern s32 gModule_CarCollFrameOther[8];
 extern struct CarContact gModule_CarCollContact;
 extern struct CollisionNormal gModule_CarCollisionNormals[];
 extern u8 gUnk_0203D4FC;
+/* Promoted-int view of ModuleKeepNearestCarContact (src/car/module_contact.c),
+   as CollideCars sees KeepNearestCarContact. */
 void ModuleKeepNearestCarContact(struct Car *a, s32 b, struct Car *c, s32 d, struct CarContact *e, u8 *f, s32 g, s32 h);
-void ModuleDummyCarHitHook(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g);
 void ModuleDummyCarDamageHook(s32 carIdx, u8 damageStage);
-void ModuleComputeForwardSpeed(struct Car *a);
-void ModuleM4aSongNumStart(u16 idx);
 
 u8 ModuleCollideCars(struct Car *car)
 {
@@ -244,9 +228,9 @@ u8 ModuleCollideCars(struct Car *car)
             b->impactSpeed = 0;
         b->rpm = (b->impactSpeed << 8) / -b->gearRatioTable[b->gear];
         if (a == gModule_Cars || b == gModule_Cars || gModule_IsLinkRace != 0) {
-            if (gModule_RaceEndState == 0 && gModule_IsDemo[0] == 0 && gModule_Options[3] != 0 &&
+            if (gModule_RaceEndState == 0 && gModule_IsDemo == 0 && gModule_Options[3] != 0 &&
                 (car == gModule_Cars || gModule_IsLinkRace != 0) && a->hitCooldown == 0 && b->hitCooldown == 0)
-                ModuleM4aSongNumStart(0x12);
+                ModuleM4aSongNumStart(18);
         }
         a->hitCooldown = 0x10;
         b->hitCooldown = 0x10;

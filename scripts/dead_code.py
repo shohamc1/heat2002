@@ -107,7 +107,8 @@ def check(dead):
     wrong = []
     for c in sorted((ROOT / "src").rglob("*.c")):
         rel = c.relative_to(ROOT / "src")
-        if rel.parts[0] == "data":
+        if rel.parts[0] in ("data", "platform"):
+            # platform/ is the hosted port's layer: no GBA objects exist.
             continue
         obj = ROOT / "build" / "src" / rel.with_suffix(".o")
         names = [line.split()[2] for line in

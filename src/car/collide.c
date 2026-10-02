@@ -5,70 +5,27 @@
 #include "functions.h"
 #include "m4a.h"
 
-struct CarContactWords
-{
-    u32 carA;        /* 0x00: word-typed for KeepNearestCarContact's signature */
-    u32 carB;        /* 0x04 */
-    u8 unk08;        /* 0x08 */
-    u8 normalIndex;  /* 0x09 */
-    u32 closingSpeed;/* 0x0C */
-};
-struct CarContact
-{
-    struct Car *carA;   /* 0x00 */
-    struct Car *carB;   /* 0x04 */
-    u8 unk08;           /* 0x08 */
-    u8 normalIndex;     /* 0x09 */
-    s32 closingSpeed;   /* 0x0C */
-};
-struct CollisionNormal
-{
-    s32 normalX; /* 0x00: 20.12 fixed point */
-    s32 normalZ; /* 0x04 */
-};
-
-extern s32 gCarCollFrameSelf[8];
-extern s32 gCarCollFrameOther[8];
-extern struct CarContact gCarCollContact;
 extern struct CollisionNormal gCarCollisionNormals[];
+/* KeepNearestCarContact (src/car/contact.c) takes its two indices as u8,
+   but this file sees them as int: the call passes them unnarrowed, as
+   the ROM does, and the callee narrows them. */
+void KeepNearestCarContact(struct Car *a, s32 b, struct Car *c, s32 d, struct CarContact *e, u8 *f, s32 g, s32 h);
+
+/* Of the file's RAM variables, gUnk_0202A530 (0x0202A530) moved to
+   src/car/globals.c and gCarCollContact with gCarCollFrameSelf
+   (0x0202CC90/0x0202CCB0) to src/race/globals.c, the owners of the EWRAM
+   runs they sit in; they are used only here, so this file keeps their
+   local externs. What stays is the 0x0202CD24-0x0202CD50 run this file
+   owns (ldscript.ld's .bss_collide places the section at 0x0202CD24):
+   gUnk_0202CD24, then gCarCollFrameOther. Both frame arrays are 8 words
+   each, as their users' indices [0..7] and the 0x20 spacing to the next
+   variable both say. */
 extern u8 gUnk_0202A530;
-void KeepNearestCarContact(s32 a, u8 b, s32 c, u8 d, struct CarContactWords *e, u8 *f, s32 g, s32 h);
-void DummyCarHitHook(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g);
-void DummyCarDamageHook(s32 a, u8 b);
-void ComputeForwardSpeed(struct Car *a);
-
-void BuildCarCollFrame(struct Car *car, s32 *frame)
-{
-    s32 x, z;
-    s32 v;
-
-    v = -(car->heading >> 8) & 0xFF;
-    frame[0] = gSinTable[v];
-    frame[1] = gSinTable[v + 0x40];
-    x = car->posX;
-    frame[4] = x >> 8;
-    z = car->posZ;
-    frame[5] = z >> 8;
-    v = car->heading + (s16)car->yawRate;
-    v = -(v >> 8) & 0xFF;
-    frame[2] = gSinTable[v];
-    frame[3] = gSinTable[v + 0x40];
-    frame[6] = (x + car->velX) >> 8;
-    frame[7] = (z + car->velZ) >> 8;
-}
-
-void KeepNearestCarContact(s32 a, u8 b, s32 c, u8 d, struct CarContactWords *e, u8 *f, s32 g, s32 h)
-{
-    if (h < gUnk_0202CD24) {
-        e->carA = a;
-        e->carB = c;
-        e->unk08 = b;
-        e->normalIndex = d;
-        e->closingSpeed = g;
-        *f = 1;
-        gUnk_0202CD24 = h;
-    }
-}
+extern struct CarContact gCarCollContact;
+extern s32 gCarCollFrameSelf[];
+EWRAM_DATA s32 gUnk_0202CD24 = 0;
+static EWRAM_DATA u8 collide_gapCD28[0x8] = {0};
+EWRAM_DATA s32 gCarCollFrameOther[8] = {0};
 
 /*
  * Car-vs-car box collision test. For every other car within range, the
@@ -166,29 +123,25 @@ u8 CollideCars(struct Car *car)
             t = (w * e) / u;
             t += v[0];
             if (t >= -0xF00 && t <= 0xF00)
-                ((void (*)(struct Car *, s32, struct Car *, s32, struct CarContact *, u8 *, s32, s32))KeepNearestCarContact)(
-                    car, a2, other, 0, &gCarCollContact, &hit, -u, (e << 16) / -u);
+                KeepNearestCarContact(car, a2, other, 0, &gCarCollContact, &hit, -u, (e << 16) / -u);
         }
         if (u > 0 && v[3] >= -0x1C00 && (e = -0x1C00 - v[1]) >= 0) {
             t = (w * e) / u;
             t += v[0];
             if (t >= -0xF00 && t <= 0xF00)
-                ((void (*)(struct Car *, s32, struct Car *, s32, struct CarContact *, u8 *, s32, s32))KeepNearestCarContact)(
-                    car, a2, other, 1, &gCarCollContact, &hit, u, (e << 16) / u);
+                KeepNearestCarContact(car, a2, other, 1, &gCarCollContact, &hit, u, (e << 16) / u);
         }
         if (w > 0 && v[2] >= -0xF00 && (e = -0xF00 - v[0]) >= 0) {
             t = (e * u) / w;
             t += v[1];
             if (t >= -0x1C00 && t <= 0x1C00)
-                ((void (*)(struct Car *, s32, struct Car *, s32, struct CarContact *, u8 *, s32, s32))KeepNearestCarContact)(
-                    car, a2, other, 2, &gCarCollContact, &hit, w, (e << 16) / w);
+                KeepNearestCarContact(car, a2, other, 2, &gCarCollContact, &hit, w, (e << 16) / w);
         }
         if (w < 0 && v[2] <= 0xF00 && (e = v[0] - 0xF00) >= 0) {
             t = (e * u) / w;
             t += v[1];
             if (t >= -0x1C00 && t <= 0x1C00)
-                ((void (*)(struct Car *, s32, struct Car *, s32, struct CarContact *, u8 *, s32, s32))KeepNearestCarContact)(
-                    car, a2, other, 3, &gCarCollContact, &hit, -w, (e << 16) / -w);
+                KeepNearestCarContact(car, a2, other, 3, &gCarCollContact, &hit, -w, (e << 16) / -w);
         }
 
         d[0] = gCarCollFrameOther[4];
@@ -209,29 +162,25 @@ u8 CollideCars(struct Car *car)
             t = (w * e) / u;
             t += v[0];
             if (t >= -0xF00 && t <= 0xF00)
-                ((void (*)(struct Car *, s32, struct Car *, s32, struct CarContact *, u8 *, s32, s32))KeepNearestCarContact)(
-                    other, a2, car, 0, &gCarCollContact, &hit, -u, (e << 16) / -u);
+                KeepNearestCarContact(other, a2, car, 0, &gCarCollContact, &hit, -u, (e << 16) / -u);
         }
         if (u > 0 && v[3] >= -0x1C00 && (e = -0x1C00 - v[1]) >= 0) {
             t = (w * e) / u;
             t += v[0];
             if (t >= -0xF00 && t <= 0xF00)
-                ((void (*)(struct Car *, s32, struct Car *, s32, struct CarContact *, u8 *, s32, s32))KeepNearestCarContact)(
-                    other, a2, car, 1, &gCarCollContact, &hit, u, (e << 16) / u);
+                KeepNearestCarContact(other, a2, car, 1, &gCarCollContact, &hit, u, (e << 16) / u);
         }
         if (w > 0 && v[2] >= -0xF00 && (e = -0xF00 - v[0]) >= 0) {
             t = (e * u) / w;
             t += v[1];
             if (t >= -0x1C00 && t <= 0x1C00)
-                ((void (*)(struct Car *, s32, struct Car *, s32, struct CarContact *, u8 *, s32, s32))KeepNearestCarContact)(
-                    other, a2, car, 2, &gCarCollContact, &hit, w, (e << 16) / w);
+                KeepNearestCarContact(other, a2, car, 2, &gCarCollContact, &hit, w, (e << 16) / w);
         }
         if (w < 0 && v[2] <= 0xF00 && (e = v[0] - 0xF00) >= 0) {
             t = (e * u) / w;
             t += v[1];
             if (t >= -0x1C00 && t <= 0x1C00)
-                ((void (*)(struct Car *, s32, struct Car *, s32, struct CarContact *, u8 *, s32, s32))KeepNearestCarContact)(
-                    other, a2, car, 3, &gCarCollContact, &hit, -w, (e << 16) / -w);
+                KeepNearestCarContact(other, a2, car, 3, &gCarCollContact, &hit, -w, (e << 16) / -w);
         }
     }
 
@@ -269,9 +218,9 @@ u8 CollideCars(struct Car *car)
                 if (sd < 0)
                     sd = 0;
                 if (sd > 50)
-                    DummyCarDamageHook(a - gCars, gUnk_0202A530 % 3);
+                    DummyCarDamageHook((s32)(a - gCars), gUnk_0202A530 % 3);
                 else
-                    DummyCarDamageHook(a - gCars, 4);
+                    DummyCarDamageHook((s32)(a - gCars), 4);
             }
             gUnk_0202A530++;
         }
@@ -288,9 +237,9 @@ u8 CollideCars(struct Car *car)
                 if (sd < 0)
                     sd = 0;
                 if (sd > 50)
-                    DummyCarDamageHook(b - gCars, gUnk_0202A530 % 3);
+                    DummyCarDamageHook((s32)(b - gCars), gUnk_0202A530 % 3);
                 else
-                    DummyCarDamageHook(b - gCars, 4);
+                    DummyCarDamageHook((s32)(b - gCars), 4);
             }
             gUnk_0202A530++;
         }
@@ -302,7 +251,7 @@ u8 CollideCars(struct Car *car)
         if (a == gCars || b == gCars || gIsLinkRace != 0) {
             if (gRaceEndState == 0 && gIsDemo == 0 && gOptions[3] != 0 && (car == gCars || gIsLinkRace != 0) &&
                 a->hitCooldown == 0 && b->hitCooldown == 0)
-                m4aSongNumStart(0x12);
+                m4aSongNumStart(18);
         }
         a->hitCooldown = 0x10;
         b->hitCooldown = 0x10;

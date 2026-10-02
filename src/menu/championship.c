@@ -20,7 +20,7 @@ u8 FindDriverByTeam(u8 teamId)
 {
     u8 driverIdx;
 
-    for (driverIdx = 0; driverIdx != 0x1E; driverIdx++) {
+    for (driverIdx = 0; driverIdx != 30; driverIdx++) {
         if (gDriverRoster[driverIdx].teamId == teamId)
             return driverIdx;
     }
@@ -30,7 +30,7 @@ u8 FindDriverByTeam(u8 teamId)
 void UnlockChampionshipTier(u8 tier)
 {
     u8 tierVal;
-    register u8 tierReg asm("r3");
+    register u8 tierReg PIN(r3);
 
     tierVal = tier;
     tierReg = tierVal;
@@ -59,11 +59,11 @@ void UnlockChampionshipTier(u8 tier)
     }
 }
 
-u32 IsAnyChampionshipTeamAvailable(void)
+u8 IsAnyChampionshipTeamAvailable(void)
 {
     u8 teamIdx;
 
-    for (teamIdx = 0; teamIdx != 0x11; teamIdx++) {
+    for (teamIdx = 0; teamIdx != 17; teamIdx++) {
         if (gChampionshipAvailable[teamIdx] != 0)
             return 1;
     }
@@ -84,7 +84,7 @@ void DrawCareerDecision(u8 selected)
     text = gText_StayOnThisTeam_2;
     DrawTextCenteredHighlight(text, 8, selected == 0);
     text = gText_ChooseANewTeam;
-    DrawTextCenteredHighlight(text, 0xA, selected == 1);
+    DrawTextCenteredHighlight(text, 10, selected == 1);
 }
 
 u8 CareerDecisionMenu(void)
@@ -96,14 +96,14 @@ u8 CareerDecisionMenu(void)
     LoadMenuScreen(6, (u16 *)palette);
     DrawCareerDecision(0);
     FadeToBrightenedPalette(palette, 0x0F);
-    choice = 0x40;
+    choice = 64;
     do {
         ReadKeys();
         DrawCareerDecision(cursor);
         if (gKeysPressed & 1)
             choice = cursor;
         if (gKeysPressed & 2)
-            choice = 0x0A;
+            choice = 10;
         cursor = MenuMoveVertical(gKeysPressed, cursor, 0, 1);
         WaitForVBlank();
     } while (choice == 0x40);
@@ -126,7 +126,7 @@ u8 ResolveSeasonResult(u8 championshipIndex, u8 finishPos)
         if (finishPos < gChampionshipRequiredFinish[team])
             gChampionshipAvailable[team] = 1;
         team++;
-    } while (team != 0x11);
+    } while (team != 17);
     ShowStayOnTeamMessage();
     UnlockChampionshipTier(gChampionshipTeamTiers[championshipIndex]);
     return 0;

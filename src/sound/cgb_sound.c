@@ -1,6 +1,12 @@
 #include "global.h"
 #include "gba/m4a_internal.h"
 #include "functions.h"
+#if PORTABLE
+// The hosted build's software PSG (issue 5 step 6): every NRx write below
+// is mirrored into it, after sa2's hooks in their m4a.c. The GBA branch
+// is untouched -- the registers are the real hardware there.
+#include "platform/shared/audio/cgb_audio.h"
+#endif
 
 /* MidiKeyToCgbFreq. Tables: gCgbScaleTable = gCgbScaleTable (u8),
  * gCgbFreqTable = gCgbFreqTable (s16), gNoiseTable = gNoiseTable (u8). */
@@ -68,6 +74,10 @@ void CgbOscOff(u8 chanNum)
             REG_NR44 = 0x80;
             break;
     }
+#if PORTABLE
+    cgb_set_envelope(chanNum - 1, 8);
+    cgb_trigger_note(chanNum - 1);
+#endif
 }
 
 void CgbModVol(struct CgbChannel *chan)
@@ -170,9 +180,12 @@ void CgbSound(void)
                 switch (ch) {
                     case 1:
                         *nrx0ptr = channels->sweep;
+#if PORTABLE
+                        cgb_set_sweep(channels->sweep);
+#endif
                         // fallthrough
                     case 2:
-                        *nrx1ptr = ((u32)channels->wavePointer << 6) + channels->length;
+                        *nrx1ptr = (ADDR_WORD(channels->wavePointer) << 6) + channels->length;
                         goto init_env_step_time_dir;
                     case 3:
                         if (channels->wavePointer != channels->currentPointer) {
@@ -182,6 +195,9 @@ void CgbSound(void)
                             REG_WAVE_RAM2 = channels->wavePointer[2];
                             REG_WAVE_RAM3 = channels->wavePointer[3];
                             channels->currentPointer = channels->wavePointer;
+#if PORTABLE
+                            cgb_set_wavram();
+#endif
                         }
                         *nrx0ptr = 0;
                         *nrx1ptr = channels->length;
@@ -192,7 +208,7 @@ void CgbSound(void)
                         break;
                     default:
                         *nrx1ptr = channels->length;
-                        *nrx3ptr = (u32)channels->wavePointer << 3;
+                        *nrx3ptr = ADDR_WORD(channels->wavePointer) << 3;
                     init_env_step_time_dir:
                         envelopeStepTimeAndDir = channels->attack + CGB_NRx2_ENV_DIR_INC;
                         if (channels->length)
@@ -201,6 +217,9 @@ void CgbSound(void)
                             channels->n4 = 0x00;
                         break;
                 }
+#if PORTABLE
+                cgb_set_length(ch - 1, channels->length);
+#endif
                 channels->envelopeCounter = channels->attack;
                 if ((u8)(channels->attack & mask)) {
                     channels->envelopeVolume = 0;
@@ -324,6 +343,9 @@ void CgbSound(void)
         }
 
         if (channels->modify & CGB_CHANNEL_MO_VOL) {
+#if PORTABLE
+            bool8 waveTriggered = FALSE;
+#endif
             REG_NR51 = (REG_NR51 & ~channels->panMask) | channels->pan;
             if (ch == 3) {
                 *nrx2ptr = gCgb3Vol[channels->envelopeVolume];
@@ -331,6 +353,9 @@ void CgbSound(void)
                     *nrx0ptr = 0x80;
                     *nrx4ptr = channels->n4;
                     channels->n4 &= ~0x80;
+#if PORTABLE
+                    waveTriggered = TRUE;
+#endif
                 }
             } else {
                 *nrx2ptr = (envelopeStepTimeAndDir & 0xf) + (channels->envelopeVolume << 4);
@@ -338,6 +363,14 @@ void CgbSound(void)
                 if (ch == 1 && !(*nrx0ptr & 0x08))
                     *nrx4ptr = channels->n4 | 0x80;
             }
+#if PORTABLE
+            /* Channels 1, 2 and 4 write the trigger bit on every volume
+               update; the wave channel only when n4 asked for it. */
+            cgb_set_envelope(ch - 1, *nrx2ptr);
+            cgb_toggle_length(ch - 1, (*nrx4ptr & 0x40));
+            if (ch != 3 || waveTriggered)
+                cgb_trigger_note(ch - 1);
+#endif
         }
 
     channel_complete:

@@ -8,23 +8,28 @@
 #include "m4a.h"
 
 extern u8 gDriverSelectTiles[], gText_BlankRowDriverSelect[];
-extern u8 gDriverSelectGfxDest[];
+#if PLATFORM_GBA
+extern u8 gDriverSelectGfxDest[];         /* 0x06016000 */
+#else
+/* The driver-select tiles' OBJ VRAM destination as a host VRAM pointer;
+   the only use decays the array and casts it to u32. */
+#define gDriverSelectGfxDest ((u8 *)((u8 *)VRAM + 0x16000))
+#endif
 
 void DrawLinkPostRaceMenu(u8 selected)
 {
     u8 cur = selected;
     const u8 *text;
     DummyUiFontLoad(gUiFontTable[0]);
-    GetString(0x5A);
-    ((void (*)(void))DrawBigText)();
-    text = GetString(0x05);
+    DrawBigText(GetString(90));
+    text = GetString(5);
     DrawTextCenteredHighlight(text, 7, selected == 0);
-    text = GetString(0x06);
+    text = GetString(6);
     DrawTextCenteredHighlight(text, 9, selected == 1);
-    text = GetString(0x07);
-    DrawTextCenteredHighlight(text, 0xB, selected == 2);
-    text = GetString(0x08);
-    DrawTextCenteredHighlight(text, 0xD, cur == 3);
+    text = GetString(7);
+    DrawTextCenteredHighlight(text, 11, selected == 2);
+    text = GetString(8);
+    DrawTextCenteredHighlight(text, 13, cur == 3);
 }
 
 u8 LinkPostRaceMenu(void)
@@ -40,7 +45,7 @@ u8 LinkPostRaceMenu(void)
     LoadMenuScreen(1, (u16 *)palette);
     DrawLinkPostRaceMenu(0);
     FadeToBrightenedPalette(palette, 0x0F);
-    choice = 0x40;
+    choice = 64;
     do {
         old = gPlayerKeys[0];
         if (ExchangeLinkInput() != 0) {
@@ -66,7 +71,7 @@ s16 LinkMenuMoveHorizontal(u16 keys, s16 v, s16 lo, s16 hi, u8 unused, u8 player
 {
     if (keys & DPAD_LEFT) {
         gMenuValueChanged = 1;
-        if (gLinkPlayerId[0] == playerId && gOptions[3] != 0)
+        if (gLinkPlayerId == playerId && gOptions[3] != 0)
             m4aSongNumStart(8);
         v = v - 1;
         if (v < lo)
@@ -74,7 +79,7 @@ s16 LinkMenuMoveHorizontal(u16 keys, s16 v, s16 lo, s16 hi, u8 unused, u8 player
     }
     if (keys & DPAD_RIGHT) {
         gMenuValueChanged = 1;
-        if (gLinkPlayerId[0] == playerId && gOptions[3] != 0)
+        if (gLinkPlayerId == playerId && gOptions[3] != 0)
             m4aSongNumStart(8);
         v = v + 1;
         if (v > hi)
@@ -83,7 +88,7 @@ s16 LinkMenuMoveHorizontal(u16 keys, s16 v, s16 lo, s16 hi, u8 unused, u8 player
     return v;
 }
 
-s8 LinkDriverSelect(void)
+s16 LinkDriverSelect(void)
 {
     u8 buf[0x200];
     u8 a[4];
@@ -95,15 +100,15 @@ s8 LinkDriverSelect(void)
     s32 i;
     s32 n;
     u8 count;
-    register u8 value asm("r1");
+    register u8 value PIN(r1);
     u8 assign;
     u8 *out;
     u8 *outElse;
-    register u8 *p asm("r6");
+    register u8 *p PIN(r6);
     u8 *init;
     u8 *q;
-    u32 src;
-    u32 dst;
+    const u8 *src;
+    u8 *dst;
 
     ResetLinkState();
     i = 3;
@@ -113,8 +118,8 @@ s8 LinkDriverSelect(void)
         i--;
     } while (i >= 0);
     e = a[(*(volatile u32 *)REG_ADDR_SIOCNT << 26) >> 30];
-    src = (u32)gDriverSelectTiles;
-    dst = (u32)gDriverSelectGfxDest;
+    src = gDriverSelectTiles;
+    dst = gDriverSelectGfxDest;
     CpuCopy16(src, dst, 0x2000);
     ResetSpriteOrderTable();
     InitGfxCaches();
@@ -131,12 +136,12 @@ s8 LinkDriverSelect(void)
     REG_DISPCNT = DISPCNT_OBJ_1D_MAP | DISPCNT_BG0_ON | DISPCNT_BG2_ON;
     WaitForVBlank();
     REG_DISPCNT = DISPCNT_OBJ_1D_MAP | DISPCNT_BG0_ON | DISPCNT_BG2_ON | DISPCNT_OBJ_ON;
-    sel = 0x40;
+    sel = 64;
     for (i = 0; i < gNumLinkPlayers[0]; i++)
         b[i] |= 0xFF;
     while (sel == 0x40) {
         ClearOamBuffer();
-        DrawDriverSelect(a[gLinkPlayerId[0]]);
+        DrawDriverSelect(a[gLinkPlayerId]);
         n = gNumLinkPlayers[0];
         for (i = 0; i < n; i++)
             d[i] = gPlayerKeys[i];
@@ -149,10 +154,10 @@ s8 LinkDriverSelect(void)
             p = b;
             q = p + i;
             if ((s8)*q == -1)
-                /* LinkMenuMoveHorizontal: this file's old prototype is
-                   u8 (u16, u8, u32, u32, u8 *, u8); the matched definition
-                   narrows differently; call through the old one. */
-                a[i] = ((u8 (*)(u16, u8, u32, u32, u8 *, u8))LinkMenuMoveHorizontal)(c[i], a[i], 0, 0x1D, (u32)a, i);
+                /* The ROM passes the array a as the fifth argument, where
+                   the definition takes a u8, and reads the s16 result as
+                   u8. */
+                a[i] = ((u8 (*)(u16, u8, u32, u32, u8 *, u8))LinkMenuMoveHorizontal)(c[i], a[i], 0, 0x1D, a, i);
             if (c[i] & 1) {
                 assign = a[i];
                 out = q;
@@ -179,8 +184,8 @@ s8 LinkDriverSelect(void)
             if ((s8)b[i] != -1)
                 count++;
         }
-        if ((s8)b[gLinkPlayerId[0]] != -1) {
-            DrawTextCenteredHighlight(GetString(0x58), 0x11, 1);
+        if ((s8)b[gLinkPlayerId] != -1) {
+            DrawTextCenteredHighlight(GetString(88), 17, 1);
             if (count == *(volatile u8 *)&gNumLinkPlayers[0]) {
                 for (i = 0; i < gNumLinkPlayers[0]; i++) {
                     gCars[i].driverId = b[i];
@@ -188,13 +193,24 @@ s8 LinkDriverSelect(void)
                 }
             }
         } else {
-            DrawTextCenteredHighlight(gText_BlankRowDriverSelect, 0x11, 1);
+            DrawTextCenteredHighlight(gText_BlankRowDriverSelect, 17, 1);
         }
         UpdateSprites();
         gVBlankWorkDone = 0;
     spin:
+#if PORTABLE
+        /* The GBA's VBlank interrupt arrives from hardware mid-spin; the
+           hosted build dispatches it only from the frame pump, so pump
+           one VBlank here - the same instant the hardware would. */
+        if (gVBlankWorkDone == 0)
+        {
+            VBlankIntrWait();
+            goto spin;
+        }
+#else
         if (gVBlankWorkDone == 0)
             goto spin;
+#endif
     }
     if (sel == -2)
         return sel;

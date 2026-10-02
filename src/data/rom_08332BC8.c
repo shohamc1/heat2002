@@ -22,8 +22,15 @@ const u16 gSpriteTextControlCharCodes[] = SPRITE_TEXT_CONTROL_CHAR_CODES;
 const u16 gTextCharMap[] = TEXT_CHAR_MAP;
 /* Maps a glyph code to the 4bpp tile index inside gTextLayerTiles. */
 const u16 gTextGlyphTileIndices[] = TEXT_GLYPH_TILE_INDICES;
+/* The screen loaders copy 0x2000 bytes of this into BG screen block 24,
+ * past the blob into the following ROM data as the original build did;
+ * hosted, the tail past the blob zero-fills so the copy stays defined. */
+#if PORTABLE
+const u32 gTextLayerTiles[0x800] = INCBIN_U32("build/assets/graphics/tiles/text_layer.tiles.bin");
+#else
 // Its users declare it as u32 x[], u8 x[].
 const u32 gTextLayerTiles[] = INCBIN_U32("build/assets/graphics/tiles/text_layer.tiles.bin");
+#endif
 /* Full 256-color BG palette of the race HUD's char sheet (below);
  * LoadTrack copies only its first 16 colors into a scratch buffer.
  * Editable: assets/graphics/palettes/race_hud_bg.pal. */
@@ -42,5 +49,10 @@ const u16 gFontTileEntries[] = FONT_TILE_ENTRIES;
  * icon tiles gFontTileEntries indexes), copied to 0x0600C000 by
  * LoadTrack; the 0x2000-byte copy deliberately runs past this blob
  * into the graphics that follow. Editable:
- * assets/graphics/tiles/race_hud_bg.png. */
+ * assets/graphics/tiles/race_hud_bg.png. Hosted, the tail past the
+ * blob zero-fills so the copy stays defined. */
+#if PORTABLE
+const u16 gRaceHudBgTiles[0x1000] = INCBIN_U16("build/assets/graphics/tiles/race_hud_bg.tiles.bin");
+#else
 const u16 gRaceHudBgTiles[] = INCBIN_U16("build/assets/graphics/tiles/race_hud_bg.tiles.bin");
+#endif

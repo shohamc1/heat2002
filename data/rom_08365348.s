@@ -1,6 +1,15 @@
 @ Generated with Luvdis v0.9.0
+@ Both builds preprocess this file (preproc inlines the .include files,
+@ cpp resolves the switch below). The GBA keeps the exact luvdis layout;
+@ the hosted build switches to a writable data section, because its mPtr
+@ pointer fields carry relocations the host linker must be able to write.
+	.include "asm/macros/portable.inc"
+#if PLATFORM_GBA
 .syntax unified
 .text
+#else
+mSectionData
+#endif
 @ Begin embedded Luvdis macros
 	.macro arm_func_start name
 	.align 2, 0
@@ -35,48 +44,60 @@
 	.align 2, 0
 	.global gTrackSegs_Track0
 gTrackSegs_Track0:
+	cSym gTrackSegs_Track0
 	.incbin "build/assets/tracks/hooley_downs/segs.bin"
 	.align 2, 0
 	.global gTrackSegs_Track1
 gTrackSegs_Track1:
+	cSym gTrackSegs_Track1
 	.incbin "build/assets/tracks/darlington_raceway/segs.bin"
 	.align 2, 0
 	.global gTrackSegs_Track2
 gTrackSegs_Track2:
+	cSym gTrackSegs_Track2
 	.incbin "build/assets/tracks/green_valley/segs.bin"
 	.align 2, 0
 	.global gTrackSegs_Track3
 gTrackSegs_Track3:
+	cSym gTrackSegs_Track3
 	.incbin "build/assets/tracks/michigan_international_speedway/segs.bin"
 	.align 2, 0
 	.global gTrackSegs_Track4
 gTrackSegs_Track4:
+	cSym gTrackSegs_Track4
 	.incbin "build/assets/tracks/great_canyon/segs.bin"
 	.align 2, 0
 	.global gTrackSegs_Track5
 gTrackSegs_Track5:
+	cSym gTrackSegs_Track5
 	.incbin "build/assets/tracks/fuji_port/segs.bin"
 	.align 2, 0
 	.global gTrackSegs_Track6
 gTrackSegs_Track6:
+	cSym gTrackSegs_Track6
 	.incbin "build/assets/tracks/crawfish_raceway/segs.bin"
 	.align 2, 0
 	.global gTrackSegs_Track7
 gTrackSegs_Track7:
+	cSym gTrackSegs_Track7
 	.incbin "build/assets/tracks/purley_park/segs.bin"
 	.align 2, 0
 	.global gTrackSegs_Track8
 gTrackSegs_Track8:
+	cSym gTrackSegs_Track8
 	.incbin "build/assets/tracks/kansas_speedway/segs.bin"
 	.align 2, 0
 	.global gTrackSegs_Track9
 gTrackSegs_Track9:
+	cSym gTrackSegs_Track9
 	.incbin "build/assets/tracks/asphalt_city/segs.bin"
 	.align 2, 0
 	.global gTrackSegs_Track10
 gTrackSegs_Track10:
+	cSym gTrackSegs_Track10
 	.incbin "build/assets/tracks/phoenix_international_raceway/segs.bin"
 	.align 2, 0
 	.global gTrackSegs_Track11
 gTrackSegs_Track11:
+	cSym gTrackSegs_Track11
 	.incbin "build/assets/tracks/infogrames_super_speedway/segs.bin"

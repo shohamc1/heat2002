@@ -1,13 +1,9 @@
 #include "global.h"
 #include "variables.h"
+#include "functions.h"
 
-extern u16 gUnk_0201F550[];
+extern u16 gModule_SpriteTextControlCharCodes[];
 extern u8 gModule_TextLayerTiles[];
-extern u8 gUnk_0201F390[];
-
-struct ObjTileCacheEntry *ModuleRequestObjTiles1(void *a);
-u32 ModuleRequestObjPalette(u32 a);
-void ModuleAddOamEntry(u32 a, u32 b);
 
 void ModuleDrawSpriteText(const u8 *text, u32 startX, u32 pal)
 {
@@ -30,13 +26,13 @@ void ModuleDrawSpriteText(const u8 *text, u32 startX, u32 pal)
         palBits = palBits & pal;
         do {
             if (ch != 0x20) {
-                ctrlCode = *(u16 *)((ch << 1) + (u32)gUnk_0201F550);
+                ctrlCode = *(u16 *)((ch << 1) + (u32)gModule_SpriteTextControlCharCodes);
                 glyphTile = gModule_TextGlyphTileIndices[ctrlCode];
-                sprite = ModuleRequestObjTiles1(&gModule_TextLayerTiles[glyphTile << 5]);
+                sprite = ModuleRequestObjTiles1((GfxSrc)&gModule_TextLayerTiles[glyphTile << 5]);
                 if (sprite != 0) {
                     attr = (xPos & 0x1FF) << 16;
                     attr = attr | palBits;
-                    palIdx = (ModuleRequestObjPalette((u32)gUnk_0201F390) << 24) >> 12;
+                    palIdx = (u32)(ModuleRequestObjPalette(gModule_FontPalette) << 24) >> 12;
                     ModuleAddOamEntry(attr, sprite->tileIndex | palIdx);
                 }
             }

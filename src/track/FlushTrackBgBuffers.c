@@ -1,8 +1,7 @@
 #include "global.h"
 #include "tilemap.h"
 #include "gba/defines.h"
-
-void FlushTilemapBuffer(u8 *src, u8 *dest);
+#include "functions.h"
 
 void FlushTrackBgBuffers(void)
 {

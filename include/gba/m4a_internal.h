@@ -35,6 +35,27 @@
 #define SOUND_MODE_DA_BIT       0x00B00000
 #define SOUND_MODE_DA_BIT_SHIFT 20
 
+// ToneData.type's flag bits (lib/m4a_constants.inc's TONEDATA_TYPE_*).
+#define TONEDATA_TYPE_CGB 0x07 // compatible sound, channel number 1-4
+#define TONEDATA_TYPE_FIX 0x08 // fixed frequency (samples at the mix rate)
+#define TONEDATA_TYPE_SPL 0x40 // key split
+#define TONEDATA_TYPE_RHY 0x80 // rhythm
+
+// A channel is live when any of these is set (lib/m4a_1.s's SoundMain
+// tests statusFlags against exactly this mask before ticking a channel).
+#define SOUND_CHANNEL_SF_ON (SOUND_CHANNEL_SF_START | SOUND_CHANNEL_SF_STOP | SOUND_CHANNEL_SF_IEC | SOUND_CHANNEL_SF_ENV)
+
+// The hosted mixer's (issue 5 step 6, after sa2) fixed-point sample type:
+// 8 integer bits, 24 fractional, [-1, 1) full scale. The macros are the
+// only float-touching spots the port's mixer needs. fp8_24_to_u32 must
+// shift BEFORE any narrowing: GenerateAudio feeds it an s64 product that
+// can be negative, whose floor the arithmetic shift gives directly.
+typedef s32 fixed8_24;
+#define float_to_fp8_24(value)        ((fixed8_24)((value) * 16777216.0f))
+#define u32_to_fp8_24(value)          ((value) << 24)
+#define fp8_24_to_u32(value)          ((value) >> 24)
+#define fp8_24_fractional_part(value) ((value) & 0xFFFFFF)
+
 struct WaveData
 {
     u16 type;
@@ -45,6 +66,57 @@ struct WaveData
     s8 data[1]; // samples
 };
 
+// GBA: one 12-byte voice-group record, the exact layout the engine's
+// hand-written asm reads (lib/m4a_constants.inc's o_ToneData_* fields)
+// and asm/macros/music_voice.inc emits. A keysplit record overlays its
+// two pointers on wav and attack (o_MusicPlayerTrack_ToneData_
+// keySplitTable == ..._attack in lib/m4a_constants.inc), and a square or
+// noise voice carries its duty cycle or period in wav's first byte.
+//
+// Hosted (issue 5 step 4): the same record as asm/macros/music_voice.inc
+// emits it there, a uniform 24 bytes so a voice group is a plain array:
+// type/key/length/pan_sweep at 0-3, the duty/period byte at 4 (where the
+// GBA record keeps it, as wav's first byte), pad to 8, then a union whose
+// two shapes share the pointer slots -- directsound/wave reads wav at 8
+// with the envelope at 16-19, keysplit reads its group pointer at 8 and
+// its key-table pointer at 16 (the same attack alias the GBA layout
+// uses). Anonymous unions and anonymous struct members are GNU
+// extensions, which -std=gnu89 accepts.
+//
+// Square and noise voices set wav = NULL and carry their duty/period in
+// duty alone; the CGB paths that read a duty through CgbChannel's
+// wavePointer (CgbSound's NRx1/NR43 writes) get it because the hosted
+// ply_note copies tone->duty into that slot for channels 1, 2 and 4
+// (src/platform/shared/audio/m4a_sound_mixer.c). Only wave voices
+// (channel 3) keep a real WaveData pointer there.
+#if PORTABLE
+struct ToneData
+{
+    /* 0x00 */ u8 type;
+    /* 0x01 */ u8 key;
+    /* 0x02 */ u8 length; // sound length (compatible sound)
+    /* 0x03 */ u8 pan_sweep; // pan or sweep (compatible sound ch. 1)
+    /* 0x04 */ u8 duty; // square duty / noise period (GBA: wav byte 0)
+    /* 0x05 */ u8 pad05[3];
+    /* 0x08 */ union
+    {
+        struct
+        {
+            struct WaveData *wav;
+            /* 0x10 */ u8 attack;
+            u8 decay;
+            u8 sustain;
+            u8 release;
+            u8 tail[4]; // pad to the 24-byte stride
+        };
+        struct
+        {
+            struct ToneData *keySplitGroup;
+            u8 *keySplitTable;
+        };
+    };
+};
+#else
 struct ToneData
 {
     u8 type;
@@ -57,12 +129,17 @@ struct ToneData
     u8 sustain;
     u8 release;
 };
+#endif
 
 #define SOUND_CHANNEL_SF_START       0x80
 #define SOUND_CHANNEL_SF_STOP        0x40
 #define SOUND_CHANNEL_SF_LOOP        0x10
 #define SOUND_CHANNEL_SF_IEC         0x04
 #define SOUND_CHANNEL_SF_ENV         0x03
+#define SOUND_CHANNEL_SF_ENV_ATTACK  0x03
+#define SOUND_CHANNEL_SF_ENV_DECAY   0x02
+#define SOUND_CHANNEL_SF_ENV_SUSTAIN 0x01
+#define SOUND_CHANNEL_SF_ENV_RELEASE 0x00
 
 #define CGB_CHANNEL_MO_PIT  0x02
 #define CGB_CHANNEL_MO_VOL  0x01
@@ -155,7 +232,17 @@ struct SoundChannel
 };
 
 #define MAX_DIRECTSOUND_CHANNELS 12
-#define PCM_DMA_BUF_SIZE 1584 // size of Direct Sound buffer
+// Size of the Direct Sound buffer, in samples per channel. The GBA keeps
+// the hardware rate's 1584; the hosted mixer (issue 5 step 6, after sa2)
+// mixes 804-sample frames and sizes the ring for six of them, so the
+// hosted build uses sa2's 4907. m4aSoundVSyncOn's and SoundInit's DMA
+// register arithmetic is the only other reader, and those writes are
+// inert on the host.
+#if PORTABLE
+#define PCM_DMA_BUF_SIZE 4907
+#else
+#define PCM_DMA_BUF_SIZE 1584
+#endif
 
 struct MusicPlayerInfo;
 
@@ -188,6 +275,12 @@ struct SoundInfo
     s32 pcmSamplesPerVBlank;
     s32 pcmFreq;
     s32 divFreq;
+#if PORTABLE
+    // The hosted mixer's resampling step, 1/sampleRate as a float (the
+    // GBA's integer approximation of it is divFreq above, which the host
+    // never reads). Set by SampleFreqSet's hosted branch.
+    float sampleRateReciprocal;
+#endif
     struct CgbChannel *cgbChans;
     MPlayMainFunc MPlayMainHead;
     struct MusicPlayerInfo *musicPlayerHead;
@@ -199,7 +292,13 @@ struct SoundInfo
     ExtVolPitFunc ExtVolPit;
     u8 gap2[16];
     struct SoundChannel chans[MAX_DIRECTSOUND_CHANNELS];
+#if PORTABLE
+    // The hosted mixer accumulates fixed-point samples here (after sa2),
+    // where the GBA buffers signed bytes for the FIFO DMAs.
+    fixed8_24 pcmBuffer[PCM_DMA_BUF_SIZE * 2];
+#else
     s8 ALIGNED(4) pcmBuffer[PCM_DMA_BUF_SIZE * 2];
+#endif
 };
 
 // Confirmed against MPlayStart: trackCount@0, blockCount@1, priority@2,

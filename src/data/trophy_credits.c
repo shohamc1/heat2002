@@ -18,12 +18,33 @@ const u16 gCreditsPage1MetatileMap[150] = INCBIN_U16("build/assets/graphics/scre
 // Its users declare it as u8 x[].
 const u16 gCreditsPage1MetatileTable[] = INCBIN_U16("build/assets/graphics/screens/credits_page1.table.bin");
 
+/* ShowCreditsPage1 copies 0xA280 bytes of tiles into VRAM, past the
+ * blob into the following ROM data as the original build did; hosted,
+ * the tail past the blob zero-fills so the copy stays defined. */
+#if PORTABLE
+const u8 gCreditsPage1Gfx[0xA280] = INCBIN_U8("build/assets/graphics/screens/credits_page1.tiles.bin");
+#else
 const u8 gCreditsPage1Gfx[] = INCBIN_U8("build/assets/graphics/screens/credits_page1.tiles.bin");
+#endif
 const u8 gCreditsPage2Palette[] = INCBIN_U8("build/assets/graphics/screens/credits_page2.pal.bin");
 const u16 gCreditsPage2MetatileMap[150] = INCBIN_U16("build/assets/graphics/screens/credits_page2.map.bin");
 const u16 gCreditsPage2MetatileTable[] = INCBIN_U16("build/assets/graphics/screens/credits_page2.table.bin");
+/* ShowCreditsPage2 copies 0xA280 bytes of tiles into VRAM, past the
+ * blob into the following ROM data as the original build did; hosted,
+ * the tail past the blob zero-fills so the copy stays defined. */
+#if PORTABLE
+const u8 gCreditsPage2Gfx[0xA280] = INCBIN_U8("build/assets/graphics/screens/credits_page2.tiles.bin");
+#else
 const u8 gCreditsPage2Gfx[] = INCBIN_U8("build/assets/graphics/screens/credits_page2.tiles.bin");
+#endif
 const u8 gCreditsPage3Palette[] = INCBIN_U8("build/assets/graphics/screens/credits_page3.pal.bin");
 const u16 gCreditsPage3MetatileMap[150] = INCBIN_U16("build/assets/graphics/screens/credits_page3.map.bin");
 const u16 gCreditsPage3MetatileTable[] = INCBIN_U16("build/assets/graphics/screens/credits_page3.table.bin");
+/* ShowCreditsPage3 copies 0xA280 bytes of tiles into VRAM, past the
+ * blob into the following ROM data as the original build did; hosted,
+ * the tail past the blob zero-fills so the copy stays defined. */
+#if PORTABLE
+const u8 gCreditsPage3Gfx[0xA280] = INCBIN_U8("build/assets/graphics/screens/credits_page3.tiles.bin");
+#else
 const u8 gCreditsPage3Gfx[] = INCBIN_U8("build/assets/graphics/screens/credits_page3.tiles.bin");
+#endif

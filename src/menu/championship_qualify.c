@@ -11,24 +11,21 @@ extern u8 gChampionshipTrackIds[];
 
 void DrawChampionshipQualifyResult(s8 passed)
 {
-    GetString(0x14);
-    /* DrawBigText: this file's old local prototype differs from
-       functions.h; call through the old signature (solved-walls 31). */
-    ((void (*)(void))DrawBigText)();
+    DrawBigText(GetString(20));
     if (passed != 0) {
-        DrawText(GetString(0x17), 0, 9, 1);
-        DrawText(GetString(0x18), 0, 0xA, 1);
-        DrawText(GetString(0x19), 0, 0xB, 1);
-        DrawText(gChampionshipRetainTexts[gChampionshipIndex], 0, 0xD, 1);
+        DrawText(GetString(23), 0, 9, 1);
+        DrawText(GetString(24), 0, 10, 1);
+        DrawText(GetString(25), 0, 11, 1);
+        DrawText(gChampionshipRetainTexts[gChampionshipIndex], 0, 13, 1);
     } else {
-        DrawText(GetString(0x15), 0, 0xD, 1);
-        DrawText(GetString(0x16), 0, 0xE, 1);
+        DrawText(GetString(21), 0, 13, 1);
+        DrawText(GetString(22), 0, 14, 1);
     }
 }
 
 void ShowChampionshipQualifyResult(s8 passed)
 {
-    void *src;
+    const void *src;
     u8 palette[0x200];
     s8 done;
 
@@ -36,10 +33,11 @@ void ShowChampionshipQualifyResult(s8 passed)
     LoadResultsScreenBackdrop();
     src = gResultsScreenPalette;
     BuildScreenPalette(src, (u16 *)palette);
-    /* DrawChampionshipQualifyResult: this file's old prototype took u8; the matched definition takes s8 */
+    /* Both calls pass passed as u8: a direct call to the s8 parameter would
+       sign-extend it, which the ROM doesn't. */
     ((void (*)(u8))DrawChampionshipQualifyResult)(passed);
     FadeToBrightenedPalette(palette, 0x0F);
-    done = 0x40;
+    done = 64;
     do {
         ReadKeys();
         ((void (*)(u8))DrawChampionshipQualifyResult)(passed);
@@ -50,7 +48,7 @@ void ShowChampionshipQualifyResult(s8 passed)
     FadeToColor(0, 0x0F);
 }
 
-u8 RunChampionshipQualifyTest(void)
+u8 RunChampionshipQualifyTest(u8 unused)
 {
     u8 *raceArg;
 

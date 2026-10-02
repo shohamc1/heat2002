@@ -19,14 +19,18 @@ void DrawQualifyResults(u8 page)
 
     base = page * 15;
     DummyUiFontLoad(gUiFontTable[0]);
-    GetString(0x31);
-    ((void (*)(void))DrawBigText)();
+    DrawBigText(GetString(49));
     walk = gCarOrder + base;
     i = 0;
     do {
+#if !PORTABLE
         ptr = *walk;
+#endif
         DrawText(gText_BlankRow, 0, i + 4, 1);
-        if (walk < gSeasonRaceIndex) {
+        if (walk < &gCarOrder[24]) {
+#if PORTABLE
+            ptr = *walk;
+#endif
             SplitMilliseconds(ptr->finishTime, &minutes, &seconds, &ms);
             if (ptr != gCars || (gMenuBlinkCounter & 0x10) == 0) {
                 buf[0] = ((i + base + 1) / 10) % 10 + 0x30;
@@ -44,7 +48,7 @@ void DrawQualifyResults(u8 page)
                 buf[6] = (ms / 100) % 10 + 0x30;
                 buf[7] = (ms / 10) % 10 + 0x30;
                 buf[8] = 0;
-                DrawText(buf, 0x16, i + 4, 1);
+                DrawText(buf, 22, i + 4, 1);
             }
             walk++;
         }
@@ -52,11 +56,11 @@ void DrawQualifyResults(u8 page)
     } while (i != 0x0F);
     if ((gMenuBlinkCounter & 8) != 0) {
         if (page == 0)
-            DrawText(gText_PageNextArrow, 0x1A, 0x13, 1);
+            DrawText(gText_PageNextArrow, 26, 19, 1);
         else
-            DrawText(gText_PagePrevArrow, 0x1A, 0x13, 1);
+            DrawText(gText_PagePrevArrow, 26, 19, 1);
     } else {
-        DrawText(gText_PageNoArrowBlank, 0x1A, 0x13, 1);
+        DrawText(gText_PageNoArrowBlank, 26, 19, 1);
     }
     gMenuBlinkCounter++;
 }
@@ -74,7 +78,7 @@ u8 QualifyResultsScreen(void)
     SortCarsByTime();
     DrawQualifyResults(0);
     FadeToBrightenedPalette(buf, 0x0F);
-    sel = 0x40;
+    sel = 64;
     do {
         ReadKeys();
         DrawQualifyResults(page);
@@ -110,13 +114,12 @@ void DrawRaceResults(u8 page)
 
     base = page * 15;
     DummyUiFontLoad(gUiFontTable[0]);
-    GetString(0x2F);
-    ((void (*)(void))DrawBigText)();
+    DrawBigText(GetString(47));
     walk = gCarOrder + base;
     i = 0;
     do {
         DrawText(gText_BlankRow36, 1, i + 4, 1);
-        if (walk < gSeasonRaceIndex) {
+        if (walk < &gCarOrder[24]) {
             ptr = *walk;
             SplitMilliseconds(ptr->finishTime, &minutes, &seconds, &ms);
             if (ptr == gCars && (gMenuBlinkCounter & 0x10) != 0) {
@@ -132,7 +135,7 @@ void DrawRaceResults(u8 page)
                 buf[6] = (ms / 100) % 10 + 0x30;
                 buf[7] = (ms / 10) % 10 + 0x30;
                 buf[8] = 0;
-                DrawText(buf, 0x14, i + 4, 1);
+                DrawText(buf, 20, i + 4, 1);
             }
             walk++;
         }
@@ -140,11 +143,11 @@ void DrawRaceResults(u8 page)
     } while (i != 0x0F);
     if ((gMenuBlinkCounter & 8) != 0) {
         if (page == 0)
-            DrawText(gText_PageNextArrow, 0x1A, 0x13, 1);
+            DrawText(gText_PageNextArrow, 26, 19, 1);
         else
-            DrawText(gText_PagePrevArrow, 0x1A, 0x13, 1);
+            DrawText(gText_PagePrevArrow, 26, 19, 1);
     } else {
-        DrawText(gText_PageNoArrowBlank, 0x1A, 0x13, 1);
+        DrawText(gText_PageNoArrowBlank, 26, 19, 1);
     }
     gMenuBlinkCounter++;
 }
@@ -160,10 +163,11 @@ u8 RaceResultsScreen(void)
     v = page;
     SortCarsByTime();
     LoadMenuScreen(6, (u16 *)buf);
-    /* DrawRaceResults: this file's old prototype differs from the matched definition; call through the old one */
+    /* Both calls pass the page unnarrowed; DrawRaceResults narrows it to u8
+       itself. */
     ((void (*)(s32))DrawRaceResults)(0);
     FadeToBrightenedPalette(buf, 0x0F);
-    sel = 0x40;
+    sel = 64;
     do {
         ReadKeys();
         ((void (*)(s32))DrawRaceResults)(page);

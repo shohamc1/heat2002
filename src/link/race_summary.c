@@ -10,21 +10,25 @@ void SortLinkCarsByTime(void)
 {
     u8 i;
     u32 swapped;
-    register u8 *countTemp asm("r2");
-    register u8 *count asm("r10");
-    register struct Car **base asm("r9");
+    register u8 *countTemp PIN(r2);
+    register u8 *count PIN(r10);
+    register struct Car **base PIN(r9);
 
     i = 0;
     countTemp = &gNumLinkPlayers[0];
     count = countTemp;
     base = gCarOrder;
     {
-        register u8 n asm("r1") = *countTemp;
+        register u8 n PIN(r1) = *countTemp;
         if (i != n) {
-            register struct Car **dst asm("r4") = base;
-            register u8 current asm("r0");
+            register struct Car **dst PIN(r4) = base;
+            register u8 current PIN(r0);
             do {
-                register struct Car **slot asm("r0") = (struct Car **)(((u32)i << 2) + (u32)dst);
+#if PORTABLE
+                register struct Car **slot PIN(r0) = &dst[i];
+#else
+                register struct Car **slot PIN(r0) = (struct Car **)(((u32)i << 2) + (u32)dst);
+#endif
                 *slot = &gCars[i];
                 i++;
                 current = *countTemp;
@@ -33,23 +37,29 @@ void SortLinkCarsByTime(void)
     }
 
     do {
-        register struct Car **p asm("r6") = base;
+        register struct Car **p PIN(r6) = base;
         i = 0;
         swapped = 0;
         {
-            register u8 *guard asm("r1") = count;
+            register u8 *guard PIN(r1) = count;
             if (*guard != 1) {
-                register u32 half asm("r2") = 0xB6;
-                register u32 off asm("ip");
-                register u8 *innerCount asm("r8");
-                register u8 *loopCount asm("r2");
+                register u32 half PIN(r2) = 0xB6;
+                register u32 off PIN(ip);
+                register u8 *innerCount PIN(r8);
+                register u8 *loopCount PIN(r2);
                 asm volatile("" : "+r"(half));
                 off = half << 1;
                 innerCount = count;
                 do {
                     struct Car *a = p[0];
                     struct Car *b = p[1];
-                    if (*(u32 *)((u32)a + off) > *(u32 *)((u32)b + off)) {
+#if PORTABLE
+                    /* finishTime: 0x16C on the GBA, shifted by the widened
+                       pointer fields hosted, so reach it by name. */
+                    if (a->finishTime > b->finishTime) {
+#else
+                    if (*(u32 *)((u8 *)a + off) > *(u32 *)((u8 *)b + off)) {
+#endif
                         p[0] = b;
                         p[1] = a;
                         swapped = 1;
@@ -73,16 +83,15 @@ void DrawLinkRaceSummary(void)
     u16 nameIdx;
 
     DummyUiFontLoad(gUiFontTable[0]);
-    GetString(0x5B);
-    ((void (*)(void))DrawBigText)();
+    DrawBigText(GetString(91));
     carOrder = gCarOrder;
     for (i = 0; i != gNumLinkPlayers[0]; i++) {
         car = *carOrder;
         SplitMilliseconds(car->finishTime, &minutes, &seconds, &hundredths);
-        if (car == &gCars[gLinkPlayerId[0]] && (gMenuBlinkCounter & 0x10)) {
+        if (car == &gCars[gLinkPlayerId] && (gMenuBlinkCounter & 0x10)) {
             DrawText(gText_BlankRow28_3, 4, 2 * i + 4, 1);
         } else {
-            DrawText(GetString(i + 0xC0), 1, 2 * i + 4, 1);
+            DrawText(GetString(i + 192), 1, 2 * i + 4, 1);
             nameIdx = 0x53 + (car - gCars);
             DrawText(GetString(nameIdx), 6, 2 * i + 4, 1);
             timeText[0] = (u16)(minutes / 10) % 10 + 0x30;
@@ -94,7 +103,7 @@ void DrawLinkRaceSummary(void)
             timeText[6] = (u16)(hundredths / 100) % 10 + 0x30;
             timeText[7] = (u16)(hundredths / 10) % 10 + 0x30;
             timeText[8] = 0;
-            DrawText(timeText, 0x12, 2 * i + 4, 1);
+            DrawText(timeText, 18, 2 * i + 4, 1);
         }
         carOrder++;
     }
@@ -126,10 +135,10 @@ u8 ShowLinkRaceSummary(void)
         } else {
             keys = (keys ^ gPlayerKeys[0]) & gPlayerKeys[0];
             DrawLinkRaceSummary();
-            if (gLinkPlayerId[0] != 0)
-                DrawTextCenteredHighlight(GetString(0x58), 0x0E, 1);
+            if (gLinkPlayerId != 0)
+                DrawTextCenteredHighlight(GetString(88), 14, 1);
             else
-                DrawTextCenteredHighlight(GetString(0x0F), 0x0E, 1);
+                DrawTextCenteredHighlight(GetString(15), 14, 1);
             if (keys & 9)
                 result = zero;
             WaitForVBlank();

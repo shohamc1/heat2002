@@ -23,15 +23,16 @@ void ModuleBuildCarCollFrame(struct Car *car, s32 *frame)
     frame[7] = (z + car->velZ) >> 8;
 }
 
-void ModuleKeepNearestCarContact(s32 arg0, u8 arg1, u32 arg2, u8 arg3, u32 *arg4, u8 *arg5, u32 arg6, s32 arg7)
+void ModuleKeepNearestCarContact(struct Car *carA, u8 unk08, struct Car *carB, u8 normalIndex,
+                                 struct CarContact *contact, u8 *hit, s32 closingSpeed, s32 time)
 {
-    if (arg7 < gUnk_0203DF44) {
-        arg4[0] = arg0;
-        arg4[1] = arg2;
-        ((u8 *)arg4)[8] = arg1;
-        ((u8 *)arg4)[9] = arg3;
-        arg4[3] = arg6;
-        *arg5 = 1;
-        gUnk_0203DF44 = arg7;
+    if (time < gUnk_0203DF44) {
+        contact->carA = carA;
+        contact->carB = carB;
+        contact->unk08 = unk08;
+        contact->normalIndex = normalIndex;
+        contact->closingSpeed = closingSpeed;
+        *hit = 1;
+        gUnk_0203DF44 = time;
     }
 }

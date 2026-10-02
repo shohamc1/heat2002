@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 #include "data.h"
 
 void DrawBigText(const u8 *text)
@@ -11,7 +12,7 @@ void DrawBigText(const u8 *text)
     u16 color;
     u32 idx;
     u8 t;
-    u16 *e;
+    const u16 *e;
     u32 c;
     dest = (u16 *)(gTextLayerMapPtr[0] + 2 * 32); /* start of text row 2 */
     do {
@@ -60,3 +61,8 @@ void DrawBigText(const u8 *text)
         dest[32] = color | gTextGlyphTileIndices[e[0x20]];
     }
 }
+
+// A stub in the retail build: callers still set up the argument
+// (a string pointer from gUiFontTable), so it keeps an unused parameter.
+void DummyUiFontLoad(const u8 *fontRow)
+{}

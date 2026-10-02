@@ -5,27 +5,28 @@
 extern const u8 gText_01234[];
 extern const u8 gText_BlankRow4[];
 extern const u8 gText_BlankRow32[];
-extern const u8 gUnk_08364FBC[];
-extern const u8 gUnk_0836500C[];
-extern const u8 gUnk_0836509C[];
-extern const u8 gUnk_08365114[];
-extern const u8 gUnk_08365174[];
-extern const u8 gUnk_083651C4[];
+extern const u8 gTrack0Cues[];
+extern const u8 gTrack2Cues[];
+extern const u8 gTrack4Cues[];
+extern const u8 gTrack5Cues[];
+extern const u8 gTrack11Cues[];
+extern const u8 gTrack9Cues[];
 
-// Stays flat: mixed pointer/config words with no decompiled reader
-// holding a struct view; a guessed layout would be wrong.
-const u32 gUnk_0836524C[] = { (u32)gUnk_08364FBC,
+// Each track's cue list (LoadTrackCues reads entry [trackId]; 0 when the
+// track has none), followed by config words no decompiled code reads.
+#if PLATFORM_GBA
+const u32 gTrackCueLists[] = { (u32)gTrack0Cues,
                               0,
-                              (u32)gUnk_0836500C,
+                              (u32)gTrack2Cues,
                               0,
-                              (u32)gUnk_0836509C,
-                              (u32)gUnk_08365114,
+                              (u32)gTrack4Cues,
+                              (u32)gTrack5Cues,
                               0,
                               0,
                               0,
-                              (u32)gUnk_083651C4,
+                              (u32)gTrack9Cues,
                               0,
-                              (u32)gUnk_08365174,
+                              (u32)gTrack11Cues,
                               0,
                               0,
                               0,
@@ -41,6 +42,39 @@ const u32 gUnk_0836524C[] = { (u32)gUnk_08364FBC,
                               0x4,
                               0x4,
                               0x400 };
+#else
+// Hosted twin: pointer entries need a pointer-typed array here, since a
+// pointer cast to an integer is not a constant initializer everywhere
+// (MinGW-w64 rejects it). The trailing config words, which nothing
+// reads, ride along as pointer-sized values.
+const u8 *const gTrackCueLists[] = { gTrack0Cues,
+                                     NULL,
+                                     gTrack2Cues,
+                                     NULL,
+                                     gTrack4Cues,
+                                     gTrack5Cues,
+                                     NULL,
+                                     NULL,
+                                     NULL,
+                                     gTrack9Cues,
+                                     NULL,
+                                     gTrack11Cues,
+                                     NULL,
+                                     NULL,
+                                     NULL,
+                                     NULL,
+                                     (const u8 *)0x2000,
+                                     (const u8 *)0xFF,
+                                     (const u8 *)0xFF,
+                                     (const u8 *)0xFF,
+                                     (const u8 *)0xFF,
+                                     (const u8 *)0x18000,
+                                     (const u8 *)0x4,
+                                     (const u8 *)0x4,
+                                     (const u8 *)0x4,
+                                     (const u8 *)0x4,
+                                     (const u8 *)0x400 };
+#endif
 // The tune menu's lower bounds, one per setting: sub_08004B1C clamps the
 // ten values (gUnk_0202A540[5] shown as "A%d %d", gUnk_0202CB20[5] as
 // "G%d %d") against these.
@@ -53,8 +87,16 @@ const s32 gTuneMenuSteps[10] = { 20, 20, 20, 20, 20, 400, 400, 400, 400, 400 };
 // (InitCountdown reads it as u8 at gTrackId).
 const u8 gTrackCountdownExtraSeconds[12] = TRACK_COUNTDOWN_EXTRA_SECONDS;
 // Its users declare it as u8 *x.
+#if PLATFORM_GBA
 const u32 gUnk_0836533C = (u32)gText_01234;
+#else
+const u8 *const gUnk_0836533C = gText_01234;
+#endif
 // Its users declare it as u8 *x.
-u8 *const gTextPadCharPtr = (u8 *)gText_BlankRow4;
+const u8 *const gTextPadCharPtr = gText_BlankRow4;
 // Its users declare it as u8 *x.
+#if PLATFORM_GBA
 const u32 gUnk_08365344 = (u32)gText_BlankRow32;
+#else
+const u8 *const gUnk_08365344 = gText_BlankRow32;
+#endif

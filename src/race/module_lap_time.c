@@ -10,7 +10,7 @@ void ModuleLapTimeTask(struct Task *task)
     u8 unused[0x28];
 
     ModuleDrawText(ModuleGetString(MODULE_MSG_LAP_TIME), 9, 5);
-    ModuleDrawText(gUnk_0203DE30, 0xD, 5);
+    ModuleDrawText(gUnk_0203DE30, 13, 5);
     if (--task->timer == 0) {
         ModuleDrawText(gUnk_0200D118, 9, 5);
         ModuleRemoveTask(task);
@@ -60,7 +60,7 @@ void ModuleLapSnapshotTask(struct Task *e)
     s32 millis;
 
     p0 = buf;
-    minutes = gUnk_0203DE28[0];
+    minutes = gUnk_0203DE28;
     digit = sub_08344C50(sub_08344BB8(minutes, 10), 10) + 0x30;
     nul = 0;
     p0[0] = digit;
@@ -68,13 +68,13 @@ void ModuleLapSnapshotTask(struct Task *e)
     p1[1] = sub_08344C50(minutes, 10) + 0x30;
     buf[2] = 0x3A;
     p3 = buf;
-    seconds = gUnk_0203DE3C[0];
+    seconds = gUnk_0203DE3C;
     p3[3] = sub_08344C50(sub_08344BB8(seconds, 10), 10) + 0x30;
     p4 = buf;
     p4[4] = sub_08344C50(seconds, 10) + 0x30;
     buf[5] = 0x3A;
     q6 = buf;
-    millis = gUnk_0203DE20[0];
+    millis = gUnk_0203DE20;
     q6[6] = sub_08344C50(sub_08344BB8(millis, 100), 10) + 0x30;
     q7 = buf;
     q7[7] = sub_08344C50(sub_08344BB8(millis, 10), 10) + 0x30;
@@ -97,8 +97,8 @@ void ModuleSaveLapTime(void)
         task->timer = 0x40;
         task->callback = ModuleLapSnapshotTask;
         ModuleAddTask(task);
-        gUnk_0203DE28[0] = gModule_LapMin[0];
-        gUnk_0203DE3C[0] = gModule_LapSec[0];
-        gUnk_0203DE20[0] = gModule_LapMs[0];
+        gUnk_0203DE28 = gModule_LapMin[0];
+        gUnk_0203DE3C = gModule_LapSec;
+        gUnk_0203DE20 = gModule_LapMs[0];
     }
 }

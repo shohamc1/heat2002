@@ -3,12 +3,11 @@
 #include "functions.h"
 #include "variables.h"
 
-void m4aSongNumStop(u16 a);
 
 void StopAllSongsAndVSyncOff(void)
 {
     u8 r4;
-    for (r4 = 0; r4 != 0x64; r4 = (u8)(r4 + 1))
+    for (r4 = 0; r4 != 100; r4 = (u8)(r4 + 1))
         m4aSongNumStop(r4);
     m4aSoundVSyncOff();
 }

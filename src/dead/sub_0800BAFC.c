@@ -7,7 +7,7 @@ void sub_0800BAFC(s32 a, s32 b)
 {
     u32 *r;
 
-    if (gGameMode[0] == 2 || gGameMode[0] == 0xA)
+    if (gGameMode == 2 || gGameMode == 0xA)
         return;
     r = (u32 *)AllocTask();
     if (r != 0) {

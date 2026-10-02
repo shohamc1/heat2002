@@ -1,8 +1,15 @@
 #include "global.h"
+#include "functions.h"
+#include "gba/defines.h"
 #include "variables.h"
 #include "car.h"
 
 extern const struct TireGripSetup gTireGripDefaults[];
+
+/* The file's five RAM variables (gTireSlipLimitBase, gTireGripFast,
+   gTireGripSlow, gFrontTireGripSlow and gFrontTireGripFast) moved to
+   src/car/globals.c, the owner of the 0x0202A510-0x0202CBE0 EWRAM run
+   they sit in; they are declared in variables.h. */
 
 void SetTireGrip(struct Car *car, u8 carIndex)
 {

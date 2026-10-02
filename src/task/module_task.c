@@ -1,7 +1,22 @@
 #include "global.h"
+#include "functions.h"
+#include "gba/defines.h"
 #include "variables.h"
 
-extern u32 gModule_TaskRunCount;
+/* This file also owns the high module's task EWRAM run
+   0x0203C340-0x0203D4A0 (issue 5 step 3, run rule; MODULE_EWRAM_DATA),
+   the module twin of src/task/task.c's run: the 64 slot-used flags, the
+   list head and the 64 0x44-byte task slots; gModule_TaskRunCount, the
+   run's last identified variable, ends 0xC bytes before the run's end,
+   where src/car/module_globals.c's grid run begins. ldscript.ld's
+   .module_ewram_data_task places the section at 0x0203C340. */
+
+MODULE_EWRAM_DATA u8 gModule_TaskSlotUsed[0x40] = {0};
+MODULE_EWRAM_DATA struct Task *gModule_TaskListHead = 0;
+static MODULE_EWRAM_DATA u8 task_gapC388[0xC] = {0};
+MODULE_EWRAM_DATA struct Task gModule_Tasks[0x40] = {0};
+MODULE_EWRAM_DATA u32 gModule_TaskRunCount = 0;
+static MODULE_EWRAM_DATA u8 task_gapD494[0xC] = {0};
 
 void ModuleInitTasks(void)
 {

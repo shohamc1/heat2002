@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 #include "gba/io_reg.h"
 #include "variables.h"
 
@@ -11,25 +12,12 @@
  * the mode test and the Lneg store.
  */
 
-struct CommRegs
-{
-    u8 mode;      /* +0 */
-    u8 state;     /* +1 */
-    u8 retry;     /* +2 */
-    u8 flag;      /* +3 */
-    u32 *data;    /* +4 */
-    s32 count;    /* +8 */
-    u32 checksum; /* +0xC */
-    u32 crc;      /* +0x10 */
-    s32 index;    /* +0x14 */
-};
-
 void SioTransferIntr(void)
 {
-    vu32 *sio = (vu32 *)0x04000120;
+    vu32 *sio = (vu32 *)REG_ADDR_SIODATA32;
     u32 v = *sio;
-    register struct CommRegs *w asm("r5") = &gSioTransfer;
-    register struct CommRegs *p asm("r4") = w;
+    register struct CommRegs *w PIN(r5) = &gSioTransfer;
+    register struct CommRegs *p PIN(r4) = w;
     s32 cnt;
     s32 n;
 

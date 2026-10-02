@@ -1,7 +1,6 @@
 #include "global.h"
 #include "variables.h"
-
-void SerialIntr(void);
+#include "functions.h"
 
 void SetLinkSerialIntr(void)
 { gIntrTable[0] = SerialIntr; }

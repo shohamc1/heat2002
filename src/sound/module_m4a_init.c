@@ -11,13 +11,10 @@
 
 /* SoundInit (high copy) */
 void sub_0833A018(MPlayFunc *jumpTable);
-void ModuleSampleFreqSet(u32 a);
 void sub_0833A4FC(void);
-void ModuleDummyCgbSound(void);
 /* SampleFreqSet (high copy) */
 extern u16 gModule_PcmSamplesPerVBlankTable[];
 /* m4aSoundMode (high copy) */
-void ModuleM4aSoundVSyncOff(void);
 
 void ModuleSoundInit(struct SoundInfo *soundInfo)
 {
@@ -38,7 +35,7 @@ void ModuleSoundInit(struct SoundInfo *soundInfo)
     REG_DMA2SAD = (u32)soundInfo->pcmBuffer + PCM_DMA_BUF_SIZE;
     REG_DMA2DAD = REG_ADDR_FIFO_B;
     SOUND_INFO_PTR = soundInfo;
-    CpuFill32(0, (u32)soundInfo, sizeof(struct SoundInfo));
+    CpuFill32(0, soundInfo, sizeof(struct SoundInfo));
     soundInfo->maxChans = 8;
     soundInfo->masterVolume = 0xF;
     soundInfo->plynote = (PlyNoteFunc)sub_0833A4FC;

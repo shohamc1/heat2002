@@ -11,6 +11,11 @@
 #define RESET_REGS       0x80
 #define RESET_ALL        0xFF
 
+struct BgAffineSrcData;
+struct BgAffineDstData;
+struct ObjAffineSrcData;
+struct MultiBootParam;
+
 void SoftReset(u32 resetFlags);
 void SoundBiasReset(void);
 void SoundBiasSet(void);

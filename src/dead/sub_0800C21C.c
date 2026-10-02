@@ -4,8 +4,6 @@
 
 extern const u8 *const gLineMarkerSpriteGfxTable[];
 
-u8 WorldToScreen(s32 x, s32 y, s32 *out);
-
 void sub_0800C21C(s32 x, s32 y, u8 c)
 {
     s32 out[2];
@@ -13,7 +11,7 @@ void sub_0800C21C(s32 x, s32 y, u8 c)
     u32 a;
     u32 b;
 
-    if (WorldToScreen(x, y, out) == 0)
+    if ((u8)WorldToScreen(x, y, out) == 0)
         return;
     out[0] = out[0] - 0x10;
     out[1] = out[1] - 0x10;

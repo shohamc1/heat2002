@@ -12,19 +12,19 @@ void RaceStartSplashTask(struct Task *e)
     u8 frame;
 
     counter = e->timer;
-    frame = (u8)e->timer % 0x17;
+    frame = (u8)e->timer % 23;
     e->timer = counter + 1;
     sprite = RequestObjTiles16(gSplashSpriteFrames[frame]);
     if (sprite != 0) {
-        register u32 attr asm("r6") = 0x80680040;
+        register u32 attr PIN(r6) = 0x80680040;
         u32 palBits;
 
-        palBits = (RequestObjPalette((u32)gSplashSpritePalette) << 12) | 0x400;
+        palBits = (RequestObjPalette(gSplashSpritePalette) << 12) | 0x400;
         attr2 = sprite->tileIndex | palBits;
         if (gIsLinkRace == 0)
             AddOamEntry(attr, attr2);
     }
-    if (e->timer == 0x30) {
+    if (e->timer == 48) {
         RemoveTask(e);
         FreeTask(e);
     }
@@ -40,20 +40,20 @@ void LinkRaceStartSplashTask(struct Task *e)
     u32 palBits;
 
     counter = e->timer;
-    frame = (u8)((u8)e->timer % 0x17);
+    frame = (u8)((u8)e->timer % 23);
     e->timer = counter + 1;
-    if (e->timer > 0x1E) {
+    if (e->timer > 30) {
         sprite = RequestObjTiles16(gSplashSpriteFrames[frame]);
         if (sprite != 0) {
-            register u32 attr asm("r6") = 0x80680040;
+            register u32 attr PIN(r6) = 0x80680040;
 
-            palBits = (RequestObjPalette((u32)gSplashSpritePalette) << 12) | 0x400;
+            palBits = (RequestObjPalette(gSplashSpritePalette) << 12) | 0x400;
             attr2 = sprite->tileIndex | palBits;
             if (gIsLinkRace == 0)
                 AddOamEntry(attr, attr2);
         }
     }
-    if (e->timer == 0x4E) {
+    if (e->timer == 78) {
         RemoveTask(e);
         FreeTask(e);
         gRaceStarted = 1;

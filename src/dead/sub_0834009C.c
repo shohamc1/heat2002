@@ -53,7 +53,7 @@ void sub_083400D4(s32 a1, s32 a2, u32 a3, u32 a4, u8 a5)
 
 u32 sub_08340168(u32 ptr)
 {
-    u32 *p = gUnk_02039200;
+    u32 *p = gModule_CarOrder;
     u8 i;
 
     for (i = 0; i != 0x5; i++, p++) {

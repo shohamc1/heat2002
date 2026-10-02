@@ -155,14 +155,14 @@ void sub_08344804(void)
     i = 0;
     do
     {
-        ((struct Unk0202A550 **)gUnk_02039200)[i] = &gModule_Cars[i];
+        ((struct Unk0202A550 **)gModule_CarOrder)[i] = &gModule_Cars[i];
         i++;
     } while (i != 0x5);
     /* A goto keeps the field-offset setup inside each sort pass. */
 outer:
     {
         swapped = 0;
-        p = (struct Unk0202A550 **)gUnk_02039200;
+        p = (struct Unk0202A550 **)gModule_CarOrder;
         i = 0;
         do
         {

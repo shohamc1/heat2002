@@ -22,12 +22,12 @@ void sub_08005FA8(void)
     UpdateRaceTimers();
     base = gTextLayerMapPtr[0];
     obj = base + 0x448;
-    DrawTime(obj, gLapMin[0], gLapSec[0], gLapMs[0]);
+    DrawTime(obj, gLapMin, gLapSec, gLapMs);
     obj = base + 0x488;
     if (gIsTimeTrial != 0)
         DrawTime(obj, gTrackRecordMin[gTrackId], gTrackRecordSec[gTrackId], gTrackRecordMs[gTrackId]);
     if (gIsLinkRace != 0)
-        car = &gCars[gLinkPlayerId[0]];
+        car = &gCars[gLinkPlayerId];
     else
         car = gCars;
     v = -car->speed >> 13;

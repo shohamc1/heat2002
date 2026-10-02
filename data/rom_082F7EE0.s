@@ -1,6 +1,15 @@
 @ Generated with Luvdis v0.9.0
+@ Both builds preprocess this file (preproc inlines the .include files,
+@ cpp resolves the switch below). The GBA keeps the exact luvdis layout;
+@ the hosted build switches to a writable data section, because its mPtr
+@ pointer fields carry relocations the host linker must be able to write.
+	.include "asm/macros/portable.inc"
+#if PLATFORM_GBA
 .syntax unified
 .text
+#else
+mSectionData
+#endif
 @ Begin embedded Luvdis macros
 	.macro arm_func_start name
 	.align 2, 0
@@ -32,7 +41,9 @@
 	.size \name, .-\name
 	.endm
 @ End embedded Luvdis macros
+#if PLATFORM_GBA
 	.thumb
+#endif
 	.global gUnk_082F7EE0
 gUnk_082F7EE0:
 	.incbin "build/assets/graphics/rl_082F7EE0.bin"
@@ -50,6 +61,7 @@ gUnk_082F9360:
 	.align 2, 0
 	.global gUnk_082F98C0
 gUnk_082F98C0:
+	cSym gUnk_082F98C0
 	.incbin "build/assets/graphics/palettes/pal_082F98C0.pal.bin"
 	.global gUnk_082F9AC0
 gUnk_082F9AC0:
@@ -69,6 +81,7 @@ gUnk_082FB3FC:
 	.align 2, 0
 	.global gUnk_082FB6AC
 gUnk_082FB6AC:
+	cSym gUnk_082FB6AC
 	.incbin "build/assets/graphics/palettes/pal_082FB6AC.pal.bin"
 	.global gUnk_082FB8AC
 gUnk_082FB8AC:
@@ -86,6 +99,7 @@ gUnk_082FCAD8:
 	.align 2, 0
 	.global gUnk_082FD0F8
 gUnk_082FD0F8:
+	cSym gUnk_082FD0F8
 	.incbin "build/assets/graphics/palettes/pal_082FD0F8.pal.bin"
 	.global gUnk_082FD2F8
 gUnk_082FD2F8:
@@ -103,6 +117,7 @@ gUnk_082FEDC4:
 	.align 2, 0
 	.global gUnk_082FF41C
 gUnk_082FF41C:
+	cSym gUnk_082FF41C
 	.incbin "build/assets/graphics/palettes/pal_082FF41C.pal.bin"
 	.global gUnk_082FF61C
 gUnk_082FF61C:
@@ -121,6 +136,7 @@ gUnk_0830076C:
 	.align 2, 0
 	.global gUnk_08300BCC
 gUnk_08300BCC:
+	cSym gUnk_08300BCC
 	.incbin "build/assets/graphics/palettes/pal_08300BCC.pal.bin"
 	.global gUnk_08300DCC
 gUnk_08300DCC:
@@ -139,6 +155,7 @@ gUnk_08302764:
 	.align 2, 0
 	.global gUnk_08302E00
 gUnk_08302E00:
+	cSym gUnk_08302E00
 	.incbin "build/assets/graphics/palettes/pal_08302E00.pal.bin"
 	.global gUnk_08303000
 gUnk_08303000:
@@ -157,6 +174,7 @@ gUnk_08304558:
 	.incbin "build/assets/graphics/rl_08304558.bin"
 	.global gUnk_083049FC
 gUnk_083049FC:
+	cSym gUnk_083049FC
 	.incbin "build/assets/graphics/palettes/pal_083049FC.pal.bin"
 	.global gUnk_08304BFC
 gUnk_08304BFC:
@@ -176,6 +194,7 @@ gUnk_08305D8C:
 	.align 2, 0
 	.global gUnk_08306238
 gUnk_08306238:
+	cSym gUnk_08306238
 	.incbin "build/assets/graphics/palettes/pal_08306238.pal.bin"
 	.global gUnk_08306438
 gUnk_08306438:
@@ -195,6 +214,7 @@ gUnk_08308110:
 	.align 2, 0
 	.global gUnk_0830877C
 gUnk_0830877C:
+	cSym gUnk_0830877C
 	.incbin "build/assets/graphics/palettes/pal_0830877C.pal.bin"
 	.global gUnk_0830897C
 gUnk_0830897C:
@@ -212,6 +232,7 @@ gUnk_0830A550:
 	.align 2, 0
 	.global gUnk_0830AB68
 gUnk_0830AB68:
+	cSym gUnk_0830AB68
 	.incbin "build/assets/graphics/palettes/pal_0830AB68.pal.bin"
 	.global gUnk_0830AD68
 gUnk_0830AD68:
@@ -229,6 +250,7 @@ gUnk_0830C23C:
 	.align 2, 0
 	.global gUnk_0830CA10
 gUnk_0830CA10:
+	cSym gUnk_0830CA10
 	.incbin "build/assets/graphics/palettes/pal_0830CA10.pal.bin"
 	.global gUnk_0830CC10
 gUnk_0830CC10:
@@ -248,7 +270,9 @@ gUnk_0830E358:
 	.align 2, 0
 	.global gUnk_0830E418
 gUnk_0830E418:
+	cSym gUnk_0830E418
 	.incbin "build/assets/graphics/palettes/pal_0830E418.pal.bin"
 	.global gTrackSelectLeftArrowGfx
 gTrackSelectLeftArrowGfx:
+	cSym gTrackSelectLeftArrowGfx
 	.incbin "build/assets/graphics/rl_0830E618.bin"

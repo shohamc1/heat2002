@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 #include "car.h"
 #include "variables.h"
 
@@ -15,12 +16,12 @@ void SortCarsByPoints(void)
     do {
         (gCarOrder)[i] = &gCars[i];
         i++;
-    } while (i != 0x18);
+    } while (i != 24);
 outer:
     swapped = 0;
     p = gCarOrder;
     i = 0;
-    off = 0x164;
+    off = OFFSETOF(struct Car, points);
     do {
         a = p[0];
         b = p[1];
@@ -31,7 +32,7 @@ outer:
         }
         p++;
         i++;
-    } while (i != 0x17);
+    } while (i != 23);
     if (swapped != 0)
         goto outer;
 }

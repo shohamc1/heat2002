@@ -92,12 +92,12 @@ s32 UpdateLinkLobby(void)
             count++;
         i++;
     } while (i < 4);
-    gLinkPlayerId[0] = (*(u32 *)REG_ADDR_SIOCNT << 26) >> 30;
+    gLinkPlayerId = (*(u32 *)REG_ADDR_SIOCNT << 26) >> 30;
     if ((*(u8 *)REG_ADDR_SIOCNT & 0x30) == 0) {
         if (gLinkPlayerCount > 1 && gLinkPlayerCount == count)
-            DrawTextCenteredHighlight(GetString(0xF), 0xF, 1);
+            DrawTextCenteredHighlight(GetString(15), 15, 1);
         else
-            DrawTextCenteredHighlight(gText_BlankRowLinkLobby, 0xF, 1);
+            DrawTextCenteredHighlight(gText_BlankRowLinkLobby, 15, 1);
     }
     if (*(u16 *)gLinkRecvWords == 0x1108 && gLinkPlayerCount > 1 && gLinkPlayerCount == count)
         return 1;
@@ -112,18 +112,17 @@ void DrawLinkLobby(u8 unused)
     s8 v;
 
     DummyUiFontLoad(gUiFontTable[0]);
-    GetString(0xC4);
-    ((void (*)(void))DrawBigText)();
+    DrawBigText(GetString(196));
     for (i = 0; i != 4; i++) {
         flag = ((struct LinkLobbySlots *)gLinkPlayerSlots)->r[i].status != -1;
-        DrawText(GetString(i + 0x53), 1, 2 * i + 7, flag);
+        DrawText(GetString(i + 83), 1, 2 * i + 7, flag);
         v = ((struct LinkLobbySlots *)gLinkPlayerSlots)->r[i].status;
         if (v == 0) {
-            DrawText(GetString(0x58), 0x14, 2 * i + 7, flag);
+            DrawText(GetString(88), 20, 2 * i + 7, flag);
         } else if (v == 1) {
-            DrawText(GetString(0x57), 0x14, 2 * i + 7, flag);
+            DrawText(GetString(87), 20, 2 * i + 7, flag);
         } else {
-            DrawText(gText_EmptySlot, 0x14, 2 * i + 7, flag);
+            DrawText(gText_EmptySlot, 20, 2 * i + 7, flag);
         }
     }
 }
@@ -136,7 +135,7 @@ u8 LinkLobby(void)
     s8 r;
 
     v = 0;
-    sel = 0x40;
+    sel = 64;
     ResetLinkState();
     ZeroTextLayer();
     LoadMenuBackdrop();

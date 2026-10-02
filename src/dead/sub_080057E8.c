@@ -31,7 +31,7 @@ void sub_08005808(void)
         return;
     gCountdownSeconds = v;
     (*(s32 *)&gCountdownMs) = v;
-    if (gGameMode[0] != 0)
+    if (gGameMode != 0)
         return;
     sub_0800B09C();
 }

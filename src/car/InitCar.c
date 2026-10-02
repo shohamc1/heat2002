@@ -2,18 +2,18 @@
 #include "data.h"
 #include "variables.h"
 #include "car.h"
+#include "functions.h"
 
 extern const u16 *const gDriverGearPowerTables[];
 extern const u16 *const gDriverGearRatioTables[];
 extern const u16 *const gDriverRpmPerSpeedTables[];
 
-void InitCarSteering(s32 *p, u32 v);
 
 void InitCar(u8 a, struct Car *car, s32 b, s32 c, u32 d, u32 unused)
 {
     u8 i;
 
-    if (gGameMode[0] == 4)
+    if (gGameMode == 4)
         car->driverId = 0;
     car->lapStartedFlag = 0;
     car->pitState = 0;
@@ -35,10 +35,10 @@ void InitCar(u8 a, struct Car *car, s32 b, s32 c, u32 d, u32 unused)
     car->hitCooldown = 0;
     car->waypoint = 0;
     car->firstStepCrossed = 0;
-    if (gGameMode[0] == 4) {
-        car->driverPalette = (u32)gDriverPalettes[a * 3];
+    if (gGameMode == 4) {
+        car->driverPalette = gDriverPalettes[a * 3];
     } else {
-        car->driverPalette = (u32)gDriverPalettes[car->driverId];
+        car->driverPalette = gDriverPalettes[car->driverId];
     }
     car->carState = 0;
     car->unk84 = 1;
@@ -50,11 +50,11 @@ void InitCar(u8 a, struct Car *car, s32 b, s32 c, u32 d, u32 unused)
     car->tireWear2 = 0;
     car->tireWear3 = 0;
     car->fuel = 0xB400;
-    if (gGameMode[0] == 0xF && gChallengeIndex == 3 && car == gCars)
+    if (gGameMode == 15 && gChallengeIndex == 3 && car == gCars)
         car->fuel = 0x5000;
-    if (gGameMode[0] != 4)
+    if (gGameMode != 4)
         SetCarLaneByIndex(car, a);
-    if (gGameMode[0] != 5 && gGameMode[0] != 0x11)
+    if (gGameMode != 5 && gGameMode != 17)
         car->finishTime = 0;
     car->onApron = 0;
     car->onGrass = 0;
@@ -72,7 +72,7 @@ void InitCar(u8 a, struct Car *car, s32 b, s32 c, u32 d, u32 unused)
     /* One store per arm: jump2 merges the stores into one strb behind a new
        label, and jumps to a label created in that pass never cross-jump,
        so the equal-valued arms stay separate as in the ROM. */
-    if (gGameMode[0] == 0xF) {
+    if (gGameMode == 15) {
         switch (gChallengeIndex) {
             case 0:
                 car->lap = 1;
@@ -114,7 +114,7 @@ void InitCar(u8 a, struct Car *car, s32 b, s32 c, u32 d, u32 unused)
     } else {
         car->lap = 0;
     }
-    if ((u8)(gGameMode[0] - 3) > 1)
+    if ((u8)(gGameMode - 3) > 1)
         car->lap--;
     car->progress = 0;
     car->tickCount = 0x12C;
@@ -130,7 +130,7 @@ void InitCar(u8 a, struct Car *car, s32 b, s32 c, u32 d, u32 unused)
     car->gearPowerTable = gDriverGearPowerTables[car->driverId];
     car->gearRatioTable = gDriverGearRatioTables[car->driverId];
     car->rpmPerSpeedTable = gDriverRpmPerSpeedTables[car->driverId];
-    if (gIsLinkRace == 0 && a != 0 && gGameMode[0] != 2) {
+    if (gIsLinkRace == 0 && a != 0 && gGameMode != 2) {
         car->gearPowerTable = gAiDriverGearPowerTable;
         car->gearRatioTable = gAiDriverGearRatioTable;
         car->rpmPerSpeedTable = gAiDriverRpmPerSpeedTable;

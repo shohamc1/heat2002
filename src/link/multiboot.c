@@ -9,7 +9,6 @@
 #include "gba/compat.h"
 
 void MultibootVBlankIntr(void);
-void SioTransferIntr(void);
 extern u32 gGameCodeAgbj;
 extern const u8 *const gUnk_083FDA50[];
 extern const u8 *const gHighModuleChunks[];
@@ -18,10 +17,6 @@ extern u8 gText_DoNotRemoveGameBoy[];
 extern u8 gText_AdvanceGameLink[];
 extern u8 gText_CableOrTurnPowerOff[];
 extern u8 gMultibootSendObjPalette[];
-void SioTransferInit(u32 a1, const u8 *a2);
-void DrawLinkProgressBar(u16 x, u16 y);
-void DrawMultibootProgressMarker(u32 id, u32 c);
-u32 SioTransferUpdate(u32 *frame);
 extern u8 gText_BlankRow28_2[];
 extern u8 gUnk_08363EE8[];
 extern u8 gUnk_08364AC8[];
@@ -61,7 +56,11 @@ void DrawLinkProgressBar(u16 progress, u16 y)
     *capAttr2 = (*capAttr2 & m2) | 0x10;
 
     for (seg = 0, oamPtr = oam, attr1Mask = m1, attr2Mask = m2; seg < 8; seg++) {
+#if PORTABLE
+        obj = (u8 *)((seg + 10) * 8 + (u8 *)oamPtr);
+#else
         obj = (u8 *)((seg + 10) * 8 + (u32)oamPtr);
+#endif
         segPos = seg * 32 + 32;
         tileNum = segPos & 0x1FF;
         tile = tileNum;
@@ -88,17 +87,20 @@ void MultibootVBlankIntr(void)
 void InitSinglePakLinkScreen(void)
 {
     u32 entryIdx;
-    u32 *fontTable;
+    const u8 *const *fontTable;
 
     entryIdx = 0;
     fontTable = gUiFontTable;
     do {
+#if PORTABLE
+        *(u16 *)(*(u8 *volatile *)&gTextLayerMapPtr[0] + 2 * entryIdx) = 0; /* per-iteration reload, as the ROM loop */
+#else
         *(u16 *)(*(volatile u32 *)&gTextLayerMapPtr[0] + 2 * entryIdx) = 0; /* per-iteration reload, as the ROM loop */
+#endif
         entryIdx++;
-    } while (entryIdx != 0x380);
+    } while (entryIdx != 896);
     DummyUiFontLoad(fontTable[0]);
-    GetString(0x52);
-    ((void (*)(void))DrawBigText)();
+    DrawBigText(GetString(82));
 }
 
 u32 SendMultibootPayload(void)
@@ -159,21 +161,29 @@ u8 SendMultibootIsland(void)
     u8 work[0x24C];
     u32 len;
     u32 flag;
-    register u32 icon __asm__("r9");
-    register u8 *start __asm__("r10");
-    register u8 *stack __asm__("sp");
+    register u32 icon PIN(r9);
+    register u8 *start PIN(r10);
+    register u8 *stack PIN(sp);
     u8 *a;
-    register u32 one __asm__("r8");
-    register u32 x __asm__("r4");
-    register u32 y __asm__("r5");
-    register s32 i __asm__("r6");
+    register u32 one PIN(r8);
+    register u32 x PIN(r4);
+    register u32 y PIN(r5);
+    register s32 i PIN(r6);
 
+#if PORTABLE
+    /* No link cable and no second GBA on the host: fail as the declined
+       dialog does (the caller's "player backed out" path), before any
+       serial setup, the island-length arithmetic below (which would
+       subtract two unrelated hosted arrays), and SendMultibootPayload's
+       chunk walk over gHighModuleRom. */
+    return 1;
+#endif
     flag = 0;
     icon = 0;
     REG_BG3CNT = BGCNT_SCREENBASE(28) | BGCNT_CHARBASE(3);
     {
         u8 *src = (u8 *)gTextLayerTiles;
-        CpuCopy16((u32)src, BG_SCREEN_ADDR(24), 0x2000);
+        CpuCopy16(src, BG_SCREEN_ADDR(24), 0x2000);
     }
     {
         u8 *buf = work + 0x4C;
@@ -182,26 +192,26 @@ u8 SendMultibootIsland(void)
         FadeToBrightenedPalette(buf, 0x0F);
     }
     start = gUnk_08363EE8;
-    len = (u32)gUnk_08364AC8 - (u32)start;
-    *(u32 *)(work + 0x28) = (u32)start;
+    len = (u32)(ADDR_WORD(gUnk_08364AC8) - ADDR_WORD(start));
+    *(u32 *)(work + 0x28) = (u32)ADDR_WORD(start);
     {
-        register u8 *dst __asm__("r0") = work + 0x4B;
+        register u8 *dst PIN(r0) = work + 0x4B;
         *dst = stack[0x254];
     }
     sub_0800EA64(work);
 loop:
     {
         VBlankIntrWait();
-        DrawTextCenteredHighlight(GetString(0x53), 8, 1);
+        DrawTextCenteredHighlight(GetString(83), 8, 1);
         i = 1;
         a = work;
         one = i;
         y = 9;
-        x = 0x54;
+        x = 84;
         do {
-            register u32 bit1 __asm__("r2");
-            register u32 bit2 __asm__("r1");
-            register u32 shifted __asm__("r0");
+            register u32 bit1 PIN(r2);
+            register u32 bit2 PIN(r1);
+            register u32 shifted PIN(r0);
             shifted = a[0x1D] >> i;
             __asm__ volatile("" : "=r"(bit1) : "0"(one));
             if ((shifted & bit1) == 0)
@@ -211,12 +221,12 @@ loop:
             if ((shifted & bit2) != 0)
                 goto show1;
         show0:
-            /* old prototype u32 GetString(u32): the canonical u16 parameter would
-                        narrow x with an extra lsls/lsrs pair */
-            DrawTextCenteredHighlight((u8 *)((u32 (*)(u32))GetString)(x), y, 0);
+            /* Called as GetString(u32): the real u16 parameter would narrow
+               x with an extra lsl/lsr pair. */
+            DrawTextCenteredHighlight((u8 *)((u8 *(*)(u32))GetString)(x), y, 0);
             goto pnext;
         show1:
-            DrawTextCenteredHighlight((u8 *)((u32 (*)(u32))GetString)(x), y, 1);
+            DrawTextCenteredHighlight((u8 *)((u8 *(*)(u32))GetString)(x), y, 1);
         pnext:;
             y = y + 1;
             x = x + 1;
@@ -224,54 +234,56 @@ loop:
         } while (i <= 3);
         if (work[0x1E] & 0x0E) {
             if (work[0x18] == 0) {
-                register u32 value __asm__("r2") = 0x0F;
+                register u32 value PIN(r2) = 0x0F;
                 __asm__ volatile("" : : "r"(value));
                 icon = value;
             } else if (work[0x18] != 0xD1) {
-                register u32 value __asm__("r0") = 0;
+                register u32 value PIN(r0) = 0;
                 __asm__ volatile("" : : "r"(value));
                 icon = value;
             }
             if (work[0x18] > 0xDF) {
-                register u32 value __asm__("r1") = 0x58;
+                register u32 value PIN(r1) = 0x58;
                 __asm__ volatile("" : : "r"(value));
                 icon = value;
                 goto show_icon;
             }
         } else {
-            register u32 value __asm__("r2") = 0;
+            register u32 value PIN(r2) = 0;
             __asm__ volatile("" : : "r"(value));
             icon = value;
         }
         if (icon == 0)
             goto show_empty;
     show_icon:
+#if PLATFORM_GBA
         __asm__ volatile("" : : : "r0");
-        DrawTextCenteredHighlight((u8 *)((u32 (*)(u32))GetString)(icon), 0x0E, 1);
+#endif
+        DrawTextCenteredHighlight((u8 *)((u8 * (*)(u32)) GetString)(icon), 14, 1);
         goto shown;
     show_empty:
-        DrawTextCenteredHighlight(gText_BlankRow28_2, 0x0E, 1);
+        DrawTextCenteredHighlight(gText_BlankRow28_2, 14, 1);
     shown:
         ReadKeys();
         if (gKeysPressed & 8) {
             if (work[0x18] == 0 && work[0x1E] != 0) {
                 sub_0800EEFC(work, start + 0xC0, len - 0xC0, 4, 1);
                 {
-                    register u32 value __asm__("r1");
+                    register u32 value PIN(r1);
                     __asm__ volatile("" : "=r"(value) : "0"(1));
                     flag = value;
                 }
             }
         }
         if (sub_0800EAA0(work) != 0) {
-            register u32 value __asm__("r2") = flag;
+            register u32 value PIN(r2) = flag;
             __asm__ volatile("" : : "r"(value));
             if (value == 1)
                 return 1;
         }
         if (sub_0800EFC0(work) == 0) {
             if ((gKeysPressed & 2) != 0) {
-                register u32 value __asm__("r0") = flag;
+                register u32 value PIN(r0) = flag;
                 __asm__ volatile("" : : "r"(value));
                 if (value != 1)
                     return 1;

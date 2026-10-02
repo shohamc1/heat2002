@@ -1,6 +1,15 @@
 @ Generated with Luvdis v0.9.0
+@ Both builds preprocess this file (preproc inlines the .include files,
+@ cpp resolves the switch below). The GBA keeps the exact luvdis layout;
+@ the hosted build switches to a writable data section, because its mPtr
+@ pointer fields carry relocations the host linker must be able to write.
+	.include "asm/macros/portable.inc"
+#if PLATFORM_GBA
 .syntax unified
 .text
+#else
+mSectionData
+#endif
 @ Begin embedded Luvdis macros
 	.macro arm_func_start name
 	.align 2, 0
@@ -35,778 +44,989 @@
 	.align 2, 0
 	.global gUnk_083682BC
 gUnk_083682BC:
+	cSym gUnk_083682BC
 	.incbin "build/assets/tracks/hooley_downs/lane_points_0.bin"
 	.align 2, 0
 	.global gLaneSegs_Track0_Lane00
 gLaneSegs_Track0_Lane00:
+	cSym gLaneSegs_Track0_Lane00
 	.incbin "build/assets/tracks/hooley_downs/lane_segs_0.bin"
 	.global gUnk_08368C1C
 gUnk_08368C1C:
+	cSym gUnk_08368C1C
 	.incbin "build/assets/tracks/hooley_downs/lane_lists_0.bin"
 	.align 1, 0
 	.global gUnk_08368FAE
 gUnk_08368FAE:
+	cSym gUnk_08368FAE
 	.incbin "build/assets/tracks/hooley_downs/lane_grid_0.bin"
 	.incbin "build/assets/tracks/hooley_downs/lane_orphan_0.bin"
 	.align 2, 0
 	.global gUnk_0836A1B0
 gUnk_0836A1B0:
+	cSym gUnk_0836A1B0
 	.incbin "build/assets/tracks/hooley_downs/lane_points_4.bin"
 	.align 2, 0
 	.global gLaneSegs_Track0_Lane04
 gLaneSegs_Track0_Lane04:
+	cSym gLaneSegs_Track0_Lane04
 	.incbin "build/assets/tracks/hooley_downs/lane_segs_4.bin"
 	.global gUnk_0836AA20
 gUnk_0836AA20:
+	cSym gUnk_0836AA20
 	.incbin "build/assets/tracks/hooley_downs/lane_lists_4.bin"
 	.align 1, 0
 	.global gUnk_0836ADC2
 gUnk_0836ADC2:
+	cSym gUnk_0836ADC2
 	.incbin "build/assets/tracks/hooley_downs/lane_grid_4.bin"
 	.incbin "build/assets/tracks/hooley_downs/lane_orphan_1.bin"
 	.align 2, 0
 	.global gUnk_0836BFC4
 gUnk_0836BFC4:
+	cSym gUnk_0836BFC4
 	.incbin "build/assets/tracks/hooley_downs/lane_points_7.bin"
 	.align 2, 0
 	.global gLaneSegs_Track0_Lane07
 gLaneSegs_Track0_Lane07:
+	cSym gLaneSegs_Track0_Lane07
 	.incbin "build/assets/tracks/hooley_downs/lane_segs_7.bin"
 	.global gUnk_0836C81C
 gUnk_0836C81C:
+	cSym gUnk_0836C81C
 	.incbin "build/assets/tracks/hooley_downs/lane_lists_7.bin"
 	.align 1, 0
 	.global gUnk_0836CB40
 gUnk_0836CB40:
+	cSym gUnk_0836CB40
 	.incbin "build/assets/tracks/hooley_downs/lane_grid_7.bin"
 	.incbin "build/assets/tracks/hooley_downs/lane_orphan_2.bin"
 	.global gUnk_0836DD42
 gUnk_0836DD42:
+	cSym gUnk_0836DD42
 	.incbin "build/assets/tracks/hooley_downs/lane_lengths.bin", 0, 8
 	.global gUnk_0836DD4A
 gUnk_0836DD4A:
+	cSym gUnk_0836DD4A
 	.incbin "build/assets/tracks/hooley_downs/lane_lengths.bin", 8, 4
 	.global gUnk_0836DD4E
 gUnk_0836DD4E:
+	cSym gUnk_0836DD4E
 	.incbin "build/assets/tracks/hooley_downs/lane_lengths.bin", 12, 2
 	.align 2, 0
 	.global gUnk_0836DD50
 gUnk_0836DD50:
+	cSym gUnk_0836DD50
 	.incbin "build/assets/tracks/darlington_raceway/lane_points_0.bin"
 	.align 2, 0
 	.global gLaneSegs_Track1_Lane00
 gLaneSegs_Track1_Lane00:
+	cSym gLaneSegs_Track1_Lane00
 	.incbin "build/assets/tracks/darlington_raceway/lane_segs_0.bin"
 	.global gUnk_0836E2D8
 gUnk_0836E2D8:
+	cSym gUnk_0836E2D8
 	.incbin "build/assets/tracks/darlington_raceway/lane_lists_0.bin"
 	.align 1, 0
 	.global gUnk_0836E4DA
 gUnk_0836E4DA:
+	cSym gUnk_0836E4DA
 	.incbin "build/assets/tracks/darlington_raceway/lane_grid_0.bin"
 	.incbin "build/assets/tracks/darlington_raceway/lane_orphan_3.bin"
 	.align 2, 0
 	.global gUnk_0836F6DC
 gUnk_0836F6DC:
+	cSym gUnk_0836F6DC
 	.incbin "build/assets/tracks/darlington_raceway/lane_points_1.bin"
 	.align 2, 0
 	.global gLaneSegs_Track1_Lane01
 gLaneSegs_Track1_Lane01:
+	cSym gLaneSegs_Track1_Lane01
 	.incbin "build/assets/tracks/darlington_raceway/lane_segs_1.bin"
 	.global gUnk_0836FB5C
 gUnk_0836FB5C:
+	cSym gUnk_0836FB5C
 	.incbin "build/assets/tracks/darlington_raceway/lane_lists_1.bin"
 	.align 1, 0
 	.global gUnk_0836FD0A
 gUnk_0836FD0A:
+	cSym gUnk_0836FD0A
 	.incbin "build/assets/tracks/darlington_raceway/lane_grid_1.bin"
 	.incbin "build/assets/tracks/darlington_raceway/lane_orphan_4.bin"
 	.align 2, 0
 	.global gUnk_08370F0C
 gUnk_08370F0C:
+	cSym gUnk_08370F0C
 	.incbin "build/assets/tracks/darlington_raceway/lane_points_4.bin"
 	.align 2, 0
 	.global gLaneSegs_Track1_Lane04
 gLaneSegs_Track1_Lane04:
+	cSym gLaneSegs_Track1_Lane04
 	.incbin "build/assets/tracks/darlington_raceway/lane_segs_4.bin"
 	.global gUnk_083713BC
 gUnk_083713BC:
+	cSym gUnk_083713BC
 	.incbin "build/assets/tracks/darlington_raceway/lane_lists_4.bin"
 	.align 1, 0
 	.global gUnk_0837157A
 gUnk_0837157A:
+	cSym gUnk_0837157A
 	.incbin "build/assets/tracks/darlington_raceway/lane_grid_4.bin"
 	.incbin "build/assets/tracks/darlington_raceway/lane_orphan_5.bin"
 	.global gUnk_0837401C
 gUnk_0837401C:
+	cSym gUnk_0837401C
 	.incbin "build/assets/tracks/darlington_raceway/lane_lengths.bin", 0, 2
 	.global gUnk_0837401E
 gUnk_0837401E:
+	cSym gUnk_0837401E
 	.incbin "build/assets/tracks/darlington_raceway/lane_lengths.bin", 2, 8
 	.global gUnk_08374026
 gUnk_08374026:
+	cSym gUnk_08374026
 	.incbin "build/assets/tracks/darlington_raceway/lane_lengths.bin", 10, 6
 	.align 2, 0
 	.global gUnk_0837402C
 gUnk_0837402C:
+	cSym gUnk_0837402C
 	.incbin "build/assets/tracks/green_valley/lane_points_0.bin"
 	.align 2, 0
 	.global gLaneSegs_Track2_Lane00
 gLaneSegs_Track2_Lane00:
+	cSym gLaneSegs_Track2_Lane00
 	.incbin "build/assets/tracks/green_valley/lane_segs_0.bin"
 	.global gUnk_08374C5C
 gUnk_08374C5C:
+	cSym gUnk_08374C5C
 	.incbin "build/assets/tracks/green_valley/lane_lists_0.bin"
 	.align 1, 0
 	.global gUnk_08375188
 gUnk_08375188:
+	cSym gUnk_08375188
 	.incbin "build/assets/tracks/green_valley/lane_grid_0.bin"
 	.align 2, 0
 	.global gUnk_08376388
 gUnk_08376388:
+	cSym gUnk_08376388
 	.incbin "build/assets/tracks/green_valley/lane_points_1.bin"
 	.align 2, 0
 	.global gLaneSegs_Track2_Lane01
 gLaneSegs_Track2_Lane01:
+	cSym gLaneSegs_Track2_Lane01
 	.incbin "build/assets/tracks/green_valley/lane_segs_1.bin"
 	.global gUnk_08376F10
 gUnk_08376F10:
+	cSym gUnk_08376F10
 	.incbin "build/assets/tracks/green_valley/lane_lists_1.bin"
 	.align 1, 0
 	.global gUnk_08377408
 gUnk_08377408:
+	cSym gUnk_08377408
 	.incbin "build/assets/tracks/green_valley/lane_grid_1.bin"
 	.incbin "build/assets/tracks/green_valley/lane_orphan_6.bin"
 	.align 2, 0
 	.global gUnk_0837EE98
 gUnk_0837EE98:
+	cSym gUnk_0837EE98
 	.incbin "build/assets/tracks/green_valley/lane_points_4.bin"
 	.align 2, 0
 	.global gLaneSegs_Track2_Lane04
 gLaneSegs_Track2_Lane04:
+	cSym gLaneSegs_Track2_Lane04
 	.incbin "build/assets/tracks/green_valley/lane_segs_4.bin"
 	.global gUnk_0837FA68
 gUnk_0837FA68:
+	cSym gUnk_0837FA68
 	.incbin "build/assets/tracks/green_valley/lane_lists_4.bin"
 	.align 1, 0
 	.global gUnk_0837FF6C
 gUnk_0837FF6C:
+	cSym gUnk_0837FF6C
 	.incbin "build/assets/tracks/green_valley/lane_grid_4.bin"
 	.incbin "build/assets/tracks/green_valley/lane_orphan_7.bin"
 	.align 2, 0
 	.global gUnk_08383430
 gUnk_08383430:
+	cSym gUnk_08383430
 	.incbin "build/assets/tracks/green_valley/lane_points_7.bin"
 	.align 2, 0
 	.global gLaneSegs_Track2_Lane07
 gLaneSegs_Track2_Lane07:
+	cSym gLaneSegs_Track2_Lane07
 	.incbin "build/assets/tracks/green_valley/lane_segs_7.bin"
 	.global gUnk_08383FB8
 gUnk_08383FB8:
+	cSym gUnk_08383FB8
 	.incbin "build/assets/tracks/green_valley/lane_lists_7.bin"
 	.align 1, 0
 	.global gUnk_0838449E
 gUnk_0838449E:
+	cSym gUnk_0838449E
 	.incbin "build/assets/tracks/green_valley/lane_grid_7.bin"
 	.global gUnk_0838569E
 gUnk_0838569E:
+	cSym gUnk_0838569E
 	.incbin "build/assets/tracks/green_valley/lane_lengths.bin", 0, 2
 	.global gUnk_083856A0
 gUnk_083856A0:
+	cSym gUnk_083856A0
 	.incbin "build/assets/tracks/green_valley/lane_lengths.bin", 2, 8
 	.global gUnk_083856A8
 gUnk_083856A8:
+	cSym gUnk_083856A8
 	.incbin "build/assets/tracks/green_valley/lane_lengths.bin", 10, 4
 	.global gUnk_083856AC
 gUnk_083856AC:
+	cSym gUnk_083856AC
 	.incbin "build/assets/tracks/green_valley/lane_lengths.bin", 14, 4
 	.align 2, 0
 	.global gUnk_083856B0
 gUnk_083856B0:
+	cSym gUnk_083856B0
 	.incbin "build/assets/tracks/michigan_international_speedway/lane_points_0.bin"
 	.align 2, 0
 	.global gLaneSegs_Track3_Lane00
 gLaneSegs_Track3_Lane00:
+	cSym gLaneSegs_Track3_Lane00
 	.incbin "build/assets/tracks/michigan_international_speedway/lane_segs_0.bin"
 	.global gUnk_08385EF0
 gUnk_08385EF0:
+	cSym gUnk_08385EF0
 	.incbin "build/assets/tracks/michigan_international_speedway/lane_lists_0.bin"
 	.align 1, 0
 	.global gUnk_08386238
 gUnk_08386238:
+	cSym gUnk_08386238
 	.incbin "build/assets/tracks/michigan_international_speedway/lane_grid_0.bin"
 	.align 2, 0
 	.global gUnk_08387438
 gUnk_08387438:
+	cSym gUnk_08387438
 	.incbin "build/assets/tracks/michigan_international_speedway/lane_points_1.bin"
 	.align 2, 0
 	.global gLaneSegs_Track3_Lane01
 gLaneSegs_Track3_Lane01:
+	cSym gLaneSegs_Track3_Lane01
 	.incbin "build/assets/tracks/michigan_international_speedway/lane_segs_1.bin"
 	.global gUnk_08387BE8
 gUnk_08387BE8:
+	cSym gUnk_08387BE8
 	.incbin "build/assets/tracks/michigan_international_speedway/lane_lists_1.bin"
 	.align 1, 0
 	.global gUnk_08387EDE
 gUnk_08387EDE:
+	cSym gUnk_08387EDE
 	.incbin "build/assets/tracks/michigan_international_speedway/lane_grid_1.bin"
 	.incbin "build/assets/tracks/michigan_international_speedway/lane_orphan_8.bin"
 	.align 2, 0
 	.global gUnk_083890E0
 gUnk_083890E0:
+	cSym gUnk_083890E0
 	.incbin "build/assets/tracks/michigan_international_speedway/lane_points_4.bin"
 	.align 2, 0
 	.global gLaneSegs_Track3_Lane04
 gLaneSegs_Track3_Lane04:
+	cSym gLaneSegs_Track3_Lane04
 	.incbin "build/assets/tracks/michigan_international_speedway/lane_segs_4.bin"
 	.global gUnk_083898F0
 gUnk_083898F0:
+	cSym gUnk_083898F0
 	.incbin "build/assets/tracks/michigan_international_speedway/lane_lists_4.bin"
 	.align 1, 0
 	.global gUnk_08389BD2
 gUnk_08389BD2:
+	cSym gUnk_08389BD2
 	.incbin "build/assets/tracks/michigan_international_speedway/lane_grid_4.bin"
 	.incbin "build/assets/tracks/michigan_international_speedway/lane_orphan_9.bin"
 	.align 2, 0
 	.global gUnk_0838ADD4
 gUnk_0838ADD4:
+	cSym gUnk_0838ADD4
 	.incbin "build/assets/tracks/michigan_international_speedway/lane_points_7.bin"
 	.align 2, 0
 	.global gLaneSegs_Track3_Lane07
 gLaneSegs_Track3_Lane07:
+	cSym gLaneSegs_Track3_Lane07
 	.incbin "build/assets/tracks/michigan_international_speedway/lane_segs_7.bin"
 	.global gUnk_0838B6BC
 gUnk_0838B6BC:
+	cSym gUnk_0838B6BC
 	.incbin "build/assets/tracks/michigan_international_speedway/lane_lists_7.bin"
 	.align 1, 0
 	.global gUnk_0838BA2E
 gUnk_0838BA2E:
+	cSym gUnk_0838BA2E
 	.incbin "build/assets/tracks/michigan_international_speedway/lane_grid_7.bin"
 	.global gUnk_0838CC2E
 gUnk_0838CC2E:
+	cSym gUnk_0838CC2E
 	.incbin "build/assets/tracks/michigan_international_speedway/lane_lengths.bin", 0, 2
 	.global gUnk_0838CC30
 gUnk_0838CC30:
+	cSym gUnk_0838CC30
 	.incbin "build/assets/tracks/michigan_international_speedway/lane_lengths.bin", 2, 8
 	.global gUnk_0838CC38
 gUnk_0838CC38:
+	cSym gUnk_0838CC38
 	.incbin "build/assets/tracks/michigan_international_speedway/lane_lengths.bin", 10, 4
 	.global gUnk_0838CC3C
 gUnk_0838CC3C:
+	cSym gUnk_0838CC3C
 	.incbin "build/assets/tracks/michigan_international_speedway/lane_lengths.bin", 14, 4
 	.align 2, 0
 	.global gUnk_0838CC40
 gUnk_0838CC40:
+	cSym gUnk_0838CC40
 	.incbin "build/assets/tracks/great_canyon/lane_points_0.bin"
 	.align 2, 0
 	.global gLaneSegs_Track4_Lane00
 gLaneSegs_Track4_Lane00:
+	cSym gLaneSegs_Track4_Lane00
 	.incbin "build/assets/tracks/great_canyon/lane_segs_0.bin"
 	.global gUnk_0838DA6C
 gUnk_0838DA6C:
+	cSym gUnk_0838DA6C
 	.incbin "build/assets/tracks/great_canyon/lane_lists_0.bin"
 	.align 1, 0
 	.global gUnk_0838E028
 gUnk_0838E028:
+	cSym gUnk_0838E028
 	.incbin "build/assets/tracks/great_canyon/lane_grid_0.bin"
 	.align 2, 0
 	.global gUnk_0838F228
 gUnk_0838F228:
+	cSym gUnk_0838F228
 	.incbin "build/assets/tracks/great_canyon/lane_points_1.bin"
 	.align 2, 0
 	.global gLaneSegs_Track4_Lane01
 gLaneSegs_Track4_Lane01:
+	cSym gLaneSegs_Track4_Lane01
 	.incbin "build/assets/tracks/great_canyon/lane_segs_1.bin"
 	.global gUnk_08390020
 gUnk_08390020:
+	cSym gUnk_08390020
 	.incbin "build/assets/tracks/great_canyon/lane_lists_1.bin"
 	.align 1, 0
 	.global gUnk_083905EC
 gUnk_083905EC:
+	cSym gUnk_083905EC
 	.incbin "build/assets/tracks/great_canyon/lane_grid_1.bin"
 	.align 2, 0
 	.global gUnk_083917EC
 gUnk_083917EC:
+	cSym gUnk_083917EC
 	.incbin "build/assets/tracks/great_canyon/lane_points_4.bin"
 	.align 2, 0
 	.global gLaneSegs_Track4_Lane04
 gLaneSegs_Track4_Lane04:
+	cSym gLaneSegs_Track4_Lane04
 	.incbin "build/assets/tracks/great_canyon/lane_segs_4.bin"
 	.global gUnk_083926EC
 gUnk_083926EC:
+	cSym gUnk_083926EC
 	.incbin "build/assets/tracks/great_canyon/lane_lists_4.bin"
 	.align 1, 0
 	.global gUnk_08392CEA
 gUnk_08392CEA:
+	cSym gUnk_08392CEA
 	.incbin "build/assets/tracks/great_canyon/lane_grid_4.bin"
 	.incbin "build/assets/tracks/great_canyon/lane_orphan_10.bin"
 	.align 2, 0
 	.global gUnk_08393EEC
 gUnk_08393EEC:
+	cSym gUnk_08393EEC
 	.incbin "build/assets/tracks/great_canyon/lane_points_7.bin"
 	.align 2, 0
 	.global gLaneSegs_Track4_Lane07
 gLaneSegs_Track4_Lane07:
+	cSym gLaneSegs_Track4_Lane07
 	.incbin "build/assets/tracks/great_canyon/lane_segs_7.bin"
 	.global gUnk_08394CE4
 gUnk_08394CE4:
+	cSym gUnk_08394CE4
 	.incbin "build/assets/tracks/great_canyon/lane_lists_7.bin"
 	.align 1, 0
 	.global gUnk_0839523A
 gUnk_0839523A:
+	cSym gUnk_0839523A
 	.incbin "build/assets/tracks/great_canyon/lane_grid_7.bin"
 	.global gUnk_0839643A
 gUnk_0839643A:
+	cSym gUnk_0839643A
 	.incbin "build/assets/tracks/great_canyon/lane_lengths.bin", 0, 2
 	.global gUnk_0839643C
 gUnk_0839643C:
+	cSym gUnk_0839643C
 	.incbin "build/assets/tracks/great_canyon/lane_lengths.bin", 2, 8
 	.global gUnk_08396444
 gUnk_08396444:
+	cSym gUnk_08396444
 	.incbin "build/assets/tracks/great_canyon/lane_lengths.bin", 10, 4
 	.global gUnk_08396448
 gUnk_08396448:
+	cSym gUnk_08396448
 	.incbin "build/assets/tracks/great_canyon/lane_lengths.bin", 14, 4
 	.align 2, 0
 	.global gUnk_0839644C
 gUnk_0839644C:
+	cSym gUnk_0839644C
 	.incbin "build/assets/tracks/fuji_port/lane_points_0.bin"
 	.align 2, 0
 	.global gLaneSegs_Track5_Lane00
 gLaneSegs_Track5_Lane00:
+	cSym gLaneSegs_Track5_Lane00
 	.incbin "build/assets/tracks/fuji_port/lane_segs_0.bin"
 	.global gUnk_08396FA4
 gUnk_08396FA4:
+	cSym gUnk_08396FA4
 	.incbin "build/assets/tracks/fuji_port/lane_lists_0.bin"
 	.align 1, 0
 	.global gUnk_08397436
 gUnk_08397436:
+	cSym gUnk_08397436
 	.incbin "build/assets/tracks/fuji_port/lane_grid_0.bin"
 	.incbin "build/assets/tracks/fuji_port/lane_orphan_11.bin"
 	.align 2, 0
 	.global gUnk_08398638
 gUnk_08398638:
+	cSym gUnk_08398638
 	.incbin "build/assets/tracks/fuji_port/lane_points_1.bin"
 	.align 2, 0
 	.global gLaneSegs_Track5_Lane01
 gLaneSegs_Track5_Lane01:
+	cSym gLaneSegs_Track5_Lane01
 	.incbin "build/assets/tracks/fuji_port/lane_segs_1.bin"
 	.global gUnk_083991C0
 gUnk_083991C0:
+	cSym gUnk_083991C0
 	.incbin "build/assets/tracks/fuji_port/lane_lists_1.bin"
 	.align 1, 0
 	.global gUnk_08399686
 gUnk_08399686:
+	cSym gUnk_08399686
 	.incbin "build/assets/tracks/fuji_port/lane_grid_1.bin"
 	.incbin "build/assets/tracks/fuji_port/lane_orphan_12.bin"
 	.align 2, 0
 	.global gUnk_0839A888
 gUnk_0839A888:
+	cSym gUnk_0839A888
 	.incbin "build/assets/tracks/fuji_port/lane_points_4.bin"
 	.align 2, 0
 	.global gLaneSegs_Track5_Lane04
 gLaneSegs_Track5_Lane04:
+	cSym gLaneSegs_Track5_Lane04
 	.incbin "build/assets/tracks/fuji_port/lane_segs_4.bin"
 	.global gUnk_0839B320
 gUnk_0839B320:
+	cSym gUnk_0839B320
 	.incbin "build/assets/tracks/fuji_port/lane_lists_4.bin"
 	.align 1, 0
 	.global gUnk_0839B788
 gUnk_0839B788:
+	cSym gUnk_0839B788
 	.incbin "build/assets/tracks/fuji_port/lane_grid_4.bin"
 	.align 2, 0
 	.global gUnk_0839C988
 gUnk_0839C988:
+	cSym gUnk_0839C988
 	.incbin "build/assets/tracks/fuji_port/lane_points_7.bin"
 	.align 2, 0
 	.global gLaneSegs_Track5_Lane07
 gLaneSegs_Track5_Lane07:
+	cSym gLaneSegs_Track5_Lane07
 	.incbin "build/assets/tracks/fuji_port/lane_segs_7.bin"
 	.global gUnk_0839D540
 gUnk_0839D540:
+	cSym gUnk_0839D540
 	.incbin "build/assets/tracks/fuji_port/lane_lists_7.bin"
 	.align 1, 0
 	.global gUnk_0839DA64
 gUnk_0839DA64:
+	cSym gUnk_0839DA64
 	.incbin "build/assets/tracks/fuji_port/lane_grid_7.bin"
 	.global gUnk_0839EC64
 gUnk_0839EC64:
+	cSym gUnk_0839EC64
 	.incbin "build/assets/tracks/fuji_port/lane_lengths.bin", 0, 2
 	.global gUnk_0839EC66
 gUnk_0839EC66:
+	cSym gUnk_0839EC66
 	.incbin "build/assets/tracks/fuji_port/lane_lengths.bin", 2, 8
 	.global gUnk_0839EC6E
 gUnk_0839EC6E:
+	cSym gUnk_0839EC6E
 	.incbin "build/assets/tracks/fuji_port/lane_lengths.bin", 10, 4
 	.global gUnk_0839EC72
 gUnk_0839EC72:
+	cSym gUnk_0839EC72
 	.incbin "build/assets/tracks/fuji_port/lane_lengths.bin", 14, 2
 	.align 2, 0
 	.global gUnk_0839EC74
 gUnk_0839EC74:
+	cSym gUnk_0839EC74
 	.incbin "build/assets/tracks/crawfish_raceway/lane_points_0.bin"
 	.align 2, 0
 	.global gLaneSegs_Track6_Lane00
 gLaneSegs_Track6_Lane00:
+	cSym gLaneSegs_Track6_Lane00
 	.incbin "build/assets/tracks/crawfish_raceway/lane_segs_0.bin"
 	.global gUnk_0839F214
 gUnk_0839F214:
+	cSym gUnk_0839F214
 	.incbin "build/assets/tracks/crawfish_raceway/lane_lists_0.bin"
 	.align 1, 0
 	.global gUnk_0839F3A6
 gUnk_0839F3A6:
+	cSym gUnk_0839F3A6
 	.incbin "build/assets/tracks/crawfish_raceway/lane_grid_0.bin"
 	.incbin "build/assets/tracks/crawfish_raceway/lane_orphan_13.bin"
 	.align 2, 0
 	.global gUnk_083A05A8
 gUnk_083A05A8:
+	cSym gUnk_083A05A8
 	.incbin "build/assets/tracks/crawfish_raceway/lane_points_1.bin"
 	.align 2, 0
 	.global gLaneSegs_Track6_Lane01
 gLaneSegs_Track6_Lane01:
+	cSym gLaneSegs_Track6_Lane01
 	.incbin "build/assets/tracks/crawfish_raceway/lane_segs_1.bin"
 	.global gUnk_083A0B90
 gUnk_083A0B90:
+	cSym gUnk_083A0B90
 	.incbin "build/assets/tracks/crawfish_raceway/lane_lists_1.bin"
 	.align 1, 0
 	.global gUnk_083A0DA4
 gUnk_083A0DA4:
+	cSym gUnk_083A0DA4
 	.incbin "build/assets/tracks/crawfish_raceway/lane_grid_1.bin"
 	.align 2, 0
 	.global gUnk_083A1FA4
 gUnk_083A1FA4:
+	cSym gUnk_083A1FA4
 	.incbin "build/assets/tracks/crawfish_raceway/lane_points_4.bin"
 	.align 2, 0
 	.global gLaneSegs_Track6_Lane04
 gLaneSegs_Track6_Lane04:
+	cSym gLaneSegs_Track6_Lane04
 	.incbin "build/assets/tracks/crawfish_raceway/lane_segs_4.bin"
 	.global gUnk_083A26AC
 gUnk_083A26AC:
+	cSym gUnk_083A26AC
 	.incbin "build/assets/tracks/crawfish_raceway/lane_lists_4.bin"
 	.align 1, 0
 	.global gUnk_083A2964
 gUnk_083A2964:
+	cSym gUnk_083A2964
 	.incbin "build/assets/tracks/crawfish_raceway/lane_grid_4.bin"
 	.align 2, 0
 	.global gUnk_083A3B64
 gUnk_083A3B64:
+	cSym gUnk_083A3B64
 	.incbin "build/assets/tracks/crawfish_raceway/lane_points_7.bin"
 	.align 2, 0
 	.global gLaneSegs_Track6_Lane07
 gLaneSegs_Track6_Lane07:
+	cSym gLaneSegs_Track6_Lane07
 	.incbin "build/assets/tracks/crawfish_raceway/lane_segs_7.bin"
 	.global gUnk_083A41F4
 gUnk_083A41F4:
+	cSym gUnk_083A41F4
 	.incbin "build/assets/tracks/crawfish_raceway/lane_lists_7.bin"
 	.align 1, 0
 	.global gUnk_083A4458
 gUnk_083A4458:
+	cSym gUnk_083A4458
 	.incbin "build/assets/tracks/crawfish_raceway/lane_grid_7.bin"
 	.global gUnk_083A5658
 gUnk_083A5658:
+	cSym gUnk_083A5658
 	.incbin "build/assets/tracks/crawfish_raceway/lane_lengths.bin", 0, 2
 	.global gUnk_083A565A
 gUnk_083A565A:
+	cSym gUnk_083A565A
 	.incbin "build/assets/tracks/crawfish_raceway/lane_lengths.bin", 2, 2
 	.global gUnk_083A565C
 gUnk_083A565C:
+	cSym gUnk_083A565C
 	.incbin "build/assets/tracks/crawfish_raceway/lane_lengths.bin", 4, 6
 	.global gUnk_083A5662
 gUnk_083A5662:
+	cSym gUnk_083A5662
 	.incbin "build/assets/tracks/crawfish_raceway/lane_lengths.bin", 10, 4
 	.global gUnk_083A5666
 gUnk_083A5666:
+	cSym gUnk_083A5666
 	.incbin "build/assets/tracks/crawfish_raceway/lane_lengths.bin", 14, 2
 	.align 2, 0
 	.global gUnk_083A5668
 gUnk_083A5668:
+	cSym gUnk_083A5668
 	.incbin "build/assets/tracks/kansas_speedway/lane_points_0.bin"
 	.align 2, 0
 	.global gLaneSegs_Track8_Lane00
 gLaneSegs_Track8_Lane00:
+	cSym gLaneSegs_Track8_Lane00
 	.incbin "build/assets/tracks/kansas_speedway/lane_segs_0.bin"
 	.global gUnk_083A5D10
 gUnk_083A5D10:
+	cSym gUnk_083A5D10
 	.incbin "build/assets/tracks/kansas_speedway/lane_lists_0.bin"
 	.align 1, 0
 	.global gUnk_083A5F3E
 gUnk_083A5F3E:
+	cSym gUnk_083A5F3E
 	.incbin "build/assets/tracks/kansas_speedway/lane_grid_0.bin"
 	.incbin "build/assets/tracks/kansas_speedway/lane_orphan_14.bin"
 	.align 2, 0
 	.global gUnk_083A7140
 gUnk_083A7140:
+	cSym gUnk_083A7140
 	.incbin "build/assets/tracks/kansas_speedway/lane_points_1.bin"
 	.align 2, 0
 	.global gLaneSegs_Track8_Lane01
 gLaneSegs_Track8_Lane01:
+	cSym gLaneSegs_Track8_Lane01
 	.incbin "build/assets/tracks/kansas_speedway/lane_segs_1.bin"
 	.global gUnk_083A7860
 gUnk_083A7860:
+	cSym gUnk_083A7860
 	.incbin "build/assets/tracks/kansas_speedway/lane_lists_1.bin"
 	.align 1, 0
 	.global gUnk_083A7B28
 gUnk_083A7B28:
+	cSym gUnk_083A7B28
 	.incbin "build/assets/tracks/kansas_speedway/lane_grid_1.bin"
 	.align 2, 0
 	.global gUnk_083A8D28
 gUnk_083A8D28:
+	cSym gUnk_083A8D28
 	.incbin "build/assets/tracks/kansas_speedway/lane_points_4.bin"
 	.align 2, 0
 	.global gLaneSegs_Track8_Lane04
 gLaneSegs_Track8_Lane04:
+	cSym gLaneSegs_Track8_Lane04
 	.incbin "build/assets/tracks/kansas_speedway/lane_segs_4.bin"
 	.global gUnk_083A9478
 gUnk_083A9478:
+	cSym gUnk_083A9478
 	.incbin "build/assets/tracks/kansas_speedway/lane_lists_4.bin"
 	.align 1, 0
 	.global gUnk_083A9710
 gUnk_083A9710:
+	cSym gUnk_083A9710
 	.incbin "build/assets/tracks/kansas_speedway/lane_grid_4.bin"
 	.align 2, 0
 	.global gUnk_083AA910
 gUnk_083AA910:
+	cSym gUnk_083AA910
 	.incbin "build/assets/tracks/kansas_speedway/lane_points_7.bin"
 	.align 2, 0
 	.global gLaneSegs_Track8_Lane07
 gLaneSegs_Track8_Lane07:
+	cSym gLaneSegs_Track8_Lane07
 	.incbin "build/assets/tracks/kansas_speedway/lane_segs_7.bin"
 	.global gUnk_083AB090
 gUnk_083AB090:
+	cSym gUnk_083AB090
 	.incbin "build/assets/tracks/kansas_speedway/lane_lists_7.bin"
 	.align 1, 0
 	.global gUnk_083AB36C
 gUnk_083AB36C:
+	cSym gUnk_083AB36C
 	.incbin "build/assets/tracks/kansas_speedway/lane_grid_7.bin"
 	.global gUnk_083AC56C
 gUnk_083AC56C:
+	cSym gUnk_083AC56C
 	.incbin "build/assets/tracks/kansas_speedway/lane_lengths.bin", 0, 2
 	.global gUnk_083AC56E
 gUnk_083AC56E:
+	cSym gUnk_083AC56E
 	.incbin "build/assets/tracks/kansas_speedway/lane_lengths.bin", 2, 8
 	.global gUnk_083AC576
 gUnk_083AC576:
+	cSym gUnk_083AC576
 	.incbin "build/assets/tracks/kansas_speedway/lane_lengths.bin", 10, 4
 	.global gUnk_083AC57A
 gUnk_083AC57A:
+	cSym gUnk_083AC57A
 	.incbin "build/assets/tracks/kansas_speedway/lane_lengths.bin", 14, 2
 	.align 2, 0
 	.global gUnk_083AC57C
 gUnk_083AC57C:
+	cSym gUnk_083AC57C
 	.incbin "build/assets/tracks/asphalt_city/lane_points_0.bin"
 	.align 2, 0
 	.global gLaneSegs_Track9_Lane00
 gLaneSegs_Track9_Lane00:
+	cSym gLaneSegs_Track9_Lane00
 	.incbin "build/assets/tracks/asphalt_city/lane_segs_0.bin"
 	.global gUnk_083AD194
 gUnk_083AD194:
+	cSym gUnk_083AD194
 	.incbin "build/assets/tracks/asphalt_city/lane_lists_0.bin"
 	.align 1, 0
 	.global gUnk_083AD67A
 gUnk_083AD67A:
+	cSym gUnk_083AD67A
 	.incbin "build/assets/tracks/asphalt_city/lane_grid_0.bin"
 	.incbin "build/assets/tracks/asphalt_city/lane_orphan_15.bin"
 	.align 2, 0
 	.global gUnk_083AE87C
 gUnk_083AE87C:
+	cSym gUnk_083AE87C
 	.incbin "build/assets/tracks/asphalt_city/lane_points_1.bin"
 	.align 2, 0
 	.global gLaneSegs_Track9_Lane01
 gLaneSegs_Track9_Lane01:
+	cSym gLaneSegs_Track9_Lane01
 	.incbin "build/assets/tracks/asphalt_city/lane_segs_1.bin"
 	.global gUnk_083AF4C4
 gUnk_083AF4C4:
+	cSym gUnk_083AF4C4
 	.incbin "build/assets/tracks/asphalt_city/lane_lists_1.bin"
 	.align 1, 0
 	.global gUnk_083AF9AC
 gUnk_083AF9AC:
+	cSym gUnk_083AF9AC
 	.incbin "build/assets/tracks/asphalt_city/lane_grid_1.bin"
 	.incbin "build/assets/tracks/asphalt_city/lane_orphan_16.bin"
 	.align 2, 0
 	.global gUnk_083B73C0
 gUnk_083B73C0:
+	cSym gUnk_083B73C0
 	.incbin "build/assets/tracks/asphalt_city/lane_points_4.bin"
 	.align 2, 0
 	.global gLaneSegs_Track9_Lane04
 gLaneSegs_Track9_Lane04:
+	cSym gLaneSegs_Track9_Lane04
 	.incbin "build/assets/tracks/asphalt_city/lane_segs_4.bin"
 	.global gUnk_083B7FD8
 gUnk_083B7FD8:
+	cSym gUnk_083B7FD8
 	.incbin "build/assets/tracks/asphalt_city/lane_lists_4.bin"
 	.align 1, 0
 	.global gUnk_083B84C4
 gUnk_083B84C4:
+	cSym gUnk_083B84C4
 	.incbin "build/assets/tracks/asphalt_city/lane_grid_4.bin"
 	.align 2, 0
 	.global gUnk_083B96C4
 gUnk_083B96C4:
+	cSym gUnk_083B96C4
 	.incbin "build/assets/tracks/asphalt_city/lane_points_7.bin"
 	.align 2, 0
 	.global gLaneSegs_Track9_Lane07
 gLaneSegs_Track9_Lane07:
+	cSym gLaneSegs_Track9_Lane07
 	.incbin "build/assets/tracks/asphalt_city/lane_segs_7.bin"
 	.global gUnk_083BA2AC
 gUnk_083BA2AC:
+	cSym gUnk_083BA2AC
 	.incbin "build/assets/tracks/asphalt_city/lane_lists_7.bin"
 	.align 1, 0
 	.global gUnk_083BA78E
 gUnk_083BA78E:
+	cSym gUnk_083BA78E
 	.incbin "build/assets/tracks/asphalt_city/lane_grid_7.bin"
 	.global gUnk_083BB98E
 gUnk_083BB98E:
+	cSym gUnk_083BB98E
 	.incbin "build/assets/tracks/asphalt_city/lane_lengths.bin", 0, 2
 	.global gUnk_083BB990
 gUnk_083BB990:
+	cSym gUnk_083BB990
 	.incbin "build/assets/tracks/asphalt_city/lane_lengths.bin", 2, 8
 	.global gUnk_083BB998
 gUnk_083BB998:
+	cSym gUnk_083BB998
 	.incbin "build/assets/tracks/asphalt_city/lane_lengths.bin", 10, 4
 	.global gUnk_083BB99C
 gUnk_083BB99C:
+	cSym gUnk_083BB99C
 	.incbin "build/assets/tracks/asphalt_city/lane_lengths.bin", 14, 4
 	.align 2, 0
 	.global gUnk_083BB9A0
 gUnk_083BB9A0:
+	cSym gUnk_083BB9A0
 	.incbin "build/assets/tracks/phoenix_international_raceway/lane_points_0.bin"
 	.align 2, 0
 	.global gLaneSegs_Track10_Lane00
 gLaneSegs_Track10_Lane00:
+	cSym gLaneSegs_Track10_Lane00
 	.incbin "build/assets/tracks/phoenix_international_raceway/lane_segs_0.bin"
 	.global gUnk_083BBE20
 gUnk_083BBE20:
+	cSym gUnk_083BBE20
 	.incbin "build/assets/tracks/phoenix_international_raceway/lane_lists_0.bin"
 	.align 1, 0
 	.global gUnk_083BBF98
 gUnk_083BBF98:
+	cSym gUnk_083BBF98
 	.incbin "build/assets/tracks/phoenix_international_raceway/lane_grid_0.bin"
 	.align 2, 0
 	.global gUnk_083BD198
 gUnk_083BD198:
+	cSym gUnk_083BD198
 	.incbin "build/assets/tracks/phoenix_international_raceway/lane_points_1.bin"
 	.align 2, 0
 	.global gLaneSegs_Track10_Lane01
 gLaneSegs_Track10_Lane01:
+	cSym gLaneSegs_Track10_Lane01
 	.incbin "build/assets/tracks/phoenix_international_raceway/lane_segs_1.bin"
 	.global gUnk_083BD600
 gUnk_083BD600:
+	cSym gUnk_083BD600
 	.incbin "build/assets/tracks/phoenix_international_raceway/lane_lists_1.bin"
 	.align 1, 0
 	.global gUnk_083BD77A
 gUnk_083BD77A:
+	cSym gUnk_083BD77A
 	.incbin "build/assets/tracks/phoenix_international_raceway/lane_grid_1.bin"
 	.incbin "build/assets/tracks/phoenix_international_raceway/lane_orphan_17.bin"
 	.align 2, 0
 	.global gUnk_083BE97C
 gUnk_083BE97C:
+	cSym gUnk_083BE97C
 	.incbin "build/assets/tracks/phoenix_international_raceway/lane_points_4.bin"
 	.align 2, 0
 	.global gLaneSegs_Track10_Lane04
 gLaneSegs_Track10_Lane04:
+	cSym gLaneSegs_Track10_Lane04
 	.incbin "build/assets/tracks/phoenix_international_raceway/lane_segs_4.bin"
 	.global gUnk_083BED84
 gUnk_083BED84:
+	cSym gUnk_083BED84
 	.incbin "build/assets/tracks/phoenix_international_raceway/lane_lists_4.bin"
 	.align 1, 0
 	.global gUnk_083BEED8
 gUnk_083BEED8:
+	cSym gUnk_083BEED8
 	.incbin "build/assets/tracks/phoenix_international_raceway/lane_grid_4.bin"
 	.align 2, 0
 	.global gUnk_083C00D8
 gUnk_083C00D8:
+	cSym gUnk_083C00D8
 	.incbin "build/assets/tracks/phoenix_international_raceway/lane_points_7.bin"
 	.align 2, 0
 	.global gLaneSegs_Track10_Lane07
 gLaneSegs_Track10_Lane07:
+	cSym gLaneSegs_Track10_Lane07
 	.incbin "build/assets/tracks/phoenix_international_raceway/lane_segs_7.bin"
 	.global gUnk_083C0600
 gUnk_083C0600:
+	cSym gUnk_083C0600
 	.incbin "build/assets/tracks/phoenix_international_raceway/lane_lists_7.bin"
 	.align 1, 0
 	.global gUnk_083C07C2
 gUnk_083C07C2:
+	cSym gUnk_083C07C2
 	.incbin "build/assets/tracks/phoenix_international_raceway/lane_grid_7.bin"
 	.global gUnk_083C19C2
 gUnk_083C19C2:
+	cSym gUnk_083C19C2
 	.incbin "build/assets/tracks/phoenix_international_raceway/lane_lengths.bin", 0, 2
 	.global gUnk_083C19C4
 gUnk_083C19C4:
+	cSym gUnk_083C19C4
 	.incbin "build/assets/tracks/phoenix_international_raceway/lane_lengths.bin", 2, 8
 	.global gUnk_083C19CC
 gUnk_083C19CC:
+	cSym gUnk_083C19CC
 	.incbin "build/assets/tracks/phoenix_international_raceway/lane_lengths.bin", 10, 4
 	.global gUnk_083C19D0
 gUnk_083C19D0:
+	cSym gUnk_083C19D0
 	.incbin "build/assets/tracks/phoenix_international_raceway/lane_lengths.bin", 14, 4
 	.align 2, 0
 	.global gUnk_083C19D4
 gUnk_083C19D4:
+	cSym gUnk_083C19D4
 	.incbin "build/assets/tracks/infogrames_super_speedway/lane_points_0.bin"
 	.align 2, 0
 	.global gLaneSegs_Track11_Lane00
 gLaneSegs_Track11_Lane00:
+	cSym gLaneSegs_Track11_Lane00
 	.incbin "build/assets/tracks/infogrames_super_speedway/lane_segs_0.bin"
 	.global gUnk_083C2304
 gUnk_083C2304:
+	cSym gUnk_083C2304
 	.incbin "build/assets/tracks/infogrames_super_speedway/lane_lists_0.bin"
 	.align 1, 0
 	.global gUnk_083C267E
 gUnk_083C267E:
+	cSym gUnk_083C267E
 	.incbin "build/assets/tracks/infogrames_super_speedway/lane_grid_0.bin"
 	.incbin "build/assets/tracks/infogrames_super_speedway/lane_orphan_18.bin"
 	.align 2, 0
 	.global gUnk_083C3880
 gUnk_083C3880:
+	cSym gUnk_083C3880
 	.incbin "build/assets/tracks/infogrames_super_speedway/lane_points_1.bin"
 	.align 2, 0
 	.global gLaneSegs_Track11_Lane01
 gLaneSegs_Track11_Lane01:
+	cSym gLaneSegs_Track11_Lane01
 	.incbin "build/assets/tracks/infogrames_super_speedway/lane_segs_1.bin"
 	.global gUnk_083C41B0
 gUnk_083C41B0:
+	cSym gUnk_083C41B0
 	.incbin "build/assets/tracks/infogrames_super_speedway/lane_lists_1.bin"
 	.align 1, 0
 	.global gUnk_083C4524
 gUnk_083C4524:
+	cSym gUnk_083C4524
 	.incbin "build/assets/tracks/infogrames_super_speedway/lane_grid_1.bin"
 	.align 2, 0
 	.global gUnk_083C5724
 gUnk_083C5724:
+	cSym gUnk_083C5724
 	.incbin "build/assets/tracks/infogrames_super_speedway/lane_points_4.bin"
 	.align 2, 0
 	.global gLaneSegs_Track11_Lane04
 gLaneSegs_Track11_Lane04:
+	cSym gLaneSegs_Track11_Lane04
 	.incbin "build/assets/tracks/infogrames_super_speedway/lane_segs_4.bin"
 	.global gUnk_083C6024
 gUnk_083C6024:
+	cSym gUnk_083C6024
 	.incbin "build/assets/tracks/infogrames_super_speedway/lane_lists_4.bin"
 	.align 1, 0
 	.global gUnk_083C639C
 gUnk_083C639C:
+	cSym gUnk_083C639C
 	.incbin "build/assets/tracks/infogrames_super_speedway/lane_grid_4.bin"
 	.align 2, 0
 	.global gUnk_083C759C
 gUnk_083C759C:
+	cSym gUnk_083C759C
 	.incbin "build/assets/tracks/infogrames_super_speedway/lane_points_7.bin"
 	.align 2, 0
 	.global gLaneSegs_Track11_Lane07
 gLaneSegs_Track11_Lane07:
+	cSym gLaneSegs_Track11_Lane07
 	.incbin "build/assets/tracks/infogrames_super_speedway/lane_segs_7.bin"
 	.global gUnk_083C7F74
 gUnk_083C7F74:
+	cSym gUnk_083C7F74
 	.incbin "build/assets/tracks/infogrames_super_speedway/lane_lists_7.bin"
 	.align 1, 0
 	.global gUnk_083C8362
 gUnk_083C8362:
+	cSym gUnk_083C8362
 	.incbin "build/assets/tracks/infogrames_super_speedway/lane_grid_7.bin"
 	.global gUnk_083C9562
 gUnk_083C9562:
+	cSym gUnk_083C9562
 	.incbin "build/assets/tracks/infogrames_super_speedway/lane_lengths.bin", 0, 2
 	.global gUnk_083C9564
 gUnk_083C9564:
+	cSym gUnk_083C9564
 	.incbin "build/assets/tracks/infogrames_super_speedway/lane_lengths.bin", 2, 6
 	.global gUnk_083C956A
 gUnk_083C956A:
+	cSym gUnk_083C956A
 	.incbin "build/assets/tracks/infogrames_super_speedway/lane_lengths.bin", 8, 6
 	.global gUnk_083C9570
 gUnk_083C9570:
+	cSym gUnk_083C9570
 	.incbin "build/assets/tracks/infogrames_super_speedway/lane_lengths.bin", 14, 4

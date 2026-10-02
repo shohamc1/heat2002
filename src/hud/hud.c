@@ -4,14 +4,7 @@
 #include "data.h"
 #include "m4a.h"
 
-struct Car
-{
-    u8 pad00[0x8C];
-    s32 tireWear0;
-    s32 tireWear1;
-    s32 tireWear2;
-    s32 tireWear3;
-};
+#include "car.h"
 
 extern u8 gText_HudPosLabel[];
 extern u8 gText_BlankRow16_2[];
@@ -22,7 +15,6 @@ extern u8 gSpeedNeedleGfx[];
 extern u8 gUnk_02025250;
 extern u8 gText_PitStopNeeded[];
 extern u8 gText_BlankRow20[];
-u8 CarNeedsPit(void);
 extern u8 gUnk_02025228;
 extern u8 gLowFuelWarningGfx[];
 
@@ -33,23 +25,23 @@ void DrawSpeedNeedle(u32 speed)
     u32 attr;
     u32 tileAttr;
 
-    pos[0] = 0xC8;
-    pos[1] = 0x78;
-    entry = RequestObjTiles16((u32)gSpeedNeedleGfx);
+    pos[0] = 200;
+    pos[1] = 120;
+    entry = RequestObjTiles16((GfxSrc)gSpeedNeedleGfx);
     if (entry != 0) {
         attr = (pos[1] & 0xFF) | ((pos[0] & 0x1FF) << 16) | 0x80000000;
-        tileAttr = entry->tileIndex | ((u8)RequestObjPalette((u32)gHudWarningIconPalette) << 12);
+        tileAttr = entry->tileIndex | ((u8)RequestObjPalette(gHudWarningIconPalette) << 12);
         attr |= 0x100;
         AddOamEntry(attr, tileAttr);
     }
     gUnk_0202522C = (speed + 0xA0) & 0xFF;
 }
 
-void DrawPitStopWarning(void)
+void DrawPitStopWarning(struct Car *car)
 {
     const u8 *text;
 
-    if (CarNeedsPit() != 0 && (gUnk_02025250 & 8) != 0) {
+    if (CarNeedsPit(car) != 0 && (gUnk_02025250 & 8) != 0) {
         text = gText_PitStopNeeded;
         DrawTextCentered(text, 6, 1);
     } else {
@@ -59,7 +51,7 @@ void DrawPitStopWarning(void)
     gUnk_02025250 = gUnk_02025250 + 1;
 }
 
-void DummyHudHook(void)
+void DummyHudHook(struct Car *unused)
 {}
 
 void DrawLowFuelWarning(s32 fuel)
@@ -74,14 +66,14 @@ void DrawLowFuelWarning(s32 fuel)
     if (gDamagePitsEnabled == 0)
         return;
     gUnk_02025228++;
-    pos[0] = 0xAA;
-    pos[1] = 0x89;
-    entry = RequestObjTiles4((u32)gLowFuelWarningGfx);
+    pos[0] = 170;
+    pos[1] = 137;
+    entry = RequestObjTiles4((GfxSrc)gLowFuelWarningGfx);
     if (entry != 0) {
         attr = pos[1] & 0xFF;
         attr |= (pos[0] & 0x1FF) << 16;
         attr |= 0x40000000;
-        tileAttr = entry->tileIndex | (((u32)RequestObjPalette((u32)gHudWarningIconPalette) << 24) >> 12);
+        tileAttr = entry->tileIndex | ((u32)RequestObjPalette(gHudWarningIconPalette) << 24) >> 12;
         AddOamEntry(attr | 0x02000100, tileAttr);
     }
     gUnk_02025398 = ((fuel >> 16) + 0xBE) & 0xFF;
@@ -91,7 +83,7 @@ void DrawLowFuelWarning(s32 fuel)
         *dest = 0xE000 | gFontTileEntries[*(u16 *)((u8 *)gFontGlyphGrid + glyphOff)];
         if (gOptions[3] != 0) {
             if (gIsDemo == 0)
-                m4aSongNumStart(0x1B);
+                m4aSongNumStart(27);
         }
     } else {
         glyphOff = 0x5B4;
@@ -103,9 +95,9 @@ void DrawRacePosition(s32 arg)
 {
     u16 *q;
     u16 *p;
-    if (gGameMode[0] == 0x0A || gGameMode[0] == 0x02)
+    if (gGameMode == 10 || gGameMode == 2)
         return;
-    if (arg == 0x64 || gGameMode[0] == 5) {
+    if (arg == 100 || gGameMode == 5) {
         p = (u16 *)gTextLayerMapPtr[0];
         p[0x16] = 0xE047;
         p[0x17] = 0xE047;
@@ -126,9 +118,9 @@ void DrawRacePosition(s32 arg)
         *q = 0xE047;
         return;
     }
-    DrawTextAt(gText_HudPosLabel, 0x16, 0);
+    DrawTextAt(gText_HudPosLabel, 22, 0);
     if (arg <= 9) {
-        register u16 *w asm("r0");
+        register u16 *w PIN(r0);
         p = (u16 *)gTextLayerMapPtr[0];
         p[0x1C] = 0xE047;
         p[0x1D] = 0xE047;
@@ -136,8 +128,8 @@ void DrawRacePosition(s32 arg)
         *w++ = 0xE047;
         *w = 0xE047;
         w -= 0x23;
-        DrawBigDigit((u16 *)((u32)w), (u8)arg);
-    } else if (arg <= 0x13) {
+        DrawBigDigit(w, (u8)arg);
+    } else if (arg <= 19) {
         DrawBigDigit((u16 *)(gTextLayerMapPtr[0] + 0x34), 1);
         DrawBigDigit((u16 *)(gTextLayerMapPtr[0] + 0x38), (u8)(arg - 0x0A));
     } else {

@@ -3,16 +3,15 @@
 #include "gba/io_reg.h"
 #include "gba/compat.h"
 #include "variables.h"
+#include "functions.h"
+#include "m4a.h"
 
-void m4aSoundVSync(void);
-void FlushTrackBgBuffers(void);
-void UploadPendingGfx(void);
-void FlushPaletteBuffer(void);
-void m4aSoundMain(void);
-
-/* Defined here (not symbols.ld): the first RAM variable moved into C,
-   per the phase-6 mechanism proof in docs/extern-headers-plan.md. */
-EWRAM_DATA u8 gVBlankWorkPhase = 0;
+/* gVBlankWorkPhase (0x020021B8) — the first RAM variable ever moved into C,
+   per the phase-6 mechanism proof in docs/extern-headers-plan.md — now
+   lives in src/system/globals.c, which owns the whole 0x02000DE0-0x02022E20
+   EWRAM run; the EWRAM_DATA definition pattern moved with it. Only this
+   file reads it, so it keeps a local extern. */
+extern u8 gVBlankWorkPhase;                       /* 0x020021B8 */
 
 void MainVBlankCallback(void)
 {
@@ -36,14 +35,14 @@ void MainVBlankCallback(void)
         v = (*(vu8 *)&gVBlankWorkDone);
         if (v == 0) {
             gVBlankWorkPhase = v;
-            CpuFastSet(gUnk_02024830, (void *)OAM, 0x100);
+            CpuFastSet(gOamEntryQueue, (void *)OAM, 0x100);
             if (gBgScrollUpdateEnabled != 0) {
-                REG_BG3HOFS = gUnk_02022DE0;
-                REG_BG3VOFS = gUnk_02022DE8;
-                REG_BG2HOFS = gUnk_02022DF8;
-                REG_BG2VOFS = gUnk_0200BC2C;
-                REG_BG1HOFS = gUnk_0200BC48;
-                REG_BG1VOFS = gUnk_0200BC4C;
+                REG_BG3HOFS = gBg3ScrollX;
+                REG_BG3VOFS = gBg3ScrollY;
+                REG_BG2HOFS = gBg2ScrollX;
+                REG_BG2VOFS = gBg2ScrollY;
+                REG_BG1HOFS = gBg1ScrollX;
+                REG_BG1VOFS = gBg1ScrollY;
                 REG_BG0HOFS = v;
                 REG_BG0VOFS = v;
                 FlushTrackBgBuffers();

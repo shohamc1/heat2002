@@ -16,8 +16,8 @@ s32 MidiKeyToFreq(struct WaveData *arg0, u8 arg1, u32 arg2)
 
     idx = arg1;
     packed = arg2 << 24;
-    if (idx > 0xB2) {
-        idx = 0xB2;
+    if (idx > 178) {
+        idx = 178;
         packed = 0xFF000000;
     }
     t = gMidiKeyToFreqTable[idx];

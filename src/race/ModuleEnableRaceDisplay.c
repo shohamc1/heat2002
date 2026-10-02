@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 #include "gba/io_reg.h"
 
 void ModuleEnableRaceDisplay(void)

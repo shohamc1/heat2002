@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 #include "variables.h"
 
 struct OamAttr1 /* OAM entry's attr1: 9-bit X */

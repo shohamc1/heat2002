@@ -13,4 +13,11 @@ const u16 gTitleScreenMetatileMap[150] = INCBIN_U16("build/assets/graphics/scree
 // Its users declare it as u16 x[][4] (150 rows of 4).
 const u16 gSharedMetatileTileTable[600] = INCBIN_U16("build/assets/graphics/screens/title_screen.table.bin");
 
+/* The 0xA280-byte VRAM copy runs past the gfx blob into the following
+ * ROM data, as the original build did; hosted, the tail past the blob
+ * zero-fills so the copy stays defined. */
+#if PORTABLE
+const u8 gTitleScreenGfx[0xA280] = INCBIN_U8("build/assets/graphics/screens/title_screen.tiles.bin");
+#else
 const u8 gTitleScreenGfx[] = INCBIN_U8("build/assets/graphics/screens/title_screen.tiles.bin");
+#endif

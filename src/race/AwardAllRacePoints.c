@@ -8,5 +8,5 @@ u32 AwardAllRacePoints(void)
     do {
         AwardRacePoints(&gCars[i], i);
         i++;
-    } while (i != 0x18);
+    } while (i != 24);
 }

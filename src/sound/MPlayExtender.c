@@ -4,16 +4,15 @@
 #include "functions.h"
 #include "m4a.h"
 #include "variables.h"
+#if PORTABLE
+#include "platform/shared/audio/cgb_audio.h"
+#endif
 
 /* MPlayExtender */
 
-void ply_memacc(void);
 void ply_lfos(void);
 void ply_mod(void);
-void ply_xcmd(void);
 void ply_endtie(void);
-void CgbSound(void);
-void MidiKeyToCgbFreq(void);
 
 void MPlayExtender(struct CgbChannel *cgbChans)
 {
@@ -30,6 +29,17 @@ void MPlayExtender(struct CgbChannel *cgbChans)
     REG_NR44 = 0x80;
     REG_NR30 = 0x00;
     REG_SOUNDCNT_L = 0xFF77;
+#if PORTABLE
+    /* The software PSG's copy of the four osc-offs above (after sa2):
+       envelope 8 with a trigger is what CgbOscOff does on the host. */
+    {
+        u8 i;
+        for (i = 0; i < 4; i++) {
+            cgb_set_envelope(i, 8);
+            cgb_trigger_note(i);
+        }
+    }
+#endif
     soundInfo = SOUND_INFO_PTR;
     ident = soundInfo->ident;
     if (ident == ID_NUMBER) {
@@ -47,8 +57,12 @@ void MPlayExtender(struct CgbChannel *cgbChans)
         soundInfo->CgbSound = (CgbSoundFunc)CgbSound;
         soundInfo->CgbOscOff = (CgbOscOffFunc)CgbOscOff;
         soundInfo->MidiKeyToCgbFreq = (MidiKeyToCgbFreqFunc)MidiKeyToCgbFreq;
+#if PORTABLE
+        soundInfo->maxLines = (u8)(uintptr_t)&gMaxLines;
+#else
         soundInfo->maxLines = (u8)(u32)&gMaxLines;
-        CpuFill32(0, (u32)cgbChans, 0x100);
+#endif
+        CpuFill32(0, cgbChans, 0x100);
         cgbChans[0].type = 1;
         cgbChans[0].panMask = 0x11;
         cgbChans[1].type = 2;

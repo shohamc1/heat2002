@@ -8,9 +8,8 @@ void DrawChallengePassed(u8 unused1, u8 unused2)
 {
     const u8 *text;
     DummyUiFontLoad(gUiFontTable[0]);
-    GetString(0xA9);
-    ((void (*)(void))DrawBigText)();
-    text = GetString(0xAA);
+    DrawBigText(GetString(169));
+    text = GetString(170);
     DrawTextCenteredHighlight(text, 6, 1);
 }
 
@@ -18,9 +17,8 @@ void DrawChallengeFailed(u8 unused)
 {
     const u8 *text;
     DummyUiFontLoad(gUiFontTable[0]);
-    GetString(0xBD);
-    ((void (*)(void))DrawBigText)();
-    text = GetString(0xBE);
+    DrawBigText(GetString(189));
+    text = GetString(190);
     DrawTextCenteredHighlight(text, 6, 1);
 }
 
@@ -33,7 +31,7 @@ u8 ShowChallengePassed(u8 challengeIdx, u8 alreadyBeaten)
     LoadMenuScreen(3, (u16 *)palette);
     DrawChallengePassed(resultIdx, alreadyBeaten);
     FadeToBrightenedPalette(palette, 0x0F);
-    done = 0x40;
+    done = 64;
     do {
         ReadKeys();
         DrawChallengePassed(resultIdx, alreadyBeaten);
@@ -52,7 +50,7 @@ u8 ChallengeFailedScreen(s8 challengeIdx)
     LoadMenuScreen(3, (u16 *)buf);
     DrawChallengeFailed(challengeIdx);
     FadeToBrightenedPalette(buf, 0x0F);
-    sel = 0x40;
+    sel = 64;
     do {
         ReadKeys();
         DrawChallengeFailed(challengeIdx);

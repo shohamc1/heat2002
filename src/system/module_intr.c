@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 #include "gba/defines.h"
 #include "gba/io_reg.h"
 #include "gba/macro.h"
@@ -55,7 +56,7 @@ void ModuleClearVBlankFlag(void)
 
 void ModuleAckVBlank(void)
 {
-    *(volatile u16 *)0x04000202 = 1;
+    REG_IF = 1;
     gUnk_02037E20 = 1;
 }
 

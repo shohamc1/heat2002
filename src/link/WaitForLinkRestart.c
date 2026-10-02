@@ -11,26 +11,26 @@ void WaitForLinkRestart(void)
     ClearOamBuffer();
     while (1) {
         u16 keys;
-        *(u16 *)0x02002124 = 0;
+        *(u16 *)&gVBlankCounter = 0;
         if (ExchangeLinkInput() != 0) {
-            DrawTextCentered(GetString(0x75), 0x0A, 1);
-            m4aMPlayStop((struct MusicPlayerInfo *)0x02001F20);
-            m4aMPlayStop((struct MusicPlayerInfo *)0x02001F60);
+            DrawTextCentered(GetString(117), 10, 1);
+            m4aMPlayStop(&gBgMusicPlayer);
+            m4aMPlayStop(&gEngineSoundPlayer);
             m4aSoundVSyncOff();
             while (1) {
-                u32 playerId = gLinkPlayerId[0];
+                u32 playerId = gLinkPlayerId;
                 if (playerId == 0)
                     playerId = REG_KEYINPUT;
                 ((void (*)(u32))VBlankIntrWait)(playerId);
             }
         }
-        if (gLinkPlayerId[0] != 0)
-            DrawTextCentered(GetString(0x58), 0x0E, 1);
+        if (gLinkPlayerId != 0)
+            DrawTextCentered(GetString(88), 14, 1);
         else
-            DrawTextCentered(GetString(0x0F), 0x0E, 1);
+            DrawTextCentered(GetString(15), 14, 1);
         keys = ReadLinkMenuKeys();
         if (keys & 8) {
-            FadeToColor(0, 0x32);
+            FadeToColor(0, 50);
             return;
         }
     }

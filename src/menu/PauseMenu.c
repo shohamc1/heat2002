@@ -44,7 +44,7 @@ u8 PauseMenu(void)
     u16 *kp;
     u8 *p248;
     u8 *p39c;
-    register u16 k asm("r1");
+    register u16 k PIN(r1);
     u16 t;
     u8 bit1;
     u8 *p248b;

@@ -1,12 +1,34 @@
 #include "global.h"
+#include "functions.h"
+#include "gba/defines.h"
 #include "variables.h"
 
-extern u8 gModule_ObjTileCache64Tiles[];
-extern u8 gModule_ObjTileCache16Tiles[];
-extern u8 gModule_ObjTileCache2Tiles[];
-extern u8 gModule_ObjTileCache8Tiles[];
-extern u8 gModule_ObjTileCache4Tiles[];
-extern u8 gModule_ObjTileCache1Tiles[];
+extern u16 gModule_ObjTileCache64Tiles[];
+extern u16 gModule_ObjTileCache16Tiles[];
+extern u16 gModule_ObjTileCache2Tiles[];
+extern u16 gModule_ObjTileCache8Tiles[];
+extern u16 gModule_ObjTileCache4Tiles[];
+extern u16 gModule_ObjTileCache1Tiles[];
+
+/* This file also owns the high module's gfx-cache EWRAM run
+   0x0203B870-0x0203C340 (issue 5 step 3, run rule; MODULE_EWRAM_DATA),
+   the module twin of src/sprite/gfx_cache.c's run: the six OBJ tile
+   caches, the OBJ palette cache and the two upload counters behind them
+   (gModule_ObjPalBytesPeak/gModule_ObjPalBytesCopiedThisFrame, src/sprite/ModuleUploadPendingGfx.c's
+   variables, which close the run 8 bytes before
+   src/task/module_task.c's task run begins). ldscript.ld's
+   .module_ewram_data_gfx_cache places the section at 0x0203B870. */
+
+MODULE_EWRAM_DATA struct ObjTileCacheEntry gModule_ObjTileCache16[0x18] = {0};
+MODULE_EWRAM_DATA struct ObjTileCacheEntry gModule_ObjTileCache2[0x20] = {0};
+MODULE_EWRAM_DATA struct ObjTileCacheEntry gModule_ObjTileCache1[0x20] = {0};
+MODULE_EWRAM_DATA struct ObjTileCacheEntry gModule_ObjTileCache8[0x14] = {0};
+MODULE_EWRAM_DATA struct ObjTileCacheEntry gModule_ObjTileCache4[0x10] = {0};
+MODULE_EWRAM_DATA struct ObjTileCacheEntry gModule_ObjTileCache64[4] = {0};
+MODULE_EWRAM_DATA struct ObjPaletteCacheEntry gModule_ObjPaletteCache[0x10] = {0};
+MODULE_EWRAM_DATA s32 gModule_ObjPalBytesPeak = 0;
+MODULE_EWRAM_DATA s32 gModule_ObjPalBytesCopiedThisFrame = 0;
+static MODULE_EWRAM_DATA u8 gfx_gapC338[0x8] = {0};
 
 void ModuleInitObjPaletteCacheEntry(struct ObjPaletteCacheEntry *entry)
 {
@@ -24,7 +46,7 @@ void ModuleInitObjTileCache(u32 count, u16 *tiles, struct ObjTileCacheEntry *ent
         entries->age = 0;
         entries->pending = 0;
         entries->tileIndex = *tiles;
-        entries->vramDest = (*tiles << 5) + 0x06010000;
+        entries->vramDest = (GfxAddr)((*tiles << 5) + OBJ_VRAM0);
         entries->unk06 = 0;
     }
 }
@@ -35,7 +57,7 @@ void ModuleInitGfxCaches(void)
     u32 color;
     struct ObjPaletteCacheEntry *entry;
     u16 *src;
-    void *dest;
+    struct ObjTileCacheEntry *dest;
 
     src = gModule_ObjTileCache64Tiles;
     dest = gModule_ObjTileCache64;
@@ -57,7 +79,7 @@ void ModuleInitGfxCaches(void)
     ModuleInitObjTileCache(0x20, src, dest);
 
     i = 0;
-    color = 0x05000200;
+    color = OBJ_PLTT;
     entry = gModule_ObjPaletteCache;
     do {
         ModuleInitObjPaletteCacheEntry(entry);
@@ -95,7 +117,7 @@ void ModuleAgeGfxCaches(void)
             p->age--;
     }
     p = a2;
-    for (i = 0; i != 0x18; i++, p++) {
+    for (i = 0; i != 24; i++, p++) {
         if (p->age == 0)
             p->gfx = 0xFFFF;
         else
@@ -109,7 +131,7 @@ void ModuleAgeGfxCaches(void)
             p->age--;
     }
     p = a4;
-    for (i = 0; i != 0x14; i++, p++) {
+    for (i = 0; i != 20; i++, p++) {
         if (p->age == 0)
             p->gfx = 0xFFFF;
         else

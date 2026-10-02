@@ -2,10 +2,8 @@
 #include "functions.h"
 #include "variables.h"
 
-extern s32 gUnk_0203C334;
-extern s32 gUnk_0203C330;
-
-void sub_08344B70(u32 a, u32 b);
+extern s32 gModule_ObjPalBytesCopiedThisFrame;
+extern s32 gModule_ObjPalBytesPeak;
 
 void ModuleUploadPendingGfx(void)
 {
@@ -13,11 +11,11 @@ void ModuleUploadPendingGfx(void)
     struct ObjTileCacheEntry *p;
     struct ObjPaletteCacheEntry *pal;
     u32 i;
-    s32 src;
-    s32 dest;
+    GfxAddr src;
+    GfxAddr dest;
     s32 *q;
 
-    gUnk_0203C334 = 0;
+    gModule_ObjPalBytesCopiedThisFrame = 0;
 
     p = gModule_ObjTileCache64;
     i = 0;
@@ -25,7 +23,7 @@ void ModuleUploadPendingGfx(void)
         if (p->pending != 0) {
             src = p->gfx;
             dest = p->vramDest;
-            sub_08344B70(src, dest);
+            sub_08344B70((const void *)src, (void *)dest);
             p->pending = 0;
         }
         i++;
@@ -38,12 +36,12 @@ void ModuleUploadPendingGfx(void)
         if (p->pending != 0) {
             src = p->gfx;
             dest = p->vramDest;
-            sub_08344B70(src, dest);
+            sub_08344B70((const void *)src, (void *)dest);
             p->pending = 0;
         }
         i++;
         p++;
-    } while (i != 0x18);
+    } while (i != 24);
 
     p = gModule_ObjTileCache2;
     i = 0;
@@ -51,8 +49,8 @@ void ModuleUploadPendingGfx(void)
         if (p->pending != 0) {
             src = p->gfx;
             dest = p->vramDest;
-            sub_08344B70(src, (u32)buf);
-            sub_08344B64((u32)buf, dest, 0x20);
+            sub_08344B70((const void *)src, buf);
+            sub_08344B64(buf, (void *)dest, 0x20);
             p->pending = 0;
         }
         i++;
@@ -65,12 +63,12 @@ void ModuleUploadPendingGfx(void)
         if (p->pending != 0) {
             src = p->gfx;
             dest = p->vramDest;
-            sub_08344B70(src, dest);
+            sub_08344B70((const void *)src, (void *)dest);
             p->pending = 0;
         }
         i++;
         p++;
-    } while (i != 0x14);
+    } while (i != 20);
 
     p = gModule_ObjTileCache4;
     i = 0;
@@ -78,7 +76,7 @@ void ModuleUploadPendingGfx(void)
         if (p->pending != 0) {
             src = p->gfx;
             dest = p->vramDest;
-            sub_08344B70(src, dest);
+            sub_08344B70((const void *)src, (void *)dest);
             p->pending = 0;
         }
         i++;
@@ -92,9 +90,9 @@ void ModuleUploadPendingGfx(void)
             src = p->gfx;
             dest = p->vramDest;
             if (p->pending == 1)
-                sub_08344B64(src, dest, 0x10);
+                sub_08344B64((const void *)src, (void *)dest, 0x10);
             else
-                sub_08344B70(src, dest);
+                sub_08344B70((const void *)src, (void *)dest);
             p->pending = 0;
         }
         i++;
@@ -103,12 +101,12 @@ void ModuleUploadPendingGfx(void)
 
     pal = gModule_ObjPaletteCache;
     i = 0;
-    q = &gUnk_0203C334;
+    q = &gModule_ObjPalBytesCopiedThisFrame;
     do {
         if (pal->pending != 0) {
             src = pal->palette;
             dest = pal->palDest;
-            sub_08344B64(src, dest, 0x10);
+            sub_08344B64((const void *)src, (void *)dest, 0x10);
             pal->pending = 0;
             *q += 0x20;
         }
@@ -116,6 +114,6 @@ void ModuleUploadPendingGfx(void)
         pal++;
     } while (i != 0x10);
 
-    if (gUnk_0203C334 > gUnk_0203C330)
-        gUnk_0203C330 = gUnk_0203C334;
+    if (gModule_ObjPalBytesCopiedThisFrame > gModule_ObjPalBytesPeak)
+        gModule_ObjPalBytesPeak = gModule_ObjPalBytesCopiedThisFrame;
 }

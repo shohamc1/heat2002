@@ -1,19 +1,18 @@
 #include "global.h"
 #include "variables.h"
 #include "car.h"
+#include "functions.h"
 
 extern u8 gUnk_0203DCF0;
 extern u32 gModule_DriverGearPowerTables[];
 extern u32 gModule_DriverGearRatioTables[];
 extern u32 gModule_DriverRpmPerSpeedTables[];
 
-void ModuleInitCarSteering(s32 *p, u32 v);
-
-void ModuleInitCar(u8 carIdx, struct Car *car, s32 posX, s32 posZ, u32 heading)
+void ModuleInitCar(u8 carIdx, struct Car *car, s32 posX, s32 posZ, u32 heading, u32 unused)
 {
     u8 i;
 
-    if (gModule_GameMode[0] == 4)
+    if (gModule_GameMode == 4)
         car->driverId = 0;
     car->lapStartedFlag = 0;
     car->pitState = 0;
@@ -45,9 +44,9 @@ void ModuleInitCar(u8 carIdx, struct Car *car, s32 posX, s32 posZ, u32 heading)
     car->tireWear2 = 0;
     car->tireWear3 = 0;
     car->fuel = 0xB400;
-    if (gModule_GameMode[0] == 0xF && gUnk_0203DFB0 == 3 && car == gModule_Cars)
+    if (gModule_GameMode == 15 && gUnk_0203DFB0 == 3 && car == gModule_Cars)
         car->fuel = 0x5000;
-    if (gModule_GameMode[0] != 5 && gModule_GameMode[0] != 0x11)
+    if (gModule_GameMode != 5 && gModule_GameMode != 17)
         car->finishTime = 0;
     car->onApron = 0;
     car->onGrass = 0;
@@ -65,7 +64,7 @@ void ModuleInitCar(u8 carIdx, struct Car *car, s32 posX, s32 posZ, u32 heading)
     /* One store per arm: jump2 merges the stores into one strb behind a new
        label, and jumps to a label created in that pass never cross-jump,
        so the equal-valued arms stay separate as in the ROM. */
-    if (gModule_GameMode[0] == 0xF) {
+    if (gModule_GameMode == 15) {
         switch (gUnk_0203DFB0) {
             case 0:
                 car->lap = 1;
@@ -107,7 +106,7 @@ void ModuleInitCar(u8 carIdx, struct Car *car, s32 posX, s32 posZ, u32 heading)
     } else {
         car->lap = 0;
     }
-    if ((u8)(gModule_GameMode[0] - 3) > 1)
+    if ((u8)(gModule_GameMode - 3) > 1)
         car->lap--;
     car->progress = 0;
     car->tickCount = 0x12C;
@@ -120,16 +119,16 @@ void ModuleInitCar(u8 carIdx, struct Car *car, s32 posX, s32 posZ, u32 heading)
     car->torque = 0;
     car->drag = 0;
     car->racePosition = 0x63;
-    (*(s32 *)&car->gearPowerTable) = gModule_DriverGearPowerTables[car->driverId];
-    (*(s32 *)&car->gearRatioTable) = gModule_DriverGearRatioTables[car->driverId];
-    (*(s32 *)&car->rpmPerSpeedTable) = gModule_DriverRpmPerSpeedTables[car->driverId];
-    if (gModule_IsLinkRace == 0 && carIdx != 0 && gModule_GameMode[0] != 2) {
+    car->gearPowerTable = gModule_DriverGearPowerTables[car->driverId];
+    car->gearRatioTable = gModule_DriverGearRatioTables[car->driverId];
+    car->rpmPerSpeedTable = gModule_DriverRpmPerSpeedTables[car->driverId];
+    if (gModule_IsLinkRace == 0 && carIdx != 0 && gModule_GameMode != 2) {
         car->gearPowerTable = gModule_AiDriverGearPowerTable;
         car->gearRatioTable = gModule_AiDriverGearRatioTable;
         car->rpmPerSpeedTable = gModule_AiDriverRpmPerSpeedTable;
-        (*(s32 *)&car->gearPowerTable) = gModule_DriverGearPowerTables[0];
-        (*(s32 *)&car->gearRatioTable) = gModule_DriverGearRatioTables[0];
-        (*(s32 *)&car->rpmPerSpeedTable) = gModule_DriverRpmPerSpeedTables[0];
+        car->gearPowerTable = gModule_DriverGearPowerTables[0];
+        car->gearRatioTable = gModule_DriverGearRatioTables[0];
+        car->rpmPerSpeedTable = gModule_DriverRpmPerSpeedTables[0];
     }
     car->unk158 = 0;
     car->finished = 0;

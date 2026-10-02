@@ -1792,27 +1792,41 @@ def unpack_asset(asset, rom=None):
         tmp.rename(out)
 
 
-def song(mid, out):
+def tools_rel(rel):
+    """A tool by path relative to tools/: the vendored mid2agb (issue 5)
+    or a tools/bin binary."""
+    return ROOT / "tools" / rel
+
+
+def song(mid, out, portable=False):
     """mid2agb a song's .mid into assembly that data/sound/sounds.s can
-    include."""
+    include. portable=True builds it with the vendored tools/mid2agb:
+    the same events, but pointer fields as mPtr and labels as C_DECL, so
+    the hosted build gets pointer-width song data."""
     asset = find(mid)
     opts = asset["options"]
     out = Path(out)
     group = f"voicegroup_{int(opts['voicegroup'], 16):08X}"
     with tempfile.TemporaryDirectory() as t:
         s = Path(t) / "song.s"
-        run(TOOLS / "mid2agb", mid, s, *song_flags(opts), "-V", opts["V"],
-            "-L", out.stem)
+        run(tools_rel("mid2agb/mid2agb" if portable else "bin/mid2agb"), mid, s,
+            *song_flags(opts), "-V", opts["V"], "-L", out.stem)
         src = s.read_text()
-    # mid2agb writes pret preproc's `label::` (a global label) and its own
-    # .rodata section; plain gas wants `label:`, and the song must stay in
-    # the including fragment's section, at its place in the ROM. That
-    # section is Thumb code to gas, which pads a bare `.align` with NOPs;
-    # the ROM pads with zeros.
-    src = (src.replace("::", ":").replace("\t.section .rodata\n", "")
-           .replace("\t.align\t2\n", "\t.align\t2, 0\n")
-           .replace('"sound/MPlayDef.s"', '"tools/tmc/sound/MPlayDef.s"')
-           .replace("voicegroup000", group))
+    if portable:
+        # The vendored tool already emits plain labels, mAlignWord and the
+        # tools/tmc MPlayDef path; only the default voicegroup name needs
+        # the same rewrite.
+        src = src.replace("voicegroup000", group)
+    else:
+        # mid2agb writes pret preproc's `label::` (a global label) and its
+        # own .rodata section; plain gas wants `label:`, and the song must
+        # stay in the including fragment's section, at its place in the
+        # ROM. That section is Thumb code to gas, which pads a bare
+        # `.align` with NOPs; the ROM pads with zeros.
+        src = (src.replace("::", ":").replace("\t.section .rodata\n", "")
+               .replace("\t.align\t2\n", "\t.align\t2, 0\n")
+               .replace('"sound/MPlayDef.s"', '"tools/tmc/sound/MPlayDef.s"')
+               .replace("voicegroup000", group))
     out.write_text(src)
 
 
@@ -1850,9 +1864,14 @@ def blank():
         if path.suffix == ".s":
             # The song table (src/sound/tables.c, another object) names each
             # song's header label, so it must be global even zero-filled.
+            # The label goes through C_DECL (asm/macros/portable.inc,
+            # included at the top of data/sound/sounds.s in both builds):
+            # the identity on ELF, but the underscore-prefixed C spelling
+            # on Mach-O, where an asm label otherwise misses the C symbol
+            # the song table (src/sound/tables.c) references.
             head = asset["options"]["headerOffset"]
-            path.write_text(f"\t.space {head}\n\t.global {path.stem}\n"
-                            f"{path.stem}:\n\t.space {asset['size'] - head}\n")
+            path.write_text(f"\t.space {head}\n\t.global C_DECL({path.stem})\n"
+                            f"C_DECL({path.stem}):\n\t.space {asset['size'] - head}\n")
         else:
             path.write_bytes(bytes(asset["size"]))
     # The stream-length files carry the retail halfword counts whatever the
@@ -1974,8 +1993,11 @@ def convert():
 
 if __name__ == "__main__":
     modes = {"extract": extract, "unpack": unpack, "song": song, "list": list_editable,
-             "blank": blank, "convert": convert, "mask": mask}
-    args = {"unpack": 1, "song": 2, "mask": 2}
+             "blank": blank, "convert": convert, "mask": mask,
+             # issue 5: the same song assembly through the vendored mPtr
+             # mid2agb, for the hosted build.
+             "song-p": lambda mid, out: song(mid, out, portable=True)}
+    args = {"unpack": 1, "song": 2, "mask": 2, "song-p": 2}
     if len(sys.argv) < 2 or sys.argv[1] not in modes \
             or len(sys.argv) - 2 != args.get(sys.argv[1], 0):
         sys.exit(__doc__)

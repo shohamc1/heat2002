@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 #include "gba/m4a_internal.h"
 
 /* m4aMPlayPitchControl (high copy) */

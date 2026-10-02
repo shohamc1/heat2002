@@ -16,11 +16,10 @@ void DrawChallengeCategorySelect(u32 cursor)
     u8 i;
 
     DummyUiFontLoad(gUiFontTable[0]);
-    GetString(0xA4);
-    ((void (*)(void))DrawBigText)();
+    DrawBigText(GetString(164));
     i = 0;
     do {
-        DrawTextCenteredHighlight(GetString(i + 0xA5), i * 2 + 6, cursor == i);
+        DrawTextCenteredHighlight(GetString(i + 165), i * 2 + 6, cursor == i);
         i++;
     } while (i != 4);
 }
@@ -34,7 +33,7 @@ u8 ChallengeCategorySelect(void)
     LoadMenuScreen(5, (u16 *)buf);
     DrawChallengeCategorySelect(0);
     FadeToBrightenedPalette(buf, 0x0F);
-    sel = 0x40;
+    sel = 64;
     do {
         ReadKeys();
         DrawChallengeCategorySelect(cursor);
@@ -43,8 +42,8 @@ u8 ChallengeCategorySelect(void)
             gChallengeCategorySelected = cursor;
         }
     retry:
-        /* old prototype u8 MenuMoveVertical(...): the s16 return shuffles the
-                r5/r6 allocation for v and sel */
+        /* Called as u8 (u16, s8, u32, u32): the real s16 return and
+           parameters shuffle the r5/r6 allocation for v and sel. */
         cursor = ((u8 (*)(u16, s8, u32, u32))MenuMoveVertical)(gKeysPressed, cursor, 0, 3);
         if (gChallengeCategoryUnlocked[cursor] == 0)
             goto retry;
@@ -66,8 +65,7 @@ void DrawChallengeSelect(u8 category, u8 challengeIdx)
     s8 status;
 
     DummyUiFontLoad(gUiFontTable[0]);
-    GetString(category + 0xAE);
-    ((void (*)(void))DrawBigText)();
+    DrawBigText(GetString(category + 174));
     base = (u8)(category * 4);
     y = 3;
     i = 0;
@@ -75,24 +73,24 @@ void DrawChallengeSelect(u8 category, u8 challengeIdx)
         DrawText(gChallengeNameTexts[base + i], 0, y, i == (challengeIdx & 3));
         if (gChallengeStatus[base + i] == 1) {
             u8 *statusText = gText_ChallengeStatusBeat;
-            DrawText(statusText, 0x16, y, i == (challengeIdx & 3));
+            DrawText(statusText, 22, y, i == (challengeIdx & 3));
         }
         if (gChallengeStatus[base + i] == 2) {
             u8 *statusText = gText_ChallengeStatusBeat;
-            DrawText(statusText, 0x16, y, i == (challengeIdx & 3));
+            DrawText(statusText, 22, y, i == (challengeIdx & 3));
         }
         status = ((s8 *)gChallengeStatus)[base + i];
         if (status == 3) {
             u8 *statusText = gText_ChallengeStatusBeat;
-            DrawText(statusText, 0x16, y, i == (status & challengeIdx));
+            DrawText(statusText, 22, y, i == (status & challengeIdx));
         }
         if (((s8 *)gChallengeStatus)[base + i] == -1) {
             u8 *statusText = gText_ChallengeStatusNA;
-            DrawText(statusText, 0x16, y, i == (challengeIdx & 3));
+            DrawText(statusText, 22, y, i == (challengeIdx & 3));
         }
         if ((s8)gChallengeStatus[base + i] == 0) {
             u8 *statusText = gText_ChallengeStatusOpen;
-            DrawText(statusText, 0x16, y, i == (challengeIdx & 3));
+            DrawText(statusText, 22, y, i == (challengeIdx & 3));
         }
         y++;
         i++;
@@ -116,7 +114,7 @@ u8 ChallengeSelect(u8 category, u8 challengeIdx)
     LoadMenuScreen(5, (u16 *)buf);
     DrawChallengeSelect(category, cursor);
     FadeToBrightenedPalette(buf, 0x0F);
-    sel = 0x40;
+    sel = 64;
     do {
         ReadKeys();
         DrawChallengeSelect(category, cursor);

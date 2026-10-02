@@ -8,8 +8,8 @@ void LinkFailScreen(void)
 {
     u8 fadePalette[0x200];
     u16 keys;
-    m4aMPlayStop((struct MusicPlayerInfo *)0x02001F60);
-    m4aMPlayStop((struct MusicPlayerInfo *)0x02001F20);
+    m4aMPlayStop(&gEngineSoundPlayer);
+    m4aMPlayStop(&gBgMusicPlayer);
     ResetSpriteOrderTable();
     InitGfxCaches();
     AgeGfxCaches();
@@ -19,14 +19,13 @@ void LinkFailScreen(void)
     gIsLinkRace = 0;
     LoadMenuScreen(1, (u16 *)fadePalette);
     DummyUiFontLoad(gUiFontTable[0]);
-    GetString(0x75);
-    ((void (*)(void))DrawBigText)();
-    DrawTextCenteredHighlight(GetString(0x75), 0x0A, 1);
+    DrawBigText(GetString(117));
+    DrawTextCenteredHighlight(GetString(117), 10, 1);
     FadeToBrightenedPalette(fadePalette, 0x0F);
     do {
         VBlankIntrWait();
         ReadKeys();
-        DrawTextCenteredHighlight(GetString(0x0F), 0x0F, 1);
-    } while (!(*(u16 *)0x020005CC & 8));
+        DrawTextCenteredHighlight(GetString(15), 15, 1);
+    } while (!(*(u16 *)&gKeysPressed & 8));
     FadeToColor(0, 0x0F);
 }

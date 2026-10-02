@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 #include "car.h"
 #include "variables.h"
 
@@ -36,7 +37,7 @@ void ModuleSmoothCamera(void)
     s32 diffX = gModule_Camera[2] - gModule_Camera[0];
     s32 diffY = gModule_Camera[3] - gModule_Camera[1];
 
-    if (gModule_IsDemo[0] != 0) {
+    if (gModule_IsDemo != 0) {
         gModule_Camera[0] = gModule_Camera[0] + diffX;
         gModule_Camera[1] = gModule_Camera[1] + diffY;
     } else {
@@ -47,7 +48,7 @@ void ModuleSmoothCamera(void)
 
 void ModuleSetCameraTarget(struct Car *car)
 {
-    if (gModule_IsDemo[0] != 0) {
+    if (gModule_IsDemo != 0) {
         gModule_Camera[2] = car->posX;
         gModule_Camera[3] = car->posZ;
     } else {

@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 #include "gba/io_reg.h"
 #include "variables.h"
 
@@ -17,7 +18,7 @@ void ModuleSioSendWord(u16 data)
     REG_IME = 0;
     gIntrCheck = gIntrCheck & 0xFF7F;
     REG_IME = 1;
-    if ((*(u8 *)0x04000128 & 0x30) == 0)
+    if ((*(u8 *)REG_ADDR_SIOCNT & 0x30) == 0)
         REG_SIOCNT |= SIO_START;
 }
 

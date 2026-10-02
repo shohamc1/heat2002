@@ -1,7 +1,8 @@
 #include "global.h"
+#include "functions.h"
 #include "gba/m4a_internal.h"
 
-void ModuleTrkVolPitSet(u32 mplayInfo, struct MusicPlayerTrack *track)
+void ModuleTrkVolPitSet(struct MusicPlayerInfo *unused, struct MusicPlayerTrack *track)
 {
     u32 envFactor;
     s32 pan;

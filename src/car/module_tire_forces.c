@@ -9,8 +9,6 @@ extern s32 gModule_CarHeadingAngle;
 extern s32 gModule_YawContactSpeed;
 extern s32 gModule_YawContactVelX;
 extern s32 gModule_YawContactVelZ;
-void ModuleAddSkidSmokeTask(u8 a, u8 b);
-void ModuleM4aSongNumStart(u16 idx);
 
 void ModuleUpdateTireForces(struct Car *car, u8 carIndex)
 {
@@ -51,7 +49,7 @@ void ModuleUpdateTireForces(struct Car *car, u8 carIndex)
             *frontGrip >>= 1;
     }
     gModule_CarHeadingAngle = ((car->heading >> 8) - 0x40) & 0xFF;
-    gModule_YawContactSpeed = contactSpeed = (*(s16 *)&car->yawRate) << 7;
+    gModule_YawContactSpeed = contactSpeed = (s16)car->yawRate << 7;
     gModule_YawContactVelX = (contactVelX = contactSpeed * -gModule_SinTable[((car->heading >> 8) - 0x40) & 0xFF]) >> 8;
     gModule_YawContactVelZ = (contactVelZ = contactSpeed * gModule_SinTable[(((car->heading >> 8) - 0x40) & 0xFF) + 0x40]) >> 8;
     if (car->zoneGripFlag != 0) {
@@ -94,8 +92,8 @@ void ModuleComputeAxleTireForce(u8 axle, struct Car *car)
     s32 lateralVel;
     s32 slipSpeed;
     s32 idx;
-    register s32 m asm("r2");
-    register s32 mm asm("r0");
+    register s32 m PIN(r2);
+    register s32 mm PIN(r0);
     s32 armAngle;
     s32 t;
     s32 *forcePtr;
@@ -133,8 +131,8 @@ void ModuleComputeAxleTireForce(u8 axle, struct Car *car)
             goto tail;
         }
     e2check:
-        if (gModule_Options[3] != 0 && gModule_IsDemo[0] == 0 && gModule_RaceEndState == 0)
-            ModuleM4aSongNumStart(0xB);
+        if (gModule_Options[3] != 0 && gModule_IsDemo == 0 && gModule_RaceEndState == 0)
+            ModuleM4aSongNumStart(11);
     } else {
         if (gModule_DamagePitsEnabled != 0) {
             car->tireWear2 += ABS2(lateralVel >> 17);

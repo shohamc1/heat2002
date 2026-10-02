@@ -9,14 +9,28 @@
  *   them, but not the flag test.
  */
 #include "global.h"
+#include "gba/defines.h"
+#include "gba/io_reg.h"
 #include "functions.h"
 #include "variables.h"
 
-extern u16 gLinkPhase0RecvWords[];
-u16 PackLinkKeys(u16 keys);
 u8 IsLinkSeqNumExpected(u16 seq, u8 next);
-u8 IsValidLinkKeys(u16 id);
-u16 UnpackLinkKeys(u16 id);
+
+/* This file's EWRAM variables below 0x02022E20 (gNumLinkPlayers,
+   gLinkVBlankTimeout, gLinkTxSeqNum and gLinkPhase0RecvWords) moved to
+   src/system/globals.c, the 0x02000DE0-0x02022E20 run's owner; the first
+   three are declared in variables.h. Only this file reads
+   gLinkPhase0RecvWords. gLinkSendWords (0x0202ED78) moved to
+   src/save/save.c, the owner of the 0x0202ED70-0x0202F1C0 run it sits in,
+   and is declared in variables.h. */
+extern u16 gLinkPhase0RecvWords[6];               /* 0x02002178 */
+#if PLATFORM_GBA
+/* The BIOS interrupt-check flag the serial ISR sets, in IWRAM: it takes
+   ldscript.ld's .iwram_ExchangeLinkInput output section. The hosted build
+   has no such definition -- variables.h maps the name onto the platform's
+   INTR_CHECK variable instead (gba/defines.h). */
+IWRAM_DATA u16 gIntrCheck = 0;
+#endif
 
 u8 IsLinkSeqNumExpected(u16 seq, u8 next)
 {
@@ -51,7 +65,7 @@ s32 ExchangeLinkInput(void)
     u8 n;
     u8 n2;
 
-    keys = ~*(u16 *)0x04000130;
+    keys = ~REG_KEYINPUT;
     keys = PackLinkKeys(keys);
     for (i = 0; i < gNumLinkPlayers[0]; i++) {
         *(u16 *)((u8 *)gLinkRecvWords + i * 8) = 0;
@@ -88,8 +102,8 @@ s32 ExchangeLinkInput(void)
             if (*(volatile u16 *)&gLinkVBlankTimeout > 100)
                 goto timeout;
         }
-        if (gLinkPlayerId[0] == 0) {
-            for (i = 0; i <= 0x257; i++)
+        if (gLinkPlayerId == 0) {
+            for (i = 0; i <= 599; i++)
                 ;
         }
         for (i = 0; i < gNumLinkPlayers[0]; i++)

@@ -1,6 +1,5 @@
 #include "global.h"
-
-void GameMain(void);
+#include "functions.h"
 
 void AgbMain(void)
 {

@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 #include "car.h"
 #include "variables.h"
 
@@ -14,7 +15,7 @@ void SortCarsByTime(void)
     do {
         (gCarOrder)[i] = &gCars[i];
         i++;
-    } while (i != 0x18);
+    } while (i != 24);
     /* A goto keeps the field-offset setup inside each sort pass. */
 outer:
     {
@@ -31,7 +32,7 @@ outer:
             }
             p++;
             i++;
-        } while (i != 0x17);
+        } while (i != 23);
     }
     if (swapped != 0)
         goto outer;

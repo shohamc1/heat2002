@@ -19,7 +19,7 @@ void AddTrackRecordTasks(void)
             AddTask(task);
         }
         row++;
-    } while (row != 0xC);
+    } while (row != 12);
 }
 
 void DelayTask(struct Task *task)

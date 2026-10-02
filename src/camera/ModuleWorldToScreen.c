@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 #include "variables.h"
 
 u8 ModuleWorldToScreen(s32 x, s32 y, s32 *out)
@@ -18,7 +19,7 @@ u8 ModuleWorldToScreen(s32 x, s32 y, s32 *out)
     if ((u32)(u + 0x18) > 0x120)
         return 0;
     res = v + 0x20;
-    if (res > 0xD0)
+    if (res > 208)
         return 0;
     out[0] = u;
     out[1] = v;

@@ -6,11 +6,6 @@ extern u8 gModule_Player1[];
 extern u8 gModule_Player2[];
 extern u8 gModule_Player3[];
 extern u8 gModule_Player4[];
-void ModuleDrawTextCenteredHighlight(u8 *s, u32 a, u32 b);
-void ModuleReadLinkMenuKeys(void);
-u32 ModuleExchangeLinkInput(void);
-void ModuleM4aSoundVSyncOff(void);
-void sub_08344B74(void);
 void ModuleClearPausedPlayerText(void);
 void ModuleDrawPausedPlayerText(void);
 
@@ -18,7 +13,7 @@ u32 ModuleLinkPauseMenu(void)
 {
     u8 unused[0x200];
 
-    gUnk_0203B850[0] = 0xFF;
+    gUnk_0203B850 = 0xFF;
     return 0;
 }
 
@@ -26,7 +21,7 @@ void ModuleDrawPausedPlayerText(void)
 {
     ModuleDrawTextCenteredHighlight(ModuleGetString(MODULE_MSG_PAUSE), 8, 1);
 
-    switch (gUnk_0203B850[0]) {
+    switch (gUnk_0203B850) {
         case 0:
             ModuleDrawTextCenteredHighlight(gModule_Player1, 9, 1);
             break;
@@ -52,16 +47,16 @@ void ModuleClearPausedPlayerText(void)
         dest[0x100] = 0x47;
         dest[0x120] = 0x47;
         col++;
-    } while (col != 0x1B);
+    } while (col != 27);
 }
 
-u8 ModuleSinglePakPauseMenu(void)
+u32 ModuleSinglePakPauseMenu(void)
 {
     volatile u8 unused[512];
     u32 done;
     u16 startMask;
 
-    gUnk_0203B850[0] = 0xFF;
+    gUnk_0203B850 = 0xFF;
     ModuleReadLinkMenuKeys();
     if (gUnk_0203B6FC & 8) {
         ModuleM4aMPlayStop(&gModule_BgMusicPlayer);
@@ -71,9 +66,9 @@ u8 ModuleSinglePakPauseMenu(void)
         for (;;) {
             gModule_VBlanksThisFrame = 0;
             if (ModuleExchangeLinkInput() != 0) {
-                ModuleDrawTextCenteredHighlight(ModuleGetString(MODULE_MSG_LINK_FAIL), 0xA, 1);
-                ModuleDrawTextCenteredHighlight((u32 *)gModule_PleaseTurnOffYour_2, 0xC, 1);
-                ModuleDrawTextCenteredHighlight((u32 *)gModule_GameBoyAdvance_2, 0xD, 1);
+                ModuleDrawTextCenteredHighlight(ModuleGetString(MODULE_MSG_LINK_FAIL), 10, 1);
+                ModuleDrawTextCenteredHighlight(gModule_PleaseTurnOffYour_2, 12, 1);
+                ModuleDrawTextCenteredHighlight(gModule_GameBoyAdvance_2, 13, 1);
                 ModuleM4aSoundVSyncOff();
                 done = 0;
                 do {

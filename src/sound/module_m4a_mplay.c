@@ -4,7 +4,6 @@
 #include "functions.h"
 
 /* MPlayOpen (high copy) */
-void ModuleClear64byte(void *r0);
 void sub_0833A228(void);
 /* MPlayStart (high copy) */
 void sub_0833A488(struct MusicPlayerInfo *, struct MusicPlayerTrack *);
@@ -20,7 +19,7 @@ void ModuleMPlayOpen(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack 
     if (count == 0)
         return;
     if (count > 0x10)
-        count = 0x10;
+        count = 16;
     soundInfo = gSoundInfoPtr[0];
     if (soundInfo->ident != ID_NUMBER)
         return;
@@ -47,14 +46,14 @@ void ModuleMPlayOpen(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack 
 
 void ModuleMPlayStart(struct MusicPlayerInfo *mplayInfo, struct SongHeader *songHeader)
 {
-    register struct MusicPlayerTrack *track asm("r4");
+    register struct MusicPlayerTrack *track PIN(r4);
     struct MusicPlayerInfo *playerInfo = mplayInfo;
     struct SongHeader *song = songHeader;
     s32 i;
     u32 trackIdx;
     u16 tempo;
     u32 partOffset;
-    register u32 partPtr asm("r0");
+    register u32 partPtr PIN(r0);
 
     if (playerInfo->ident != ID_NUMBER)
         return;

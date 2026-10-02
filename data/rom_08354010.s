@@ -1,6 +1,15 @@
 @ Generated with Luvdis v0.9.0
+@ Both builds preprocess this file (preproc inlines the .include files,
+@ cpp resolves the switch below). The GBA keeps the exact luvdis layout;
+@ the hosted build switches to a writable data section, because its mPtr
+@ pointer fields carry relocations the host linker must be able to write.
+	.include "asm/macros/portable.inc"
+#if PLATFORM_GBA
 .syntax unified
 .text
+#else
+mSectionData
+#endif
 @ Begin embedded Luvdis macros
 	.macro arm_func_start name
 	.align 2, 0
@@ -32,8 +41,8 @@
 	.size \name, .-\name
 	.endm
 @ End embedded Luvdis macros
-	.global gUnk_0201B590
-gUnk_0201B590:
+	.global gModule_DriverNumberPalette
+gModule_DriverNumberPalette:
 	.incbin "build/assets/graphics/palettes/driver_number.pal.bin"
 	.global gModule_0201B5B0
 gModule_0201B5B0:
@@ -416,10 +425,10 @@ gModule_0201F2F4:
 gModule_0201F334:
 	.incbin "build/assets/graphics/rl_08331F4C.bin"
 	.space 1
-	.global gUnk_0201F370
-gUnk_0201F370:
+	.global gModule_SkidSmokePalette
+gModule_SkidSmokePalette:
 	.incbin "build/assets/graphics/palettes/skid_smoke.pal.bin"
-	.global gUnk_0201F390
-gUnk_0201F390:
+	.global gModule_FontPalette
+gModule_FontPalette:
 	.incbin "build/assets/graphics/palettes/font.pal.bin"
 

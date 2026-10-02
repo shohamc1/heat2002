@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 #include "gba/m4a_internal.h"
 #include "m4a.h"
 
@@ -112,7 +113,9 @@ cond_true:
     return;
 
 cond_false:
-    track->cmdPtr += 4;
+    /* Skip the jump target: a pointer, pointer-wide in the hosted song
+       data (mPtr). */
+    track->cmdPtr += sizeof(u8 *);
 }
 
 void ply_xcmd(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
@@ -128,6 +131,21 @@ void ply_xxx(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
 
 void ply_xwave(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
 {
+#if PORTABLE
+    /* The hosted song streams store the wav pointer at the host's
+       pointer width (mPtr), so read it as bytes of a pointer rather
+       than the GBA's four. */
+    union {
+        struct WaveData *a;
+        u8 d[sizeof(uintptr_t)];
+    } u;
+    u32 i;
+
+    for (i = 0; i < sizeof(uintptr_t); i++)
+        u.d[i] = *(track->cmdPtr + i);
+    track->tone.wav = u.a;
+    track->cmdPtr += sizeof(uintptr_t);
+#else
     u32 wav;
 
     READ_XCMD_BYTE(wav, 0)
@@ -135,8 +153,9 @@ void ply_xwave(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track
     READ_XCMD_BYTE(wav, 2)
     READ_XCMD_BYTE(wav, 3)
 
-    track->tone.wav = (struct WaveData *)wav;
+    track->tone.wav = (struct WaveData *)ADDR_WORD(wav);
     track->cmdPtr += 4;
+#endif
 }
 
 void ply_xtype(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
@@ -151,43 +170,43 @@ void ply_xatta(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track
     track->cmdPtr++;
 }
 
-void ply_xdeca(u32 mplayInfo, struct MusicPlayerTrack *track)
+void ply_xdeca(struct MusicPlayerInfo *unused, struct MusicPlayerTrack *track)
 {
     track->tone.decay = *track->cmdPtr;
     track->cmdPtr++;
 }
 
-void ply_xsust(u32 mplayInfo, struct MusicPlayerTrack *track)
+void ply_xsust(struct MusicPlayerInfo *unused, struct MusicPlayerTrack *track)
 {
     track->tone.sustain = *track->cmdPtr;
     track->cmdPtr++;
 }
 
-void ply_xrele(u32 mplayInfo, struct MusicPlayerTrack *track)
+void ply_xrele(struct MusicPlayerInfo *unused, struct MusicPlayerTrack *track)
 {
     track->tone.release = *track->cmdPtr;
     track->cmdPtr++;
 }
 
-void ply_xiecv(u32 mplayInfo, struct MusicPlayerTrack *track)
+void ply_xiecv(struct MusicPlayerInfo *unused, struct MusicPlayerTrack *track)
 {
     track->pseudoEchoVolume = *track->cmdPtr;
     track->cmdPtr++;
 }
 
-void ply_xiecl(u32 mplayInfo, struct MusicPlayerTrack *track)
+void ply_xiecl(struct MusicPlayerInfo *unused, struct MusicPlayerTrack *track)
 {
     track->pseudoEchoLength = *track->cmdPtr;
     track->cmdPtr++;
 }
 
-void ply_xleng(u32 mplayInfo, struct MusicPlayerTrack *track)
+void ply_xleng(struct MusicPlayerInfo *unused, struct MusicPlayerTrack *track)
 {
     track->tone.length = *track->cmdPtr;
     track->cmdPtr++;
 }
 
-void ply_xswee(u32 mplayInfo, struct MusicPlayerTrack *track)
+void ply_xswee(struct MusicPlayerInfo *unused, struct MusicPlayerTrack *track)
 {
     track->tone.pan_sweep = *track->cmdPtr;
     track->cmdPtr++;

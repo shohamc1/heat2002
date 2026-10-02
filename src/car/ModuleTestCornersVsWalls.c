@@ -2,47 +2,13 @@
 #include "functions.h"
 #include "variables.h"
 
-struct Box
-{
-    s32 minX; /* 0x00: corner-sweep AABB, world units */
-    s32 maxX; /* 0x04 */
-    s32 minZ; /* 0x08 */
-    s32 maxZ; /* 0x0C */
-};
-
-struct Corner
-{
-    u16 unk00;   /* low half of x */
-    s16 xHi;     /* 0x02: current X, world units */
-    u16 unk04;   /* 0x04 */
-    s16 zHi;     /* 0x06: current Z */
-    u16 unk08;   /* 0x08 */
-    s16 nextXHi; /* 0x0A: next-frame X */
-    u16 unk0C;   /* 0x0C */
-    s16 nextZHi; /* 0x0E: next-frame Z */
-    s32 deltaX;  /* 0x10: nextCornerX - cornerX */
-    s32 deltaZ;  /* 0x14 */
-};
-
-struct Hit
-{
-    u8 pad00[4];      /* 0x00 */
-    s32 normalX;      /* 0x04: wall normal, slightly amplified */
-    s32 normalZ;      /* 0x08 */
-    u8 cornerIndex;   /* 0x0C: which car corner hit */
-    u8 steerAngle;    /* 0x0D */
-    u8 steerAngleOpp; /* 0x0E */
-    u8 unk0F;         /* 0x0F */
-    s32 unk10;        /* 0x10: winning wall index (write-only) */
-};
-
-s32 ModuleTestCornersVsWalls(struct Corner *corn, struct Box *box, struct Box *cbox, struct Hit *out, u16 *wallList,
-                             s32 *best)
+s32 ModuleTestCornersVsWalls(struct CornerSweep *corn, struct SweepBox *box, struct SweepBox *cbox, struct WallHit *out,
+                             u16 *wallList, s32 *best)
 {
     s32 tmp[4];
     s32 pax, pay, pbx, pby;
-    struct Corner *pc;
-    struct Box *pq;
+    struct CornerSweep *pc;
+    struct SweepBox *pq;
     s32 i;
     u16 *w;
     u16 *wnext;
@@ -87,10 +53,10 @@ s32 ModuleTestCornersVsWalls(struct Corner *corn, struct Box *box, struct Box *c
             gUnk_020375B4 = pay;
             gUnk_020375B8 = pbx;
             gUnk_020375BC = pby;
-            gUnk_020375A0 = x1 = pc->xHi;
-            gUnk_020375A4 = y1 = pc->zHi;
-            gUnk_020375A8 = x2 = pc->nextXHi;
-            gUnk_020375AC = y2 = pc->nextZHi;
+            gUnk_020375A0 = x1 = pc->x >> 16;
+            gUnk_020375A4 = y1 = pc->z >> 16;
+            gUnk_020375A8 = x2 = pc->nextX >> 16;
+            gUnk_020375AC = y2 = pc->nextZ >> 16;
             gUnk_020375C0 = det = (x2 - x1) * (pby - pay) - (y2 - y1) * (pbx - pax);
             if (det == 0)
                 continue;

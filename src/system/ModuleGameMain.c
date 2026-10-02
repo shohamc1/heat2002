@@ -2,44 +2,32 @@
 #include "functions.h"
 #include "variables.h"
 #include "gba/defines.h"
+#include "gba/io_reg.h"
 
 extern u8 gUnk_02039190;
-void ModuleMainVBlankCallback(void);
 extern u8 gModule_PleaseTurnOffYour[];
 extern u8 gModule_GameBoyAdvance[];
 
-void ModuleInitIntrHandlers(void);
-void ModuleSetVBlankCallback(void (*callback)(void));
-void ModuleFillFadePalette(u16 color);
-void ModuleFadeToColor(u32 r0, u32 r1);
-void ModuleM4aSoundInit(void);
-u8 ModuleRunRace(u32 r0, u32 r1, u32 r2);
-void ModuleDrawTextCenteredHighlight(u32 r0, u32 r1, u32 r2);
-void ModuleM4aSoundVSyncOff(void);
-void ModuleUpdateSprites(void);
-void sub_08344B74(void);
-void ModuleSortLinkCarsByTime(void);
-void ModuleWaitForLinkRestart(void);
 
 void ModuleGameMain(void)
 {
-    register u8 z1 asm("r9");
+    register u8 z1 PIN(r9);
     u32 z2;
     u32 eight;
     volatile u16 *p128;
     volatile u16 *ie;
     volatile u16 *ds;
-    register volatile u16 *p asm("r1");
+    register volatile u16 *p PIN(r1);
 
-    p128 = (volatile u16 *)0x04000128;
+    p128 = (volatile u16 *)REG_ADDR_SIOCNT;
     z1 = 0;
     z2 = 0;
     p128[1] = z2;
     ModuleInitIntrHandlers();
-    ie = (volatile u16 *)0x04000200;
+    ie = (volatile u16 *)REG_ADDR_IE;
     *ie = z2;
-    *(volatile u16 *)0x04000208 = 1;
-    ds = (volatile u16 *)0x04000004;
+    REG_IME = 1;
+    ds = (volatile u16 *)REG_ADDR_DISPSTAT;
     eight = 8;
     *ds = eight;
     ModuleReadKeys();
@@ -48,9 +36,9 @@ void ModuleGameMain(void)
     *ie = 0x2001;
     *ds = eight;
     ModuleFillFadePalette(RGB_WHITE);
-    ModuleFadeToColor(0, 0x32);
+    ModuleFadeToColor(0, 50);
     ModuleWaitForVBlank();
-    p = (volatile u16 *)0x0400000E;
+    p = (volatile u16 *)REG_ADDR_BG3CNT;
     *p = 0x3D0B;
     p -= 1;
     *p = 0x1E01;
@@ -72,11 +60,11 @@ void ModuleGameMain(void)
         ModuleLinkHandshake();
         gModule_IsLinkRace = 1;
         gUnk_02039190 = 0;
-        ModuleFadeToColor(0, 0x0A);
+        ModuleFadeToColor(0, 10);
         if (ModuleRunRace(0, 4, 0)) {
-            ModuleDrawTextCenteredHighlight(ModuleGetString(MODULE_MSG_LINK_FAIL), 0x0A, 1);
-            ModuleDrawTextCenteredHighlight((u32)gModule_PleaseTurnOffYour, 0x0C, 1);
-            ModuleDrawTextCenteredHighlight((u32)gModule_GameBoyAdvance, 0x0D, 1);
+            ModuleDrawTextCenteredHighlight(ModuleGetString(MODULE_MSG_LINK_FAIL), 10, 1);
+            ModuleDrawTextCenteredHighlight(gModule_PleaseTurnOffYour, 12, 1);
+            ModuleDrawTextCenteredHighlight(gModule_GameBoyAdvance, 13, 1);
             ModuleM4aMPlayStop(&gModule_BgMusicPlayer);
             ModuleM4aMPlayStop(&gModule_EngineSoundPlayer);
             ModuleM4aSoundVSyncOff();

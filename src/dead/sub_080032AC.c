@@ -7,7 +7,7 @@ void sub_080032AC(void)
     u16 v;
     u8 unused[4];
 
-    if (gLinkPlayerId[0] == 0)
+    if (gLinkPlayerId == 0)
     {
         VBlankIntrWait();
     }

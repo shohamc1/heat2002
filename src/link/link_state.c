@@ -13,6 +13,14 @@ struct LinkPlayerSlot
     u8 unk03;
 };
 
+/* The file's RAM variables (gUnk_0202EDBC, gLinkSyncByte, gLinkRecvWords
+   and gLinkPlayerSlots) moved to src/save/save.c, the owner of the merged
+   0x0202ED70-0x0202F1C0 menu/link/save EWRAM run they sit in.
+   gLinkRecvWords is sized to gChallengeStatus (DetectLinkPlayers reads
+   word indexes 0/4/8/12) and gLinkPlayerSlots holds the four
+   LinkPlayerSlot rows ResetLinkState clears; the other two are used only
+   here, so this file keeps gUnk_0202EDBC's local extern, and the rest
+   are declared in variables.h. */
 extern u32 gUnk_0202EDBC;
 
 void ResetLinkState(void)

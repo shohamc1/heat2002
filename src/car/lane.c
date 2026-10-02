@@ -3,45 +3,10 @@
 #include "data.h"
 #include "functions.h"
 
-struct OutBD98
-{
-    s32 x;
-    s32 y;
-};
-struct Car
-{
-    s32 posX;
-    s32 unk04;
-    s32 posZ;
-    u8 pad0C[0x18 - 0x0C];
-    s32 predictedPosX;
-    s32 predictedPosZ;
-    s32 unk20;
-    s32 unk24;
-    s32 unk28;
-    s32 speed;
-    u8 pad30[0x34 - 0x30];
-    s16 heading;
-    u8 pad36[0x4C - 0x36];
-    u8 lap;
-    u8 waypoint;
-    u8 subStep;
-    u8 pad4F;
-    u8 pad50[0xF0 - 0x50];
-    s32 lanePosition;
-    const u16 *lanePoints;
-    const struct LaneSeg *laneSegments;
-    u32 laneCellLists;
-    u32 laneCellGrid;
-    u8 pad104[0x154 - 0x104];
-    s32 laneLength;
-};
+#include "car.h"
 
 extern const u8 *const gLaneCellLists[];
 extern const u8 *const gLaneCellGrids[];
-void UpdateCarPredictedPos(struct Car *a);
-s32 FindClosestLaneSegment(struct Car *a, s32 b);
-s32 Atan2(s32 a, s32 b);
 
 s32 WorldToLaneDistance(s32 posX, s32 posZ, const u16 *points, const struct LaneSeg *seg, s32 unused)
 {
@@ -77,7 +42,7 @@ s32 WorldToLaneDistance(s32 posX, s32 posZ, const u16 *points, const struct Lane
 
 s32 FindWaypointCrossing(const u16 *points, const struct LaneSeg *laneSeg)
 {
-    struct TrackSeg *trackSeg = gTrackSegTables[gTrackId];
+    const struct TrackSeg *trackSeg = gTrackSegTables[gTrackId];
     s32 t[6];
     s32 x1, y1, x2, y2;
     s32 reachedLast;
@@ -145,11 +110,11 @@ done:
     car->subStep = 0xF;
 }
 
-void GetLanePositionAtDistance(s32 dist, struct OutBD98 *pos, const u16 *lanePoints, const struct LaneSeg *segments)
+void GetLanePositionAtDistance(s32 dist, struct LanePos *pos, const u16 *lanePoints, const struct LaneSeg *segments)
 {
-    register struct OutBD98 *posOut asm("r8") = pos;
-    register const u16 *points asm("r6") = lanePoints;
-    register const struct LaneSeg *seg asm("r4") = segments;
+    register struct LanePos *posOut PIN(r8) = pos;
+    register const u16 *points PIN(r6) = lanePoints;
+    register const struct LaneSeg *seg PIN(r4) = segments;
     s32 scale;
     s32 rangeStart;
 
@@ -161,19 +126,26 @@ void GetLanePositionAtDistance(s32 dist, struct OutBD98 *pos, const u16 *lanePoi
     rangeStart = seg->startDist;
     scale = sub_08017230((dist - rangeStart) << 16, seg->endDist - rangeStart);
     {
-        register const u16 *endPt asm("r2");
-        register const u16 *basePt asm("r1");
+        register const u16 *endPt PIN(r2);
+        register const u16 *basePt PIN(r1);
         s32 x0;
         s32 x1;
         s32 y1;
         s32 y0;
         s32 dx;
         s32 dy;
-        register s32 outY asm("r0");
+        register s32 outY PIN(r0);
 
         x1 = seg->pointB;
+#if PORTABLE
+        /* Pointer-typed walk of the same byte offsets the GBA build does
+           with integer address math (see the #else). */
+        endPt = (const u16 *)((u8 *)points + x1 * 4);
+        basePt = (const u16 *)((u8 *)points + seg->pointA * 4);
+#else
         endPt = (const u16 *)(x1 * 4 + (u32)points);
         basePt = (const u16 *)(seg->pointA * 4 + (u32)points);
+#endif
         x0 = basePt[0];
         x1 = endPt[0];
         dx = x1 - x0;
@@ -185,7 +157,7 @@ void GetLanePositionAtDistance(s32 dist, struct OutBD98 *pos, const u16 *lanePoi
         x0 += dx;
         posOut->x = x0;
         outY = points[seg->pointA * 2 + 1] + dy;
-        posOut->y = outY;
+        posOut->z = outY;
     }
 }
 
@@ -196,8 +168,13 @@ void SetCarLane(struct Car *car, s32 lanePosition)
     car->lanePosition = lanePosition;
     car->lanePoints = gLanePointTables[row + gTrackId * 12];
     car->laneSegments = gLaneSegmentTables[row + gTrackId * 12];
+#if PORTABLE
+    car->laneCellLists = gLaneCellLists[row + gTrackId * 12];
+    car->laneCellGrid = gLaneCellGrids[row + gTrackId * 12];
+#else
     car->laneCellLists = (u32)gLaneCellLists[row + gTrackId * 12];
     car->laneCellGrid = (u32)gLaneCellGrids[row + gTrackId * 12];
+#endif
     car->laneLength = *(u16 *)gLaneLengthPtrs[row + gTrackId * 12];
 }
 
@@ -205,14 +182,14 @@ void PlaceCarsAlongLane(struct Car **carOrder, s32 unused1, s32 unused2, s32 spa
 {
     struct Car **carPtr;
     struct Car *car;
-    s32 pos[2];
+    struct LanePos pos;
     s32 dist;
     s32 i, k;
     s32 deltaX;
     s32 deltaZ;
 
     car = *carOrder;
-    for (i = 0; i != 0x18; i++) {
+    for (i = 0; i != 24; i++) {
         if (singleLane == 0) {
             if (i & 1)
                 SetCarLane(car, 0x100);
@@ -229,8 +206,8 @@ void PlaceCarsAlongLane(struct Car **carOrder, s32 unused1, s32 unused2, s32 spa
     car->predictedPosZ = car->posZ;
     if (FindClosestLaneSegment(car, 0) == -1)
         return;
-    dist = WorldToLaneDistance(gClosestLanePointX[0], gClosestLanePointZ[0], car->lanePoints, gClosestLaneSegment[0],
-                               gClosestLaneSegmentIndex[0]);
+    dist = WorldToLaneDistance(gClosestLanePointX, gClosestLanePointZ, car->lanePoints, gClosestLaneSegment,
+                               gClosestLaneSegmentIndex);
     dist -= 5000;
     if (dist < 0)
         dist += car->laneLength;
@@ -246,17 +223,17 @@ void PlaceCarsAlongLane(struct Car **carOrder, s32 unused1, s32 unused2, s32 spa
             else
                 SetCarLane(car, 0x500);
             SetCarWaypointAtLaneDistance(dist, car->lanePoints, car->laneSegments, car);
-            GetLanePositionAtDistance(dist, (struct OutBD98 *)pos, car->lanePoints, car->laneSegments);
-            car->posX = pos[0] << 16;
-            car->posZ = pos[1] << 16;
-            GetLanePositionAtDistance(sub_080172C8(dist + 0x32, car->laneLength), pos, car->lanePoints,
+            GetLanePositionAtDistance(dist, &pos, car->lanePoints, car->laneSegments);
+            car->posX = pos.x << 16;
+            car->posZ = pos.z << 16;
+            GetLanePositionAtDistance(sub_080172C8(dist + 50, car->laneLength), &pos, car->lanePoints,
                                       car->laneSegments);
-            deltaX = (pos[0] << 16) - car->posX;
-            deltaZ = (pos[1] << 16) - car->posZ;
+            deltaX = (pos.x << 16) - car->posX;
+            deltaZ = (pos.z << 16) - car->posZ;
             /* Stored straight to the s16 field, the minus is done in
                HImode, which gives the ROM's constant copy (adds r1, r2, #0). */
             car->heading = -0x7C00 - (Atan2(deltaX >> 5, deltaZ >> 5) << 8);
-            if (gGameMode[0] == 0xF && i == 0 && gChallengeIndex == 3)
+            if (gGameMode == 15 && i == 0 && gChallengeIndex == 3)
                 dist -= 500;
             /* Two copies, merged by cross-jumping after allocation. The two
                uses let loop.c hoist a3 * 3 / 2 and give it r10 ahead of
@@ -274,7 +251,7 @@ void PlaceCarsAlongLane(struct Car **carOrder, s32 unused1, s32 unused2, s32 spa
             carPtr++;
         } while (i != gNumCars[0]);
     }
-    for (k = 0; k != 0x32; k++) {
+    for (k = 0; k != 50; k++) {
         carPtr = carOrder;
         for (i = 0; i != gNumCars[0]; i++) {
             car = *carPtr++;
@@ -284,4 +261,11 @@ void PlaceCarsAlongLane(struct Car **carOrder, s32 unused1, s32 unused2, s32 spa
 }
 
 void SetCarLaneByIndex(struct Car *car, u8 laneIdx)
-{ SetCarLane(car, laneIdx << 8); }
+{
+#if PORTABLE
+    /* InitRaceCars initializes 24 cars, but each track has 12 lanes.
+       Grid placement assigns the race lanes after initialization. */
+    laneIdx %= 12;
+#endif
+    SetCarLane(car, laneIdx << 8);
+}

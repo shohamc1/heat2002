@@ -17,18 +17,17 @@ void DrawCareerSessionMenu(u8 cursor, u8 unused0, u8 unused1)
     u8 sel = cursor;
     const u8 *text;
     DummyUiFontLoad(gUiFontTable[0]);
-    GetString(0x00);
-    ((void (*)(void))DrawBigText)();
-    text = (u32)gText_Practice;
+    DrawBigText(GetString(0));
+    text = gText_Practice;
     DrawTextCenteredHighlight(text, 6, cursor == 0);
-    text = GetString(0x02);
+    text = GetString(2);
     DrawTextCenteredHighlight(text, 8, cursor == 1);
-    text = GetString(0x03);
-    DrawTextCenteredHighlight(text, 0xA, cursor == 2);
-    text = GetString(0x60);
-    DrawTextCenteredHighlight(text, 0xC, cursor == 3);
-    text = GetString(0x08);
-    DrawTextCenteredHighlight(text, 0xE, sel == 4);
+    text = GetString(3);
+    DrawTextCenteredHighlight(text, 10, cursor == 2);
+    text = GetString(96);
+    DrawTextCenteredHighlight(text, 12, cursor == 3);
+    text = GetString(8);
+    DrawTextCenteredHighlight(text, 14, sel == 4);
 }
 
 s8 CareerSessionMenu(u8 qualifyDone, u8 practiceDone)
@@ -40,7 +39,7 @@ s8 CareerSessionMenu(u8 qualifyDone, u8 practiceDone)
     LoadMenuScreen(6, (u16 *)buf);
     DrawCareerSessionMenu(0, qualifyDone, practiceDone | qualifyDone);
     FadeToBrightenedPalette(buf, 0x0F);
-    sel = 0x40;
+    sel = 64;
     do {
         ReadKeys();
         DrawCareerSessionMenu(cursor, qualifyDone, practiceDone);
@@ -54,7 +53,7 @@ s8 CareerSessionMenu(u8 qualifyDone, u8 practiceDone)
             if (gKeysPressed & 0xC0)
                 cursor = MenuMoveVertical(gKeysPressed, cursor, 0, 4);
             else
-                cursor = MenuMoveVertical(0x80, cursor, 0, 4);
+                cursor = MenuMoveVertical(128, cursor, 0, 4);
             goto again;
         }
         WaitForVBlank();
@@ -70,16 +69,15 @@ void DrawSeasonSessionMenu(u8 cursor, u8 unused0, u8 unused1)
     u8 sel = cursor;
     const u8 *text;
     DummyUiFontLoad(gUiFontTable[0]);
-    GetString(0x00);
-    ((void (*)(void))DrawBigText)();
-    text = GetString(0x01);
+    DrawBigText(GetString(0));
+    text = GetString(1);
     DrawTextCenteredHighlight(text, 6, cursor == 0);
-    text = GetString(0x02);
+    text = GetString(2);
     DrawTextCenteredHighlight(text, 8, cursor == 1);
-    text = GetString(0x03);
-    DrawTextCenteredHighlight(text, 0xA, cursor == 2);
-    text = GetString(0x08);
-    DrawTextCenteredHighlight(text, 0xC, sel == 3);
+    text = GetString(3);
+    DrawTextCenteredHighlight(text, 10, cursor == 2);
+    text = GetString(8);
+    DrawTextCenteredHighlight(text, 12, sel == 3);
 }
 
 s8 SeasonSessionMenu(u8 qualifyDone, u8 practiceDone)
@@ -91,7 +89,7 @@ s8 SeasonSessionMenu(u8 qualifyDone, u8 practiceDone)
     LoadMenuScreen(6, (u16 *)buf);
     DrawSeasonSessionMenu(0, qualifyDone, practiceDone);
     FadeToBrightenedPalette(buf, 0x0F);
-    sel = 0x40;
+    sel = 64;
     do {
         ReadKeys();
         DrawSeasonSessionMenu(cursor, qualifyDone, practiceDone);
@@ -105,7 +103,7 @@ s8 SeasonSessionMenu(u8 qualifyDone, u8 practiceDone)
             if (gKeysPressed & 0xC0)
                 cursor = MenuMoveVertical(gKeysPressed, cursor, 0, 3);
             else
-                cursor = MenuMoveVertical(0x80, cursor, 0, 3);
+                cursor = MenuMoveVertical(128, cursor, 0, 3);
             goto again;
         }
         WaitForVBlank();
@@ -118,16 +116,16 @@ s8 SeasonSessionMenu(u8 qualifyDone, u8 practiceDone)
 
 void DrawCareerOverwriteConfirm(u8 cursor)
 {
-    u32 text;
+    const u8 *text;
 
-    DummyUiFontLoad((u32)gText_Overwrite);
+    DummyUiFontLoad(gText_Overwrite);
     DrawTextCenteredHighlight(gText_YouWillLoseThe, 7, 1);
     DrawTextCenteredHighlight(gText_PreviouslySavedCareer, 8, 1);
-    DrawTextCenteredHighlight(gText_AreYouSure, 0xA, 1);
-    text = (u32)gText_No;
-    DrawTextCenteredHighlight(text, 0xC, cursor == 0);
-    text = (u32)gText_Yes;
-    DrawTextCenteredHighlight(text, 0xE, cursor == 1);
+    DrawTextCenteredHighlight(gText_AreYouSure, 10, 1);
+    text = gText_No;
+    DrawTextCenteredHighlight(text, 12, cursor == 0);
+    text = gText_Yes;
+    DrawTextCenteredHighlight(text, 14, cursor == 1);
 }
 
 u8 CareerOverwriteConfirm(void)
@@ -140,7 +138,7 @@ u8 CareerOverwriteConfirm(void)
     LoadMenuScreen(6, (u16 *)buf);
     DrawCareerOverwriteConfirm(0);
     FadeToBrightenedPalette(buf, 0x0F);
-    sel = 0x40;
+    sel = 64;
     do {
         ReadKeys();
         if (gKeysPressed & 9)
@@ -163,14 +161,13 @@ void DrawSaveCareerStatus(u8 status)
 
     state = status;
     DummyUiFontLoad(gUiFontTable[0]);
-    GetString(0x60);
-    ((void (*)(void))DrawBigText)();
+    DrawBigText(GetString(96));
     if (status == 0)
-        DrawTextCenteredHighlight(GetString(0x63), 9, 1);
+        DrawTextCenteredHighlight(GetString(99), 9, 1);
     if (status == 1)
-        DrawTextCenteredHighlight(GetString(0x61), 9, 1);
+        DrawTextCenteredHighlight(GetString(97), 9, 1);
     if (state == 2)
-        DrawTextCenteredHighlight(GetString(0x62), 9, 1);
+        DrawTextCenteredHighlight(GetString(98), 9, 1);
 }
 
 s8 SaveCareerScreen(void)
@@ -179,8 +176,8 @@ s8 SaveCareerScreen(void)
     s8 sel;
     /* Keep this signed-byte local: its allocation reproduces the saved registers. */
     s8 done = 0;
-    /* IsSeasonSaved: this file's old prototypes return s8; the matched definitions return wider types */
-    if (((s8 (*)(void))IsSeasonSaved)() != 0) {
+    /* The ROM narrows the result to s8 before the test. */
+    if ((s8)IsSeasonSaved() != 0) {
         if (CareerOverwriteConfirm() == 0)
             return;
     }
@@ -189,7 +186,7 @@ s8 SaveCareerScreen(void)
     FadeToBrightenedPalette(buf, 0x0F);
     SaveSeason();
     DrawSaveCareerStatus(1);
-    sel = 0x40;
+    sel = 64;
     do {
         ReadKeys();
         if (gKeysPressed & 9)

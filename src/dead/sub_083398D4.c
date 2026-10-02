@@ -83,8 +83,6 @@ s16 sub_08339A00(s16 arg0, s16 arg1)
     return (arg0 << 8) / arg1;
 }
 
-void CarNeedsPit(u32 arg);
-
 s16 sub_08339A18(u16 r0)
 {
     /* sub_08344BB8: this file's old prototype is s16 (u32, s16); the

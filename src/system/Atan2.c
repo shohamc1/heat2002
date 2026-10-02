@@ -1,8 +1,9 @@
 #include "global.h"
+#include "functions.h"
 
 extern u8 gAtan2Table[];
 
-u8 Atan2(s32 x, s32 y)
+s32 Atan2(s32 x, s32 y)
 {
     u8 *t;
     s32 a;

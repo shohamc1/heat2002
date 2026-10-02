@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 #include "car.h"
 
 void ModuleStopCar(struct Car *car)

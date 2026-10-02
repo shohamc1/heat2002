@@ -1,7 +1,8 @@
 #include "global.h"
+#include "functions.h"
 
-void ModuleLoadTrackCues(void)
+void ModuleLoadTrackCues(u32 unused)
 {}
 
-void ModuleUpdateTrackCues(void)
+void ModuleUpdateTrackCues(struct Car *unused)
 {}

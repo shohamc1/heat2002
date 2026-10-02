@@ -8,12 +8,11 @@ void DrawMultiplayerMenu(u8 selected)
 {
     const u8 *text;
     DummyUiFontLoad(gUiFontTable[0]);
-    GetString(0x5A);
-    ((void (*)(void))DrawBigText)();
-    text = GetString(0x51);
+    DrawBigText(GetString(90));
+    text = GetString(81);
     DrawTextCenteredHighlight(text, 9, selected == 0);
-    text = GetString(0x52);
-    DrawTextCenteredHighlight(text, 0xB, selected == 1);
+    text = GetString(82);
+    DrawTextCenteredHighlight(text, 11, selected == 1);
 }
 
 s8 MultiplayerMenu(void)
@@ -24,7 +23,8 @@ s8 MultiplayerMenu(void)
     cursor = 0;
     choice = 0;
     LoadMenuScreen(4, (u16 *)palette);
-    /* DrawMultiplayerMenu: this file's old prototype differs from the matched definition; call through the old one */
+    /* Both calls pass the cursor unnarrowed; DrawMultiplayerMenu narrows it
+       to u8 itself. */
     ((void (*)(s32))DrawMultiplayerMenu)(0);
     FadeToBrightenedPalette(palette, 0x0F);
     do {

@@ -159,66 +159,66 @@ extern struct Pt gUnk_083F92C4[];
 extern struct WallRec gUnk_083F9B14[];
 extern u16 gUnk_083FBBF4[];
 extern u16 gUnk_083FC71C[];
-extern const u32 gUnk_083FED48[];
-extern const u32 gUnk_083FED4C[];
-extern const u32 gUnk_083FED50[];
-extern const u32 gUnk_083FED54[];
-extern const u32 gUnk_083FED58[];
-extern const u32 gUnk_083FED5C[];
-extern const u32 gUnk_083FED60[];
-extern const u32 gUnk_083FED64[];
-extern const u32 gUnk_083FED68[];
-extern const u32 gUnk_083FED6C[];
-extern const u32 gUnk_083FED70[];
-extern const u32 gUnk_083FED74[];
-extern const u32 gUnk_083FED78[];
-extern const u32 gUnk_083FED7C[];
-extern const u32 gUnk_083FED80[];
-extern const u32 gUnk_083FED84[];
-extern const u32 gUnk_083FED88[];
-extern const u32 gUnk_083FED8C[];
-extern const u32 gUnk_083FED90[];
-extern const u32 gUnk_083FED94[];
-extern const u32 gUnk_083FED98[];
-extern const u32 gUnk_083FED9C[];
-extern const u32 gUnk_083FEDA0[];
-extern const u32 gUnk_083FEDA4[];
-extern const u32 gUnk_083FEDA8[];
-extern const u32 gUnk_083FEDAC[];
-extern const u32 gUnk_083FEDB0[];
-extern const u32 gUnk_083FEDB4[];
-extern const u32 gUnk_083FEDB8[];
-extern const u32 gUnk_083FEDBC[];
-extern const u32 gUnk_083FEDC0[];
-extern const u32 gUnk_083FEDC4[];
-extern const u32 gUnk_083FEDC8[];
-extern const u32 gUnk_083FEDCC[];
-extern const u32 gUnk_083FEDD0[];
-extern const u32 gUnk_083FEDD4[];
-extern const u32 gUnk_083FEDD8[];
-extern const u32 gUnk_083FEDDC[];
-extern const u32 gUnk_083FEDE0[];
-extern const u32 gUnk_083FEDE4[];
-extern const u32 gUnk_083FEDE8[];
-extern const u32 gUnk_083FEDEC[];
-extern const u32 gUnk_083FEDF0[];
-extern const u32 gUnk_083FEDF4[];
-extern const u32 gUnk_083FEDF8[];
-extern const u32 gUnk_083FEDFC[];
-extern const u32 gUnk_083FEE00[];
-extern const u32 gUnk_083FEE04[];
-extern const u32 gUnk_083FEE08[];
-extern const u32 gUnk_083FEE0C[];
-extern const u32 gUnk_083FEE10[];
-extern const u32 gUnk_083FEE14[];
-extern const u32 gUnk_083FEE18[];
-extern const u32 gUnk_083FEE1C[];
-extern const u32 gUnk_083FEE20[];
-extern const u32 gUnk_083FEE24[];
-extern const u32 gUnk_083FEE28[];
-extern const u32 gUnk_083FEE2C[];
-extern const u32 gUnk_083FEE30[];
-extern const u32 gUnk_083FEE34[];
+extern const GfxSrc gUnk_083FED48[];
+extern const GfxSrc gUnk_083FED4C[];
+extern const GfxSrc gUnk_083FED50[];
+extern const GfxSrc gUnk_083FED54[];
+extern const GfxSrc gUnk_083FED58[];
+extern const GfxSrc gUnk_083FED5C[];
+extern const GfxSrc gUnk_083FED60[];
+extern const GfxSrc gUnk_083FED64[];
+extern const GfxSrc gUnk_083FED68[];
+extern const GfxSrc gUnk_083FED6C[];
+extern const GfxSrc gUnk_083FED70[];
+extern const GfxSrc gUnk_083FED74[];
+extern const GfxSrc gUnk_083FED78[];
+extern const GfxSrc gUnk_083FED7C[];
+extern const GfxSrc gUnk_083FED80[];
+extern const GfxSrc gUnk_083FED84[];
+extern const GfxSrc gUnk_083FED88[];
+extern const GfxSrc gUnk_083FED8C[];
+extern const GfxSrc gUnk_083FED90[];
+extern const GfxSrc gUnk_083FED94[];
+extern const GfxSrc gUnk_083FED98[];
+extern const GfxSrc gUnk_083FED9C[];
+extern const GfxSrc gUnk_083FEDA0[];
+extern const GfxSrc gUnk_083FEDA4[];
+extern const GfxSrc gUnk_083FEDA8[];
+extern const GfxSrc gUnk_083FEDAC[];
+extern const GfxSrc gUnk_083FEDB0[];
+extern const GfxSrc gUnk_083FEDB4[];
+extern const GfxSrc gUnk_083FEDB8[];
+extern const GfxSrc gUnk_083FEDBC[];
+extern const GfxSrc gUnk_083FEDC0[];
+extern const GfxSrc gUnk_083FEDC4[];
+extern const GfxSrc gUnk_083FEDC8[];
+extern const GfxSrc gUnk_083FEDCC[];
+extern const GfxSrc gUnk_083FEDD0[];
+extern const GfxSrc gUnk_083FEDD4[];
+extern const GfxSrc gUnk_083FEDD8[];
+extern const GfxSrc gUnk_083FEDDC[];
+extern const GfxSrc gUnk_083FEDE0[];
+extern const GfxSrc gUnk_083FEDE4[];
+extern const GfxSrc gUnk_083FEDE8[];
+extern const GfxSrc gUnk_083FEDEC[];
+extern const GfxSrc gUnk_083FEDF0[];
+extern const GfxSrc gUnk_083FEDF4[];
+extern const GfxSrc gUnk_083FEDF8[];
+extern const GfxSrc gUnk_083FEDFC[];
+extern const GfxSrc gUnk_083FEE00[];
+extern const GfxSrc gUnk_083FEE04[];
+extern const GfxSrc gUnk_083FEE08[];
+extern const GfxSrc gUnk_083FEE0C[];
+extern const GfxSrc gUnk_083FEE10[];
+extern const GfxSrc gUnk_083FEE14[];
+extern const GfxSrc gUnk_083FEE18[];
+extern const GfxSrc gUnk_083FEE1C[];
+extern const GfxSrc gUnk_083FEE20[];
+extern const GfxSrc gUnk_083FEE24[];
+extern const GfxSrc gUnk_083FEE28[];
+extern const GfxSrc gUnk_083FEE2C[];
+extern const GfxSrc gUnk_083FEE30[];
+extern const GfxSrc gUnk_083FEE34[];
 extern const struct TrackPreviewGfx gTrackPreviewGfx_Track2[];
 extern const struct TrackPreviewGfx gTrackPreviewGfx_Track3[];
 extern const struct TrackPreviewGfx gTrackPreviewGfx_Track5[];
@@ -363,7 +363,8 @@ const u8 *const gChampionshipRetainTexts[] = { gText_ToStayInThisTeamYouWillNeed
                                                gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop20,
                                                gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop20,
                                                gText_ToStayInThisTeamYouWillNeedToFinishTheSeasonInTheTop20 };
-// Its users declare it as u8 *x[].
+// Its users declare it as u8 *x[] (team_select.c: const u8 *const x[]).
+#if PLATFORM_GBA
 const u32 gChampionshipTeamNames[17] = { (u32)gText_Dei,
                                          (u32)gText_Rcr,
                                          (u32)gText_Ryr,
@@ -381,6 +382,25 @@ const u32 gChampionshipTeamNames[17] = { (u32)gText_Dei,
                                          (u32)gText_EricHayashiMotorsports,
                                          (u32)gText_Darby,
                                          (u32)gText_TeamCrawfish };
+#else
+const u8 *const gChampionshipTeamNames[17] = { gText_Dei,
+                                               gText_Rcr,
+                                               gText_Ryr,
+                                               gText_HendrickMotorsports,
+                                               gText_DalyEnterprises,
+                                               gText_MackneyMotorsports,
+                                               gText_KravitzRacing,
+                                               gText_Penske,
+                                               gText_ChipGanassi,
+                                               gText_JimFerrisMotorsports,
+                                               gText_AndylandRacing,
+                                               gText_TtMotorsports,
+                                               gText_TeamTino,
+                                               gText_MikeMacconellRacing,
+                                               gText_EricHayashiMotorsports,
+                                               gText_Darby,
+                                               gText_TeamCrawfish };
+#endif
 // No decompiled code reads these bytes yet.
 const u8 gUnk_083FDE14[4] = UNK_083FDE14;
 // Its users declare it as u32 x, u32 x[].
@@ -414,14 +434,14 @@ const u8 *const gDriverCarPalettes[] = { gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082C
                                          gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8,
                                          gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8, gUnk_082CC5D8,
                                          gUnk_082CC5D8, gUnk_082CC5D8 };
-const u32 *const gDriverCarGfxLeftTiles[] = {
+const GfxSrc *const gDriverCarGfxLeftTiles[] = {
     gUnk_083FED9C, gUnk_083FEDBC, gUnk_083FEDAC, gUnk_083FEDB8, gUnk_083FEDA8, gUnk_083FEDA4,
     gUnk_083FED98, gUnk_083FEDA0, gUnk_083FEDB0, gUnk_083FEDB4, gUnk_083FED48, gUnk_083FED4C,
     gUnk_083FED50, gUnk_083FED54, gUnk_083FED58, gUnk_083FED5C, gUnk_083FED60, gUnk_083FED64,
     gUnk_083FED68, gUnk_083FED6C, gUnk_083FED70, gUnk_083FED74, gUnk_083FED78, gUnk_083FED7C,
     gUnk_083FED80, gUnk_083FED84, gUnk_083FED88, gUnk_083FED8C, gUnk_083FED90, gUnk_083FED94
 };
-const u32 *const gDriverCarGfxRightTiles[] = {
+const GfxSrc *const gDriverCarGfxRightTiles[] = {
     gUnk_083FEE14, gUnk_083FEE34, gUnk_083FEE24, gUnk_083FEE30, gUnk_083FEE20, gUnk_083FEE1C,
     gUnk_083FEE10, gUnk_083FEE18, gUnk_083FEE28, gUnk_083FEE2C, gUnk_083FEDC0, gUnk_083FEDC4,
     gUnk_083FEDC8, gUnk_083FEDCC, gUnk_083FEDD0, gUnk_083FEDD4, gUnk_083FEDD8, gUnk_083FEDDC,

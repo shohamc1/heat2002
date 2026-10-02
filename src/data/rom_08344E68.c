@@ -1,5 +1,6 @@
 #include "global.h"
 #include "sin_table.h"
+#include "functions.h"
 
 /* no variables.h: it declares gModule_SinTable without const, which its
    readers' bytes need; this file needs nothing else from it. */
@@ -41,21 +42,17 @@ void sub_0833A198(void);
 void sub_0833A1B0(void);
 void sub_0833A1C4(void);
 void sub_0833A6FC(void);
-void ModuleSampleFreqSet(void);
 void sub_0833A488(void);
-void ModuleFadeOutBody(void);
-void ModuleTrkVolPitSet(void);
 void sub_08339FC8(void);
 void sub_08339FB0(void);
 
 const u32 gUnk_0200C668[36] = {
-    (u32)sub_08339FE8, (u32)sub_0833A058, (u32)sub_0833A078, (u32)sub_0833A094,
-    (u32)sub_0833A0A8, (u32)sub_08339FE8, (u32)sub_08339FE8, (u32)sub_08339FE8,
-    (u32)sub_08339FE8, (u32)sub_0833A0D8, (u32)sub_0833A0E4, (u32)sub_0833A0F8,
-    (u32)sub_0833A10C, (u32)sub_0833A13C, (u32)sub_0833A150, (u32)sub_0833A164,
-    (u32)sub_0833A178, (u32)sub_0833A764, (u32)sub_0833A18C, (u32)sub_0833A778,
-    (u32)sub_0833A198, (u32)sub_08339FE8, (u32)sub_08339FE8, (u32)sub_0833A1B0,
-    (u32)sub_08339FE8, (u32)sub_08339FE8, (u32)sub_08339FE8, (u32)sub_0833A1C4,
-    (u32)sub_08339FE8, (u32)sub_0833A6FC, (u32)ModuleSampleFreqSet, (u32)sub_0833A488,
-    (u32)ModuleFadeOutBody, (u32)ModuleTrkVolPitSet, (u32)sub_08339FC8, (u32)sub_08339FB0
+    (u32)sub_08339FE8,        (u32)sub_0833A058, (u32)sub_0833A078,      (u32)sub_0833A094,       (u32)sub_0833A0A8,
+    (u32)sub_08339FE8,        (u32)sub_08339FE8, (u32)sub_08339FE8,      (u32)sub_08339FE8,       (u32)sub_0833A0D8,
+    (u32)sub_0833A0E4,        (u32)sub_0833A0F8, (u32)sub_0833A10C,      (u32)sub_0833A13C,       (u32)sub_0833A150,
+    (u32)sub_0833A164,        (u32)sub_0833A178, (u32)sub_0833A764,      (u32)sub_0833A18C,       (u32)sub_0833A778,
+    (u32)sub_0833A198,        (u32)sub_08339FE8, (u32)sub_08339FE8,      (u32)sub_0833A1B0,       (u32)sub_08339FE8,
+    (u32)sub_08339FE8,        (u32)sub_08339FE8, (u32)sub_0833A1C4,      (u32)sub_08339FE8,       (u32)sub_0833A6FC,
+    (u32)ModuleSampleFreqSet, (u32)sub_0833A488, (u32)ModuleFadeOutBody, (u32)ModuleTrkVolPitSet, (u32)sub_08339FC8,
+    (u32)sub_08339FB0
 };

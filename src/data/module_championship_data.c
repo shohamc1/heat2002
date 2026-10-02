@@ -76,8 +76,8 @@ extern const u8 gModule_TtMotorsports[];
 extern const u8 gModule_UnderscoreRow32[];
 
 /* The sprite frames the frame lists below point at: the module's
- * copies of the main program's frames, labelled in its data/*.s
- * fragments by their EWRAM addresses. */
+ * copies of the main program's frames, labelled in its data fragments (data/rom_*.s)
+ * by their EWRAM addresses. */
 extern const u8 gModule_0201AD3C[];
 extern const u8 gModule_0201AD78[];
 extern const u8 gModule_0201ADBC[];

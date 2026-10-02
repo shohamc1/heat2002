@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 #include "variables.h"
 
 u16 ModuleReadLinkMenuKeys(void)
@@ -11,7 +12,7 @@ u16 ModuleReadLinkMenuKeys(void)
     u16 *playerKeys;
     u32 startKey;
     u32 numPlayersCopy;
-    register u8 *menuPlayerPtr asm("r4") = &gUnk_0203B850[0];
+    register u8 *menuPlayerPtr PIN(r4) = &gUnk_0203B850;
 
     if (*menuPlayerPtr == 0xFF) {
         keys = 0;

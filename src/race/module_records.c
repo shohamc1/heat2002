@@ -1,15 +1,13 @@
 #include "global.h"
 #include "variables.h"
-
-void ModuleSetTrackRecord(u32 a, u32 b, u32 c);
-void ModuleAddTrackRecordTasks(void);
-extern u32 gUnk_0203D68C[];
+#include "car.h"
+#include "functions.h"
 
 void ModuleSetTrackRecord(u32 min, u32 sec, u32 ms)
 {
     u8 modeMinus3;
 
-    modeMinus3 = gModule_GameMode[0] - 3;
+    modeMinus3 = gModule_GameMode - 3;
     if (modeMinus3 > 1) {
         gModule_TrackRecordMs[gModule_TrackId] = ms;
         gModule_TrackRecordSec[gModule_TrackId] = sec;
@@ -27,7 +25,7 @@ void ModuleCheckTrackRecord(u16 min, u16 sec, u16 ms)
            gModule_TrackRecordMs[gModule_TrackId];
     if (total > best)
         return;
-    if ((u8)(gModule_GameMode[0] - 3) <= 1)
+    if ((u8)(gModule_GameMode - 3) <= 1)
         return;
     ModuleSetTrackRecord(min, sec, ms);
     gUnk_02039100 = 1;
@@ -47,21 +45,21 @@ void ModuleUpdateRaceTimers(void)
         if (gModule_RaceEndState != 0) {
             return;
         }
-        v8 = gModule_GameMode[0] - 3;
+        v8 = gModule_GameMode - 3;
         p1 = &gModule_LapMs[0];
         p2 = &gModule_RaceMs[0];
         if (v8 <= 2) {
             for (i = 0; i != gModule_NumLinkPlayers[0]; i++) {
-                gUnk_0203D68C[i * 100] = gUnk_0203D68C[i * 100] + 1;
+                gModule_Cars[i].finishTime = gModule_Cars[i].finishTime + 1;
             }
         }
         *p1 += 40;
     } while (0);
     if ((*p1) > 999) {
         *p1 -= 1000;
-        gModule_LapSec[0] = gModule_LapSec[0] + 1;
-        if (gModule_LapSec[0] > 59) {
-            gModule_LapSec[0] = gModule_LapSec[0] - 60;
+        gModule_LapSec = gModule_LapSec + 1;
+        if (gModule_LapSec > 59) {
+            gModule_LapSec = gModule_LapSec - 60;
             gModule_LapMin[0] = gModule_LapMin[0] + 1;
         }
     }

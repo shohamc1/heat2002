@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 #include "gba/io_reg.h"
 #include "gba/defines.h"
 #include "variables.h"

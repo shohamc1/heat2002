@@ -12,13 +12,13 @@ void ModuleRaceEndTask(struct Task *task);
 void ModuleDemoEndTask(struct Task *task)
 {
     if (task->timer & 0x10)
-        ModuleDrawText(gModule_DemoMode, 0xB, 0xA);
+        ModuleDrawText(gModule_DemoMode, 11, 10);
     else
-        ModuleDrawText(gModule_OutOfTime, 0xB, 0xA);
+        ModuleDrawText(gModule_OutOfTime, 11, 10);
     --task->timer;
     ModuleReadKeys();
     if ((gUnk_02037618 & 0x3FF) != 0 || task->timer == 0) {
-        ModuleBeginFadeToColor(0xA, 0);
+        ModuleBeginFadeToColor(10, 0);
         ModuleWaitForVBlank();
         REG_DISPCNT &= ~DISPCNT_OBJ_ON;
         gModule_RaceEndState = 2;
@@ -42,16 +42,16 @@ void ModuleRaceEndTask(struct Task *task)
 {
     if (gModule_PaletteFadeActive == 0) {
         if (gModule_IsLinkRace == 0)
-            /* ModuleDrawText: this file's old local prototype differs from
-               functions.h; call through the old signature (solved-walls 31). */
-            ((void (*)(u32, u32, u32, u32))ModuleDrawText)(ModuleGetString(MODULE_MSG_RACE_OVER), 0xA, 3, 1);
+            /* The ROM passes a fourth argument (1, DrawText's highlight
+               flag in the main program) that ModuleDrawText ignores. */
+            ((void (*)(const u8 *, u32, u32, u32))ModuleDrawText)(ModuleGetString(MODULE_MSG_RACE_OVER), 10, 3, 1);
         if (--task->timer == 0) {
             ModuleRemoveTask(task);
             ModuleFreeTask(task);
-            if (gModule_GameMode[0] != 4) {
-                ModuleBeginFadeToColor(0xA, 0);
+            if (gModule_GameMode != 4) {
+                ModuleBeginFadeToColor(10, 0);
                 ModuleWaitForVBlank();
-                *(volatile u16 *)0x04000000 &= 0xEFFF;
+                REG_DISPCNT &= 0xEFFF;
             }
             gModule_RaceEndState = 2;
         }

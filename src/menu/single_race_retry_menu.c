@@ -9,12 +9,11 @@ void DrawSingleRaceRetryMenu(u8 cursor)
 
     cursorCopy = cursor;
     DummyUiFontLoad(gUiFontTable[0]);
-    GetString(9);
-    ((void (*)(void))DrawBigText)();
+    DrawBigText(GetString(9));
     DrawTextCenteredHighlight(GetString(5), 7, cursor == 0);
     DrawTextCenteredHighlight(GetString(6), 9, cursor == 1);
-    DrawTextCenteredHighlight(GetString(0x9D), 0xB, cursor == 2);
-    DrawTextCenteredHighlight(GetString(8), 0xD, cursorCopy == 3);
+    DrawTextCenteredHighlight(GetString(157), 11, cursor == 2);
+    DrawTextCenteredHighlight(GetString(8), 13, cursorCopy == 3);
 }
 
 u8 SingleRaceRetryMenu(void)
@@ -26,7 +25,7 @@ u8 SingleRaceRetryMenu(void)
     LoadMenuScreen(1, (u16 *)fadePalette);
     DrawSingleRaceRetryMenu(0);
     FadeToBrightenedPalette(fadePalette, 0x0F);
-    selection = 0x40;
+    selection = 64;
     do {
         ReadKeys();
         DrawSingleRaceRetryMenu(cursor);

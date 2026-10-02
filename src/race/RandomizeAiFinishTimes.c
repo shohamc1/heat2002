@@ -13,5 +13,5 @@ void RandomizeAiFinishTimes(void)
         car->finishTime = RandomInRange(minTime, maxTime);
         i++;
         car++;
-    } while (i != 0x17);
+    } while (i != 23);
 }

@@ -90,7 +90,7 @@ column shows where each class gets fixed.
 | Array size differs | 2 | `gUnk_0202CBC0` | 2 |
 | Different struct types | 20 | `gCars`: about 20 struct types across 52 files | 3 |
 | Element width or sign differs | 62 | `gCamera`, `gUnk_03007FF8` | 4 |
-| Pointer in some files, array in others | 5 | `gUnk_0203ACD8` | 4 |
+| Pointer in some files, array in others | 5 | `gModule_OamEntryQueueCursor` | 4 |
 | Other mixed shapes | 28 | `gUnk_020251B8`: `u32`, `u32 []`, `u8 *`, `u16 *` | 4 |
 
 ### `volatile` isn't needed

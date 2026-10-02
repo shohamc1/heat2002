@@ -9,5 +9,12 @@
 extern const u8 gUnk_0830E70C[];
 extern const u8 gUnk_0831C850[];
 
+#if PLATFORM_GBA
 const u32 gChampionshipTrophyGfx = (u32)gUnk_0830E70C;
+#else
+// Hosted twin: trophy.c passes the word straight to RLUnCompVram's
+// const void * source, so it holds the pointer at host width, like the
+// gLineMarkerSpriteGfxTable row below.
+const u8 *const gChampionshipTrophyGfx = gUnk_0830E70C;
+#endif
 const u8 *const gLineMarkerSpriteGfxTable[] = { gUnk_0831C850 };

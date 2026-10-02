@@ -52,18 +52,18 @@ extern const struct TrackSeg gTrackSegs_Track8[];
 extern const struct TrackSeg gTrackSegs_Track9[];
 extern const struct TrackSeg gTrackSegs_Track10[];
 extern const struct TrackSeg gTrackSegs_Track11[];
-extern const u32 gUnk_083FEF80[];
-extern const u32 gUnk_083FF004[];
-extern const u32 gUnk_083FF088[];
-extern const u32 gUnk_083FF10C[];
-extern const u32 gUnk_083FF190[];
-extern const u32 gUnk_083FF214[];
-extern const u32 gUnk_083FF298[];
-extern const u32 gUnk_083FF31C[];
-extern const u32 gUnk_083FF3A0[];
-extern const u32 gUnk_083FF424[];
-extern const u32 gUnk_083FF4A8[];
-extern const u32 gUnk_083FF52C[];
+extern const GfxSrc gUnk_083FEF80[];
+extern const GfxSrc gUnk_083FF004[];
+extern const GfxSrc gUnk_083FF088[];
+extern const GfxSrc gUnk_083FF10C[];
+extern const GfxSrc gUnk_083FF190[];
+extern const GfxSrc gUnk_083FF214[];
+extern const GfxSrc gUnk_083FF298[];
+extern const GfxSrc gUnk_083FF31C[];
+extern const GfxSrc gUnk_083FF3A0[];
+extern const GfxSrc gUnk_083FF424[];
+extern const GfxSrc gUnk_083FF4A8[];
+extern const GfxSrc gUnk_083FF52C[];
 
 const struct TrackSeg *const gTrackSegTables[] = { gTrackSegs_Track0, gTrackSegs_Track1, gTrackSegs_Track2, gTrackSegs_Track3,
                                                    gTrackSegs_Track4, gTrackSegs_Track5, gTrackSegs_Track6, gTrackSegs_Track7,
@@ -89,14 +89,14 @@ const u16 gPitExitProgressPoints[12] = PIT_EXIT_PROGRESS_POINTS;
 // NASCAR championship points per finishing position 1-30; 31st and
 // beyond get nothing (AwardRacePoints, src/race/grid.c).
 const u8 gRacePointsTable[32] = RACE_POINTS_TABLE;
-const u32 *const gDriverCarSpriteHalfATables[] = {
+const GfxSrc *const gDriverCarSpriteHalfATables[] = {
     gUnk_083FF424, gUnk_083FF424, gUnk_083FF52C, gUnk_083FF004, gUnk_083FF52C, gUnk_083FF214,
     gUnk_083FF10C, gUnk_083FF31C, gUnk_083FF52C, gUnk_083FF52C, gUnk_083FF31C, gUnk_083FF214,
     gUnk_083FF31C, gUnk_083FF424, gUnk_083FF10C, gUnk_083FF10C, gUnk_083FF424, gUnk_083FF214,
     gUnk_083FF10C, gUnk_083FF214, gUnk_083FF424, gUnk_083FF214, gUnk_083FF52C, gUnk_083FF10C,
     gUnk_083FF31C, gUnk_083FF004, gUnk_083FF004, gUnk_083FF004, gUnk_083FF31C, gUnk_083FF004
 };
-const u32 *const gDriverCarSpriteHalfBTables[] = {
+const GfxSrc *const gDriverCarSpriteHalfBTables[] = {
     gUnk_083FF3A0, gUnk_083FF3A0, gUnk_083FF4A8, gUnk_083FEF80, gUnk_083FF4A8, gUnk_083FF190,
     gUnk_083FF088, gUnk_083FF298, gUnk_083FF4A8, gUnk_083FF4A8, gUnk_083FF298, gUnk_083FF190,
     gUnk_083FF298, gUnk_083FF3A0, gUnk_083FF088, gUnk_083FF088, gUnk_083FF3A0, gUnk_083FF190,
@@ -348,40 +348,40 @@ extern const u16 gDriverDaveMurphyRpmPerSpeed[];
 extern const u16 gDriverDarrenJacksonRpmPerSpeed[];
 extern const u16 gDriverMikeMerrenRpmPerSpeed[];
 extern const u16 gDriverCameronSheppardRpmPerSpeed[];
-extern const u32 gDriverSteveParkNumberFrames[];
-extern const u32 gDriverDaleEarnhardtJRNumberFrames[];
-extern const u32 gDriverKevinHarvickNumberFrames[];
-extern const u32 gDriverDaleJarrettNumberFrames[];
-extern const u32 gDriverRickyRuddNumberFrames[];
-extern const u32 gDriverJeffGordonNumberFrames[];
-extern const u32 gDriverJasonPopeNumberFrames[];
-extern const u32 gDriverJoeFriedNumberFrames[];
-extern const u32 gDriverRustyWallaceNumberFrames[];
-extern const u32 gDriverSterlingMarlinNumberFrames[];
-extern const u32 gDriverBrianLockeNumberFrames[];
-extern const u32 gDriverJayMcgeeNumberFrames[];
-extern const u32 gDriverMitchellSlaterNumberFrames[];
-extern const u32 gDriverJamesBrownNumberFrames[];
-extern const u32 gDriverNeilWilsonNumberFrames[];
-extern const u32 gDriverTimMunsonNumberFrames[];
-extern const u32 gDriverAndrewBishopNumberFrames[];
-extern const u32 gDriverDanielEvansNumberFrames[];
-extern const u32 gDriverSeanKendrickNumberFrames[];
-extern const u32 gDriverJakeMayNumberFrames[];
-extern const u32 gDriverChrisWalshNumberFrames[];
-extern const u32 gDriverJamesDalyNumberFrames[];
-extern const u32 gDriverAdamBouskillNumberFrames[];
-extern const u32 gDriverTimCoodeNumberFrames[];
-extern const u32 gDriverWillGreenoughNumberFrames[];
-extern const u32 gDriverJonnieShearnNumberFrames[];
-extern const u32 gDriverDaveMurphyNumberFrames[];
-extern const u32 gDriverDarrenJacksonNumberFrames[];
-extern const u32 gDriverMikeMerrenNumberFrames[];
-extern const u32 gDriverCameronSheppardNumberFrames[];
-extern const u32 gLinkMarkerP1FrameList[];
-extern const u32 gLinkMarkerP2FrameList[];
-extern const u32 gLinkMarkerP3FrameList[];
-extern const u32 gLinkMarkerP4FrameList[];
+extern const GfxSrc gDriverSteveParkNumberFrames[];
+extern const GfxSrc gDriverDaleEarnhardtJRNumberFrames[];
+extern const GfxSrc gDriverKevinHarvickNumberFrames[];
+extern const GfxSrc gDriverDaleJarrettNumberFrames[];
+extern const GfxSrc gDriverRickyRuddNumberFrames[];
+extern const GfxSrc gDriverJeffGordonNumberFrames[];
+extern const GfxSrc gDriverJasonPopeNumberFrames[];
+extern const GfxSrc gDriverJoeFriedNumberFrames[];
+extern const GfxSrc gDriverRustyWallaceNumberFrames[];
+extern const GfxSrc gDriverSterlingMarlinNumberFrames[];
+extern const GfxSrc gDriverBrianLockeNumberFrames[];
+extern const GfxSrc gDriverJayMcgeeNumberFrames[];
+extern const GfxSrc gDriverMitchellSlaterNumberFrames[];
+extern const GfxSrc gDriverJamesBrownNumberFrames[];
+extern const GfxSrc gDriverNeilWilsonNumberFrames[];
+extern const GfxSrc gDriverTimMunsonNumberFrames[];
+extern const GfxSrc gDriverAndrewBishopNumberFrames[];
+extern const GfxSrc gDriverDanielEvansNumberFrames[];
+extern const GfxSrc gDriverSeanKendrickNumberFrames[];
+extern const GfxSrc gDriverJakeMayNumberFrames[];
+extern const GfxSrc gDriverChrisWalshNumberFrames[];
+extern const GfxSrc gDriverJamesDalyNumberFrames[];
+extern const GfxSrc gDriverAdamBouskillNumberFrames[];
+extern const GfxSrc gDriverTimCoodeNumberFrames[];
+extern const GfxSrc gDriverWillGreenoughNumberFrames[];
+extern const GfxSrc gDriverJonnieShearnNumberFrames[];
+extern const GfxSrc gDriverDaveMurphyNumberFrames[];
+extern const GfxSrc gDriverDarrenJacksonNumberFrames[];
+extern const GfxSrc gDriverMikeMerrenNumberFrames[];
+extern const GfxSrc gDriverCameronSheppardNumberFrames[];
+extern const GfxSrc gLinkMarkerP1FrameList[];
+extern const GfxSrc gLinkMarkerP2FrameList[];
+extern const GfxSrc gLinkMarkerP3FrameList[];
+extern const GfxSrc gLinkMarkerP4FrameList[];
 
 const u16 *const gDriverGearPowerTables[] = {
     gDriverSteveParkPower,      gDriverDaleEarnhardtJRPower, gDriverKevinHarvickPower, gDriverDaleJarrettPower,
@@ -429,10 +429,10 @@ const u8 gPitLaneIndices[12] = PIT_LANE_INDICES;
 // Eight 16.16 fixed-point values (+/-16.0). No decompiled code reads them yet.
 const s32 gUnk_083681C8[8] = UNK_083681C8;
 // Its users declare it as u32 *x[], u32 x[].
-const u32 *const gLinkMarkerFrameLists[] = { gLinkMarkerP1FrameList, gLinkMarkerP2FrameList, gLinkMarkerP3FrameList,
+const GfxSrc *const gLinkMarkerFrameLists[] = { gLinkMarkerP1FrameList, gLinkMarkerP2FrameList, gLinkMarkerP3FrameList,
                                              gLinkMarkerP4FrameList };
 // Its users declare it as u32 *x[].
-const u32 *const gDriverNumberFrameLists[] = {
+const GfxSrc *const gDriverNumberFrameLists[] = {
     gDriverSteveParkNumberFrames,      gDriverDaleEarnhardtJRNumberFrames, gDriverKevinHarvickNumberFrames,
     gDriverDaleJarrettNumberFrames,    gDriverRickyRuddNumberFrames,       gDriverJeffGordonNumberFrames,
     gDriverJasonPopeNumberFrames,      gDriverJoeFriedNumberFrames,        gDriverRustyWallaceNumberFrames,

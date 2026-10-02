@@ -5,26 +5,28 @@
 #include "functions.h"
 #include "gba/defines.h"
 
-extern u16 gUnk_02022DF4;
 /* struct Track and gTrackData come from include/structs.h via
    variables.h. */
 /* Each case carries its own copy of the body so expand_case counts 12
    distinct labels and emits a jump table; cross-jumping then merges the
    twelve identical bodies, leaving every table entry at one address. */
-extern u16 gUnk_02002220[];
-extern u16 gUnk_0200BC70[];
-extern u16 gUnk_02015690[];
-extern u32 gUnk_02022DD8;
-extern u32 gUnk_02022DF0;
-extern u32 gUnk_0201567C;
 extern u16 gRaceHudBgTiles[];
 extern u16 gRaceHudBgPalette[];
 void LoadTrackTiles(u8 idx);
 void RleDecode16(u16 *src, u16 *dst, u16 count);
-void FlushTrackBgBuffers(void);
-void SetCameraPos(u32 x, u32 y);
-void InitRaceCars(u32 idx);
-void ResetRaceTimer(void);
+
+/* This file's EWRAM variables (0x02002200-0x02022E20: the map metadata,
+   the three RLE buffers gBg3MapBuffer/gBg2MapBuffer/gCellMapBuffer and the
+   scroll registers) moved to src/system/globals.c, that run's owner; the
+   ones no other file reads keep local externs here, the rest come from
+   variables.h. */
+extern u16 gBg3MapBuffer[0x4D06];                 /* 0x02002220 */
+extern u16 gBg2MapBuffer[0x4D06];                 /* 0x0200BC70 */
+extern u32 gUnk_0201567C;                         /* 0x0201567C */
+extern u16 gCellMapBuffer[0x6BA4];                /* 0x02015690 */
+extern u32 gBgMapWidth2;                          /* 0x02022DD8 */
+extern u32 gUnk_02022DF0;                         /* 0x02022DF0 */
+extern u16 gUnk_02022DF4;                         /* 0x02022DF4 */
 
 void RleDecode16(u16 *src, u16 *dst, u16 count)
 {
@@ -141,53 +143,64 @@ void LoadTrackTiles(u8 idx)
 
 void LoadTrack(u32 idx)
 {
+#if PORTABLE
+    /* The CpuCopy16 below writes 0x200 bytes (the 256-colour palette)
+       into a, 64 bytes past the GBA's 0xE0 halfwords; on the GBA the
+       spill lands on b, which the next line overwrites with the HUD
+       palette, and the fade then reads all 256 colours from a, so the
+       HUD colours become BG bank 14. Rebuild that layout: one
+       0x100-halfword array, with b its last 0x20. */
+    u16 a[0x100];
+    u16 *b = &a[0xE0];
+#else
     u16 a[0xE0];
     u16 b[0x20];
+#endif
     u16 *t;
 
     LoadTrackTiles(idx);
     t = gRaceHudBgTiles;
     CpuCopy16(t, BG_SCREEN_ADDR(24), 0x2000);
-    CpuCopy16(gTrackData[idx].palette, (u32)a, 0x200);
-    CpuCopy16(t = gRaceHudBgPalette, (u32)b, 0x20);
+    CpuCopy16(gTrackData[idx].palette, a, 0x200);
+    CpuCopy16(t = gRaceHudBgPalette, b, 0x20);
     BeginFadeToBrightenedPalette(0x1E, a);
     gBgMapWidth = gTrackData[idx].mapWidth;
-    gUnk_02022DD8 = gTrackData[idx].mapWidth2;
-    gUnk_02002208 = (u8 *)gUnk_02002220;
-    gUnk_0200BC54 = (u8 *)gUnk_0200BC70;
-    RleDecode16(gTrackData[idx].bg3Map, gUnk_02002220, gTrackData[idx].bg3MapLen);
-    RleDecode16(gTrackData[idx].bg2Map, gUnk_0200BC70, gTrackData[idx].bg2MapLen);
-    gUnk_0200221C = (u8 *)gTrackData[idx].bg3Metatiles;
-    gUnk_02002210 = (u8 *)gTrackData[idx].bg2Metatiles;
+    gBgMapWidth2 = gTrackData[idx].mapWidth2;
+    gBg3MapPtr = (u8 *)gBg3MapBuffer;
+    gBg2MapPtr = (u8 *)gBg2MapBuffer;
+    RleDecode16(gTrackData[idx].bg3Map, gBg3MapBuffer, gTrackData[idx].bg3MapLen);
+    RleDecode16(gTrackData[idx].bg2Map, gBg2MapBuffer, gTrackData[idx].bg2MapLen);
+    gBg3Metatiles = (u8 *)gTrackData[idx].bg3Metatiles;
+    gBg2Metatiles = (u8 *)gTrackData[idx].bg2Metatiles;
     gUnk_02022DF0 = gTrackData[idx].unk3C;
     gUnk_0201567C = gTrackData[idx].unk40;
-    gUnk_0200BC50[0] = (u32)gUnk_02015690;
-    RleDecode16(gTrackData[idx].cellMap, gUnk_02015690, gTrackData[idx].cellMapLen);
-    gUnk_02022DEC[0] = gTrackData[idx].surfaceTable;
+    gCellMapPtr = (u8 *)gCellMapBuffer;
+    RleDecode16(gTrackData[idx].cellMap, gCellMapBuffer, gTrackData[idx].cellMapLen);
+    gSurfaceTablePtr = gTrackData[idx].surfaceTable;
     if (idx == 0)
-        gTrackMapWidth[0] = 0x7D;
+        gTrackMapWidth = 125;
     if (idx == 1)
-        gTrackMapWidth[0] = 0x70;
+        gTrackMapWidth = 112;
     if (idx == 2)
-        gTrackMapWidth[0] = 0xA8;
+        gTrackMapWidth = 168;
     if (idx == 3)
-        gTrackMapWidth[0] = 0x6B;
+        gTrackMapWidth = 107;
     if (idx == 4)
-        gTrackMapWidth[0] = 0xA3;
+        gTrackMapWidth = 163;
     if (idx == 5)
-        gTrackMapWidth[0] = 0xA6;
+        gTrackMapWidth = 166;
     if (idx == 6)
-        gTrackMapWidth[0] = 0x7D;
+        gTrackMapWidth = 125;
     if (idx == 8)
-        gTrackMapWidth[0] = 0x7D;
+        gTrackMapWidth = 125;
     if (idx == 9)
-        gTrackMapWidth[0] = 0x7D;
+        gTrackMapWidth = 125;
     if (idx == 10)
-        gTrackMapWidth[0] = 0x5E;
+        gTrackMapWidth = 94;
     if (idx == 11)
-        gTrackMapWidth[0] = 0x7D;
-    DrawTrackMapWindow(0, 0, gUnk_02002208, (u32 *)TILEMAP_BUFFER(0), gUnk_0200221C, gUnk_02022DE4);
-    DrawTrackMapWindow(0, 0, gUnk_0200BC54, (u32 *)TILEMAP_BUFFER(1), gUnk_02002210, gUnk_0200BC34);
+        gTrackMapWidth = 125;
+    DrawTrackMapWindow(0, 0, gBg3MapPtr, (u32 *)TILEMAP_BUFFER(0), gBg3Metatiles, gUnk_02022DE4);
+    DrawTrackMapWindow(0, 0, gBg2MapPtr, (u32 *)TILEMAP_BUFFER(1), gBg2Metatiles, gUnk_0200BC34);
     FlushTrackBgBuffers();
     SetCameraPos(0, 0);
     InitRaceCars(idx);
@@ -203,17 +216,17 @@ void UpdateTrackScroll(u32 unused0, u32 unused1)
 
     x = gCamera[6] - 0x78;
     y = gCamera[7] - 0x50;
-    gUnk_0200BC48 = x & 0x0F;
-    gUnk_0200BC4C = y & 0x1F;
-    gUnk_02022DF8 = x & 0x0F;
-    gUnk_0200BC2C = y & 0x1F;
-    gUnk_02022DE0 = x & 0x0F;
-    gUnk_02022DE8 = y & 0x1F;
-    gUnk_02002218 = x & 0x10;
+    gBg1ScrollX = x & 0x0F;
+    gBg1ScrollY = y & 0x1F;
+    gBg2ScrollX = x & 0x0F;
+    gBg2ScrollY = y & 0x1F;
+    gBg3ScrollX = x & 0x0F;
+    gBg3ScrollY = y & 0x1F;
+    gMapScrollHalfMetatile = x & 0x10;
     x >>= 5;
     y >>= 5;
-    DrawTrackMapWindow(x, y, gUnk_02002208, (u32 *)TILEMAP_BUFFER(0), gUnk_0200221C, gUnk_02022DE4);
-    DrawTrackMapWindow(x, y, gUnk_0200BC54, (u32 *)TILEMAP_BUFFER(1), gUnk_02002210, gUnk_0200BC34);
+    DrawTrackMapWindow(x, y, gBg3MapPtr, (u32 *)TILEMAP_BUFFER(0), gBg3Metatiles, gUnk_02022DE4);
+    DrawTrackMapWindow(x, y, gBg2MapPtr, (u32 *)TILEMAP_BUFFER(1), gBg2Metatiles, gUnk_0200BC34);
 }
 
 void DrawTrackMapWindow(u32 tileX, u32 tileY, u8 *map, u32 *dest, u8 *charBase, u16 unused)
@@ -225,7 +238,13 @@ void DrawTrackMapWindow(u32 tileX, u32 tileY, u8 *map, u32 *dest, u8 *charBase, 
     u32 row;
     u32 col;
 
+#if PORTABLE
+    /* Negative projected columns are valid on the diagonal tracks.
+       Combine the offsets before pointer addition, with GBA 32-bit wrap. */
+    mapPtr = map + (s32)(tileY * gBgMapWidth * 2 + tileX * 2);
+#else
     mapPtr = map + tileY * gBgMapWidth * 2 + tileX * 2;
+#endif
     row = 0;
     do {
         destRow2 = dest + 0x24;

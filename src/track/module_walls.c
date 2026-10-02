@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 #include "variables.h"
 
 extern u32 gUnk_0203DE68;
@@ -11,9 +12,9 @@ u16 *ModuleGetWallListAt(s32 xIn, s32 yIn)
 
     tx = xIn >> 7;
     ty = yIn >> 7;
-    if (tx > 0x30 || ty > 0x30 || tx < 0 || ty < 0)
+    if (tx > 48 || ty > 48 || tx < 0 || ty < 0)
         return gUnk_0203DE8C + *gUnk_0203DE88;
-    return gUnk_0203DE8C + gUnk_0203DE88[ty * 0x30 + tx];
+    return gUnk_0203DE8C + gUnk_0203DE88[ty * 48 + tx];
 }
 
 void ModuleLoadTrackWalls(u32 idx)

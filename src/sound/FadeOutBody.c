@@ -1,28 +1,12 @@
 #include "global.h"
+#include "functions.h"
+#include "m4a.h"
 
-struct Track
-{
-    u8 flags;
-    u8 pad1[0x13 - 1];
-    u8 volX;
-    u8 pad2[0x50 - 0x14];
-};
-struct MPlayInfo
-{
-    u8 pad0[8];
-    u8 trackCount;
-    u8 pad9[0x24 - 9];
-    u16 fadeOI;
-    u16 fadeOC;
-    u16 fadeOV;
-    struct Track *tracks;
-};
-void TrackStop(struct MPlayInfo *mplayInfo, struct Track *track);
-void FadeOutBody(struct MPlayInfo *mplayInfo)
+void FadeOutBody(struct MusicPlayerInfo *mplayInfo)
 {
     s32 i;
     s32 fadeOV;
-    struct Track *track;
+    struct MusicPlayerTrack *track;
     unsigned long long mask;
     if (mplayInfo->fadeOI != 0) {
         if ((--mplayInfo->fadeOC) == 0) {

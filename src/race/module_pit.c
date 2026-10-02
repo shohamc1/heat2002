@@ -1,8 +1,9 @@
 #include "global.h"
+#include "functions.h"
 #include "variables.h"
 #include "car.h"
 
-u8 ModuleFindFreePitStall(void)
+u8 ModuleFindFreePitStall(u8 unused)
 {
     u8 i;
 
@@ -13,7 +14,7 @@ u8 ModuleFindFreePitStall(void)
     return 0x63;
 }
 
-u32 ModuleCarNeedsPit(struct Car *car)
+u8 ModuleCarNeedsPit(struct Car *car)
 {
     s32 ret;
     s32 tireWear;
@@ -21,13 +22,13 @@ u32 ModuleCarNeedsPit(struct Car *car)
 
     if (car != gModule_Cars) {
         ret = 0;
-        if (car->fuel <= 0xA0 << 6)
+        if (car->fuel <= 160 << 6)
             ret = 1;
         tireWear = car->tireWear0;
         wearLimit = 0x3E7FF;
     } else {
         ret = 0;
-        if (car->fuel <= 0xA0 << 6)
+        if (car->fuel <= 160 << 6)
             ret = 1;
         tireWear = car->tireWear0;
         wearLimit = 0x5DBFF;

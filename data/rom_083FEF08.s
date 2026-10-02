@@ -1,6 +1,15 @@
 @ Generated with Luvdis v0.9.0
+@ Both builds preprocess this file (preproc inlines the .include files,
+@ cpp resolves the switch below). The GBA keeps the exact luvdis layout;
+@ the hosted build switches to a writable data section, because its mPtr
+@ pointer fields carry relocations the host linker must be able to write.
+	.include "asm/macros/portable.inc"
+#if PLATFORM_GBA
 .syntax unified
 .text
+#else
+mSectionData
+#endif
 @ Begin embedded Luvdis macros
 	.macro arm_func_start name
 	.align 2, 0
@@ -34,511 +43,553 @@
 @ End embedded Luvdis macros
 	.global gDriverSteveParkNumberFrames
 gDriverSteveParkNumberFrames:
-	.4byte gUnk_0831C898
+	cSym gDriverSteveParkNumberFrames
+	mPtr gUnk_0831C898
 	.global gDriverDaleEarnhardtJRNumberFrames
 gDriverDaleEarnhardtJRNumberFrames:
-	.4byte gUnk_0831C8D4
+	cSym gDriverDaleEarnhardtJRNumberFrames
+	mPtr gUnk_0831C8D4
 	.global gDriverKevinHarvickNumberFrames
 gDriverKevinHarvickNumberFrames:
-	.4byte gUnk_0831C918
+	cSym gDriverKevinHarvickNumberFrames
+	mPtr gUnk_0831C918
 	.global gDriverDaleJarrettNumberFrames
 gDriverDaleJarrettNumberFrames:
-	.4byte gUnk_0831C960
+	cSym gDriverDaleJarrettNumberFrames
+	mPtr gUnk_0831C960
 	.global gDriverRickyRuddNumberFrames
 gDriverRickyRuddNumberFrames:
-	.4byte gUnk_0831C9A8
+	cSym gDriverRickyRuddNumberFrames
+	mPtr gUnk_0831C9A8
 	.global gDriverJeffGordonNumberFrames
 gDriverJeffGordonNumberFrames:
-	.4byte gUnk_0831C9F0
+	cSym gDriverJeffGordonNumberFrames
+	mPtr gUnk_0831C9F0
 	.global gDriverJasonPopeNumberFrames
 gDriverJasonPopeNumberFrames:
-	.4byte gUnk_0831CA38
+	cSym gDriverJasonPopeNumberFrames
+	mPtr gUnk_0831CA38
 	.global gDriverJoeFriedNumberFrames
 gDriverJoeFriedNumberFrames:
-	.4byte gUnk_0831CA80
+	cSym gDriverJoeFriedNumberFrames
+	mPtr gUnk_0831CA80
 	.global gDriverRustyWallaceNumberFrames
 gDriverRustyWallaceNumberFrames:
-	.4byte gUnk_0831CAC8
+	cSym gDriverRustyWallaceNumberFrames
+	mPtr gUnk_0831CAC8
 	.global gDriverSterlingMarlinNumberFrames
 gDriverSterlingMarlinNumberFrames:
-	.4byte gUnk_0831CB04
+	cSym gDriverSterlingMarlinNumberFrames
+	mPtr gUnk_0831CB04
 	.global gDriverBrianLockeNumberFrames
 gDriverBrianLockeNumberFrames:
-	.4byte gUnk_0831CB4C
+	cSym gDriverBrianLockeNumberFrames
+	mPtr gUnk_0831CB4C
 	.global gDriverJayMcgeeNumberFrames
 gDriverJayMcgeeNumberFrames:
-	.4byte gUnk_0831CB94
+	cSym gDriverJayMcgeeNumberFrames
+	mPtr gUnk_0831CB94
 	.global gDriverMitchellSlaterNumberFrames
 gDriverMitchellSlaterNumberFrames:
-	.4byte gUnk_0831CBDC
+	cSym gDriverMitchellSlaterNumberFrames
+	mPtr gUnk_0831CBDC
 	.global gDriverJamesBrownNumberFrames
 gDriverJamesBrownNumberFrames:
-	.4byte gUnk_0831CC24
+	cSym gDriverJamesBrownNumberFrames
+	mPtr gUnk_0831CC24
 	.global gDriverNeilWilsonNumberFrames
 gDriverNeilWilsonNumberFrames:
-	.4byte gUnk_0831CC6C
+	cSym gDriverNeilWilsonNumberFrames
+	mPtr gUnk_0831CC6C
 	.global gDriverTimMunsonNumberFrames
 gDriverTimMunsonNumberFrames:
-	.4byte gUnk_0831CCB4
+	cSym gDriverTimMunsonNumberFrames
+	mPtr gUnk_0831CCB4
 	.global gDriverAndrewBishopNumberFrames
 gDriverAndrewBishopNumberFrames:
-	.4byte gUnk_0831CCFC
+	cSym gDriverAndrewBishopNumberFrames
+	mPtr gUnk_0831CCFC
 	.global gDriverDanielEvansNumberFrames
 gDriverDanielEvansNumberFrames:
-	.4byte gUnk_0831CD44
+	cSym gDriverDanielEvansNumberFrames
+	mPtr gUnk_0831CD44
 	.global gDriverSeanKendrickNumberFrames
 gDriverSeanKendrickNumberFrames:
-	.4byte gUnk_0831CD8C
+	cSym gDriverSeanKendrickNumberFrames
+	mPtr gUnk_0831CD8C
 	.global gDriverJakeMayNumberFrames
 gDriverJakeMayNumberFrames:
-	.4byte gUnk_0831CDD4
+	cSym gDriverJakeMayNumberFrames
+	mPtr gUnk_0831CDD4
 	.global gDriverChrisWalshNumberFrames
 gDriverChrisWalshNumberFrames:
-	.4byte gUnk_0831CE1C
+	cSym gDriverChrisWalshNumberFrames
+	mPtr gUnk_0831CE1C
 	.global gDriverJamesDalyNumberFrames
 gDriverJamesDalyNumberFrames:
-	.4byte gUnk_0831CE64
+	cSym gDriverJamesDalyNumberFrames
+	mPtr gUnk_0831CE64
 	.global gDriverAdamBouskillNumberFrames
 gDriverAdamBouskillNumberFrames:
-	.4byte gUnk_0831CEAC
+	cSym gDriverAdamBouskillNumberFrames
+	mPtr gUnk_0831CEAC
 	.global gDriverTimCoodeNumberFrames
 gDriverTimCoodeNumberFrames:
-	.4byte gUnk_0831CEF4
+	cSym gDriverTimCoodeNumberFrames
+	mPtr gUnk_0831CEF4
 	.global gDriverWillGreenoughNumberFrames
 gDriverWillGreenoughNumberFrames:
-	.4byte gUnk_0831CF3C
+	cSym gDriverWillGreenoughNumberFrames
+	mPtr gUnk_0831CF3C
 	.global gDriverJonnieShearnNumberFrames
 gDriverJonnieShearnNumberFrames:
-	.4byte gUnk_0831CF84
+	cSym gDriverJonnieShearnNumberFrames
+	mPtr gUnk_0831CF84
 	.global gDriverDaveMurphyNumberFrames
 gDriverDaveMurphyNumberFrames:
-	.4byte gUnk_0831CFCC
+	cSym gDriverDaveMurphyNumberFrames
+	mPtr gUnk_0831CFCC
 	.global gDriverDarrenJacksonNumberFrames
 gDriverDarrenJacksonNumberFrames:
-	.4byte gUnk_0831D014
+	cSym gDriverDarrenJacksonNumberFrames
+	mPtr gUnk_0831D014
 	.global gDriverMikeMerrenNumberFrames
 gDriverMikeMerrenNumberFrames:
-	.4byte gUnk_0831D05C
+	cSym gDriverMikeMerrenNumberFrames
+	mPtr gUnk_0831D05C
 	.global gDriverCameronSheppardNumberFrames
 gDriverCameronSheppardNumberFrames:
-	.4byte gUnk_0831D0A4
+	cSym gDriverCameronSheppardNumberFrames
+	mPtr gUnk_0831D0A4
 	.global gUnk_083FEF80
 gUnk_083FEF80:
-	.4byte gUnk_0831D10C
-	.4byte gUnk_0831D240
-	.4byte gUnk_0831D36C
-	.4byte gUnk_0831D4A4
-	.4byte gUnk_0831D5D8
-	.4byte gUnk_0831D6FC
-	.4byte gUnk_0831D81C
-	.4byte gUnk_0831D928
-	.4byte gUnk_0831DA34
-	.4byte gUnk_0831DB48
-	.4byte gUnk_0831DC5C
-	.4byte gUnk_0831DD68
-	.4byte gUnk_0831DE74
-	.4byte gUnk_0831DF80
-	.4byte gUnk_0831E08C
-	.4byte gUnk_0831E198
-	.4byte gUnk_0831E2A8
-	.4byte gUnk_0831E3B0
-	.4byte gUnk_0831E4C0
-	.4byte gUnk_0831E5C8
-	.4byte gUnk_0831E6D8
-	.4byte gUnk_0831E7F0
-	.4byte gUnk_0831E900
-	.4byte gUnk_0831EA10
-	.4byte gUnk_0831EB28
-	.4byte gUnk_0831EC3C
-	.4byte gUnk_0831ED50
-	.4byte gUnk_0831EE60
-	.4byte gUnk_0831EF64
-	.4byte gUnk_0831F064
-	.4byte gUnk_0831F164
-	.4byte gUnk_0831F260
-	.4byte gUnk_0831F354
+	cSym gUnk_083FEF80
+	mPtr gUnk_0831D10C
+	mPtr gUnk_0831D240
+	mPtr gUnk_0831D36C
+	mPtr gUnk_0831D4A4
+	mPtr gUnk_0831D5D8
+	mPtr gUnk_0831D6FC
+	mPtr gUnk_0831D81C
+	mPtr gUnk_0831D928
+	mPtr gUnk_0831DA34
+	mPtr gUnk_0831DB48
+	mPtr gUnk_0831DC5C
+	mPtr gUnk_0831DD68
+	mPtr gUnk_0831DE74
+	mPtr gUnk_0831DF80
+	mPtr gUnk_0831E08C
+	mPtr gUnk_0831E198
+	mPtr gUnk_0831E2A8
+	mPtr gUnk_0831E3B0
+	mPtr gUnk_0831E4C0
+	mPtr gUnk_0831E5C8
+	mPtr gUnk_0831E6D8
+	mPtr gUnk_0831E7F0
+	mPtr gUnk_0831E900
+	mPtr gUnk_0831EA10
+	mPtr gUnk_0831EB28
+	mPtr gUnk_0831EC3C
+	mPtr gUnk_0831ED50
+	mPtr gUnk_0831EE60
+	mPtr gUnk_0831EF64
+	mPtr gUnk_0831F064
+	mPtr gUnk_0831F164
+	mPtr gUnk_0831F260
+	mPtr gUnk_0831F354
 	.global gUnk_083FF004
 gUnk_083FF004:
-	.4byte gUnk_0831F468
-	.4byte gUnk_0831F4C4
-	.4byte gUnk_0831F510
-	.4byte gUnk_0831F560
-	.4byte gUnk_0831F5B4
-	.4byte gUnk_0831F618
-	.4byte gUnk_0831F6A0
-	.4byte gUnk_0831F734
-	.4byte gUnk_0831F7C8
-	.4byte gUnk_0831F85C
-	.4byte gUnk_0831F8F0
-	.4byte gUnk_0831F984
-	.4byte gUnk_0831FA14
-	.4byte gUnk_0831FAA0
-	.4byte gUnk_0831FB28
-	.4byte gUnk_0831FBAC
-	.4byte gUnk_0831FC30
-	.4byte gUnk_0831FCB0
-	.4byte gUnk_0831FD30
-	.4byte gUnk_0831FDB0
-	.4byte gUnk_0831FE28
-	.4byte gUnk_0831FE9C
-	.4byte gUnk_0831FF10
-	.4byte gUnk_0831FF7C
-	.4byte gUnk_0831FFE8
-	.4byte gUnk_08320050
-	.4byte gUnk_083200B0
-	.4byte gUnk_083200F4
-	.4byte gUnk_08320138
-	.4byte gUnk_0832017C
-	.4byte gUnk_083201BC
-	.4byte gUnk_083201FC
-	.4byte gUnk_08320250
+	cSym gUnk_083FF004
+	mPtr gUnk_0831F468
+	mPtr gUnk_0831F4C4
+	mPtr gUnk_0831F510
+	mPtr gUnk_0831F560
+	mPtr gUnk_0831F5B4
+	mPtr gUnk_0831F618
+	mPtr gUnk_0831F6A0
+	mPtr gUnk_0831F734
+	mPtr gUnk_0831F7C8
+	mPtr gUnk_0831F85C
+	mPtr gUnk_0831F8F0
+	mPtr gUnk_0831F984
+	mPtr gUnk_0831FA14
+	mPtr gUnk_0831FAA0
+	mPtr gUnk_0831FB28
+	mPtr gUnk_0831FBAC
+	mPtr gUnk_0831FC30
+	mPtr gUnk_0831FCB0
+	mPtr gUnk_0831FD30
+	mPtr gUnk_0831FDB0
+	mPtr gUnk_0831FE28
+	mPtr gUnk_0831FE9C
+	mPtr gUnk_0831FF10
+	mPtr gUnk_0831FF7C
+	mPtr gUnk_0831FFE8
+	mPtr gUnk_08320050
+	mPtr gUnk_083200B0
+	mPtr gUnk_083200F4
+	mPtr gUnk_08320138
+	mPtr gUnk_0832017C
+	mPtr gUnk_083201BC
+	mPtr gUnk_083201FC
+	mPtr gUnk_08320250
 	.global gUnk_083FF088
 gUnk_083FF088:
-	.4byte gUnk_083202B4
-	.4byte gUnk_083203E8
-	.4byte gUnk_08320510
-	.4byte gUnk_08320648
-	.4byte gUnk_0832077C
-	.4byte gUnk_083208A0
-	.4byte gUnk_083209C0
-	.4byte gUnk_08320ACC
-	.4byte gUnk_08320BD8
-	.4byte gUnk_08320CEC
-	.4byte gUnk_08320E00
-	.4byte gUnk_08320F10
-	.4byte gUnk_0832101C
-	.4byte gUnk_08321128
-	.4byte gUnk_0832122C
-	.4byte gUnk_08321338
-	.4byte gUnk_08321440
-	.4byte gUnk_08321544
-	.4byte gUnk_08321648
-	.4byte gUnk_08321744
-	.4byte gUnk_0832184C
-	.4byte gUnk_08321958
-	.4byte gUnk_08321A68
-	.4byte gUnk_08321B78
-	.4byte gUnk_08321C90
-	.4byte gUnk_08321DA4
-	.4byte gUnk_08321EB8
-	.4byte gUnk_08321FC8
-	.4byte gUnk_083220CC
-	.4byte gUnk_083221CC
-	.4byte gUnk_083222CC
-	.4byte gUnk_083223C4
-	.4byte gUnk_083224BC
+	cSym gUnk_083FF088
+	mPtr gUnk_083202B4
+	mPtr gUnk_083203E8
+	mPtr gUnk_08320510
+	mPtr gUnk_08320648
+	mPtr gUnk_0832077C
+	mPtr gUnk_083208A0
+	mPtr gUnk_083209C0
+	mPtr gUnk_08320ACC
+	mPtr gUnk_08320BD8
+	mPtr gUnk_08320CEC
+	mPtr gUnk_08320E00
+	mPtr gUnk_08320F10
+	mPtr gUnk_0832101C
+	mPtr gUnk_08321128
+	mPtr gUnk_0832122C
+	mPtr gUnk_08321338
+	mPtr gUnk_08321440
+	mPtr gUnk_08321544
+	mPtr gUnk_08321648
+	mPtr gUnk_08321744
+	mPtr gUnk_0832184C
+	mPtr gUnk_08321958
+	mPtr gUnk_08321A68
+	mPtr gUnk_08321B78
+	mPtr gUnk_08321C90
+	mPtr gUnk_08321DA4
+	mPtr gUnk_08321EB8
+	mPtr gUnk_08321FC8
+	mPtr gUnk_083220CC
+	mPtr gUnk_083221CC
+	mPtr gUnk_083222CC
+	mPtr gUnk_083223C4
+	mPtr gUnk_083224BC
 	.global gUnk_083FF10C
 gUnk_083FF10C:
-	.4byte gUnk_083225CC
-	.4byte gUnk_08322628
-	.4byte gUnk_08322674
-	.4byte gUnk_083226C4
-	.4byte gUnk_08322718
-	.4byte gUnk_0832277C
-	.4byte gUnk_08322804
-	.4byte gUnk_08322898
-	.4byte gUnk_0832292C
-	.4byte gUnk_083229C0
-	.4byte gUnk_08322A54
-	.4byte gUnk_08322AE8
-	.4byte gUnk_08322B78
-	.4byte gUnk_08322C04
-	.4byte gUnk_08322C8C
-	.4byte gUnk_08322D10
-	.4byte gUnk_08322D94
-	.4byte gUnk_08322E14
-	.4byte gUnk_08322E94
-	.4byte gUnk_08322F14
-	.4byte gUnk_08322F8C
-	.4byte gUnk_08323004
-	.4byte gUnk_08323078
-	.4byte gUnk_083230E4
-	.4byte gUnk_08323150
-	.4byte gUnk_083231B8
-	.4byte gUnk_08323218
-	.4byte gUnk_0832325C
-	.4byte gUnk_083232A0
-	.4byte gUnk_083232E4
-	.4byte gUnk_08323324
-	.4byte gUnk_08323364
-	.4byte gUnk_083233B8
+	cSym gUnk_083FF10C
+	mPtr gUnk_083225CC
+	mPtr gUnk_08322628
+	mPtr gUnk_08322674
+	mPtr gUnk_083226C4
+	mPtr gUnk_08322718
+	mPtr gUnk_0832277C
+	mPtr gUnk_08322804
+	mPtr gUnk_08322898
+	mPtr gUnk_0832292C
+	mPtr gUnk_083229C0
+	mPtr gUnk_08322A54
+	mPtr gUnk_08322AE8
+	mPtr gUnk_08322B78
+	mPtr gUnk_08322C04
+	mPtr gUnk_08322C8C
+	mPtr gUnk_08322D10
+	mPtr gUnk_08322D94
+	mPtr gUnk_08322E14
+	mPtr gUnk_08322E94
+	mPtr gUnk_08322F14
+	mPtr gUnk_08322F8C
+	mPtr gUnk_08323004
+	mPtr gUnk_08323078
+	mPtr gUnk_083230E4
+	mPtr gUnk_08323150
+	mPtr gUnk_083231B8
+	mPtr gUnk_08323218
+	mPtr gUnk_0832325C
+	mPtr gUnk_083232A0
+	mPtr gUnk_083232E4
+	mPtr gUnk_08323324
+	mPtr gUnk_08323364
+	mPtr gUnk_083233B8
 	.global gUnk_083FF190
 gUnk_083FF190:
-	.4byte gUnk_0832341C
-	.4byte gUnk_0832354C
-	.4byte gUnk_08323674
-	.4byte gUnk_083237A8
-	.4byte gUnk_083238D8
-	.4byte gUnk_083239FC
-	.4byte gUnk_08323B1C
-	.4byte gUnk_08323C24
-	.4byte gUnk_08323D30
-	.4byte gUnk_08323E3C
-	.4byte gUnk_08323F50
-	.4byte gUnk_0832405C
-	.4byte gUnk_08324168
-	.4byte gUnk_08324274
-	.4byte gUnk_0832437C
-	.4byte gUnk_08324484
-	.4byte gUnk_08324594
-	.4byte gUnk_0832469C
-	.4byte gUnk_083247A8
-	.4byte gUnk_083248AC
-	.4byte gUnk_083249BC
-	.4byte gUnk_08324AD4
-	.4byte gUnk_08324BE4
-	.4byte gUnk_08324CF0
-	.4byte gUnk_08324E08
-	.4byte gUnk_08324F1C
-	.4byte gUnk_08325030
-	.4byte gUnk_08325140
-	.4byte gUnk_08325244
-	.4byte gUnk_08325344
-	.4byte gUnk_08325444
-	.4byte gUnk_08325538
-	.4byte gUnk_08325630
+	cSym gUnk_083FF190
+	mPtr gUnk_0832341C
+	mPtr gUnk_0832354C
+	mPtr gUnk_08323674
+	mPtr gUnk_083237A8
+	mPtr gUnk_083238D8
+	mPtr gUnk_083239FC
+	mPtr gUnk_08323B1C
+	mPtr gUnk_08323C24
+	mPtr gUnk_08323D30
+	mPtr gUnk_08323E3C
+	mPtr gUnk_08323F50
+	mPtr gUnk_0832405C
+	mPtr gUnk_08324168
+	mPtr gUnk_08324274
+	mPtr gUnk_0832437C
+	mPtr gUnk_08324484
+	mPtr gUnk_08324594
+	mPtr gUnk_0832469C
+	mPtr gUnk_083247A8
+	mPtr gUnk_083248AC
+	mPtr gUnk_083249BC
+	mPtr gUnk_08324AD4
+	mPtr gUnk_08324BE4
+	mPtr gUnk_08324CF0
+	mPtr gUnk_08324E08
+	mPtr gUnk_08324F1C
+	mPtr gUnk_08325030
+	mPtr gUnk_08325140
+	mPtr gUnk_08325244
+	mPtr gUnk_08325344
+	mPtr gUnk_08325444
+	mPtr gUnk_08325538
+	mPtr gUnk_08325630
 	.global gUnk_083FF214
 gUnk_083FF214:
-	.4byte gUnk_0832573C
-	.4byte gUnk_08325798
-	.4byte gUnk_083257E4
-	.4byte gUnk_08325834
-	.4byte gUnk_08325888
-	.4byte gUnk_083258EC
-	.4byte gUnk_08325970
-	.4byte gUnk_08325A04
-	.4byte gUnk_08325A94
-	.4byte gUnk_08325B28
-	.4byte gUnk_08325BBC
-	.4byte gUnk_08325C50
-	.4byte gUnk_08325CE0
-	.4byte gUnk_08325D6C
-	.4byte gUnk_08325DF0
-	.4byte gUnk_08325E6C
-	.4byte gUnk_08325EEC
-	.4byte gUnk_08325F64
-	.4byte gUnk_08325FDC
-	.4byte gUnk_0832605C
-	.4byte gUnk_083260D4
-	.4byte gUnk_0832614C
-	.4byte gUnk_083261C0
-	.4byte gUnk_0832622C
-	.4byte gUnk_08326298
-	.4byte gUnk_08326300
-	.4byte gUnk_08326360
-	.4byte gUnk_083263A4
-	.4byte gUnk_083263E8
-	.4byte gUnk_0832642C
-	.4byte gUnk_0832646C
-	.4byte gUnk_083264AC
-	.4byte gUnk_08326500
+	cSym gUnk_083FF214
+	mPtr gUnk_0832573C
+	mPtr gUnk_08325798
+	mPtr gUnk_083257E4
+	mPtr gUnk_08325834
+	mPtr gUnk_08325888
+	mPtr gUnk_083258EC
+	mPtr gUnk_08325970
+	mPtr gUnk_08325A04
+	mPtr gUnk_08325A94
+	mPtr gUnk_08325B28
+	mPtr gUnk_08325BBC
+	mPtr gUnk_08325C50
+	mPtr gUnk_08325CE0
+	mPtr gUnk_08325D6C
+	mPtr gUnk_08325DF0
+	mPtr gUnk_08325E6C
+	mPtr gUnk_08325EEC
+	mPtr gUnk_08325F64
+	mPtr gUnk_08325FDC
+	mPtr gUnk_0832605C
+	mPtr gUnk_083260D4
+	mPtr gUnk_0832614C
+	mPtr gUnk_083261C0
+	mPtr gUnk_0832622C
+	mPtr gUnk_08326298
+	mPtr gUnk_08326300
+	mPtr gUnk_08326360
+	mPtr gUnk_083263A4
+	mPtr gUnk_083263E8
+	mPtr gUnk_0832642C
+	mPtr gUnk_0832646C
+	mPtr gUnk_083264AC
+	mPtr gUnk_08326500
 	.global gUnk_083FF298
 gUnk_083FF298:
-	.4byte gUnk_08326564
-	.4byte gUnk_08326694
-	.4byte gUnk_083267B0
-	.4byte gUnk_083268E4
-	.4byte gUnk_08326A18
-	.4byte gUnk_08326B44
-	.4byte gUnk_08326C60
-	.4byte gUnk_08326D70
-	.4byte gUnk_08326E78
-	.4byte gUnk_08326F84
-	.4byte gUnk_0832709C
-	.4byte gUnk_083271A8
-	.4byte gUnk_083272B8
-	.4byte gUnk_083273C4
-	.4byte gUnk_083274D0
-	.4byte gUnk_083275E0
-	.4byte gUnk_083276EC
-	.4byte gUnk_083277F8
-	.4byte gUnk_08327908
-	.4byte gUnk_08327A10
-	.4byte gUnk_08327B20
-	.4byte gUnk_08327C2C
-	.4byte gUnk_08327D3C
-	.4byte gUnk_08327E50
-	.4byte gUnk_08327F64
-	.4byte gUnk_0832807C
-	.4byte gUnk_08328190
-	.4byte gUnk_083282A0
-	.4byte gUnk_083283A4
-	.4byte gUnk_083284A0
-	.4byte gUnk_0832859C
-	.4byte gUnk_08328698
-	.4byte gUnk_08328790
+	cSym gUnk_083FF298
+	mPtr gUnk_08326564
+	mPtr gUnk_08326694
+	mPtr gUnk_083267B0
+	mPtr gUnk_083268E4
+	mPtr gUnk_08326A18
+	mPtr gUnk_08326B44
+	mPtr gUnk_08326C60
+	mPtr gUnk_08326D70
+	mPtr gUnk_08326E78
+	mPtr gUnk_08326F84
+	mPtr gUnk_0832709C
+	mPtr gUnk_083271A8
+	mPtr gUnk_083272B8
+	mPtr gUnk_083273C4
+	mPtr gUnk_083274D0
+	mPtr gUnk_083275E0
+	mPtr gUnk_083276EC
+	mPtr gUnk_083277F8
+	mPtr gUnk_08327908
+	mPtr gUnk_08327A10
+	mPtr gUnk_08327B20
+	mPtr gUnk_08327C2C
+	mPtr gUnk_08327D3C
+	mPtr gUnk_08327E50
+	mPtr gUnk_08327F64
+	mPtr gUnk_0832807C
+	mPtr gUnk_08328190
+	mPtr gUnk_083282A0
+	mPtr gUnk_083283A4
+	mPtr gUnk_083284A0
+	mPtr gUnk_0832859C
+	mPtr gUnk_08328698
+	mPtr gUnk_08328790
 	.global gUnk_083FF31C
 gUnk_083FF31C:
-	.4byte gUnk_083288A0
-	.4byte gUnk_08328900
-	.4byte gUnk_08328950
-	.4byte gUnk_083289A4
-	.4byte gUnk_083289F8
-	.4byte gUnk_08328A70
-	.4byte gUnk_08328AF8
-	.4byte gUnk_08328B88
-	.4byte gUnk_08328C1C
-	.4byte gUnk_08328CB4
-	.4byte gUnk_08328D4C
-	.4byte gUnk_08328DE0
-	.4byte gUnk_08328E70
-	.4byte gUnk_08328F00
-	.4byte gUnk_08328F88
-	.4byte gUnk_08329010
-	.4byte gUnk_08329094
-	.4byte gUnk_08329118
-	.4byte gUnk_08329198
-	.4byte gUnk_08329214
-	.4byte gUnk_08329290
-	.4byte gUnk_08329308
-	.4byte gUnk_08329380
-	.4byte gUnk_083293F4
-	.4byte gUnk_08329464
-	.4byte gUnk_083294CC
-	.4byte gUnk_08329530
-	.4byte gUnk_08329584
-	.4byte gUnk_083295CC
-	.4byte gUnk_08329610
-	.4byte gUnk_08329654
-	.4byte gUnk_08329698
-	.4byte gUnk_083296F0
+	cSym gUnk_083FF31C
+	mPtr gUnk_083288A0
+	mPtr gUnk_08328900
+	mPtr gUnk_08328950
+	mPtr gUnk_083289A4
+	mPtr gUnk_083289F8
+	mPtr gUnk_08328A70
+	mPtr gUnk_08328AF8
+	mPtr gUnk_08328B88
+	mPtr gUnk_08328C1C
+	mPtr gUnk_08328CB4
+	mPtr gUnk_08328D4C
+	mPtr gUnk_08328DE0
+	mPtr gUnk_08328E70
+	mPtr gUnk_08328F00
+	mPtr gUnk_08328F88
+	mPtr gUnk_08329010
+	mPtr gUnk_08329094
+	mPtr gUnk_08329118
+	mPtr gUnk_08329198
+	mPtr gUnk_08329214
+	mPtr gUnk_08329290
+	mPtr gUnk_08329308
+	mPtr gUnk_08329380
+	mPtr gUnk_083293F4
+	mPtr gUnk_08329464
+	mPtr gUnk_083294CC
+	mPtr gUnk_08329530
+	mPtr gUnk_08329584
+	mPtr gUnk_083295CC
+	mPtr gUnk_08329610
+	mPtr gUnk_08329654
+	mPtr gUnk_08329698
+	mPtr gUnk_083296F0
 	.global gUnk_083FF3A0
 gUnk_083FF3A0:
-	.4byte gUnk_0832975C
-	.4byte gUnk_08329890
-	.4byte gUnk_083299BC
-	.4byte gUnk_08329AF4
-	.4byte gUnk_08329C28
-	.4byte gUnk_08329D4C
-	.4byte gUnk_08329E6C
-	.4byte gUnk_08329F78
-	.4byte gUnk_0832A084
-	.4byte gUnk_0832A198
-	.4byte gUnk_0832A2AC
-	.4byte gUnk_0832A3BC
-	.4byte gUnk_0832A4C8
-	.4byte gUnk_0832A5D4
-	.4byte gUnk_0832A6E0
-	.4byte gUnk_0832A7E8
-	.4byte gUnk_0832A8F0
-	.4byte gUnk_0832A9F8
-	.4byte gUnk_0832AAFC
-	.4byte gUnk_0832AC04
-	.4byte gUnk_0832AD18
-	.4byte gUnk_0832AE30
-	.4byte gUnk_0832AF40
-	.4byte gUnk_0832B050
-	.4byte gUnk_0832B168
-	.4byte gUnk_0832B27C
-	.4byte gUnk_0832B390
-	.4byte gUnk_0832B4A0
-	.4byte gUnk_0832B5A4
-	.4byte gUnk_0832B6A4
-	.4byte gUnk_0832B7A4
-	.4byte gUnk_0832B89C
-	.4byte gUnk_0832B994
+	cSym gUnk_083FF3A0
+	mPtr gUnk_0832975C
+	mPtr gUnk_08329890
+	mPtr gUnk_083299BC
+	mPtr gUnk_08329AF4
+	mPtr gUnk_08329C28
+	mPtr gUnk_08329D4C
+	mPtr gUnk_08329E6C
+	mPtr gUnk_08329F78
+	mPtr gUnk_0832A084
+	mPtr gUnk_0832A198
+	mPtr gUnk_0832A2AC
+	mPtr gUnk_0832A3BC
+	mPtr gUnk_0832A4C8
+	mPtr gUnk_0832A5D4
+	mPtr gUnk_0832A6E0
+	mPtr gUnk_0832A7E8
+	mPtr gUnk_0832A8F0
+	mPtr gUnk_0832A9F8
+	mPtr gUnk_0832AAFC
+	mPtr gUnk_0832AC04
+	mPtr gUnk_0832AD18
+	mPtr gUnk_0832AE30
+	mPtr gUnk_0832AF40
+	mPtr gUnk_0832B050
+	mPtr gUnk_0832B168
+	mPtr gUnk_0832B27C
+	mPtr gUnk_0832B390
+	mPtr gUnk_0832B4A0
+	mPtr gUnk_0832B5A4
+	mPtr gUnk_0832B6A4
+	mPtr gUnk_0832B7A4
+	mPtr gUnk_0832B89C
+	mPtr gUnk_0832B994
 	.global gUnk_083FF424
 gUnk_083FF424:
-	.4byte gUnk_0832BAA8
-	.4byte gUnk_0832BB04
-	.4byte gUnk_0832BB50
-	.4byte gUnk_0832BBA0
-	.4byte gUnk_0832BBF4
-	.4byte gUnk_0832BC58
-	.4byte gUnk_0832BCE0
-	.4byte gUnk_0832BD74
-	.4byte gUnk_0832BE08
-	.4byte gUnk_0832BE9C
-	.4byte gUnk_0832BF30
-	.4byte gUnk_0832BFC4
-	.4byte gUnk_0832C054
-	.4byte gUnk_0832C0E0
-	.4byte gUnk_0832C168
-	.4byte gUnk_0832C1EC
-	.4byte gUnk_0832C270
-	.4byte gUnk_0832C2F0
-	.4byte gUnk_0832C36C
-	.4byte gUnk_0832C3EC
-	.4byte gUnk_0832C464
-	.4byte gUnk_0832C4DC
-	.4byte gUnk_0832C550
-	.4byte gUnk_0832C5BC
-	.4byte gUnk_0832C628
-	.4byte gUnk_0832C690
-	.4byte gUnk_0832C6F0
-	.4byte gUnk_0832C734
-	.4byte gUnk_0832C778
-	.4byte gUnk_0832C7BC
-	.4byte gUnk_0832C7FC
-	.4byte gUnk_0832C83C
-	.4byte gUnk_0832C890
+	cSym gUnk_083FF424
+	mPtr gUnk_0832BAA8
+	mPtr gUnk_0832BB04
+	mPtr gUnk_0832BB50
+	mPtr gUnk_0832BBA0
+	mPtr gUnk_0832BBF4
+	mPtr gUnk_0832BC58
+	mPtr gUnk_0832BCE0
+	mPtr gUnk_0832BD74
+	mPtr gUnk_0832BE08
+	mPtr gUnk_0832BE9C
+	mPtr gUnk_0832BF30
+	mPtr gUnk_0832BFC4
+	mPtr gUnk_0832C054
+	mPtr gUnk_0832C0E0
+	mPtr gUnk_0832C168
+	mPtr gUnk_0832C1EC
+	mPtr gUnk_0832C270
+	mPtr gUnk_0832C2F0
+	mPtr gUnk_0832C36C
+	mPtr gUnk_0832C3EC
+	mPtr gUnk_0832C464
+	mPtr gUnk_0832C4DC
+	mPtr gUnk_0832C550
+	mPtr gUnk_0832C5BC
+	mPtr gUnk_0832C628
+	mPtr gUnk_0832C690
+	mPtr gUnk_0832C6F0
+	mPtr gUnk_0832C734
+	mPtr gUnk_0832C778
+	mPtr gUnk_0832C7BC
+	mPtr gUnk_0832C7FC
+	mPtr gUnk_0832C83C
+	mPtr gUnk_0832C890
 	.global gUnk_083FF4A8
 gUnk_083FF4A8:
-	.4byte gUnk_0832C8F4
-	.4byte gUnk_0832CA28
-	.4byte gUnk_0832CB54
-	.4byte gUnk_0832CC88
-	.4byte gUnk_0832CDBC
-	.4byte gUnk_0832CEE0
-	.4byte gUnk_0832D000
-	.4byte gUnk_0832D10C
-	.4byte gUnk_0832D218
-	.4byte gUnk_0832D32C
-	.4byte gUnk_0832D43C
-	.4byte gUnk_0832D54C
-	.4byte gUnk_0832D654
-	.4byte gUnk_0832D760
-	.4byte gUnk_0832D868
-	.4byte gUnk_0832D970
-	.4byte gUnk_0832DA78
-	.4byte gUnk_0832DB7C
-	.4byte gUnk_0832DC84
-	.4byte gUnk_0832DD88
-	.4byte gUnk_0832DE98
-	.4byte gUnk_0832DFAC
-	.4byte gUnk_0832E0BC
-	.4byte gUnk_0832E1CC
-	.4byte gUnk_0832E2E4
-	.4byte gUnk_0832E3F4
-	.4byte gUnk_0832E508
-	.4byte gUnk_0832E618
-	.4byte gUnk_0832E71C
-	.4byte gUnk_0832E81C
-	.4byte gUnk_0832E918
-	.4byte gUnk_0832EA10
-	.4byte gUnk_0832EB08
+	cSym gUnk_083FF4A8
+	mPtr gUnk_0832C8F4
+	mPtr gUnk_0832CA28
+	mPtr gUnk_0832CB54
+	mPtr gUnk_0832CC88
+	mPtr gUnk_0832CDBC
+	mPtr gUnk_0832CEE0
+	mPtr gUnk_0832D000
+	mPtr gUnk_0832D10C
+	mPtr gUnk_0832D218
+	mPtr gUnk_0832D32C
+	mPtr gUnk_0832D43C
+	mPtr gUnk_0832D54C
+	mPtr gUnk_0832D654
+	mPtr gUnk_0832D760
+	mPtr gUnk_0832D868
+	mPtr gUnk_0832D970
+	mPtr gUnk_0832DA78
+	mPtr gUnk_0832DB7C
+	mPtr gUnk_0832DC84
+	mPtr gUnk_0832DD88
+	mPtr gUnk_0832DE98
+	mPtr gUnk_0832DFAC
+	mPtr gUnk_0832E0BC
+	mPtr gUnk_0832E1CC
+	mPtr gUnk_0832E2E4
+	mPtr gUnk_0832E3F4
+	mPtr gUnk_0832E508
+	mPtr gUnk_0832E618
+	mPtr gUnk_0832E71C
+	mPtr gUnk_0832E81C
+	mPtr gUnk_0832E918
+	mPtr gUnk_0832EA10
+	mPtr gUnk_0832EB08
 	.global gUnk_083FF52C
 gUnk_083FF52C:
-	.4byte gUnk_0832EC18
-	.4byte gUnk_0832EC74
-	.4byte gUnk_0832ECC0
-	.4byte gUnk_0832ED10
-	.4byte gUnk_0832ED64
-	.4byte gUnk_0832EDC8
-	.4byte gUnk_0832EE50
-	.4byte gUnk_0832EEE4
-	.4byte gUnk_0832EF78
-	.4byte gUnk_0832F00C
-	.4byte gUnk_0832F0A0
-	.4byte gUnk_0832F134
-	.4byte gUnk_0832F1C4
-	.4byte gUnk_0832F250
-	.4byte gUnk_0832F2D8
-	.4byte gUnk_0832F35C
-	.4byte gUnk_0832F3E0
-	.4byte gUnk_0832F460
-	.4byte gUnk_0832F4E0
-	.4byte gUnk_0832F560
-	.4byte gUnk_0832F5D8
-	.4byte gUnk_0832F650
-	.4byte gUnk_0832F6C4
-	.4byte gUnk_0832F730
-	.4byte gUnk_0832F79C
-	.4byte gUnk_0832F804
-	.4byte gUnk_0832F864
-	.4byte gUnk_0832F8A8
-	.4byte gUnk_0832F8EC
-	.4byte gUnk_0832F930
-	.4byte gUnk_0832F970
-	.4byte gUnk_0832F9B0
-	.4byte gUnk_0832FA04
+	cSym gUnk_083FF52C
+	mPtr gUnk_0832EC18
+	mPtr gUnk_0832EC74
+	mPtr gUnk_0832ECC0
+	mPtr gUnk_0832ED10
+	mPtr gUnk_0832ED64
+	mPtr gUnk_0832EDC8
+	mPtr gUnk_0832EE50
+	mPtr gUnk_0832EEE4
+	mPtr gUnk_0832EF78
+	mPtr gUnk_0832F00C
+	mPtr gUnk_0832F0A0
+	mPtr gUnk_0832F134
+	mPtr gUnk_0832F1C4
+	mPtr gUnk_0832F250
+	mPtr gUnk_0832F2D8
+	mPtr gUnk_0832F35C
+	mPtr gUnk_0832F3E0
+	mPtr gUnk_0832F460
+	mPtr gUnk_0832F4E0
+	mPtr gUnk_0832F560
+	mPtr gUnk_0832F5D8
+	mPtr gUnk_0832F650
+	mPtr gUnk_0832F6C4
+	mPtr gUnk_0832F730
+	mPtr gUnk_0832F79C
+	mPtr gUnk_0832F804
+	mPtr gUnk_0832F864
+	mPtr gUnk_0832F8A8
+	mPtr gUnk_0832F8EC
+	mPtr gUnk_0832F930
+	mPtr gUnk_0832F970
+	mPtr gUnk_0832F9B0
+	mPtr gUnk_0832FA04

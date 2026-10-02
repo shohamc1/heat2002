@@ -11,8 +11,8 @@ void DrawSpriteText(u8 *a, u32 b, u32 c)
     u32 pal;
     u32 x;
     u16 *q;
-    register u8 *pa asm("r6");
-    register u32 v asm("r1");
+    register u8 *pa PIN(r6);
+    register u32 v PIN(r1);
 
     pa = a;
     v = *pa++;
@@ -23,10 +23,10 @@ void DrawSpriteText(u8 *a, u32 b, u32 c)
 loop:
     if (v != 0x20) {
         q = v + gSpriteTextControlCharCodes;
-        p = RequestObjTiles1((u32)((u8 *)gTextLayerTiles + gTextGlyphTileIndices[*q] * TILE_SIZE_4BPP));
+        p = RequestObjTiles1((GfxSrc)((u8 *)gTextLayerTiles + gTextGlyphTileIndices[*q] * TILE_SIZE_4BPP));
         if (p != 0) {
             x = ((b & 0x1FF) << 0x10) | pal;
-            AddOamEntry(x, p->tileIndex | (RequestObjPalette((u32)((u8 *)gFontPalette)) << 12));
+            AddOamEntry(x, p->tileIndex | (RequestObjPalette(gFontPalette) << 12));
         }
     }
     b += 8;

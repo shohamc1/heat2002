@@ -1,6 +1,8 @@
 #ifndef GUARD_STRUCTS_H
 #define GUARD_STRUCTS_H
 
+#include "config.h"
+
 // structs that belong to no module yet — stage 1 catch-all of
 // docs/extern-headers-plan.md
 
@@ -19,25 +21,25 @@
 // docs/extern-headers-plan.md).
 struct Track
 {
-    /* 0x00 */ u32 bg3Tiles; /* 4bpp tiles copied to char block 2 (BG3) */
-    /* 0x04 */ u32 bg2Tiles; /* 4bpp tiles copied to char block 0 (BG2) */
-    /* 0x08 */ u32 unk08;
+    /* 0x00 */ const u8 *bg3Tiles; /* 4bpp tiles copied to char block 2 (BG3) */
+    /* 0x04 */ const u8 *bg2Tiles; /* 4bpp tiles copied to char block 0 (BG2) */
+    /* 0x08 */ const u8 *unk08;    /* bg2Tiles again in the module's record, 0 in the ROM's */
     /* 0x0C */ u16 *bg3Metatiles; /* 32 bytes per metatile, 4x4 tilemap entries */
     /* 0x10 */ u16 *bg2Metatiles;
-    /* 0x14 */ u32 unk14;
-    /* 0x18 */ u32 palette; /* 256-colour palette, 0x200 bytes */
+    /* 0x14 */ const u16 *unk14;  /* bg2Metatiles again in the module's record, 0 in the ROM's */
+    /* 0x18 */ const u8 *palette; /* 256-colour palette, 0x200 bytes */
     /* 0x1C */ u32 unk1C;
     /* 0x20 */ u16 *bg3Map; /* RLE-compressed u16 map of metatile indices */
     /* 0x24 */ u16 *bg2Map;
-    /* 0x28 */ u32 unk28; /* bg2Map's value again on tracks 3-11, 0 on 0-2 */
+    /* 0x28 */ const u16 *unk28; /* bg2Map's value again on tracks 3-11, 0 on 0-2 */
     /* 0x2C */ u32 mapWidth; /* the gBgMapWidth stride of both layers */
     /* 0x30 */ u32 mapHeight;
     /* 0x34 */ u32 mapWidth2; /* the second pair; equal to mapWidth on */
-    /* 0x38 */ u32 mapHeight2; /* every track (LoadTrack -> gUnk_02022DD8) */
+    /* 0x38 */ u32 mapHeight2; /* every track (LoadTrack -> gBgMapWidth2) */
     /* 0x3C */ u32 unk3C;
     /* 0x40 */ u32 unk40;
-    /* 0x44 */ u16 *cellMap;     /* RLE-compressed u16 collision cell map */
-    /* 0x48 */ u32 surfaceTable; /* 16 bytes per cell value: surface code per 4x4 sub-position */
+    /* 0x44 */ u16 *cellMap;           /* RLE-compressed u16 collision cell map */
+    /* 0x48 */ const u8 *surfaceTable; /* 16 bytes per cell value: surface code per 4x4 sub-position */
     /* 0x4C */ u8 pad4C[0x5C - 0x4C];
     /* 0x5C */ u16 bg3MapLen; /* RLE source halfword counts, one per */
     /* 0x5E */ u16 bg2MapLen; /* stream: the ROM blob is 2*len bytes, */
@@ -45,7 +47,11 @@ struct Track
     /* 0x62 */ u8 pad62[0x64 - 0x62];
 };
 
+// The 0x64 layout holds on the GBA; the hosted build widens the pointer
+// members (issue 5 step 4 adjusts the pads), so the check is GBA-only.
+#if PLATFORM_GBA
 typedef char TrackSizeCheck[sizeof(struct Track) == 0x64 ? 1 : -1];
+#endif
 
 // The ROM's track table at 0x08364B0C; every user agrees on this type.
 extern const struct Track gTrackData[];
@@ -84,6 +90,13 @@ struct LaneSeg
     /* 0x10 */ s32 scaleZ;
 };
 
+// A point on a lane, in world units (GetLanePositionAtDistance's output).
+struct LanePos
+{
+    /* 0x00 */ s32 x;
+    /* 0x04 */ s32 z;
+};
+
 // A track's wall geometry, read by LoadTrackWalls and TestCornersVsWalls.
 struct Pt
 {
@@ -113,6 +126,87 @@ struct TrackWalls
     /* 0x08 */ u32 wallCount;
     /* 0x0C */ u16 *cellLists; /* 0xFFFF-terminated wall-index lists */
     /* 0x10 */ u16 *cellGrid;  /* u16[48*48] grid of offsets into cellLists */
+};
+
+// Car-vs-wall sweep test (CollideCarWithWalls, TestCornersVsWalls and their
+// high-module twins). One car corner's motion this frame, 16.16 world units.
+struct CornerSweep
+{
+    /* 0x00 */ s32 x;      /* cornerX */
+    /* 0x04 */ s32 z;      /* cornerZ */
+    /* 0x08 */ s32 nextX;  /* nextCornerX */
+    /* 0x0C */ s32 nextZ;  /* nextCornerZ */
+    /* 0x10 */ s32 deltaX; /* nextX - x */
+    /* 0x14 */ s32 deltaZ;
+};
+
+// A corner sweep's bounding box, in world units.
+struct SweepBox
+{
+    /* 0x00 */ s32 minX;
+    /* 0x04 */ s32 maxX;
+    /* 0x08 */ s32 minZ;
+    /* 0x0C */ s32 maxZ;
+};
+
+// The nearest wall hit TestCornersVsWalls reports.
+struct WallHit
+{
+    /* 0x00 */ u8 pad00[4];
+    /* 0x04 */ s32 normalX; /* wall normal, slightly amplified */
+    /* 0x08 */ s32 normalZ;
+    /* 0x0C */ u8 cornerIndex; /* which car corner hit */
+    /* 0x0D */ u8 steerAngle;
+    /* 0x0E */ u8 steerAngleOpp;
+    /* 0x0F */ u8 unk0F;
+    /* 0x10 */ s32 unk10; /* winning wall index (write-only) */
+};
+
+// The nearest car-vs-car contact CollideCars has found this frame
+// (gCarCollContact): KeepNearestCarContact replaces it whenever a closer
+// hit turns up.
+struct CarContact
+{
+    /* 0x00 */ struct Car *carA;
+    /* 0x04 */ struct Car *carB;
+    /* 0x08 */ u8 unk08;
+    /* 0x09 */ u8 normalIndex; /* row of gCarCollisionNormals */
+    /* 0x0C */ s32 closingSpeed;
+};
+
+// One side of the car's collision box, as a unit normal in the car's
+// frame (gCarCollisionNormals).
+struct CollisionNormal
+{
+    /* 0x00 */ s32 normalX; /* 20.12 fixed point */
+    /* 0x04 */ s32 normalZ;
+};
+
+// One entry of the depth-sorted sprite queue (gDepthSortedSprites, and
+// gModule_DepthSortedSprites in the high module): an OAM entry's attributes
+// and its sort depth. FlushSortedSprites copies the entries to the OAM
+// entry queue nearest-last.
+struct DepthSortedSprite
+{
+    /* 0x00 */ u32 attr01;
+    /* 0x04 */ u32 attr2; /* 0xFFFFFFFF: an unused slot */
+    /* 0x08 */ u16 depth;
+    /* 0x0A */ u16 pad0A;
+};
+
+// The serial transfer state the link-cable interrupt handler steps
+// (gSioTransfer, and gIsland_SioTransfer on the multiboot island).
+struct CommRegs
+{
+    /* 0x00 */ u8 mode;
+    /* 0x01 */ u8 state;
+    /* 0x02 */ u8 retry;
+    /* 0x03 */ u8 flag;
+    /* 0x04 */ u32 *data; /* the 32 KB chunk sent or received */
+    /* 0x08 */ s32 count;
+    /* 0x0C */ u32 checksum;
+    /* 0x10 */ u32 crc;
+    /* 0x14 */ s32 index;
 };
 
 // The m4a song/player tables (defined identically in sub_08001208.c and
@@ -245,6 +339,66 @@ struct Task
     /* 0x40 */ u8 pad40[4];
 };
 
+// The particle tasks' views of a struct Task slot (src/car/particles.c and
+// its high-module twin). prev and next are pointer-wide, so their pad
+// widens on a hosted build.
+struct DraftStreak
+{
+    /* 0x00 */ u32 unk00;
+    /* 0x04 */ u32 unk04;
+    /* 0x08 */ s32 axialDist; /* 16.16 distance along the car's heading axis */
+    /* 0x0C */ void (*callback)();
+    /* 0x10 */ u8 pad10[2 * sizeof(void *)]; /* prev, next */
+    /* 0x18 */ s32 timer;
+    /* 0x1C */ s32 cornerIdx;
+    /* 0x20 */ u32 unk20;
+    /* 0x24 */ u8 pad24[0x10];
+    /* 0x34 */ u8 carIdx;
+};
+
+struct SkidSmoke
+{
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ s32 rise;
+    /* 0x08 */ s32 posZ;
+    /* 0x0C */ void (*callback)();
+    /* 0x10 */ u8 pad10[2 * sizeof(void *)]; /* prev, next */
+    /* 0x18 */ s32 timer;
+    /* 0x1C */ s32 cornerIdx;
+    /* 0x20 */ u32 unk20;
+    /* 0x24 */ u8 pad24[4];
+    /* 0x28 */ s32 velX;
+    /* 0x2C */ u8 pad2C[4];
+    /* 0x30 */ s32 velZ;
+    /* 0x34 */ u8 carIdx;
+};
+
+struct DamageSmoke
+{
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ s32 rise;
+    /* 0x08 */ s32 posZ;
+    /* 0x0C */ void (*callback)();
+    /* 0x10 */ u8 pad10[2 * sizeof(void *)]; /* prev, next */
+    /* 0x18 */ s32 timer;
+    /* 0x1C */ s32 riseRate;
+    /* 0x20 */ u8 pad20[8];
+    /* 0x28 */ s32 velX;
+    /* 0x2C */ u8 pad2C[4];
+    /* 0x30 */ s32 velZ;
+};
+
+// An address carried in the OBJ gfx/palette caches. The ROM stores these
+// as 32-bit words; the hosted build needs them pointer-wide so the cached
+// source and destination addresses survive (same device as io_reg.h's
+// uintptr_t DMA registers). Under !PORTABLE this is exactly u32, so the
+// module's and the main program's views stay identical.
+#if PORTABLE
+typedef uintptr_t GfxAddr;
+#else
+typedef u32 GfxAddr;
+#endif
+
 // One slot of an OBJ tile cache (gObjTileCache1 to gObjTileCache64, by
 // tile count). RequestObjTiles* hands a slot out for a graphics pointer,
 // UploadPendingGfx copies it to vramDest, and AgeGfxCaches frees it when
@@ -256,8 +410,8 @@ struct ObjTileCacheEntry
     /* 0x05 */ u8 unk05;   /* RequestObjTiles64's flag argument */
     /* 0x06 */ u8 unk06;
     /* 0x07 */ u8 unk07;
-    /* 0x08 */ u32 gfx; /* source graphics; 0xFFFF when the slot is free */
-    /* 0x0C */ u32 vramDest;
+    /* 0x08 */ GfxAddr gfx; /* source graphics; 0xFFFF when the slot is free */
+    /* 0x0C */ GfxAddr vramDest;
     /* 0x10 */ u32 tileIndex; /* OAM attr2 base: tile number, OR'd with palette/priority at each use */
 };
 
@@ -267,8 +421,8 @@ struct ObjPaletteCacheEntry
     /* 0x00 */ u8 age;
     /* 0x01 */ u8 pending;
     /* 0x02 */ u8 pad02[2];
-    /* 0x04 */ u32 palette; /* source palette; 0xFFFF when the slot is free */
-    /* 0x08 */ u32 palDest;
+    /* 0x04 */ GfxAddr palette; /* source palette; 0xFFFF when the slot is free */
+    /* 0x08 */ GfxAddr palDest;
 };
 
 #endif // GUARD_STRUCTS_H

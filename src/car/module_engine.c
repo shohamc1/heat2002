@@ -1,9 +1,9 @@
 #include "global.h"
 #include "car.h"
 #include "variables.h"
+#include "functions.h"
 
 u32 ModuleGetGearForSpeed(struct Car *car, s32 speed);
-void ModuleStopCar(struct Car *a);
 extern s32 gModule_CornerOffsetX[];
 extern s32 gModule_CornerOffsetZ[];
 
@@ -81,7 +81,7 @@ void ModuleUpdateEngine(struct Car *car, s32 mode)
     }
     t3 = car->speed;
     if (t3 <= 0)
-        r = ((s16 (*)(struct Car *))ModuleGetGearForSpeed)(car);
+        r = (s16)ModuleGetGearForSpeed(car, t3);
     else
         r = 0;
     car->engineForce = -((-car->gearRatioTable[car->gear]) * v) >> 8;

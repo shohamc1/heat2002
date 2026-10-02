@@ -1,6 +1,8 @@
 #include "global.h"
 #include "gba/defines.h"
+#include "gba/io_reg.h"
 #include "variables.h"
+#include "functions.h"
 
 /*
  * ModuleExchangeLinkInput: SIO handshake with retry. Levers that made it match:
@@ -12,11 +14,8 @@
  *   them, but not the flag test.
  */
 extern u16 gUnk_02039188[];
-u16 ModulePackLinkKeys(u16 keys);
 u8 ModuleIsLinkSeqNumExpected(u16 seq, u8 next);
 u32 ModuleIsValidLinkKeys(u32 keys);
-u16 ModuleUnpackLinkKeys(u16 id);
-void ModuleSioSendWord(u16 data);
 
 u8 ModuleIsLinkSeqNumExpected(u16 seq, u8 next)
 {
@@ -54,7 +53,7 @@ s32 ModuleExchangeLinkInput(void)
     u8 n;
     u8 n2;
 
-    keys = ~*(u16 *)0x04000130;
+    keys = ~REG_KEYINPUT;
     keys = ModulePackLinkKeys(keys);
     for (i = 0; i < gModule_NumLinkPlayers[0]; i++) {
         *(u16 *)((u8 *)gModule_LinkRecvWords + i * 8) = 0;
@@ -92,7 +91,7 @@ s32 ModuleExchangeLinkInput(void)
                 goto timeout;
         }
         if (gModule_LinkPlayerId == 0) {
-            for (i = 0; i <= 0x257; i++)
+            for (i = 0; i <= 599; i++)
                 ;
         }
         for (i = 0; i < gModule_NumLinkPlayers[0]; i++)

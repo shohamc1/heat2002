@@ -15,39 +15,39 @@ extern u8 gPitMenuBlinkCounter;
 
 void ClearPitMenu(void)
 {
-    u32 blankText;
+    const u8 *blankText;
 
-    DrawTextAt(gText_BlankRow12, 0x0B, 0x07);
-    blankText = (u32)gText_BlankRow24;
-    DrawTextAt(blankText, 0x06, 0x09);
-    DrawTextAt(blankText, 0x06, 0x0A);
-    blankText = (u32)gText_BlankRow28;
-    DrawTextAt(blankText, 0x06, 0x0B);
-    DrawTextAt(blankText, 0x0A, 0x0C);
+    DrawTextAt(gText_BlankRow12, 11, 7);
+    blankText = gText_BlankRow24;
+    DrawTextAt(blankText, 6, 9);
+    DrawTextAt(blankText, 6, 10);
+    blankText = gText_BlankRow28;
+    DrawTextAt(blankText, 6, 11);
+    DrawTextAt(blankText, 10, 12);
 }
 
 void DrawPitMenu(u8 cursorRow)
 {
-    DrawTextAt(gText_PitMenu, 0x0B, 0x07);
+    DrawTextAt(gText_PitMenu, 11, 7);
     if (cursorRow != 0 || (gPitMenuBlinkCounter & 4) == 0) {
-        DrawTextAt(gPitMenuRowLabelTexts[0], 0x06, 0x09);
-        DrawTextAt(gPitMenuTireOptionTexts[gPitServiceSelections[0]], 0x0D, 0x09);
+        DrawTextAt(gPitMenuRowLabelTexts[0], 6, 9);
+        DrawTextAt(gPitMenuTireOptionTexts[gPitServiceSelections[0]], 13, 9);
     } else
-        DrawTextAt(gText_BlankRowPitMenu, 0x06, 0x09);
+        DrawTextAt(gText_BlankRowPitMenu, 6, 9);
     if (cursorRow != 1 || (gPitMenuBlinkCounter & 4) == 0) {
-        DrawTextAt(gPitMenuRowLabelTexts[1], 0x06, 0x0A);
-        DrawTextAt(gPitMenuFuelOptionTexts[gPitServiceSelections[1]], 0x0D, 0x0A);
+        DrawTextAt(gPitMenuRowLabelTexts[1], 6, 10);
+        DrawTextAt(gPitMenuFuelOptionTexts[gPitServiceSelections[1]], 13, 10);
     } else
-        DrawTextAt(gText_BlankRow28, 0x06, 0x0A);
+        DrawTextAt(gText_BlankRow28, 6, 10);
     if (cursorRow != 2 || (gPitMenuBlinkCounter & 4) == 0) {
-        DrawTextAt(gPitMenuRowLabelTexts[2], 0x06, 0x0B);
-        DrawTextAt(gPitMenuRepairOptionTexts[gPitServiceSelections[2]], 0x0D, 0x0B);
+        DrawTextAt(gPitMenuRowLabelTexts[2], 6, 11);
+        DrawTextAt(gPitMenuRepairOptionTexts[gPitServiceSelections[2]], 13, 11);
     } else
-        DrawTextAt(gText_BlankRow28, 0x06, 0x0B);
+        DrawTextAt(gText_BlankRow28, 6, 11);
     if (cursorRow != 3 || (gPitMenuBlinkCounter & 4) == 0)
-        DrawTextAt(gPitMenuRowLabelTexts[3], 0x0D, 0x0C);
+        DrawTextAt(gPitMenuRowLabelTexts[3], 13, 12);
     else
-        DrawTextAt(gText_BlankRowPitMenu, 0x0A, 0x0C);
+        DrawTextAt(gText_BlankRowPitMenu, 10, 12);
     gPitMenuBlinkCounter++;
 }
 

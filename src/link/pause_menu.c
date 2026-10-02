@@ -16,7 +16,7 @@ u8 LinkPauseConfirmMenu(void)
     u8 unused[0x200];
     u8 *cursor;
     u8 *blink;
-    register u16 keys asm("r1");
+    register u16 keys PIN(r1);
     u16 startMask;
     u16 bMask;
     u8 bit1;
@@ -54,8 +54,19 @@ u8 LinkPauseConfirmMenu(void)
         DrawPauseConfirmMenu(*cursor);
         gVBlankWorkDone = bMask;
     spin:
+#if PORTABLE
+        /* The GBA's VBlank interrupt arrives from hardware mid-spin; the
+           hosted build dispatches it only from the frame pump, so pump
+           one VBlank here - the same instant the hardware would. */
+        if (gVBlankWorkDone == 0)
+        {
+            VBlankIntrWait();
+            goto spin;
+        }
+#else
         if (gVBlankWorkDone == 0)
             goto spin;
+#endif
         *blink = (u8)(*blink + 1);
         ReadKeys();
     }
@@ -107,8 +118,19 @@ u8 LinkPauseMenu(void)
             *blink = *blink + 1;
             gVBlankWorkDone = bMask;
         poll:
-            if (gVBlankWorkDone == 0)
-                goto poll;
+#if PORTABLE
+        /* The GBA's VBlank interrupt arrives from hardware mid-spin; the
+           hosted build dispatches it only from the frame pump, so pump
+           one VBlank here - the same instant the hardware would. */
+        if (gVBlankWorkDone == 0)
+        {
+            VBlankIntrWait();
+            goto poll;
+        }
+#else
+        if (gVBlankWorkDone == 0)
+            goto poll;
+#endif
         }
     }
     return 0;
@@ -116,7 +138,7 @@ u8 LinkPauseMenu(void)
 
 void DrawPausedPlayerText(void)
 {
-    DrawTextCentered(GetString(0x96), 8, 1);
+    DrawTextCentered(GetString(150), 8, 1);
     switch (gLinkMenuPlayerIndex) {
         case 0:
             DrawTextCentered(gText_Player1, 9, 1);
@@ -137,8 +159,12 @@ void ClearPausedPlayerText(void)
 {
     u8 col;
 
-    for (col = 0; col != 0x1B; col++) {
+    for (col = 0; col != 27; col++) {
+#if PORTABLE
+        u16 *map = (u16 *)(*(u8 *volatile *)&gTextLayerMapPtr[0]);
+#else
         u16 *map = (u16 *)(*(volatile u32 *)&gTextLayerMapPtr[0]);
+#endif
         map[col + 0x100] = 0x47;
         map[col + 0x120] = 0x47;
     }
@@ -164,11 +190,11 @@ u8 SinglePakPauseMenu(void)
                     m4aSoundVSyncOff();
                     done = 0;
                     do {
-                        playerId = gLinkPlayerId[0];
+                        playerId = gLinkPlayerId;
                         if (playerId == 0)
                             return 0x27;
-                        /* VBlankIntrWait: this file's old local prototype differs from
-                           functions.h; call through the old signature (solved-walls 31). */
+                        /* The ROM passes playerId in r0, which VBlankIntrWait
+                           ignores. */
                         ((void (*)(u32))VBlankIntrWait)(playerId);
                     } while (done == 0);
                 }

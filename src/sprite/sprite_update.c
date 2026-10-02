@@ -1,4 +1,5 @@
 #include "global.h"
+#include "gba/defines.h"
 #include "variables.h"
 #include "data.h"
 #include "functions.h"
@@ -20,6 +21,11 @@ typedef struct
 u32 SortSpritesByDepth(void);
 void SetSpriteRotMatrices(void);
 
+/* The file's RAM variables (gDepthSortedSprites, gSpriteOrderTable,
+   gUnk_0202522C and gUnk_02025398) moved to src/hud/globals.c, the
+   owner of the 0x02024C40-0x02025270 and 0x02025380 EWRAM runs they
+   sit in; they are declared in variables.h. */
+
 void ResetSpriteOrderTable(void)
 {
     u32 i = 0;
@@ -38,8 +44,6 @@ u32 SortSpritesByDepth(void)
     u32 i;
     u16 a;
     u16 b;
-    u8 *ea;
-    u8 *eb;
 
 outer:
     swapped = 0;
@@ -47,9 +51,7 @@ outer:
     do {
         a = gSpriteOrderTable[i];
         b = gSpriteOrderTable[i + 1];
-        ea = gDepthSortedSprites + a * 12;
-        eb = gDepthSortedSprites + b * 12;
-        if (*(u16 *)(ea + 8) < *(u16 *)(eb + 8)) {
+        if (gDepthSortedSprites[a].depth < gDepthSortedSprites[b].depth) {
             gSpriteOrderTable[i] = b;
             gSpriteOrderTable[i + 1] = a;
             swapped = 1;
@@ -62,49 +64,50 @@ outer:
 
 void FlushSortedSprites(void)
 {
-    register u32 p asm("r0");
+    register struct DepthSortedSprite *p PIN(r0);
+    register u32 *oam PIN(r0);
     u32 i;
-    u32 e;
-    u32 base;
+    struct DepthSortedSprite *e;
+    struct DepthSortedSprite *base;
     u16 *tbl;
 
-    for (i = gUnk_02024824; i != 0x3F; i++) {
-        p = gUnk_02024820;
-        *(u16 *)(p + 8) = 0;
-        *(s32 *)(p + 4) = -1;
-        p += 0xC;
-        gUnk_02024820 = p;
+    for (i = gDepthSortedSpriteCount; i != 0x3F; i++) {
+        p = gDepthSortedSpriteCursor;
+        p->depth = 0;
+        p->attr2 = -1;
+        p++;
+        gDepthSortedSpriteCursor = p;
     }
     SortSpritesByDepth();
     tbl = gSpriteOrderTable;
-    for (i = 0; i != gUnk_02024824; tbl++, i++) {
-        base = (u32)gDepthSortedSprites;
-        e = base + *tbl * 12;
-        if (*(s32 *)(e + 4) != -1) {
-            p = gUnk_02024828;
-            *(u32 *)(p) = *(u32 *)(e);
-            *(u32 *)(p + 4) = *(s32 *)(e + 4);
-            p += 8;
-            gUnk_02024828 = p;
+    for (i = 0; i != gDepthSortedSpriteCount; tbl++, i++) {
+        base = gDepthSortedSprites;
+        e = &base[*tbl];
+        if (e->attr2 != -1) {
+            oam = gOamEntryQueueCursor;
+            oam[0] = e->attr01;
+            oam[1] = e->attr2;
+            oam += 2;
+            gOamEntryQueueCursor = oam;
         }
     }
 }
 
 void SetSpriteRotMatrices(void)
 {
-    s16 *sinTable;
+    const s16 *sinTable;
     u16 *cosEntry;
-    register Ent *oamEntry asm("r4");
-    register u32 hiMask asm("r6");
-    register s32 cosA asm("r5");
-    register u32 entry asm("r0");
+    register Ent *oamEntry PIN(r4);
+    register u32 hiMask PIN(r6);
+    register s32 cosA PIN(r5);
+    register u32 entry PIN(r0);
     s32 cosIdx;
     u16 angle;
-    register u32 cueAngle asm("r0");
-    register u16 *cueAnglePtr asm("r1");
+    register u32 cueAngle PIN(r0);
+    register u16 *cueAnglePtr PIN(r1);
     u32 cueAngleCopy;
-    register s32 sinVal asm("r2");
-    register s32 negSin asm("r3");
+    register s32 sinVal PIN(r2);
+    register s32 negSin PIN(r3);
     u32 sinHi, negSinHi, cosHi;
     u16 cosVal;
     s32 cosB;
@@ -122,7 +125,7 @@ void SetSpriteRotMatrices(void)
     negSinHi = negSin << 16;
     cosVal = *cosEntry;
     cosHi = cosVal << 16;
-    oamEntry = (Ent *)gUnk_02024830;
+    oamEntry = (Ent *)gOamEntryQueue;
     oamEntry[0].u.w = cosHi | oamEntry[0].u.h.lo;
     oamEntry[1].u.w = sinHi | oamEntry[1].u.h.lo;
     oamEntry[2].u.w = negSinHi | oamEntry[2].u.h.lo;

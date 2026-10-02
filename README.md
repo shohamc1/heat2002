@@ -115,10 +115,44 @@ ROM has changed. To get the original back, delete the file and run `make`
 again.
 
 Only an edit that keeps the song's or sample's size is safe. The song table
-and the voicegroups name each song and sample by its label, so they follow a
-size change, but a size change also moves the data after the sound, and
+and the voicegroups name each song and sample by its label, so they follow
+a size change, but a size change also moves the data after the sound, and
 some of it still holds raw addresses (see "Pointers" in
 `docs/learnings/parked.md`).
+
+## SDL port
+
+The same source also builds as a native program with an SDL2 platform layer
+(issue 5), after SAT-R/sa2's hosted port. The GBA build is untouched: every
+port-only change sits in `#if PORTABLE` branches, and `make check` must keep
+printing `MATCH`.
+
+```sh
+make sdl                # or: make PLATFORM=sdl
+./build/sdl/nascar-heat.sdl
+```
+
+Besides the tools above it needs SDL2 (`sdl2-config` on PATH; `brew install
+sdl2` / `apt install libsdl2-dev`) and a C++ compiler for the software
+renderer. It also builds without `baserom.gba`, with every asset zero-filled,
+which is what CI exercises.
+
+Controls follow modern racing-game conventions.
+
+Keyboard: `W`/`S` are throttle and brake (the port's A/B buttons), `A`/`D`
+steer, the arrow keys are the D-pad (menu navigation), `Q`/`E` are L/R,
+`Enter` or `Esc` is Start (pause), `Tab` is Select; `C`/`X` still work as
+A/B. Gamepads that SDL recognises map 1:1 (A/B, shoulders, D-pad,
+Start/Back), the left stick steers past a deadzone, and the analog
+triggers are throttle and brake. Saves are file-backed:
+the EEPROM image lives in `nascar-heat.sav` in the working directory (the
+first run creates it in its erased state).
+
+For automated runs the front end reads environment variables:
+`HEADLESS=true` runs without a window, `FRAME_LIMIT=<n>` exits 0 once n
+frames have run, and `INPUT_SCRIPT=<file>` feeds scripted input (lines
+`wait <n>`, `press <k>...`, `release <k>...`, `mask 0x<hex>`; key names
+A B SELECT START RIGHT LEFT UP DOWN L R).
 
 ## How it works
 

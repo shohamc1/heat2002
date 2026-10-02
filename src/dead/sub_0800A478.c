@@ -13,7 +13,7 @@ void sub_0800A478(struct Car *p)
     p->zoneGripFlag = 0;
     p->throttleLevel = 0;
     DummyCarWreckedHook(p);
-    if (p == gCars && gGameMode[0] == 0)
+    if (p == gCars && gGameMode == 0)
     {
         gCountdownSeconds += 5;
         if (gCountdownSeconds > 0x63)

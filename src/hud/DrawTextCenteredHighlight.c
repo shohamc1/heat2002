@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 #include "data.h"
 
 void DrawTextCenteredHighlight(const u8 *text, u32 y, u8 highlight)

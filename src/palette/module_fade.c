@@ -6,8 +6,7 @@
 #define GBA_CPUSET sub_08344B64
 
 void ModulePackFadePalette(void);
-extern u16 gUnk_0203AAD0[];
-void ModuleUpdatePaletteFade(void);
+extern u16 gModule_PaletteBuffer[];
 
 void ModuleFillFadePalette(u32 color)
 {
@@ -64,7 +63,7 @@ void ModuleBeginFadeToColor(u32 steps, u32 color)
     } while (i != 0x100);
     gModule_PaletteFadeSteps = steps;
     {
-        register u32 active __asm__("r0") = 1;
+        register u32 active PIN(r0) = 1;
         gModule_PaletteFadeActive = active;
     }
 }
@@ -74,7 +73,7 @@ void ModuleBeginFadeToBrightenedPalette(s32 steps, u16 *src)
     s32 *colors;
     s32 *deltas;
     s32 i;
-    register s32 color asm("r4");
+    register s32 color PIN(r4);
     s32 red, green, blue;
     s32 scaled;
 
@@ -110,7 +109,7 @@ void ModuleBeginFadeToBrightenedPalette(s32 steps, u16 *src)
 
     gModule_PaletteFadeSteps = steps;
     {
-        register u32 one __asm__("r0") = 1;
+        register u32 one PIN(r0) = 1;
         gModule_PaletteFadeActive = one;
     }
 }
@@ -171,7 +170,7 @@ void ModuleUpdatePaletteFade(void)
         } while (i != n);
         gModule_PaletteFadeSteps -= 1;
     }
-    gUnk_020392C0 = 1;
+    gModule_PaletteBufferDirty = 1;
 }
 
 void ModulePackFadePalette(void)
@@ -184,7 +183,7 @@ void ModulePackFadePalette(void)
     s32 b;
 
     src = (s32 *)gModule_PaletteFadeColors;
-    dst = gUnk_0203AAD0;
+    dst = gModule_PaletteBuffer;
     for (i = 0; i != 0x100; i++) {
         r = *src++;
         g = *src++;
@@ -201,9 +200,9 @@ void ModulePackFadePalette(void)
 
 void ModuleFlushPaletteBuffer(void)
 {
-    if (gUnk_020392C0 != 0) {
-        CpuSet(EWRAM_START + 0x3AAD0, PLTT, 0x80 << 1);
-        gUnk_020392C0 = 0;
+    if (gModule_PaletteBufferDirty != 0) {
+        CpuSet(gModule_PaletteBuffer, (void *)PLTT, 0x80 << 1);
+        gModule_PaletteBufferDirty = 0;
     }
 }
 

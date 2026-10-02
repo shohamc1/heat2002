@@ -33,14 +33,14 @@ void DrawPauseMenu(u8 cursor)
         DrawTextCentered(gText_Paused, 6, 1);
     }
     if (sel == 1 || (gMenuBlinkCounter & 8)) {
-        DrawTextCentered(GetString(0x81), 8, 1);
+        DrawTextCentered(GetString(129), 8, 1);
     } else {
         DrawTextCentered(gText_BlankRowPauseMenu, 8, 1);
     }
     if (sel == 0 || (gMenuBlinkCounter & 8)) {
-        DrawTextCentered(GetString(0x80), 0xA, 1);
+        DrawTextCentered(GetString(128), 10, 1);
     } else {
-        DrawTextCentered(gText_BlankRowPauseMenu, 0xA, 1);
+        DrawTextCentered(gText_BlankRowPauseMenu, 10, 1);
     }
 }
 
@@ -49,18 +49,18 @@ void DrawPauseConfirmMenu(u8 cursor)
     u8 sel = cursor;
 
     if (sel != 3) {
-        DrawTextCentered(GetString(0x66), 6, 1);
+        DrawTextCentered(GetString(102), 6, 1);
     } else {
         DrawTextCentered(gText_BlankRowPauseConfirm, 6, 1);
     }
     if (sel == 1 || (gMenuBlinkCounter & 8)) {
-        DrawTextCentered(GetString(0x68), 8, 1);
+        DrawTextCentered(GetString(104), 8, 1);
     } else {
         DrawTextCentered(gText_BlankRowPauseMenu, 8, 1);
     }
     if (sel == 0 || (gMenuBlinkCounter & 8)) {
-        DrawTextCentered(GetString(0x67), 0xA, 1);
+        DrawTextCentered(GetString(103), 10, 1);
     } else {
-        DrawTextCentered(gText_BlankRowPauseMenu, 0xA, 1);
+        DrawTextCentered(gText_BlankRowPauseMenu, 10, 1);
     }
 }

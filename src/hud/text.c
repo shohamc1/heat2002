@@ -1,7 +1,6 @@
 #include "global.h"
 #include "data.h"
-
-void ClearTextLayer(void);
+#include "functions.h"
 
 void ClearRaceTextLayer(void)
 { ClearTextLayer(); }

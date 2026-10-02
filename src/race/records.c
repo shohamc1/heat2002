@@ -1,13 +1,19 @@
 #include "global.h"
+#include "gba/defines.h"
 #include "variables.h"
+#include "car.h"
+#include "functions.h"
 
 void SetTrackRecord(u32 a, u32 b, u32 c);
-void AddTrackRecordTasks(void);
-extern u32 gUnk_0202A6BC[];
+
+/* The file's RAM variables (the three track-record tables and gRaceSec)
+   moved to src/hud/globals.c, the owner of the 0x02024C40-0x02025270 and
+   0x02025380-0x020253F8 EWRAM runs they sit in; they are declared in
+   variables.h. */
 
 void SetTrackRecord(u32 a, u32 b, u32 c)
 {
-    if ((u8)(gGameMode[0] - 3) <= 1)
+    if ((u8)(gGameMode - 3) <= 1)
         return;
     gTrackRecordMs[gTrackId] = c;
     gTrackRecordSec[gTrackId] = b;
@@ -18,7 +24,7 @@ void CheckTrackRecord(u16 a1, u16 a2, u16 a3)
 {
     if (a1 * 60000 + a2 * 1000 + a3 <=
         gTrackRecordMin[gTrackId] * 60000 + gTrackRecordSec[gTrackId] * 1000 + gTrackRecordMs[gTrackId]) {
-        if (gGameMode[0] == 3 || gGameMode[0] == 4)
+        if (gGameMode == 3 || gGameMode == 4)
             return;
         SetTrackRecord(a1, a2, a3);
         gNewTrackRecord = 1;
@@ -39,22 +45,22 @@ void UpdateRaceTimers(void)
         if (gRaceEndState != 0) {
             return;
         }
-        v8 = gGameMode[0] - 3;
-        p1 = &gLapMs[0];
+        v8 = gGameMode - 3;
+        p1 = &gLapMs;
         p2 = &gRaceMs;
         if (v8 <= 2) {
             for (i = 0; i != gNumLinkPlayers[0]; i++) {
-                gUnk_0202A6BC[i * 100] = gUnk_0202A6BC[i * 100] + 1;
+                gCars[i].finishTime = gCars[i].finishTime + 1;
             }
         }
         *p1 += 40;
     } while (0);
     if ((*p1) > 999) {
         *p1 -= 1000;
-        gLapSec[0] = gLapSec[0] + 1;
-        if (gLapSec[0] > 59) {
-            gLapSec[0] = gLapSec[0] - 60;
-            gLapMin[0] = gLapMin[0] + 1;
+        gLapSec = gLapSec + 1;
+        if (gLapSec > 59) {
+            gLapSec = gLapSec - 60;
+            gLapMin = gLapMin + 1;
         }
     }
     *p2 += 40;

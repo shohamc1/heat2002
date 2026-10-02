@@ -4,15 +4,6 @@
 #include "variables.h"
 #include "car.h"
 
-/* car.h types 0x4C as u8 lap, but this function's load is a signed ldrsb
-   (its old local view typed the field s8). Reach it through this view so
-   the offset stays inside the MEM like a plain component access. */
-struct CarLapS8
-{
-    u8 pad[0x4C];
-    s8 lap;
-};
-
 u32 ComputeProgressDistance(s32 progress, u8 trackId)
 {
     u32 lapDistance = progress & 0xFFFF;
@@ -35,9 +26,9 @@ void FinishAllCars(u8 recomposeTimes)
                 car->finishTime = car->finishMin * 60000 + car->finishSec * 1000 + car->finishMs;
             i++;
             car++;
-        } while (i != 0x18);
+        } while (i != 24);
     }
-    refDistance = ((struct CarLapS8 *)gCars)->lap * gTrackLapLengths[gTrackId];
+    refDistance = gCars[0].lap * gTrackLapLengths[gTrackId];
     refTime = gCars[0].finishTime;
     msPerUnit = sub_08017230(refTime, refDistance);
     car = gCars;
@@ -50,5 +41,5 @@ void FinishAllCars(u8 recomposeTimes)
         }
         i++;
         car++;
-    } while (i != 0x18);
+    } while (i != 24);
 }

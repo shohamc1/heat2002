@@ -18,15 +18,14 @@ void DrawStandings(u8 page)
 
     base = page * 15;
     DummyUiFontLoad(gUiFontTable[0]);
-    GetString(0x32);
-    ((void (*)(void))DrawBigText)();
+    DrawBigText(GetString(50));
     walk = gCarOrder + base;
     i = 0;
     digits = buf;
     zero = 0;
     do {
         DrawText(gText_BlankRow36, 1, i + 4, 1);
-        if (walk < gSeasonRaceIndex) {
+        if (walk < &gCarOrder[24]) {
             ptr = *walk;
             if (ptr == gCars && (gMenuBlinkCounter & 0x10) != 0) {
                 DrawText(gText_BlankRowMenu, 1, i + 4, 1);
@@ -37,7 +36,7 @@ void DrawStandings(u8 page)
                 digits[2] = (ptr->points / 10) % 10 + 0x30;
                 digits[3] = ptr->points % 10 + 0x30;
                 digits[4] = zero;
-                DrawText(buf, 0x1A, i + 4, 1);
+                DrawText(buf, 26, i + 4, 1);
             }
             walk++;
         }
@@ -46,17 +45,17 @@ void DrawStandings(u8 page)
     gMenuBlinkCounter++;
     if (gMenuBlinkCounter & 8) {
         if (page == 0)
-            DrawText(gText_PageNextArrow, 0x1A, 0x13, 1);
+            DrawText(gText_PageNextArrow, 26, 19, 1);
         else
-            DrawText(gText_PagePrevArrow, 0x1A, 0x13, 1);
+            DrawText(gText_PagePrevArrow, 26, 19, 1);
     } else {
-        DrawText(gText_PageNoArrowBlank, 0x1A, 0x13, 1);
+        DrawText(gText_PageNoArrowBlank, 26, 19, 1);
     }
 }
 
 u8 StandingsScreen(void)
 {
-    void *p;
+    const void *p;
     u8 buf[0x200];
     u8 mode;
     s8 v;
@@ -70,7 +69,7 @@ u8 StandingsScreen(void)
     BuildScreenPalette(p, (u16 *)buf);
     DrawStandings(0);
     FadeToBrightenedPalette(buf, 0x0F);
-    sel = 0x40;
+    sel = 64;
     do {
         ReadKeys();
         DrawStandings(mode);

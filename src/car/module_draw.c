@@ -1,18 +1,12 @@
 #include "global.h"
 #include "variables.h"
 #include "car.h"
+#include "functions.h"
 
 extern u32 *gModule_DriverCarSpriteHalfATables[];
 extern u32 *gModule_DriverCarSpriteHalfBTables[];
 extern u32 *gModule_DriverNumberFrameLists[];
-extern u8 gUnk_0201B590[];
-u32 ModuleAddDepthSortedSprite(u32 a, u32 b, u16 c);
-struct ObjTileCacheEntry *ModuleRequestObjTiles16(u32 a);
-struct ObjTileCacheEntry *ModuleRequestObjTiles2(u32 a);
-struct ObjTileCacheEntry *ModuleRequestObjTiles8(u32 a);
-struct ObjTileCacheEntry *ModuleRequestObjTiles4(u32 a);
-u8 ModuleRequestObjPalette(u32 a);
-u8 ModuleWorldToScreen(s32 x, s32 y, s32 *out);
+extern u8 gModule_DriverNumberPalette[];
 
 void ModuleDrawCar(struct Car *car, u8 idx)
 {
@@ -27,12 +21,12 @@ void ModuleDrawCar(struct Car *car, u8 idx)
     if (ModuleWorldToScreen(car->posX, car->posZ, pos) == 0)
         return;
     y = pos[1];
-    pos[0] -= 0x18;
-    pos[1] -= 0x10;
+    pos[0] -= 24;
+    pos[1] -= 16;
     if (car->finished != 0 && gModule_IsLinkRace != 0 && (gModule_FrameCounter & 8) != 0)
         return;
     k = (car->heading + 0x200) >> 10;
-    k += 0x28;
+    k += 40;
     k &= 0x3F;
     flip = k & 0x20;
     k &= 0x1F;
@@ -56,7 +50,7 @@ void ModuleDrawCar(struct Car *car, u8 idx)
         }
     } else {
         u8 *p162;
-        register u32 a asm("r4");
+        register u32 a PIN(r4);
         u32 b;
         u32 **tbl;
 
@@ -67,39 +61,39 @@ void ModuleDrawCar(struct Car *car, u8 idx)
             a = (pos[1] & 0xFF) | ((pos[0] & 0x1FF) << 16) | 0x80000000;
             b = t->tileIndex | t5;
             a |= 0x10000000;
-            ModuleAddDepthSortedSprite(a, b, y + 0x40);
+            ModuleAddDepthSortedSprite(a, b, y + 64);
         }
         t = ModuleRequestObjTiles8(gModule_DriverCarSpriteHalfATables[*p162][k]);
         if (t != NULL) {
             a = (pos[1] & 0xFF) | (((pos[0] + 0x20) & 0x1FF) << 16) | 0x80008000;
             b = t->tileIndex | t5;
             a |= 0x10000000;
-            ModuleAddDepthSortedSprite(a, b, y + 0x40);
+            ModuleAddDepthSortedSprite(a, b, y + 64);
         }
     }
     if (gModule_IsLinkRace != 0) {
         row = gModule_LinkMarkerFrameLists[idx];
         row += (gModule_FrameCounter >> 1) % 7;
-        pos[1] -= 0xC;
-        pos[0] += 0x10;
+        pos[1] -= 12;
+        pos[0] += 16;
         k = (pos[1] & 0xFF) | ((pos[0] & 0x1FF) << 16) | 0x40000000;
         t = ModuleRequestObjTiles4(*row);
         if (t == NULL)
             return;
         t5 = t->tileIndex | 0x400;
-        t5 |= (u32)(ModuleRequestObjPalette(gUnk_020243E8) << 24) >> 12;
-        ModuleAddDepthSortedSprite(k, t5, y + 0x40);
+        t5 |= (u32)(ModuleRequestObjPalette(gModule_LinkMarkerPalette) << 24) >> 12;
+        ModuleAddDepthSortedSprite(k, t5, y + 64);
     } else {
         row = gModule_DriverNumberFrameLists[car->driverId];
         pos[1] -= 8;
-        pos[0] += 0x10;
+        pos[0] += 16;
         k = (pos[1] & 0xFF) | ((pos[0] & 0x1FF) << 16) | 0x4000;
         t = ModuleRequestObjTiles2(*row);
         if (t == NULL)
             return;
         t5 = t->tileIndex | 0x400;
-        t5 |= (u32)(ModuleRequestObjPalette(gUnk_0201B590) << 24) >> 12;
-        ModuleAddDepthSortedSprite(k, t5, y + 0x40);
+        t5 |= (u32)(ModuleRequestObjPalette(gModule_DriverNumberPalette) << 24) >> 12;
+        ModuleAddDepthSortedSprite(k, t5, y + 64);
     }
 }
 
@@ -114,7 +108,7 @@ void ModuleDrawAllCars(void)
         limit = gModule_NumLinkPlayers[0];
     p = gModule_Cars;
     for (i = 0; i != limit; i++, p++) {
-        if (gModule_GameMode[0] != 2 || i == 0)
+        if (gModule_GameMode != 2 || i == 0)
             ModuleDrawCar(p, i);
     }
 }

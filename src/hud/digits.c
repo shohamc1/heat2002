@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 #include "data.h"
 
 struct BigDigitGlyphRow
@@ -18,9 +19,20 @@ struct BigDigitGlyph
     u16 bottomRight;
 };
 
+#if PLATFORM_GBA
 extern struct BigDigitGlyphRow gBigDigitGlyphs[];
+#else
+// symbols.ld alias gBigDigitGlyphs = gFontGlyphGrid + 0x16, viewed here as
+// rows; the port has no linker script, so the alias becomes a constant.
+#define gBigDigitGlyphs ((struct BigDigitGlyphRow *)((u8 *)gFontGlyphGrid + 0x16))
+#endif
 
+#if PLATFORM_GBA
 extern u16 gSmallDigitGlyphs[];
+#else
+// symbols.ld alias gSmallDigitGlyphs = gFontGlyphGrid + 0x3E.
+#define gSmallDigitGlyphs ((u16 *)((u8 *)gFontGlyphGrid + 0x3E))
+#endif
 
 void DrawBigDigit(u16 *dest, u8 idx)
 {

@@ -7,23 +7,18 @@
 extern u32 gUnk_0203DFF4;
 extern u8 gModule_DetectedPlayers;
 
-void ModuleSetLinkSerialIntr(void);
-void ModuleInitMultiplayerSio(void);
-void sub_08344B74(void);
-void sub_08344B68(u32 a, u32 b);
-void ModuleSioSendWord(u16 a);
 
 void ModuleResetLinkState(void)
 {
     u32 *linkStatePtr;
     u16 *timeoutPtr;
     u8 *playerSlotsPtr;
-    register u8 mask asm("r3");
+    register u8 mask PIN(r3);
     u8 i;
     u8 j;
 
-    *(volatile u16 *)0x04000134 = 0;
-    *(volatile u16 *)0x04000128 = 0;
+    REG_RCNT = 0;
+    REG_SIOCNT = 0;
     i = 0;
     linkStatePtr = &gUnk_0203DFF4;
     timeoutPtr = &gUnk_0203917C;
@@ -39,9 +34,9 @@ void ModuleResetLinkState(void)
     *timeoutPtr = 0;
     ModuleSetLinkSerialIntr();
     ModuleInitMultiplayerSio();
-    *(volatile u16 *)0x04000200 |= 0x80;
-    if ((*(u8 *)0x04000128 & 0x30) == 0)
-        *(volatile u16 *)0x04000200 |= 0x40;
+    REG_IE |= 0x80;
+    if ((*(u8 *)REG_ADDR_SIOCNT & 0x30) == 0)
+        REG_IE |= 0x40;
     i = 0;
     do {
         gModule_LinkTxBuffer[i] = 0;

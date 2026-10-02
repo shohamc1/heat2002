@@ -1,11 +1,12 @@
 #include "global.h"
+#include "functions.h"
 #include "variables.h"
 
 void sub_080170B8(u16 a, u16 *b);
 void sub_0801719C(u16 a, u16 *b);
 void sub_08017000(u16 a, u16 *b);
 u32 sub_08016E38(u32 a);
-u32 sub_08016EA0(u32 a, u32 b);
+u32 sub_08016EA0(u32 a, IntrFunc *b);
 
 void WriteSaveBlocks(u16 a, u16 b)
 {
@@ -40,7 +41,7 @@ u32 InitEeprom(void)
 {
     sub_08016E38(4);
     {
-        u32 p = (u32)gIntrTable;
+        IntrFunc *p = gIntrTable;
 
         return sub_08016EA0(3, p);
     }

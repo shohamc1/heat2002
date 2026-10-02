@@ -2,7 +2,7 @@
 #include "functions.h"
 #include "structs.h"
 
-void DrawCachedSprite(u32 posX, u32 posY, u32 gfxId, u32 palette, u8 hflip)
+void DrawCachedSprite(u32 posX, u32 posY, GfxSrc gfxId, const void *palette, u8 hflip)
 {
     struct ObjTileCacheEntry *entry;
     u8 palIdx;

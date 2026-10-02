@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 #include "gba/defines.h"
 #include "variables.h"
 
@@ -6,19 +7,19 @@ void ModuleResetSpriteQueues(void);
 
 void ModuleResetSpriteQueues(void)
 {
-    gUnk_0203ACD8 = (u32 *)(EWRAM_START + 0x3ACE0);
-    gUnk_0203B0E0 = EWRAM_START + 0x3B400;
-    gUnk_0203ACD0 = (u32 *)(EWRAM_START + 0x3B0F0);
+    gModule_OamEntryQueueCursor = gModule_OamEntryQueue;
+    gModule_SecondOamSortCursor = gModule_SecondOamSortBuffer;
+    gModule_DepthSortedSpriteCursor = gModule_DepthSortedSprites;
     gUnk_0203B600 = 0;
     gUnk_0203B604 = 0;
-    gUnk_0203ACD4 = 0;
+    gModule_DepthSortedSpriteCount = 0;
 }
 
 void ModuleClearOamBuffer(void)
 {
     u32 i = 0;
     u32 fill = 0xAA;
-    u32 *oam = (u32 *)gUnk_0203ACE0;
+    u32 *oam = gModule_OamEntryQueue;
 
     do {
         *oam = fill;
@@ -34,25 +35,25 @@ u32 ModuleAddOamEntry(u32 attr01, u32 attr2)
 
     if ((s8)gUnk_0203B600 < 0)
         return 0;
-    ptr = gUnk_0203ACD8;
+    ptr = gModule_OamEntryQueueCursor;
     ptr[0] = attr01;
     ptr[1] = attr2;
-    gUnk_0203ACD8 = ptr + 2;
+    gModule_OamEntryQueueCursor = ptr + 2;
     gUnk_0203B600 = gUnk_0203B600 + 1;
     return 1;
 }
 
 u32 ModuleAddDepthSortedSprite(u32 attr01, u32 attr2, u16 depth)
 {
-    u32 *ptr;
+    struct DepthSortedSprite *entry;
     u32 newCount;
 
-    ptr = gUnk_0203ACD0;
-    ptr[0] = attr01;
-    ptr[1] = attr2;
-    ((u16 *)ptr)[4] = depth;
-    gUnk_0203ACD0 = ptr + 3;
-    newCount = gUnk_0203ACD4 + 1;
-    gUnk_0203ACD4 = newCount;
+    entry = gModule_DepthSortedSpriteCursor;
+    entry->attr01 = attr01;
+    entry->attr2 = attr2;
+    entry->depth = depth;
+    gModule_DepthSortedSpriteCursor = entry + 1;
+    newCount = gModule_DepthSortedSpriteCount + 1;
+    gModule_DepthSortedSpriteCount = newCount;
     return newCount;
 }

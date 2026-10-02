@@ -1,7 +1,19 @@
 #include "global.h"
 #include "data.h"
 #include "structs.h"
+#include "m4a.h"
 #include "variables.h"
+
+/* The players' track arrays in EWRAM (0x02000000-0x02000460), defined in
+   address order (ldscript.ld's .bss_tables places the section at
+   gUnk_02000000's address). Each row of gMPlayTable below names its
+   player's array here; the background-music player owns 10 tracks, each
+   sound-effect player one, and a struct MusicPlayerTrack is 0x50 bytes. */
+EWRAM_DATA struct MusicPlayerTrack gUnk_02000000[10] = {0};
+EWRAM_DATA struct MusicPlayerTrack gUnk_02000320[1] = {0};
+EWRAM_DATA struct MusicPlayerTrack gUnk_02000370[1] = {0};
+EWRAM_DATA struct MusicPlayerTrack gUnk_020003C0[1] = {0};
+EWRAM_DATA struct MusicPlayerTrack gUnk_02000410[1] = {0};
 
 /* The m4a music player and song tables (0x0801DA90-0x0801DBBC), as tmc's
  * src/sound.c holds them: five players (background music, engine sound and
@@ -19,7 +31,18 @@ const struct MusicPlayer gMPlayTable[5] = {
     { &gMPlayInfo_SE4, gUnk_02000410, 1, 0 },
 };
 
-const struct Song gSongTable[30] = {
+#if PORTABLE
+/* StopAllSongsAndVSyncOff (src/sound/stop_songs.c) walks song numbers
+   0..0x63 although the table holds 30 rows; on the GBA the reads land in
+   the ROM data that follows and every comparison quietly fails. A hosted
+   build cannot read past the array, so the port pads the table to the
+   walked range with dummy rows. The GBA build keeps the 30-row table. */
+#define SONG_TABLE_ROWS (30 + 70)
+#else
+#define SONG_TABLE_ROWS 30
+#endif
+
+const struct Song gSongTable[SONG_TABLE_ROWS] = {
     { &song_dummy, 0, 0 },
     { &song_01, 0, 0 },
     { &song_02, 0, 0 },
@@ -50,4 +73,7 @@ const struct Song gSongTable[30] = {
     { &song_27, 2, 2 },
     { &song_28, 3, 3 },
     { &song_29, 2, 2 },
+#if PORTABLE
+    [30 ... 99] = { &song_dummy, 0, 0 },
+#endif
 };

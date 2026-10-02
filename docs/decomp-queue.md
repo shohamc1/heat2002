@@ -451,7 +451,7 @@ literals became function names (`(u32)ModuleDummyCgbSound [sub_0833BC78]`). Sinc
 module C names everything inside the image.
 
 The same EWRAM address means a different variable on each GBA. The main
-program's `gUnk_02022E20` and the module's `0x02022E20` aren't the same
+program's `gPaletteFadeColors` and the module's `0x02022E20` aren't the same
 thing. When you rename module data, never change a name that
 main-program code uses.
 

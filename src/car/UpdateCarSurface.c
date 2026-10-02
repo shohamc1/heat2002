@@ -4,8 +4,10 @@
 #include "variables.h"
 #include "car.h"
 
-void EnterPit(u8 *a, u8 b);
-u8 GetTrackTileType(s32 x, s32 y);
+
+/* The three sound-effect MusicPlayerInfo records gMPlayTable's rows 2-4
+   name (0x02001FA0-0x02002070) are defined in src/system/globals.c, which
+   owns the whole 0x02000DE0-0x02022E20 EWRAM run. */
 
 void UpdateCarSurface(struct Car *car)
 {
@@ -22,13 +24,13 @@ void UpdateCarSurface(struct Car *car)
     car->wasOnGrass = car->onGrass;
     car->onGrass = 0;
     car->behindBgFlag = 0;
-    if (gGameMode[0] == 4)
+    if (gGameMode == 4)
         return;
     if (gTrackId == 7)
         return;
     playerIdx = 0;
     if (gIsLinkRace != 0)
-        playerIdx = gLinkPlayerId[0];
+        playerIdx = gLinkPlayerId;
     posX = car->posX;
     posZ = car->posZ;
     tileX = posX >> 19;
@@ -55,22 +57,22 @@ void UpdateCarSurface(struct Car *car)
         }
     }
     if (pitTileCount > 4 ||
-        (pitTileCount != 0 && (gTrackId == 3 || gTrackId == 5 || gTrackId == 8 || gTrackId == 0xB || gTrackId == 2))) {
+        (pitTileCount != 0 && (gTrackId == 3 || gTrackId == 5 || gTrackId == 8 || gTrackId == 11 || gTrackId == 2))) {
         if (gIsLinkRace == 0 && car == gCars)
-            EnterPit((u8 *)car, 0);
+            EnterPit(car, 0);
     }
     muteGrassSound = 0;
-    if ((u8)(gGameMode[0] - 0xF) <= 1 && gChallengeIndex == 0xC)
+    if ((u8)(gGameMode - 15) <= 1 && gChallengeIndex == 12)
         muteGrassSound = 1;
     if (car == &gCars[playerIdx]) {
         if (car->onGrass != 0 && car->wasOnGrass == 0 && muteGrassSound == 0 && gOptions[3] != 0 && gIsDemo == 0 &&
             gRaceEndState == 0)
-            m4aSongNumStart(0x1C);
+            m4aSongNumStart(28);
     }
     if (car == &gCars[playerIdx]) {
         if (car->onGrass != 0 && (Random8() & 0x1F) == 0 && gOptions[3] != 0 && gIsDemo == 0 && gRaceEndState == 0 &&
             muteGrassSound == 0)
-            m4aSongNumStart(0x1D);
+            m4aSongNumStart(29);
     }
     if (car == &gCars[playerIdx]) {
         if ((*(u32 *)&car->onApron & 0xFF00FF00) == 0x01000000) {
@@ -79,6 +81,6 @@ void UpdateCarSurface(struct Car *car)
             m4aMPlayStop(&gMPlayInfo_SE4);
         }
     }
-    if (gGameMode[0] == 0x10 && gChallengeIndex == 0xC)
+    if (gGameMode == 16 && gChallengeIndex == 12)
         car->onGrass = 0;
 }

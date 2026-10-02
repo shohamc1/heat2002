@@ -5,7 +5,7 @@ void LoadFadePalette(u16 *r4)
 {
     u32 r6 = 0;
     u32 r5 = 0x1F;
-    u32 *r3 = gUnk_02022E20;
+    u32 *r3 = gPaletteFadeColors;
     u32 r7 = 0x80 << 1;
 
     do
@@ -142,7 +142,7 @@ void sub_08003F0C(u16 *r4)
 {
     u32 r6 = 0;
     u32 r5 = 0x1F;
-    u32 *r3 = gUnk_02022E20;
+    u32 *r3 = gPaletteFadeColors;
     u32 r7 = 0x80 << 1;
 
     do

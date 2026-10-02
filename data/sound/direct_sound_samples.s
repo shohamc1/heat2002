@@ -1,6 +1,16 @@
 @ Generated with Luvdis v0.9.0
+@ Both builds preprocess this file (preproc inlines the .include files,
+@ cpp resolves the switch below). The GBA keeps the exact luvdis layout;
+@ the hosted build switches to a writable data section, because its mPtr
+@ pointer fields carry relocations the host linker must be able to write.
+	.include "asm/macros/portable.inc"
+#if PLATFORM_GBA
 .syntax unified
 .text
+#else
+.include "asm/macros/portable.inc"
+mSectionData
+#endif
 @ Begin embedded Luvdis macros
 	.macro arm_func_start name
 	.align 2, 0
@@ -32,32 +42,40 @@
 	.size \name, .-\name
 	.endm
 @ End embedded Luvdis macros
+#if PLATFORM_GBA
 	.thumb
+#endif
 	@ 0x0801DBBC-0x0806AA64: song_dummy, the 4-byte empty song every
 	@ unused gSongTable row plays, then the 36 direct sound samples
 	@ (aif2pcm's output from assets/sound/samples/*.aif). The voice
 	@ groups reference the samples from another object.
 	.global song_dummy
 song_dummy:
+	cSym song_dummy
 	.incbin "build/assets/sound/song_dummy.bin"
 	.global sample_0801DBC0
 sample_0801DBC0:
+	cSym sample_0801DBC0
 	.incbin "build/assets/sound/samples/sample_0801DBC0.bin"
 	.align 2, 0
 	.global sample_0801E4C8
 sample_0801E4C8:
+	cSym sample_0801E4C8
 	.incbin "build/assets/sound/samples/sample_0801E4C8.bin"
 	.align 2, 0
 	.global sample_0801F84C
 sample_0801F84C:
+	cSym sample_0801F84C
 	.incbin "build/assets/sound/samples/sample_0801F84C.bin"
 	.align 2, 0
 	.global sample_08020018
 sample_08020018:
+	cSym sample_08020018
 	.incbin "build/assets/sound/samples/sample_08020018.bin"
 	.align 2, 0
 	.global sample_08021F6C
 sample_08021F6C:
+	cSym sample_08021F6C
 	.incbin "build/assets/sound/samples/sample_08021F6C.bin"
 	.align 2, 0
 	.global sample_080242E0

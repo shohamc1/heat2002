@@ -1,8 +1,9 @@
 #include "global.h"
+#include "functions.h"
 #include "variables.h"
 #include "car.h"
 
-u8 FindFreePitStall(void)
+u8 FindFreePitStall(u8 unused)
 {
     u8 i;
 

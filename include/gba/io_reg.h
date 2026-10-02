@@ -1,7 +1,31 @@
 #ifndef GUARD_GBA_IO_REG_H
 #define GUARD_GBA_IO_REG_H
 
+#include "config.h"
+
+#if PLATFORM_GBA
 #define REG_BASE 0x4000000 // I/O register base address
+#else
+// A 0x400-byte array stands in for the I/O register block, so every
+// REG_ADDR_* below stays address arithmetic on the host too (defined in
+// the platform layer).
+#define IO_SIZE 0x400
+// __attribute__ spelled out: ALIGNED lives in defines.h, which need not
+// have been included yet when this header is read first.
+extern __attribute__((aligned(8))) u8 REG_BASE[IO_SIZE];
+#endif
+
+// The DMA source and destination registers hold real pointers in a
+// hosted build, so they widen to uintptr_t. Four 8-byte SADs and DADs no
+// longer fit the GBA's interleaved layout, so the offsets repack:
+// SADs first, then DADs, then the still-32-bit CNTs. Only the platform
+// layer reads the registers' positions; game code goes through the
+// Dma* macros (functions under PORTABLE).
+#if PLATFORM_GBA
+#define USE_NEW_DMA 0
+#else
+#define USE_NEW_DMA 1
+#endif
 
 // I/O register offsets
 
@@ -95,6 +119,7 @@
 #define REG_OFFSET_FIFO_A      0xa0
 #define REG_OFFSET_FIFO_B      0xa4
 
+#if !USE_NEW_DMA
 #define REG_OFFSET_DMA0        0xb0
 #define REG_OFFSET_DMA0SAD     0xb0
 #define REG_OFFSET_DMA0SAD_L   0xb0
@@ -135,6 +160,34 @@
 #define REG_OFFSET_DMA3CNT     0xdc
 #define REG_OFFSET_DMA3CNT_L   0xdc
 #define REG_OFFSET_DMA3CNT_H   0xde
+#else
+// The repacked host layout: four pointer-sized SADs, four DADs, then the
+// 32-bit CNTs, all inside the b0..ff span the GBA layout uses.
+#define REG_OFFSET_DMA0        0xb0
+#define REG_OFFSET_DMA0SAD     0xb0
+#define REG_OFFSET_DMA1SAD     (REG_OFFSET_DMA0SAD + sizeof(uintptr_t))
+#define REG_OFFSET_DMA2SAD     (REG_OFFSET_DMA1SAD + sizeof(uintptr_t))
+#define REG_OFFSET_DMA3SAD     (REG_OFFSET_DMA2SAD + sizeof(uintptr_t))
+#define REG_OFFSET_DMA0DAD     (REG_OFFSET_DMA3SAD + sizeof(uintptr_t))
+#define REG_OFFSET_DMA1DAD     (REG_OFFSET_DMA0DAD + sizeof(uintptr_t))
+#define REG_OFFSET_DMA2DAD     (REG_OFFSET_DMA1DAD + sizeof(uintptr_t))
+#define REG_OFFSET_DMA3DAD     (REG_OFFSET_DMA2DAD + sizeof(uintptr_t))
+#define REG_OFFSET_DMA0CNT     (REG_OFFSET_DMA3DAD + sizeof(uintptr_t))
+#define REG_OFFSET_DMA1        REG_OFFSET_DMA1SAD
+#define REG_OFFSET_DMA2        REG_OFFSET_DMA2SAD
+#define REG_OFFSET_DMA3        REG_OFFSET_DMA3SAD
+#define REG_OFFSET_DMA0CNT_L   REG_OFFSET_DMA0CNT
+#define REG_OFFSET_DMA0CNT_H   (REG_OFFSET_DMA0CNT + 2)
+#define REG_OFFSET_DMA1CNT     (REG_OFFSET_DMA0CNT + 4)
+#define REG_OFFSET_DMA1CNT_L   REG_OFFSET_DMA1CNT
+#define REG_OFFSET_DMA1CNT_H   (REG_OFFSET_DMA1CNT + 2)
+#define REG_OFFSET_DMA2CNT     (REG_OFFSET_DMA0CNT + 8)
+#define REG_OFFSET_DMA2CNT_L   REG_OFFSET_DMA2CNT
+#define REG_OFFSET_DMA2CNT_H   (REG_OFFSET_DMA2CNT + 2)
+#define REG_OFFSET_DMA3CNT     (REG_OFFSET_DMA0CNT + 12)
+#define REG_OFFSET_DMA3CNT_L   REG_OFFSET_DMA3CNT
+#define REG_OFFSET_DMA3CNT_H   (REG_OFFSET_DMA3CNT + 2)
+#endif
 
 #define REG_OFFSET_TMCNT       0x100
 #define REG_OFFSET_TMCNT_L     0x100
@@ -437,6 +490,11 @@
 #define REG_FIFO_A      (*(vu32 *)REG_ADDR_FIFO_A)
 #define REG_FIFO_B      (*(vu32 *)REG_ADDR_FIFO_B)
 
+#if !PLATFORM_GBA
+#include <stdint.h> // uintptr_t for the DMA address registers
+#endif
+
+#if PLATFORM_GBA
 #define REG_DMA0SAD     (*(vu32 *)REG_ADDR_DMA0SAD)
 #define REG_DMA0DAD     (*(vu32 *)REG_ADDR_DMA0DAD)
 #define REG_DMA0CNT     (*(vu32 *)REG_ADDR_DMA0CNT)
@@ -460,6 +518,32 @@
 #define REG_DMA3CNT     (*(vu32 *)REG_ADDR_DMA3CNT)
 #define REG_DMA3CNT_L   (*(vu16 *)REG_ADDR_DMA3CNT_L)
 #define REG_DMA3CNT_H   (*(vu16 *)REG_ADDR_DMA3CNT_H)
+#else
+// Address registers hold host pointers (USE_NEW_DMA layout above).
+#define REG_DMA0SAD     (*(volatile uintptr_t *)REG_ADDR_DMA0SAD)
+#define REG_DMA0DAD     (*(volatile uintptr_t *)REG_ADDR_DMA0DAD)
+#define REG_DMA0CNT     (*(vu32 *)REG_ADDR_DMA0CNT)
+#define REG_DMA0CNT_L   (*(vu16 *)REG_ADDR_DMA0CNT_L)
+#define REG_DMA0CNT_H   (*(vu16 *)REG_ADDR_DMA0CNT_H)
+
+#define REG_DMA1SAD     (*(volatile uintptr_t *)REG_ADDR_DMA1SAD)
+#define REG_DMA1DAD     (*(volatile uintptr_t *)REG_ADDR_DMA1DAD)
+#define REG_DMA1CNT     (*(vu32 *)REG_ADDR_DMA1CNT)
+#define REG_DMA1CNT_L   (*(vu16 *)REG_ADDR_DMA1CNT_L)
+#define REG_DMA1CNT_H   (*(vu16 *)REG_ADDR_DMA1CNT_H)
+
+#define REG_DMA2SAD     (*(volatile uintptr_t *)REG_ADDR_DMA2SAD)
+#define REG_DMA2DAD     (*(volatile uintptr_t *)REG_ADDR_DMA2DAD)
+#define REG_DMA2CNT     (*(vu32 *)REG_ADDR_DMA2CNT)
+#define REG_DMA2CNT_L   (*(vu16 *)REG_ADDR_DMA2CNT_L)
+#define REG_DMA2CNT_H   (*(vu16 *)REG_ADDR_DMA2CNT_H)
+
+#define REG_DMA3SAD     (*(volatile uintptr_t *)REG_ADDR_DMA3SAD)
+#define REG_DMA3DAD     (*(volatile uintptr_t *)REG_ADDR_DMA3DAD)
+#define REG_DMA3CNT     (*(vu32 *)REG_ADDR_DMA3CNT)
+#define REG_DMA3CNT_L   (*(vu16 *)REG_ADDR_DMA3CNT_L)
+#define REG_DMA3CNT_H   (*(vu16 *)REG_ADDR_DMA3CNT_H)
+#endif
 
 #define REG_TMCNT(n)    (*(vu16 *)(REG_ADDR_TMCNT + ((n) * 4)))
 #define REG_TMCNT_L(n)  (*(vu16 *)(REG_ADDR_TMCNT_L + ((n) * 4)))

@@ -20,7 +20,7 @@ s32 GetGearForSpeed(struct Car *car, s32 speed)
     do {
         gear = nextGear;
         rpm = (-(s32)rpmPerSpeedTable[gear] * speed) >> 8;
-        if ((u32)(rpm - 2001) <= 0x2326)
+        if ((u32)(rpm - 2001) <= 8998)
             return gear;
         nextGear = gear + 1;
     } while ((s16)nextGear != 5);
@@ -84,7 +84,7 @@ void UpdateEngine(struct Car *car, s32 mode)
     }
     t3 = car->speed;
     if (t3 <= 0)
-        r = ((s16 (*)(struct Car *))GetGearForSpeed)(car);
+        r = (s16)GetGearForSpeed(car, t3);
     else
         r = 0;
     car->engineForce = -((-car->gearRatioTable[car->gear]) * v) >> 8;

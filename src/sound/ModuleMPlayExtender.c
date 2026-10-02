@@ -9,17 +9,10 @@
 
 /* MPlayExtender (high copy) */
 
-void ModulePlyMemacc(void);
 void sub_0833A764(void);
 void sub_0833A778(void);
-void ModulePlyXcmd(void);
 void sub_0833A6FC(void);
-void ModuleSampleFreqSet(void);
 void sub_0833A488(void);
-void ModuleFadeOutBody(void);
-void ModuleTrkVolPitSet(void);
-void ModuleCgbSound(void);
-void ModuleMidiKeyToCgbFreq(void);
 
 void ModuleMPlayExtender(struct CgbChannel *cgbChans)
 {
@@ -54,7 +47,7 @@ void ModuleMPlayExtender(struct CgbChannel *cgbChans)
         soundInfo->CgbOscOff = (CgbOscOffFunc)ModuleCgbOscOff;
         soundInfo->MidiKeyToCgbFreq = (MidiKeyToCgbFreqFunc)ModuleMidiKeyToCgbFreq;
         soundInfo->maxLines = (u8)(u32)&gMaxLines;
-        CpuFill32(0, (u32)cgbChans, 0x100);
+        CpuFill32(0, cgbChans, 0x100);
         cgbChans[0].type = 1;
         cgbChans[0].panMask = 0x11;
         cgbChans[1].type = 2;

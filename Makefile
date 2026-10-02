@@ -16,10 +16,133 @@ ASFLAGS := -mcpu=arm7tdmi -mthumb-interwork
 CFLAGS  := -O2 -mthumb-interwork -fhex-asm -Wimplicit -Wparentheses
 CPPFLAGS := -I include -I tools/agbcc/include -iquote include -nostdinc -undef
 
-C_SRCS   := $(shell find src -name '*.c')
+# The platform layer is hosted-only: the GBA build never compiles it
+# (its files include host headers and the SDL front end).
+C_SRCS   := $(shell find src -name '*.c' ! -path 'src/platform/*')
 DATA_SRCS := $(wildcard data/*.s data/sound/*.s)
 # Bodies of ASM_FUNC functions (include/global.h), included from C.
-ASM_INCS := $(shell find asm -name '*.inc' 2>/dev/null)
+ASM_INCS := $(shell find asm -name '*.inc' 2>/dev/null | grep -v '^asm/macros/')
+
+# ---------------------------------------------------------------------------
+# Hosted build (issue 5): PLATFORM=sdl compiles the main program as a
+# native 64-bit program with an SDL platform layer, after SAT-R/sa2. Any
+# other PLATFORM value also builds hosted. The GBA target above and below
+# is untouched and stays byte-exact.
+# ---------------------------------------------------------------------------
+PLATFORM ?= gba
+ifeq ($(PLATFORM),gba)
+PORTABLE := 0
+else
+PORTABLE := 1
+endif
+
+ifeq ($(PORTABLE),1)
+# The build machine's OS (keys the ASan null-front-end switch) and the
+# sanitizer switch, both read throughout this block.
+UNAME_S := $(shell uname -s)
+ASAN ?= 0
+# The hosted toolchain. Each can be overridden on the command line to
+# cross-compile; a Windows build uses MinGW-w64:
+#   make PLATFORM=sdl CC_H=x86_64-w64-mingw32-gcc CXX_H=x86_64-w64-mingw32-g++ \
+#        AS_H=x86_64-w64-mingw32-as LD_H=x86_64-w64-mingw32-ld \
+#        SDL2_CONFIG=/path/to/x86_64-w64-mingw32/bin/sdl2-config
+# The tools the build runs itself (preproc, mid2agb, aif2pcm) always use
+# the build machine's cc and c++.
+CC_H := cc
+CXX_H := c++
+AS_H := as
+# The host linker, for the -r pass that normalizes the data objects'
+# symbol tables (gas Mach-O objects with .equ aliases leave an indirect
+# symbol table ld64 refuses).
+LD_H := ld
+SDL2_CONFIG := sdl2-config
+# The hosted sources preprocess with the target compiler too: its
+# predefined macros (pointer and long widths, OS) must match the compile.
+CPP_H = $(CC_H) -E -x c
+ACPP_H = $(CC_H) -E -P -x assembler-with-cpp
+# The OS the port is built for, from the compiler's target triple (it
+# differs from UNAME_S when cross-compiling).
+PORT_TARGET := $(shell $(CC_H) -dumpmachine 2>/dev/null)
+PORT_WINDOWS := $(if $(findstring mingw,$(PORT_TARGET)),1)
+# The hosted build writes only under build/$(PLATFORM)/, never build/.
+# The sanitizer build (ASAN=1) and a Windows cross-build get their own
+# trees beside it, so the binaries and object sets coexist.
+PORT_BUILD := build/$(PLATFORM)$(if $(PORT_WINDOWS),-windows)$(if $(filter 1,$(ASAN)),-asan)
+# -Wshorten-64-to-32 is clang-only; gcc (CI's Linux hosts) rejects it as
+# an unrecognized option, so probe the compiler once and leave it out
+# where it is not accepted.
+WARN_SHORTEN_64_TO_32 := $(shell $(CC_H) -Wshorten-64-to-32 -fsyntax-only -x c /dev/null >/dev/null 2>&1 && echo -Wshorten-64-to-32)
+CPPFLAGS_H := -I include -DPLATFORM_$(shell echo $(PLATFORM) | tr '[:lower:]' '[:upper:]')=1 \
+	-DPLATFORM_GBA=0 -DPORTABLE=1 $(shell $(SDL2_CONFIG) --cflags 2>/dev/null)
+# A GCC 2.95-era codebase meeting a modern host compiler: the old dialect
+# is accepted, and the code reads the same memory through several types
+# and relies on signed wraparound, as agbcc allowed.
+CFLAGS_H := -O2 -std=gnu89 -fno-strict-aliasing -fwrapv \
+	-Wno-implicit-function-declaration -Wno-pointer-sign -Wno-return-mismatch \
+	-Wno-incompatible-pointer-types $(WARN_SHORTEN_64_TO_32)
+
+# Sanitizer build of the port (issue 5 step 9): `make PLATFORM=sdl ASAN=1`
+# compiles every hosted object (game code, platform layer, renderer) and
+# links with -fsanitize=address,undefined, so the soak runs trip host-side
+# UB (OOB, uninit, bad shifts) the GBA build silently tolerates.
+# On macOS this needs the null front end instead of the SDL one (see
+# src/platform/null_front/null_front.c): Homebrew's sdl2 is the
+# sdl2-compat layer, whose dylib initializer dlopens SDL3 -- under ASan
+# that dlopen fails and the layer pops a modal NSAlert no automated run
+# dismisses. A plain build and a UBSan-only build of the same SDL program
+# run fine; only ASan+SDL does not (verified 2026-10-01, SDL 2.32.72).
+# Elsewhere (Linux) the SDL front end stays.
+ifeq ($(ASAN),1)
+# -fsanitize-recover=address: a soak collects every report in one run
+# (with ASAN_OPTIONS=halt_on_error=0) instead of stopping at the first.
+SAN_FLAGS := -fsanitize=address,undefined -fno-omit-frame-pointer -g \
+	-fsanitize-recover=address
+CFLAGS_H += $(SAN_FLAGS)
+ifeq ($(UNAME_S),Darwin)
+PORT_FRONT_C := src/platform/null_front/null_front.c
+else
+PORT_FRONT_C := src/platform/pret_sdl/sdl2.c
+endif
+else
+SAN_FLAGS :=
+PORT_FRONT_C := src/platform/pret_sdl/sdl2.c
+endif
+
+# The port builds the main program's own objects: every build/src line the
+# .text section of ldscript.ld places (which leaves the high module, the
+# island, the runtime libraries and crt0 out), minus the dead files, whose
+# functions nothing reaches. The data fragments the same section places
+# come along: the assets still build from baserom.gba (or zero-fill in CI)
+# exactly as the GBA build's do.
+# NB: the sed programs below must not contain a bare closing paren, which
+# would end this $(shell ...) reference for make; none of the object paths
+# carries a dot before its .o suffix.
+# .text_tail follows the EWRAM images and holds the rest of the main
+# program's ROM data (race data and the trailing rom_083F* fragments).
+PORT_SECTIONS := '/^    \.text : ALIGN/,/^    }$$/p;/^    \.text_tail /,/^    }$$/p;/^    \.bss_[A-Za-z0-9_]* 0x/,/^    }$$/p;/^    \.iwram_[A-Za-z0-9_]* 0x/,/^    }$$/p'
+PORT_C_SRCS := $(shell sed -n $(PORT_SECTIONS) ldscript.ld \
+	| sed -n 's|^ *build/src/\([^. ]*\)\.o.*|src/\1.c|p' | grep -v '^src/dead/' | sort -u)
+PORT_DATA_SRCS := $(shell sed -n $(PORT_SECTIONS) ldscript.ld \
+	| sed -n 's|^ *build/data/\([^. ]*\)\.o.*|data/\1.s|p' | sort -u)
+PORT_C_OBJS := $(PORT_C_SRCS:src/%.c=$(PORT_BUILD)/src/%.o)
+PORT_DATA_OBJS := $(PORT_DATA_SRCS:data/%.s=$(PORT_BUILD)/data/%.o)
+
+# The platform layer (issue 5 step 5): the SDL front end, the shared
+# hosted hardware (memory arrays, DMA, the C BIOS calls and interrupt
+# dispatcher), the software renderer, and the stubs that complete the
+# link until steps 6-8 replace them. C sources build with the same
+# hosted rule as the game objects; the renderer is C++. ext/gbagfx is
+# not compiled standalone: libagbsyscall.c #includes it, as sa2's build
+# does. Exactly one front end links: PORT_FRONT_C (the ASAN block above)
+# -- the other front-end folders stay out of the glob.
+PORT_PLATFORM_C_SRCS := $(filter-out $(PORT_C_SRCS) src/platform/ext/% \
+	src/platform/pret_sdl/% src/platform/null_front/%,$(wildcard src/platform/*.c) \
+	$(wildcard src/platform/*/*.c) $(wildcard src/platform/*/*/*.c)) $(PORT_FRONT_C)
+PORT_PLATFORM_OBJS := $(PORT_PLATFORM_C_SRCS:src/%.c=$(PORT_BUILD)/src/%.o) \
+	$(PORT_BUILD)/src/platform/shared/video/gpsp_renderer.cc.o
+PORT_EXE := $(PORT_BUILD)/$(TARGET).sdl$(if $(PORT_WINDOWS),.exe)
+endif
+
 # Runtime library: newlib objects built from the vendored source with the
 # flags of tools/agbcc/libc/Makefile (no interwork, -fno-builtin), in ROM
 # order. ldscript.ld places each one whole, plus its .rodata, .data and .bss.
@@ -101,8 +224,12 @@ $(BUILD)/src/link/IslandSioTransferIntr.o: CFLAGS := $(subst -O2,-O1,$(CFLAGS))
 OBJS     := $(C_SRCS:%.c=$(BUILD)/%.o) $(DATA_SRCS:%.s=$(BUILD)/%.o) \
 	$(NEWLIB_OBJS) $(AGBSYSCALL_OBJS) $(AGBSYSCALL_COPY_OBJS) $(M4A_OBJS) $(LIB_C_OBJS) $(LIBGCC_OBJS) $(CRT0_OBJS)
 
-.PHONY: all check check-code test clean disasm tools convert pointers shift-test
+.PHONY: all check check-code test clean disasm tools convert pointers shift-test sdl port-objects run
+ifeq ($(PORTABLE),1)
+all: port-objects
+else
 all: $(TARGET).gba
+endif
 
 # Each C file is preprocessed, run through preproc (which expands INCBIN_*
 # calls into array initialisers), compiled by agbcc, then assembled. preproc
@@ -371,11 +498,21 @@ endif
 convert: baserom.gba $(ASSET_TOOLS) $(ASSET_STAMP)
 	python3 scripts/assets.py convert
 
-$(BUILD)/data/%.o: data/%.s Makefile $(ASSET_STAMP)
+# The data fragments carry #if PLATFORM_GBA guards (asm/macros/*.inc) so the
+# hosted build can assemble them too, so every one runs through preproc
+# (which inlines the .include files into one flat stream) and cpp (which
+# resolves the guards and strips its own line markers) before gas. The
+# object bytes are unchanged: the GBA branch of each guard is exactly what
+# the fragment said before the guards existed (verified per file by
+# assembling both ways and comparing the objects).
+ACPP := cc -E -P -x assembler-with-cpp
+PORT_ASM_DEPS := Makefile $(PREPROC) $(wildcard asm/macros/*.inc)
+$(BUILD)/data/%.o: data/%.s $(PORT_ASM_DEPS) $(ASSET_STAMP)
 	@mkdir -p $(@D)
-	cat $< > $(BUILD)/data/$*.s
-	printf '\t.align 2, 0\n' >> $(BUILD)/data/$*.s
-	$(AS) $(ASFLAGS) -I include -o $@ $(BUILD)/data/$*.s
+	$(PREPROC) $(TARGET) $< "" > $(BUILD)/data/$*.pp.s
+	printf '\t.align 2, 0\n' >> $(BUILD)/data/$*.pp.s
+	$(ACPP) -undef -nostdinc -DPLATFORM_GBA=1 $(BUILD)/data/$*.pp.s -o $(BUILD)/data/$*.cpp.s
+	$(AS) $(ASFLAGS) -I include -o $@ $(BUILD)/data/$*.cpp.s
 
 # --no-check-sections: the multiboot island's run addresses overlap the
 # main program's EWRAM .bss. The overlap is real, since the island runs on a
@@ -460,6 +597,142 @@ disasm: nascar.cfg
 
 nascar.cfg: baserom.gba scripts/seed_functions.py
 	python3 scripts/seed_functions.py baserom.gba $@
+
+# ---------------------------------------------------------------------------
+# Hosted-build rules. Same shape as the GBA ones above: preproc expands
+# INCBIN_* after cpp, and the data fragments run preproc (inlining the
+# .include files) and cpp (resolving the #if PLATFORM_GBA guards) before
+# the host assembler. mPtr fields then widen to the host's pointer width.
+# ---------------------------------------------------------------------------
+ifeq ($(PORTABLE),1)
+
+all: $(PORT_EXE)
+
+$(PORT_BUILD)/src/%.o: src/%.c $(wildcard include/*.h include/gba/*.h src/data/*.h) \
+	$(wildcard include/platform/*.h include/platform/shared/*.h include/platform/shared/video/*.h \
+	include/platform/shared/audio/*.h include/platform/ext/gbagfx/*.h) Makefile $(PREPROC)
+	@mkdir -p $(@D)
+	$(CPP_H) $(CPPFLAGS_H) $< -o $(PORT_BUILD)/src/$*.i
+	$(PREPROC) $(TARGET) $(PORT_BUILD)/src/$*.i > $(PORT_BUILD)/src/$*.pp.i
+	$(CC_H) $(CFLAGS_H) -c $(PORT_BUILD)/src/$*.pp.i -o $@
+
+# The platform layer includes host headers (stdio.h, SDL.h), which the
+# split cpp/compile pipeline leaves spelling C99 keywords the -std=gnu89
+# compile then can't parse. It is new code, not 2.95-era source, so it
+# builds as C11; its declarations-in-for loops are legal there too.
+# $(SAN_FLAGS) rides along so ASAN=1 instruments this code too.
+$(PORT_BUILD)/src/platform/%.o: CFLAGS_H := -O2 -std=gnu11 -fno-strict-aliasing -fwrapv \
+	-Wno-implicit-function-declaration -Wno-pointer-sign -Wno-return-mismatch \
+	-Wno-incompatible-pointer-types $(WARN_SHORTEN_64_TO_32) $(SAN_FLAGS)
+
+# libagbsyscall.c #includes the gbagfx LZ77 and RL decoders, so an edit
+# to either must rebuild it.
+$(PORT_BUILD)/src/platform/libagbsyscall.o: $(wildcard src/platform/ext/gbagfx/*.c)
+
+# The renderer is the platform layer's one C++ source (GPL-2.0+, after
+# sa2); it takes the same defines as the C objects, and the sanitizer
+# flags with them (ASAN=1).
+$(PORT_BUILD)/src/platform/shared/video/gpsp_renderer.cc.o: src/platform/shared/video/gpsp_renderer.cc \
+		$(wildcard include/platform/*.h include/platform/*/*.h include/platform/*/*/*.h) Makefile
+	@mkdir -p $(@D)
+	$(CXX_H) -std=c++11 -O2 -fno-strict-aliasing $(CPPFLAGS_H) $(SAN_FLAGS) -Wno-c99-designator -c $< -o $@
+
+# The hosted songs build with the vendored mPtr mid2agb (tools/mid2agb,
+# issue 5 step 4) into the port's own directory: same events as the GBA
+# ones, pointer-width fields. The rule sits outside the baserom.gba guard
+# so both paths produce $(PORT_BUILD)/songs/%.s: with the ROM each song
+# builds from its editable .mid; without it (CI) the zero-fill stubs that
+# assets.py blank writes (which carry the global labels the song table,
+# src/sound/tables.c, names) copy over, as the GBA build's do.
+PORT_SONG_MIDS := $(shell python3 scripts/assets.py list | grep '\.mid$$')
+ifneq ($(wildcard baserom.gba),)
+$(PORT_BUILD)/songs/%.s: assets/sound/songs/%.mid tools/mid2agb/mid2agb $(ASSET_STAMP)
+	@mkdir -p $(@D)
+	python3 scripts/assets.py song-p $< $@
+else
+# The stubs are a side effect of the blank stamp (assets.py blank writes
+# the whole tree in one run), so the per-file prerequisite make can see
+# is the stamp itself, exactly as the INCBIN reads in the port's src/data
+# objects depend on it; the file name rides in $*.
+$(PORT_BUILD)/songs/%.s: $(ASSET_STAMP)
+	@mkdir -p $(@D)
+	cp $(BUILD)/assets/sound/songs/$*.s $@
+endif
+
+tools/mid2agb/mid2agb: $(wildcard tools/mid2agb/*.cpp tools/mid2agb/*.h)
+	$(MAKE) -C tools/mid2agb
+
+# Each data fragment is staged under the port build first, with the song
+# includes repointed at the port's mPtr songs: preproc inlines .include
+# files itself, so the path swap has to reach it (the old rule sed'd
+# preproc's output, which was too late -- the GBA songs were already
+# inlined, 4-byte pointers and all). asm/macros/portable.inc's hosted
+# section macros balign the staged data to the pointer width, which
+# ld64 requires of the mPtr fields. The final staging rewrites .align to
+# .p2align: Darwin's as reads .align as a power of two, but GNU as on
+# ELF x86-64 (CI's Linux) reads it as a byte count, which misaligns the
+# mPtr fields; .p2align is a power of two everywhere. On Darwin the two
+# spellings assemble to identical bytes (verified: same section bytes,
+# same label offsets), so the hosted build is unchanged.
+$(PORT_BUILD)/data/%.o: data/%.s $(PORT_ASM_DEPS) $(ASSET_STAMP)
+	@mkdir -p $(@D)
+	sed 's|build/assets/sound/songs/|$(PORT_BUILD)/songs/|' $< > $(PORT_BUILD)/data/$*.src.s
+	$(PREPROC) $(TARGET) $(PORT_BUILD)/data/$*.src.s "" > $(PORT_BUILD)/data/$*.pp.s
+	printf '\t.balign 4\n' >> $(PORT_BUILD)/data/$*.pp.s
+	$(ACPP_H) -DPLATFORM_GBA=0 -DPORTABLE=1 $(PORT_BUILD)/data/$*.pp.s -o $(PORT_BUILD)/data/$*.cpp.s
+	sed -e 's/\.align  *\([0-9][0-9]*\) *, */.p2align \1,/' \
+	    -e 's/\.align  *\([0-9][0-9]*\) *$$/.p2align \1/' \
+	    $(PORT_BUILD)/data/$*.cpp.s > $(PORT_BUILD)/data/$*.p2.s
+	$(AS_H) -o $(@:.o=.raw.o) $(PORT_BUILD)/data/$*.p2.s
+	$(LD_H) -r $(@:.o=.raw.o) -o $@ && rm -f $(@:.o=.raw.o)
+
+$(filter $(PORT_BUILD)/src/data/%,$(PORT_C_OBJS)): $(ASSET_STAMP)
+ifeq ($(PORTABLE),1)
+$(PORT_BUILD)/data/sound/sounds.o: $(PORT_SONG_MIDS:assets/sound/songs/%.mid=$(PORT_BUILD)/songs/%.s)
+# The samples incbin the GBA build's converted .bin files (the hosted
+# build has no copies of its own), so it needs the same dependency as
+# the GBA object: a fresh checkout builds them first, and an edited .aif
+# rebuilds the object.
+ifneq ($(wildcard baserom.gba),)
+$(PORT_BUILD)/data/sound/direct_sound_samples.o: $(SOUND_SAMPLES:%.aif=$(BUILD)/%.bin)
+endif
+endif
+
+port-objects: $(PORT_C_OBJS) $(PORT_DATA_OBJS)
+
+# The link (issue 5 step 5): every hosted object plus the platform
+# layer, linked by c++ so the renderer's C++ runtime comes along. Sound
+# is stubbed this step; the mixer is step 6. On macOS, ld64's chained
+# fixups refuse the songs' inline PATT pointers, mPtr fields the m4a
+# command stream packs at odd offsets (unaligned reads are fine on the
+# host); -no_fixup_chains falls back to classic relocations for them.
+# UNAME_S is set in the ASAN block above; $(SAN_FLAGS) links the
+# sanitizer runtimes in when ASAN=1.
+ifneq ($(findstring apple,$(PORT_TARGET)),)
+PORT_LDFLAGS := -Wl,-no_fixup_chains
+else
+PORT_LDFLAGS :=
+endif
+PORT_LDFLAGS += $(SAN_FLAGS)
+# Windows: link the GCC and C++ runtimes statically, so the .exe needs
+# only SDL2.dll, which the link copies beside it.
+ifneq ($(PORT_WINDOWS),)
+PORT_LDFLAGS += -static-libgcc -static-libstdc++
+endif
+$(PORT_EXE): $(PORT_C_OBJS) $(PORT_DATA_OBJS) $(PORT_PLATFORM_OBJS)
+	$(CXX_H) -o $@ $(PORT_C_OBJS) $(PORT_DATA_OBJS) $(PORT_PLATFORM_OBJS) \
+		$(if $(filter src/platform/pret_sdl/%,$(PORT_FRONT_C)),$(shell $(SDL2_CONFIG) --libs)) \
+		-lm $(PORT_LDFLAGS)
+	$(if $(PORT_WINDOWS),cp "$(shell $(SDL2_CONFIG) --prefix)/bin/SDL2.dll" $(@D)/)
+
+run: $(PORT_EXE)
+	$(PORT_EXE)
+
+endif # PORTABLE
+
+# Convenience, as sa2's: `make sdl` re-invokes make with PLATFORM=sdl.
+sdl:
+	@$(MAKE) PLATFORM=sdl
 
 clean:
 	rm -rf $(BUILD) $(TARGET).elf $(TARGET).gba

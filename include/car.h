@@ -1,6 +1,8 @@
 #ifndef GUARD_CAR_H
 #define GUARD_CAR_H
 
+#include "config.h"
+
 // struct Car: the merged view of the 0x190-byte per-car record (the union of
 // the local struct views the 52+ gCars/gModule_Cars users used to declare;
 // build/car_map.txt maps every local field to the canonical one). Fields
@@ -35,7 +37,7 @@ struct Car
     /* 0x40 */ u16 rpm;
     /* 0x42 */ u8 pad42[0x48 - 0x42];
     /* 0x48 */ s32 impactSpeed;
-    /* 0x4C */ u8 lap;
+    /* 0x4C */ s8 lap; /* -1 until the car first crosses the line */
     /* 0x4D */ u8 waypoint;
     /* 0x4E */ u8 subStep;
     /* 0x4F */ u8 pad4F[0x50 - 0x4F];
@@ -43,8 +45,8 @@ struct Car
     /* 0x54 */ u8 pad54[0x55 - 0x54];
     /* 0x55 */ u8 hitCooldown;
     /* 0x56 */ u8 pad56[0x58 - 0x56];
-    /* 0x58 */ s32
-        driverPalette; /* cached gDriverPalettes[driverId] palette pointer; write-only (no reader in shipped code) */
+    /* 0x58 */ const void
+        *driverPalette; /* cached gDriverPalettes[driverId] palette pointer; write-only (no reader in shipped code) */
     /* 0x5C */ u8 pad5C[0x7C - 0x5C];
     /* 0x7C */ u8 carState; /* only 0 (init) and 2 (wreck reset) ever written; 1, 1-3 and 5-7 are tested but never set
                                in matched code */
@@ -71,8 +73,16 @@ struct Car
     /* 0xF0 */ s32 lanePosition;                   /* row index (>>8) into the wall tables below */
     /* 0xF4 */ const u16 *lanePoints;              /* u16 (x,y) pairs, gLanePointTables[row+gTrackId*12] */
     /* 0xF8 */ const struct LaneSeg *laneSegments; /* 20-byte records, gLaneSegmentTables[row+gTrackId*12] */
-    /* 0xFC */ u32 laneCellLists; /* base of 0xFF-terminated lane-segment index lists (held as a pointer) */
-    /* 0x100 */ u32 laneCellGrid; /* u16[48*48] grid of offsets into laneCellLists (held as a pointer) */
+    /* Pointer-carried lane tables; the GBA build's asm computes with them as
+       plain integers (see FindClosestLaneSegment), so the word type keeps
+       that codegen and only the hosted build widens them. */
+#if PORTABLE
+    /* 0xFC */ const u8 *laneCellLists; /* base of 0xFF-terminated lane-segment index lists */
+    /* 0x100 */ const u8 *laneCellGrid; /* u16[48*48] grid of offsets into laneCellLists */
+#else
+    /* 0xFC */ u32 laneCellLists;
+    /* 0x100 */ u32 laneCellGrid;
+#endif
     /* 0x104 */ u16 finishMin;
     /* 0x106 */ u16 finishSec;
     /* 0x108 */ u16 finishMs;
@@ -114,8 +124,13 @@ struct Car
     /* 0x176 */ u8 draftTimer;
     /* 0x177 */ u8 pad177[0x178 - 0x177];
     /* 0x178 */ u32 prePitLane; /* SetCarLane arg to warp back after pit */
-    /* 0x17C */ s32
-        trackCueCursor; /* gTrackCueList pointer walked by the 8-byte track-cue records (held as a pointer) */
+    /* 0x17C */ /* gTrackCueList pointer walked by the 8-byte track-cue records;
+                     the GBA build computes with it as a word (see track_cues.c) */
+#if PORTABLE
+    const u8 *trackCueCursor;
+#else
+    s32 trackCueCursor;
+#endif
     /* 0x180 */ u8 torqueDampTimer; /* nonzero: 16x torque while decrementing; armed outside the direct call graph */
     /* 0x181 */ u8 pitStall;
     /* 0x182 */ u16 pitExitPending;
@@ -126,17 +141,23 @@ struct Car
     /* 0x18F */ u8 pitCollidable;
 };
 
+// GBA-only, like TrackSizeCheck in structs.h: the port widens pointers.
+#if PLATFORM_GBA
 typedef char CarSizeCheck[sizeof(struct Car) == 0x190 ? 1 : -1];
+#endif
 
-// gCars: the main program's cars at 0x0202A550 (stride 0x190).
+/* gCars: the main program's cars at 0x0202A550 (stride 0x190), defined by
+   src/car/globals.c (the 0x0202A510-0x0202CBE0 EWRAM run's owner).
+   gAiCars is &gCars[1], the first AI car. */
 extern struct Car gCars[];
-// gAiCars: &gCars[1], the first AI car (an alias label in symbols.ld).
-extern struct Car gAiCars[];
+#define gAiCars (gCars + 1)
 
 // gModule_Cars: the high module's cars, gUnk_0203D520 on the other GBA
-// (renamed separately; a different machine, not an alias of gCars).
+// (renamed separately; a different machine, not an alias of gCars). The
+// module races five cars (0x7D0 bytes, ending at gUnk_0203DCF0), defined
+// by src/car/module_globals.c. gModule_AiCars is &gModule_Cars[1], the
+// first AI car.
 extern struct Car gModule_Cars[];
-// gModule_AiCars: &gModule_Cars[1].
-extern struct Car gModule_AiCars[];
+#define gModule_AiCars (gModule_Cars + 1)
 
 #endif // GUARD_CAR_H

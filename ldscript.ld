@@ -62,11 +62,139 @@ SECTIONS
         build/lib/libgcc/dp-bit.o(.bss);
         build/lib/libgcc/fp-bit.o(.bss);
     }
-    /* gVBlankWorkPhase: defined in sub_0800306C.c, placed at its original
-       address (phase-6 mechanism proof; NOLOAD, so no ROM bytes). */
-    .bss_sub_0800306C 0x020021B8 (NOLOAD) :
+    /* The main program's EWRAM, one output section per run (issue 5 step
+       3, run rule): each section has exactly one owning file, which
+       defines every identified variable in it, in address order, with
+       static gap arrays padding only the unidentified memory. A run with
+       interior small gaps stays one section; owners change only at
+       genuine breaks in the run. Sections may touch but never overlap. */
+    /* src/sound/tables.c's EWRAM track arrays, the ones gMPlayTable's
+       rows name (the multiboot island overlays the same addresses on the
+       other GBA). */
+    .bss_tables 0x02000000 (NOLOAD) :
     {
-        build/src/system/MainVBlankCallback.o(ewram_data)
+        build/src/sound/tables.o(ewram_data)
+    }
+    /* src/car/TestCornersVsWalls.c's eleven s32 wall-test scratch
+       values; gWalls/gWallVertices moved to src/race/globals.c. */
+    .bss_TestCornersVsWalls 0x02000460 (NOLOAD) :
+    {
+        build/src/car/TestCornersVsWalls.o(ewram_data)
+    }
+    /* src/system/vblank.c's RAM variables (the section sits at
+       gVBlankCallback's address). */
+    .bss_vblank 0x02000580 (NOLOAD) :
+    {
+        build/src/system/vblank.o(ewram_data)
+    }
+    /* src/system/globals.c owns the main program's one contiguous EWRAM
+       run 0x02000DE0-0x02022E20: the m4a driver state, the game/menu/link
+       state, the track map buffers and the palette-fade state. The high
+       module's image legitimately overlays these addresses on the second
+       GBA (--no-check-sections). */
+    .bss_globals 0x02000DE0 (NOLOAD) :
+    {
+        build/src/system/globals.o(ewram_data)
+    }
+    /* src/palette/fade_begin.c owns the one contiguous palette-fade span
+       0x02022E20-0x02024620: the 0xC00-byte fade state and the 0xC00-byte
+       delta buffer flush behind it (the first ends exactly where the
+       second begins; see the file's own comment). */
+    .bss_fade_begin 0x02022E20 (NOLOAD) :
+    {
+        build/src/palette/fade_begin.o(ewram_data)
+    }
+    /* src/palette/fade.c owns the packed 0x200-byte palette staging buffer
+       at 0x02024620; src/sprite/oam.c's run starts at its end. */
+    .bss_fade 0x02024620 (NOLOAD) :
+    {
+        build/src/palette/fade.o(ewram_data)
+    }
+    /* src/sprite/oam.c owns two runs: the queue-reset state, the OAM entry
+       queue's fill pointer, the 0x400-byte OAM entry queue itself
+       (0x02024830-0x02024C30) and the second sort buffer's pointer
+       variable gSecondOamSortCursor behind it, through 0x02024C34 (the 12 bytes
+       up to .bss_hud_globals at 0x02024C40 stay unnamed), and gOamBuffer
+       at 0x0202E960 (the 0x400-byte OAM image plus 8 bytes of slack). */
+    .bss_oam 0x02024820 (NOLOAD) :
+    {
+        build/src/sprite/oam.o(ewram_data)
+    }
+    /* src/hud/globals.c owns the HUD/sprite-counters runs: the
+       depth-sorted sprite queue through the link-menu key state, and the
+       record tables through the finish order. */
+    .bss_hud_globals 0x02024C40 (NOLOAD) :
+    {
+        build/src/hud/globals.o(ewram_data)
+    }
+    .bss_hud_globals_2 0x02025380 (NOLOAD) :
+    {
+        build/src/hud/globals.o(ewram_data2)
+    }
+    /* src/sprite/gfx_cache.c's RAM variables (the section sits at
+       gObjTileCache16's address). */
+    .bss_gfx_cache 0x02025400 (NOLOAD) :
+    {
+        build/src/sprite/gfx_cache.o(ewram_data)
+    }
+    /* src/task/task.c's RAM variables: the 256 slot-used flags, the list
+       head and the 256 0x44-byte task slots; gTasks ends exactly at
+       gTaskRunCount, the section's last variable. */
+    .bss_task 0x02025ED0 (NOLOAD) :
+    {
+        build/src/task/task.o(ewram_data)
+    }
+    /* src/race/challenge.c's gUnk_0202A3F0[0x48] alone: the run ends at
+       0x0202A510, where src/car/globals.c's run begins. */
+    .bss_challenge 0x0202A3F0 (NOLOAD) :
+    {
+        build/src/race/challenge.o(ewram_data)
+    }
+    /* src/car/globals.c owns the car/tire/pit run: the tire and pit state
+       around gCars (the 24 0x190-byte car records, whose gAiCars/
+       gUnk_0202A6B2/gUnk_0202A6BC aliases are macros in car.h). */
+    .bss_car_globals 0x0202A510 (NOLOAD) :
+    {
+        build/src/car/globals.o(ewram_data)
+    }
+    /* src/race/globals.c owns the race run: the pit-menu cursor, the
+       tire-force leftovers, the lap-time state, the AI lane state, the
+       wall-table pointers and the car contact record with its self frame
+       counters. */
+    .bss_race_globals 0x0202CBE0 (NOLOAD) :
+    {
+        build/src/race/globals.o(ewram_data)
+    }
+    /* src/car/collide.c's own 0x0202CD24-0x0202CD50 run: gUnk_0202CD24
+       and gCarCollFrameOther. */
+    .bss_collide 0x0202CD24 (NOLOAD) :
+    {
+        build/src/car/collide.o(ewram_data)
+    }
+    /* src/race/globals.c's second run: the RunRace argument buffers, the
+       unreferenced gUnk_0202CDB0 byte and the SIO transfer block. */
+    .bss_race_globals_2 0x0202CD90 (NOLOAD) :
+    {
+        build/src/race/globals.o(ewram_data2)
+    }
+    /* src/sprite/oam.c's second run: gOamBuffer (see .bss_oam above). */
+    .bss_oam_3 0x0202E960 (NOLOAD) :
+    {
+        build/src/sprite/oam.o(ewram_data3)
+    }
+    /* src/save/save.c owns the merged menu/link/save run
+       0x0202ED70-0x0202F1C0: the menu state, the link state, the cheat
+       dials and the EEPROM staging buffer views. */
+    .bss_save 0x0202ED70 (NOLOAD) :
+    {
+        build/src/save/save.o(ewram_data)
+    }
+    /* src/link/ExchangeLinkInput.c's remaining EWRAM variable moved to
+       src/save/save.c; gIntrCheck is the BIOS interrupt-check flag in
+       IWRAM and takes an iwram_data section of its own. */
+    .iwram_ExchangeLinkInput 0x03007FF8 (NOLOAD) :
+    {
+        build/src/link/ExchangeLinkInput.o(iwram_data)
     }
     . = 0x08000000;
     rom_entry = .;
@@ -150,14 +278,11 @@ SECTIONS
         build/src/dead/sub_080058FC.o(.text*);
         build/src/hud/hud.o(.text*);
         build/src/dead/sub_08005FA8.o(.text*);
-        build/src/hud/UpdateRaceHud.o(.text*);
-        build/src/hud/ClearTextLayer.o(.text*);
-        build/src/hud/InitRaceHud.o(.text*);
+        build/src/hud/race_hud.o(.text*);
         build/src/dead/sub_080063AC.o(.text*);
         build/src/hud/text.o(.text*);
         build/src/dead/sub_080064F8.o(.text*);
-        build/src/hud/DrawBigText.o(.text*);
-        build/src/hud/DummyUiFontLoad.o(.text*);
+        build/src/hud/big_text.o(.text*);
         build/src/dead/sub_08006738.o(.text*);
         build/src/hud/DrawTextCenteredHighlight.o(.text*);
         build/src/dead/sub_080069D8.o(.text*);
@@ -179,6 +304,7 @@ SECTIONS
         build/src/dead/sub_080089EC.o(.text*);
         build/src/race/drivers.o(.text*);
         build/src/race/challenge.o(.text*);
+        build/src/race/InitRaceCars.o(.text*);
         build/src/race/pitstop.o(.text*);
         build/src/car/InitCar.o(.text*);
         build/src/dead/sub_08009B1C.o(.text*);
@@ -186,8 +312,7 @@ SECTIONS
         build/src/dead/sub_08009BA4.o(.text*);
         build/src/camera/WorldToScreen.o(.text*);
         build/src/dead/sub_08009C00.o(.text*);
-        build/src/car/DrawCar.o(.text*);
-        build/src/car/DrawAllCars.o(.text*);
+        build/src/car/draw.o(.text*);
         build/src/hud/DrawLinkMarker.o(.text*);
         build/src/dead/sub_0800A008.o(.text*);
         build/src/car/engine.o(.text*);
@@ -215,8 +340,7 @@ SECTIONS
         build/src/dead/sub_0800BBDC.o(.text*);
         build/src/car/lane.o(.text*);
         build/src/dead/sub_0800C0F8.o(.text*);
-        build/src/car/WorldToCarLocal.o(.text*);
-        build/src/car/CheckDrafting.o(.text*);
+        build/src/car/drafting.o(.text*);
         build/src/dead/sub_0800C21C.o(.text*);
         build/src/car/ai_driver.o(.text*);
         build/src/dead/sub_0800C98C.o(.text*);
@@ -229,6 +353,7 @@ SECTIONS
         build/src/dead/TestSegmentVsWalls.o(.text*);
         build/src/dead/BounceOffWalls.o(.text*);
         build/src/car/CollideCarWithWalls.o(.text*);
+        build/src/car/contact.o(.text*);
         build/src/car/collide.o(.text*);
         build/src/dead/CallFunc.o(.text*);
         build/src/link/multiboot.o(.text*);
@@ -269,6 +394,7 @@ SECTIONS
         build/src/dead/sub_080109C0.o(.text*);
         build/src/menu/team_select.o(.text*);
         build/src/menu/driver_select.o(.text*);
+        build/src/menu/track_select.o(.text*);
         build/src/link/race_summary.o(.text*);
         build/src/link/post_race_menu.o(.text*);
         build/src/link/link_state.o(.text*);
@@ -280,8 +406,7 @@ SECTIONS
         build/src/link/link_lobby.o(.text*);
         build/src/dead/sub_08012354.o(.text*);
         build/src/save/InitNewSaveData.o(.text*);
-        build/src/menu/DrawOptionsMenu.o(.text*);
-        build/src/menu/OptionsMenu.o(.text*);
+        build/src/menu/options.o(.text*);
         build/src/dead/sub_0801264C.o(.text*);
         build/src/menu/championship_qualify.o(.text*);
         build/src/menu/challenge_complete.o(.text*);
@@ -307,7 +432,6 @@ SECTIONS
         build/src/dead/sub_08014ED0.o(.text*);
         build/src/menu/single_race_retry_menu.o(.text*);
         build/src/dead/sub_08014FD0.o(.text*);
-        build/src/menu/ResetBgScroll.o(.text*);
         build/src/menu/MainMenuLoop.o(.text*);
         build/src/dead/sub_08016330.o(.text*);
         build/src/link/LinkFailScreen.o(.text*);
@@ -550,6 +674,7 @@ SECTIONS
         build/src/car/module_tire_forces.o(.text*);
         build/src/dead/sub_08340B5C.o(.text*);
         build/src/race/module_challenge.o(.text*);
+        build/src/race/ModuleInitRaceCars.o(.text*);
         build/src/dead/sub_0834116C.o(.text*);
         build/src/race/ModuleEnterPit.o(.text*);
         build/src/dead/sub_08341284.o(.text*);
@@ -693,6 +818,87 @@ SECTIONS
            instead of silently vanishing into /DISCARD/ with `make check`
            still printing MATCH. */
         *(.text*);
+    }
+    /* The high module's EWRAM .bss and the island's IWRAM (issue 5 step
+       3): the RAM variables each image keeps outside its own bytes.
+       NOLOAD sections at each run's first address (run rule, one owner
+       per section); they carry no ROM bytes and legitimately overlay
+       the main program's EWRAM/IWRAM on the other GBA. */
+    .module_ewram_data_sound 0x02038DE0 (NOLOAD) :
+    {
+        build/src/sound/module_globals.o(module_ewram_data)
+    }
+    .module_ewram_data_sound_2 0x02038F70 (NOLOAD) :
+    {
+        build/src/sound/module_globals.o(module_ewram_data2)
+    }
+    /* src/system/module_globals.c owns the game/link/track/fade run
+       (the module twin of .bss_globals): the race state, the track
+       pointer block and the palette-fade buffers. */
+    .module_ewram_data_system 0x020390A0 (NOLOAD) :
+    {
+        build/src/system/module_globals.o(module_ewram_data)
+    }
+    /* src/sprite/module_globals.c owns the OAM queue run and, past the
+       module's unnamed 0x400-byte sort buffer, the sprite sort run. */
+    .module_ewram_data_sprite 0x0203ACD0 (NOLOAD) :
+    {
+        build/src/sprite/module_globals.o(module_ewram_data)
+    }
+    .module_ewram_data_sprite_2 0x0203B0E0 (NOLOAD) :
+    {
+        build/src/sprite/module_globals.o(module_ewram_data2)
+    }
+    /* src/hud/module_globals.c owns the lap/race timer run and, past
+       the 0x108-byte unnamed span, the record tables through the
+       finish order (the module twin of .bss_hud_globals_2). */
+    .module_ewram_data_hud 0x0203B6A8 (NOLOAD) :
+    {
+        build/src/hud/module_globals.o(module_ewram_data)
+    }
+    .module_ewram_data_hud_2 0x0203B810 (NOLOAD) :
+    {
+        build/src/hud/module_globals.o(module_ewram_data2)
+    }
+    /* src/sprite/module_gfx_cache.c's OBJ tile/palette caches (the
+       module twin of .bss_gfx_cache), closing at src/task/
+       module_task.c's task run (the twin of .bss_task). */
+    .module_ewram_data_gfx_cache 0x0203B870 (NOLOAD) :
+    {
+        build/src/sprite/module_gfx_cache.o(module_ewram_data)
+    }
+    .module_ewram_data_task 0x0203C340 (NOLOAD) :
+    {
+        build/src/task/module_task.o(module_ewram_data)
+    }
+    /* src/car/module_globals.c owns the car/tire run (the module twin
+       of .bss_car_globals): the grid buffer, the tire state and the
+       five 0x190-byte car records (gModule_AiCars and gUnk_0203D68C
+       are macros into gModule_Cars, car.h). */
+    .module_ewram_data_car 0x0203D4A0 (NOLOAD) :
+    {
+        build/src/car/module_globals.o(module_ewram_data)
+    }
+    /* src/race/module_globals.c owns the tire-leftover/wall/collide
+       runs (the module twin of .bss_race_globals), split by the
+       unnamed span behind the collision frame counters. */
+    .module_ewram_data_race 0x0203DDE4 (NOLOAD) :
+    {
+        build/src/race/module_globals.o(module_ewram_data)
+    }
+    .module_ewram_data_race_2 0x0203DF44 (NOLOAD) :
+    {
+        build/src/race/module_globals.o(module_ewram_data2)
+    }
+    /* src/link/module_globals.c owns the module's last run: the
+       race-end and link state through the closing link buffers. */
+    .module_ewram_data_link 0x0203E0E0 (NOLOAD) :
+    {
+        build/src/link/module_globals.o(module_ewram_data)
+    }
+    .island_data 0x03000000 (NOLOAD) :
+    {
+        build/src/link/island_globals.o(island_data)
     }
     /DISCARD/ : { *(*); }
 }

@@ -6,16 +6,22 @@
 #include "data.h"
 
 extern u8 gPitLaneIndices[];
-void InitPitMenu(void);
 extern u8 gText_PitControl[];
 extern u8 gText_BlankRow16_3[];
 extern u8 gText_GetReady[];
 extern u32 gPitStopTireServiceTimes[];
 extern u32 gPitStopRepairTimes[];
-extern s32 gPitFuelToAdd;
-extern s32 gPlayerPitProgressRate;
 
 extern const u8 gText_BlankRow20_2[];
+
+/* The file's five RAM variables (gPitFuelToAdd, gPitServiceEnabled,
+   gPitMenuActive, gPlayerPitProgressRate and the 8-stall
+   gPitStallOccupied) moved to src/car/globals.c, the owner of the
+   0x0202A510-0x0202CBE0 EWRAM run they sit in. gPitFuelToAdd and
+   gPlayerPitProgressRate are used only here, so this file keeps their
+   local externs; the rest are declared in variables.h. */
+extern s32 gPitFuelToAdd;
+extern s32 gPlayerPitProgressRate;
 void ClearPitStopProgressBar(void)
 { DrawTextAt(gText_BlankRow20_2, 7, 10); }
 
@@ -52,37 +58,30 @@ void DrawPitStopProgressBar(u8 percent)
         }
         row += 8;
         cell++;
-    } while (cell != 0x0C);
+    } while (cell != 12);
     glyphOff = 0x744;
     *dest = (0xE0 << 8) | gFontTileEntries[*(u16 *)((u8 *)gFontGlyphGrid + glyphOff)];
 }
 
-void EnterPit(u8 *r4, u8 r5)
+void EnterPit(struct Car *car, u8 stall)
 {
-    u8 *r1;
-    u32 r0;
-
-    if (gGameMode[0] == 3)
+    if (gGameMode == 3)
         return;
-    if (r4[0x175] != 0)
+    if (car->pitState != 0)
         return;
 
-    if (r4 == (u8 *)gCars) {
-        r1 = &gPlayerPittedFlag;
-        r0 = 1;
-        r1[0] = r0;
+    if (car == gCars) {
+        gPlayerPittedFlag = 1;
     } else {
-        *(u32 *)&r4[0x178] = *(u32 *)&r4[0xF0];
-        r0 = 0x18F;
-        r1 = &r4[r0];
-        r0 = (r1[0] = 1);
+        car->prePitLane = car->lanePosition;
+        car->pitCollidable = 1;
     }
-    r4[0x175] = 1;
-    SetCarLane(r4, gPitLaneIndices[gTrackId] << 8);
-    if (r4 == (u8 *)gCars && gDamagePitsEnabled != 0)
+    car->pitState = 1;
+    SetCarLane(car, gPitLaneIndices[gTrackId] << 8);
+    if (car == gCars && gDamagePitsEnabled != 0)
         InitPitMenu();
-    r4[0x181] = r5;
-    gPitStallOccupied[r5] = 1;
+    car->pitStall = stall;
+    gPitStallOccupied[stall] = 1;
 }
 
 void UpdatePitStop(struct Car *a1, u8 a2)

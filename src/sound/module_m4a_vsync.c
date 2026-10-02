@@ -1,4 +1,5 @@
 #include "global.h"
+#include "functions.h"
 #include "gba/compat.h"
 #include "gba/m4a_internal.h"
 #include "gba/defines.h"
@@ -22,7 +23,7 @@ void ModuleM4aSoundVSyncOff(void)
             REG_DMA2CNT = ((DMA_ENABLE | DMA_32BIT | DMA_DEST_FIXED) << 16) | 4;
         REG_DMA1CNT_H = DMA_32BIT;
         REG_DMA2CNT_H = DMA_32BIT;
-        CpuFill32(0, (u32)soundInfo->pcmBuffer, sizeof(soundInfo->pcmBuffer));
+        CpuFill32(0, soundInfo->pcmBuffer, sizeof(soundInfo->pcmBuffer));
     }
 }
 

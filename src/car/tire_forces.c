@@ -5,13 +5,19 @@
 #include "car.h"
 #include "m4a.h"
 
-extern s32 gTireGrip;
-extern s32 gFrontTireGrip;
-extern s32 gCarHeadingAngle;
+
+/* The file's RAM variables all moved to the owners of the EWRAM runs
+   they sit in (issue 5 step 3, run rule): everything up to gAxleTireGrip
+   to src/car/globals.c, and the four at 0x0202CBE4 on (gCarHeadingAngle,
+   gYawContactVelX, gYawContactVelZ, gTireForceAngle) to
+   src/race/globals.c. The six no header declares are used only here, so
+   this file keeps their local externs; the rest are in variables.h. */
 extern s32 gYawContactSpeed;
+extern s32 gFrontTireGrip;
+extern s32 gTireGrip;
+extern s32 gCarHeadingAngle;
 extern s32 gYawContactVelX;
 extern s32 gYawContactVelZ;
-void AddSkidSmokeTask(u8 a, u8 b);
 
 void UpdateTireForces(struct Car *car, u8 carIndex)
 {
@@ -52,7 +58,7 @@ void UpdateTireForces(struct Car *car, u8 carIndex)
             *frontGrip >>= 1;
     }
     gCarHeadingAngle = ((car->heading >> 8) - 0x40) & 0xFF;
-    gYawContactSpeed = contactSpeed = (*(s16 *)&car->yawRate) << 7;
+    gYawContactSpeed = contactSpeed = (s16)car->yawRate << 7;
     gYawContactVelX = (contactVelX = contactSpeed * -gSinTable[((car->heading >> 8) - 0x40) & 0xFF]) >> 8;
     gYawContactVelZ = (contactVelZ = contactSpeed * gSinTable[(((car->heading >> 8) - 0x40) & 0xFF) + 0x40]) >> 8;
     if (car->zoneGripFlag != 0) {
@@ -95,8 +101,8 @@ void ComputeAxleTireForce(u8 axle, struct Car *car)
     s32 lateralVel;
     s32 slipSpeed;
     s32 idx;
-    register s32 m asm("r2");
-    register s32 mm asm("r0");
+    register s32 m PIN(r2);
+    register s32 mm PIN(r0);
     s32 armAngle;
     s32 t;
     s32 *forcePtr;
@@ -118,7 +124,7 @@ void ComputeAxleTireForce(u8 axle, struct Car *car)
                     goto e2check;
                 goto tail;
             }
-            if (gCurrentCarIndex != gLinkPlayerId[0])
+            if (gCurrentCarIndex != gLinkPlayerId)
                 goto tail;
         } else if (slipSpeed > gTireSlipLimit) {
             slipSpeed = gTireSlipLimit / 2;
@@ -128,14 +134,14 @@ void ComputeAxleTireForce(u8 axle, struct Car *car)
                     goto e2check;
                 goto tail;
             }
-            if (gCurrentCarIndex != gLinkPlayerId[0])
+            if (gCurrentCarIndex != gLinkPlayerId)
                 goto tail;
         } else {
             goto tail;
         }
     e2check:
         if (gOptions[3] != 0 && gIsDemo == 0 && gRaceEndState == 0)
-            m4aSongNumStart(0xB);
+            m4aSongNumStart(11);
     } else {
         if (gDamagePitsEnabled != 0) {
             car->tireWear2 += ABS2(lateralVel >> 17);

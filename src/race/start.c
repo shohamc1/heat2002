@@ -6,16 +6,16 @@ void StartRace(void)
 {
     struct Task *task;
 
-    if (gGameMode[0] == 9)
-        gGameMode[0] = 6;
-    if (gGameMode[0] == 0x0D)
-        gGameMode[0] = 0x0C;
-    if (gGameMode[0] == 0x0E)
-        gGameMode[0] = 2;
-    if (gGameMode[0] == 0x0F)
-        gGameMode[0] = 0x10;
-    if (gGameMode[0] == 0x11)
-        gGameMode[0] = 5;
+    if (gGameMode == 9)
+        gGameMode = 6;
+    if (gGameMode == 13)
+        gGameMode = 12;
+    if (gGameMode == 14)
+        gGameMode = 2;
+    if (gGameMode == 15)
+        gGameMode = 16;
+    if (gGameMode == 17)
+        gGameMode = 5;
     gRaceStarted = 1;
     task = AllocTask();
     if (task != 0) {
@@ -32,7 +32,7 @@ void InitLinkRaceStart(void)
 
     gRaceStarted = 0;
     gRaceEndState = 0;
-    if (gGameMode[0] == 3 || gGameMode[0] == 4) {
+    if (gGameMode == 3 || gGameMode == 4) {
         task = AllocTask();
         if (task != 0) {
             task->timer = 0;

@@ -4,22 +4,15 @@
 #include "gba/io_reg.h"
 #include "gba/macro.h"
 #include "data.h"
+#include "functions.h"
 
 extern u32 gUnk_020009B8;
 void sub_083640B0(void);
 extern u8 *gUnk_02000BD4[];
 extern u32 gUnk_02000A9C[];
 extern u16 gUnk_05000200[];
-extern u32 gUnk_02000964[];
+extern u8 *const gUnk_02000964[]; /* the high module chunks' EWRAM destinations */
 extern u8 gUnk_02000D00[];
-void sub_08364804(u32 flags);
-void sub_08364800(const void *src, void *dest);
-void sub_083647F8(const void *src, void *dest, u32 control);
-void sub_08364808(void);
-void IslandSioTransferInit(u32 a1, u32 a2);
-void IslandDrawLinkProgressBar(u16 x, u16 y);
-void IslandDrawMultibootProgressMarker(s16 a, u8 b);
-u32 IslandSioTransferUpdate(u32 *a1);
 void _08364810(u32 target);
 
 void IslandDrawLinkProgressBar(u16 progress, u16 y)
@@ -87,7 +80,7 @@ void IslandAgbMain(void)
     for (i = 0; i < 3; i++)
         sub_08364800(gUnk_02000BD4[i], (void *)(OBJ_VRAM0 + i * 0x200));
     DmaCopy32(3, gUnk_02000A9C, gUnk_05000200, 0x20);
-    *(vu16 *)0x04000008 = 0x89;
+    REG_BG0CNT = 0x89;
     REG_DISPCNT = DISPCNT_OBJ_ON | DISPCNT_BG0_ON | DISPCNT_OBJ_1D_MAP;
     REG_IE = INTR_FLAG_VBLANK;
     REG_DISPSTAT = DISPSTAT_VBLANK_INTR;

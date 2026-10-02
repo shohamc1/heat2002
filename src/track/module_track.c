@@ -9,17 +9,11 @@
    record type of gModule_TrackData, also from variables.h. */
 extern u16 gUnk_02022428[];
 extern u16 gModule_RaceHudBgPalette[];
-extern u32 gUnk_02039288;
-extern u32 gUnk_02039224;
+extern u32 gModule_BgMapWidth2;
+extern const u16 *gModule_TrackUnk28;
 extern u32 gUnk_020392A0;
 extern u32 gUnk_02039280;
 void ModuleLoadTrackTiles(u8 idx);
-void ModuleBeginFadeToBrightenedPalette(s32 arg0, u16 *src);
-void ModuleFlushTrackBgBuffers(void);
-void ModuleSetCameraPos(u32 x, u32 y);
-void ModuleInitRaceCars(u32 idx);
-void ModuleResetRaceTimer(void);
-void sub_08344B60(u32 a, u32 b, u32 c);
 
 void ModuleLoadTrackTiles(u8 idx)
 {
@@ -30,8 +24,8 @@ void ModuleLoadTrackTiles(u8 idx)
     base = (u8 *)gModule_TrackData;
     off = idx * 100;
     p = base + 4;
-    sub_08344B64(*(u32 *)(p + off), 0x06000000, 0x4000);
-    sub_08344B64(*(u32 *)(base + off), 0x06008000, 0x2000);
+    sub_08344B64(*(u32 *)(p + off), VRAM, 0x4000);
+    sub_08344B64(*(u32 *)(base + off), BG_CHAR_ADDR(2), 0x2000);
     gUnk_02039294 = 0;
     gUnk_02039248 = 0;
     gUnk_020392A4 = 0;
@@ -46,43 +40,45 @@ void ModuleLoadTrack(u32 idx)
     ModuleLoadTrackTiles(idx);
     t = gUnk_02022428;
     CpuCopy16(t, BG_SCREEN_ADDR(24), 0x2000);
-    CpuCopy16(gModule_TrackData[idx].palette, (u32)fadePalette, 0x200);
-    CpuCopy16(t = gModule_RaceHudBgPalette, (u32)paletteCopy, 0x20);
+    CpuCopy16(gModule_TrackData[idx].palette, fadePalette, 0x200);
+    CpuCopy16(t = gModule_RaceHudBgPalette, paletteCopy, 0x20);
     ModuleBeginFadeToBrightenedPalette(0x1E, fadePalette);
-    gUnk_02039244 = gModule_TrackData[idx].mapWidth;
-    gUnk_02039288 = gModule_TrackData[idx].mapWidth2;
-    gUnk_02039228 = gModule_TrackData[idx].bg3Map;
-    gUnk_02039268 = gModule_TrackData[idx].bg2Map;
-    gUnk_02039224 = gModule_TrackData[idx].unk28;
-    gUnk_02039238 = gModule_TrackData[idx].bg3Metatiles;
-    gUnk_0203922C = gModule_TrackData[idx].bg2Metatiles;
+    gModule_BgMapWidth = gModule_TrackData[idx].mapWidth;
+    gModule_BgMapWidth2 = gModule_TrackData[idx].mapWidth2;
+    gModule_Bg3MapPtr = gModule_TrackData[idx].bg3Map;
+    gModule_Bg2MapPtr = gModule_TrackData[idx].bg2Map;
+    gModule_TrackUnk28 = gModule_TrackData[idx].unk28;
+    gModule_Bg3Metatiles = gModule_TrackData[idx].bg3Metatiles;
+    gModule_Bg2Metatiles = gModule_TrackData[idx].bg2Metatiles;
     gUnk_020392A0 = gModule_TrackData[idx].unk3C;
     gUnk_02039280 = gModule_TrackData[idx].unk40;
-    gUnk_0203929C = (u8 *)gModule_TrackData[idx].surfaceTable;
+    gModule_SurfaceTablePtr = gModule_TrackData[idx].surfaceTable;
     if (idx == 0)
-        gModule_TrackMapWidth[0] = 0x7D;
+        gModule_TrackMapWidth = 125;
     if (idx == 1)
-        gModule_TrackMapWidth[0] = 0x70;
+        gModule_TrackMapWidth = 112;
     if (idx == 2)
-        gModule_TrackMapWidth[0] = 0xA8;
+        gModule_TrackMapWidth = 168;
     if (idx == 3)
-        gModule_TrackMapWidth[0] = 0x6B;
+        gModule_TrackMapWidth = 107;
     if (idx == 4)
-        gModule_TrackMapWidth[0] = 0xA3;
+        gModule_TrackMapWidth = 163;
     if (idx == 5)
-        gModule_TrackMapWidth[0] = 0xA6;
+        gModule_TrackMapWidth = 166;
     if (idx == 6)
-        gModule_TrackMapWidth[0] = 0x7D;
+        gModule_TrackMapWidth = 125;
     if (idx == 8)
-        gModule_TrackMapWidth[0] = 0x7D;
+        gModule_TrackMapWidth = 125;
     if (idx == 9)
-        gModule_TrackMapWidth[0] = 0x7D;
+        gModule_TrackMapWidth = 125;
     if (idx == 10)
-        gModule_TrackMapWidth[0] = 0x5E;
+        gModule_TrackMapWidth = 94;
     if (idx == 11)
-        gModule_TrackMapWidth[0] = 0x7D;
-    ModuleDrawTrackMapWindow(0, 0, (u8 *)gUnk_02039228, (u32 *)TILEMAP_BUFFER(1), (u32 *)gUnk_02039238, gUnk_02039294);
-    ModuleDrawTrackMapWindow(0, 0, (u8 *)gUnk_02039268, (u32 *)TILEMAP_BUFFER(2), (u32 *)gUnk_0203922C, gUnk_02039248);
+        gModule_TrackMapWidth = 125;
+    ModuleDrawTrackMapWindow(0, 0, (u8 *)gModule_Bg3MapPtr, (u32 *)TILEMAP_BUFFER(1), (u32 *)gModule_Bg3Metatiles,
+                             gUnk_02039294);
+    ModuleDrawTrackMapWindow(0, 0, (u8 *)gModule_Bg2MapPtr, (u32 *)TILEMAP_BUFFER(2), (u32 *)gModule_Bg2Metatiles,
+                             gUnk_02039248);
     ModuleFlushTrackBgBuffers();
     ModuleSetCameraPos(0, 0);
     ModuleInitRaceCars(idx);
@@ -91,24 +87,26 @@ void ModuleLoadTrack(u32 idx)
     gModule_NumFinishedCars = 0;
 }
 
-void ModuleUpdateTrackScroll(void)
+void ModuleUpdateTrackScroll(u32 unused0, u32 unused1)
 {
     s32 x;
     s32 y;
 
     x = gModule_Camera[6] - 0x78;
     y = gModule_Camera[7] - 0x50;
-    gUnk_0203925C = x & 0xF;
-    gUnk_02039260 = y & 0x1F;
-    gUnk_020392A8 = x & 0xF;
-    gUnk_02039240 = y & 0x1F;
-    gUnk_02039290 = x & 0xF;
-    gUnk_02039298 = y & 0x1F;
-    gUnk_02039234[0] = x & 0x10;
+    gModule_Bg1ScrollX = x & 0xF;
+    gModule_Bg1ScrollY = y & 0x1F;
+    gModule_Bg2ScrollX = x & 0xF;
+    gModule_Bg2ScrollY = y & 0x1F;
+    gModule_Bg3ScrollX = x & 0xF;
+    gModule_Bg3ScrollY = y & 0x1F;
+    gModule_MapScrollHalfMetatile = x & 0x10;
     x = x >> 5;
     y = y >> 5;
-    ModuleDrawTrackMapWindow(x, y, (*(u32 *)&gUnk_02039228), 0x03000000, (*(u32 *)&gUnk_02039238), gUnk_02039248);
-    ModuleDrawTrackMapWindow(x, y, (*(u32 *)&gUnk_02039268), 0x03000800, (*(u32 *)&gUnk_0203922C), gUnk_020392A4);
+    ModuleDrawTrackMapWindow(x, y, (u8 *)gModule_Bg3MapPtr, (u32 *)TILEMAP_BUFFER(0), (u32 *)gModule_Bg3Metatiles,
+                             gUnk_02039248);
+    ModuleDrawTrackMapWindow(x, y, (u8 *)gModule_Bg2MapPtr, (u32 *)TILEMAP_BUFFER(1), (u32 *)gModule_Bg2Metatiles,
+                             gUnk_020392A4);
 }
 
 void ModuleDrawTrackMapWindow(u32 tileX, u32 tileY, u8 *map, u32 *dest, u32 *charBase, u16 unused)
@@ -121,9 +119,9 @@ void ModuleDrawTrackMapWindow(u32 tileX, u32 tileY, u8 *map, u32 *dest, u32 *cha
     u32 col;
     u32 tileIdx;
 
-    mapPtr = map + tileY * gUnk_02039244 + tileX;
+    mapPtr = map + tileY * gModule_BgMapWidth + tileX;
     destPtr = dest;
-    for (row = 0; row != 0x18; row += 4) {
+    for (row = 0; row != 24; row += 4) {
         destRow2 = destPtr + 36;
         for (col = 0; col != 9; col++) {
             tileIdx = *mapPtr++;
@@ -140,21 +138,19 @@ void ModuleDrawTrackMapWindow(u32 tileX, u32 tileY, u8 *map, u32 *dest, u32 *cha
             destPtr += 2;
         }
         destPtr += 54;
-        mapPtr += gUnk_02039244 - 9;
+        mapPtr += gModule_BgMapWidth - 9;
     }
 }
 
 void ModuleFlushTilemapBuffer(u8 *src, u8 *dest)
 {
     u32 row;
-    u32 srcPtr = (u32)src;
-    u32 destPtr = (u32)dest;
 
-    if (gUnk_02039234[0] != 0)
-        srcPtr += 4;
+    if (gModule_MapScrollHalfMetatile != 0)
+        src += 4;
     for (row = 0; row != TILEMAP_ROWS; row++) {
-        sub_08344B60(srcPtr, destPtr, TILEMAP_DST_STRIDE / 4);
-        srcPtr += TILEMAP_SRC_STRIDE;
-        destPtr += TILEMAP_DST_STRIDE;
+        sub_08344B60(src, dest, TILEMAP_DST_STRIDE / 4);
+        src += TILEMAP_SRC_STRIDE;
+        dest += TILEMAP_DST_STRIDE;
     }
 }

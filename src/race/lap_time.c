@@ -1,17 +1,23 @@
 #include "global.h"
+#include "gba/defines.h"
 #include "data.h"
 #include "functions.h"
 #include "variables.h"
 
 void LapTimeTask(struct Task *task);
-void LapSnapshotTask(struct Task *);
+
+/* The file's four RAM variables (the two u32 timer-snapshot arrays,
+   gLapTimeTextBuf -- sized to gUnk_0202CC20, its first 9 bytes the text
+   DrawLapTime writes -- and gUnk_0202CC1C) moved to src/race/globals.c,
+   the owner of the 0x0202CBE0-0x0202CCD0 EWRAM run they sit in; they are
+   declared in variables.h. */
 
 void LapTimeTask(struct Task *task)
 {
     u8 unused[0x28];
 
-    DrawTextAt(GetString(0x9A), 9, 5);
-    DrawTextAt(gLapTimeTextBuf, 0xD, 5);
+    DrawTextAt(GetString(154), 9, 5);
+    DrawTextAt(gLapTimeTextBuf, 13, 5);
     if (--task->timer == 0) {
         DrawTextAt(gText_BlankRowRaceMsg, 9, 5);
         RemoveTask(task);
@@ -59,7 +65,7 @@ void LapSnapshotTask(struct Task *e)
     s32 millis;
 
     p0 = buf;
-    minutes = gUnk_0202CC08[0];
+    minutes = gUnk_0202CC08;
     digit = sub_080172C8(sub_08017230(minutes, 10), 10) + 0x30;
     nul = 0;
     p0[0] = digit;
@@ -73,7 +79,7 @@ void LapSnapshotTask(struct Task *e)
     p4[4] = sub_080172C8(seconds, 10) + 0x30;
     buf[5] = 0x3A;
     q6 = buf;
-    millis = gUnk_0202CC00[0];
+    millis = gUnk_0202CC00;
     q6[6] = sub_080172C8(sub_08017230(millis, 100), 10) + 0x30;
     q7 = buf;
     q7[7] = sub_080172C8(sub_08017230(millis, 10), 10) + 0x30;
@@ -96,8 +102,8 @@ void SaveLapTime(void)
         task->timer = 0x40;
         task->callback = LapSnapshotTask;
         AddTask(task);
-        gUnk_0202CC08[0] = gLapMin[0];
-        gUnk_0202CC1C[0] = gLapSec[0];
-        gUnk_0202CC00[0] = gLapMs[0];
+        gUnk_0202CC08 = gLapMin;
+        gUnk_0202CC1C[0] = gLapSec;
+        gUnk_0202CC00 = gLapMs;
     }
 }
